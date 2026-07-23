@@ -1,0 +1,5 @@
+.workbuddy/
+moonlit-covenant-ai-jrpg/.env
+*.log
+.DS_Store
+Thumbs.db
