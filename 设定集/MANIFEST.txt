@@ -1,19 +1,29 @@
-《月蚀契约》AI JRPG 剧情设定包 v0.1
-生成日期：2026-07-22
-编码：UTF-8
+《月蚀契约》AI JRPG 剧情设定包 v0.2
+Build date: 2026-07-23
+Encoding: UTF-8
+Line endings: LF
 
-文件清单（SHA-256）：
-334be638f54ed0da408ad77618d7cd4912f1374d506d11e0370acf9469b85798  00_总览与目录.md
-2d13f21b4b4ffbb1dd86de90700a9f72e6f833a901e576bb3bbe7e4ff22b8a6e  01_核心企划与叙事支柱.md
-23558e2946db212152515ef8d4d77746178b96c21ba8c7aede840f9e06ffb23e  02_世界观与历史.md
-648d6fd4210154d24211924b9007e9e3fa48d9503c0ce3451a9a06d475495d08  03_主角与八位女主角.md
-1b2d2248b499d089bd619a7c1503a01d733f65ffde358ed942c1dd9fdf861f05  04_阵营与关键NPC.md
-a70c0dd4958ff54628327e7707c9019b5bef9771f2a65dc8a5690462c0eda853  05_五心系统与主线谜团.md
-871abb6b280d13a91ef64b927821f473bd82240ab1a7f79524cf83f6d8cd8a91  06_战斗职业魔法与装备.md
-45c1d6c50b65fe9ded64400b6f4ecccace84fad2928f35890752e8ced9ac0d83  07_怪物与Boss图鉴.md
-d75dcb89a97c67106fb2df0583d58163af43fa47a8bb2fb1f0722731f3d6a6b5  08_世界地图城镇与支线.md
-19da0a747c2efa858e19b2dc36330321e15f98f6e3aba718249b92c3a5a2da8d  09_主线剧情100章总纲.md
-6561002f8674699dafc4f59913ae2cbf4fde334a1b8d16f50c0214c66c4ffa34  10_前15章详细剧本.md
-cd157de0d905029470ec850f254550ab03b49cfc7a118fb6f4e74023123af4f0  11_AI互动好感与结局.md
-ba2052368cb9dd8bf9524ff14f31244b08e744d7f053254999e463456a596756  12_编剧格式与制作规范.md
-b2756b866827cddb85a12483ee5908dbf082c18e8f37ae4cfa2dc9c08f64920e  99_整合设定集.md
+FILES
+00_总览与目录.md	9371 bytes	SHA256 2fb910aca5a1205908a1b30cbf8ae75db4f5d8adaac3f23a914ae3c868760d16
+01_核心企划与叙事支柱.md	14956 bytes	SHA256 7c91917d28d0c0e4a350e7a876ae1353790bd4c8068679518dace5a5fe641654
+02_世界观与历史.md	14710 bytes	SHA256 535f217082196cbb0bb687c07be3f16bc50f0384ee2e3a2fc81bb368d032b043
+03_主角与八位女主角.md	38523 bytes	SHA256 c83c1e06a4682d32de7460cce32040b7cb59fe0fa0a502a5ebf6cac02b9cf70d
+04_阵营与关键NPC.md	11712 bytes	SHA256 a402479e3611e4e164285dc2d70a8efed4cdb85b154c7c20c9de387b80ec7c21
+05_五心系统与主线谜团.md	14438 bytes	SHA256 aa509b8ea6063013ad9162d52842fa9bfaacd68e1a78c4293ca76e412a9317a4
+06_战斗职业魔法与装备.md	15762 bytes	SHA256 7cda7e93dbcac62548b64255aa499a1854685425512807166200cb4628584a19
+07_怪物与Boss图鉴.md	17126 bytes	SHA256 7130f6277755c0749e052772a10d86b0e8a1a28c2a79fd1b087dd552e30177a4
+08_世界地图城镇与支线.md	13774 bytes	SHA256 5f43a9866421667e176afd810fd7f455428728cf62de978405268cb97a366a30
+09_主线剧情100章总纲.md	55012 bytes	SHA256 3fcb6a3e219d54e26e811c019c531b62afa8bc91847ca739d62a525c3d5e2d76
+10_前15章详细剧本.md	56167 bytes	SHA256 aabee8e1ae5a6adead530fef3be4c6f88adb1430e08fdb8335830d76d4b4625c
+11_AI互动好感与结局.md	38761 bytes	SHA256 05ac341e354f013adee03281438d99769bf7fe15a5ea42663e34ac13587cfadb
+12_编剧格式与制作规范.md	31922 bytes	SHA256 6ed986c9f3cb45409b0768a2f885a947ac61aad09584c33068d292130c867f9a
+CHANGELOG_v0.2.md	10586 bytes	SHA256 c95646b79797aebe53ecb2dc05284ac35b10736959d96e1c568a3ddff9fa496c
+99_整合设定集.md	344377 bytes	SHA256 bab4bd15abb0d6f4b29531c369fec7d2f5dada316ad60700844ba9d21b4cc57e
+
+CANON SUMMARY
+- Chapters: CH001–CH100 common route; CH101–CH103 endings.
+- All eight heroines appear by Chapter 30.
+- Seven laws / seven sins / seven nations / seven monster regions / seven sin-linked heroines; Evelyn is Pure Bond.
+- Relics: five World Hearts + two Balance Seals.
+- Endings: single marriage, consensual three-partner marriage, sick-love tragedy, seven-sins worst ending, plus non-romance travel epilogue.
+- Marriage epilogues occur three years after the main story.
