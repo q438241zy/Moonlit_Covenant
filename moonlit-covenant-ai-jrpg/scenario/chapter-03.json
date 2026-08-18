@@ -1,0 +1,76 @@
+{
+  "id": 3,
+  "title": "九命机关",
+  "subtitle": "Nine Lives Mechanism",
+  "estimatedMinutes": 3,
+  "unlockCondition": { "chapter": 2, "completed": true },
+  "scenes": [
+    {
+      "id": "ch3_scene1",
+      "name": "银轨号·行李车厢（米娅的工作室）",
+      "background": "被改造成临时工坊的行李车厢。到处是散落的齿轮、铜管、发条和半成品的机械装置。天花板上悬挂着十几盏自制的小灯，发出温暖的橘色光芒。角落里，一台猫形机械正在打盹，尾巴有节奏地摆动。",
+      "events": [
+        { "type": "narration", "text": "你循着叮叮当当的敲击声来到行李车厢。推开门的瞬间，一个弹簧从某个装置中弹射出来，差点命中你的额头。" },
+        { "type": "dialogue", "speaker": "mia", "text": "喵哇！别、别动！那个是'自动防御弹射器'的原型机，触发范围是——啊，已经触发了喵。快趴下！", "emotion": "panicked" },
+        { "type": "narration", "text": "你本能地蹲下。三个弹簧、两枚橡皮弹和一团不明泡沫从头顶飞过，砸在身后的墙壁上。" },
+        { "type": "dialogue", "speaker": "mia", "text": "呼……安全了喵。对不起对不起！我忘了把保险栓关上。那个……你没事吧？没受伤吧喵？", "emotion": "apologetic" },
+        { "type": "choice", "id": "ch3_choice1", "prompt": "你从泡沫中爬起来，看着满脸歉意的米娅——", "options": [
+          { "id": "a", "text": "\"……这就是你说的'把扳手声音调到最低频'？\"", "effect": { "trust_mia": 1 } },
+          { "id": "b", "text": "\"没事。不过下次能不能在门口挂个'内有机关'的牌子？\"", "effect": { "trust_mia": 1, "bond_mia": 1 } }
+        ]},
+        { "type": "dialogue", "speaker": "mia", "text": "嘿嘿……我考虑过喵。但是挂牌子的话就没有惊喜感了嘛！好的发明就应该让人'哇'一下才对喵！", "emotion": "cheerful" },
+        { "type": "dialogue", "speaker": "mia", "text": "欢迎来到米娅的秘密工坊！虽然说是秘密，但其实全列车就这一个地方能让我安心做研究喵。来，我给你介绍我的孩子们！", "emotion": "proud" },
+        { "type": "narration", "text": "她像展示珍宝一样，逐一指向车厢里的各种装置：自动泡茶机（会喷蒸汽）、折叠式护盾发生器（只能展开一半）、以及一台正在打呼噜的猫形机械。" },
+        { "type": "transition", "target": "ch3_scene2" }
+      ],
+      "choices": ["ch3_choice1"]
+    },
+    {
+      "id": "ch3_scene2",
+      "name": "银轨号·行李车厢·零号",
+      "background": "工坊最深处，一块天鹅绒布覆盖着一个大型装置。米娅小心翼翼地揭开布，露出了一台精密的猫形机关人偶——它的眼睛是两颗蓝宝石，胸腔内可以看到复杂的齿轮组在缓缓转动。",
+      "events": [
+        { "type": "dialogue", "speaker": "mia", "text": "这个……是'零号'。我最重要的作品。也是……我唯一没有完成的作品喵。", "emotion": "tender" },
+        { "type": "narration", "text": "她的语气突然变了。不再是平时那种蹦蹦跳跳的活泼，而是带着一种小心翼翼的温柔，像是在介绍一个沉睡的孩子。" },
+        { "type": "dialogue", "speaker": "mia", "text": "零号是我五年前开始做的。那时候我十二岁，刚被机关学院退学——他们说我的理论'太危险'、'不切实际'喵。", "emotion": "bittersweet" },
+        { "type": "dialogue", "speaker": "mia", "text": "他们说得对。零号的核心是'共感齿轮'——一种能读取并回应人类情感的机关。如果成功的话，它不只是一台机器……它会'理解'你。会因为你难过而难过，因为你开心而开心喵。", "emotion": "passionate" },
+        { "type": "dialogue", "speaker": "lia", "text": "……你什么时候来的？", "emotion": "surprised" },
+        { "type": "narration", "text": "莉亚不知何时站在了车厢门口，双臂抱胸。她的目光落在零号身上，表情复杂。" },
+        { "type": "dialogue", "speaker": "mia", "text": "莉亚姐！你、你听到多少了喵？", "emotion": "embarrassed" },
+        { "type": "dialogue", "speaker": "lia", "text": "够多了。一台能感受情感的机器……你造它，是因为你觉得自己不被理解？", "emotion": "perceptive" },
+        { "type": "dialogue", "speaker": "mia", "text": "……", "emotion": "silent" },
+        { "type": "dialogue", "speaker": "mia", "text": "……被退学之后，没有人愿意看我的设计图。他们说'一个女孩子玩什么机关'。我花了三年时间，一个人，在地下室里，把零号做到了98%喵。", "emotion": "vulnerable" },
+        { "type": "dialogue", "speaker": "mia", "text": "最后2%……是'心'。我不知道怎么给一台机器一颗心。所以我一直在找答案。坐这趟列车，也是为了去东部的'万象图书馆'找最后的文献喵。", "emotion": "determined" },
+        { "type": "cg", "unlockCg": "cg_ch3_zero", "description": "CG：米娅跪在零号面前，双手捧着它冰冷的金属爪子，额头轻轻抵在上面。蓝色的齿轮光芒从胸腔中透出，映照着她的猫耳和微微泛红的眼眶。莉亚靠在门框上，表情罕见地柔和。" },
+        { "type": "transition", "target": "ch3_scene3" }
+      ],
+      "choices": []
+    },
+    {
+      "id": "ch3_scene3",
+      "name": "银轨号·行李车厢·共鸣",
+      "background": "工坊内，零号的蓝宝石眼睛突然闪烁了一下。所有悬挂的小灯同时暗了一瞬，又恢复。空气中传来极轻的、像猫打呼噜一样的震动声。",
+      "events": [
+        { "type": "narration", "text": "就在米娅说完最后一句话的瞬间，零号的胸腔内，齿轮的转速突然加快了。蓝宝石眼睛亮了起来——不是机械的冷光，而是一种温暖的、仿佛带着好奇的光芒。" },
+        { "type": "dialogue", "speaker": "mia", "text": "零、零号？！你……你醒了？不可能，共感齿轮的启动条件是——", "emotion": "shocked" },
+        { "type": "dialogue", "speaker": "serena", "text": "——是'被理解'。", "emotion": "knowing" },
+        { "type": "narration", "text": "塞蕾娜从阴影中走出，紫色的长发在灯光下泛着星辉般的光泽。" },
+        { "type": "dialogue", "speaker": "serena", "text": "共感齿轮需要的不是技术，不是文献。它需要的是——有人真正看见制造者的孤独，并说出'我理解'。你找了五年的答案，不在万象图书馆里。", "emotion": "gentle" },
+        { "type": "dialogue", "speaker": "serena", "text": "它在这节车厢里。在此刻。在莉亚·赫斯特说出'你觉得自己不被理解'的那一刻。", "emotion": "profound" },
+        { "type": "dialogue", "speaker": "mia", "text": "……喵。", "emotion": "tearful" },
+        { "type": "narration", "text": "米娅的眼泪掉了下来。但她笑着。零号缓缓抬起金属爪子，笨拙地、轻轻地碰了碰她的脸颊。" },
+        { "type": "dialogue", "speaker": "mia", "text": "你……你在安慰我吗？笨蛋零号，你的爪子好冰喵……但是……好温暖……", "emotion": "crying_happy" },
+        { "type": "choice", "id": "ch3_choice2", "prompt": "看着这一幕，你——", "options": [
+          { "id": "a", "text": "轻轻拍了拍米娅的头：\"九条命的猫，总有一条命是用来被理解的。\"", "effect": { "bond_mia": 2 } },
+          { "id": "b", "text": "对零号伸出手：\"你好，零号。以后请多关照。\"", "effect": { "trust_mia": 1, "bond_mia": 1 } }
+        ]},
+        { "type": "dialogue", "speaker": "lia", "text": "……行了。擦擦眼泪。我们还有任务。", "emotion": "soft" },
+        { "type": "narration", "text": "莉亚别过脸去。但你注意到她悄悄把一块干净的手帕放在了米娅手边。" },
+        { "type": "dialogue", "speaker": "mia", "text": "嗯！米娅·铃，重新出发喵！零号，启动护卫模式！……虽然它现在只会打呼噜和蹭人喵。", "emotion": "renewed" },
+        { "type": "narration", "text": "零号发出一声满足的'咕噜'声，蜷缩在米娅脚边。它的蓝宝石眼睛映着工坊的暖光，齿轮平稳地转动着——像一颗小小的、终于开始跳动的心。" },
+        { "type": "transition", "target": "ch3_end" }
+      ],
+      "choices": ["ch3_choice2"]
+    }
+  ]
+}

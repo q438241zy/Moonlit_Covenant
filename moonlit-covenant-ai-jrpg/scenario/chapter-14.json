@@ -1,0 +1,91 @@
+{
+  "id": 14,
+  "title": "第四条路",
+  "subtitle": "The Fourth Path",
+  "estimatedMinutes": 3,
+  "unlockCondition": { "chapter": 13, "completed": true },
+  "scenes": [
+    {
+      "id": "ch14_scene1",
+      "name": "诺克斯观测所·黎明",
+      "background": "月蚀完全消退。第一缕真正的阳光穿透穹顶，照在黎明种上。种子表面的四道纹路在阳光下闪烁，然后——它裂开了。不是碎裂，是像种子发芽一样的裂开。从裂缝中，金色的光尘飘散到空气中。",
+      "events": [
+        { "type": "narration", "text": "月蚀消退了。第一缕阳光穿透穹顶，照在黎明种上。然后——种子裂开了。不是毁灭性的碎裂，而是像一颗真正的种子在春天发芽。" },
+        { "type": "dialogue", "speaker": "mia", "text": "黎明种在……发芽喵？", "emotion": "amazed" },
+        { "type": "dialogue", "speaker": "narrator", "text": "「……封印改变了它的性质。它不再是记忆改写装置了。四重共鸣将四个人的记忆注入了它的核心——它现在是一颗真正的'种子'。一颗承载着你们四人记忆碎片的种子。」", "emotion": "wondering" },
+        { "type": "dialogue", "speaker": "narrator", "text": "「它不会再改写任何人的记忆了。它只是……记住了你们。记住了这一夜。记住了你们选择信任彼此的那一刻。」", "emotion": "peaceful" },
+        { "type": "dialogue", "speaker": "lia", "text": "……所以它不会再被用来做那种事了？", "emotion": "cautious" },
+        { "type": "dialogue", "speaker": "narrator", "text": "「不会了。黎明种计划……结束了。我——艾琳娜的记忆体——也会随着计划的终止而消散。」", "emotion": "accepting" },
+        { "type": "dialogue", "speaker": "serena", "text": "……母亲。", "emotion": "grief" },
+        { "type": "dialogue", "speaker": "narrator", "text": "「不要难过，塞蕾娜。我不是你的母亲。我只是她留下的一段记忆。真正的她……还在休眠舱里。她的记忆会被归还。她会醒来。」", "emotion": "gentle" },
+        { "type": "dialogue", "speaker": "narrator", "text": "「替我告诉她……对不起。还有……她做得很好。把女儿养得这么好。」", "emotion": "farewell" },
+        { "type": "narration", "text": "黎明卿的身影开始变得透明。金色的光尘从她身上飘散，像蒲公英的种子被风吹走。" },
+        { "type": "dialogue", "speaker": "serena", "text": "……我会的。我会告诉她。", "emotion": "tearful" },
+        { "type": "dialogue", "speaker": "narrator", "text": "「还有……谢谢你们。谢谢你们选择了第四条路。不是牺牲，不是逃避，不是改写——是信任。是我最没有预料到的答案。」", "emotion": "grateful" },
+        { "type": "narration", "text": "她消散了。金色的光尘飘散在空气中，最终融入了黎明种的嫩芽中。" },
+        { "type": "cg", "unlockCg": "cg_ch14_dawn", "description": "CG：第一缕阳光照在裂开的黎明种上，金色的嫩芽从裂缝中探出。黎明卿的身影在光中消散，化为金色光尘。塞蕾娜伸出手，光尘从她指间穿过。莉亚、米娅和玩家站在她身后，阳光将四人的影子拉得很长。" },
+        { "type": "transition", "target": "ch14_scene2" }
+      ],
+      "choices": []
+    },
+    {
+      "id": "ch14_scene2",
+      "name": "诺克斯观测所·苏醒",
+      "background": "实验室中，休眠舱一个接一个地开启。银色导线从太阳穴上脱落，沉睡的人们开始有了呼吸的变化。塞蕾娜的母亲——艾琳娜·诺克斯——缓缓睁开了眼睛。",
+      "events": [
+        { "type": "narration", "text": "休眠舱开始一个接一个地开启。银色导线脱落，沉睡的人们发出微弱的呻吟，像是从很长的梦中醒来。" },
+        { "type": "dialogue", "speaker": "mia", "text": "记忆在回流喵！所有被提取的记忆都在回到它们的主人身边！", "emotion": "joyful" },
+        { "type": "narration", "text": "塞蕾娜站在母亲的休眠舱前。舱盖缓缓升起，艾琳娜·诺克斯——真正的、活着的她——睁开了眼睛。" },
+        { "type": "dialogue", "speaker": "narrator", "text": "「……塞蕾娜？」", "emotion": "confused" },
+        { "type": "dialogue", "speaker": "serena", "text": "……妈妈。", "emotion": "overwhelmed" },
+        { "type": "dialogue", "speaker": "narrator", "text": "「我……我做了很长的梦。梦里你七岁，站在观测所门口哭。我转身走了。我……」", "emotion": "guilty" },
+        { "type": "dialogue", "speaker": "serena", "text": "我知道。我都记得。", "emotion": "gentle" },
+        { "type": "dialogue", "speaker": "serena", "text": "但我也记得……你每年冬天都会寄一条围巾到观测所。没有署名。但针脚和你教我织的一模一样。", "emotion": "tender" },
+        { "type": "dialogue", "speaker": "narrator", "text": "「你……你发现了？」", "emotion": "surprised" },
+        { "type": "dialogue", "speaker": "serena", "text": "我七岁就发现了。只是……不敢确认。", "emotion": "soft" },
+        { "type": "narration", "text": "母女相拥。艾琳娜哭了，塞蕾娜也哭了。但这次的泪水不是悲伤——是十七年的等待终于有了回应。" },
+        { "type": "dialogue", "speaker": "lia", "text": "……", "emotion": "moved" },
+        { "type": "dialogue", "speaker": "mia", "text": "莉亚姐你在哭喵。", "emotion": "teasing" },
+        { "type": "dialogue", "speaker": "lia", "text": "没有。是灰尘。", "emotion": "denying" },
+        { "type": "dialogue", "speaker": "mia", "text": "这里是密封实验室喵。没有灰尘。", "emotion": "playful" },
+        { "type": "dialogue", "speaker": "lia", "text": "……闭嘴，米娅。", "emotion": "flustered" },
+        { "type": "choice", "id": "ch14_choice1", "prompt": "看着重逢的母女，你——", "options": [
+          { "id": "a", "text": "悄悄退后一步，给她们空间。有些时刻不需要旁观者。", "effect": { "bond_serena": 1 } },
+          { "id": "b", "text": "对莉亚和米娅笑了笑：\"走吧。让她们待一会儿。\"", "effect": { "bond_lia": 1, "bond_mia": 1 } }
+        ]},
+        { "type": "transition", "target": "ch14_scene3" }
+      ],
+      "choices": ["ch14_choice1"]
+    },
+    {
+      "id": "ch14_scene3",
+      "name": "银轨号·归途",
+      "background": "银轨号重新启动了。铁轨在前方重新出现，延伸向远方的地平线。列车缓缓驶离观测所，阳光从车窗涌入，将车厢照得温暖而明亮。",
+      "events": [
+        { "type": "narration", "text": "银轨号重新启动了。铁轨在前方重新出现——不是通向未知的黑暗，而是通向远方的、被阳光照亮的地平线。" },
+        { "type": "dialogue", "speaker": "mia", "text": "列车恢复正常了喵！动力系统、轨道、通讯……全部正常。乘客们也都在醒来。", "emotion": "relieved" },
+        { "type": "dialogue", "speaker": "lia", "text": "……结束了。真的结束了。", "emotion": "disbelieving" },
+        { "type": "dialogue", "speaker": "serena", "text": "是的。我看不见了——未来。但我不需要看见了。", "emotion": "free" },
+        { "type": "dialogue", "speaker": "serena", "text": "因为未来……是我们自己走出来的。不是被看见的。", "emotion": "wise" },
+        { "type": "dialogue", "speaker": "mia", "text": "零号还在修喵。共感齿轮的裂纹……可能需要很长时间。但它还在转。很慢，但在转。", "emotion": "hopeful" },
+        { "type": "dialogue", "speaker": "lia", "text": "……我的剑也是。裂了，但没碎。找个好铁匠，还能修。", "emotion": "optimistic" },
+        { "type": "narration", "text": "莉亚低头看着剑身上的裂纹。然后，她做了一件从未做过的事——她笑了。不是苦笑，不是冷笑，是一个真正的、放松的笑。" },
+        { "type": "dialogue", "speaker": "lia", "text": "……第八道刻痕。", "emotion": "warm" },
+        { "type": "narration", "text": "她看向你。" },
+        { "type": "dialogue", "speaker": "lia", "text": "你说过不让我刻。看来我食言了。", "emotion": "playful" },
+        { "type": "dialogue", "speaker": "lia", "text": "但这一次……不是墓志铭。是勋章。", "emotion": "proud" },
+        { "type": "choice", "id": "ch14_choice2", "prompt": "列车在阳光中前行。你看着身边的三个人——", "options": [
+          { "id": "a", "text": "\"银轨号护卫队……任务完成。\"", "effect": { "bond_lia": 1, "bond_mia": 1, "bond_serena": 1 } },
+          { "id": "b", "text": "\"下一站是哪里？不管去哪里，一起。\"", "effect": { "bond_lia": 1, "bond_mia": 1, "bond_serena": 1 } }
+        ]},
+        { "type": "dialogue", "speaker": "mia", "text": "下一站喵……让我看看……是'万象图书馆'！我本来就是要去那里的喵！虽然目的变了，但目的地没变！", "emotion": "excited" },
+        { "type": "dialogue", "speaker": "serena", "text": "万象图书馆……也许那里有修复共感齿轮的文献。也有……我想知道的答案。关于观测者的未来。", "emotion": "thoughtful" },
+        { "type": "dialogue", "speaker": "lia", "text": "……我无所谓。你们去哪，我去哪。反正我现在没有团了。", "emotion": "casual" },
+        { "type": "dialogue", "speaker": "lia", "text": "……而且。有人欠我一杯咖啡。在银轨号的餐车里。凉的。", "emotion": "tsundere" },
+        { "type": "narration", "text": "列车在阳光中前行。窗外的世界从黑暗变成了金色。月蚀结束了。黎明到来了。而银轨号上的四个人，终于可以只是——乘客。" },
+        { "type": "transition", "target": "ch14_end" }
+      ],
+      "choices": ["ch14_choice2"]
+    }
+  ]
+}

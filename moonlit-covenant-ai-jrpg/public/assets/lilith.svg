@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 900" role="img" aria-labelledby="title desc">
+  <title id="title">莉莉丝·瓦尔哈拉</title><desc id="desc">金发暗影刺客·阿卡丽风格</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#1a0f24"/><stop offset=".5" stop-color="#3d2456"/><stop offset="1" stop-color="#0d0a18"/></linearGradient>
+    <linearGradient id="hair" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffe08a"/><stop offset=".45" stop-color="#e8b84a"/><stop offset="1" stop-color="#a87a2a"/></linearGradient>
+    <linearGradient id="outfit" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#3a3048"/><stop offset=".2" stop-color="#241d33"/><stop offset="1" stop-color="#120e1c"/></linearGradient>
+    <radialGradient id="glow"><stop stop-color="#e8c8ff"/><stop offset=".6" stop-color="#9a6ad0" stop-opacity=".35"/><stop offset="1" stop-color="#7a4ab0" stop-opacity="0"/></radialGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="16" stdDeviation="18" flood-color="#000" flood-opacity=".5"/></filter>
+  </defs>
+  <rect width="600" height="900" rx="52" fill="url(#bg)"/>
+  <circle cx="300" cy="380" r="230" fill="url(#glow)" opacity=".45"/>
+  <g opacity=".35" fill="none" stroke="#c8a8e8"><path d="M80 200q60-40 120 0"/><path d="M420 160q60-40 120 0"/><path d="M60 620q60-40 120 0"/><path d="M440 660q60-40 120 0"/></g>
+  <g fill="#e8d0ff" opacity=".6"><circle cx="130" cy="120" r="4"/><circle cx="490" cy="140" r="5"/><circle cx="100" cy="500" r="4"/><circle cx="500" cy="560" r="4"/></g>
+  <g filter="url(#shadow)">
+    <path d="M100 853c19-170 91-265 200-265 115 0 190 95 205 265z" fill="url(#outfit)"/>
+    <path d="M160 340c-6-152 59-235 151-235 112 0 176 91 154 262l-28 210-281-9z" fill="url(#hair)"/>
+    <path d="M190 302c14-86 67-135 123-135 75 0 128 60 129 149v130c0 89-58 157-136 157-74 0-126-66-126-153z" fill="#f5d5c8"/>
+    <path d="M160 341c30-110 82-168 160-168 30 0 58 8 82 24l-20 40c-50-28-100-30-150-8-24 30-40 68-48 112z" fill="url(#hair)"/>
+    <path d="M160 290c-40 80-38 190 4 280l40-4c-28-105-22-198 22-280z" fill="#c89a3a"/>
+    <path d="M435 225c55 85 50 220-18 340l40-5c60-120 66-272-22-335z" fill="#a87a2a"/>
+    <path d="M218 342c28-18 58-19 86-3" fill="none" stroke="#8a6a3a" stroke-width="9" stroke-linecap="round"/>
+    <path d="M343 339c24-15 50-15 74 0" fill="none" stroke="#8a6a3a" stroke-width="9" stroke-linecap="round"/>
+    <ellipse cx="267" cy="383" rx="22" ry="27" fill="#fffaf5"/><ellipse cx="377" cy="383" rx="22" ry="27" fill="#fffaf5"/>
+    <ellipse cx="270" cy="387" rx="11" ry="19" fill="#c8942a"/><ellipse cx="374" cy="387" rx="11" ry="19" fill="#c8942a"/>
+    <circle cx="274" cy="379" r="5" fill="#fff"/><circle cx="378" cy="379" r="5" fill="#fff"/>
+    <path d="M240 412l-16 8M258 418l-8 14" stroke="#8a5a7a" stroke-width="4" stroke-linecap="round" opacity=".7"/>
+    <path d="M319 385c-5 23-7 40 7 46" fill="none" stroke="#ce998f" stroke-width="6" stroke-linecap="round"/>
+    <path d="M290 470c20 8 44 6 62-6" fill="none" stroke="#a05a72" stroke-width="7" stroke-linecap="round"/>
+    <path d="M178 700c38-46 78-69 121-75l5 150-92-76zM424 700c-37-46-77-69-120-75l-6 150 92-76z" fill="#2a2138" stroke="#c8a8e8" stroke-width="6"/>
+    <path d="M300 640v140" stroke="#c8b0e0" stroke-width="9"/>
+    <path d="M255 700l-30 60 18 6 24-50zM345 700l30 60-18 6-24-50z" fill="#8a8a9a" stroke="#d8d8e8" stroke-width="3"/>
+  </g>
+  <text x="300" y="838" text-anchor="middle" font-family="serif" font-size="30" fill="#e8c87a" opacity=".85">莉莉丝·瓦尔哈拉</text>
+</svg>

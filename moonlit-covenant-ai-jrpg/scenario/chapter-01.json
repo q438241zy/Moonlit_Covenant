@@ -1,0 +1,96 @@
+{
+  "id": 1,
+  "title": "银轨号上的异变",
+  "subtitle": "Anomaly on the Silver Rail",
+  "estimatedMinutes": 3,
+  "unlockCondition": null,
+  "scenes": [
+    {
+      "id": "ch1_scene1",
+      "name": "银轨号·观景车厢",
+      "background": "银轨号列车内部，暖黄色灯光映照在深红色天鹅绒座椅上。窗外是无尽的夜色，月光透过玻璃在地板上投下银白色的光斑。列车轻微摇晃，远处传来铁轨有节奏的震动声。",
+      "events": [
+        { "type": "narration", "text": "银轨号——连接大陆东西两端的传奇列车，据说从未晚点，从未脱轨。你坐在观景车厢的角落，手中握着一张没有目的地的车票。" },
+        { "type": "narration", "text": "车厢里乘客寥寥。一位赤色短发的少女靠在窗边打盹，手边放着一柄制式长剑。不远处，一个戴着猫耳发饰的女孩正埋头拆解一台小型机械。最远处的座位上，紫发女子静静凝视着窗外的月亮。" },
+        { "type": "dialogue", "speaker": "mia", "text": "喵呜～这颗齿轮的咬合角差了0.3度……不对，是0.27度！差一点就完美了喵！", "emotion": "excited" },
+        { "type": "dialogue", "speaker": "lia", "text": "……你能不能安静点。有些人需要休息。", "emotion": "annoyed" },
+        { "type": "dialogue", "speaker": "mia", "text": "啊，对不起对不起！莉亚姐你继续睡喵～我保证把扳手的声音调到最低频！", "emotion": "apologetic" },
+        { "type": "dialogue", "speaker": "serena", "text": "……月亮今夜的弧度，比昨日偏了三分。有什么东西，正在靠近。", "emotion": "mysterious" },
+        { "type": "narration", "text": "紫发女子的话音刚落，列车猛地一震。灯光闪烁了两下，随即全部熄灭。黑暗中，你听见了——一种不属于机械的、湿润的呼吸声。" },
+        { "type": "transition", "target": "ch1_scene2" }
+      ],
+      "choices": []
+    },
+    {
+      "id": "ch1_scene2",
+      "name": "银轨号·黑暗车厢",
+      "background": "完全黑暗的车厢，只有窗外偶尔闪过的月光提供微弱的照明。空气中弥漫着一种甜腻的、令人昏沉的气味。座椅上，几名乘客已经陷入了不自然的沉睡，面带诡异的微笑。",
+      "events": [
+        { "type": "narration", "text": "黑暗中，你感到一阵强烈的困意袭来。眼皮沉重得像灌了铅，脑海中浮现出温暖的、令人眷恋的画面——那是你最珍贵的记忆。" },
+        { "type": "dialogue", "speaker": "lia", "text": "别睡！所有人，保持清醒！", "emotion": "alert" },
+        { "type": "narration", "text": "一声清脆的金属出鞘声划破黑暗。赤发少女已经拔剑在手，剑身上泛起微弱的赤红色光芒，照亮了她锐利的金色眼瞳。" },
+        { "type": "dialogue", "speaker": "lia", "text": "是食梦兽。我在北境前线见过这种东西——它们以沉睡者的记忆为食。被吃完记忆的人，就再也不会醒来了。", "emotion": "serious" },
+        { "type": "dialogue", "speaker": "mia", "text": "食、食梦兽？！等等，让我想想……根据《异种生物机关学》第七章，食梦兽的核心在——喵！它来了！", "emotion": "panicked" },
+        { "type": "narration", "text": "车厢尽头，一团漆黑的、不断蠕动的雾气凝聚成形。它没有固定的形态，像是一千个噩梦的集合体。无数半透明的手臂从雾中伸出，朝沉睡的乘客探去。" },
+        { "type": "dialogue", "speaker": "serena", "text": "……我看见了三条路。第一条，我们各自逃命，这节车厢的人全部死去。第二条……", "emotion": "calm" },
+        { "type": "dialogue", "speaker": "lia", "text": "没有第二条。拔剑，或者死。你——", "emotion": "commanding" },
+        { "type": "narration", "text": "赤发少女的目光落在你身上。她上下打量了你一眼，将一柄备用的短剑抛了过来。" },
+        { "type": "dialogue", "speaker": "lia", "text": "你，看起来不像是会乖乖等死的人。接住。不想死就跟紧我。", "emotion": "determined" },
+        { "type": "choice", "id": "ch1_choice1", "prompt": "你握住了短剑。面对食梦兽，你决定——", "options": [
+          { "id": "a", "text": "站到莉亚身旁，与她并肩面对食梦兽", "effect": { "bond_lia": 1 } },
+          { "id": "b", "text": "退到米娅身边，询问食梦兽的弱点", "effect": { "trust_mia": 1 } },
+          { "id": "c", "text": "看向塞蕾娜，等待她说完第二条路", "effect": { "bond_serena": 1 } }
+        ]},
+        { "type": "transition", "target": "ch1_scene3" }
+      ],
+      "choices": ["ch1_choice1"]
+    },
+    {
+      "id": "ch1_scene3",
+      "name": "银轨号·初次交锋",
+      "background": "食梦兽的雾气蔓延了半个车厢，赤红色的剑光与蓝色的机关火花在黑暗中交织。车厢壁被腐蚀出一个个黑洞，露出外面飞速后退的夜色。",
+      "events": [
+        { "type": "narration", "text": "莉亚一剑斩出，赤色的剑气撕裂了食梦兽伸出的触手。但断裂的雾气很快又重新聚合，仿佛根本不受影响。" },
+        { "type": "dialogue", "speaker": "lia", "text": "切……物理斩击效果有限。这东西的核心不在这些触手上！", "emotion": "frustrated" },
+        { "type": "dialogue", "speaker": "mia", "text": "找到了喵！食梦兽的梦境核心频率是7.83赫兹——和人类深度睡眠的脑波完全一致！所以普通攻击打不到它，因为它的本体在'梦境层'里喵！", "emotion": "excited" },
+        { "type": "dialogue", "speaker": "lia", "text": "说人话。", "emotion": "impatient" },
+        { "type": "dialogue", "speaker": "mia", "text": "就是……要打它得先睡着！不对，是半睡半醒！我需要三分钟改装一下这个共振器——", "emotion": "flustered" },
+        { "type": "dialogue", "speaker": "serena", "text": "你不需要三分钟。", "emotion": "serene" },
+        { "type": "narration", "text": "紫发女子从座位上起身。她的双眼在黑暗中泛着幽紫色的光，瞳孔中仿佛有星图在旋转。" },
+        { "type": "dialogue", "speaker": "serena", "text": "在我看见的未来里，你只需要九十秒。因为——", "emotion": "mysterious" },
+        { "type": "narration", "text": "她抬起手，一道紫色的月光从她掌心射出，精准地击中了食梦兽的核心位置。食梦兽发出一声尖锐的嘶鸣，雾气短暂地散开，露出了内部一颗跳动的、半透明的球体。" },
+        { "type": "dialogue", "speaker": "serena", "text": "——因为我已经替你看过了答案。现在，动手。", "emotion": "commanding" },
+        { "type": "dialogue", "speaker": "mia", "text": "共振器就绪喵！对准那个核心，按下这个红色按钮——三、二、一，发射！", "emotion": "triumphant" },
+        { "type": "narration", "text": "一道蓝色的声波从米娅手中的装置中射出，与塞蕾娜的月光形成共振。食梦兽的核心剧烈震颤，最终在一声玻璃碎裂般的脆响中崩解。雾气消散，车厢重新恢复了平静。" },
+        { "type": "transition", "target": "ch1_scene4" }
+      ],
+      "choices": []
+    },
+    {
+      "id": "ch1_scene4",
+      "name": "银轨号·劫后余生",
+      "background": "灯光重新亮起的车厢。沉睡的乘客们依然没有醒来，但脸上的诡异微笑已经消失，取而代之的是安详的睡容。食梦兽消散后留下的黑色痕迹正在缓缓褪去。",
+      "events": [
+        { "type": "narration", "text": "战斗结束。你手中的短剑还在微微震颤，掌心全是汗水。这是你第一次面对这种超自然的存在。" },
+        { "type": "dialogue", "speaker": "lia", "text": "……还行。至少没吓得腿软。", "emotion": "grudging_respect" },
+        { "type": "narration", "text": "莉亚将长剑归鞘，朝你微微点了点头。这是她给予的最高评价。" },
+        { "type": "dialogue", "speaker": "mia", "text": "嘿嘿，我们配合得不错嘛喵！对了，我叫米娅·铃，是机关师！那个共振器是我三天前刚发明的，本来是用来治失眠的……没想到对付食梦兽也有效喵～", "emotion": "cheerful" },
+        { "type": "dialogue", "speaker": "serena", "text": "塞蕾娜·诺克斯。月蚀观测者。……你不必用那种眼神看我。我所做的一切，不过是转述月亮告诉我的话。", "emotion": "distant" },
+        { "type": "dialogue", "speaker": "lia", "text": "莉亚·赫斯特，赤誓骑士团……前成员。", "emotion": "guarded" },
+        { "type": "narration", "text": "她说到'前成员'时，语气中有一丝不易察觉的苦涩。但她很快恢复了冷硬的表情。" },
+        { "type": "dialogue", "speaker": "lia", "text": "听好了。食梦兽不会只来一只。银轨号上还有更多乘客在沉睡，而下一只随时可能出现。在到站之前，我们四个就是一支队伍。有异议吗？", "emotion": "commanding" },
+        { "type": "choice", "id": "ch1_choice2", "prompt": "莉亚向你伸出了手。", "options": [
+          { "id": "a", "text": "握住她的手：\"赤誓骑士的命令，我接了。\"", "effect": { "bond_lia": 1 } },
+          { "id": "b", "text": "握住她的手，但看向米娅：\"不过战术指挥权归机关师，对吧？\"", "effect": { "trust_mia": 1 } },
+          { "id": "c", "text": "握住她的手，但问塞蕾娜：\"你看见的未来里，我们都能活着到站吗？\"", "effect": { "bond_serena": 1 } }
+        ]},
+        { "type": "dialogue", "speaker": "mia", "text": "那就这么决定了喵！银轨号护卫队，出发！……虽然目的地好像不太明确喵。", "emotion": "enthusiastic" },
+        { "type": "dialogue", "speaker": "serena", "text": "目的地并不重要。重要的是——这趟列车，不会抵达任何已知的站点。", "emotion": "ominous" },
+        { "type": "narration", "text": "你望向窗外。月光下，铁轨延伸向无尽的黑暗。而远处的天际线上，一轮正在被阴影吞噬的月亮，正缓缓升起。" },
+        { "type": "cg", "unlockCg": "cg_ch1_moonrise", "description": "CG：四人站在银轨号车窗前，窗外是被阴影侵蚀的月亮。莉亚抱剑而立，米娅举着发光的机关，塞蕾娜凝视远方，而玩家的身影映在玻璃上，与三人并肩。" },
+        { "type": "transition", "target": "ch1_end" }
+      ],
+      "choices": ["ch1_choice2"]
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "id": 12,
+  "title": "月蚀降临",
+  "subtitle": "The Eclipse Descends",
+  "estimatedMinutes": 3,
+  "unlockCondition": { "chapter": 11, "completed": true },
+  "scenes": [
+    {
+      "id": "ch12_scene1",
+      "name": "诺克斯观测所·核心室（月蚀）",
+      "background": "球形空间已经面目全非。黎明种的光芒从金色变成了刺目的白，整个空间在震颤。穹顶变得透明，可以直接看到外面的天空——月亮已经被阴影吞噬了五分之四，只剩最后一丝银边。",
+      "events": [
+        { "type": "narration", "text": "你们冲回核心室时，一切都变了。黎明种不再安静地悬浮——它在疯狂旋转，白色的光芒脉冲像心跳一样越来越快。穹顶变成了透明的，头顶的月亮只剩最后一丝银边。" },
+        { "type": "dialogue", "speaker": "serena", "text": "月蚀……已经完成了百分之九十五。最多还有一个小时。", "emotion": "urgent" },
+        { "type": "dialogue", "speaker": "narrator", "text": "「你们来了。很好。无论你们是否愿意，仪式都会开始。月蚀完成的那一刻，黎明种会自动激活——届时，所有被收集的记忆将被改写。不可逆转。」", "emotion": "resolute" },
+        { "type": "dialogue", "speaker": "lia", "text": "那就在那之前毁掉它！", "emotion": "fierce" },
+        { "type": "narration", "text": "莉亚拔剑冲向黎明种。赤色的剑气斩出——但在距离种子一尺的地方，被一道无形的屏障弹开。莉亚被反震力弹飞，重重撞在墙壁上。" },
+        { "type": "dialogue", "speaker": "lia", "text": "咳……！什么……", "emotion": "shocked" },
+        { "type": "dialogue", "speaker": "narrator", "text": "「黎明种在月蚀期间处于'觉醒态'。物理攻击无效。唯一能触及它的方式，是封印仪式——或者，用等量的记忆能量与之共鸣。」", "emotion": "explaining" },
+        { "type": "dialogue", "speaker": "mia", "text": "等量的记忆能量……四个S级样本的全部记忆……喵。所以这就是为什么需要四个人站在基座上。", "emotion": "understanding" },
+        { "type": "dialogue", "speaker": "narrator", "text": "「是的。四个人站在基座上，将记忆注入黎明种。但只有一个人的记忆会被完全消耗——作为封印的燃料。其余三人只会失去一小部分。」", "emotion": "clarifying" },
+        { "type": "dialogue", "speaker": "narrator", "text": "「或者——你们什么都不做。月蚀完成，黎明种自动激活，所有人的记忆被改写。没有牺牲，但也没有选择。」", "emotion": "ultimatum" },
+        { "type": "transition", "target": "ch12_scene2" }
+      ],
+      "choices": []
+    },
+    {
+      "id": "ch12_scene2",
+      "name": "诺克斯观测所·绝望",
+      "background": "核心室在持续震颤。黎明种的白光越来越强，地面上的仪式阵开始自行发光。四个基座上升起光柱，像是在等待。穹顶外，月亮的最后一丝银边正在被吞噬。",
+      "events": [
+        { "type": "narration", "text": "地面在震颤。仪式阵开始自行激活——无论你们是否站上基座，月蚀完成时一切都会结束。" },
+        { "type": "dialogue", "speaker": "lia", "text": "……一个小时。我们只有一个小时来做一个决定。", "emotion": "strained" },
+        { "type": "dialogue", "speaker": "mia", "text": "我……我还在想替代方案喵。一定有办法用机械共振来替代记忆能量——给我时间——", "emotion": "frantic" },
+        { "type": "dialogue", "speaker": "serena", "text": "米娅。", "emotion": "gentle" },
+        { "type": "dialogue", "speaker": "serena", "text": "……没有了。我看见了所有时间线。在月蚀完成前，没有任何机械装置能产生足够的共振能量。", "emotion": "sorrowful" },
+        { "type": "dialogue", "speaker": "mia", "text": "不要……不要告诉我'不可能'喵……我是天才机关师……我一定能……", "emotion": "breaking" },
+        { "type": "dialogue", "speaker": "lia", "text": "米娅。", "emotion": "firm" },
+        { "type": "narration", "text": "莉亚走过去，双手按住米娅的肩膀。" },
+        { "type": "dialogue", "speaker": "lia", "text": "你已经做得够多了。零号替我们挡了那一下。你不需要再一个人扛了。", "emotion": "tender" },
+        { "type": "dialogue", "speaker": "mia", "text": "可是……如果什么都做不了……那我们……", "emotion": "helpless" },
+        { "type": "dialogue", "speaker": "serena", "text": "……还有一条路。", "emotion": "quiet" },
+        { "type": "narration", "text": "所有人看向塞蕾娜。她的表情很平静——太平静了。" },
+        { "type": "dialogue", "speaker": "serena", "text": "预言说'除非第四条路被找到'。我一直在想，第四条路是什么。现在……我看见了。", "emotion": "resolved" },
+        { "type": "dialogue", "speaker": "serena", "text": "第四条路不是'谁牺牲'。是'如何牺牲'。", "emotion": "mysterious" },
+        { "type": "choice", "id": "ch12_choice1", "prompt": "塞蕾娜的眼中映着黎明种的白光。你——", "options": [
+          { "id": "a", "text": "\"说下去。不管是什么路，我们一起走。\"", "effect": { "bond_serena": 1, "bond_lia": 1, "bond_mia": 1 } },
+          { "id": "b", "text": "\"塞蕾娜，你的表情……你打算做什么？\"", "effect": { "bond_serena": 2 } }
+        ]},
+        { "type": "dialogue", "speaker": "serena", "text": "……不是现在。等月蚀完成的那一刻，你们就会明白。", "emotion": "enigmatic" },
+        { "type": "dialogue", "speaker": "serena", "text": "但在那之前——我需要你们相信我。无论接下来发生什么。相信我。", "emotion": "pleading" },
+        { "type": "dialogue", "speaker": "lia", "text": "……你又在一个人扛了。", "emotion": "pained" },
+        { "type": "dialogue", "speaker": "serena", "text": "最后一次。我保证。", "emotion": "gentle" },
+        { "type": "narration", "text": "穹顶外，月亮的最后一丝银边开始消失。黑暗正在吞噬最后的光。而黎明种的白光，越来越亮，越来越亮——" },
+        { "type": "transition", "target": "ch12_scene3" }
+      ],
+      "choices": ["ch12_choice1"]
+    },
+    {
+      "id": "ch12_scene3",
+      "name": "诺克斯观测所·月蚀完成",
+      "background": "月亮完全消失。天空变成了纯粹的黑暗。但在黑暗中，黎明种的光芒达到了顶峰——整个球形空间被白光充满，什么都看不清。四个基座的光柱冲天而起，仪式阵完全激活。",
+      "events": [
+        { "type": "narration", "text": "月蚀完成了。月亮消失了。天空变成了无底的黑暗。而黎明种——爆了。" },
+        { "type": "narration", "text": "不是爆炸。是绽放。像一朵花在瞬间盛开，白色的光从种子中倾泻而出，充满了整个空间。四个基座的光柱冲天而起，仪式阵的铭文全部亮起。" },
+        { "type": "dialogue", "speaker": "narrator", "text": "「时间到了。黎明种激活。记忆改写程序启动——」", "emotion": "final" },
+        { "type": "dialogue", "speaker": "serena", "text": "不。", "emotion": "commanding" },
+        { "type": "narration", "text": "塞蕾娜走向基座。不是犹豫的、恐惧的步伐——而是平静的、确定的。像是走向一个她早已看见的结局。" },
+        { "type": "dialogue", "speaker": "lia", "text": "塞蕾娜！你——", "emotion": "alarmed" },
+        { "type": "dialogue", "speaker": "serena", "text": "莉亚。米娅。还有你。", "emotion": "warm" },
+        { "type": "narration", "text": "她转过身，看着你们三个。紫色的眼瞳中，星图不再旋转——它们静止了。像是所有的未来都已经确定。" },
+        { "type": "dialogue", "speaker": "serena", "text": "第四条路。不是一个人牺牲记忆。是——四个人分担。", "emotion": "revelation" },
+        { "type": "dialogue", "speaker": "serena", "text": "预言说'必有一人成为钥匙'。但它没有说钥匙必须是一个人。如果四个人的记忆同时注入，每人只失去四分之一——没有人会失去全部。", "emotion": "hopeful" },
+        { "type": "dialogue", "speaker": "mia", "text": "四分之……一？那每个人只会失去一部分记忆？不会完全忘记自己是谁？", "emotion": "hopeful" },
+        { "type": "dialogue", "speaker": "serena", "text": "是的。但有一个条件——四个人必须完全信任彼此。注入记忆的瞬间，所有的防备都会消失。所有的秘密、所有的伤疤、所有的真实——都会暴露在其他三人面前。", "emotion": "grave" },
+        { "type": "dialogue", "speaker": "serena", "text": "包括那些我们最不想被人看见的部分。", "emotion": "vulnerable" },
+        { "type": "dialogue", "speaker": "lia", "text": "……", "emotion": "silent" },
+        { "type": "dialogue", "speaker": "lia", "text": "我没什么好藏的。我的伤疤，你们早就看过了。", "emotion": "resolute" },
+        { "type": "dialogue", "speaker": "mia", "text": "我……我也是喵。反正你们已经知道我是个被退学的笨蛋了。", "emotion": "nervous" },
+        { "type": "choice", "id": "ch12_choice2", "prompt": "你走向基座。最后一步——", "options": [
+          { "id": "a", "text": "\"从银轨号到现在，你们已经看见了我所有的狼狈。不差这最后一点。\"", "effect": { "bond_lia": 1, "bond_mia": 1, "bond_serena": 1 } },
+          { "id": "b", "text": "什么都不说。只是伸出手。", "effect": { "bond_lia": 1, "bond_mia": 1, "bond_serena": 1 } }
+        ]},
+        { "type": "narration", "text": "四只手叠在一起。莉亚的粗糙而有力，米娅的纤细而灵巧，塞蕾娜的冰凉而柔软，你的——温暖的，坚定的。" },
+        { "type": "dialogue", "speaker": "lia", "text": "……一起。", "emotion": "united" },
+        { "type": "cg", "unlockCg": "cg_ch12_eclipse_complete", "description": "CG：月蚀完成的瞬间，天空纯黑，黎明种绽放出太阳般的白光。四人站在四个基座上，手叠在一起，光柱从她们脚下冲天而起。塞蕾娜的紫发在光中飞扬，莉亚的赤色铠甲映着白光，米娅的猫耳竖起，零号在她怀中发出最后的蓝光。" },
+        { "type": "transition", "target": "ch12_end" }
+      ],
+      "choices": ["ch12_choice2"]
+    }
+  ]
+}

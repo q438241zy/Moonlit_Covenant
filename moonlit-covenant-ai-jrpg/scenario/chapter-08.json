@@ -1,0 +1,78 @@
+{
+  "id": 8,
+  "title": "裂隙深处",
+  "subtitle": "Into the Rift",
+  "estimatedMinutes": 3,
+  "unlockCondition": { "chapter": 7, "completed": true },
+  "scenes": [
+    {
+      "id": "ch8_scene1",
+      "name": "记忆迷宫·废墟",
+      "background": "食梦兽母体崩解后的空间。碎裂的镜片散落一地，不再映出记忆画面，只是普通的玻璃碎片。空气中残留着淡淡的金色光尘——那是黎明种散发的气息。",
+      "events": [
+        { "type": "narration", "text": "战斗结束。莉亚单膝跪地，剑拄在地上支撑身体——那一击消耗了她太多生命力。你扶住她的肩膀，她摆了摆手，示意自己没事。" },
+        { "type": "dialogue", "speaker": "lia", "text": "……别用那种眼神看我。赤誓骑士的秘技，用一次少一次。但值得。", "emotion": "exhausted" },
+        { "type": "dialogue", "speaker": "mia", "text": "莉亚姐你脸色好差喵！零号，启动修复模式——虽然只能提供热敷功能喵……", "emotion": "worried" },
+        { "type": "narration", "text": "零号爬上莉亚的膝盖，胸腔发出温暖的橘光，像一只巨大的暖水袋。莉亚愣了一下，然后轻轻哼了一声，没有推开它。" },
+        { "type": "dialogue", "speaker": "serena", "text": "……那个东西。", "emotion": "focused" },
+        { "type": "narration", "text": "所有人的目光跟随塞蕾娜的视线，落在废墟中央那颗金色的种子上。它只有拇指大小，却散发着一种奇异的温暖——不是温度的温暖，而是某种更深层的、触及灵魂的温暖。" },
+        { "type": "dialogue", "speaker": "serena", "text": "黎明种。我在预言中见过它无数次，但每次试图看清，画面就会碎裂。现在……它就在那里。真实的。", "emotion": "awed" },
+        { "type": "dialogue", "speaker": "lia", "text": "不要碰它。在确认安全之前，任何人不要碰它。", "emotion": "cautious" },
+        { "type": "transition", "target": "ch8_scene2" }
+      ],
+      "choices": []
+    },
+    {
+      "id": "ch8_scene2",
+      "name": "裂隙·数据残骸",
+      "background": "黎明种周围的碎裂镜片中，残留着一些不属于乘客记忆的画面——那是某种技术文档、实验记录、以及一个反复出现的标志：一轮被齿轮环绕的月亮。",
+      "events": [
+        { "type": "narration", "text": "米娅蹲在碎片间，用放大镜仔细观察。突然，她的猫耳猛地竖了起来。" },
+        { "type": "dialogue", "speaker": "mia", "text": "等等……这些不是记忆碎片。这是——数据。结构化的、有编码规则的数据喵！", "emotion": "shocked" },
+        { "type": "dialogue", "speaker": "lia", "text": "什么意思？", "emotion": "alert" },
+        { "type": "dialogue", "speaker": "mia", "text": "意思是……这些记忆不是被'吃'掉的。是被'提取'的。像从硬盘里拷贝文件一样。有编号，有分类，有……有接收端地址喵！", "emotion": "horrified" },
+        { "type": "dialogue", "speaker": "mia", "text": "食梦兽不是自然生物。它是被制造出来的。一个……一个记忆采集工具。", "emotion": "devastated" },
+        { "type": "dialogue", "speaker": "serena", "text": "……被制造出来的。", "emotion": "stunned" },
+        { "type": "narration", "text": "塞蕾娜闭上眼睛。当她再次睁开时，紫色的瞳孔中星图疯狂旋转。" },
+        { "type": "dialogue", "speaker": "serena", "text": "我看见了。碎片化的画面——一间实验室。白色的房间。穿着制服的人。他们在……在往一颗金色的种子里注入什么东西。", "emotion": "vision" },
+        { "type": "dialogue", "speaker": "serena", "text": "记忆。他们在往黎明种里注入记忆。成百上千人的记忆。", "emotion": "revelation" },
+        { "type": "choice", "id": "ch8_choice1", "prompt": "真相的碎片逐渐拼凑。你看着那颗静静发光的黎明种——", "options": [
+          { "id": "a", "text": "\"如果食梦兽是工具，那制造它的人是谁？目的是什么？\"", "effect": { "bond_serena": 1 } },
+          { "id": "b", "text": "\"米娅，你能解读这些数据的编码规则吗？也许能找到制造者的信息。\"", "effect": { "trust_mia": 1 } },
+          { "id": "c", "text": "\"不管是谁制造的，银轨号上的乘客是被选中的目标。我们也是。\"", "effect": { "bond_lia": 1 } }
+        ]},
+        { "type": "dialogue", "speaker": "mia", "text": "编码规则……给我时间喵。这个加密方式很高级，但结构上有漏洞——像是故意留下的。或者……像是制造者希望有人能读懂。", "emotion": "determined" },
+        { "type": "dialogue", "speaker": "lia", "text": "故意留下？陷阱？", "emotion": "suspicious" },
+        { "type": "dialogue", "speaker": "serena", "text": "或者……是求救信号。", "emotion": "mysterious" },
+        { "type": "transition", "target": "ch8_scene3" }
+      ],
+      "choices": ["ch8_choice1"]
+    },
+    {
+      "id": "ch8_scene3",
+      "name": "裂隙·深处通道",
+      "background": "废墟下方，一条隐藏的通道被食梦兽的崩解震开了。通道壁上是密密麻麻的铭文——不是魔法符文，而是某种技术规格说明。尽头处，一扇金属门上刻着那个标志：齿轮环绕的月亮。",
+      "events": [
+        { "type": "narration", "text": "地面塌陷，露出了下方的隐藏通道。通道壁上的铭文在黎明种的光芒下清晰可见——那不是装饰，是技术文档。" },
+        { "type": "dialogue", "speaker": "mia", "text": "这些铭文……是'黎明种计划'的技术规格书喵。项目代号：'月蚀'。执行机构：'诺克斯观测所'。", "emotion": "reading" },
+        { "type": "dialogue", "speaker": "serena", "text": "……诺克斯。", "emotion": "frozen" },
+        { "type": "narration", "text": "塞蕾娜停住了脚步。她的脸色在金色光芒中显得苍白。" },
+        { "type": "dialogue", "speaker": "lia", "text": "诺克斯。那是你的姓。", "emotion": "realization" },
+        { "type": "dialogue", "speaker": "serena", "text": "……诺克斯观测所。我母亲……我母亲是那里的人。她在我七岁那年把我送进了观测所。她说我是'被选中的人'。", "emotion": "shaken" },
+        { "type": "dialogue", "speaker": "serena", "text": "我一直以为那只是一个研究月蚀的天文台。但如果……如果它和这个计划有关……", "emotion": "conflicted" },
+        { "type": "dialogue", "speaker": "lia", "text": "塞蕾娜。", "emotion": "firm" },
+        { "type": "narration", "text": "莉亚走到她面前，直视她的眼睛。" },
+        { "type": "dialogue", "speaker": "lia", "text": "不管你的过去和这个计划有什么关系，你现在站在这里。和我们站在一起。这就够了。", "emotion": "steadfast" },
+        { "type": "dialogue", "speaker": "mia", "text": "对喵！莉亚姐说得对！而且而且，如果诺克斯观测所真的和黎明种有关，那塞蕾娜反而是我们最大的优势喵！你比任何人都了解那个地方！", "emotion": "encouraging" },
+        { "type": "dialogue", "speaker": "serena", "text": "……你们。", "emotion": "moved" },
+        { "type": "dialogue", "speaker": "serena", "text": "……好。那扇门后面，也许有我母亲留下的答案。也有……我必须面对的真相。", "emotion": "resolute" },
+        { "type": "narration", "text": "她走向那扇刻着齿轮月亮标志的金属门，将手掌按在门面上。门上的铭文亮起紫色的光——与她的瞳色完全一致。" },
+        { "type": "dialogue", "speaker": "serena", "text": "……它认出了我的血脉。诺克斯家的血脉，是这把锁的钥匙。", "emotion": "bitter_irony" },
+        { "type": "narration", "text": "金属门缓缓开启。门后，是一条通往更深处的阶梯。阶梯尽头，金色的光芒如同黎明前的第一缕阳光，温暖而刺眼。" },
+        { "type": "cg", "unlockCg": "cg_ch8_nox_door", "description": "CG：塞蕾娜将手按在金属门上，紫色光纹从她掌心蔓延至整扇门。齿轮月亮标志亮起，门缓缓开启，金色光芒从门缝中倾泻而出，照亮了四人震惊而坚定的面孔。" },
+        { "type": "transition", "target": "ch8_end" }
+      ],
+      "choices": []
+    }
+  ]
+}

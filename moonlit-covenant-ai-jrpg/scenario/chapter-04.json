@@ -1,0 +1,75 @@
+{
+  "id": 4,
+  "title": "月蚀预言",
+  "subtitle": "Prophecy of the Eclipse",
+  "estimatedMinutes": 3,
+  "unlockCondition": { "chapter": 3, "completed": true },
+  "scenes": [
+    {
+      "id": "ch4_scene1",
+      "name": "银轨号·车顶",
+      "background": "银轨号的车顶，夜风凛冽。头顶的月亮已经明显缺了一角，紫色的月晕在云层中扩散。塞蕾娜独自站在车头位置，紫发被风吹得猎猎作响，双手展开，仿佛在拥抱月光。",
+      "events": [
+        { "type": "narration", "text": "深夜。你无法入睡，来到车顶透气。月光比几个小时前更暗了——不是云遮住了它，而是某种东西正在一点一点地吞噬它。" },
+        { "type": "dialogue", "speaker": "serena", "text": "你来了。月亮告诉我你会来。", "emotion": "expectant" },
+        { "type": "narration", "text": "塞蕾娜没有回头。她的声音被风撕成碎片，但你每个字都听得清楚。" },
+        { "type": "dialogue", "speaker": "serena", "text": "你知道吗，月蚀观测者并不是'预测未来'。我们只是……被迫看见。每一条可能的时间线，每一个分岔的结局，像潮水一样涌进脑海。", "emotion": "weary" },
+        { "type": "dialogue", "speaker": "serena", "text": "我七岁那年第一次'看见'。我看见邻居家的猫会在第二天被马车碾过。我告诉了邻居。邻居把猫锁在家里。", "emotion": "flat" },
+        { "type": "dialogue", "speaker": "serena", "text": "猫从窗户跳出去，还是被碾过了。邻居说——'是你诅咒了它'。", "emotion": "pained" },
+        { "type": "choice", "id": "ch4_choice1", "prompt": "塞蕾娜的声音很平静，但你听出了平静下的裂痕。你——", "options": [
+          { "id": "a", "text": "\"预言不是诅咒。你只是在承受别人不愿看见的真相。\"", "effect": { "bond_serena": 1 } },
+          { "id": "b", "text": "沉默地走到她身边，与她一起看向月亮。", "effect": { "bond_serena": 2 } }
+        ]},
+        { "type": "dialogue", "speaker": "serena", "text": "……你是第一个不问我'那我的未来是什么'的人。", "emotion": "surprised" },
+        { "type": "transition", "target": "ch4_scene2" }
+      ],
+      "choices": ["ch4_choice1"]
+    },
+    {
+      "id": "ch4_scene2",
+      "name": "银轨号·车顶·预言",
+      "background": "月亮又暗了一分。塞蕾娜的紫色瞳孔中，星图的旋转速度加快了。她的身体开始微微发光，紫色的光纹沿着她的手臂蔓延，像是某种古老的铭文在皮肤下苏醒。",
+      "events": [
+        { "type": "narration", "text": "突然，塞蕾娜的身体猛地一僵。她的双眼完全变成了紫色，瞳孔消失，取而代之的是旋转的星图。光纹从她的手臂蔓延到脖颈、脸颊。" },
+        { "type": "dialogue", "speaker": "serena", "text": "……又来了。不……不要……不是现在……", "emotion": "frightened" },
+        { "type": "narration", "text": "她的声音变了。不再是她自己的声音，而是像无数人在同时低语。" },
+        { "type": "dialogue", "speaker": "serena", "text": "「月蚀完成之时，银轨将抵达终焉之站。四名旅人中，必有一人成为'钥匙'。钥匙将打开黎明之门——而门后，是所有记忆的终结与重生。」", "emotion": "prophetic" },
+        { "type": "dialogue", "speaker": "serena", "text": "「赤色之剑将断裂。九命之猫将失去最后一命。紫月之眼将永远闭合。除非——第四条路被找到。」", "emotion": "prophetic" },
+        { "type": "narration", "text": "预言结束。塞蕾娜的身体失去了光芒，她向前倒去——你接住了她。她的体温低得吓人，嘴唇发紫，像是在冰水中浸泡过。" },
+        { "type": "dialogue", "speaker": "serena", "text": "……你听到了。", "emotion": "exhausted" },
+        { "type": "dialogue", "speaker": "serena", "text": "每一次预言……都会夺走我的一部分。看见的未来越远，失去的就越多。我已经……不记得自己母亲的脸了。不记得故乡的名字了。", "emotion": "devastated" },
+        { "type": "dialogue", "speaker": "serena", "text": "这就是月蚀观测者的代价。用记忆，换未来。", "emotion": "resigned" },
+        { "type": "cg", "unlockCg": "cg_ch4_prophecy", "description": "CG：塞蕾娜倒在玩家怀中，全身浮现紫色星图光纹，双眼是纯粹的紫色漩涡。背景中，月亮被阴影吞噬了大半，银轨号在黑暗中疾驰，铁轨上泛起不祥的紫光。" },
+        { "type": "transition", "target": "ch4_scene3" }
+      ],
+      "choices": []
+    },
+    {
+      "id": "ch4_scene3",
+      "name": "银轨号·车顶·誓言",
+      "background": "预言的余波散去。塞蕾娜靠在玩家肩上，虚弱但清醒。远处，莉亚和米娅的身影出现在车顶入口——她们被预言的异象惊动了。",
+      "events": [
+        { "type": "dialogue", "speaker": "mia", "text": "塞蕾娜！你没事吧喵？！我刚才在工坊里看到你的光——零号也突然开始发出警报声喵！", "emotion": "worried" },
+        { "type": "dialogue", "speaker": "lia", "text": "……又是预言？", "emotion": "grim" },
+        { "type": "dialogue", "speaker": "serena", "text": "……是的。月蚀完成时，我们四人中必须有一人成为'钥匙'。而代价是——", "emotion": "weak" },
+        { "type": "dialogue", "speaker": "lia", "text": "我听到了。'赤色之剑将断裂'。", "emotion": "steady" },
+        { "type": "dialogue", "speaker": "mia", "text": "'九命之猫将失去最后一命'……是、是说零号吗？还是说我喵？", "emotion": "scared" },
+        { "type": "dialogue", "speaker": "serena", "text": "'紫月之眼将永远闭合'……是我。", "emotion": "accepting" },
+        { "type": "narration", "text": "沉默。风在四人之间呼啸。每个人都在消化那个预言中属于自己的部分。" },
+        { "type": "dialogue", "speaker": "lia", "text": "……'除非第四条路被找到'。", "emotion": "focused" },
+        { "type": "dialogue", "speaker": "lia", "text": "听好了。我不接受这个预言。剑断了就重铸。我莉亚·赫斯特的剑，从来不是只有一把。", "emotion": "defiant" },
+        { "type": "dialogue", "speaker": "mia", "text": "我、我也不接受喵！九条命？我有十条！因为零号也算一条！我们加起来有十一条命，够用的喵！", "emotion": "determined" },
+        { "type": "dialogue", "speaker": "serena", "text": "……你们。", "emotion": "moved" },
+        { "type": "choice", "id": "ch4_choice2", "prompt": "所有人的目光汇聚。你深吸一口气——", "options": [
+          { "id": "a", "text": "\"第四条路。我们一起找。预言说'除非'——那就是还有希望。\"", "effect": { "bond_lia": 1, "bond_mia": 1, "bond_serena": 1 } },
+          { "id": "b", "text": "\"塞蕾娜，你不需要一个人扛着所有未来。从现在开始，我们分担。\"", "effect": { "bond_serena": 2 } }
+        ]},
+        { "type": "dialogue", "speaker": "serena", "text": "……在我看见的无数条时间线里，这是第一次……有人对我说'我们分担'。", "emotion": "tearful" },
+        { "type": "dialogue", "speaker": "serena", "text": "也许……第四条路，从一开始就不是一个人能走的路。", "emotion": "hopeful" },
+        { "type": "narration", "text": "头顶的月亮又暗了一分。但此刻，四个人站在银轨号的车顶，被夜风包围，却没有人觉得冷。" },
+        { "type": "transition", "target": "ch4_end" }
+      ],
+      "choices": ["ch4_choice2"]
+    }
+  ]
+}

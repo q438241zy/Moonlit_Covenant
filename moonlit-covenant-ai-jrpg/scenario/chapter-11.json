@@ -1,0 +1,88 @@
+{
+  "id": 11,
+  "title": "背叛与信任",
+  "subtitle": "Betrayal and Trust",
+  "estimatedMinutes": 3,
+  "unlockCondition": { "chapter": 10, "completed": true },
+  "scenes": [
+    {
+      "id": "ch11_scene1",
+      "name": "诺克斯观测所·休整室",
+      "background": "实验室旁的一间小房间，原本是观测员的休息室。四人暂时撤退到这里讨论对策。黎明卿没有追赶——她说'月蚀完成前，你们有的是时间考虑'。房间里只有一盏昏暗的灯和四面白墙。",
+      "events": [
+        { "type": "narration", "text": "你们退到休整室。门在身后关上，将黎明种的金光隔绝在外。四个人围坐在一盏昏暗的灯下，沉默像一堵墙。" },
+        { "type": "dialogue", "speaker": "lia", "text": "……所以。四个人里，必须有一个人牺牲全部记忆。", "emotion": "heavy" },
+        { "type": "dialogue", "speaker": "mia", "text": "一定没有别的办法吗喵？我是机关师，给我时间，我一定能设计出替代方案——", "emotion": "desperate" },
+        { "type": "dialogue", "speaker": "serena", "text": "没有时间了。月蚀已经完成了四分之三。最多还有六个小时。", "emotion": "grim" },
+        { "type": "dialogue", "speaker": "lia", "text": "那就我来。", "emotion": "decisive" },
+        { "type": "dialogue", "speaker": "mia", "text": "莉亚姐？！", "emotion": "shocked" },
+        { "type": "dialogue", "speaker": "lia", "text": "我的记忆里有太多痛苦。七道刻痕，北境的雪，艾琳的血。如果必须有人失去记忆……不如让我失去那些。", "emotion": "resigned" },
+        { "type": "dialogue", "speaker": "serena", "text": "不。应该是我。预言本来就在吞噬我的记忆。我只是……提前完成这个过程。", "emotion": "sacrificial" },
+        { "type": "dialogue", "speaker": "mia", "text": "不行喵！你们两个都不行！如果一定要有人……那、那就让我来。反正我……我本来就不太被需要——", "emotion": "self_deprecating" },
+        { "type": "dialogue", "speaker": "lia", "text": "闭嘴。", "emotion": "sharp" },
+        { "type": "dialogue", "speaker": "lia", "text": "谁都不许说'不被需要'这种话。你听到了吗，米娅·铃。", "emotion": "fierce" },
+        { "type": "narration", "text": "争吵在继续。每个人都在试图把牺牲揽到自己身上。你看着她们——看着这三个在银轨号上相遇的、本不该有交集的人，此刻却争着为彼此赴死。" },
+        { "type": "choice", "id": "ch11_choice1", "prompt": "你打断了她们的争吵——", "options": [
+          { "id": "a", "text": "\"够了。谁都不许一个人做决定。我们四个人一起想。\"", "effect": { "bond_lia": 1, "bond_mia": 1, "bond_serena": 1 } },
+          { "id": "b", "text": "\"如果一定要有人牺牲记忆……那就让我来。你们三个，谁都不许。\"", "effect": { "bond_lia": 2, "bond_mia": 2, "bond_serena": 2 } }
+        ]},
+        { "type": "transition", "target": "ch11_scene2" }
+      ],
+      "choices": ["ch11_choice1"]
+    },
+    {
+      "id": "ch11_scene2",
+      "name": "诺克斯观测所·背叛",
+      "background": "休整室的门突然被打开。黎明卿站在门口，但她身后——跟着一个不应该出现在这里的人。一个穿着银轨号乘务员制服的男人，手中握着一把造型奇异的钥匙。",
+      "events": [
+        { "type": "narration", "text": "门开了。黎明卿站在门口，表情平静。但她身后跟着一个人——银轨号的列车长，那个你们从未见过面、只在广播中听过声音的男人。" },
+        { "type": "dialogue", "speaker": "narrator", "text": "「时间到了。月蚀不会等你们讨论完。」", "emotion": "impatient" },
+        { "type": "dialogue", "speaker": "lia", "text": "列车长？你——", "emotion": "suspicious" },
+        { "type": "dialogue", "speaker": "narrator", "text": "「他是计划的执行者。银轨号从一开始就不是普通的列车——它是黎明种的'培养皿'。而列车长，是负责确保四颗S级种子按时抵达的人。」", "emotion": "revealing" },
+        { "type": "dialogue", "speaker": "mia", "text": "培养皿……我们……从一开始就是被饲养的样本喵？", "emotion": "horrified" },
+        { "type": "dialogue", "speaker": "narrator", "text": "「列车长，启动强制协议。」", "emotion": "commanding" },
+        { "type": "narration", "text": "列车长举起钥匙。整个房间开始震动，墙壁上浮现出隐藏的铭文——束缚阵。四道光束从地面射出，将莉亚、米娅和塞蕾娜固定在原地。" },
+        { "type": "dialogue", "speaker": "lia", "text": "什——！动不了！这该死的——", "emotion": "struggling" },
+        { "type": "dialogue", "speaker": "mia", "text": "零号！零号帮我——喵！零号也被固定住了！", "emotion": "panicked" },
+        { "type": "dialogue", "speaker": "serena", "text": "……我看见了。在所有时间线里，这一刻都会发生。但我没有告诉你们。", "emotion": "guilty" },
+        { "type": "dialogue", "speaker": "lia", "text": "你说什么？", "emotion": "betrayed" },
+        { "type": "dialogue", "speaker": "serena", "text": "我看见了背叛。但我没有说。因为……在所有我试图阻止它的未来里，结果都更糟。我以为……接受它，然后从内部找到出路，是最好的选择。", "emotion": "conflicted" },
+        { "type": "dialogue", "speaker": "lia", "text": "你——从一开始就知道？！", "emotion": "furious" },
+        { "type": "dialogue", "speaker": "serena", "text": "对不起。对不起。我不知道怎么说。每一次我试图改变预言，都会有人死。我不想你们死。", "emotion": "tearful" },
+        { "type": "choice", "id": "ch11_choice2", "prompt": "莉亚的愤怒和塞蕾娜的泪水之间，你——", "options": [
+          { "id": "a", "text": "对莉亚说：\"她不是背叛。她是在用她能用的方式保护我们。\"", "effect": { "bond_serena": 1, "bond_lia": 1 } },
+          { "id": "b", "text": "对塞蕾娜说：\"下次，告诉我们。就算结果更糟，我们也一起面对。\"", "effect": { "bond_serena": 2 } }
+        ]},
+        { "type": "transition", "target": "ch11_scene3" }
+      ],
+      "choices": ["ch11_choice2"]
+    },
+    {
+      "id": "ch11_scene3",
+      "name": "诺克斯观测所·破局",
+      "background": "束缚阵的光芒越来越强。黎明卿走向核心室的方向，列车长跟在身后。但就在门即将关上的瞬间——零号的眼睛亮了。",
+      "events": [
+        { "type": "narration", "text": "黎明卿转身离去。门在你们面前缓缓关闭。束缚阵的光芒越来越强，三人的挣扎越来越微弱。" },
+        { "type": "dialogue", "speaker": "lia", "text": "该死……力量在流失……", "emotion": "weakening" },
+        { "type": "dialogue", "speaker": "mia", "text": "束缚阵的频率是……是……我算不出来了喵……头好晕……", "emotion": "fading" },
+        { "type": "narration", "text": "就在意识即将模糊的瞬间——一声清脆的'叮'。零号的蓝宝石眼睛亮了。不是普通的亮——是一种前所未有的、炽烈的蓝光。" },
+        { "type": "dialogue", "speaker": "mia", "text": "零号……？", "emotion": "weak" },
+        { "type": "narration", "text": "零号从束缚光束的缝隙中挤了出来——它的体型刚好够小。它跑到米娅身边，将金属爪子按在束缚阵的节点上。胸腔内的共感齿轮疯狂转动，发出刺耳的摩擦声。" },
+        { "type": "dialogue", "speaker": "mia", "text": "零号！你在做什么！你会过载的！停下来喵！", "emotion": "desperate" },
+        { "type": "narration", "text": "零号没有停。它的齿轮转速已经超过了设计极限，金属外壳开始发红。但它只是转过头，用那双蓝宝石眼睛看着米娅——然后发出了一声轻柔的'咕噜'。" },
+        { "type": "narration", "text": "那声'咕噜'里，有某种超越机械的东西。是安慰。是'我没事'。是'让我保护你一次'。" },
+        { "type": "dialogue", "speaker": "mia", "text": "笨蛋……笨蛋零号……", "emotion": "crying" },
+        { "type": "narration", "text": "束缚阵碎裂。三人重获自由。但零号倒在地上，胸腔的齿轮已经停止转动，蓝宝石眼睛的光芒微弱得几乎看不见。" },
+        { "type": "dialogue", "speaker": "mia", "text": "零号！零号！醒醒喵！你的齿轮——让我修——给我一秒——", "emotion": "frantic" },
+        { "type": "narration", "text": "米娅颤抖着打开零号的胸腔面板。齿轮组有三颗已经碎裂，共感齿轮上出现了裂纹。但它还在转动。微弱地、固执地转动着。" },
+        { "type": "dialogue", "speaker": "mia", "text": "……还活着。齿轮还在转。笨蛋……你吓死我了喵……", "emotion": "relieved_crying" },
+        { "type": "dialogue", "speaker": "lia", "text": "……那东西。不。那不是'东西'。", "emotion": "respectful" },
+        { "type": "dialogue", "speaker": "serena", "text": "在我看见的所有未来里……零号碎裂的那一刻，都不曾出现。它改变了命运。", "emotion": "awed" },
+        { "type": "dialogue", "speaker": "lia", "text": "……走。追上黎明卿。在月蚀完成之前。", "emotion": "renewed" },
+        { "type": "cg", "unlockCg": "cg_ch11_zero_sacrifice", "description": "CG：零号将爪子按在束缚阵节点上，全身发出过载的蓝光，金属外壳发红。它的蓝宝石眼睛温柔地注视着米娅。背景中，束缚光束碎裂如玻璃，三人重获自由。零号的胸腔中，三颗齿轮碎裂飞溅，但共感齿轮仍在顽强转动。" },
+        { "type": "transition", "target": "ch11_end" }
+      ],
+      "choices": []
+    }
+  ]
+}

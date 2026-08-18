@@ -1,0 +1,75 @@
+{
+  "id": 5,
+  "title": "战前之夜",
+  "subtitle": "The Night Before Battle",
+  "estimatedMinutes": 3,
+  "unlockCondition": { "chapter": 4, "completed": true },
+  "scenes": [
+    {
+      "id": "ch5_scene1",
+      "name": "银轨号·临时营地",
+      "background": "列车停靠在一片被月光笼罩的荒原上。铁轨在这里断裂，前方是一片浓雾。四人在车厢连接处搭建了临时营地——莉亚在磨剑，米娅在调试装备，塞蕾娜在绘制星图。篝火的光芒在金属车壁上跳动。",
+      "events": [
+        { "type": "narration", "text": "银轨号停了。不是到站——是前方的铁轨消失了。取而代之的是一片浓雾，雾中隐约可见一座巨大的、不属于任何已知建筑风格的回廊。" },
+        { "type": "dialogue", "speaker": "lia", "text": "前方就是食梦兽的巢穴。根据塞蕾娜的观测，至少有十二只以上。加上那个'核心体'。", "emotion": "serious" },
+        { "type": "dialogue", "speaker": "mia", "text": "十二只！上次一只就差点把车厢拆了喵！十二只的话……我需要至少四个新型共振器，还有——", "emotion": "calculating" },
+        { "type": "dialogue", "speaker": "lia", "text": "所以今晚是最后的准备时间。明天天亮——如果这里还有天亮的话——我们就进去。", "emotion": "commanding" },
+        { "type": "dialogue", "speaker": "serena", "text": "在那之前……我想我们需要谈谈。不是战术。是……彼此。", "emotion": "gentle" },
+        { "type": "narration", "text": "塞蕾娜合上星图，紫色的眼瞳在火光中显得格外温柔。" },
+        { "type": "dialogue", "speaker": "serena", "text": "如果明天是最后一战，我不想以陌生人的身份死去。你们呢？", "emotion": "vulnerable" },
+        { "type": "transition", "target": "ch5_scene2" }
+      ],
+      "choices": []
+    },
+    {
+      "id": "ch5_scene2",
+      "name": "银轨号·营地·战术会议",
+      "background": "米娅展开了一张手绘的地图——是她根据列车结构图和塞蕾娜的观测数据拼凑出的回廊内部推测图。上面标满了问号和她自创的符号。",
+      "events": [
+        { "type": "dialogue", "speaker": "mia", "text": "好！战术时间喵！根据我的分析，回廊内部大概分三层。第一层是'霜冻回廊'——温度极低，食梦兽的幼体在那里休眠。第二层是'记忆迷宫'——会读取入侵者的记忆来构建幻象。第三层……", "emotion": "focused" },
+        { "type": "dialogue", "speaker": "mia", "text": "第三层是核心。食梦兽的母体在那里。也是'黎明种'的所在地喵。", "emotion": "grave" },
+        { "type": "dialogue", "speaker": "lia", "text": "黎明种？", "emotion": "alert" },
+        { "type": "dialogue", "speaker": "serena", "text": "……我在预言的碎片中见过这个词。但每次试图看清它的真面目，画面就会碎裂。它被某种力量保护着。", "emotion": "troubled" },
+        { "type": "dialogue", "speaker": "lia", "text": "不管它是什么，先活过第一层再说。编队——我前锋，你——", "emotion": "planning" },
+        { "type": "narration", "text": "她看向你。" },
+        { "type": "choice", "id": "ch5_choice1", "prompt": "莉亚等待你选择自己的位置——", "options": [
+          { "id": "a", "text": "\"我跟你一起前锋。两把剑比一把好使。\"", "effect": { "bond_lia": 1 } },
+          { "id": "b", "text": "\"我留在中段保护米娅。她的共振器是我们的关键。\"", "effect": { "trust_mia": 1 } },
+          { "id": "c", "text": "\"我殿后，和塞蕾娜一起。她的预言需要有人 guarding 她的盲区。\"", "effect": { "bond_serena": 1 } }
+        ]},
+        { "type": "dialogue", "speaker": "lia", "text": "好。记住——在回廊里，不要落单。不要碰任何发光的东西。不要相信任何'看起来像同伴'的影子。", "emotion": "stern" },
+        { "type": "dialogue", "speaker": "mia", "text": "还有还有！如果听到有人叫你的名字，先确认是不是本人喵！食梦兽会模仿声音！暗号是——'今天的月亮是什么形状'，回答'缺了一角的烧饼'喵！", "emotion": "serious" },
+        { "type": "dialogue", "speaker": "lia", "text": "……这什么暗号。", "emotion": "deadpan" },
+        { "type": "dialogue", "speaker": "mia", "text": "越荒谬越不容易被猜到喵！这是密码学的基本原则！", "emotion": "proud" },
+        { "type": "transition", "target": "ch5_scene3" }
+      ],
+      "choices": ["ch5_choice1"]
+    },
+    {
+      "id": "ch5_scene3",
+      "name": "银轨号·营地·篝火旁",
+      "background": "战术会议结束。夜色更深了，篝火噼啪作响。米娅靠在零号身上打盹，零号的尾巴轻轻拍着她的背。莉亚在远处独自练剑，剑光在黑暗中划出赤色的弧线。",
+      "events": [
+        { "type": "narration", "text": "夜深了。米娅抱着零号沉沉睡去，嘴角还挂着一丝微笑，大概在做关于齿轮和弹簧的美梦。莉亚在远处练剑，每一击都带着不容许自己失败的力度。" },
+        { "type": "dialogue", "speaker": "serena", "text": "你也没睡。", "emotion": "soft" },
+        { "type": "narration", "text": "塞蕾娜不知何时坐到了你身边。她手中捧着一杯已经凉透的茶，目光落在跳动的火焰上。" },
+        { "type": "dialogue", "speaker": "serena", "text": "在所有我看见的未来里……有一个画面，无论哪条时间线都会出现。", "emotion": "contemplative" },
+        { "type": "dialogue", "speaker": "serena", "text": "就是现在。四个人，一堆火，一片安静的夜。没有食梦兽，没有预言，没有黎明种。只是……在一起。", "emotion": "warm" },
+        { "type": "dialogue", "speaker": "serena", "text": "也许这就是为什么我害怕预言。因为每一次'看见'，都在提醒我——这一刻是有限的。", "emotion": "melancholy" },
+        { "type": "choice", "id": "ch5_choice2", "prompt": "火光映在塞蕾娜的脸上。你轻声说——", "options": [
+          { "id": "a", "text": "\"那就不要看未来了。就看现在。看这堆火。看我们。\"", "effect": { "bond_serena": 2 } },
+          { "id": "b", "text": "\"有限的东西才珍贵。所以我们会记住这一夜。所有人。\"", "effect": { "bond_lia": 1, "bond_mia": 1, "bond_serena": 1 } }
+        ]},
+        { "type": "dialogue", "speaker": "serena", "text": "……记住。是的。在我失去所有记忆之前，我想记住这个夜晚。", "emotion": "grateful" },
+        { "type": "narration", "text": "远处，莉亚的剑停了。她走过来，一言不发地坐在火堆旁，将剑横放在膝上。" },
+        { "type": "dialogue", "speaker": "lia", "text": "……别用那种眼神看我。我只是练完了。", "emotion": "tsundere" },
+        { "type": "dialogue", "speaker": "mia", "text": "唔……喵……五分钟后叫我……齿轮还没……呼……", "emotion": "sleepy" },
+        { "type": "narration", "text": "米娅在睡梦中嘟囔了一句，翻了个身，继续睡。零号发出轻柔的咕噜声，像一台完美的白噪音机器。" },
+        { "type": "cg", "unlockCg": "cg_ch5_campfire", "description": "CG：篝火旁，四人各据一方。莉亚抱剑假寐，米娅枕着零号酣睡，塞蕾娜仰望星空，玩家坐在火堆前看着她们。月光从缺了一角的月亮上洒下，将一切镀上银边。温暖而短暂的一夜。" },
+        { "type": "narration", "text": "这一夜，没有人再说话。但沉默本身，就是最好的誓言。" },
+        { "type": "transition", "target": "ch5_end" }
+      ],
+      "choices": ["ch5_choice2"]
+    }
+  ]
+}

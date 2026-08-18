@@ -1,0 +1,77 @@
+{
+  "id": 6,
+  "title": "霜冻回廊",
+  "subtitle": "The Frozen Corridor",
+  "estimatedMinutes": 3,
+  "unlockCondition": { "chapter": 5, "completed": true },
+  "scenes": [
+    {
+      "id": "ch6_scene1",
+      "name": "霜冻回廊·入口",
+      "background": "浓雾散去后，一座由冰晶构成的巨大回廊出现在眼前。墙壁是半透明的蓝白色冰体，内部封存着模糊的人影——像是被冻结在琥珀中的昆虫。地面覆盖着一层薄霜，每走一步都会发出清脆的碎裂声。",
+      "events": [
+        { "type": "narration", "text": "清晨——如果这片永恒暮色中的世界还有清晨的话——四人踏入了回廊。入口处的温度骤降，呼出的气息瞬间凝成白雾。" },
+        { "type": "dialogue", "speaker": "lia", "text": "编队不变。我前锋，保持五米间距。眼睛不要盯着墙壁里的东西看。", "emotion": "commanding" },
+        { "type": "dialogue", "speaker": "mia", "text": "墙壁里那些……是人吗喵？", "emotion": "uneasy" },
+        { "type": "dialogue", "speaker": "serena", "text": "曾经是。他们是被食梦兽抽干记忆后的'空壳'。肉体还活着，但内部已经空了。像被掏空了果肉的果皮。", "emotion": "somber" },
+        { "type": "dialogue", "speaker": "mia", "text": "好、好可怕喵……零号，启动体温维持模式！给大家供暖喵！", "emotion": "scared" },
+        { "type": "narration", "text": "零号从米娅的背包中探出头，胸腔的齿轮加速转动，散发出一圈温暖的橘色光芒。四人周围的温度稍微回升了一些。" },
+        { "type": "dialogue", "speaker": "lia", "text": "……那东西还挺有用的。", "emotion": "impressed" },
+        { "type": "dialogue", "speaker": "mia", "text": "对吧喵！零号可是全能型——", "emotion": "proud" },
+        { "type": "narration", "text": "话没说完，回廊深处传来一声尖锐的嘶鸣。冰壁上出现了裂纹，无数细小的冰晶碎片如弹幕般射来。" },
+        { "type": "dialogue", "speaker": "lia", "text": "来了！防御阵型！", "emotion": "alert" },
+        { "type": "transition", "target": "ch6_scene2" }
+      ],
+      "choices": []
+    },
+    {
+      "id": "ch6_scene2",
+      "name": "霜冻回廊·幼体遭遇",
+      "background": "回廊中段，三只食梦兽幼体从冰壁中破壁而出。它们比成体小得多，只有猫一般大小，但数量众多，动作极快，像黑色的水银在地面上流淌。",
+      "events": [
+        { "type": "narration", "text": "三只——不，五只幼体从冰壁中涌出。它们没有固定形态，像是一团团黑色的、不断变形的液体，表面浮现着无数张扭曲的人脸——那是它们吞噬的记忆残影。" },
+        { "type": "dialogue", "speaker": "lia", "text": "幼体！比成体弱，但速度快！不要让它碰到你的皮肤——它会直接抽取表层记忆！", "emotion": "tactical" },
+        { "type": "narration", "text": "莉亚一剑横扫，赤色的剑气将两只幼体斩成两半。但断裂的部分迅速重新聚合，变成四只更小的个体。" },
+        { "type": "dialogue", "speaker": "lia", "text": "切……斩击会分裂！米娅！", "emotion": "frustrated" },
+        { "type": "dialogue", "speaker": "mia", "text": "收到喵！幼体的核心频率比成体高——是15.6赫兹！切换共振器频段——好了！对准它们，发射！", "emotion": "focused" },
+        { "type": "narration", "text": "米娅抛出一个圆盘状的装置。它在地面旋转，发出高频的蓝色声波。幼体们发出刺耳的尖叫，身体开始凝固、碎裂。" },
+        { "type": "dialogue", "speaker": "serena", "text": "左边。第三根冰柱后面。还有一只。", "emotion": "calm" },
+        { "type": "narration", "text": "你循声望去——果然，一只幼体正沿着冰柱攀爬，试图从侧面绕到米娅身后。" },
+        { "type": "choice", "id": "ch6_choice1", "prompt": "那只幼体正朝米娅逼近——", "options": [
+          { "id": "a", "text": "冲上前用短剑将幼体从冰柱上劈落", "effect": { "trust_mia": 1 } },
+          { "id": "b", "text": "大喊提醒米娅，让她自己应对", "effect": { "bond_mia": 1 } }
+        ]},
+        { "type": "dialogue", "speaker": "mia", "text": "谢了喵！……哼，小东西，本天才机关师可不是好欺负的！看招——'猫爪弹射器'！", "emotion": "triumphant" },
+        { "type": "narration", "text": "米娅从袖中弹出一个弹簧装置，三枚橡皮弹精准命中幼体核心。配合共振器的声波，最后一只幼体也化为了黑色的碎片，消散在空气中。" },
+        { "type": "dialogue", "speaker": "lia", "text": "……清理完毕。继续前进。不要放松警惕，这只是幼体。", "emotion": "vigilant" },
+        { "type": "transition", "target": "ch6_scene3" }
+      ],
+      "choices": ["ch6_choice1"]
+    },
+    {
+      "id": "ch6_scene3",
+      "name": "霜冻回廊·冰封记忆",
+      "background": "回廊深处，冰壁中封存的人影变得更加清晰。你认出了他们的面容——那是银轨号上的乘客。其中一人的手中，紧握着一张与你的车票一模一样的银色票据。",
+      "events": [
+        { "type": "narration", "text": "越往深处走，冰壁中的人影越清晰。你停下脚步——那些面孔，你认得。是银轨号上的乘客。那个在餐车看报纸的老人，那对靠在一起睡着的年轻情侣……" },
+        { "type": "dialogue", "speaker": "mia", "text": "他们……都是银轨号上的人喵。我们以为他们在睡觉，但其实……", "emotion": "horrified" },
+        { "type": "dialogue", "speaker": "serena", "text": "他们的记忆已经被抽取了大部分。但还没有完全消失——所以肉体还维持着生命体征。如果能在核心体被消灭前夺回记忆……他们还有救。", "emotion": "analytical" },
+        { "type": "dialogue", "speaker": "lia", "text": "……所以这不只是为了我们自己。", "emotion": "resolute" },
+        { "type": "narration", "text": "莉亚走到一面冰壁前，看着里面封存的一个年轻士兵。他的面容安详，嘴角甚至带着微笑——像是正在做一个美梦。" },
+        { "type": "dialogue", "speaker": "lia", "text": "……和北境那次一样。我没能保护他们。", "emotion": "guilty" },
+        { "type": "choice", "id": "ch6_choice2", "prompt": "莉亚的手按在冰壁上，指节发白。你——", "options": [
+          { "id": "a", "text": "把手覆在她的手上：\"这次不一样。这次我们能把他们救回来。\"", "effect": { "bond_lia": 2 } },
+          { "id": "b", "text": "\"莉亚，前面还有更多人在等我们。走吧。\"", "effect": { "bond_lia": 1 } }
+        ]},
+        { "type": "dialogue", "speaker": "lia", "text": "……对。不是缅怀的时候。走。", "emotion": "steel_renewed" },
+        { "type": "narration", "text": "她收回手，重新握紧剑柄。但她的步伐比之前更坚定了——不再只是为了生存，而是为了那些冰封在墙壁中的、等待被唤醒的灵魂。" },
+        { "type": "dialogue", "speaker": "serena", "text": "前方两百米，回廊分叉。左边通向记忆迷宫。右边……", "emotion": "hesitant" },
+        { "type": "dialogue", "speaker": "serena", "text": "右边有什么东西在呼唤我。很微弱。像是……另一个观测者留下的回响。", "emotion": "intrigued" },
+        { "type": "dialogue", "speaker": "lia", "text": "分头行动？不。太危险了。一起走。", "emotion": "decisive" },
+        { "type": "narration", "text": "四人继续深入。身后的冰壁中，那些沉睡的面容似乎在微微颤动——像是在梦中感知到了希望的到来。" },
+        { "type": "transition", "target": "ch6_end" }
+      ],
+      "choices": ["ch6_choice2"]
+    }
+  ]
+}

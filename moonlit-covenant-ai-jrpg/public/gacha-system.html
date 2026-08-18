@@ -1,0 +1,1134 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>月蚀契约 · 星轨召唤</title>
+<style>
+:root {
+  --bg: #080617; --surf: #100e24; --card: #181535; --line: #2a2650;
+  --text: #e8e4f0; --muted: #8b87a8; --faint: #5c5880;
+  --legendary: #c084fc; --epic: #f87171; --rare: #fbbf24; --uncommon: #60a5fa; --common: #9ca3af;
+  --diamond: #5ee4ff; --pink: #f472b6; --gold: #fbbf24;
+  --radius: 14px; --shadow: 0 8px 32px rgba(0,0,0,.55);
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+body { background:var(--bg); color:var(--text); font-family:'Segoe UI',system-ui,sans-serif; min-height:100vh; overflow-x:hidden; }
+::-webkit-scrollbar{width:5px} ::-webkit-scrollbar-thumb{background:var(--line);border-radius:3px}
+.app { max-width:1200px; margin:0 auto; padding:14px 20px; }
+
+/* ===== Header ===== */
+.header { display:flex; align-items:center; justify-content:space-between; padding:14px 0; border-bottom:1px solid var(--line); margin-bottom:16px; flex-wrap:wrap; gap:10px; }
+.header h1 { font-size:1.4rem; }
+.resource-bar { display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+.res-badge { display:flex; align-items:center; gap:6px; padding:6px 14px; border-radius:99px; background:var(--card); border:1px solid var(--line); font-weight:700; font-size:.88rem; }
+
+/* ===== 高光钻石图标 ===== */
+.diamond-svg { width:24px; height:24px; filter:drop-shadow(0 0 6px rgba(94,228,255,.7)); }
+.pink-svg { width:18px; height:18px; filter:drop-shadow(0 0 4px rgba(244,114,182,.6)); }
+
+/* ===== Tabs ===== */
+.tabs { display:flex; gap:4px; margin-bottom:20px; flex-wrap:wrap; }
+.tab-btn { padding:9px 20px; border-radius:99px; border:1px solid var(--line); background:var(--surf); color:var(--muted); cursor:pointer; font-size:.85rem; transition:all .2s; }
+.tab-btn:hover { border-color:var(--diamond); color:var(--text); }
+.tab-btn.active { background:var(--diamond); color:#000; border-color:var(--diamond); font-weight:700; }
+.tab-content { display:none; animation:fadeSlide .25s ease; }
+.tab-content.active { display:block; }
+@keyframes fadeSlide { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+
+/* ===== Banner ===== */
+.banner-hero { background:var(--card); border-radius:var(--radius); border:1px solid var(--line); padding:32px 28px; text-align:center; position:relative; overflow:hidden; margin-bottom:20px; }
+.banner-hero::before { content:""; position:absolute; inset:0; background:radial-gradient(ellipse at 50% 15%, rgba(94,228,255,.08), transparent 55%); }
+.banner-hero h2 { font-size:1.6rem; margin-bottom:6px; }
+.banner-hero .banner-sub { color:var(--muted); font-size:.88rem; margin-bottom:14px; }
+.banner-hero .rate-info { font-size:.78rem; color:var(--faint); margin-bottom:16px; line-height:1.8; }
+.rate-info b { color:var(--epic); }
+.pull-actions { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+.pull-btn { padding:14px 32px; border-radius:99px; border:none; cursor:pointer; font-size:1rem; font-weight:700; color:#fff; transition:all .2s; }
+.pull-btn:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,.4); }
+.pull-btn.primary { background:linear-gradient(135deg,#f87171,#dc2626); }
+.pull-btn.ten { background:linear-gradient(135deg,#c084fc,#f472b6); }
+.pull-btn:disabled { opacity:.4; transform:none; cursor:not-allowed; }
+.pull-btn.small { padding:8px 18px; font-size:.8rem; }
+
+/* ===== 稀有度卡片 ===== */
+.item-row { display:grid; grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); gap:12px; margin-top:16px; }
+.item-card { background:var(--card); border-radius:var(--radius); border:1px solid var(--line); padding:14px; text-align:center; transition:all .2s; position:relative; overflow:hidden; }
+.item-card::before { content:""; position:absolute; top:0; left:0; right:0; height:3px; border-radius:3px 3px 0 0; }
+.item-card.r-legendary::before { background:linear-gradient(90deg,#c084fc,#9333ea); }
+.item-card.r-epic::before { background:linear-gradient(90deg,#f87171,#dc2626); }
+.item-card.r-rare::before { background:linear-gradient(90deg,#fbbf24,#d97706); }
+.item-card.r-uncommon::before { background:linear-gradient(90deg,#60a5fa,#2563eb); }
+.item-card.r-common::before { background:linear-gradient(90deg,#9ca3af,#6b7280); }
+.item-card:hover { transform:translateY(-3px); box-shadow:var(--shadow); }
+.item-card .item-icon { font-size:2.2rem; margin:8px 0; }
+.item-card .item-name { font-size:.88rem; font-weight:700; }
+.item-card .item-type { font-size:.7rem; color:var(--muted); margin-top:4px; }
+.item-card .item-stats { font-size:.65rem; color:var(--faint); margin-top:4px; font-style:italic; }
+.item-card.owned { opacity:.55; }
+.item-card.owned::after { content:"✓ 已拥有"; position:absolute; top:8px; right:10px; font-size:.65rem; padding:2px 8px; border-radius:99px; background:var(--diamond); color:#000; }
+.item-card.maxed::after { content:"已满破"; position:absolute; top:8px; right:10px; font-size:.65rem; padding:2px 8px; border-radius:99px; background:var(--gold); color:#000; }
+
+/* ===== 类型分组标签 ===== */
+.type-group { margin-top:20px; }
+.type-group h3 { font-size:.95rem; margin-bottom:8px; display:flex; align-items:center; gap:6px; }
+.type-group h3 .group-icon { font-size:1.1rem; }
+
+/* ===== 仓库 ===== */
+.inv-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:10px; }
+.inv-card { background:var(--card); border-radius:var(--radius); border:1px solid var(--line); padding:14px; display:flex; gap:12px; align-items:center; border-left:3px solid var(--faint); }
+.inv-card.r-legendary { border-left-color:var(--legendary); }
+.inv-card.r-epic { border-left-color:var(--epic); }
+.inv-card.r-rare { border-left-color:var(--rare); }
+.inv-card.r-uncommon { border-left-color:var(--uncommon); }
+.inv-card.r-common { border-left-color:var(--common); }
+.inv-card .quant { font-size:1.3rem; font-weight:700; min-width:38px; text-align:center; }
+.filter-bar { display:flex; gap:8px; align-items:center; margin-bottom:14px; flex-wrap:wrap; }
+.filter-bar select, .filter-bar input { padding:7px 14px; border-radius:99px; background:var(--surf); color:var(--text); border:1px solid var(--line); font-size:.84rem; }
+.filter-bar select:focus, .filter-bar input:focus { outline:none; border-color:var(--diamond); }
+
+/* ===== 商城 ===== */
+.shop-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:12px; }
+.shop-item { background:var(--card); border-radius:var(--radius); border:1px solid var(--line); padding:18px; text-align:center; }
+
+/* ===== 会员 ===== */
+.member-card { background:var(--card); border-radius:var(--radius); border:1px solid var(--line); padding:24px; text-align:center; transition:all .2s; }
+.member-card:hover { transform:translateY(-3px); box-shadow:var(--shadow); }
+.member-card .tier-name { font-size:1.25rem; font-weight:700; margin-bottom:4px; }
+.member-card .tier-perks { font-size:.8rem; color:var(--muted); line-height:1.8; margin:12px 0; }
+.member-card .tier-price { font-size:1.05rem; font-weight:700; margin-bottom:12px; }
+
+/* ===== 召唤动画 ===== */
+.anim-overlay { display:none; position:fixed; inset:0; z-index:200; background:rgba(0,0,0,.93); justify-content:center; align-items:center; flex-direction:column; }
+.anim-overlay.active { display:flex; }
+.anim-stage { position:relative; width:320px; height:320px; }
+.anim-orb { position:absolute; inset:18%; border-radius:50%; animation:orbPulse .55s ease-in-out infinite alternate; }
+@keyframes orbPulse { from { transform:scale(.88); filter:brightness(.9); } to { transform:scale(1.12); filter:brightness(1.5); } }
+.anim-result { text-align:center; animation:resultReveal .45s cubic-bezier(.175,.885,.32,1.275); display:none; }
+.anim-result.show { display:block; }
+@keyframes resultReveal { from { opacity:0; transform:scale(.4); } to { opacity:1; transform:scale(1); } }
+.anim-result .rarity-name { font-size:1.5rem; font-weight:700; margin:8px 0; }
+.anim-result .item-detail { font-size:1.05rem; color:var(--muted); }
+.anim-skip { position:fixed; bottom:30px; right:30px; z-index:210; }
+.particles { position:absolute; inset:0; pointer-events:none; }
+
+/* ===== 十连弹窗 ===== */
+.result-modal { display:none; position:fixed; inset:0; z-index:180; background:rgba(0,0,0,.88); justify-content:center; align-items:center; flex-direction:column; }
+.result-modal.active { display:flex; }
+.result-list { display:flex; gap:14px; flex-wrap:wrap; justify-content:center; max-width:900px; padding:20px; }
+.result-item { width:130px; padding:14px; border-radius:var(--radius); text-align:center; animation:popIn .35s cubic-bezier(.175,.885,.32,1.275) backwards; }
+.result-item:nth-child(1) { animation-delay:.08s; } .result-item:nth-child(2) { animation-delay:.12s; }
+.result-item:nth-child(3) { animation-delay:.16s; } .result-item:nth-child(4) { animation-delay:.2s; }
+.result-item:nth-child(5) { animation-delay:.24s; } .result-item:nth-child(6) { animation-delay:.28s; }
+.result-item:nth-child(7) { animation-delay:.32s; } .result-item:nth-child(8) { animation-delay:.36s; }
+.result-item:nth-child(9) { animation-delay:.4s; } .result-item:nth-child(10) { animation-delay:.44s; }
+@keyframes popIn { from { opacity:0; transform:scale(.3) translateY(40px); } to { opacity:1; transform:scale(1) translateY(0); } }
+.result-item .r-icon { font-size:2rem; margin-bottom:6px; }
+.result-item .r-name { font-size:.75rem; font-weight:700; }
+.result-item .r-type { font-size:.62rem; opacity:.7; margin-top:2px; }
+.result-item.r-legendary { background:linear-gradient(135deg,#c084fc,#9333ea); color:#fff; }
+.result-item.r-epic { background:linear-gradient(135deg,#f87171,#dc2626); color:#fff; }
+.result-item.r-rare { background:linear-gradient(135deg,#fbbf24,#d97706); color:#000; }
+.result-item.r-uncommon { background:linear-gradient(135deg,#60a5fa,#2563eb); color:#fff; }
+.result-item.r-common { background:linear-gradient(135deg,#9ca3af,#6b7280); color:#fff; }
+.result-item.r-costume { background:linear-gradient(135deg,#f472b6,#ec4899); color:#fff; }
+.result-item.r-essence { background:linear-gradient(135deg,#fbbf24,#d97706); color:#000; }
+.result-item.r-pink { background:linear-gradient(135deg,#f472b6,#ec4899); color:#fff; }
+
+/* ===== 召唤动画 v2 — 流星坠落+召唤阵+翻转揭示 ===== */
+.anim-overlay { display:none; position:fixed; inset:0; z-index:200; background:rgba(2,2,12,.95); justify-content:center; align-items:center; flex-direction:column; overflow:hidden; }
+.anim-overlay.active { display:flex; }
+
+/* 召唤阵 */
+.summon-circle {
+  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  width:260px; height:260px; pointer-events:none;
+}
+.summon-circle svg { width:100%; height:100%; animation:circleSpin 3s linear infinite; }
+@keyframes circleSpin { to { transform:rotate(360deg); } }
+
+/* 流星 */
+.meteor {
+  position:absolute; top:-80px; left:50%; transform:translateX(-50%);
+  width:6px; height:120px; border-radius:99px;
+  animation:meteorFall .7s cubic-bezier(.55,.06,.68,.19) forwards;
+  filter:blur(1px);
+}
+@keyframes meteorFall {
+  0% { top:-80px; opacity:1; }
+  80% { top:55%; opacity:1; }
+  100% { top:60%; opacity:0; }
+}
+
+/* 撞击闪光 */
+.impact-flash {
+  position:absolute; inset:0; background:#fff; opacity:0; pointer-events:none;
+}
+.impact-flash.flash { animation:flashFade .35s ease-out; }
+@keyframes flashFade { 0% { opacity:.7; } 100% { opacity:0; } }
+
+/* 冲击波 */
+.impact-ring {
+  position:absolute; top:58%; left:50%; transform:translate(-50%,-50%);
+  width:10px; height:10px; border-radius:50%; border:3px solid currentColor;
+  opacity:0;
+}
+.impact-ring.expand { animation:ringExpand .5s ease-out forwards; }
+@keyframes ringExpand {
+  0% { width:10px; height:10px; opacity:1; }
+  100% { width:300px; height:300px; opacity:0; }
+}
+
+/* 翻转卡片 */
+.flip-card { perspective:1200px; width:220px; height:320px; margin:20px auto; }
+.flip-inner { width:100%; height:100%; position:relative; transform-style:preserve-3d; transition:transform .7s cubic-bezier(.4,0,.2,1); }
+.flip-inner.flipped { transform:rotateY(180deg); }
+.flip-front, .flip-back { position:absolute; inset:0; backface-visibility:hidden; border-radius:16px; overflow:hidden; }
+.flip-front {
+  background:linear-gradient(145deg,#1a1840,#0d0b24);
+  border:2px solid var(--line); display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+}
+.flip-front .moon-emblem { font-size:3.5rem; opacity:.3; animation:emblemPulse 2s ease-in-out infinite; }
+@keyframes emblemPulse { 0%,100% { opacity:.25; transform:scale(1); } 50% { opacity:.5; transform:scale(1.05); } }
+.flip-front .flip-hint { position:absolute; bottom:16px; font-size:.72rem; color:var(--faint); }
+.flip-back { transform:rotateY(180deg); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20px; }
+.flip-back .rarity-badge { position:absolute; top:10px; right:10px; font-size:.62rem; padding:2px 8px; border-radius:99px; font-weight:700; }
+
+/* 稀有度光效 */
+.glow-legendary { box-shadow:0 0 30px #c084fc,0 0 60px #c084fc44,inset 0 0 20px #c084fc22; }
+.glow-epic { box-shadow:0 0 25px #f87171,0 0 50px #f8717144,inset 0 0 15px #f8717122; }
+.glow-rare { box-shadow:0 0 20px #fbbf24,0 0 40px #fbbf2444; }
+.glow-uncommon { box-shadow:0 0 15px #60a5fa,0 0 30px #60a5fa33; }
+
+/* 十连卡片网格 */
+.gacha-cards-grid { display:flex; gap:12px; flex-wrap:wrap; justify-content:center; max-width:960px; padding:20px; }
+.mini-flip-card { perspective:800px; width:110px; height:160px; cursor:pointer; }
+.mini-flip-inner { width:100%; height:100%; position:relative; transform-style:preserve-3d; transition:transform .5s cubic-bezier(.4,0,.2,1); }
+.mini-flip-inner.flipped { transform:rotateY(180deg); }
+.mini-flip-front, .mini-flip-back { position:absolute; inset:0; backface-visibility:hidden; border-radius:10px; overflow:hidden; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+.mini-flip-front { background:linear-gradient(145deg,#1a1840,#0d0b24); border:1.5px solid var(--line); }
+.mini-flip-front .mini-moon { font-size:1.8rem; opacity:.25; }
+.mini-flip-back { transform:rotateY(180deg); padding:8px; }
+.mini-flip-back .mini-icon { font-size:1.6rem; }
+.mini-flip-back .mini-name { font-size:.6rem; font-weight:700; text-align:center; margin-top:4px; }
+.mini-flip-back .mini-rarity { font-size:.5rem; opacity:.7; margin-top:2px; }
+
+/* 结果区 */
+.anim-result-v2 { text-align:center; display:none; animation:resultPop .5s cubic-bezier(.175,.885,.32,1.275); }
+.anim-result-v2.show { display:block; }
+@keyframes resultPop { from { opacity:0; transform:scale(.5); } to { opacity:1; transform:scale(1); } }
+
+.anim-skip-v2 { position:fixed; bottom:30px; right:30px; z-index:210; }
+.reveal-all-btn { position:fixed; bottom:30px; left:50%; transform:translateX(-50%); z-index:210; display:none; }
+
+/* 后台面板 */
+.admin-panel { background:var(--card); border-radius:var(--radius); border:1px solid var(--line); padding:20px; }
+.admin-panel label { display:block; font-size:.8rem; color:var(--muted); margin-top:12px; margin-bottom:4px; }
+.admin-panel input[type=range] { width:100%; accent-color:var(--diamond); }
+.admin-panel input[type=number] { width:80px; padding:6px 10px; border-radius:8px; background:var(--bg); color:var(--text); border:1px solid var(--line); font-size:.84rem; }
+
+/* ===== Toast ===== */
+.toast { position:fixed; bottom:24px; right:24px; padding:12px 24px; border-radius:99px; background:var(--diamond); color:#000; font-weight:700; z-index:300; opacity:0; transition:opacity .3s; pointer-events:none; }
+.toast.show { opacity:1; }
+
+@media(max-width:768px) {
+  .header { flex-direction:column; }
+  .tabs { overflow-x:auto; flex-wrap:nowrap; }
+  .result-list { flex-direction:column; align-items:center; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="header">
+    <h1>月蚀契约 · <span style="color:var(--diamond)">星轨召唤</span></h1>
+    <div class="resource-bar">
+      <a href="/" style="color:var(--muted);text-decoration:none;font-size:.82rem;padding:5px 12px;border:1px solid var(--line);border-radius:99px">← 返回游戏</a>
+      <div class="res-badge">
+        <svg class="diamond-svg" viewBox="0 0 24 24" fill="none">
+          <defs><linearGradient id="dGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#5ee4ff"/><stop offset="50%" stop-color="#0ea5e9"/><stop offset="100%" stop-color="#0284c7"/></linearGradient></defs>
+          <path d="M12 2L2 9.5L12 22L22 9.5L12 2Z" fill="url(#dGrad)" stroke="rgba(255,255,255,.5)" stroke-width="0.5"/>
+          <path d="M12 2L7.5 9.5L12 22L16.5 9.5L12 2Z" fill="rgba(255,255,255,.15)"/>
+          <path d="M2 9.5L12 22L22 9.5L12 15L2 9.5Z" fill="rgba(255,255,255,.08)"/>
+          <ellipse cx="10" cy="5.5" rx="1.5" ry="1" fill="rgba(255,255,255,.85)" transform="rotate(-25 10 5.5)"/>
+        </svg>
+        <span id="diamondDisplay">0</span>
+      </div>
+      <div class="res-badge">
+        <svg class="pink-svg" viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="#f472b6" opacity=".9"/><circle cx="10" cy="10" r="6" fill="#ec4899" opacity=".7"/><circle cx="10" cy="10" r="3" fill="rgba(255,255,255,.5)"/></svg>
+        <span id="pinkDisplay">0</span>
+      </div>
+      <div class="res-badge">🔮 <span id="essenceDisplay">0</span> 精魄</div>
+      <span class="membership-badge" id="memberBadge" style="background:rgba(156,163,175,.2);color:#9ca3af">青铜</span>
+      <button class="tab-btn" style="font-size:.72rem;padding:4px 10px" onclick="switchTab('admin')">⚙</button>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('charBanner')">🎴 角色召唤</button>
+    <button class="tab-btn" onclick="switchTab('costumeBanner')">👗 服装召唤</button>
+    <button class="tab-btn" onclick="switchTab('shop')">🛒 商城</button>
+    <button class="tab-btn" onclick="switchTab('inventory')">📦 仓库</button>
+    <button class="tab-btn" onclick="switchTab('membership')">💎 会员</button>
+    <button class="tab-btn" onclick="switchTab('admin')">🔧 后台</button>
+  </div>
+
+  <!-- ===== 角色召唤 ===== -->
+  <div id="tab-charBanner" class="tab-content active">
+    <div class="banner-hero">
+      <h2>🌙 月蚀召唤 · 角色</h2>
+      <p class="banner-sub">八位女主的命运���由你召唤</p>
+      <div class="rate-info">
+        ⭐ 角色 <b>1.0%</b> &nbsp;|&nbsp;
+        <span style="color:var(--legendary)">传说</span> 2% &nbsp;
+        <span style="color:var(--epic)">史诗</span> 8% &nbsp;
+        <span style="color:var(--rare)">精良</span> 20% &nbsp;
+        <span style="color:var(--uncommon)">优良</span> 30% &nbsp;
+        <span style="color:var(--common)">普通</span> 40%
+      </div>
+      <div class="pull-actions">
+        <button class="pull-btn primary" onclick="doPull('character',1)" id="btnSingle">✨ 单抽 · 6💎</button>
+        <button class="pull-btn ten" onclick="doPull('character',10)" id="btnTen">🌟 十连 · 54💎</button>
+      </div>
+    </div>
+    <div class="type-group"><h3><span class="group-icon">👑</span> 角色池预览</h3><div class="item-row" id="charPoolPreview"></div></div>
+  </div>
+
+  <!-- ===== 服装召唤 ===== -->
+  <div id="tab-costumeBanner" class="tab-content" style="display:none">
+    <div class="banner-hero">
+      <h2>✨ 星尘衣橱</h2>
+      <p class="banner-sub">专属服装，限时幻化</p>
+      <div class="rate-info">👗 服装 <b>1/30 (3.33%)</b> &nbsp;|&nbsp; 其余物品概率同角色池</div>
+      <div class="pull-actions">
+        <button class="pull-btn primary" onclick="doPull('costume',1)" id="btnCostSingle">✨ 单抽 · 6💎</button>
+        <button class="pull-btn ten" onclick="doPull('costume',5)" id="btnCost5">🌟 五连 · 30💎</button>
+      </div>
+    </div>
+    <div class="type-group"><h3><span class="group-icon">👗</span> 可获取服装</h3><div class="item-row" id="costumePoolPreview"></div></div>
+  </div>
+
+  <!-- ===== 商城 ===== -->
+  <div id="tab-shop" class="tab-content" style="display:none">
+    <div class="filter-bar" style="margin-bottom:14px;">
+      <button class="tab-btn active" onclick="switchShopTab('diamond')">💎 钻石充值</button>
+      <button class="tab-btn" onclick="switchShopTab('pink')">💗 粉晶兑换</button>
+      <button class="tab-btn" onclick="switchShopTab('essence')">🔮 精魄商店</button>
+    </div>
+    <div id="shop-diamond" class="shop-grid"></div>
+    <div id="shop-pink" class="shop-grid" style="display:none"></div>
+    <div id="shop-essence" class="shop-grid" style="display:none"></div>
+  </div>
+
+  <!-- ===== 仓库 ===== -->
+  <div id="tab-inventory" class="tab-content" style="display:none">
+    <div class="filter-bar">
+      <select id="invFilter" onchange="renderInventory()">
+        <option value="all">全部</option><option value="character">角色</option><option value="weapon">武器</option>
+        <option value="equipment">防具</option><option value="consumable">药品</option><option value="costume">服装</option>
+      </select>
+      <input type="text" id="invSearch" oninput="renderInventory()" placeholder="搜索物品..." style="margin-left:8px">
+    </div>
+    <div class="inv-grid" id="invGrid"></div>
+  </div>
+
+  <!-- ===== 会员 ===== -->
+  <div id="tab-membership" class="tab-content" style="display:none">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;" id="memberGrid"></div>
+  </div>
+
+  <!-- ===== 后台 ===== -->
+  <div id="tab-admin" class="tab-content" style="display:none">
+    <div class="admin-panel">
+      <h3>⚙ 后台调试面板</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:14px;">
+        <div>
+          <h4 style="color:var(--diamond);margin-bottom:10px;">概率调整</h4>
+          <label>角色: <span id="vCharRate">1.0</span>%</label><input type="range" min="0.1" max="10" step="0.1" value="1" oninput="document.getElementById('vCharRate').textContent=this.value;updateRates()" id="sCharRate">
+          <label>传说: <span id="vLegRate">2</span>%</label><input type="range" min="0" max="20" step="0.5" value="2" oninput="document.getElementById('vLegRate').textContent=this.value;updateRates()" id="sLegRate">
+          <label>史诗: <span id="vEpiRate">8</span>%</label><input type="range" min="0" max="30" step="0.5" value="8" oninput="document.getElementById('vEpiRate').textContent=this.value;updateRates()" id="sEpiRate">
+          <label>精良: <span id="vRarRate">20</span>%</label><input type="range" min="0" max="40" step="1" value="20" oninput="document.getElementById('vRarRate').textContent=this.value;updateRates()" id="sRarRate">
+          <label>优良: <span id="vUncRate">30</span>%</label><input type="range" min="0" max="50" step="1" value="30" oninput="document.getElementById('vUncRate').textContent=this.value;updateRates()" id="sUncRate">
+          <label>服装: 1 / <span id="vCosRate">30</span></label><input type="range" min="5" max="100" step="1" value="30" oninput="document.getElementById('vCosRate').textContent=this.value" id="sCosRate">
+        </div>
+        <div>
+          <h4 style="color:var(--pink);margin-bottom:10px;">资源调试</h4>
+          <button class="pull-btn primary small" style="width:100%;margin-bottom:8px" onclick="player.diamonds+=100;savePlayer();refreshUI()">+100 💎</button>
+          <button class="pull-btn primary small" style="width:100%;margin-bottom:8px;background:var(--pink)" onclick="player.pinkCrystals+=50;savePlayer();refreshUI()">+50 💗 粉晶</button>
+          <button class="pull-btn primary small" style="width:100%;margin-bottom:8px;background:var(--legendary)" onclick="player.essence+=10;savePlayer();refreshUI()">+10 🔮 精魄</button>
+          <button class="pull-btn primary small" style="width:100%;margin-bottom:8px;background:var(--diamond)" onclick="addAllCharacters()">解锁全部角色</button>
+          <button class="pull-btn primary small" style="width:100%;background:var(--epic)" onclick="if(confirm('确定重置所有数据？')){resetAll();refreshUI();renderAll()}">🔄 重置全部</button>
+        </div>
+        <div>
+          <h4 style="color:var(--gold);margin-bottom:10px;">会员调试</h4>
+          <select onchange="player.membership=this.value;savePlayer();refreshUI()" style="width:100%;padding:8px;border-radius:8px;background:var(--surf);color:var(--text);border:1px solid var(--line)">
+            <option value="bronze">青铜会员</option><option value="silver">白银会员</option>
+            <option value="gold">黄金会员</option><option value="diamond">钻石会员</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 召唤动画 v2 -->
+<div class="anim-overlay" id="animOverlay">
+  <!-- 召唤阵 -->
+  <div class="summon-circle" id="summonCircle">
+    <svg viewBox="0 0 200 200" fill="none">
+      <circle cx="100" cy="100" r="90" stroke="currentColor" stroke-width="1.5" opacity=".3" stroke-dasharray="8 6"/>
+      <circle cx="100" cy="100" r="70" stroke="currentColor" stroke-width="1" opacity=".2" stroke-dasharray="4 4"/>
+      <circle cx="100" cy="100" r="50" stroke="currentColor" stroke-width="0.8" opacity=".15"/>
+      <path d="M100 10 L100 190 M10 100 L190 100 M40 40 L160 160 M160 40 L40 160" stroke="currentColor" stroke-width=".5" opacity=".1"/>
+      <circle cx="100" cy="100" r="3" fill="currentColor" opacity=".4"/>
+    </svg>
+  </div>
+  <!-- 流星 -->
+  <div class="meteor" id="animMeteor" style="display:none"></div>
+  <!-- 撞击闪光 -->
+  <div class="impact-flash" id="impactFlash"></div>
+  <!-- 冲击波 -->
+  <div class="impact-ring" id="impactRing"></div>
+  <!-- 翻转卡片 -->
+  <div class="flip-card" id="flipCard" style="display:none">
+    <div class="flip-inner" id="flipInner">
+      <div class="flip-front">
+        <div class="moon-emblem">🌙</div>
+        <div class="flip-hint">点击揭示</div>
+      </div>
+      <div class="flip-back" id="flipBack"></div>
+    </div>
+  </div>
+  <!-- 结果区（单抽） -->
+  <div class="anim-result-v2" id="animResultV2"></div>
+  <!-- 十连卡片网格 -->
+  <div class="gacha-cards-grid" id="multiCardsGrid" style="display:none"></div>
+  <!-- 按钮 -->
+  <button class="pull-btn primary reveal-all-btn" id="revealAllBtn" onclick="revealAllCards()">✨ 全部揭示</button>
+  <button class="pull-btn primary anim-skip-v2" id="animSkipV2" onclick="skipAnimationV2()">跳过 ▸</button>
+</div>
+
+<!-- 十连结果弹窗（确认用） -->
+<div class="result-modal" id="resultModal">
+  <div class="result-list" id="resultList"></div>
+  <button class="pull-btn primary" style="margin-top:16px" onclick="closeResultModal()">确认</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ============ 完整 RPG 物品池 ============
+const CHARACTERS = [
+  {id:'lia',name:'莉亚·赫斯特',type:'character',rarity:'legendary',icon:'⚔️',title:'赤誓骑士'},
+  {id:'mia',name:'米娅·铃',type:'character',rarity:'legendary',icon:'🔧',title:'猫耳机关师'},
+  {id:'serena',name:'塞蕾娜·诺克斯',type:'character',rarity:'legendary',icon:'🌙',title:'月蚀观测者'},
+  {id:'freya',name:'芙蕾娅·霜华',type:'character',rarity:'legendary',icon:'❄️',title:'霜华术师'},
+  {id:'lilith',name:'莉莉丝·瓦尔哈拉',type:'character',rarity:'legendary',icon:'⚜️',title:'战乙女审判者'},
+  {id:'evelyn',name:'伊芙琳·星歌',type:'character',rarity:'legendary',icon:'⭐',title:'星咏者'},
+  {id:'ophelia',name:'奥菲利亚·使诺德',type:'character',rarity:'legendary',icon:'🦷',title:'诺德使徒'},
+  {id:'ayla',name:'艾拉·瓦尔哈拉',type:'character',rarity:'legendary',icon:'🕊️',title:'圣疗骑士'}
+];
+
+// ===== 武器池（55件）=====
+const WEAPONS = [
+  // 传说（8件角色专武）
+  {id:'w_lia',name:'月蚀圣剑',type:'weapon',rarity:'legendary',icon:'🗡️',owner:'lia',stats:'攻击力+45 暴击+12%'},
+  {id:'w_mia',name:'九命回路核心',type:'weapon',rarity:'legendary',icon:'🔮',owner:'mia',stats:'攻击力+38 技能冷却-20%'},
+  {id:'w_serena',name:'静月封界仪',type:'weapon',rarity:'legendary',icon:'🌑',owner:'serena',stats:'攻击力+42 封印强度+30%'},
+  {id:'w_freya',name:'霜华星杖',type:'weapon',rarity:'legendary',icon:'🪄',owner:'freya',stats:'攻击力+40 冻结时间+2s'},
+  {id:'w_lilith',name:'瓦尔哈拉双刃',type:'weapon',rarity:'legendary',icon:'⚔️',owner:'lilith',stats:'攻击力+48 审判伤害+25%'},
+  {id:'w_evelyn',name:'星咏竖琴',type:'weapon',rarity:'legendary',icon:'🎵',owner:'evelyn',stats:'攻击力+35 预知回合+1'},
+  {id:'w_ophelia',name:'诺德之眼',type:'weapon',rarity:'legendary',icon:'👁️',owner:'ophelia',stats:'攻击力+44 认知污染+15%'},
+  {id:'w_ayla',name:'圣光羽盾',type:'weapon',rarity:'legendary',icon:'🛡️',owner:'ayla',stats:'防御力+35 治疗量+40%'},
+  // 史诗
+  {id:'w_e1',name:'赤焰之刃',type:'weapon',rarity:'epic',icon:'🔥',stats:'攻击力+32 灼烧附加'},
+  {id:'w_e2',name:'霜月弯刀',type:'weapon',rarity:'epic',icon:'🌙',stats:'攻击力+30 攻速+15%'},
+  {id:'w_e3',name:'雷霆回路枪',type:'weapon',rarity:'epic',icon:'⚡',stats:'攻击力+28 感电触发'},
+  {id:'w_e4',name:'暗影长镰',type:'weapon',rarity:'epic',icon:'🔪',stats:'攻击力+34 暗蚀叠加'},
+  {id:'w_e5',name:'圣歌法典',type:'weapon',rarity:'epic',icon:'📖',stats:'攻击力+26 法力回复+20%'},
+  {id:'w_e6',name:'破晓巨剑',type:'weapon',rarity:'epic',icon:'🗡️',stats:'攻击力+36 击退效果'},
+  {id:'w_e7',name:'月痕短匕',type:'weapon',rarity:'epic',icon:'🔪',stats:'攻击力+27 背刺+30%'},
+  {id:'w_e8',name:'深渊法球',type:'weapon',rarity:'epic',icon:'🔮',stats:'攻击力+29 召唤深渊触手'},
+  // 精良
+  {id:'w_r1',name:'精钢长剑',type:'weapon',rarity:'rare',icon:'⚔️',stats:'攻击力+22 耐久+15%'},
+  {id:'w_r2',name:'机关弩',type:'weapon',rarity:'rare',icon:'🏹',stats:'攻击力+20 连射+1'},
+  {id:'w_r3',name:'术士短杖',type:'weapon',rarity:'rare',icon:'🪄',stats:'攻击力+18 咏唱-10%'},
+  {id:'w_r4',name:'骑士长枪',type:'weapon',rarity:'rare',icon:'🔱',stats:'攻击力+24 突刺+20%'},
+  {id:'w_r5',name:'猎人弓',type:'weapon',rarity:'rare',icon:'🏹',stats:'攻击力+19 射程+25%'},
+  {id:'w_r6',name:'双刃匕首',type:'weapon',rarity:'rare',icon:'🔪',stats:'攻击力+21 流血+15%'},
+  {id:'w_r7',name:'元素法杖',type:'weapon',rarity:'rare',icon:'🪄',stats:'攻击力+17 元素伤害+20%'},
+  {id:'w_r8',name:'月刃',type:'weapon',rarity:'rare',icon:'🌙',stats:'攻击力+23 夜战加成'},
+  {id:'w_r9',name:'破甲战锤',type:'weapon',rarity:'rare',icon:'🔨',stats:'攻击力+25 破防+20%'},
+  {id:'w_r10',name:'咒术长鞭',type:'weapon',rarity:'rare',icon:'🐍',stats:'攻击力+16 诅咒附加'},
+  // 优良
+  {id:'w_u1',name:'铁剑',type:'weapon',rarity:'uncommon',icon:'🗡️',stats:'攻击力+14'},
+  {id:'w_u2',name:'短弓',type:'weapon',rarity:'uncommon',icon:'🏹',stats:'攻击力+12 命中率+5%'},
+  {id:'w_u3',name:'学徒法杖',type:'weapon',rarity:'uncommon',icon:'🪄',stats:'攻击力+11 魔力+8'},
+  {id:'w_u4',name:'训练枪',type:'weapon',rarity:'uncommon',icon:'🔱',stats:'攻击力+13 突刺+10%'},
+  {id:'w_u5',name:'皮质护腕',type:'weapon',rarity:'uncommon',icon:'🩹',stats:'攻击力+10 格挡+5%'},
+  {id:'w_u6',name:'铜指虎',type:'weapon',rarity:'uncommon',icon:'👊',stats:'攻击力+15 击退+10%'},
+  {id:'w_u7',name:'木制法杖',type:'weapon',rarity:'uncommon',icon:'🪄',stats:'攻击力+9 咏唱-5%'},
+  {id:'w_u8',name:'旅人短刀',type:'weapon',rarity:'uncommon',icon:'🔪',stats:'攻击力+11 便携+20%'},
+  // 普通
+  {id:'w_c1',name:'木剑',type:'weapon',rarity:'common',icon:'🗡️',stats:'攻击力+6'},
+  {id:'w_c2',name:'训练弓',type:'weapon',rarity:'common',icon:'🏹',stats:'攻击力+5'},
+  {id:'w_c3',name:'基础魔杖',type:'weapon',rarity:'common',icon:'🪄',stats:'攻击力+4 魔力+3'},
+  {id:'w_c4',name:'旧匕首',type:'weapon',rarity:'common',icon:'🔪',stats:'攻击力+7'},
+  {id:'w_c5',name:'见习骑士剑',type:'weapon',rarity:'common',icon:'⚔️',stats:'攻击力+8'},
+  {id:'w_c6',name:'猎人小刀',type:'weapon',rarity:'common',icon:'🔪',stats:'攻击力+5 剥皮+10%'},
+  {id:'w_c7',name:'流浪者手杖',type:'weapon',rarity:'common',icon:'🪄',stats:'攻击力+4'},
+  {id:'w_c8',name:'农用手斧',type:'weapon',rarity:'common',icon:'🪓',stats:'攻击力+7 伐木+20%'},
+];
+
+// ===== 防具/装备池（40件）=====
+const EQUIPMENTS = [
+  // 传说
+  {id:'eq_l1',name:'月蚀守护铠',type:'equipment',rarity:'legendary',icon:'🛡️',stats:'防御+42 全抗性+15%'},
+  {id:'eq_l2',name:'星轨披风',type:'equipment',rarity:'legendary',icon:'🧥',stats:'防御+38 闪避+20%'},
+  {id:'eq_l3',name:'契约胸甲',type:'equipment',rarity:'legendary',icon:'💎',stats:'防御+45 契约之力+10%'},
+  {id:'eq_l4',name:'瓦尔哈拉战裙',type:'equipment',rarity:'legendary',icon:'👗',stats:'防御+40 战意+25%'},
+  {id:'eq_l5',name:'诺德行者斗篷',type:'equipment',rarity:'legendary',icon:'🧥',stats:'防御+36 隐匿+30%'},
+  // 史诗
+  {id:'eq_e1',name:'回路护腕',type:'equipment',rarity:'epic',icon:'⌚',stats:'防御+28 技能急速+12%'},
+  {id:'eq_e2',name:'深渊护符',type:'equipment',rarity:'epic',icon:'📿',stats:'防御+26 暗抗+25%'},
+  {id:'eq_e3',name:'极光长靴',type:'equipment',rarity:'epic',icon:'👢',stats:'防御+24 移速+15%'},
+  {id:'eq_e4',name:'赤誓肩甲',type:'equipment',rarity:'epic',icon:'🛡️',stats:'防御+30 火抗+20%'},
+  {id:'eq_e5',name:'星尘腰带',type:'equipment',rarity:'epic',icon:'👑',stats:'防御+25 法力+40'},
+  {id:'eq_e6',name:'暗月面纱',type:'equipment',rarity:'epic',icon:'🎭',stats:'防御+22 暴击+8%'},
+  {id:'eq_e7',name:'誓约护手',type:'equipment',rarity:'epic',icon:'🧤',stats:'防御+27 攻速+10%'},
+  {id:'eq_e8',name:'雷霆胫甲',type:'equipment',rarity:'epic',icon:'👢',stats:'防御+29 雷抗+22%'},
+  // 精良
+  {id:'eq_r1',name:'银鳞甲',type:'equipment',rarity:'rare',icon:'🦺',stats:'防御+20 光抗+10%'},
+  {id:'eq_r2',name:'机关靴',type:'equipment',rarity:'rare',icon:'👞',stats:'防御+16 弹跳+15%'},
+  {id:'eq_r3',name:'月痕指环',type:'equipment',rarity:'rare',icon:'💍',stats:'防御+14 魔力+20'},
+  {id:'eq_r4',name:'巡逻者披风',type:'equipment',rarity:'rare',icon:'🧥',stats:'防御+17 侦察+20%'},
+  {id:'eq_r5',name:'术士长袍',type:'equipment',rarity:'rare',icon:'🧥',stats:'防御+15 咏唱-8%'},
+  {id:'eq_r6',name:'猎人护胸',type:'equipment',rarity:'rare',icon:'🦺',stats:'防御+18 暴击+5%'},
+  {id:'eq_r7',name:'守卫者头盔',type:'equipment',rarity:'rare',icon:'🪖',stats:'防御+19 生命+50'},
+  {id:'eq_r8',name:'符文护腿',type:'equipment',rarity:'rare',icon:'👖',stats:'防御+17 土抗+15%'},
+  // 优良
+  {id:'eq_u1',name:'铁护腕',type:'equipment',rarity:'uncommon',icon:'⛓️',stats:'防御+12'},
+  {id:'eq_u2',name:'皮质护甲',type:'equipment',rarity:'uncommon',icon:'🦺',stats:'防御+10 闪避+5%'},
+  {id:'eq_u3',name:'学徒勋章',type:'equipment',rarity:'uncommon',icon:'🏅',stats:'防御+8 经验+5%'},
+  {id:'eq_u4',name:'旅行者斗篷',type:'equipment',rarity:'uncommon',icon:'🧥',stats:'防御+9 耐寒+15%'},
+  {id:'eq_u5',name:'铜腰带',type:'equipment',rarity:'uncommon',icon:'👑',stats:'防御+7 负重+20%'},
+  {id:'eq_u6',name:'步兵头盔',type:'equipment',rarity:'uncommon',icon:'🪖',stats:'防御+11 生命+30'},
+  {id:'eq_u7',name:'侦察兵靴',type:'equipment',rarity:'uncommon',icon:'👢',stats:'防御+9 移速+8%'},
+  // 普通
+  {id:'eq_c1',name:'布衣',type:'equipment',rarity:'common',icon:'👕',stats:'防御+5'},
+  {id:'eq_c2',name:'木盾',type:'equipment',rarity:'common',icon:'🪵',stats:'防御+7 格挡+3%'},
+  {id:'eq_c3',name:'草鞋',type:'equipment',rarity:'common',icon:'🥿',stats:'防御+4 移速+3%'},
+  {id:'eq_c4',name:'旅人披风',type:'equipment',rarity:'common',icon:'🧥',stats:'防御+5 风抗+8%'},
+  {id:'eq_c5',name:'皮手套',type:'equipment',rarity:'common',icon:'🧤',stats:'防御+6'},
+  {id:'eq_c6',name:'布帽',type:'equipment',rarity:'common',icon:'👒',stats:'防御+4 中暑-10%'},
+  {id:'eq_c7',name:'旧腰带',type:'equipment',rarity:'common',icon:'👑',stats:'防御+5 口袋+2'},
+];
+
+// ===== 药品/消耗品池（30件）=====
+const CONSUMABLES = [
+  // 传说
+  {id:'con_l1',name:'月露仙药',type:'consumable',rarity:'legendary',icon:'🧪',stats:'全队完全恢复+清除异常'},
+  {id:'con_l2',name:'星轨秘药',type:'consumable',rarity:'legendary',icon:'💊',stats:'永久攻击力+3（唯一）'},
+  {id:'con_l3',name:'诺德圣水',type:'consumable',rarity:'legendary',icon:'🍶',stats:'免疫死亡1次（持续3回合）'},
+  // 史诗
+  {id:'con_e1',name:'凤凰之血',type:'consumable',rarity:'epic',icon:'🔥',stats:'复活+50%生命'},
+  {id:'con_e2',name:'全恢复药水',type:'consumable',rarity:'epic',icon:'🧪',stats:'生命完全恢复'},
+  {id:'con_e3',name:'魔力涌泉剂',type:'consumable',rarity:'epic',icon:'💧',stats:'法力完全恢复'},
+  {id:'con_e4',name:'战斗兴奋剂',type:'consumable',rarity:'epic',icon:'💉',stats:'攻击+30%持续3回合'},
+  {id:'con_e5',name:'万能解毒剂',type:'consumable',rarity:'epic',icon:'💊',stats:'清除所有异常状态'},
+  {id:'con_e6',name:'隐身药水',type:'consumable',rarity:'epic',icon:'🫥',stats:'回避2回合'},
+  // 精良
+  {id:'con_r1',name:'高级恢复药水',type:'consumable',rarity:'rare',icon:'🧪',stats:'恢复60%生命'},
+  {id:'con_r2',name:'高级魔力药��',type:'consumable',rarity:'rare',icon:'💧',stats:'恢复60%法力'},
+  {id:'con_r3',name:'攻击药水',type:'consumable',rarity:'rare',icon:'💉',stats:'攻击+15%持续5回合'},
+  {id:'con_r4',name:'防御药水',type:'consumable',rarity:'rare',icon:'🧪',stats:'防御+20%持续5回合'},
+  {id:'con_r5',name:'速度药水',type:'consumable',rarity:'rare',icon:'💊',stats:'速度+25%持续3回合'},
+  {id:'con_r6',name:'解毒剂',type:'consumable',rarity:'rare',icon:'💊',stats:'清除中毒'},
+  {id:'con_r7',name:'清醒剂',type:'consumable',rarity:'rare',icon:'💊',stats:'清除混乱/睡眠'},
+  {id:'con_r8',name:'耐火药剂',type:'consumable',rarity:'rare',icon:'🧪',stats:'火抗+40%持续5回合'},
+  {id:'con_r9',name:'耐寒药剂',type:'consumable',rarity:'rare',icon:'🧪',stats:'冰抗+40%持续5回合'},
+  // 优良
+  {id:'con_u1',name:'恢复药水',type:'consumable',rarity:'uncommon',icon:'🧪',stats:'恢复30%生命'},
+  {id:'con_u2',name:'魔力药水',type:'consumable',rarity:'uncommon',icon:'💧',stats:'恢复30%法力'},
+  {id:'con_u3',name:'绷带',type:'consumable',rarity:'uncommon',icon:'🩹',stats:'每回合恢复5%生命持续3回合'},
+  {id:'con_u4',name:'提神饮料',type:'consumable',rarity:'uncommon',icon:'🥤',stats:'恢复15%生命+法力'},
+  {id:'con_u5',name:'解毒草',type:'consumable',rarity:'uncommon',icon:'🌿',stats:'解除轻度中毒'},
+  {id:'con_u6',name:'暖身汤',type:'consumable',rarity:'uncommon',icon:'🍲',stats:'解冻+恢复10%生命'},
+  // 普通
+  {id:'con_c1',name:'小恢复药水',type:'consumable',rarity:'common',icon:'🧪',stats:'恢复10%生命'},
+  {id:'con_c2',name:'小魔力药水',type:'consumable',rarity:'common',icon:'💧',stats:'恢复10%法力'},
+  {id:'con_c3',name:'干粮',type:'consumable',rarity:'common',icon:'🍞',stats:'恢复5%生命'},
+  {id:'con_c4',name:'水壶',type:'consumable',rarity:'common',icon:'🚰',stats:'恢复5%法力'},
+  {id:'con_c5',name:'急救喷雾',type:'consumable',rarity:'common',icon:'💨',stats:'恢复8%生命'},
+];
+
+// ===== 服装池（16件）=====
+const COSTUMES = [
+  {id:'c_lia_1',name:'血色骑士服',type:'costume',rarity:'legendary',icon:'👘',owner:'lia',desc:'莉亚专属'},
+  {id:'c_lia_2',name:'夏日清凉装',type:'costume',rarity:'epic',icon:'👗',owner:'lia',desc:'莉亚专属'},
+  {id:'c_mia_1',name:'机械猫娘装',type:'costume',rarity:'legendary',icon:'🤖',owner:'mia',desc:'米娅专属'},
+  {id:'c_mia_2',name:'睡衣派对',type:'costume',rarity:'epic',icon:'😴',owner:'mia',desc:'米娅专属'},
+  {id:'c_serena_1',name:'月蚀礼服',type:'costume',rarity:'legendary',icon:'🌌',owner:'serena',desc:'塞蕾娜专属'},
+  {id:'c_serena_2',name:'观测者制服',type:'costume',rarity:'epic',icon:'🔭',owner:'serena',desc:'塞蕾娜专属'},
+  {id:'c_freya_1',name:'冰雪女王裙',type:'costume',rarity:'legendary',icon:'❄️',owner:'freya',desc:'芙蕾娅专属'},
+  {id:'c_freya_2',name:'暖冬便服',type:'costume',rarity:'epic',icon:'🧣',owner:'freya',desc:'芙蕾娅专属'},
+  {id:'c_lilith_1',name:'瓦尔哈拉战袍',type:'costume',rarity:'legendary',icon:'⚔️',owner:'lilith',desc:'莉莉丝专属'},
+  {id:'c_lilith_2',name:'暗夜便装',type:'costume',rarity:'epic',icon:'🖤',owner:'lilith',desc:'莉莉丝专属'},
+  {id:'c_evelyn_1',name:'星尘舞台装',type:'costume',rarity:'legendary',icon:'🌟',owner:'evelyn',desc:'伊芙琳专属'},
+  {id:'c_evelyn_2',name:'睡衣星图',type:'costume',rarity:'epic',icon:'💤',owner:'evelyn',desc:'伊芙琳专属'},
+  {id:'c_ophelia_1',name:'使徒礼装',type:'costume',rarity:'legendary',icon:'🌑',owner:'ophelia',desc:'奥菲利亚专属'},
+  {id:'c_ophelia_2',name:'日常咬人服',type:'costume',rarity:'epic',icon:'🦷',owner:'ophelia',desc:'奥菲利亚专属'},
+  {id:'c_ayla_1',name:'圣光礼裙',type:'costume',rarity:'legendary',icon:'👼',owner:'ayla',desc:'艾拉专属'},
+  {id:'c_ayla_2',name:'野餐便服',type:'costume',rarity:'epic',icon:'🧺',owner:'ayla',desc:'艾拉专属'},
+];
+
+const ALL_ITEMS = [...WEAPONS, ...EQUIPMENTS, ...CONSUMABLES];
+
+// ============ PLAYER STATE ============
+const DEFAULT_PLAYER = {
+  diamonds: 200, pinkCrystals: 0, essence: 0, membership: 'bronze',
+  ownedCharacters: {}, ownedItems: {}, ownedCostumes: {},
+  charMaxLevel: 6, pullHistory: [],
+};
+let player = {};
+let rates = { charRate:1, legRate:2, epiRate:8, rarRate:20, uncRate:30, costumeDenom:30 };
+let isAnimating = false;
+let pendingResults = [];
+
+function loadPlayer() {
+  const raw = localStorage.getItem('moonlit_gacha_player');
+  if (raw) { try { player = JSON.parse(raw); } catch(e) { player = {...DEFAULT_PLAYER}; } }
+  else player = {...DEFAULT_PLAYER};
+  player.ownedCharacters = player.ownedCharacters || {};
+  player.ownedItems = player.ownedItems || {};
+  player.ownedCostumes = player.ownedCostumes || {};
+  player.pullHistory = player.pullHistory || [];
+}
+function savePlayer() { localStorage.setItem('moonlit_gacha_player', JSON.stringify(player)); }
+function resetAll() { player = {...DEFAULT_PLAYER}; savePlayer(); }
+function diamondCost(count) {
+  const discount = {bronze:0, silver:0, gold:5, diamond:10}[player.membership] || 0;
+  return Math.max(1, Math.floor(count * 6 * (100 - discount) / 100));
+}
+function showToast(msg) {
+  const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+// ============ GACHA ENGINE ============
+function rollRarity(isCharBanner) {
+  if (isCharBanner) {
+    const r = Math.random() * 100;
+    if (r < rates.charRate) return 'character';
+    r -= rates.charRate;
+    if (r < rates.legRate) return 'legendary';
+    r -= rates.legRate;
+    if (r < rates.epiRate) return 'epic';
+    r -= rates.epiRate;
+    if (r < rates.rarRate) return 'rare';
+    r -= rates.rarRate;
+    if (r < rates.uncRate) return 'uncommon';
+    return 'common';
+  } else {
+    if (Math.random() < 1/rates.costumeDenom) return 'costume';
+    const r = Math.random() * 100;
+    if (r < rates.legRate) return 'legendary';
+    r -= rates.legRate;
+    if (r < rates.epiRate) return 'epic';
+    r -= rates.epiRate;
+    if (r < rates.rarRate) return 'rare';
+    r -= rates.rarRate;
+    if (r < rates.uncRate) return 'uncommon';
+    return 'common';
+  }
+}
+
+function pickFromPool(rarity, isCostumeBanner) {
+  if (rarity === 'character') {
+    const maxed = CHARACTERS.filter(c => (player.ownedCharacters[c.id] || 0) >= player.charMaxLevel);
+    const available = CHARACTERS.filter(c => !maxed.includes(c));
+    if (available.length > 0) {
+      const pick = available[Math.floor(Math.random() * available.length)];
+      player.ownedCharacters[pick.id] = (player.ownedCharacters[pick.id] || 0) + 1;
+      const copies = player.ownedCharacters[pick.id];
+      return { ...pick, isNew: copies === 1, copies, isDuplicate: copies > 1 };
+    }
+    player.essence += 3;
+    return { id:'essence', name:'武器精魄', type:'essence', rarity:'essence', icon:'🔮', amount:3, isEssence:true };
+  }
+  if (rarity === 'costume') {
+    const available = COSTUMES.filter(c => !player.ownedCostumes[c.id]);
+    if (available.length > 0) {
+      const pick = available[Math.floor(Math.random() * available.length)];
+      player.ownedCostumes[pick.id] = true;
+      return { ...pick, isNew: true };
+    }
+    const pink = 8 + Math.floor(Math.random() * 3);
+    player.pinkCrystals += pink;
+    return { id:'pink_dup', name:`粉晶 x${pink}`, type:'pink', rarity:'pink', icon:'💗', amount:pink, isPink:true };
+  }
+  const pool = ALL_ITEMS.filter(i => i.rarity === rarity);
+  if (pool.length === 0) return ALL_ITEMS[Math.floor(Math.random() * ALL_ITEMS.length)];
+  const pick = pool[Math.floor(Math.random() * pool.length)];
+  player.ownedItems[pick.id] = (player.ownedItems[pick.id] || 0) + 1;
+  const qty = player.ownedItems[pick.id];
+  return { ...pick, isNew: qty === 1, quantity: qty, isDuplicate: qty > 1 };
+}
+
+function executeSinglePull(isCharBanner) {
+  const rarity = rollRarity(isCharBanner);
+  const result = pickFromPool(rarity, !isCharBanner);
+  if (result.isDuplicate && result.type !== 'character' && result.type !== 'costume' && !result.isEssence && !result.isPink) {
+    const pink = 5 + Math.floor(Math.random() * 6);
+    player.pinkCrystals += pink;
+    result.pinkReward = pink;
+  }
+  if (result.isDuplicate && result.type === 'character' && result.copies <= player.charMaxLevel) {
+    const pink = 4 + Math.floor(Math.random() * 7);
+    player.pinkCrystals += pink;
+    result.pinkReward = pink;
+  }
+  player.pullHistory.push({ timestamp: Date.now(), ...result, banner: isCharBanner ? 'character' : 'costume' });
+  if (player.pullHistory.length > 200) player.pullHistory = player.pullHistory.slice(-200);
+  return result;
+}
+
+function doPull(bannerType, count) {
+  if (isAnimating) return;
+  const cost = diamondCost(count);
+  if (player.diamonds < cost) { showToast('💎 钻石不足！'); return; }
+  player.diamonds -= cost;
+  const results = [];
+  for (let i = 0; i < count; i++) results.push(executeSinglePull(bannerType === 'character'));
+  savePlayer();
+  pendingResults = results;
+  if (count === 1) showPullAnimation(results[0]);
+  else showMultiResult(results);
+}
+
+// ============ 动画 v2 ============
+const RARITY_CONFIG = {
+  character:{color:'#c084fc',glow:'glow-legendary',label:'⭐ 角色获得！',emoji:'👑'},
+  legendary:{color:'#c084fc',glow:'glow-legendary',label:'⭐ 传说获得！',emoji:'⭐'},
+  epic:{color:'#f87171',glow:'glow-epic',label:'🔥 史诗获得！',emoji:'🔥'},
+  rare:{color:'#fbbf24',glow:'glow-rare',label:'💛 精良',emoji:'💛'},
+  uncommon:{color:'#60a5fa',glow:'glow-uncommon',label:'💙 优良',emoji:'💙'},
+  common:{color:'#9ca3af',glow:'',label:'⬜ 普通',emoji:'⬜'},
+  costume:{color:'#f472b6',glow:'glow-epic',label:'👗 服装获得！',emoji:'👗'},
+  essence:{color:'#fbbf24',glow:'glow-rare',label:'🔮 精魄',emoji:'🔮'},
+  pink:{color:'#f472b6',glow:'glow-epic',label:'💗 粉晶',emoji:'💗'},
+};
+
+function showPullAnimation(result) {
+  isAnimating = true;
+  const overlay = document.getElementById('animOverlay');
+  const circle = document.getElementById('summonCircle');
+  const meteor = document.getElementById('animMeteor');
+  const flipCard = document.getElementById('flipCard');
+  const flipInner = document.getElementById('flipInner');
+  const flipBack = document.getElementById('flipBack');
+  const resultEl = document.getElementById('animResultV2');
+  const skipBtn = document.getElementById('animSkipV2');
+  const revealBtn = document.getElementById('revealAllBtn');
+  const cfg = RARITY_CONFIG[result.rarity] || RARITY_CONFIG.common;
+
+  // Reset
+  overlay.classList.add('active');
+  circle.style.display = 'block';
+  circle.style.color = cfg.color;
+  meteor.style.display = 'none';
+  flipCard.style.display = 'none';
+  flipInner.classList.remove('flipped');
+  resultEl.classList.remove('show');
+  resultEl.innerHTML = '';
+  revealBtn.style.display = 'none';
+  skipBtn.style.display = 'block';
+  flipBack.innerHTML = '';
+  flipBack.className = 'flip-back';
+  document.getElementById('multiCardsGrid').style.display = 'none';
+
+  // Phase 1: 召唤阵旋转 (0.8s)
+  setTimeout(() => {
+    // Phase 2: 流星坠落 (0.7s)
+    meteor.style.display = 'block';
+    meteor.style.background = `linear-gradient(to bottom, transparent, ${cfg.color})`;
+    meteor.style.boxShadow = `0 0 20px ${cfg.color}, 0 0 40px ${cfg.color}`;
+
+    setTimeout(() => {
+      // Phase 3: 撞击闪光+冲击波
+      meteor.style.display = 'none';
+      const flash = document.getElementById('impactFlash');
+      const ring = document.getElementById('impactRing');
+      flash.className = 'impact-flash flash';
+      ring.style.color = cfg.color;
+      ring.className = 'impact-ring expand';
+      setTimeout(() => { flash.className = 'impact-flash'; ring.className = 'impact-ring'; }, 600);
+
+      // Phase 4: 显示翻转卡片
+      circle.style.display = 'none';
+      flipCard.style.display = 'block';
+      flipBack.classList.add(cfg.glow);
+      flipBack.innerHTML = buildFlipBackHTML(result, cfg);
+
+      // 点击卡片翻转
+      flipInner.onclick = () => {
+        if (!flipInner.classList.contains('flipped')) {
+          flipInner.classList.add('flipped');
+          setTimeout(() => {
+            resultEl.classList.add('show');
+            resultEl.innerHTML = buildResultDetailHTML(result, cfg);
+          }, 400);
+        }
+      };
+    }, 700);
+  }, 800);
+}
+
+function buildFlipBackHTML(r, cfg) {
+  const rarityText = {character:'角色',legendary:'传说',epic:'史诗',rare:'精良',uncommon:'优良',common:'普通',costume:'服装',essence:'精魄',pink:'粉晶'}[r.rarity];
+  return `
+    <div class="rarity-badge" style="background:${cfg.color};color:${r.rarity==='rare'||r.rarity==='essence'?'#000':'#fff'}">${rarityText}</div>
+    <div style="font-size:3.5rem;margin-bottom:8px">${r.icon}</div>
+    <div style="font-size:1.1rem;font-weight:700;color:${cfg.color}">${r.name}</div>
+    ${r.stats ? `<div style="font-size:.72rem;color:var(--muted);margin-top:6px;font-style:italic">${r.stats}</div>` : ''}
+  `;
+}
+
+function buildResultDetailHTML(r, cfg) {
+  let extra = '';
+  if (r.isNew) extra += '<div style="color:#4ade80;font-size:.95rem;margin-top:6px;font-weight:700">✨ NEW!</div>';
+  if (r.isDuplicate) extra += `<div style="color:var(--muted);font-size:.8rem;margin-top:4px">+${r.pinkReward||0} 粉晶</div>`;
+  if (r.type === 'character') extra += `<div style="color:var(--muted);font-size:.8rem;margin-top:4px">突破: ${r.copies}/${player.charMaxLevel}</div>`;
+  return `
+    <div style="font-size:1.2rem;font-weight:700;color:${cfg.color};margin-top:8px">${cfg.label}</div>
+    ${extra}
+    <button class="pull-btn primary" style="margin-top:16px" onclick="endAnimationV2()">确认</button>
+  `;
+}
+
+// 十连：卡片网格翻转
+function showMultiResult(results) {
+  isAnimating = true;
+  const overlay = document.getElementById('animOverlay');
+  const grid = document.getElementById('multiCardsGrid');
+  const skipBtn = document.getElementById('animSkipV2');
+  const revealBtn = document.getElementById('revealAllBtn');
+  const circle = document.getElementById('summonCircle');
+  const flipCard = document.getElementById('flipCard');
+  const resultEl = document.getElementById('animResultV2');
+
+  overlay.classList.add('active');
+  circle.style.display = 'none';
+  flipCard.style.display = 'none';
+  resultEl.classList.remove('show');
+  resultEl.innerHTML = '';
+  skipBtn.style.display = 'block';
+  grid.style.display = 'flex';
+  grid.innerHTML = '';
+
+  // 生成卡片（全部背面朝上）
+  results.forEach((r, i) => {
+    const cfg = RARITY_CONFIG[r.rarity] || RARITY_CONFIG.common;
+    const card = document.createElement('div');
+    card.className = 'mini-flip-card';
+    card.innerHTML = `
+      <div class="mini-flip-inner" data-idx="${i}">
+        <div class="mini-flip-front"><div class="mini-moon">🌙</div></div>
+        <div class="mini-flip-back" style="background:linear-gradient(135deg,${cfg.color}dd,${cfg.color}88)">
+          <div class="mini-icon">${r.icon}</div>
+          <div class="mini-name">${r.name}</div>
+          <div class="mini-rarity">${r.rarity==='character'?'角色':r.rarity==='costume'?'服装':r.rarity==='legendary'?'传说':r.rarity==='epic'?'史诗':r.rarity==='rare'?'精良':r.rarity==='uncommon'?'优良':'普通'}</div>
+          ${r.isNew ? '<div style="color:#4ade80;font-size:.55rem;margin-top:2px">NEW</div>' : ''}
+        </div>
+      </div>`;
+    card.onclick = () => flipMiniCard(card, results[i]);
+    grid.appendChild(card);
+  });
+
+  revealBtn.style.display = 'block';
+
+  // 自动逐张翻转（0.3s 间隔）
+  window._revealTimeouts = [];
+  results.forEach((r, i) => {
+    const t = setTimeout(() => flipMiniCard(grid.children[i], r), 800 + i * 300);
+    window._revealTimeouts.push(t);
+  });
+
+  // 全部翻完后显示确认按钮
+  const totalTime = 800 + results.length * 300 + 500;
+  window._finalTimeout = setTimeout(() => {
+    showMultiConfirm(results);
+  }, totalTime);
+}
+
+function flipMiniCard(cardEl, result) {
+  const inner = cardEl.querySelector('.mini-flip-inner');
+  if (!inner || inner.classList.contains('flipped')) return;
+  inner.classList.add('flipped');
+}
+
+function revealAllCards() {
+  const grid = document.getElementById('multiCardsGrid');
+  const cards = grid.querySelectorAll('.mini-flip-inner');
+  cards.forEach((inner, i) => {
+    setTimeout(() => inner.classList.add('flipped'), i * 80);
+  });
+  // 清除自动翻转定时器
+  if (window._revealTimeouts) window._revealTimeouts.forEach(t => clearTimeout(t));
+  if (window._finalTimeout) clearTimeout(window._finalTimeout);
+  setTimeout(() => showMultiConfirm(pendingResults), cards.length * 80 + 500);
+}
+
+function showMultiConfirm(results) {
+  const resultEl = document.getElementById('animResultV2');
+  const revealBtn = document.getElementById('revealAllBtn');
+  revealBtn.style.display = 'none';
+  resultEl.classList.add('show');
+  const best = results.reduce((a, b) => {
+    const order = {character:0,legendary:1,epic:2,rare:3,uncommon:4,common:5,costume:1,essence:3,pink:2};
+    return (order[a.rarity] || 5) < (order[b.rarity] || 5) ? a : b;
+  });
+  const cfg = RARITY_CONFIG[best.rarity] || RARITY_CONFIG.common;
+  resultEl.innerHTML = `
+    <div style="font-size:1.1rem;color:${cfg.color};margin-top:12px;font-weight:700">最佳: ${best.icon} ${best.name}</div>
+    <button class="pull-btn primary" style="margin-top:14px" onclick="endAnimationV2()">确认</button>
+  `;
+}
+
+function skipAnimationV2() {
+  if (window._revealTimeouts) window._revealTimeouts.forEach(t => clearTimeout(t));
+  if (window._finalTimeout) clearTimeout(window._finalTimeout);
+  const overlay = document.getElementById('animOverlay');
+  const grid = document.getElementById('multiCardsGrid');
+  const isMulti = grid.style.display !== 'none';
+
+  if (isMulti) {
+    // 十连：全部翻开
+    grid.querySelectorAll('.mini-flip-inner').forEach(inner => inner.classList.add('flipped'));
+    document.getElementById('revealAllBtn').style.display = 'none';
+    showMultiConfirm(pendingResults);
+  } else {
+    // 单抽：直接显示结果
+    const result = pendingResults[0];
+    if (!result) { endAnimationV2(); return; }
+    const cfg = RARITY_CONFIG[result.rarity] || RARITY_CONFIG.common;
+    document.getElementById('summonCircle').style.display = 'none';
+    document.getElementById('animMeteor').style.display = 'none';
+    const flipCard = document.getElementById('flipCard');
+    flipCard.style.display = 'block';
+    const flipInner = document.getElementById('flipInner');
+    flipInner.classList.add('flipped');
+    flipInner.onclick = null;
+    const flipBack = document.getElementById('flipBack');
+    flipBack.className = 'flip-back ' + cfg.glow;
+    flipBack.innerHTML = buildFlipBackHTML(result, cfg);
+    const resultEl = document.getElementById('animResultV2');
+    resultEl.classList.add('show');
+    resultEl.innerHTML = buildResultDetailHTML(result, cfg);
+  }
+}
+
+function endAnimationV2() {
+  if (window._revealTimeouts) window._revealTimeouts.forEach(t => clearTimeout(t));
+  if (window._finalTimeout) clearTimeout(window._finalTimeout);
+  document.getElementById('animOverlay').classList.remove('active');
+  document.getElementById('summonCircle').style.display = 'block';
+  document.getElementById('animMeteor').style.display = 'none';
+  document.getElementById('flipCard').style.display = 'none';
+  document.getElementById('multiCardsGrid').style.display = 'none';
+  document.getElementById('animResultV2').classList.remove('show');
+  document.getElementById('animResultV2').innerHTML = '';
+  document.getElementById('revealAllBtn').style.display = 'none';
+  isAnimating = false;
+  pendingResults = [];
+  refreshUI();
+}
+
+// ============ UI ============
+function refreshUI() {
+  document.getElementById('diamondDisplay').textContent = player.diamonds;
+  document.getElementById('pinkDisplay').textContent = player.pinkCrystals;
+  document.getElementById('essenceDisplay').textContent = player.essence;
+  const mb = document.getElementById('memberBadge');
+  const tiers = {bronze:{label:'青铜',color:'#9ca3af',bg:'rgba(156,163,175,.2)'},silver:{label:'白银',color:'#c0c0c0',bg:'rgba(192,192,192,.2)'},gold:{label:'黄金',color:'#fbbf24',bg:'rgba(251,191,36,.2)'},diamond:{label:'钻石',color:'#5ee4ff',bg:'rgba(94,228,255,.2)'}};
+  const t = tiers[player.membership] || tiers.bronze;
+  mb.textContent = t.label; mb.style.color = t.color; mb.style.background = t.bg;
+  document.getElementById('btnSingle').textContent = `✨ 单抽 · ${diamondCost(1)}💎`;
+  document.getElementById('btnTen').textContent = `🌟 十连 · ${diamondCost(10)}💎`;
+  document.getElementById('btnCostSingle').textContent = `✨ 单抽 · ${diamondCost(1)}💎`;
+  document.getElementById('btnCost5').textContent = `🌟 五连 · ${diamondCost(5)}💎`;
+}
+
+function renderCharPool() {
+  document.getElementById('charPoolPreview').innerHTML = CHARACTERS.map(c => {
+    const owned = player.ownedCharacters[c.id] || 0;
+    const maxed = owned >= player.charMaxLevel;
+    return `<div class="item-card r-legendary ${owned ? (maxed ? 'maxed' : 'owned') : ''}">
+      <div class="item-icon">${c.icon}</div>
+      <div class="item-name" style="color:var(--legendary)">${c.name}</div>
+      <div class="item-type">${c.title} ${owned ? `(${owned}/${player.charMaxLevel})` : ''}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderCostumePool() {
+  document.getElementById('costumePoolPreview').innerHTML = COSTUMES.map(c => {
+    const owned = !!player.ownedCostumes[c.id];
+    return `<div class="item-card r-${c.rarity} ${owned ? 'owned' : ''}">
+      <div class="item-icon">${c.icon}</div>
+      <div class="item-name" style="color:${c.rarity==='legendary'?'var(--legendary)':'var(--epic)'}">${c.name}</div>
+      <div class="item-type">${c.desc}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderShop() {
+  document.getElementById('shop-diamond').innerHTML = `
+    <div class="shop-item"><h4>60 💎</h4><p style="color:var(--muted);font-size:.8rem">小份钻石</p><button class="pull-btn primary small" onclick="player.diamonds+=60;savePlayer();refreshUI();showToast('+60💎')">测试获取</button></div>
+    <div class="shop-item"><h4>300 💎</h4><p style="color:var(--muted);font-size:.8rem">钻石包</p><button class="pull-btn primary small" style="background:linear-gradient(135deg,#f87171,#dc2626)" onclick="player.diamonds+=300;savePlayer();refreshUI();showToast('+300💎')">测试获取</button></div>
+    <div class="shop-item"><h4>980 💎</h4><p style="color:var(--muted);font-size:.8rem">豪华钻石包</p><button class="pull-btn ten" style="font-size:.8rem;padding:8px 20px" onclick="player.diamonds+=980;savePlayer();refreshUI();showToast('+980💎')">测试获取</button></div>
+  `;
+  document.getElementById('shop-pink').innerHTML = COSTUMES.map(c => `
+    <div class="shop-item">
+      <div style="font-size:2rem">${c.icon}</div>
+      <div style="font-weight:700;margin:6px 0">${c.name}</div>
+      <div style="color:var(--muted);font-size:.78rem">${c.desc}</div>
+      <div style="margin:8px 0;font-weight:700">💗 100 粉晶</div>
+      <button class="pull-btn primary small" style="background:var(--pink)" ${player.pinkCrystals >= 100 && !player.ownedCostumes[c.id] ? '' : 'disabled'} onclick="buyCostume('${c.id}')">
+        ${player.ownedCostumes[c.id] ? '已拥有' : '兑换'}
+      </button>
+    </div>
+  `).join('');
+  document.getElementById('shop-essence').innerHTML = `
+    <div class="shop-item"><h4>随机传说武器</h4><p style="color:var(--muted);font-size:.8rem">含8件专武</p><button class="pull-btn primary small" style="background:linear-gradient(135deg,#c084fc,#9333ea)" onclick="buyRandomLegendWeapon()">🔮 8精魄</button></div>
+    <div class="shop-item"><h4>传说装备箱</h4><p style="color:var(--muted);font-size:.8rem">随机传说防具</p><button class="pull-btn primary small" style="background:linear-gradient(135deg,#c084fc,#9333ea)" onclick="buyRandomLegendEquip()">🔮 5精魄</button></div>
+  `;
+}
+
+function buyCostume(id) {
+  if (player.pinkCrystals < 100) return showToast('粉晶不足！');
+  if (player.ownedCostumes[id]) return showToast('已拥有');
+  player.pinkCrystals -= 100; player.ownedCostumes[id] = true;
+  savePlayer(); renderShop(); refreshUI(); showToast('兑换成功！');
+}
+function buyRandomLegendWeapon() {
+  if (player.essence < 8) return showToast('精魄不足！');
+  player.essence -= 8;
+  const pool = WEAPONS.filter(w => w.rarity === 'legendary');
+  const pick = pool[Math.floor(Math.random() * pool.length)];
+  player.ownedItems[pick.id] = (player.ownedItems[pick.id] || 0) + 1;
+  savePlayer(); renderInventory(); refreshUI(); showToast(`获得 ${pick.name}！`);
+}
+function buyRandomLegendEquip() {
+  if (player.essence < 5) return showToast('精魄不足！');
+  player.essence -= 5;
+  const pool = EQUIPMENTS.filter(e => e.rarity === 'legendary');
+  const pick = pool[Math.floor(Math.random() * pool.length)];
+  player.ownedItems[pick.id] = (player.ownedItems[pick.id] || 0) + 1;
+  savePlayer(); renderInventory(); refreshUI(); showToast(`获得 ${pick.name}！`);
+}
+function switchShopTab(t) {
+  document.querySelectorAll('#tab-shop [id^="shop-"]').forEach(d => d.style.display = 'none');
+  document.getElementById('shop-' + t).style.display = 'grid';
+  document.querySelectorAll('#tab-shop .filter-bar .tab-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+function renderInventory() {
+  const filter = document.getElementById('invFilter')?.value || 'all';
+  const search = (document.getElementById('invSearch')?.value || '').toLowerCase();
+  let items = [];
+  if (filter === 'all' || filter === 'character') {
+    CHARACTERS.forEach(c => {
+      const copies = player.ownedCharacters[c.id] || 0;
+      if (copies > 0) items.push({...c, quantity: copies});
+    });
+  }
+  if (filter === 'all' || filter === 'weapon' || filter === 'equipment' || filter === 'consumable') {
+    const typeMap = {weapon:'weapon', equipment:'equipment', consumable:'consumable'};
+    ALL_ITEMS.filter(i => filter === 'all' || i.type === typeMap[filter]).forEach(i => {
+      const qty = player.ownedItems[i.id] || 0;
+      if (qty > 0) items.push({...i, quantity: qty});
+    });
+  }
+  if (filter === 'all' || filter === 'costume') {
+    COSTUMES.filter(c => player.ownedCostumes[c.id]).forEach(c => items.push({...c, quantity: 1}));
+  }
+  if (search) items = items.filter(i => i.name.toLowerCase().includes(search));
+  const rOrder = {legendary:0, epic:1, rare:2, uncommon:3, common:4};
+  items.sort((a,b) => rOrder[a.rarity] - rOrder[b.rarity]);
+
+  document.getElementById('invGrid').innerHTML = items.map(i => `
+    <div class="inv-card r-${i.rarity}">
+      <div style="font-size:1.8rem">${i.icon}</div>
+      <div style="flex:1">
+        <div style="font-weight:700;font-size:.88rem">${i.name}</div>
+        <div style="font-size:.7rem;color:var(--muted)">${i.type==='character'?i.title:i.type==='costume'?i.desc:i.type==='weapon'?'武器':i.type==='equipment'?'防具':'药品'}</div>
+        ${i.stats ? `<div style="font-size:.62rem;color:var(--faint);font-style:italic">${i.stats}</div>` : ''}
+      </div>
+      <div class="quant" style="color:var(--${i.rarity==='legendary'?'legendary':i.rarity==='epic'?'epic':i.rarity==='rare'?'rare':i.rarity==='uncommon'?'uncommon':'common'})">x${i.quantity}</div>
+    </div>
+  `).join('') || '<div style="color:var(--faint);text-align:center;padding:40px">暂无物品</div>';
+}
+
+function addAllCharacters() {
+  CHARACTERS.forEach(c => { player.ownedCharacters[c.id] = 1; });
+  savePlayer(); refreshUI(); renderCharPool(); renderInventory();
+  showToast('已解锁全部角色');
+}
+
+function renderMembership() {
+  const tiers = [
+    {id:'bronze',name:'青铜会员',price:'免费',perks:['标准概率','基础每日奖励'],color:'#9ca3af',bg:'linear-gradient(135deg,#9ca3af,#6b7280)',current:player.membership==='bronze'},
+    {id:'silver',name:'白银会员',price:'测试免费',perks:['+5%粉晶加成','每日+5💎','专属头像框'],color:'#c0c0c0',bg:'linear-gradient(135deg,#94a3b8,#64748b)',current:player.membership==='silver'},
+    {id:'gold',name:'黄金会员',price:'测试免费',perks:['+10%粉晶','每日+10💎','召唤折扣5%','专属称号'],color:'#fbbf24',bg:'linear-gradient(135deg,#fbbf24,#d97706)',current:player.membership==='gold'},
+    {id:'diamond',name:'钻石会员',price:'测试免费',perks:['+20%粉晶','每日+20💎','召唤折扣10%','全套专属'],color:'#5ee4ff',bg:'linear-gradient(135deg,#0ea5e9,#0891b2)',current:player.membership==='diamond'},
+  ];
+  document.getElementById('memberGrid').innerHTML = tiers.map(t => `
+    <div class="member-card" style="${t.current ? 'border:2px solid '+t.color+';box-shadow:0 0 20px '+t.color+'44' : ''}">
+      <div class="tier-name" style="color:${t.color}">${t.name}</div>
+      <div class="tier-price">${t.price}</div>
+      <div class="tier-perks">${t.perks.map(p => '✓ '+p).join('<br>')}</div>
+      <button class="pull-btn primary small" style="background:${t.bg}" ${t.current ? 'disabled' : ''} onclick="player.membership='${t.id}';savePlayer();refreshUI();renderMembership();showToast('已切换为${t.name}')">
+        ${t.current ? '当前' : '切换（测试）'}
+      </button>
+    </div>
+  `).join('');
+}
+
+function updateRates() {
+  rates.charRate = parseFloat(document.getElementById('sCharRate').value);
+  rates.legRate = parseFloat(document.getElementById('sLegRate').value);
+  rates.epiRate = parseFloat(document.getElementById('sEpiRate').value);
+  rates.rarRate = parseFloat(document.getElementById('sRarRate').value);
+  rates.uncRate = parseFloat(document.getElementById('sUncRate').value);
+  rates.costumeDenom = parseInt(document.getElementById('sCosRate').value);
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.tabs > .tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('[id^="tab-"]').forEach(c => c.style.display = 'none');
+  const idx = {charBanner:0, costumeBanner:1, shop:2, inventory:3, membership:4, admin:5}[tab] || 0;
+  document.querySelectorAll('.tabs > .tab-btn')[idx].classList.add('active');
+  document.getElementById('tab-' + tab).style.display = 'block';
+  if (tab === 'charBanner') renderCharPool();
+  if (tab === 'costumeBanner') renderCostumePool();
+  if (tab === 'shop') renderShop();
+  if (tab === 'inventory') renderInventory();
+  if (tab === 'membership') renderMembership();
+}
+
+function renderAll() { renderCharPool(); renderCostumePool(); renderShop(); renderInventory(); renderMembership(); }
+
+// ============ INIT ============
+loadPlayer();
+refreshUI();
+renderAll();
+document.querySelector('#tab-charBanner').style.display = 'block';
+window.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeResultModal(); if (!isAnimating) endAnimationV2(); }
+});
+</script>
+</body>
+</html>

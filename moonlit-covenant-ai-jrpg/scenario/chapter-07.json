@@ -1,0 +1,80 @@
+{
+  "id": 7,
+  "title": "食梦兽",
+  "subtitle": "The Dream Eater",
+  "estimatedMinutes": 3,
+  "unlockCondition": { "chapter": 6, "completed": true },
+  "scenes": [
+    {
+      "id": "ch7_scene1",
+      "name": "记忆迷宫·入口大厅",
+      "background": "一个巨大的圆形空间，穹顶高得看不见顶。地面是由无数碎裂的镜片铺成的，每一片都映出不同的画面——有的是童年，有的是战场，有的是空无一物的虚无。空气中漂浮着淡紫色的光点，像是萤火虫，又像是碎裂的记忆。",
+      "events": [
+        { "type": "narration", "text": "回廊的尽头，一扇巨大的冰门在莉亚的剑下碎裂。门后是一个超乎想象的巨大空间——记忆迷宫。" },
+        { "type": "dialogue", "speaker": "mia", "text": "这些镜片……每一片都是一段记忆喵。踩上去的话——", "emotion": "curious" },
+        { "type": "narration", "text": "米娅的话没说完。她的脚碰到了一片镜片，瞬间，她的眼神变得空洞——" },
+        { "type": "dialogue", "speaker": "mia", "text": "……妈妈？妈妈你在哪里……不要走……不要丢下米娅一个人……", "emotion": "lost" },
+        { "type": "dialogue", "speaker": "lia", "text": "米娅！醒醒！", "emotion": "alarmed" },
+        { "type": "narration", "text": "莉亚一把将米娅拉离镜片。米娅猛地回过神，大口喘气，猫耳紧紧贴在头上。" },
+        { "type": "dialogue", "speaker": "mia", "text": "我……我刚才……看到了……不，不要说了喵。我们快走。不要踩镜片。", "emotion": "shaken" },
+        { "type": "dialogue", "speaker": "serena", "text": "记忆迷宫的防御机制。它用你自己的记忆困住你。越珍贵的记忆，陷阱越深。", "emotion": "warning" },
+        { "type": "dialogue", "speaker": "lia", "text": "所有人，踩我的脚印走。我开路。", "emotion": "protective" },
+        { "type": "narration", "text": "莉亚用剑尖在地面上划出一条线，小心翼翼地避开镜片，为队伍开辟安全路径。她的步伐沉稳而精确，像是在雷区中行走。" },
+        { "type": "transition", "target": "ch7_scene2" }
+      ],
+      "choices": []
+    },
+    {
+      "id": "ch7_scene2",
+      "name": "记忆迷宫·核心体",
+      "background": "迷宫中心，一个由无数记忆碎片编织成的巨大茧状结构悬挂在半空中。茧的表面不断浮现各种画面——笑脸、泪水、拥抱、离别。茧的下方，食梦兽的母体盘踞着，它的形态比之前遇到的任何一只都要庞大，像是一座由噩梦构成的小山。",
+      "events": [
+        { "type": "narration", "text": "穿过迷宫的最深处，你们终于看见了它——食梦兽的母体。它比银轨号上遇到的那只大了百倍，漆黑的身体像一座小山，表面流动着无数被吞噬的记忆画面。" },
+        { "type": "dialogue", "speaker": "lia", "text": "……这就是核心体。所有人，战斗准备。", "emotion": "grim" },
+        { "type": "dialogue", "speaker": "serena", "text": "等等。看它上方——那个茧。那是所有被吞噬记忆的集合体。如果直接攻击核心体，茧可能会碎裂，那些记忆就永远无法归还了。", "emotion": "cautious" },
+        { "type": "dialogue", "speaker": "mia", "text": "也就是说……我们得一边打它，一边保护那个茧？！这不是地狱难度吗喵！", "emotion": "desperate" },
+        { "type": "dialogue", "speaker": "lia", "text": "不。我们分开。米娅，你负责茧的防护——用你的共振器在茧周围建立频率屏障。塞蕾娜，你观测它的攻击模式，提前预警。我和——", "emotion": "strategic" },
+        { "type": "narration", "text": "她看向你。" },
+        { "type": "dialogue", "speaker": "lia", "text": "你和我，负责把它的注意力从茧上拉开。我们两个，就是诱饵。", "emotion": "fierce" },
+        { "type": "choice", "id": "ch7_choice1", "prompt": "莉亚的计划意味着你将直面食梦兽母体。你——", "options": [
+          { "id": "a", "text": "拔剑：\"诱饵？不。我们是猎人。\"", "effect": { "bond_lia": 2 } },
+          { "id": "b", "text": "\"明白了。但如果你受伤了，立刻换我顶上。\"", "effect": { "bond_lia": 1, "trust_lia": 1 } }
+        ]},
+        { "type": "dialogue", "speaker": "lia", "text": "……哼。好。那就让这东西知道，什么叫赤誓骑士的猎物。", "emotion": "battle_ready" },
+        { "type": "narration", "text": "食梦兽母体似乎感知到了入侵者。它缓缓抬起头——如果那团不断变形的黑暗可以被称为'头'的话。无数只眼睛在黑暗中睁开，每一只都映着不同的噩梦。" },
+        { "type": "dialogue", "speaker": "serena", "text": "它看见了我们。三秒后，第一次攻击——从左侧。", "emotion": "prophetic" },
+        { "type": "narration", "text": "三。二。一——一条巨大的黑色触手从左侧横扫而来！" },
+        { "type": "transition", "target": "ch7_scene3" }
+      ],
+      "choices": ["ch7_choice1"]
+    },
+    {
+      "id": "ch7_scene3",
+      "name": "记忆迷宫·激战",
+      "background": "记忆碎片在战斗中四散飞溅，像是一场由回忆构成的暴风雪。莉亚的赤色剑气与食梦兽的黑色触手在空中碰撞，每一次交锋都激起一圈记忆的涟漪。米娅在后方全力维持着茧的防护屏障，零号在她身边高速运转。",
+      "events": [
+        { "type": "narration", "text": "战斗爆发。莉亚的剑如同赤色的闪电，在食梦兽的触手间穿梭。你紧随其后，短剑划过一道道弧线，将逼近的触手斩断。" },
+        { "type": "dialogue", "speaker": "lia", "text": "左三！——不，是四！它分裂了！", "emotion": "intense" },
+        { "type": "dialogue", "speaker": "serena", "text": "下一波，七秒后，从上方。所有人散开！", "emotion": "urgent" },
+        { "type": "narration", "text": "你翻滚躲开。一根触手砸在你刚才站立的位置，地面碎裂，记忆碎片如雪花般飞散。" },
+        { "type": "dialogue", "speaker": "mia", "text": "屏障还能撑住喵！但是共振器能量在快速消耗——我大概还能维持四分钟！", "emotion": "strained" },
+        { "type": "dialogue", "speaker": "lia", "text": "四分钟够了！塞蕾娜，核心在哪里！", "emotion": "demanding" },
+        { "type": "dialogue", "speaker": "serena", "text": "……我看见了。在它体内。但不是固定的——核心在移动。每十五秒变换一次位置。下一个位置——", "emotion": "concentrating" },
+        { "type": "dialogue", "speaker": "serena", "text": "——现在！正中央，第三层触手交汇处！", "emotion": "commanding" },
+        { "type": "dialogue", "speaker": "lia", "text": "收到！——你，掩护我三秒！", "emotion": "fierce" },
+        { "type": "narration", "text": "莉亚全身爆发出赤红色的光芒——那是赤誓骑士的秘技，以生命力为代价的全力一击。她跃起，剑尖直指食梦兽的核心。" },
+        { "type": "narration", "text": "你挡在她身前，短剑格开了两根试图拦截的触手。虎口震裂，鲜血顺着剑柄流下。但你没有退。" },
+        { "type": "dialogue", "speaker": "lia", "text": "赤誓——断！", "emotion": "ultimate" },
+        { "type": "narration", "text": "赤色的剑光贯穿了食梦兽的核心。一声不属于这个世界的悲鸣响彻整个空间。母体的身体开始崩解，黑色的雾气从伤口中喷涌而出。" },
+        { "type": "cg", "unlockCg": "cg_ch7_dream_eater_fall", "description": "CG：莉亚在空中完成斩击，赤色剑气贯穿食梦兽核心的瞬间。黑色的记忆碎片如暴风雪般四散，背景中记忆之茧散发着柔和的紫光。玩家在地面举剑格挡触手，鲜血飞溅。米娅在后方张开双臂维持屏障，零号在她肩头发出蓝光。" },
+        { "type": "dialogue", "speaker": "mia", "text": "核心被破坏了喵！记忆之茧正在释放——所有记忆都在回流！", "emotion": "ecstatic" },
+        { "type": "narration", "text": "茧裂开了。无数光点从中飞出，像是逆流的流星雨，朝着来时的方向飞去——回到那些冰封的乘客体内。" },
+        { "type": "dialogue", "speaker": "serena", "text": "……结束了。但——", "emotion": "troubled" },
+        { "type": "narration", "text": "塞蕾娜的目光穿过消散的雾气，落在食梦兽崩解后露出的地面上。那里，有一个不属于这个空间的东西——一颗散发着黎明般金色光芒的种子，静静地躺在碎裂的镜片之间。" },
+        { "type": "dialogue", "speaker": "serena", "text": "——那是什么？", "emotion": "awed" },
+        { "type": "transition", "target": "ch7_end" }
+      ],
+      "choices": []
+    }
+  ]
+}

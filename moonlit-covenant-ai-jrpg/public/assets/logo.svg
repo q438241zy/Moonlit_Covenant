@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 210" role="img" aria-labelledby="title">
+<title id="title">月蚀契约</title>
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffb9d0"/><stop offset=".45" stop-color="#b8d8ff"/><stop offset="1" stop-color="#d5b8ff"/></linearGradient><filter id="s"><feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000" flood-opacity=".6"/></filter></defs>
+<g><path d="M93 30c60 0 91 57 69 106-20 45-74 60-113 30 62 9 101-65 44-136z" fill="url(#g)"/><circle cx="105" cy="92" r="8" fill="#fff"/><text x="190" y="105" fill="url(#g)" font-size="72" font-weight="800" font-family="system-ui, sans-serif" letter-spacing="8">月蚀契约</text><text x="194" y="158" fill="#f2eaff" font-size="27" font-family="system-ui, sans-serif" letter-spacing="5">她们会记得你</text></g>
+</svg>

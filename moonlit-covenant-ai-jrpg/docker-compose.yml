@@ -1,0 +1,19 @@
+services:
+  game:
+    build: .
+    ports:
+      - "4173:4173"
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: 4173
+      AI_MODE: ${AI_MODE:-demo}
+      AI_BASE_URL: ${AI_BASE_URL:-http://host.docker.internal:11434/v1}
+      AI_API_KEY: ${AI_API_KEY:-ollama}
+      AI_MODEL: ${AI_MODEL:-qwen3:8b}
+      AI_TIMEOUT_MS: ${AI_TIMEOUT_MS:-15000}
+      WISHLIST_URL: ${WISHLIST_URL:-}
+      COMMUNITY_URL: ${COMMUNITY_URL:-}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
