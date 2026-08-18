@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 900" role="img" aria-labelledby="title desc">
+  <title id="title">莉亚·赫斯特</title><desc id="desc">原创红发赤誓骑士角色立绘</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#351522"/><stop offset=".5" stop-color="#7f243b"/><stop offset="1" stop-color="#160e1d"/></linearGradient>
+    <linearGradient id="hair" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ff7b67"/><stop offset=".48" stop-color="#b92e43"/><stop offset="1" stop-color="#60152b"/></linearGradient>
+    <linearGradient id="armor" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#f4d7c3"/><stop offset=".22" stop-color="#9a253e"/><stop offset="1" stop-color="#281424"/></linearGradient>
+    <radialGradient id="glow"><stop stop-color="#ffcc9a" stop-opacity=".75"/><stop offset="1" stop-color="#ff5278" stop-opacity="0"/></radialGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="16" stdDeviation="18" flood-color="#000" flood-opacity=".45"/></filter>
+  </defs>
+  <rect width="600" height="900" rx="52" fill="url(#bg)"/>
+  <circle cx="95" cy="145" r="175" fill="url(#glow)"/>
+  <g opacity=".35" fill="none" stroke="#ffd5dc"><path d="M42 690 558 176M35 755 505 285"/><circle cx="480" cy="145" r="74"/><circle cx="480" cy="145" r="92"/></g>
+  <g>
+    <path d="M102 853c10-183 72-273 199-273 126 0 194 90 205 273z" fill="url(#armor)"/>
+    <path d="M167 694 95 829h135l62-207zM430 694l75 135H370l-62-207z" fill="#39182a" stroke="#f0b4a5" stroke-width="9"/>
+    <path d="M254 598h94l25 96-73 76-73-76z" fill="#f0bd9e"/>
+    <path d="M165 334c-10-152 64-244 153-244 115 0 181 92 157 263l-34 231-281-11z" fill="url(#hair)"/>
+    <path d="M195 294c16-88 73-137 130-137 72 0 124 61 125 153v137c0 92-64 166-143 166-76 0-132-71-132-162z" fill="#ffd9c7"/>
+    <path d="M170 329c35-132 93-193 188-175 46 9 90 43 104 100-67-30-139-29-226 5-17 28-29 65-36 111z" fill="url(#hair)"/>
+    <path d="M429 206c63 89 52 245-18 370l42-10c58-134 66-286-24-360z" fill="#6d172e"/>
+    <path d="M167 293c-54 91-35 216 14 285l34-8c-43-101-34-199 15-291z" fill="#8e2037"/>
+    <path d="M216 334c28-18 60-19 88-2" fill="none" stroke="#7c2332" stroke-width="9" stroke-linecap="round"/>
+    <path d="M344 331c25-17 54-16 78 2" fill="none" stroke="#7c2332" stroke-width="9" stroke-linecap="round"/>
+    <ellipse cx="265" cy="374" rx="24" ry="30" fill="#fff7ed"/><ellipse cx="382" cy="374" rx="24" ry="30" fill="#fff7ed"/>
+    <ellipse cx="270" cy="378" rx="13" ry="20" fill="#c13b4c"/><ellipse cx="377" cy="378" rx="13" ry="20" fill="#c13b4c"/>
+    <circle cx="275" cy="371" r="5" fill="#fff"/><circle cx="382" cy="371" r="5" fill="#fff"/>
+    <path d="M318 376c-6 27-9 45 6 51" fill="none" stroke="#d89782" stroke-width="6" stroke-linecap="round"/>
+    <path d="M277 472c31 24 65 24 93-2" fill="none" stroke="#a73e50" stroke-width="7" stroke-linecap="round"/>
+    <path d="M236 518c35 18 121 18 157-3l-10 56c-49 37-103 36-153 2z" fill="#f7c4ad" opacity=".55"/>
+    <path d="M176 696c31-41 72-66 113-74l17 143-79-74zM427 696c-31-41-72-66-113-74l-16 143 78-74z" fill="#792039" stroke="#d9797f" stroke-width="7"/>
+    <path d="M300 770 264 702l36-55 37 55z" fill="#ffd091" stroke="#fff1cf" stroke-width="7"/>
+    <path d="M113 838h375" stroke="#ff8c93" stroke-width="14" stroke-linecap="round" opacity=".65"/>
+  </g>
+  <g transform="translate(62 70)"><path d="m0 58 29-50 29 50-29 18z" fill="#ffe4c1"/><path d="M29 8v68" stroke="#8d2f40" stroke-width="5"/></g>
+</svg>

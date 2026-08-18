@@ -1,0 +1,99 @@
+{
+  "id": 13,
+  "title": "最终封印",
+  "subtitle": "The Final Seal",
+  "estimatedMinutes": 3,
+  "unlockCondition": { "chapter": 12, "completed": true },
+  "scenes": [
+    {
+      "id": "ch13_scene1",
+      "name": "记忆空间·共鸣",
+      "background": "四人的意识被拉入了黎明种的内部空间。这里没有上下左右，只有无尽的白色虚空中漂浮着无数记忆碎片——金色的、蓝色的、赤色的、紫色的，像是四颗星星在虚空中旋转。",
+      "events": [
+        { "type": "narration", "text": "光吞没了一切。当视觉恢复时，你发现自己漂浮在一片无尽的白色虚空中。没有地面，没有天空，只有无数记忆碎片如星辰般环绕。" },
+        { "type": "dialogue", "speaker": "lia", "text": "这是……黎明种的内部？", "emotion": "disoriented" },
+        { "type": "dialogue", "speaker": "mia", "text": "我们的意识被拉进来了喵。身体应该还在基座上……这里是记忆层。", "emotion": "analytical" },
+        { "type": "dialogue", "speaker": "serena", "text": "封印仪式已经开始了。现在……我们的记忆正在被读取。", "emotion": "calm" },
+        { "type": "narration", "text": "话音刚落，虚空中的记忆碎片开始向你们涌来。不是攻击——是展示。每个人的记忆像翻开的书页，暴露在所有人面前。" },
+        { "type": "narration", "text": "你看见了莉亚的记忆——不是她讲述过的版本，而是更深的、她从未说出口的部分。艾琳倒下时，她握住了莉亚的手。艾琳说的最后一句话不是'活下去'，而是'不要恨自己'。但莉亚从来没有做到。" },
+        { "type": "dialogue", "speaker": "lia", "text": "……！别看——", "emotion": "exposed" },
+        { "type": "narration", "text": "你看见了米娅的记忆——退学那天，她站在学院门口，手里攥着零号的设计图。没有人来送她。她在门口站了三个小时，等一个不会来的人。最后她对自己说：'没关系，有零号就够了。'" },
+        { "type": "dialogue", "speaker": "mia", "text": "那、那个……那个不重要喵……", "emotion": "embarrassed" },
+        { "type": "narration", "text": "你看见了塞蕾娜的记忆——七岁的她，被母亲送进观测所的那天。母亲蹲下来，笑着说'妈妈很快就来接你'。然后转身走了。再也没有回来。直到今天，她躺在休眠舱里。" },
+        { "type": "dialogue", "speaker": "serena", "text": "……", "emotion": "silent" },
+        { "type": "narration", "text": "然后——你的记忆也被翻开了。你不确定她们看见了什么。但她们看向你的眼神变了。变得更柔软。更理解。" },
+        { "type": "choice", "id": "ch13_choice1", "prompt": "所有的伪装都被剥去了。四颗赤裸的心在虚空中相对。你——", "options": [
+          { "id": "a", "text": "\"……原来我们都是这样。带着伤疤，假装没事。\"", "effect": { "bond_lia": 1, "bond_mia": 1, "bond_serena": 1 } },
+          { "id": "b", "text": "走向莉亚，走向米娅，走向塞蕾娜。一个一个拥抱她们。", "effect": { "bond_lia": 2, "bond_mia": 2, "bond_serena": 2 } }
+        ]},
+        { "type": "dialogue", "speaker": "lia", "text": "……艾琳说'不要恨自己'。我花了三年没有做到。", "emotion": "raw" },
+        { "type": "dialogue", "speaker": "lia", "text": "但也许……现在可以试试了。", "emotion": "healing" },
+        { "type": "dialogue", "speaker": "mia", "text": "我不需要等一个不会来的人了喵。因为……你们来了。", "emotion": "tearful_smile" },
+        { "type": "dialogue", "speaker": "serena", "text": "母亲没有回来。但你们在这里。这就够了。", "emotion": "peaceful" },
+        { "type": "transition", "target": "ch13_scene2" }
+      ],
+      "choices": ["ch13_choice1"]
+    },
+    {
+      "id": "ch13_scene2",
+      "name": "记忆空间·封印",
+      "background": "白色虚空中，四颗记忆之星开始融合。金色、蓝色、赤色、紫色的光交织在一起，形成一道螺旋状的光流，向黎明种的核心汇聚。封印仪式进入最终阶段。",
+      "events": [
+        { "type": "narration", "text": "记忆分享完毕。四颗记忆之星开始旋转、靠近、融合。光流从四种颜色变成一种——不是白色，而是一种从未见过的、像黎明前天际线一样的颜色。" },
+        { "type": "dialogue", "speaker": "narrator", "text": "「……这不在我的计算中。四重共鸣……不是一个人牺牲，而是四人分担。封印的能量……足够了。」", "emotion": "surprised" },
+        { "type": "dialogue", "speaker": "serena", "text": "这就是第四条路。不是牺牲。是信任。", "emotion": "triumphant" },
+        { "type": "narration", "text": "光流涌入黎明种的核心。种子开始收缩，白色的光芒逐渐变成柔和的金色。封印正在形成。" },
+        { "type": "dialogue", "speaker": "mia", "text": "记忆在流失……我能感觉到……有些东西在变模糊喵……", "emotion": "fading" },
+        { "type": "dialogue", "speaker": "lia", "text": "……北境的雪。变得不那么冷了。艾琳的脸……还在。但痛……痛在减轻。", "emotion": "wondering" },
+        { "type": "dialogue", "speaker": "serena", "text": "预言……变安静了。那些潮水一样的未来……在退去。", "emotion": "relieved" },
+        { "type": "narration", "text": "封印在继续。每个人都在失去一部分——不是全部，只是一部分。那些最尖锐的痛苦被磨去了棱角，但记忆本身还在。伤疤还在，但不再流血了。" },
+        { "type": "dialogue", "speaker": "narrator", "text": "「封印完成度……百分之九十。还差最后一点。需要……需要一个'锚点'。一段足够强烈的、不属于痛苦的记忆。一段……纯粹的连接。」", "emotion": "urgent" },
+        { "type": "dialogue", "speaker": "serena", "text": "一段纯粹的连接……", "emotion": "thinking" },
+        { "type": "narration", "text": "四人对视。然后，不约而同地，她们想到了同一个画面——篝火。银轨号旁的篝火。米娅抱着零号打盹，莉亚抱剑假寐，塞蕾娜仰望星空。那一夜。" },
+        { "type": "dialogue", "speaker": "lia", "text": "……那一夜。", "emotion": "warm" },
+        { "type": "dialogue", "speaker": "mia", "text": "篝火旁的夜晚喵……", "emotion": "nostalgic" },
+        { "type": "dialogue", "speaker": "serena", "text": "在所有时间线里，都会出现的那一幕。", "emotion": "certain" },
+        { "type": "choice", "id": "ch13_choice2", "prompt": "四段相同的记忆汇聚成一道光——你将自己的那份也推了出去。那是你最珍贵的记忆。你——", "options": [
+          { "id": "a", "text": "\"拿去吧。这一夜，我永远不会忘。就算失去一部分，这一夜也会留下。\"", "effect": { "bond_lia": 1, "bond_mia": 1, "bond_serena": 1 } },
+          { "id": "b", "text": "闭上眼睛，让记忆自然流出。不需要语言。", "effect": { "bond_lia": 1, "bond_mia": 1, "bond_serena": 1 } }
+        ]},
+        { "type": "narration", "text": "四道光汇聚成一道。黎明种接收了最后的锚点，发出一声清澈的鸣响——像钟声，像风铃，像四个人同时笑出来的声音。" },
+        { "type": "dialogue", "speaker": "narrator", "text": "「封印……完成。黎明种进入休眠态。记忆改写程序……终止。」", "emotion": "awed" },
+        { "type": "cg", "unlockCg": "cg_ch13_seal_complete", "description": "CG：记忆空间中，四颗光星融合成一道黎明色的光流，注入黎明种核心。种子从刺目的白色变为柔和的金色，表面浮现出四道交织的纹路——赤色、蓝色、紫色、和一道无色的光。背景中，无数记忆碎片如流星雨般回归各自的主人。" },
+        { "type": "transition", "target": "ch13_scene3" }
+      ],
+      "choices": ["ch13_choice2"]
+    },
+    {
+      "id": "ch13_scene3",
+      "name": "诺克斯观测所·核心室（封印后）",
+      "background": "意识回归身体。核心室恢复了平静，黎明种安静地悬浮着，光芒柔和如晨曦。仪式阵的铭文熄灭了。穹顶外，月亮的边缘开始出现一丝银光——月蚀正在消退。",
+      "events": [
+        { "type": "narration", "text": "意识回归。你睁开眼睛，发现自己还站在基座上。但光柱消失了，仪式阵熄灭了。黎明种安静地悬浮着，像一颗沉睡的星星。" },
+        { "type": "dialogue", "speaker": "mia", "text": "我们……成功了喵？", "emotion": "dazed" },
+        { "type": "dialogue", "speaker": "lia", "text": "……成功了。", "emotion": "exhausted_relief" },
+        { "type": "narration", "text": "莉亚的腿一软，你扶住了她。她的赤色铠甲上出现了无数细小的裂纹——'赤色之剑将断裂'。但剑还在。她也还在。" },
+        { "type": "dialogue", "speaker": "serena", "text": "预言……'赤色之剑将断裂'。剑确实裂了。但没有碎。", "emotion": "wondering" },
+        { "type": "dialogue", "speaker": "serena", "text": "'九命之猫将失去最后一命'……", "emotion": "worried" },
+        { "type": "narration", "text": "米娅怀中的零号——它的蓝宝石眼睛暗了。胸腔的齿轮完全停止了转动。共感齿轮上的裂纹扩展到了整个表面。" },
+        { "type": "dialogue", "speaker": "mia", "text": "零号……零号？！", "emotion": "panicked" },
+        { "type": "narration", "text": "米娅疯狂地检查零号的胸腔。齿轮碎了。共感齿轮裂了。按照任何机关学的标准，它已经'死了'。" },
+        { "type": "dialogue", "speaker": "mia", "text": "不……不要……你答应过我的……你说好要一直咕噜咕噜的喵……", "emotion": "grieving" },
+        { "type": "narration", "text": "然后——极轻极轻的，一声'咕噜'。" },
+        { "type": "narration", "text": "零号的蓝宝石眼睛闪了一下。只有一下。微弱得像将熄的烛火。但确实——闪了。" },
+        { "type": "dialogue", "speaker": "mia", "text": "……！你还活着！笨蛋零号！你吓我喵！", "emotion": "sobbing_happy" },
+        { "type": "dialogue", "speaker": "serena", "text": "'紫月之眼将永远闭合'……", "emotion": "quiet" },
+        { "type": "narration", "text": "塞蕾娜闭上了眼睛。当她再次睁开时——紫色的瞳孔中，星图消失了。取而代之的，是普通的、人类的、深紫色的虹膜。" },
+        { "type": "dialogue", "speaker": "serena", "text": "……看不见了。未来。全部看不见了。", "emotion": "loss" },
+        { "type": "dialogue", "speaker": "serena", "text": "……好安静。", "emotion": "peaceful" },
+        { "type": "dialogue", "speaker": "serena", "text": "原来……这就是'现在'的感觉。只有现在。没有未来。", "emotion": "liberated" },
+        { "type": "narration", "text": "她笑了。不是之前那种带着距离感的、神秘的微笑——而是一个普通的、如释重负的、属于一个普通女孩的笑。" },
+        { "type": "dialogue", "speaker": "lia", "text": "……预言实现了。但每一条，都不是我们以为的那种方式。", "emotion": "reflective" },
+        { "type": "dialogue", "speaker": "serena", "text": "是的。第四条路……从来不是逃避预言。是重新定义它。", "emotion": "wise" },
+        { "type": "narration", "text": "穹顶外，月亮的银边越来越宽。月蚀在消退。黎明——真正的黎明——正在到来。" },
+        { "type": "transition", "target": "ch13_end" }
+      ],
+      "choices": []
+    }
+  ]
+}

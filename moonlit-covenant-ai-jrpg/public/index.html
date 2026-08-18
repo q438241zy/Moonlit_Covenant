@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0c0b1b">
+  <meta name="description" content="《月蚀契约：她们会记得你》AI JRPG 网页垂直切片。自由对话、角色记忆、羁绊战术与确定性战斗。">
+  <title>月蚀契约：她们会记得你</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='%23d8c6ff' d='M38 4A28 28 0 1 0 58 45 24 24 0 1 1 38 4Z'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="ambient ambient-one" aria-hidden="true"></div>
+  <div class="ambient ambient-two" aria-hidden="true"></div>
+  <div class="stars" aria-hidden="true"></div>
+
+  <div id="app" class="app" aria-live="polite">
+    <noscript>本游戏需要启用 JavaScript。</noscript>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <dialog id="settingsDialog" class="modal">
+    <form method="dialog" class="modal-card">
+      <button class="icon-button modal-close" value="close" aria-label="关闭">×</button>
+      <div class="eyebrow">RUNTIME</div>
+      <h2>AI 与运行设置</h2>
+      <div id="settingsContent"></div>
+      <div class="modal-actions">
+        <button id="soundToggle" type="button" class="button secondary">声音：开</button>
+        <button value="close" class="button primary">完成</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="helpDialog" class="modal">
+    <form method="dialog" class="modal-card modal-wide">
+      <button class="icon-button modal-close" value="close" aria-label="关闭">×</button>
+      <div class="eyebrow">HOW TO PLAY</div>
+      <h2>不是猜关键词，是建立可兑现的关系</h2>
+      <div class="help-grid">
+        <section><strong>自由交流</strong><p>选择队友后直接输入任何话。她们会根据立场、信任与过去的承诺回应。</p></section>
+        <section><strong>战术定锚</strong><p>AI 只负责角色表演和意图判断；伤害、资源、解锁条件与结局全部由游戏规则裁定。</p></section>
+        <section><strong>羁绊技能</strong><p>战斗中积累焦点，发动所选队友的羁绊技能。关系越稳，效果越强。</p></section>
+        <section><strong>第四结局</strong><p>它不是固定选项。守住承诺、建立双向信任，并在战斗中真正协作，才会出现。</p></section>
+      </div>
+      <div class="modal-actions"><button value="close" class="button primary">明白了</button></div>
+    </form>
+  </dialog>
+
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

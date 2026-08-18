@@ -1,0 +1,87 @@
+{
+  "id": 2,
+  "title": "赤色誓约",
+  "subtitle": "The Crimson Oath",
+  "estimatedMinutes": 3,
+  "unlockCondition": { "chapter": 1, "completed": true },
+  "scenes": [
+    {
+      "id": "ch2_scene1",
+      "name": "银轨号·餐车",
+      "background": "银轨号的餐车车厢，长桌上摆着冷掉的茶点。莉亚独自坐在角落，面前放着一杯没有动过的黑咖啡。她的手指无意识地摩挲着剑柄上一道深深的刻痕。",
+      "events": [
+        { "type": "narration", "text": "击退食梦兽后，列车恢复了暂时的平静。你来到餐车寻找补给，却发现莉亚已经先一步到了这里。她似乎没有注意到你的到来。" },
+        { "type": "dialogue", "speaker": "lia", "text": "……第七刻痕。", "emotion": "melancholy" },
+        { "type": "narration", "text": "她低声说着，拇指划过剑柄上的刻痕。你数了数——一共七道。每一道都深浅不一，像是用不同的力度刻下的。" },
+        { "type": "dialogue", "speaker": "lia", "text": "你站在那里多久了？", "emotion": "startled" },
+        { "type": "choice", "id": "ch2_choice1", "prompt": "莉亚发现了你。你决定——", "options": [
+          { "id": "a", "text": "\"抱歉，我不是故意偷听的。那些刻痕……是战友吗？\"", "effect": { "bond_lia": 1 } },
+          { "id": "b", "text": "假装没听到，自然地坐到她对面：\"这咖啡看起来不错，介意我坐这儿吗？\"", "effect": { "bond_lia": 0 } }
+        ]},
+        { "type": "dialogue", "speaker": "lia", "text": "……你观察力不错。", "emotion": "guarded" },
+        { "type": "narration", "text": "她沉默了很久。咖啡的热气在两人之间升起又消散。最终，她开口了。" },
+        { "type": "dialogue", "speaker": "lia", "text": "赤誓骑士团，北境第七小队。我是队长。七个人——不，曾经是七个人。", "emotion": "painful" },
+        { "type": "transition", "target": "ch2_scene2" }
+      ],
+      "choices": ["ch2_choice1"]
+    },
+    {
+      "id": "ch2_scene2",
+      "name": "回忆·北境雪原",
+      "background": "【回忆画面】漫天风雪中，七名身着赤红色铠甲的骑士围坐在篝火旁。他们的铠甲上刻着相同的誓言纹章，火光映照着年轻而坚定的面孔。",
+      "events": [
+        { "type": "narration", "text": "莉亚的声音变得遥远，仿佛从很深的记忆底部浮上来。" },
+        { "type": "dialogue", "speaker": "lia", "text": "赤誓骑士团的入团誓言是——'以血为契，以命为盾，吾之剑，永远挡在你身前。'我们七个人，在入团那天一起刻下了第一道痕。", "emotion": "nostalgic" },
+        { "type": "narration", "text": "画面中，年轻的莉亚——比现在更瘦小，但眼中有着同样的锐利——正和战友们笑着碰杯。" },
+        { "type": "dialogue", "speaker": "lia", "text": "第三年，北境裂隙爆发。上级命令我们坚守霜牙关七十二小时，等待增援。我们守了。", "emotion": "flat" },
+        { "type": "dialogue", "speaker": "lia", "text": "第七十二小时，增援没有来。第七十三小时，第二波攻势来了。", "emotion": "cold" },
+        { "type": "narration", "text": "莉亚的声音没有颤抖。但她握着咖啡杯的手指关节发白。" },
+        { "type": "dialogue", "speaker": "lia", "text": "副队长艾琳替我挡了致命的一击。枪兵卡尔断后，让我们撤退。弓手莉莉安……她到死都在射击，箭壶空了就用匕首。", "emotion": "restrained_grief" },
+        { "type": "dialogue", "speaker": "lia", "text": "七个人进去，一个人出来。而我——是那个活着出来的人。", "emotion": "guilty" },
+        { "type": "cg", "unlockCg": "cg_ch2_seven_oaths", "description": "CG：回忆中的七名赤誓骑士在篝火前举起刻有誓言的剑。画面边缘逐渐被风雪侵蚀，最终只剩下莉亚一人站在空荡荡的雪原上，手中握着七柄剑。" },
+        { "type": "transition", "target": "ch2_scene3" }
+      ],
+      "choices": []
+    },
+    {
+      "id": "ch2_scene3",
+      "name": "银轨号·餐车（续）",
+      "background": "回到现实。餐车的灯光依旧昏黄，咖啡已经彻底凉了。莉亚的眼眶微红，但没有泪水。她的表情像是一块被反复锻打的钢铁——坚硬，但裂纹清晰可见。",
+      "events": [
+        { "type": "dialogue", "speaker": "lia", "text": "之后我退了团。不是被开除——是我自己走的。我没资格再戴着那个纹章。", "emotion": "bitter" },
+        { "type": "dialogue", "speaker": "lia", "text": "所以别用那种眼神看我。我不需要同情。我只是……不想再让任何人替我死。", "emotion": "vulnerable" },
+        { "type": "choice", "id": "ch2_choice2", "prompt": "面对莉亚的过去，你想说——", "options": [
+          { "id": "a", "text": "\"活下来不是罪。你带着他们的份在战斗，这就是最好的纪念。\"", "effect": { "bond_lia": 2 } },
+          { "id": "b", "text": "\"我不会让你一个人扛。这次，我挡在你前面。\"", "effect": { "bond_lia": 1, "trust_lia": 1 } },
+          { "id": "c", "text": "\"……七道刻痕。你打算刻第八道吗？\"", "effect": { "bond_lia": 1 } }
+        ]},
+        { "type": "dialogue", "speaker": "lia", "text": "……哼。", "emotion": "softened" },
+        { "type": "narration", "text": "她别过脸去，但你看到她嘴角微微上扬了一个几乎不可察觉的弧度。" },
+        { "type": "dialogue", "speaker": "lia", "text": "你这个人……说话倒是挺直接的。行。那从今天起，你就是我的第八道刻痕。", "emotion": "resolute" },
+        { "type": "dialogue", "speaker": "lia", "text": "别误会。这不是什么浪漫的话。意思是——如果你倒下了，我会把你的名字刻在剑上。所以，别让我刻。", "emotion": "fierce" },
+        { "type": "transition", "target": "ch2_scene4" }
+      ],
+      "choices": ["ch2_choice2"]
+    },
+    {
+      "id": "ch2_scene4",
+      "name": "银轨号·走廊",
+      "background": "餐车外的走廊，米娅正趴在墙壁上，用一把微型螺丝刀拆卸着什么。塞蕾娜站在走廊尽头的窗前，月光将她的影子拉得很长。",
+      "events": [
+        { "type": "dialogue", "speaker": "mia", "text": "啊，莉亚姐！你终于肯跟人说话了喵！我刚才偷听——不是，我刚才'不小心'听到了一些。那个……你以前的小队，一定很厉害吧喵？", "emotion": "sympathetic" },
+        { "type": "dialogue", "speaker": "lia", "text": "……你的猫耳朵是装饰品还是真的能听到十米外的对话？", "emotion": "exasperated" },
+        { "type": "dialogue", "speaker": "mia", "text": "是、是接收器啦！增强型的！……好吧确实能听到喵。但是！我保证不会告诉别人的！这是我和莉亚姐还有……还有你的秘密喵！", "emotion": "flustered" },
+        { "type": "dialogue", "speaker": "serena", "text": "秘密……吗。在我看见的所有未来里，没有什么是真正能被隐藏的。但——", "emotion": "thoughtful" },
+        { "type": "narration", "text": "塞蕾娜转过身，紫色的眼瞳中映着走廊尽头那扇紧闭的车门。" },
+        { "type": "dialogue", "speaker": "serena", "text": "有些伤疤，确实只适合在月光下展示。莉亚·赫斯特，你的七道刻痕……我在星图中见过它们的回响。它们没有消失。它们只是换了一种方式守护你。", "emotion": "gentle" },
+        { "type": "dialogue", "speaker": "lia", "text": "……你这人说话真让人火大。但……谢了。", "emotion": "reluctantly_grateful" },
+        { "type": "dialogue", "speaker": "mia", "text": "好了好了！感伤时间结束喵！我刚才拆了这个面板，发现银轨号的动力系统有异常——列车不是在减速，是在加速！而且轨道……轨道在分叉喵！", "emotion": "alarmed" },
+        { "type": "dialogue", "speaker": "serena", "text": "是的。我看见了。前方的轨道通向一个不存在于任何地图上的地方。", "emotion": "ominous" },
+        { "type": "dialogue", "speaker": "lia", "text": "……那就更要保持警惕了。所有人，检查装备。下一波攻击随时会来。", "emotion": "commanding" },
+        { "type": "narration", "text": "列车在黑暗中加速前行。窗外的月亮又暗了几分。而你手中那柄短剑的剑柄上，不知何时多了一道浅浅的、崭新的刻痕。" },
+        { "type": "transition", "target": "ch2_end" }
+      ],
+      "choices": []
+    }
+  ]
+}

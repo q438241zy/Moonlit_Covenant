@@ -1,0 +1,127 @@
+{
+  "id": 15,
+  "title": "她们会记得你",
+  "subtitle": "They Will Remember You",
+  "estimatedMinutes": 3,
+  "unlockCondition": { "chapter": 14, "completed": true },
+  "scenes": [
+    {
+      "id": "ch15_scene1",
+      "name": "银轨号·观景车厢（一周后）",
+      "background": "一周后的银轨号。车厢恢复了正常运营，乘客们来来往往，没有人记得那个夜晚发生了什么——除了你们四个。观景车厢里，阳光从车窗涌入，将一切镀上温暖的金色。",
+      "events": [
+        { "type": "narration", "text": "一周后。银轨号恢复了正常运营。乘客们来来往往，谈笑风生。没有人记得那个夜晚——食梦兽、回廊、黎明种。他们的记忆被归还了，但那段经历被温柔地模糊了，像一场醒来就忘的梦。" },
+        { "type": "narration", "text": "除了你们四个。你们记得一切。" },
+        { "type": "dialogue", "speaker": "mia", "text": "喵～今天的天气真好！零号，你看，太阳！真正的太阳喵！", "emotion": "joyful" },
+        { "type": "narration", "text": "米娅坐在窗边，零号趴在她膝上。它的蓝宝石眼睛比之前暗了一些，齿轮的转动声也轻了许多——但还在转。米娅每天给它上油、调齿轮、跟它说话。它在慢慢恢复。" },
+        { "type": "dialogue", "speaker": "lia", "text": "……你每天跟它说多少话？", "emotion": "amused" },
+        { "type": "dialogue", "speaker": "mia", "text": "很多喵！机关师跟自己的作品说话是基本礼仪！而且零号喜欢听我讲今天的发明计划——对吧零号？", "emotion": "affectionate" },
+        { "type": "narration", "text": "零号发出一声微弱的'咕噜'。米娅开心地蹭了蹭它的金属脑袋。" },
+        { "type": "dialogue", "speaker": "serena", "text": "……真安静。", "emotion": "peaceful" },
+        { "type": "narration", "text": "塞蕾娜坐在最远处的座位上——和第一次见面时一样的位置。但她的姿态完全不同了。不再是凝视远方的疏离，而是放松的、享受当下的安宁。" },
+        { "type": "dialogue", "speaker": "serena", "text": "以前，每一秒我都在'看见'。看见下一秒会发生什么，看见明天的天气，看见十年后的结局。从来没有安静过。", "emotion": "reflective" },
+        { "type": "dialogue", "speaker": "serena", "text": "现在……只有现在。只有这一秒的阳光，这一杯茶的温度，你们的声音。", "emotion": "grateful" },
+        { "type": "dialogue", "speaker": "serena", "text": "原来'活着'是这种感觉。", "emotion": "wondering" },
+        { "type": "transition", "target": "ch15_scene2" }
+      ],
+      "choices": []
+    },
+    {
+      "id": "ch15_scene2",
+      "name": "银轨号·餐车",
+      "background": "餐车里，莉亚面前放着一杯热咖啡——不是凉的。她对面坐着塞蕾娜，手中捧着一杯花茶。米娅在旁边的桌子上拆着零号的外壳做维护，零号乖乖地趴着，尾巴偶尔摆动。",
+      "events": [
+        { "type": "narration", "text": "你端着餐盘走进餐车。莉亚朝你抬了抬下巴——她对面的空位，是给你留的。" },
+        { "type": "dialogue", "speaker": "lia", "text": "坐。咖啡是热的。我让乘务员重新做的。", "emotion": "casual" },
+        { "type": "dialogue", "speaker": "mia", "text": "莉亚姐今天心情很好喵！她刚才居然跟乘务员说了'谢谢'！", "emotion": "teasing" },
+        { "type": "dialogue", "speaker": "lia", "text": "……那是基本礼貌。", "emotion": "embarrassed" },
+        { "type": "dialogue", "speaker": "serena", "text": "她昨天还帮一个找不到座位的老太太提了行李。", "emotion": "smiling" },
+        { "type": "dialogue", "speaker": "lia", "text": "你们两个——", "emotion": "flustered" },
+        { "type": "dialogue", "speaker": "mia", "text": "嘿嘿喵～莉亚姐变温柔了！是月蚀的后遗症吗喵？", "emotion": "playful" },
+        { "type": "dialogue", "speaker": "lia", "text": "我一直很温柔。只是以前没空展示。", "emotion": "defensive" },
+        { "type": "dialogue", "speaker": "lia", "text": "……而且。", "emotion": "quiet" },
+        { "type": "narration", "text": "她低头看着咖啡杯。" },
+        { "type": "dialogue", "speaker": "lia", "text": "艾琳说'不要恨自己'。我花了三年没做到。但那天在记忆空间里……你们看见了我所有的狼狈。然后你们没有走。", "emotion": "vulnerable" },
+        { "type": "dialogue", "speaker": "lia", "text": "所以……也许可以试试了。不恨自己。", "emotion": "healing" },
+        { "type": "dialogue", "speaker": "mia", "text": "莉亚姐……", "emotion": "moved" },
+        { "type": "dialogue", "speaker": "lia", "text": "行了。别用那种眼神看我。喝咖啡。", "emotion": "tsundere" },
+        { "type": "choice", "id": "ch15_choice1", "prompt": "阳光照在餐桌上。你端起咖啡——", "options": [
+          { "id": "a", "text": "\"敬银轨号护卫队。敬我们。\"", "effect": { "bond_lia": 1, "bond_mia": 1, "bond_serena": 1 } },
+          { "id": "b", "text": "\"敬第八条刻痕。敬第九条。敬以后所有的。\"", "effect": { "bond_lia": 2 } }
+        ]},
+        { "type": "dialogue", "speaker": "mia", "text": "敬我们喵！", "emotion": "cheerful" },
+        { "type": "dialogue", "speaker": "serena", "text": "敬现在。", "emotion": "warm" },
+        { "type": "narration", "text": "四只杯子碰在一起。咖啡、花茶、果汁、还有米娅那杯不知道加了什么添加剂的'超级能量饮料'。清脆的碰杯声在餐车里回荡。" },
+        { "type": "transition", "target": "ch15_scene3" }
+      ],
+      "choices": ["ch15_choice1"]
+    },
+    {
+      "id": "ch15_scene3",
+      "name": "银轨号·车窗旁（黄昏）",
+      "background": "黄昏。列车驶过一片开阔的平原，夕阳将天空染成橘红色。四人站在车窗旁，看着窗外的风景。远处，一座城市的轮廓在地平线上浮现——万象图书馆的所在地。",
+      "events": [
+        { "type": "narration", "text": "黄昏。列车驶过一片开阔的平原，夕阳将天空染成橘红色。远处，一座城市的轮廓在地平线上浮现。" },
+        { "type": "dialogue", "speaker": "mia", "text": "看到了喵！万象图书馆！还有两小时就到站了！", "emotion": "excited" },
+        { "type": "dialogue", "speaker": "serena", "text": "到了那里……我要找关于月蚀观测者的文献。也许有办法……不是恢复预言能力，而是理解它。理解我母亲为什么把我送到那里。", "emotion": "determined" },
+        { "type": "dialogue", "speaker": "lia", "text": "我打算去城里的铁匠铺。这把剑跟了我五年，该好好修修了。", "emotion": "practical" },
+        { "type": "dialogue", "speaker": "lia", "text": "……然后。也许。重新注册一个骑士团。不是赤誓。是新的。", "emotion": "hopeful" },
+        { "type": "dialogue", "speaker": "mia", "text": "新骑士团！我要给它设计全套机关装备喵！自动磨剑器！恒温铠甲！还有——", "emotion": "enthusiastic" },
+        { "type": "dialogue", "speaker": "lia", "text": "……先别激动。我还没说要不要你加入。", "emotion": "teasing" },
+        { "type": "dialogue", "speaker": "mia", "text": "莉亚姐！！", "emotion": "outraged" },
+        { "type": "dialogue", "speaker": "lia", "text": "开玩笑的。", "emotion": "smiling" },
+        { "type": "narration", "text": "莉亚笑了。真正的、没有防备的笑。米娅愣了一下，然后也笑了。塞蕾娜看着她们，嘴角弯起一个温柔的弧度。" },
+        { "type": "dialogue", "speaker": "serena", "text": "……你们。", "emotion": "fond" },
+        { "type": "narration", "text": "她转向你。紫色的眼瞳在夕阳下变成了温暖的薰衣草色。没有星图，没有预言，只有一个普通的、看着你的女孩。" },
+        { "type": "dialogue", "speaker": "serena", "text": "谢谢你。在银轨号上，你没有问我'未来是什么'。你只是……站在那里。和我一起看月亮。", "emotion": "grateful" },
+        { "type": "dialogue", "speaker": "serena", "text": "那是第一次，有人不把我当作'预言的工具'。只是当作……塞蕾娜。", "emotion": "tender" },
+        { "type": "dialogue", "speaker": "mia", "text": "还有我喵！谢谢你没有嫌弃我的发明会爆炸！还帮零号说了'你好'！你是第一个跟它打招呼的人喵！", "emotion": "grateful" },
+        { "type": "dialogue", "speaker": "lia", "text": "……还有我。谢谢你接住了那把短剑。谢谢你没有跑。", "emotion": "sincere" },
+        { "type": "dialogue", "speaker": "lia", "text": "赤誓骑士的誓言是'吾之剑，永远挡在你身前'。但那天在核心室里……你挡在了我前面。", "emotion": "moved" },
+        { "type": "dialogue", "speaker": "lia", "text": "所以。这句话，我送给你。", "emotion": "solemn" },
+        { "type": "narration", "text": "她拔出那柄裂了纹的长剑，剑尖朝下，行了一个标准的骑士礼。" },
+        { "type": "dialogue", "speaker": "lia", "text": "吾之剑，永远挡在你身前。", "emotion": "oath" },
+        { "type": "choice", "id": "ch15_choice2", "prompt": "夕阳将四人的影子拉得很长。你——", "options": [
+          { "id": "a", "text": "\"那我的剑，也永远挡在你们身前。\"", "effect": { "bond_lia": 1, "bond_mia": 1, "bond_serena": 1 } },
+          { "id": "b", "text": "\"不用挡。我们并肩走就好了。\"", "effect": { "bond_lia": 1, "bond_mia": 1, "bond_serena": 1 } }
+        ]},
+        { "type": "dialogue", "speaker": "mia", "text": "并肩走喵！银轨号护卫队，永远不解散喵！", "emotion": "joyful" },
+        { "type": "dialogue", "speaker": "serena", "text": "……永远。", "emotion": "certain" },
+        { "type": "narration", "text": "她重复了这个词。不是预言，不是观测，不是看见的未来。只是——一个选择。一个承诺。" },
+        { "type": "cg", "unlockCg": "cg_ch15_sunset_promise", "description": "CG：黄昏的银轨号车窗旁，夕阳将天空染成橘红色。四人并肩站在窗前，影子在地板上交叠。莉亚持剑行骑士礼，米娅举着零号欢呼，塞蕾娜微笑着伸出手。玩家站在中央，被三人的光芒环绕。窗外，万象图书馆的城市轮廓在夕阳中闪耀。远处，一轮完整的、没有阴影的月亮正在升起。" },
+        { "type": "transition", "target": "ch15_scene4" }
+      ],
+      "choices": ["ch15_choice2"]
+    },
+    {
+      "id": "ch15_scene4",
+      "name": "银轨号·夜（尾声）",
+      "background": "夜晚。列车在月光下平稳行驶。观景车厢里，乘客们已经散去，只剩你们四个。米娅抱着零号在沙发上睡着了，零号的尾巴轻轻拍着她的背。莉亚靠在窗边，剑横放在膝上，闭着眼。塞蕾娜坐在角落，手中捧着一本书，但目光落在窗外的月亮上。",
+      "events": [
+        { "type": "narration", "text": "夜。列车在月光下平稳行驶。观景车厢里只剩你们四个。" },
+        { "type": "narration", "text": "米娅抱着零号在沙发上睡着了，嘴角挂着微笑，大概又梦到了齿轮和弹簧。零号的尾巴有节奏地拍着她的背，齿轮发出轻柔的咕噜声——像一首摇篮曲。" },
+        { "type": "narration", "text": "莉亚靠在窗边，剑横放在膝上。她闭着眼，但你知道她没有睡——她的呼吸太均匀了，是刻意的放松。她在守夜。老习惯。" },
+        { "type": "narration", "text": "塞蕾娜坐在角落，手中捧着一本从餐车顺来的小说。但她没有在看——她的目光落在窗外的月亮上。完整的、没有阴影的月亮。" },
+        { "type": "dialogue", "speaker": "serena", "text": "……月亮今晚很圆。", "emotion": "peaceful" },
+        { "type": "narration", "text": "她轻声说。不是预言，不是观测。只是一个女孩在看月亮。" },
+        { "type": "dialogue", "speaker": "lia", "text": "……嗯。", "emotion": "sleepy" },
+        { "type": "narration", "text": "莉亚没有睁眼。但她的嘴角微微上扬了。" },
+        { "type": "dialogue", "speaker": "mia", "text": "唔……喵……月亮……烧饼……呼……", "emotion": "sleep_talking" },
+        { "type": "narration", "text": "米娅在睡梦中嘟囔了一句。零号'咕噜'了一声，像是在回应。" },
+        { "type": "narration", "text": "你坐在她们中间。月光从车窗涌入，将一切镀上银边。列车在铁轨上平稳前行，发出有节奏的震动声。" },
+        { "type": "narration", "text": "你想起那个夜晚——银轨号上的第一夜。食梦兽、黑暗、三个陌生的人。那时候你不知道这趟列车会通向哪里。" },
+        { "type": "narration", "text": "现在你知道了。它通向这里。通向这个安静的、温暖的、有她们在的夜晚。" },
+        { "type": "narration", "text": "月蚀结束了。黎明到来了。而她们——会记得你。" },
+        { "type": "narration", "text": "就像你会记得她们一样。" },
+        { "type": "dialogue", "speaker": "serena", "text": "……晚安。", "emotion": "gentle" },
+        { "type": "narration", "text": "塞蕾娜合上书，闭上眼睛。莉亚的呼吸终于变得真正均匀。米娅翻了个身，零号的咕噜声变得更轻了。" },
+        { "type": "narration", "text": "列车在月光下前行。下一站，万象图书馆。再下一站，不知道哪里。" },
+        { "type": "narration", "text": "但无所谓。因为无论下一站是哪里——你们会一起抵达。" },
+        { "type": "narration", "text": "—— 月蚀契约 · 完 ——" },
+        { "type": "cg", "unlockCg": "cg_ch15_final", "description": "CG：最终的CG。月光下的观景车厢，四人各自安睡。米娅抱着零号蜷在沙发上，莉亚靠窗抱剑，塞蕾娜合书闭目，玩家坐在中央，月光落在肩上。车窗外，完整的月亮高悬，铁轨延伸向远方的城市灯火。画面边缘，四道淡淡的光纹——赤色、蓝色、紫色、无色——在月光中若隐若现，像是刻在空气中的誓言。" },
+        { "type": "transition", "target": "end" }
+      ],
+      "choices": []
+    }
+  ]
+}

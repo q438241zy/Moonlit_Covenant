@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 900" role="img" aria-labelledby="title desc">
+  <title id="title">芙蕾娅·霜华</title><desc id="desc">青蓝发冰系魔法师·温柔大姐姐</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0a1a2e"/><stop offset=".5" stop-color="#1e4a6e"/><stop offset="1" stop-color="#0b1028"/></linearGradient>
+    <linearGradient id="hair" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#a8e6f5"/><stop offset=".45" stop-color="#4aa3d8"/><stop offset="1" stop-color="#2a5f8f"/></linearGradient>
+    <linearGradient id="robe" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#e8f4ff"/><stop offset=".2" stop-color="#7ab8e0"/><stop offset="1" stop-color="#1a2f4a"/></linearGradient>
+    <radialGradient id="glow"><stop stop-color="#cfeaff"/><stop offset=".6" stop-color="#7ac4f0" stop-opacity=".4"/><stop offset="1" stop-color="#4aa3d8" stop-opacity="0"/></radialGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="16" stdDeviation="18" flood-color="#000" flood-opacity=".5"/></filter>
+  </defs>
+  <rect width="600" height="900" rx="52" fill="url(#bg)"/>
+  <circle cx="300" cy="380" r="240" fill="url(#glow)" opacity=".5"/>
+  <g fill="#dff2ff" opacity=".75"><circle cx="120" cy="140" r="4"/><circle cx="480" cy="110" r="5"/><circle cx="90" cy="400" r="4"/><circle cx="510" cy="480" r="5"/><circle cx="140" cy="700" r="4"/></g>
+  <g opacity=".3" fill="none" stroke="#bfe4ff"><path d="M300 90l14 26 30 4-22 21 6 30-28-15-28 15 6-30-22-21 30-4z"/><path d="M120 250l10 18 20 3-15 14 4 20-19-10-19 10 4-20-15-14 20-3z"/><path d="M480 300l10 18 20 3-15 14 4 20-19-10-19 10 4-20-15-14 20-3z"/></g>
+  <g filter="url(#shadow)">
+    <path d="M95 853c19-175 91-272 205-272 119 0 194 97 210 272z" fill="url(#robe)"/>
+    <path d="M155 335c-6-157 61-242 156-242 116 0 182 94 159 270l-29 230-290-9z" fill="url(#hair)"/>
+    <path d="M186 298c14-89 69-139 127-139 78 0 132 62 133 154v137c0 92-60 162-140 162-77 0-130-68-130-158z" fill="#f7dcd2"/>
+    <path d="M155 336c35-130 96-193 190-177 48 8 95 41 113 100-78-30-154-24-235 17-19 34-31 72-40 113z" fill="url(#hair)"/>
+    <path d="M155 284c-45 90-40 220 6 320l44-4c-32-118-24-222 26-320z" fill="#3a7cb0"/>
+    <path d="M440 220c62 95 55 250-20 385l44-5c67-134 74-305-24-380z" fill="#2f6694"/>
+    <path d="M214 338c29-19 60-20 89-3" fill="none" stroke="#3d6a8f" stroke-width="9" stroke-linecap="round"/>
+    <path d="M345 335c25-16 52-16 77 0" fill="none" stroke="#3d6a8f" stroke-width="9" stroke-linecap="round"/>
+    <ellipse cx="265" cy="380" rx="23" ry="29" fill="#fffaff"/><ellipse cx="379" cy="380" rx="23" ry="29" fill="#fffaff"/>
+    <ellipse cx="268" cy="384" rx="12" ry="20" fill="#4a90c4"/><ellipse cx="376" cy="384" rx="12" ry="20" fill="#4a90c4"/>
+    <circle cx="273" cy="376" r="5" fill="#fff"/><circle cx="381" cy="376" r="5" fill="#fff"/>
+    <path d="M319 382c-5 24-7 42 7 48" fill="none" stroke="#ce998f" stroke-width="6" stroke-linecap="round"/>
+    <path d="M284 472c26 14 56 14 82-2" fill="none" stroke="#b06a82" stroke-width="7" stroke-linecap="round"/>
+    <path d="M175 700c39-48 80-71 124-77l5 154-94-78zM428 700c-38-48-79-71-123-77l-6 154 94-78z" fill="#2f5a80" stroke="#a8d8f0" stroke-width="7"/>
+    <path d="M300 640v145" stroke="#dceeff" stroke-width="10"/>
+    <circle cx="300" cy="620" r="16" fill="#7ac4f0" stroke="#e8f6ff" stroke-width="4"/>
+  </g>
+  <text x="300" y="838" text-anchor="middle" font-family="serif" font-size="30" fill="#a8d8f0" opacity=".85">芙蕾娅·霜华</text>
+</svg>

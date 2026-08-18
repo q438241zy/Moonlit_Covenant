@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 650" role="img" aria-labelledby="title desc">
+  <title id="title">食梦兽·阿涅摩伊</title><desc id="desc">原创月外食梦兽战斗立绘</desc>
+  <defs>
+    <radialGradient id="body"><stop stop-color="#5b327e"/><stop offset=".55" stop-color="#24183f"/><stop offset="1" stop-color="#070b18"/></radialGradient>
+    <radialGradient id="eye"><stop stop-color="#fff8c4"/><stop offset=".38" stop-color="#fca8ff"/><stop offset=".7" stop-color="#8e4eff"/><stop offset="1" stop-color="#2b123f"/></radialGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="18" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <filter id="shadow"><feDropShadow dx="0" dy="20" stdDeviation="25" flood-color="#000" flood-opacity=".65"/></filter>
+  </defs>
+  <g>
+    <path d="M151 447C51 333 93 178 260 144c67-92 283-112 379 9 172 38 209 192 111 306-115 133-485 119-599-12z" fill="url(#body)" stroke="#8f66bd" stroke-width="10"/>
+    <path d="M225 154 105 48l39 168M673 157 801 54l-49 178M147 363 32 406l132 39M748 351l125 47-143 47" fill="#1c1634" stroke="#7853a4" stroke-width="14" stroke-linejoin="round"/>
+    <path d="M290 177c42-66 270-74 319 4 47 74 7 216-159 238-159-21-208-163-160-242z" fill="#0c1022" stroke="#9b6cc8" stroke-width="8"/>
+    <ellipse cx="450" cy="286" rx="132" ry="88" fill="url(#eye)" filter="url(#glow)"/>
+    <ellipse cx="450" cy="286" rx="49" ry="83" fill="#16071e"/><ellipse cx="433" cy="260" rx="13" ry="27" fill="#fff" opacity=".85"/>
+    <path d="M272 455c70-45 288-47 359 0-88 69-278 73-359 0z" fill="#0a0d19" stroke="#62428b" stroke-width="8"/>
+    <path d="m317 449 26 59 31-65 30 72 34-75 32 72 31-71 34 66 28-61" fill="#e6d8ff" opacity=".65"/>
+    <g fill="#a980d4" opacity=".65"><circle cx="260" cy="285" r="14"/><circle cx="641" cy="302" r="17"/><circle cx="226" cy="383" r="9"/><circle cx="683" cy="385" r="11"/></g>
+  </g>
+</svg>
