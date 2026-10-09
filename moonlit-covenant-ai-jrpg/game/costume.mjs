@@ -13,7 +13,7 @@ export const COSTUME_LABELS = {
   christmas: '圣诞服',
   duanwu: '端午服',
   anniversary: '周年庆服',
-  swimsuit: '夏日泳装服'
+  swimsuit: '夏日度假服'
 };
 
 // 每种服装类型对应的分支剧情
@@ -46,7 +46,7 @@ export const BRANCH_SCENES = {
   swimsuit: {
     sceneId: 'branch_swimsuit',
     title: '海边列车',
-    description: '夏日特别篇，列车驶过海岸线，换上泳装享受短暂假期。'
+    description: '夏日特别篇，列车驶过海岸线，换上夏日便装享受短暂假期。'
   }
 };
 
