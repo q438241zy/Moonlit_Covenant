@@ -24,6 +24,7 @@ export default {
     eyeShape: 'narrow', lidDrop: 0.5, gaze: [-0.45, 0.05], browAngle: 0.25, browRaise: -0.08, browWeight: 0.85,
     mouth: 'neutral', mouthWidth: 0.88, blush: 0.14, blushLines: false, lashWeight: 1.15, lashFlick: true, browsOverHair: 0.35,
   },
+  face: { jaw: -0.5, width: -4, chin: 9, eyeSize: 0.97 }, // a little longer and sharper
   costumeLayers: ['bodyBack', 'neckAccessory', 'foreground'],
   layers: {
     bgMotif,

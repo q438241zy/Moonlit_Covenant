@@ -25,7 +25,7 @@ export default {
     bgTop: '#080d1d', bgMid: '#0f1a33', bgBottom: '#060914',
   },
   expression: { eyeShape: 'round', mouth: 'grin', browRaise: 0.45, browAngle: -0.15, blush: 0.45, gaze: [0.05, -0.1], mouthWidth: 1.05, browWeight: 1.05 },
-  face: { ears: false },
+  face: { ears: false, jaw: 0.7, width: 4, chin: -6, eyeSize: 1.05 }, // rounder, softer face
   costumeLayers: ['bodyBack', 'neckAccessory'],
   layers: {
     bgMotif,
@@ -264,7 +264,8 @@ function catEars(p) {
 // ------------------------------------------------------------------ face marks: the tiny mole on the nose tip
 function faceMarks(p) {
   const pal = p.palette;
-  return `<circle cx="411.5" cy="503.5" r="2.3" fill="${pal.skinLine}" opacity=".85"/>`;
+  const [x, y] = p.anchors.noseTip;
+  return `<circle cx="${x - 4.5}" cy="${y - 2.5}" r="2.3" fill="${pal.skinLine}" opacity=".85"/>`;
 }
 
 // ------------------------------------------------------------------ iris: faint circuit glint

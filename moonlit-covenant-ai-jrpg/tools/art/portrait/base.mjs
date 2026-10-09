@@ -321,7 +321,74 @@ export function rng(seed) {
 export const attr = (s) => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
 
 // ---------------------------------------------------------------- template geometry
-/** Named template coordinates. Every module may rely on these (see README). */
+// Face shape is parametric (heroine.face, see README §4): the skull is shared, the lower face is a
+// superellipse quarter from the cheekbone (y434, where the ears attach) to the chin. The neck,
+// shoulders and every body anchor are fixed, so outfits and collars never depend on the face shape.
+/** face-shape parameters (heroine.face); every key is optional */
+export const DEFAULT_FACE = Object.freeze({
+  ears: true, // false hides the human ears (Mia's mechanical ears replace them)
+  castShadow: 0.8, // opacity of the bangs' cast shadow on the face
+  width: 0, // px added to the lower-face half width (+ fuller cheeks, - slimmer)
+  jaw: 0, // -1..1: - sharper, more V-shaped jaw and pointed chin / + rounder, softer jaw
+  chin: 0, // px: + longer lower face (chin lower) / - shorter
+  eyeSize: 1, // eye size multiplier on top of the template eye
+});
+const SKULL_L = [[416, 211], [360, 216], [312, 238], [281, 279], [267, 330], [263, 385]];
+const CHEEK_Y = 434; // widest point of the lower face (the ears attach here)
+const CHIN_Y = 596; // template chin height (jaw 0, chin 0)
+const EYE_SCALE = 1.1; // template eye size relative to the 70 px base eye drawn by eyeGeom()
+const NECK_X = 375; // neck side just under the jaw (body silhouette)
+
+/** per-heroine face geometry: outline points, derived face anchors, eye size */
+function faceGeom(face = {}) {
+  const f = { ...DEFAULT_FACE, ...face };
+  const jaw = clamp(Number(f.jaw) || 0, -1, 1);
+  const chinY = CHIN_Y + (Number(f.chin) || 0);
+  const b = chinY - CHEEK_Y;
+  const k = 1.7 + 0.28 * jaw; // superellipse exponent: 2 = round U, lower = sharper V with a pointed chin
+  const extra = 2 + (Number(f.width) || 0);
+  // dense lower-face outline on the viewer's left, cheekbone -> chin
+  const dense = [];
+  for (let i = 0; i <= 60; i++) {
+    const th = (i / 60) * Math.PI / 2;
+    const c = Math.cos(th), sn = Math.sin(th);
+    const a = 152 + extra * Math.min(1, sn * 2.5);
+    dense.push([416 - a * c ** (2 / k), CHEEK_Y + b * sn ** (2 / k)]);
+  }
+  const yAt = (x) => { // outline height at canvas x (viewer's left half)
+    for (let i = 1; i < dense.length; i++) {
+      const [x0, y0] = dense[i - 1], [x1, y1] = dense[i];
+      if (x >= x0 && x <= x1) return lerp(y0, y1, (x - x0) / (x1 - x0 || 1));
+    }
+    return chinY;
+  };
+  const lower = sampleSpline(dense, 11); // [264,434] ... [416,chinY]
+  lower[lower.length - 1] = [416, chinY];
+  const outlineL = SKULL_L.concat(lower);
+  const s = EYE_SCALE * (Number(f.eyeSize) || 1);
+  const eyeX = 350 - (s - 1) * 20; // bigger eyes grow mostly outward
+  const r5 = (v) => Math.round(v * 2) / 2;
+  const fy = (t) => r5(440 + t * (chinY - 440)); // height between the eye line (0) and the chin (1)
+  const jawY = r5(yAt(333));
+  const neckY = r5(yAt(NECK_X));
+  return {
+    f, chinY, dense, lower, outlineL, eyeScale: s, eyeX, neckY,
+    outline: outlineL.concat(mirrorPts(outlineL.slice(1, -1)).reverse()),
+    jawPts: lower.concat(mirrorPts(lower.slice(0, -1)).reverse()),
+    anchors: {
+      eyeL: [r5(eyeX), 440], eyeR: [r5(2 * CX - eyeX), 440], eyeW: Math.round(70 * s),
+      cheekL: [320, fy(0.39)], cheekR: [512, fy(0.39)],
+      noseTip: [416, fy(0.42)],
+      mouth: [416, fy(0.68)],
+      jawL: [333, jawY], jawR: [499, jawY],
+      chin: [416, chinY],
+      neckL: [374, neckY + 4], neckR: [458, neckY + 4],
+    },
+  };
+}
+const GEOM0 = faceGeom();
+
+/** Named template coordinates (default face). Every module may rely on these (see README). */
 export const ANCHORS = Object.freeze({
   cx: CX,
   headTop: [416, 172], // top of an average hair volume
@@ -331,14 +398,12 @@ export const ANCHORS = Object.freeze({
   foreheadY: 350, // middle of the forehead
   templeL: [268, 390], templeR: [564, 390],
   browL: [349, 398], browR: [483, 398],
-  eyeY: 440, eyeL: [350, 440], eyeR: [482, 440], eyeW: 70,
+  eyeY: 440,
   earL: [256, 452], earR: [576, 452], // ear centres (ears span y 416..494)
-  cheekL: [320, 503], cheekR: [512, 503], // cheek / blush centres
-  noseTip: [416, 506],
-  mouth: [416, 559],
-  jawL: [333, 566], jawR: [499, 566], // on the jaw line, halfway between ear and chin
-  chin: [416, 615],
-  neckL: [374, 600], neckR: [458, 600], neckW: 84, // neck sides just under the jaw
+  // face anchors below follow heroine.face (p.anchors); these are the default-face values:
+  // eyeL/eyeR, eyeW, cheekL/cheekR, noseTip, mouth, jawL/jawR, chin, neckL/neckR
+  ...GEOM0.anchors,
+  neckW: 84, // neck width just under the jaw
   neckBase: [416, 700],
   sternum: [416, 720], // jugular notch between the collarbones
   clavicleL: [296, 734], clavicleR: [536, 734],
@@ -354,14 +419,11 @@ export const ANCHORS = Object.freeze({
 });
 
 const A = ANCHORS;
-const FACE_L = [[416, 211], [360, 216], [312, 238], [281, 279], [267, 330], [263, 385], [265, 434], [270, 472], [281, 505], [298, 532], [321, 555], [346, 576], [370, 595], [392, 609], [416, 615]];
-const JAW_PTS = FACE_L.slice(6).concat(mirrorPts(FACE_L.slice(6, -1)).reverse());
-const faceOutlinePts = () => FACE_L.concat(mirrorPts(FACE_L.slice(1, -1)).reverse());
 const BODY_L = [[378, 560], [375, 616], [371, 662], [364, 694], [336, 713], [284, 734], [228, 754], [192, 773], [166, 802], [150, 846], [140, 918], [134, 1010], [130, 1216, 1]];
 
-/** Shared template shapes (path strings) exposed to modules as p.shapes */
+/** Shared template shapes (path strings) exposed to modules as p.shapes (face = default face) */
 export const SHAPES = Object.freeze({
-  face: smooth(faceOutlinePts(), { closed: true }),
+  face: smooth(GEOM0.outline, { closed: true }),
   body: smooth(BODY_L.concat(mirrorPts(BODY_L).reverse()), { closed: true }),
   // neck column; its top is hidden under the head
   neck: smooth([[378, 540], [375, 616], [371, 662], [364, 700, 1], [468, 700, 1], [461, 662], [457, 616], [454, 540]], { closed: true }),
@@ -408,24 +470,28 @@ export const DEFAULT_EXPRESSION = Object.freeze({
   lashWeight: 1,
   lashFlick: false, // one extra lash flick above the wing
   pupil: 'round', // 'round' | 'slit' (draconic / feline)
+  browAsym: 0, // one raised brow: + lifts/arches the viewer's-right brow, - the viewer's-left; the other dips slightly
 });
 
 // ---------------------------------------------------------------- face feature drawing
-function eyeGeom(ex, ey, e) {
-  const top = ey - 20 * e.open + e.lidDrop * 7;
-  const bot = ey + 16 * e.open - e.lowerLid * 5;
-  const I = [ex + 35, ey + 5];
-  const O = [ex - 36, ey + 2 - e.tilt];
-  const upper = [I, [ex + 31, top + 10], [ex + 21, top + 2], [ex + 4, top], [ex - 14, top + 1.5 + e.tilt * 0.25], [ex - 27, (top + O[1]) / 2 - 0.5], O];
-  const lower = [O, [ex - 24, bot - 4.5], [ex - 4, bot], [ex + 20, bot - 2.5], I];
-  const wing = [O[0] - 11, O[1] - 2.5 - e.tilt * 0.5];
+// eye shape around the eye centre (ex, ey); s = eye scale (the base eye is 70 px wide)
+function eyeGeom(ex, ey, e, s) {
+  const X = (dx) => ex + dx * s, Y = (dy) => ey + dy * s;
+  const top = Y(-20 * e.open + e.lidDrop * 7);
+  const bot = Y(16 * e.open - e.lowerLid * 5);
+  const I = [X(35), Y(5)];
+  const O = [X(-36), Y(2 - e.tilt)];
+  const upper = [I, [X(31), top + 10 * s], [X(21), top + 2 * s], [X(4), top], [X(-14), top + (1.5 + e.tilt * 0.25) * s], [X(-27), (top + O[1]) / 2 - 0.5 * s], O];
+  const lower = [O, [X(-24), bot - 4.5 * s], [X(-4), bot], [X(20), bot - 2.5 * s], I];
+  const wing = [O[0] - 11 * s, O[1] - (2.5 + e.tilt * 0.5) * s];
   return { top, bot, I, O, upper, lower, wing };
 }
 
-function drawEye(p, side, e, irisDetail) {
+function drawEye(p, side, e, irisDetail, G) {
   const { palette: pal } = p;
-  const ex = A.eyeL[0], ey = A.eyeY;
-  const g = eyeGeom(ex, ey, e);
+  const s = G.eyeScale, ex = G.eyeX, ey = A.eyeY;
+  const q = s * 1.07; // iris, pupil and catch-lights: a bigger iris relative to the eye white
+  const g = eyeGeom(ex, ey, e, s);
   const M = side === 'R' ? mirrorPath : (d) => d;
   const mx = side === 'R' ? (x) => 2 * CX - x : (x) => x;
   const opening = M(smooth(g.upper) + smooth(g.lower).replace(/^M[^C]+/, '') + 'Z');
@@ -436,33 +502,34 @@ function drawEye(p, side, e, irisDetail) {
   const glow = pal.eyeGlow || lighten(eyeBottom, 0.5);
   const irisFill = p.lin(`t-iris${side}`, [[0, darken(eyeTop, 0.35)], [0.3, eyeTop], [0.68, mix(eyeTop, eyeBottom, 0.7)], [1, eyeBottom]], [0, 0, 0, 1], 'objectBoundingBox');
   const whiteFill = p.lin('t-white', [[0, pal.eyeWhiteShadow], [0.5, pal.eyeWhite], [1, pal.eyeWhite]], [0, 0, 0, 1], 'objectBoundingBox');
-  const icx = mx(ex) + e.gaze[0] * 7 + (side === 'R' ? -1 : 1); // irises sit 1px toward the nose
-  const icy = ey + 0.5 + e.gaze[1] * 4;
-  const rx = 17.2 * e.iris, ry = 20.5 * e.iris;
+  const icx = mx(ex) + (e.gaze[0] * 7 + (side === 'R' ? -1 : 1)) * s; // irises sit 1px toward the nose
+  const icy = ey + (0.5 + e.gaze[1] * 4) * s;
+  const rx = 17.2 * e.iris * q, ry = 20.5 * e.iris * q * 0.98;
   const lash = pal.lash || pal.eyeLine;
   const ring = darken(eyeTop, 0.45);
   // upper-lid shadow band on the eyeball
-  const lidShadowPts = g.upper.map(([x, y], i) => [x, y + (i === 0 || i === g.upper.length - 1 ? 0 : 8)]);
+  const lidShadowPts = g.upper.map(([x, y], i) => [x, y + (i === 0 || i === g.upper.length - 1 ? 0 : 8 * s)]);
   const lidShadow = M(smooth(g.upper) + smooth(lidShadowPts.slice().reverse()).replace(/^M/, 'L') + 'Z');
   // lash band above the upper lid, thickening outwards and ending in a sharp wing
   const lashPts = [g.I, ...g.upper.slice(1, -1), g.O, g.wing];
-  const lw = 6.6 * e.lashWeight;
+  const lw = 6.6 * e.lashWeight * s;
   const lashD = M(ribbon(lashPts, (t) => {
     const w = t < 0.8 ? lerp(1.5, lw, Math.sin((t / 0.8) * Math.PI / 2) ** 1.3) : lw * Math.cos(((t - 0.8) / 0.2) * Math.PI / 2) ** 0.8 + 0.1;
     return [-1.2, w - 1.2]; // left normal of an I->O (right-to-left) path points up
   }, { samples: 18 }));
   // dark outer-corner wedge closing the eye, then a thin lower lash
-  const cornerPts = [[g.O[0] - 1, g.O[1] - 0.5], [g.lower[1][0] - 2, g.lower[1][1] - 1], [g.lower[1][0] + 8, g.lower[1][1] + 2.5]];
-  const corner = M(ribbon(cornerPts, (t) => [6.5 * (1 - t) ** 1.3 + 0.3, -(1.4 * Math.sin(Math.min(1, t * 2) * Math.PI / 2) * (1 - t) + 0.3)]));
-  const flicks = M(taper([[g.O[0] + 10, g.O[1] - 6.5], [g.O[0] + 2, g.O[1] - 10.5], [g.O[0] - 3, g.O[1] - 12]], { w: 2.2 * e.lashWeight, start: 1, end: 0, peak: 0.05 }));
-  const lowerLashPts = [[g.lower[1][0] - 2, g.lower[1][1] + 0.4], [g.lower[1][0] + 10, g.lower[1][1] + 3.6], [g.lower[2][0], g.lower[2][1] + 0.9], [g.lower[2][0] + 10, g.lower[2][1] + 0.3]];
+  const L1 = g.lower[1], L2 = g.lower[2];
+  const cornerPts = [[g.O[0] - s, g.O[1] - 0.5 * s], [L1[0] - 2 * s, L1[1] - s], [L1[0] + 8 * s, L1[1] + 2.5 * s]];
+  const corner = M(ribbon(cornerPts, (t) => [6.5 * s * (1 - t) ** 1.3 + 0.3, -(1.4 * Math.sin(Math.min(1, t * 2) * Math.PI / 2) * (1 - t) + 0.3)]));
+  const flicks = M(taper([[g.O[0] + 10 * s, g.O[1] - 6.5 * s], [g.O[0] + 2 * s, g.O[1] - 10.5 * s], [g.O[0] - 3 * s, g.O[1] - 12 * s]], { w: 2.2 * e.lashWeight, start: 1, end: 0, peak: 0.05 }));
+  const lowerLashPts = [[L1[0] - 2 * s, L1[1] + 0.4 * s], [L1[0] + 10 * s, L1[1] + 3.6 * s], [L2[0], L2[1] + 0.9 * s], [L2[0] + 10 * s, L2[1] + 0.3 * s]];
   const lowerLash = M(ribbon(lowerLashPts, (t) => [0.3, -(1.7 * Math.cos(t * Math.PI / 2) + 0.15)]));
-  const crease = M(taper([[ex - 18, g.top - 5], [ex, g.top - 8.5], [ex + 18, g.top - 6.5], [ex + 28, g.top]], { w: 1.7, start: 0.1, end: 0.15, peak: 0.45 }));
-  const innerCorner = M(taper([[g.I[0] - 4, g.I[1] - 1.5], [g.I[0] + 1, g.I[1] + 0.5], [g.I[0] + 4, g.I[1] + 3]], { w: 2.2, start: 1, end: 0, peak: 0.2 }));
+  const crease = M(taper([[ex - 18 * s, g.top - 5 * s], [ex, g.top - 8.5 * s], [ex + 18 * s, g.top - 6.5 * s], [ex + 28 * s, g.top]], { w: 1.7, start: 0.1, end: 0.15, peak: 0.45 }));
+  const innerCorner = M(taper([[g.I[0] - 4 * s, g.I[1] - 1.5 * s], [g.I[0] + s, g.I[1] + 0.5 * s], [g.I[0] + 4 * s, g.I[1] + 3 * s]], { w: 2.2, start: 1, end: 0, peak: 0.2 }));
   // eyeshadow: soft skin-shadow band between the lash line and the crease
   const shadowPts = g.upper.slice(1, -1);
-  const lidUp = smooth([[g.I[0] - 2, g.I[1] - 3], ...shadowPts.map(([x, y]) => [x, y - 3]), [g.O[0] + 3, g.O[1] - 4]])
-    + smooth([[g.O[0] + 6, g.O[1] - 8], ...shadowPts.slice().reverse().map(([x, y], i, a) => [x, y - 9 - Math.sin(((i + 1) / (a.length + 1)) * Math.PI) * 3]), [g.I[0] - 4, g.I[1] - 7]]).replace(/^M/, 'L') + 'Z';
+  const lidUp = smooth([[g.I[0] - 2 * s, g.I[1] - 3 * s], ...shadowPts.map(([x, y]) => [x, y - 3 * s]), [g.O[0] + 3 * s, g.O[1] - 4 * s]])
+    + smooth([[g.O[0] + 6 * s, g.O[1] - 8 * s], ...shadowPts.slice().reverse().map(([x, y], i, a) => [x, y - (9 + Math.sin(((i + 1) / (a.length + 1)) * Math.PI) * 3) * s]), [g.I[0] - 4 * s, g.I[1] - 7 * s]]).replace(/^M/, 'L') + 'Z';
   const eyeshadow = M(lidUp);
   const rays = Array.from({ length: 10 }, (_, k) => {
     const a = (k / 10) * Math.PI * 2 + 0.3;
@@ -473,15 +540,15 @@ function drawEye(p, side, e, irisDetail) {
     + `<path d="${eyeshadow}" fill="${pal.skinShadow}" opacity=".3"/>`
     + `<path d="${opening}" fill="${whiteFill}"/>`
     + `<g clip-path="url(#${clipId})">`
-    + `<ellipse cx="${n(icx)}" cy="${n(icy)}" rx="${n(rx)}" ry="${n(ry)}" fill="${irisFill}" stroke="${ring}" stroke-width="1.8"/>`
+    + `<ellipse cx="${n(icx)}" cy="${n(icy)}" rx="${n(rx)}" ry="${n(ry)}" fill="${irisFill}" stroke="${ring}" stroke-width="1.9"/>`
     + `<path d="${rays}" stroke="${darken(eyeTop, 0.3)}" stroke-width=".9" opacity=".18"/>`
     + `<ellipse cx="${n(icx)}" cy="${n(icy + 1)}" rx="${n(rx * 0.7)}" ry="${n(ry * 0.7)}" fill="none" stroke="${glow}" stroke-width="1.1" opacity=".3"/>`
     + `<path d="${crescent}" fill="${glow}" opacity=".6"/>`
-    + `<ellipse cx="${n(icx)}" cy="${n(icy + 1)}" rx="${n((e.pupil === 'slit' ? 2.6 : 6.6) * e.iris)}" ry="${n((e.pupil === 'slit' ? 13 : 9.6) * e.iris)}" fill="${darken(eyeTop, 0.6)}"/>`
+    + `<ellipse cx="${n(icx)}" cy="${n(icy + 1)}" rx="${n((e.pupil === 'slit' ? 2.6 : 6.6) * e.iris * q)}" ry="${n((e.pupil === 'slit' ? 13 : 9.6) * e.iris * q)}" fill="${darken(eyeTop, 0.6)}"/>`
     + (irisDetail ? irisDetail({ side, cx: icx, cy: icy, rx, ry, eyeTop, eyeBottom, clip: `url(#${clipId})` }) : '')
     + `<path d="${lidShadow}" fill="${darken(eyeTop, 0.55)}" opacity=".42"/>`
-    + `<ellipse cx="${n(icx - 6.5)}" cy="${n(icy - 7.5)}" rx="5.6" ry="6.8" fill="#fff"/>`
-    + `<circle cx="${n(icx + 7)}" cy="${n(icy + 8.5)}" r="2.4" fill="#fff" opacity=".92"/>`
+    + `<ellipse cx="${n(icx - 6.5 * q)}" cy="${n(icy - 7.5 * q)}" rx="${n(5.6 * q)}" ry="${n(6.8 * q)}" fill="#fff"/>`
+    + `<circle cx="${n(icx + 7 * q)}" cy="${n(icy + 8.5 * q)}" r="${n(2.4 * q)}" fill="#fff" opacity=".92"/>`
     + `</g>`
     + `<path d="${crease}" fill="${pal.skinLine}" opacity=".45"/>`
     + `<path d="${lowerLash}" fill="${mix(lash, pal.skinLine, 0.35)}" opacity=".9"/><path d="${corner}" fill="${lash}"/>`
@@ -490,18 +557,23 @@ function drawEye(p, side, e, irisDetail) {
     + `</g>`;
 }
 
-function browPath(side, e) {
-  const by = A.browL[1] + 10 - e.browRaise * 8;
-  const ang = e.browAngle;
-  const pts = [[385, by + 4 + ang * 5], [367, by - 2 + ang * 2], [347, by - 4.5 + ang * 0.5], [328, by - 3.5 - ang * 1], [311, by + 1.5 - ang * 1.5]];
-  const d = taper(pts, { w: 4 * e.browWeight, start: 0.55, end: 0.1, peak: 0.28 });
+function browPath(side, e, G) {
+  const s = G.eyeScale, X = (dx) => G.eyeX + dx * s;
+  // one raised brow (browAsym): the raised brow lifts and arches, the other dips and angles in a little
+  const asym = side === 'R' ? e.browAsym || 0 : -(e.browAsym || 0);
+  const up = Math.max(0, asym), down = Math.max(0, -asym);
+  const ang = e.browAngle - up * 0.3 + down * 0.35;
+  const by = A.eyeY - 32 - (s - 1) * 40 - (e.browRaise + up * 0.95 - down * 0.15) * 8;
+  const arch = up * 4;
+  const pts = [[X(35), by + 4 + ang * 5], [X(17), by - 2 + ang * 2 - arch * 0.6], [X(-3), by - 4.5 + ang * 0.5 - arch], [X(-22), by - 3.5 - ang - arch * 0.8], [X(-39), by + 1.5 - ang * 1.5]];
+  const d = taper(pts, { w: 4 * e.browWeight * Math.sqrt(s), start: 0.55, end: 0.1, peak: 0.28 });
   return side === 'R' ? mirrorPath(d) : d;
 }
 
-function drawMouth(p, e) {
+function drawMouth(p, e, G) {
   const pal = p.palette;
   const mw = e.mouthWidth;
-  const x0 = 416 - 19 * mw, x1 = 416 + 19 * mw, y = A.mouth[1];
+  const x0 = 416 - 19 * mw, x1 = 416 + 19 * mw, y = G.anchors.mouth[1];
   const line = pal.mouthLine;
   const lip = pal.lip;
   switch (e.mouth) {
@@ -537,39 +609,48 @@ function drawMouth(p, e) {
   }
 }
 
-function drawFace(p, e, irisDetail) {
+function drawFace(p, e, irisDetail, G) {
   const pal = p.palette;
   const brow = pal.brow || mix(pal.hairLine, pal.hairShadow, 0.35);
   const blushFill = p.rad('t-blush', [[0, pal.blush, 0.55 * e.blush], [1, pal.blush, 0]], { cx: 0.5, cy: 0.5, r: 0.5 }, 'objectBoundingBox');
+  const cy = G.anchors.cheekL[1];
   let s = '';
   // blush
   if (e.blush > 0) {
-    s += `<ellipse cx="320" cy="503" rx="36" ry="17" fill="${blushFill}"/><ellipse cx="512" cy="503" rx="36" ry="17" fill="${blushFill}"/>`;
+    s += `<ellipse cx="320" cy="${n(cy)}" rx="36" ry="17" fill="${blushFill}"/><ellipse cx="512" cy="${n(cy)}" rx="36" ry="17" fill="${blushFill}"/>`;
     if (e.blushLines) {
-      const hatch = (x) => [0, 1, 2].map((k) => taper([[x + k * 9, 496], [x + k * 9 - 5, 508]], { w: 1.5, start: 0.2, end: 0.2, peak: 0.5 })).join('');
+      const hatch = (x) => [0, 1, 2].map((k) => taper([[x + k * 9, cy - 7], [x + k * 9 - 5, cy + 5]], { w: 1.5, start: 0.2, end: 0.2, peak: 0.5 })).join('');
       s += `<path d="${hatch(312)}${mirrorPath(hatch(312))}" fill="${mix(pal.blush, pal.skinLine, 0.4)}" opacity="${n(0.45 * e.blush + 0.1)}"/>`;
     }
   }
-  // nose: soft side shadow + tiny tick
-  s += `<path d="M419,488Q425,498 424,506Q420,508.5 416,508Q421,500 419,488Z" fill="${pal.skinShadow}" opacity=".6"/>`;
-  s += `<path d="${taper([[421, 501], [423, 506], [416, 509.5]], { w: 2.3, start: 0.2, end: 0.15, peak: 0.55 })}" fill="${pal.skinLine}" opacity=".85"/>`;
-  s += `<ellipse cx="413" cy="497" rx="2.2" ry="1.2" fill="${pal.skinHighlight}" opacity=".7"/>`;
+  // nose: soft side shadow + tiny tick (tip at anchors.noseTip)
+  const ny = G.anchors.noseTip[1] - 506;
+  const Y = (y) => n(y + ny);
+  s += `<path d="M419,${Y(488)}Q425,${Y(498)} 424,${Y(506)}Q420,${Y(508.5)} 416,${Y(508)}Q421,${Y(500)} 419,${Y(488)}Z" fill="${pal.skinShadow}" opacity=".6"/>`;
+  s += `<path d="${taper([[421, 501 + ny], [423, 506 + ny], [416, 509.5 + ny]], { w: 2.3, start: 0.2, end: 0.15, peak: 0.55 })}" fill="${pal.skinLine}" opacity=".85"/>`;
+  s += `<ellipse cx="413" cy="${Y(497)}" rx="2.2" ry="1.2" fill="${pal.skinHighlight}" opacity=".7"/>`;
   // mouth
-  s += drawMouth(p, e);
+  s += drawMouth(p, e, G);
   // brows
-  s += `<path d="${browPath('L', e)}${browPath('R', e)}" fill="${brow}"/>`;
+  s += `<path d="${browPath('L', e, G)}${browPath('R', e, G)}" fill="${brow}"/>`;
   // eyes
-  s += drawEye(p, 'L', e, irisDetail) + drawEye(p, 'R', e, irisDetail);
+  s += drawEye(p, 'L', e, irisDetail, G) + drawEye(p, 'R', e, irisDetail, G);
   return s;
 }
 
 // ---------------------------------------------------------------- template body & head
-function drawBody(p) {
+function drawBody(p, G) {
   const pal = p.palette;
   const skinGrad = p.lin('t-skinBody', [[0, pal.skin], [0.55, mix(pal.skin, pal.skinShadow, 0.25)], [1, pal.skinShadow]], [0, 560, 0, 1000]);
-  const neckShadow = smooth([[372, 540], [460, 540], [462, 622], [440, 646], [416, 652], [392, 646], [370, 622]], { closed: true });
-  const neckSide = smooth([[446, 600], [458, 600], [462, 662], [470, 700, 1], [438, 706, 1], [448, 664]], { closed: true });
+  // the head's cast shadow on the neck: it reaches well below the chin so the lit part of the neck
+  // stays short however high the chin sits (neck base and shoulders never move)
+  const cy = G.chinY, jn = G.neckY;
+  const neckShadow = smooth([[372, 540], [460, 540], [462, jn + 30], [444, cy + 40], [416, cy + 49], [388, cy + 40], [370, jn + 30]], { closed: true });
+  const neckSide = smooth([[446, jn + 6], [458, jn + 8], [462, 662], [470, 700, 1], [438, 706, 1], [448, 664]], { closed: true });
   const clav = taper([[400, 722], [372, 728], [340, 732], [300, 736]], { w: 2.4, start: 0.4, end: 0, peak: 0.3 });
+  // the neck outline starts well below the jaw (where the cast shadow ends at the sides), so the jaw
+  // reads as one clean curve and the visible neck column stays short
+  const neckLine = smooth([[NECK_X + 0.3, Math.min(624, cy + 22)], ...BODY_L.slice(2, 4)]);
   return `<use href="#${p.id('t-bodyShape')}" fill="${skinGrad}"/>`
     + `<path d="${neckShadow}" fill="${pal.skinShadow}"/>`
     + `<path d="${neckSide}" fill="${pal.skinShadow}" opacity=".8"/>`
@@ -577,10 +658,10 @@ function drawBody(p) {
     + `<path d="${clav}${mirrorPath(clav)}" fill="${pal.skinLine}" opacity=".35"/>`
     + `<path d="${SHAPES.armSeamL}${SHAPES.armSeamR}" fill="none" stroke="${pal.skinLine}" stroke-width="2" opacity=".35"/>`
     + `<path d="${smooth(BODY_L.slice(3, 12))}${mirrorPath(smooth(BODY_L.slice(3, 12)))}" fill="none" stroke="${pal.skinLine}" stroke-width="3" opacity=".7"/>`
-    + `<path d="${smooth(BODY_L.slice(1, 4))}${mirrorPath(smooth(BODY_L.slice(1, 4)))}" fill="none" stroke="${pal.skinLine}" stroke-width="2.6" opacity=".75"/>`;
+    + `<path d="${neckLine}${mirrorPath(neckLine)}" fill="none" stroke="${pal.skinLine}" stroke-width="2.6" opacity=".75"/>`;
 }
 
-function drawHead(p, showEars) {
+function drawHead(p, showEars, G) {
   const pal = p.palette;
   let s = '';
   if (showEars) {
@@ -592,15 +673,24 @@ function drawHead(p, showEars) {
       + `<path d="${mirrorPath(inner)}" fill="none" stroke="${pal.skinLine}" stroke-width="2" opacity=".7"/>`
       + `<path d="${mirrorPath('M262,438C256,446 258,462 266,470L270,460C264,454 264,446 268,440Z')}" fill="${pal.skinDeep}" opacity=".6"/>`;
   }
-  const faceGrad = p.lin('t-skinFace', [[0, pal.skinHighlight], [0.35, pal.skin], [1, mix(pal.skin, pal.skinShadow, 0.35)]], [300, 330, 520, 610]);
+  const faceGrad = p.lin('t-skinFace', [[0, pal.skinHighlight], [0.35, pal.skin], [1, mix(pal.skin, pal.skinShadow, 0.35)]], [300, 330, 520, G.chinY - 5]);
   s += `<use href="#${p.id('t-faceShape')}" fill="${faceGrad}"/>`;
-  // cel shadow down the right side of the face (moonlight comes from upper-left)
-  const cheekShadow = smooth([[572, 360], [569, 400], [567, 438], [562, 474], [549, 510], [531, 532], [510, 552], [487, 572], [464, 592], [441, 608], [418, 616, 1], [440, 598], [466, 576], [492, 550], [514, 524], [532, 494], [543, 466], [548, 440], [551, 400], [556, 360]], { closed: true });
+  // cel shadow down the right side of the face (moonlight comes from upper-left): the face outline
+  // (viewer's right) pushed out a little, and the same outline offset inward, narrowing to the chin
+  const R = mirrorPts(sampleSpline(G.dense, 12));
+  const outer = R.slice(0, -1).map(([x, y]) => [x + 3, y + 1]);
+  const inner = R.slice(0, -1).map((c, i, a) => {
+    const a0 = a[Math.max(0, i - 1)], a1 = a[Math.min(a.length - 1, i + 1)];
+    const tx = a1[0] - a0[0], ty = a1[1] - a0[1], m = Math.hypot(tx, ty) || 1;
+    const t = i / (a.length - 1);
+    const w = 18 * (t < 0.62 ? 1 : Math.cos(((t - 0.62) / 0.38) * Math.PI / 2) ** 0.8 * 0.85 + 0.15);
+    return [c[0] - (ty / m) * w, c[1] + (tx / m) * w - 2];
+  });
+  const cheekShadow = smooth([[572, 360], [569, 400], ...outer, [418, G.chinY + 1, 1], ...inner.reverse(), [551, 400], [556, 360]], { closed: true });
   s += `<g clip-path="url(#${p.id('t-faceClip')})"><path d="${cheekShadow}" fill="${pal.skinShadow}" opacity=".7"/></g>`;
   // jaw line: one continuous tapered stroke, heavier on the shadow (right) side
-  const jaw = JAW_PTS;
-  s += `<path d="${ribbon(jaw, (t) => {
-    const w = (1.7 + 2 * t) * Math.sin(Math.min(1, t / 0.12) * Math.PI / 2) * Math.sin(Math.min(1, (1 - t) / 0.12) * Math.PI / 2);
+  s += `<path d="${ribbon(G.jawPts, (t) => {
+    const w = (1.6 + 1.9 * t) * Math.sin(Math.min(1, t / 0.12) * Math.PI / 2) * Math.sin(Math.min(1, (1 - t) / 0.12) * Math.PI / 2);
     return [w / 2, -w / 2];
   }, { samples: 22 })}" fill="${pal.skinLine}"/>`;
   return s;
@@ -643,7 +733,7 @@ function makeContext(prefix) {
   return { prefix, defs };
 }
 
-function makeP(ctx, heroine, palette, expression, ns, outfit) {
+function makeP(ctx, heroine, palette, expression, ns, outfit, G) {
   const id = (name) => `${ctx.prefix}-${ns ? `${ns}-` : ''}${name}`;
   const def = (markup) => {
     const m = markup.match(/id="([^"]+)"/);
@@ -677,8 +767,8 @@ function makeP(ctx, heroine, palette, expression, ns, outfit) {
     costume: outfit ? outfit.type : null, // outfit type being rendered, or null for the default portrait
     palette,
     expression,
-    anchors: ANCHORS,
-    shapes: SHAPES,
+    anchors: G.anchorsAll, // ANCHORS with this heroine's face anchors (eyes, nose, mouth, jaw, chin, neck)
+    shapes: G.shapes, // SHAPES with this heroine's face outline
     id,
     url: (name) => `url(#${id(name)})`,
     def,
@@ -766,8 +856,11 @@ function composeInner(heroine, outfit, prefix) {
   const preset = EYE_SHAPES[ex.eyeShape] || EYE_SHAPES.almond;
   for (const k of Object.keys(preset)) if (ex[k] === undefined) ex[k] = preset[k];
   const layers = heroine.layers || {};
-  const p = makeP(ctx, heroine, palette, ex, '', outfit);
-  const po = outfit ? makeP(ctx, heroine, palette, ex, 'o', outfit) : null;
+  const G = faceGeom(heroine.face || {});
+  G.anchorsAll = Object.freeze({ ...ANCHORS, ...G.anchors });
+  G.shapes = Object.freeze({ ...SHAPES, face: smooth(G.outline, { closed: true }) });
+  const p = makeP(ctx, heroine, palette, ex, '', outfit, G);
+  const po = outfit ? makeP(ctx, heroine, palette, ex, 'o', outfit, G) : null;
   const costumeLayers = new Set(heroine.costumeLayers || ['bodyBack', 'neckAccessory']);
   const hidden = new Set(outfit?.hide || []);
   // Layer resolution (see README "Outfits"):
@@ -789,7 +882,7 @@ function composeInner(heroine, outfit, prefix) {
 
   const T = (name) => `${pre}-t-${name}`;
   // template-owned defs
-  p.def(`<path id="${T('faceShape')}" d="${SHAPES.face}"/>`);
+  p.def(`<path id="${T('faceShape')}" d="${G.shapes.face}"/>`);
   p.def(`<path id="${T('bodyShape')}" d="${SHAPES.body}"/>`);
   p.def(`<clipPath id="${T('faceClip')}"><use href="#${T('faceShape')}"/></clipPath>`);
   p.def(`<clipPath id="${T('bodyClip')}"><use href="#${T('bodyShape')}"/></clipPath>`);
@@ -802,20 +895,20 @@ function composeInner(heroine, outfit, prefix) {
     + `<feOffset in="SourceAlpha" dx="5" dy="6" result="o2"/><feComposite in="SourceAlpha" in2="o2" operator="out" result="e2"/><feGaussianBlur in="e2" stdDeviation="1.2" result="b2"/><feFlood flood-color="${palette.moon}" flood-opacity=".5"/><feComposite in2="b2" operator="in" result="r2"/>`
     + `<feMerge><feMergeNode in="r2"/><feMergeNode in="r1"/></feMerge><feComposite in2="SourceAlpha" operator="in"/></filter>`);
 
-  const showEars = heroine.face?.ears !== false;
+  const showEars = G.f.ears !== false;
   const hairFront = L('hairFront');
   p.def(`<g id="${T('hairFront')}">${hairFront}</g>`);
   const browsGhost = ex.browsOverHair > 0
-    ? `<path d="${browPath('L', ex)}${browPath('R', ex)}" fill="${palette.brow}" opacity="${n(ex.browsOverHair)}"/>` : '';
+    ? `<path d="${browPath('L', ex, G)}${browPath('R', ex, G)}" fill="${palette.brow}" opacity="${n(ex.browsOverHair)}"/>` : '';
 
   const figure = L('hairBack')
     + L('bodyBack')
-    + drawBody(p)
+    + drawBody(p, G)
     + L('outfit')
     + L('neckAccessory')
-    + drawHead(p, showEars)
-    + `<g clip-path="url(#${T('faceClip')})" opacity="${n(heroine.face?.castShadow ?? 0.8)}"><use href="#${T('hairFront')}" filter="url(#${T('cast')})"/></g>`
-    + drawFace(p, ex, typeof layers.irisDetail === 'function' ? (eye) => safeLayer(layers.irisDetail, { ...p, eye }, `${heroine.id}.irisDetail`) : null)
+    + drawHead(p, showEars, G)
+    + `<g clip-path="url(#${T('faceClip')})" opacity="${n(G.f.castShadow ?? 0.8)}"><use href="#${T('hairFront')}" filter="url(#${T('cast')})"/></g>`
+    + drawFace(p, ex, typeof layers.irisDetail === 'function' ? (eye) => safeLayer(layers.irisDetail, { ...p, eye }, `${heroine.id}.irisDetail`) : null, G)
     + L('faceMarks')
     + L('headBack')
     + `<use href="#${T('hairFront')}"/>`

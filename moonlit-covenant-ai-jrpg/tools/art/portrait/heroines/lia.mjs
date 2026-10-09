@@ -20,6 +20,7 @@ export default {
     brow: '#5a1020',
   },
   expression: { eyeShape: 'sharp', browAngle: 0.8, mouth: 'pressed', gaze: [0.35, 0], blush: 0.28 },
+  face: { jaw: -0.6, width: -1, chin: 4 }, // a little sharper / angular
   costumeLayers: ['bodyBack', 'foreground'],
   layers: {
     bgMotif,

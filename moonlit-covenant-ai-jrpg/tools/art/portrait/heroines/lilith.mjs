@@ -27,8 +27,9 @@ export default {
   },
   expression: {
     eyeShape: 'sharp', tilt: 6, lidDrop: 0.28, lowerLid: 0.16, gaze: [-0.3, 0], browAngle: 0.55, browRaise: 0.05, browWeight: 1.05,
-    mouth: 'smirk', mouthWidth: 1, blush: 0.2, lashWeight: 1.15, lashFlick: true, browsOverHair: 0.45,
+    mouth: 'smirk', mouthWidth: 1, browAsym: -0.7, blush: 0.2, lashWeight: 1.15, lashFlick: true, browsOverHair: 0.45,
   },
+  face: { jaw: -0.65, width: -2, chin: 4 }, // sharper / angular
   costumeLayers: ['bodyBack', 'neckAccessory', 'foreground'],
   layers: {
     bgMotif,
