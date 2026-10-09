@@ -7,6 +7,7 @@ import {
   applyChatOutcome,
   battleAction,
   chooseEnding,
+  resetBattle,
   sanitizeState
 } from '../game/engine.mjs';
 
@@ -69,4 +70,23 @@ test('public state never exposes the RNG seed', () => {
   const safe = sanitizeState(state);
   assert.equal('rngSeed' in safe, false);
   assert.equal('rngSeed' in state, true);
+});
+
+test('time rewind keeps the boss phase in sync with its restored HP', () => {
+  const state = createInitialState('测试队长');
+  advanceScene(state, 'begin_camp');
+  chooseStrategy(state, 'lia');
+  advanceScene(state, 'begin_battle');
+  state.battlePhase = 3;
+  state.enemy.hp = 40;
+  state.partyHp = 1;
+  state.rngSeed = 7;
+  battleAction(state, 'guard');
+  assert.equal(state.flags.battleLostOnce, true);
+  assert.equal(state.enemy.hp, 80);
+  assert.equal(state.battlePhase, 2);
+
+  resetBattle(state);
+  assert.equal(state.enemy.hp, state.enemy.maxHp);
+  assert.equal(state.battlePhase, 1);
 });

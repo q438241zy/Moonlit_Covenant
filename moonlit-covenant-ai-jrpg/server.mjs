@@ -1,6 +1,7 @@
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
+import zlib from 'node:zlib';
 import { fileURLToPath } from 'node:url';
 import {
   createInitialState,
@@ -57,6 +58,9 @@ const mimeTypes = {
   '.webp': 'image/webp',
   '.ico': 'image/x-icon'
 };
+
+// 文本类静态资源按需 gzip：矢量立绘 / 服装 / CG 每张 40–90KB，压缩后约为 1/3（换衣间、服饰池一次会请求几十张）
+const COMPRESSIBLE_EXT = new Set(['.html', '.css', '.js', '.mjs', '.json', '.svg']);
 
 function securityHeaders(contentType = 'application/json; charset=utf-8') {
   return {
@@ -656,9 +660,14 @@ function serveStatic(req, res, url) {
     headers['cache-control'] = process.env.NODE_ENV === 'production' && ext !== '.html'
       ? 'public, max-age=3600'
       : 'no-cache';
+    const gzip = COMPRESSIBLE_EXT.has(ext) && /\bgzip\b/i.test(String(req.headers['accept-encoding'] || ''));
+    if (COMPRESSIBLE_EXT.has(ext)) headers.vary = 'Accept-Encoding';
+    if (gzip) headers['content-encoding'] = 'gzip';
     res.writeHead(200, headers);
     if (req.method === 'HEAD') return res.end();
-    fs.createReadStream(filePath).pipe(res);
+    const stream = fs.createReadStream(filePath);
+    if (gzip) stream.pipe(zlib.createGzip()).pipe(res);
+    else stream.pipe(res);
   });
 }
 

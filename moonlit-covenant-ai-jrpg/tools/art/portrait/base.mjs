@@ -372,7 +372,7 @@ function faceGeom(face = {}) {
   const jawY = r5(yAt(333));
   const neckY = r5(yAt(NECK_X));
   return {
-    f, chinY, dense, lower, outlineL, eyeScale: s, eyeX, neckY,
+    f, chinY, dense, lower, outlineL, eyeScale: s, eyeX, neckY, yAtJaw: yAt,
     outline: outlineL.concat(mirrorPts(outlineL.slice(1, -1)).reverse()),
     jawPts: lower.concat(mirrorPts(lower.slice(0, -1)).reverse()),
     anchors: {
@@ -642,17 +642,27 @@ function drawFace(p, e, irisDetail, G) {
 function drawBody(p, G) {
   const pal = p.palette;
   const skinGrad = p.lin('t-skinBody', [[0, pal.skin], [0.55, mix(pal.skin, pal.skinShadow, 0.25)], [1, pal.skinShadow]], [0, 560, 0, 1000]);
-  // the head's cast shadow on the neck: it reaches well below the chin so the lit part of the neck
-  // stays short however high the chin sits (neck base and shoulders never move)
-  const cy = G.chinY, jn = G.neckY;
-  const neckShadow = smooth([[372, 540], [460, 540], [462, jn + 30], [444, cy + 40], [416, cy + 49], [388, cy + 40], [370, jn + 30]], { closed: true });
+  // the head's cast shadow on the neck: its lower edge is the jaw curve dropped onto the neck (deepest
+  // under the chin, a little lower on the shadow side), so the lit part of the neck stays short however
+  // high the chin sits - the neck base and shoulders never move
+  const jn = G.neckY;
+  const belowJaw = (x, gap, dip, skew) => {
+    const u = clamp(Math.abs(x - 416) / 46, 0, 1);
+    return G.yAtJaw(x <= 416 ? x : 2 * CX - x) + gap + dip * (1 - u * u) + (x > 416 ? skew : 0);
+  };
+  const edge = [462, 448, 432, 416, 400, 384, 370].map((x) => [x, belowJaw(x, 34, 18, 3)]);
+  const neckShadow = smooth([[372, 540], [460, 540], ...edge], { closed: true });
+  // occlusion crescent hugging the jaw (the head reads as one mass, separate from the neck)
+  const occl = [460, 438, 416, 394, 372].map((x) => [x, belowJaw(x, 9, 9, 2)]);
+  const neckDeep = smooth([[372, 540], [460, 540], ...occl], { closed: true });
   const neckSide = smooth([[446, jn + 6], [458, jn + 8], [462, 662], [470, 700, 1], [438, 706, 1], [448, 664]], { closed: true });
   const clav = taper([[400, 722], [372, 728], [340, 732], [300, 736]], { w: 2.4, start: 0.4, end: 0, peak: 0.3 });
   // the neck outline starts well below the jaw (where the cast shadow ends at the sides), so the jaw
   // reads as one clean curve and the visible neck column stays short
-  const neckLine = smooth([[NECK_X + 0.3, Math.min(624, cy + 22)], ...BODY_L.slice(2, 4)]);
+  const neckLine = smooth([[NECK_X + 0.3, Math.min(630, belowJaw(372, 32, 18, 0))], ...BODY_L.slice(2, 4)]);
   return `<use href="#${p.id('t-bodyShape')}" fill="${skinGrad}"/>`
     + `<path d="${neckShadow}" fill="${pal.skinShadow}"/>`
+    + `<path d="${neckDeep}" fill="${pal.skinDeep}" opacity=".3"/>`
     + `<path d="${neckSide}" fill="${pal.skinShadow}" opacity=".8"/>`
     + `<path d="M416,700Q402,712 400,722Q416,716 432,722Q430,712 416,700Z" fill="${pal.skinShadow}" opacity=".6"/>`
     + `<path d="${clav}${mirrorPath(clav)}" fill="${pal.skinLine}" opacity=".35"/>`

@@ -115,6 +115,23 @@ test('法术：暗蚀术对随从造成3点伤害', () => {
   assert.equal(enemy.health, 2);
 });
 
+test('指向性卡牌：对手空场时法术不可用，指向入场曲的随从照常入场', () => {
+  const s = createBattle({ playerClass: 'serena', playerDeck: fillerDeck(), opponentClass: 'lia', opponentDeck: fillerDeck(), seed: 9 });
+  s.players.player.pp = { current: 10, max: 10 };
+  s.players.opponent.field = [];
+  s.players.player.field = [];
+  const bolt = inst('serena_darkbolt');
+  const devourer = inst('serena_devourer'); // 入场曲：对一个敌方随从造成4点伤害
+  s.players.player.hand = [bolt, devourer];
+  const plays = getLegalPlays(s, 'player');
+  assert.ok(!plays.some((p) => p.uid === bolt.uid));
+  assert.deepEqual(plays.find((p) => p.uid === devourer.uid)?.needsTarget, false);
+  assert.throws(() => playCard(s, 'player', bolt.uid));
+  playCard(s, 'player', devourer.uid);
+  assert.equal(s.phase, 'main');
+  assert.ok(s.players.player.field.some((f) => f.uid === devourer.uid));
+});
+
 test('直伤打脸致死：玩家胜利', () => {
   const s = createBattle({ playerClass: 'lilith', playerDeck: fillerDeck(), opponentClass: 'serena', opponentDeck: fillerDeck(), seed: 8 });
   s.players.opponent.leader.hp = 3;

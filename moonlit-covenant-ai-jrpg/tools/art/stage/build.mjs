@@ -1,20 +1,14 @@
-// Build the boss / stage-scene / UI art.
+// Build the stage-scene / UI art. (Boss art lives in tools/art/boss/.)
 //   node tools/art/stage/build.mjs            -> everything
-//   node tools/art/stage/build.mjs boss ui    -> only those groups (boss | scenes | ui)
+//   node tools/art/stage/build.mjs scenes ui  -> only those groups (scenes | ui)
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { boss } from './boss.mjs';
 import { battleBg, endingBg, campBg } from './scenes.mjs';
 import { dawnSeed, eclipseCrest, cardBack, cardPack } from './ui.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const groups = {
-  boss: () => ({
-    'public/assets/boss/dream-eater-1.svg': boss(1),
-    'public/assets/boss/dream-eater-2.svg': boss(2),
-    'public/assets/boss/dream-eater-3.svg': boss(3),
-  }),
   scenes: () => ({
     'public/assets/scenes/battle-bg.svg': battleBg(),
     'public/assets/scenes/ending-bg.svg': endingBg(),

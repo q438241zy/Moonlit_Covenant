@@ -25,7 +25,7 @@ export default {
     bgTop: '#080d1d', bgMid: '#0f1a33', bgBottom: '#060914',
   },
   expression: { eyeShape: 'round', mouth: 'grin', browRaise: 0.45, browAngle: -0.15, blush: 0.45, gaze: [0.05, -0.1], mouthWidth: 1.05, browWeight: 1.05 },
-  face: { ears: false, jaw: 0.7, width: 4, chin: -6, eyeSize: 1.05 }, // rounder, softer face
+  face: { ears: false, jaw: 0.6, width: 4, chin: -5, eyeSize: 1.05 }, // rounder, softer face
   costumeLayers: ['bodyBack', 'neckAccessory'],
   layers: {
     bgMotif,

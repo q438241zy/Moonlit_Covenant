@@ -29,7 +29,7 @@ export default {
   },
   expression: {
     eyeShape: 'almond', tilt: 5, lowerLid: 0.5, open: 0.97, gaze: [-0.4, 0.05], pupil: 'slit',
-    browAngle: -0.2, browRaise: 0.3, browAsym: 0.6, mouth: 'grin', mouthWidth: 0.95, blush: 0.42, lashFlick: true,
+    browAngle: -0.2, browRaise: 0.3, browAsym: 0.85, mouth: 'grin', mouthWidth: 0.95, blush: 0.42, lashFlick: true,
   },
   face: { jaw: -0.7, width: -2, chin: 2 }, // sharper, playful (tilted eyes + one raised brow)
   costumeLayers: ['bodyBack', 'neckAccessory'],

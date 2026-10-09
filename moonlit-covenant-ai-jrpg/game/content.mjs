@@ -306,7 +306,8 @@ export const ENEMY = {
   id: 'dream_eater',
   name: '食梦兽·阿涅摩伊',
   maxHp: 150,
-  portrait: '/assets/dream-eater.png',
+  // 第一阶段立绘；前端按 engine.mjs 的阶段 HP 阈值切换 /assets/boss/dream-eater-{1,2,3}.svg（完整 / 破甲 / 封印）
+  portrait: '/assets/boss/dream-eater-1.svg',
   description: '以承诺和回忆为食的月外生物。鲸的体量、蛾的覆粉触须、深海的拟饵辉光；眼睑如月相开合，鳞片是无数映着陌生人一生的记忆切片。'
 };
 
@@ -314,16 +315,16 @@ export const ALLOWED_EMOTIONS = ['戒备', '平静', '开心', '害羞', '担忧
 export const ALLOWED_INTENTS = ['encourage', 'strategy', 'question', 'flirt', 'promise', 'apology', 'challenge', 'insult', 'other'];
 
 export const CG_GALLERY = [
-  { id: 'cg_intro_eye', title: '窗外的眼睛', description: '银轨号紧急停驶，一只巨眼贴着车窗呼吸。', scene: 'intro', file: '/assets/cg/intro-eye.png' },
-  { id: 'cg_camp_fire', title: '战前餐车', description: '三人在昏暗的餐车里围坐，莉亚用剑柄敲桌子。', scene: 'camp', file: '/assets/cg/camp-fire.png' },
-  { id: 'cg_corridor_frost', title: '记忆之霜', description: '回廊墙壁上结满记忆碎片凝成的霜，指尖触碰闪过陌生人的一生。', scene: 'corridor', file: '/assets/cg/corridor-frost.png' },
-  { id: 'cg_battle_descend', title: '食梦兽降临', description: '车厢顶棚被撕开，食梦兽从黑色裂隙中坠落，鳞片映着千段人生。', scene: 'battle', file: '/assets/cg/battle-descend.png' },
-  { id: 'cg_battle_phase2', title: '记忆崩塌', description: '食梦兽悲鸣，鳞片碎裂释放出无数萤火虫般的记忆碎片。', scene: 'battle_p2', file: '/assets/cg/battle-phase2.png' },
-  { id: 'cg_battle_phase3', title: '它想起了什么', description: '食梦兽的巨眼完全睁开，虹膜静止，触须末端闪过一个孩子喊妈妈的画面。', scene: 'battle_p3', file: '/assets/cg/battle-phase3.png' },
-  { id: 'cg_aftermath_snow', title: '记忆之雪', description: '食梦兽崩解，记忆碎片像雪一样落满车厢。莉亚接住一片，然后捏碎。', scene: 'aftermath', file: '/assets/cg/aftermath-snow.png' },
-  { id: 'cg_ending_seal', title: '静默契约', description: '四人的记忆交织成钥匙，封印在黎明种核心缓缓闭合。', scene: 'ending_seal', file: '/assets/cg/ending-seal.png' },
-  { id: 'cg_ending_share', title: '黎明公开', description: '黎明种的光芒照向世界，所有被改写的记忆同时苏醒。', scene: 'ending_share', file: '/assets/cg/ending-share.png' },
-  { id: 'cg_ending_destroy', title: '永夜终章', description: '黎明种在手中化为灰烬，恢复过去的机会永远消失。', scene: 'ending_destroy', file: '/assets/cg/ending-destroy.png' }
+  { id: 'cg_intro_eye', title: '窗外的眼睛', description: '银轨号紧急停驶，一只巨眼贴着车窗呼吸。', scene: 'intro', file: '/assets/cg/intro-eye.svg' },
+  { id: 'cg_camp_fire', title: '战前餐车', description: '三人在昏暗的餐车里围坐，莉亚用剑柄敲桌子。', scene: 'camp', file: '/assets/cg/camp-fire.svg' },
+  { id: 'cg_corridor_frost', title: '记忆之霜', description: '回廊墙壁上结满记忆碎片凝成的霜，指尖触碰闪过陌生人的一生。', scene: 'corridor', file: '/assets/cg/corridor-frost.svg' },
+  { id: 'cg_battle_descend', title: '食梦兽降临', description: '车厢顶棚被撕开，食梦兽从黑色裂隙中坠落，鳞片映着千段人生。', scene: 'battle', file: '/assets/cg/battle-descend.svg' },
+  { id: 'cg_battle_phase2', title: '记忆崩塌', description: '食梦兽悲鸣，鳞片碎裂释放出无数萤火虫般的记忆碎片。', scene: 'battle_p2', file: '/assets/cg/battle-phase2.svg' },
+  { id: 'cg_battle_phase3', title: '它想起了什么', description: '食梦兽的巨眼完全睁开，虹膜静止，触须末端闪过一个孩子喊妈妈的画面。', scene: 'battle_p3', file: '/assets/cg/battle-phase3.svg' },
+  { id: 'cg_aftermath_snow', title: '记忆之雪', description: '食梦兽崩解，记忆碎片像雪一样落满车厢。莉亚接住一片，然后捏碎。', scene: 'aftermath', file: '/assets/cg/aftermath-snow.svg' },
+  { id: 'cg_ending_seal', title: '静默契约', description: '四人的记忆交织成钥匙，封印在黎明种核心缓缓闭合。', scene: 'ending_seal', file: '/assets/cg/ending-seal.svg' },
+  { id: 'cg_ending_share', title: '黎明公开', description: '黎明种的光芒照向世界，所有被改写的记忆同时苏醒。', scene: 'ending_share', file: '/assets/cg/ending-share.svg' },
+  { id: 'cg_ending_destroy', title: '永夜终章', description: '黎明种在手中化为灰烬，恢复过去的机会永远消失。', scene: 'ending_destroy', file: '/assets/cg/ending-destroy.svg' }
 ];
 
 export function publicCharacter(character) {

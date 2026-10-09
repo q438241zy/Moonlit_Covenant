@@ -4,7 +4,7 @@
 
 一个可以直接运行的网页 JRPG 序章：玩家能和三名队友自由交谈，AI 会记住承诺、道歉、夸奖与冒犯；这些关系会影响战术协同和最终评价。战斗、道具、剧情节点与结局由确定性游戏规则控制，不由语言模型擅自改写。
 
-> 当前版本是用于验证玩法和商业方向的可玩垂直切片。角色 SVG、怪物图与 UI 均为原创占位资产，可用于内部演示；正式销售前应替换为商业级立绘、CG、音乐与授权语音。
+> 当前版本是用于验证玩法和商业方向的可玩垂直切片。游戏内的矢量美术（立绘、服装、CG、卡面、地图、Boss、场景与 UI 图标）均为本项目代码生成的**原创**资产；三张主角厚涂立绘与主视觉 PNG 为 AI 生成并带有「图片由AI生成」标识（见下方「资产说明」）。正式销售前应替换为商业级立绘、CG、音乐与授权语音。
 
 ## 已实现内容
 
@@ -115,14 +115,44 @@ curl http://127.0.0.1:4173/api/health
 ## 目录
 
 ```text
-public/                 网页 UI、CSS、前端状态渲染与原创 SVG 占位资产
-game/content.mjs        世界观、角色、战术、敌人与结局内容
+public/                 网页 UI、CSS、前端状态渲染
+public/icons.js         原创线性 UI 图标库（ES module，内联 SVG，继承 currentColor）
+public/assets/          美术资产（矢量 SVG 由 tools/art/ 生成，详见「资产说明」）
+game/content.mjs        世界观、角色、战术、敌人、CG 图库与结局内容
 game/engine.mjs         确定性剧情状态机、关系、战斗与结局判定
+game/gacha.mjs          召唤卡池（角色池 / 服饰池、概率与保底）
+game/costume.mjs        换衣系统与服装分支剧情
 game/ai.mjs             本地/云端模型适配、结构化输出、验证与保底
-server.mjs              零依赖 HTTP 服务、API、会话锁与静态文件服务
+server.mjs              零依赖 HTTP 服务、API、会话锁与静态文件服务（严格 CSP）
+tools/art/              矢量美术生成器（立绘、服装、CG、卡面、地图、Boss、场景）
 test/                   游戏规则与 AI 边界测试
-docs/                   市场、架构与发行清单
+docs/                   市场、架构、美术规范与发行清单
 ```
+
+## 资产说明
+
+### 原创矢量美术（代码生成）
+
+全部按 [`docs/ART-DIRECTION.md`](docs/ART-DIRECTION.md)（月蚀琉璃矢量风）绘制，由 `tools/art/` 下的零依赖 Node 脚本生成为自包含 SVG：无脚本、无外部引用、无位图、无 `<text>`。这套矢量美术为本项目原创，不临摹现有作品、不含第三方角色或商标素材。
+
+| 资产 | 路径 | 生成器 / 命令 |
+|---|---|---|
+| 8 位女主胸像立绘 | `public/assets/portraits/<id>.svg` | `tools/art/portrait/` · `npm run art:portraits` |
+| 48 套服装立绘（8 人 × 6 套） | `public/assets/costumes/<id>_<type>.svg` | 同上（`npm run art:portraits` 一并产出） |
+| 卡牌卡面（38 张基础 + 进化版 `_e`） | `public/assets/cards/<cardId>.svg` | `tools/art/cards/`、`tools/art/build-cards.mjs` · `npm run art:cards` |
+| 10 张剧情 CG | `public/assets/cg/<name>.svg` | `tools/art/cg/` |
+| 世界地图 | `public/assets/map/world-map.svg` | `tools/art/map/build-map.mjs` |
+| 食梦兽三阶段（完整 / 破甲 / 封印） | `public/assets/boss/dream-eater-{1,2,3}.svg` | `tools/art/boss/` |
+| 舞台背景与 UI 元素 | `public/assets/scenes/*.svg`、`public/assets/ui/*.svg` | `tools/art/stage/` |
+| UI 图标 | `public/icons.js` | 手写，`import { icon } from './icons.js'` |
+
+一键重建全部矢量资产：`npm run art`（按依赖顺序调用上述生成器，输出确定、可复现）。
+
+游戏内的使用方式：召唤与换衣统一使用矢量立绘（换衣间会显示当前穿着的服装立绘）；大地图以 `world-map.svg` 为底图，城镇徽章使用 `icons.js` 图标；剧情舞台使用 CG / 场景作为背景；Boss 战按 HP 阶段切换三张食梦兽立绘；结局页叠加结局背景、对应抉择的 CG，隐藏路线显示月蚀纹章；解锁 CG 时会弹出一次非阻塞提示，并收录进 CG 图库。
+
+### AI 生成的厚涂 PNG
+
+`public/assets/{lia,mia,serena,key-visual,dream-eater}.png` 为 AI 生成图像，画面右下角带有依法标注的「图片由AI生成」。三张主角 PNG 用于标题页与剧情场景（保留更高的绘制精度），`key-visual.png` 为标题页主视觉；`dream-eater.png` 已由矢量三阶段 Boss 取代，仅作备用素材。任何显示位置都**不得裁切或遮挡该标识**——UI 按原图比例显示这些图片，小尺寸头像改用矢量立绘。
 
 ## API 摘要
 
@@ -155,6 +185,7 @@ docs/                   市场、架构与发行清单
 ## 权利与注意事项
 
 - 仓库代码为本项目定制，`package.json` 标记为 `UNLICENSED`，不会自动授予第三方再分发权。
-- 当前 SVG 是原创占位图，不含抓取的动漫角色或品牌素材。
+- `public/assets/` 下的矢量 SVG 与 `public/icons.js` 为本项目代码生成的原创美术，不含抓取的动漫角色或品牌素材。
+- AI 生成的 PNG 必须保留「图片由AI生成」标识，不得裁切、遮挡或去除。
 - 正式版不要使用未经授权的角色、配音演员声音、训练素材、音乐或商标。
 - 本仓库没有支付、用户账号或公开托管配置；上线收款仍需绑定域名、托管、支付/Steamworks 账号，并完成相应审核。

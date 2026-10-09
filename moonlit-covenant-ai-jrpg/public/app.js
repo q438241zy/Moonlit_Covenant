@@ -1,3 +1,5 @@
+import { icon } from './icons.js';
+
 const app = document.querySelector('#app');
 const toast = document.querySelector('#toast');
 const settingsDialog = document.querySelector('#settingsDialog');
@@ -17,20 +19,115 @@ let soundEnabled = localStorage.getItem('moonlit:sound') !== 'off';
 let playerId = localStorage.getItem('moonlit:playerId') || null;
 let playerAccount = null;
 let creditMeter = null;
-let playerPos = { x: 15, y: 75 };
+let lastBossPhase = null;
 let completedChapters = JSON.parse(localStorage.getItem('moonlit:chapters') || '[0]');
 
-/* ═══ 大地图城镇数据 ═══ */
+/* ═══ 大地图城镇数据（坐标为百分比，与 /assets/map/world-map.svg 的铁路站点一致） ═══ */
 const MAP_TOWNS = [
-  { id:'start',    name:'起点村',       icon:'🏠', x:12, y:72, unlockChapter:0,  desc:'旅程的起点，宁静的边境小村', color:'#8cf0c9' },
-  { id:'station',  name:'银轨站',       icon:'🚂', x:25, y:58, unlockChapter:1,  desc:'月蚀列车停靠站，通往各地的枢纽', color:'#6edcff' },
-  { id:'mooncity', name:'月蚀城',       icon:'🌙', x:40, y:42, unlockChapter:3,  desc:'观测者的圣城，塞蕾娜的故乡', color:'#b996ff' },
-  { id:'frosttown',name:'霜华镇',       icon:'❄️', x:55, y:25, unlockChapter:5,  desc:'永冬之地，芙蕾娅守护的边镇', color:'#8fd4f5' },
-  { id:'valhalla', name:'瓦尔哈拉要塞', icon:'⚔️', x:70, y:38, unlockChapter:7,  desc:'战乙女的钢铁要塞，莉莉丝与艾拉的家', color:'#c084fc' },
-  { id:'startower',name:'星咏塔',       icon:'⭐', x:62, y:58, unlockChapter:9,  desc:'观星者的孤独高塔，伊芙琳在此守望', color:'#ffd98c' },
-  { id:'nodgate',  name:'诺德之门',     icon:'🌀', x:80, y:50, unlockChapter:11, desc:'月之领域的入口，奥菲利亚的领地', color:'#f472b6' },
-  { id:'terminal', name:'终点站',       icon:'🏁', x:90, y:68, unlockChapter:13, desc:'一切结束与开始的地方', color:'#ff8fb8' },
+  { id:'start',    name:'起点村',       icon:'village',    x:12, y:72, unlockChapter:0,  desc:'旅程的起点，宁静的边境小村', color:'#8cf0c9' },
+  { id:'station',  name:'银轨站',       icon:'station',    x:25, y:58, unlockChapter:1,  desc:'月蚀列车停靠站，通往各地的枢纽', color:'#6edcff' },
+  { id:'mooncity', name:'月蚀城',       icon:'moon-city',  x:40, y:42, unlockChapter:3,  desc:'观测者的圣城，塞蕾娜的故乡', color:'#b996ff' },
+  { id:'frosttown',name:'霜华镇',       icon:'frost',      x:55, y:25, unlockChapter:5,  desc:'永冬之地，芙蕾娅守护的边镇', color:'#8fd4f5' },
+  { id:'valhalla', name:'瓦尔哈拉要塞', icon:'fortress',   x:70, y:38, unlockChapter:7,  desc:'战乙女的钢铁要塞，莉莉丝与艾拉的家', color:'#c084fc' },
+  { id:'startower',name:'星咏塔',       icon:'star-tower', x:62, y:58, unlockChapter:9,  desc:'观星者的孤独高塔，伊芙琳在此守望', color:'#ffd98c' },
+  { id:'nodgate',  name:'诺德之门',     icon:'gate',       x:80, y:50, unlockChapter:11, desc:'月之领域的入口，奥菲利亚的领地', color:'#f472b6' },
+  { id:'terminal', name:'终点站',       icon:'terminal',   x:90, y:68, unlockChapter:13, desc:'一切结束与开始的地方', color:'#ff8fb8' },
 ];
+// 玩家标记停在城镇徽章的右上方，避免盖住徽章
+const MARKER_OFFSET = { x: 2.4, y: -4.5 };
+let playerPos = { x: MAP_TOWNS[0].x + MARKER_OFFSET.x, y: MAP_TOWNS[0].y + MARKER_OFFSET.y };
+
+/* ═══ 美术资源路径（原创矢量美术，见 docs/ART-DIRECTION.md） ═══ */
+const ART = {
+  portrait: (id) => `/assets/portraits/${id}.svg`,
+  costume: (id, type) => `/assets/costumes/${id}_${type}.svg`,
+  boss: (phase) => `/assets/boss/dream-eater-${phase}.svg`,
+  cg: (name) => `/assets/cg/${name}.svg`,
+  scene: (name) => `/assets/scenes/${name}.svg`,
+  ui: (name) => `/assets/ui/${name}.svg`,
+  map: '/assets/map/world-map.svg',
+  fallbackPortrait: '/assets/portraits/lia.svg'
+};
+
+// 与 game/engine.mjs finishBattleIfNeeded 相同的阈值：HP ≤ 100 进入第二阶段（battle_p2），HP ≤ 50 进入第三阶段（battle_p3）
+const BOSS_PHASES = [
+  { phase: 1, label: '完整形态' },
+  { phase: 2, label: '外壳破碎', maxHp: 100 },
+  { phase: 3, label: '封印临界', maxHp: 50 }
+];
+
+// 结局抉择 -> 结局 CG
+const ENDING_CG = { seal: 'ending-seal', share: 'ending-share', destroy: 'ending-destroy' };
+
+const COSTUME_TYPE_META = {
+  newyear: { icon: 'newyear', frame: 'frame-newyear' },
+  maid: { icon: 'maid', frame: 'frame-maid' },
+  christmas: { icon: 'christmas', frame: 'frame-christmas' },
+  duanwu: { icon: 'duanwu', frame: 'frame-duanwu' },
+  anniversary: { icon: 'anniversary', frame: 'frame-anniversary' },
+  swimsuit: { icon: 'summer', frame: 'frame-swimsuit' }
+};
+
+const TIER_ICON = { silver: 'medal', gold: 'crown', diamond: 'diamond' };
+
+/* 图片加载失败兜底：CSP 禁止内联 onerror，统一用一个捕获阶段监听器。
+   <img data-fallback="/path.svg"> 失败时换成备用图；<img data-fallback-icon="film"> 失败时换成图标占位。 */
+document.addEventListener('error', (event) => {
+  const img = event.target;
+  if (!(img instanceof HTMLImageElement)) return;
+  const fallback = img.dataset.fallback;
+  if (fallback && img.getAttribute('src') !== fallback) {
+    delete img.dataset.fallback;
+    img.src = fallback;
+    return;
+  }
+  const iconName = img.dataset.fallbackIcon;
+  if (iconName) {
+    const placeholder = document.createElement('span');
+    placeholder.className = 'img-placeholder';
+    placeholder.innerHTML = icon(iconName, { size: 32 });
+    img.replaceWith(placeholder);
+  } else if ('fallbackHide' in img.dataset) {
+    img.hidden = true;
+  }
+}, true);
+
+/* 图片懒加载：原生 loading="lazy" 在 Chromium 里会提前 1250–2500px 开始加载，服饰池 / 换衣间首屏就会拉满
+   48 张服装立绘（约 3MB SVG）。这里改用 IntersectionObserver：<img data-lazy-src> 先放 1×1 透明占位，
+   进入视口 300px 范围内才换成真实地址。新插入的节点由 MutationObserver 自动登记，渲染函数无需手动调用。 */
+const LAZY_PLACEHOLDER = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+const lazyObserver = 'IntersectionObserver' in window
+  ? new IntersectionObserver((entries) => {
+    entries.forEach((entry) => { if (entry.isIntersecting) loadLazyImage(entry.target); });
+  }, { rootMargin: '300px 0px' })
+  : null;
+// 已经换成真实地址的图：换装后整块重绘时直接输出 src，避免缩略图闪一下空白
+const lazyLoadedSrc = new Set();
+
+function loadLazyImage(img) {
+  lazyObserver?.unobserve(img);
+  const src = img.dataset.lazySrc;
+  if (!src) return;
+  delete img.dataset.lazySrc;
+  lazyLoadedSrc.add(src);
+  img.src = src;
+}
+
+function observeLazyImages(node) {
+  const images = node.matches?.('img[data-lazy-src]') ? [node] : node.querySelectorAll?.('img[data-lazy-src]') || [];
+  images.forEach((img) => (lazyObserver ? lazyObserver.observe(img) : loadLazyImage(img)));
+}
+
+new MutationObserver((records) => {
+  records.forEach((record) => record.addedNodes.forEach((node) => { if (node.nodeType === 1) observeLazyImages(node); }));
+}).observe(document.body, { childList: true, subtree: true });
+
+// <img> 的 src 属性：lazy 时输出占位 + data-lazy-src
+function imgSrcAttrs(src, lazy) {
+  return lazy && !lazyLoadedSrc.has(src)
+    ? `src="${LAZY_PLACEHOLDER}" data-lazy-src="${escapeHtml(src)}" decoding="async"`
+    : `src="${escapeHtml(src)}"`;
+}
 
 const escapeHtml = (value) => String(value ?? '')
   .replaceAll('&', '&amp;')
@@ -39,6 +136,11 @@ const escapeHtml = (value) => String(value ?? '')
   .replaceAll('"', '&quot;')
   .replaceAll("'", '&#039;');
 
+// 服务端错误有两种形状：sendError 的 { error: { message } }，以及抽卡/会员/换装等业务函数直接返回的 { ok:false, message }
+function apiErrorMessage(payload, status) {
+  return payload?.error?.message || payload?.message || `请求失败 (${status})`;
+}
+
 function apiHeaders() {
   return { 'content-type': 'application/json' };
 }
@@ -46,9 +148,7 @@ function apiHeaders() {
 async function apiGet(path) {
   const response = await fetch(path, { headers: { accept: 'application/json' } });
   const payload = await response.json().catch(() => ({}));
-  if (!response.ok || !payload.ok) {
-    throw new Error(payload?.error?.message || `请求失败 (${response.status})`);
-  }
+  if (!response.ok || !payload.ok) throw new Error(apiErrorMessage(payload, response.status));
   return payload;
 }
 
@@ -59,9 +159,7 @@ async function apiPost(path, body) {
     body: JSON.stringify(body)
   });
   const payload = await response.json().catch(() => ({}));
-  if (!response.ok || !payload.ok) {
-    throw new Error(payload?.error?.message || `请求失败 (${response.status})`);
-  }
+  if (!response.ok || !payload.ok) throw new Error(apiErrorMessage(payload, response.status));
   return payload;
 }
 
@@ -111,6 +209,11 @@ function characterState(id) {
   return state?.characters?.[id];
 }
 
+// /api/meta 不含 battleSkill；存档里的角色状态带有该字段
+function battleSkillOf(id) {
+  return characterMeta(id)?.battleSkill || characterState(id)?.battleSkill || '羁绊技能';
+}
+
 function strategyMeta(id) {
   return meta?.strategies?.find((strategy) => strategy.id === id);
 }
@@ -118,6 +221,26 @@ function strategyMeta(id) {
 function percentage(value, max) {
   if (!max) return 0;
   return Math.max(0, Math.min(100, Math.round((value / max) * 100)));
+}
+
+function starsHtml(count, max = count) {
+  const filled = Math.max(0, Math.min(max, Number(count) || 0));
+  return `<span class="stars-row" aria-label="${filled} 星">${icon('star', { size: 12 }).repeat(filled)}${icon('star-empty', { size: 12, cls: 'star-off' }).repeat(max - filled)}</span>`;
+}
+
+// 头像徽章：832×1216 胸像立绘裁出脸部（立绘/服装立绘同构图，眼线约 y≈440）
+function faceThumb(src, { cls = '', alt = '', fallback = ART.fallbackPortrait, lazy = false } = {}) {
+  return `<span class="face-crop ${cls}"><img ${imgSrcAttrs(src, lazy)} alt="${escapeHtml(alt)}" data-fallback="${escapeHtml(fallback)}"></span>`;
+}
+
+// 场景背景：铺满舞台、压暗，不参与交互
+function stageBackdrop(src, cls = '') {
+  return `<div class="stage-backdrop ${cls}" aria-hidden="true"><img src="${escapeHtml(src)}" alt="" data-fallback-hide></div>`;
+}
+
+function bossPhase(enemy = state?.enemy) {
+  const hp = Number(enemy?.hp ?? Infinity);
+  return [...BOSS_PHASES].reverse().find((p) => p.maxHp === undefined || hp <= p.maxHp) || BOSS_PHASES[0];
 }
 
 function externalCta(url, label, className = 'secondary') {
@@ -150,16 +273,11 @@ function titleScreen() {
             <button id="newGame" class="button primary large">开始序章</button>
             ${hasSave ? `<button id="continueGame" class="button secondary large">继续 · ${escapeHtml(currentScene)}</button>` : ''}
             ${externalCta(meta?.marketing?.wishlistUrl, '加入 Steam 愿望单', 'secondary large')}
-            <button id="titleHelp" class="button ghost large">玩法说明</button>
-            <button id="galleryButton" class="button ghost large">CG图库</button>
+            <button id="titleHelp" class="button ghost large">${icon('help', { size: 18 })}玩法说明</button>
+            <button id="galleryButton" class="button ghost large">${icon('collection', { size: 18 })}CG图库</button>
           </div>
           <div class="title-nav-row">
-            <button class="button ghost" data-nav="map">地图</button>
-            <button class="button ghost" data-nav="chapters">章节</button>
-            <button class="button ghost" data-nav="gacha">召唤</button>
-            <button class="button ghost" data-nav="costume">换衣</button>
-            <button class="button ghost" data-nav="shop">商店</button>
-            <button class="button ghost" data-nav="settings">设置</button>
+            ${NAV_ITEMS.filter((item) => item.id !== 'title').map((item) => `<button class="button ghost" data-nav="${item.id}">${icon(item.icon, { size: 16 })}${item.label}</button>`).join('')}
           </div>
           <div class="title-notes">
             ${aiBadge()}
@@ -168,7 +286,7 @@ function titleScreen() {
             <span class="pill">确定性回合战斗</span>
           </div>
           <p class="title-studio">阳之亮面出品</p>
-          <p class="title-footnote">本切片角色立绘、怪物图与主视觉由 AI 生成（画面含生成水印），世界观、人设与游戏规则为原创内容。AI 只生成受约束的角色台词，不直接修改数值、战斗结果或世界事实。</p>
+          <p class="title-footnote">本切片三位主角的厚涂立绘与主视觉由 AI 生成（画面含「图片由AI生成」标识）；其余立绘、服装、CG、地图、怪物与图标为原创矢量美术。世界观、人设与游戏规则为原创内容。AI 只生成受约束的角色台词，不直接修改数值、战斗结果或世界事实。</p>
         </section>
         <section class="title-art" aria-label="三名主要角色">
           <div class="hero-moon"></div>
@@ -201,9 +319,9 @@ function renderHeader() {
       <div class="header-actions">
         <button id="modeToggle" class="pill mode-pill ${state.dialogueMode === 'ai' ? 'ai' : 'story'}" title="切换对话模式">${state.dialogueMode === 'ai' ? 'AI对话' : '故事模式'}</button>
         ${aiBadge()}
-        <button id="helpButton" class="icon-button" title="玩法说明" aria-label="玩法说明">?</button>
-        <button id="settingsButton" class="icon-button" title="设置" aria-label="设置">⚙</button>
-        <button id="backToTitle" class="icon-button" title="返回标题" aria-label="返回标题">⌂</button>
+        <button id="helpButton" class="icon-button" title="玩法说明" aria-label="玩法说明">${icon('help')}</button>
+        <button id="settingsButton" class="icon-button" title="设置" aria-label="设置">${icon('settings')}</button>
+        <button id="backToTitle" class="icon-button" title="返回标题" aria-label="返回标题">${icon('home')}</button>
       </div>
     </header>`;
 }
@@ -217,7 +335,7 @@ function rosterHtml({ selectable = true, showBars = true } = {}) {
         const active = selectedCharacterId === character.id;
         return `
           <button class="roster-card ${active ? 'active' : ''}" data-character="${character.id}" ${selectable ? '' : 'disabled'} style="--char-accent:${character.accent}">
-            <img class="roster-avatar" src="${character.portrait}" alt="">
+            ${faceThumb(ART.portrait(character.id), { cls: 'roster-avatar' })}
             <div>
               <div class="roster-name">${escapeHtml(character.shortName)}</div>
               <div class="roster-role">${escapeHtml(character.role)}</div>
@@ -233,14 +351,15 @@ function rosterHtml({ selectable = true, showBars = true } = {}) {
 
 function questHtml() {
   const strategyChosen = Boolean(state.chosenStrategyId);
-  const talked = state.chatTurns > 0;
+  // chatTurns 在进入回廊/战后会清零，所以用事件记录判断是否交流过
+  const talked = state.chatTurns > 0 || state.events.some((item) => item.type === 'player');
   return `
     <h3 class="panel-heading">Chapter Goals</h3>
     <div class="quest-list">
-      <div class="quest-item"><span class="quest-check">${talked ? '✓' : '·'}</span><span>与至少一名队友自由交流</span></div>
-      <div class="quest-item"><span class="quest-check">${strategyChosen ? '✓' : '·'}</span><span>选择一套主导战术</span></div>
-      <div class="quest-item"><span class="quest-check">${state.flags.battleWon ? '✓' : '·'}</span><span>击败食梦兽</span></div>
-      <div class="quest-item"><span class="quest-check">${state.ending ? '✓' : '·'}</span><span>决定黎明种的命运</span></div>
+      <div class="quest-item"><span class="quest-check ${talked ? 'done' : ''}">${talked ? icon('check', { size: 13 }) : ''}</span><span>与至少一名队友自由交流</span></div>
+      <div class="quest-item"><span class="quest-check ${strategyChosen ? 'done' : ''}">${strategyChosen ? icon('check', { size: 13 }) : ''}</span><span>选择一套主导战术</span></div>
+      <div class="quest-item"><span class="quest-check ${state.flags.battleWon ? 'done' : ''}">${state.flags.battleWon ? icon('check', { size: 13 }) : ''}</span><span>击败食梦兽</span></div>
+      <div class="quest-item"><span class="quest-check ${state.ending ? 'done' : ''}">${state.ending ? icon('check', { size: 13 }) : ''}</span><span>决定黎明种的命运</span></div>
     </div>`;
 }
 
@@ -299,27 +418,31 @@ function chatPanelHtml({ actionButton = '' } = {}) {
 function characterStageHtml() {
   const character = characterMeta(selectedCharacterId);
   const relationship = characterState(selectedCharacterId);
+  const isCorridor = state.scene === 'corridor';
   return `
-    <div class="character-stage" style="--char-accent:${character.accent}">
+    <div class="character-stage ${isCorridor ? 'is-corridor' : 'is-camp'}" style="--char-accent:${character.accent}">
+      ${stageBackdrop(isCorridor ? ART.cg('corridor-frost') : ART.scene('camp-bg'), isCorridor ? 'backdrop-corridor' : 'backdrop-camp')}
       <div class="character-backdrop"></div>
       <img class="character-portrait" src="${character.portrait}" alt="${escapeHtml(character.name)}">
       <div class="character-label">
         <h2>${escapeHtml(character.name)}</h2>
-        <p>${escapeHtml(character.title)} · ${escapeHtml(character.role)} · 羁绊技能「${escapeHtml(character.battleSkill)}」</p>
+        <p>${escapeHtml(character.title)} · ${escapeHtml(character.role)} · 羁绊技能「${escapeHtml(battleSkillOf(character.id))}」</p>
       </div>
       <span class="pill character-mood"><span class="pill-dot" style="background:${character.accent}"></span>${escapeHtml(relationship.mood)}</span>
       ${busy ? '<div class="loading-overlay"><div class="loader"></div></div>' : ''}
     </div>`;
 }
 
-function strategyPanelHtml() {
+// locked：回廊阶段战术已部署，只展示不可再改（服务端也只允许在营地选择战术）；
+// actionButton：面板底部的主按钮，默认是营地的「部署战术」，回廊传入「开始战斗」，两个场景主按钮位置一致
+function strategyPanelHtml({ locked = false, actionButton = null } = {}) {
   return `
     <h3 class="panel-heading">Tactical Anchor</h3>
     <div class="strategy-list">
       ${meta.strategies.map((strategy) => {
         const owner = characterMeta(strategy.owner);
         const selected = state.chosenStrategyId === strategy.id;
-        return `<button class="strategy-card ${selected ? 'selected' : ''}" data-strategy="${strategy.id}" style="--strategy-accent:${owner.accent}">
+        return `<button class="strategy-card ${selected ? 'selected' : ''}" ${locked ? 'disabled' : `data-strategy="${strategy.id}"`} style="--strategy-accent:${owner.accent}">
           <div class="strategy-title"><span>${escapeHtml(strategy.name)}</span><span class="strategy-owner">${escapeHtml(owner.shortName)}</span></div>
           <p>${escapeHtml(strategy.description)}</p>
           <div class="strategy-bonus">${escapeHtml(strategy.bonus)}</div>
@@ -327,10 +450,10 @@ function strategyPanelHtml() {
       }).join('')}
     </div>
     <div class="stat-card">
-      <div class="spread"><span class="muted">交流次数</span><strong>${state.chatTurns}/${state.maxChatTurns}</strong></div>
+      <div class="spread"><span class="muted">${locked ? '回廊交流' : '交流次数'}</span><strong>${state.chatTurns}/${locked ? 4 : state.maxChatTurns}</strong></div>
       <div class="spread" style="margin-top:8px"><span class="muted">承诺记录</span><strong>${state.flags.madePromise ? '已建立' : '未建立'}</strong></div>
     </div>
-    <button id="beginCorridor" class="button primary full" style="margin-top:12px" ${state.chosenStrategyId && !busy ? '' : 'disabled'}>部署战术，穿过回廊</button>`;
+    ${actionButton ?? `<button id="beginCorridor" class="button primary full" style="margin-top:12px" ${state.chosenStrategyId && !busy ? '' : 'disabled'}>部署战术，穿过回廊</button>`}`;
 }
 
 function introLayout() {
@@ -339,6 +462,7 @@ function introLayout() {
       <aside class="left-panel">${questHtml()}</aside>
       <section class="center-stage">
         <div class="intro-stage">
+          ${stageBackdrop(ART.cg('intro-eye'), 'backdrop-intro')}
           <div class="intro-panel">
             <div class="eyebrow">PROLOGUE · THE EYE OUTSIDE THE WINDOW</div>
             <div class="intro-orbit">
@@ -379,11 +503,10 @@ function corridorLayout() {
     <div class="game-content">
       <aside class="left-panel">${rosterHtml()}<div style="height:18px"></div>
         <div class="stat-card"><h3 class="panel-heading">回廊 · 战前最后时刻</h3><p class="muted">走廊里的霜越来越厚。食梦兽就在前方。这是最后交流的机会。</p>
-        <div class="spread" style="margin-top:8px"><span class="muted">剩余交流</span><strong>${remaining} 次</strong></div>
-        <button id="beginBattle" class="button primary full" style="margin-top:12px" ${!busy ? '' : 'disabled'}>冲出去，开始战斗</button></div>
+        <div class="spread" style="margin-top:8px"><span class="muted">剩余交流</span><strong>${remaining} 次</strong></div></div>
       </aside>
       <section class="center-stage">${characterStageHtml()}</section>
-      <aside class="right-panel">${strategyPanelHtml()}</aside>
+      <aside class="right-panel">${strategyPanelHtml({ locked: true, actionButton: `<button id="beginBattle" class="button primary full" style="margin-top:12px" ${!busy ? '' : 'disabled'}>冲出去，开始战斗</button>` })}</aside>
       <section class="dialogue-panel">${chatPanelHtml()}</section>
     </div>`;
 }
@@ -394,8 +517,11 @@ function battleLayout() {
   const focus = percentage(state.focus, state.focusMax);
   const selectedStrategy = strategyMeta(state.chosenStrategyId);
   const leader = characterMeta(selectedStrategy.owner);
+  const phase = bossPhase();
+  const phaseChanged = lastBossPhase !== null && lastBossPhase !== phase.phase;
+  lastBossPhase = phase.phase;
   return `
-    <div class="game-content">
+    <div class="game-content is-battle">
       <aside class="left-panel">
         <h3 class="panel-heading">Party Status</h3>
         <div class="party-status">
@@ -405,9 +531,10 @@ function battleLayout() {
         </div>
       </aside>
       <section class="center-stage">
-        <div class="battle-stage">
-          <div class="battle-top"><div class="enemy-nameplate"><div class="eyebrow">MEMORY DEVOURER · TURN ${state.turn}</div><h2>${escapeHtml(state.enemy.name)}</h2><div class="hp-bar"><div class="hp-fill" style="--value:${enemyHp}%"></div></div><div class="muted" style="margin-top:7px">${state.enemy.hp}/${state.enemy.maxHp} · 压制 ${state.enemy.sealed}</div></div></div>
-          <div class="enemy-zone"><img class="enemy-art" src="${state.enemy.portrait}" alt="${escapeHtml(state.enemy.name)}"></div>
+        <div class="battle-stage boss-phase-${phase.phase}">
+          ${stageBackdrop(ART.scene('battle-bg'), 'backdrop-battle')}
+          <div class="battle-top"><div class="enemy-nameplate"><div class="eyebrow">MEMORY DEVOURER · TURN ${state.turn}</div><h2>${escapeHtml(state.enemy.name)} <span class="phase-pill">PHASE ${phase.phase} · ${escapeHtml(phase.label)}</span></h2><div class="hp-bar"><div class="hp-fill" style="--value:${enemyHp}%"></div></div><div class="muted" style="margin-top:7px">${state.enemy.hp}/${state.enemy.maxHp} · 压制 ${state.enemy.sealed}</div></div></div>
+          <div class="enemy-zone ${phaseChanged ? 'phase-enter' : ''}"><img class="enemy-art" src="${ART.boss(phase.phase)}" alt="${escapeHtml(state.enemy.name)} · ${escapeHtml(phase.label)}" data-fallback="${escapeHtml(state.enemy.portrait)}"></div>
           <div class="battle-bottom"><span>主导战术：${escapeHtml(selectedStrategy.name)}</span><span>·</span><span>羁绊角色：${escapeHtml(leader.shortName)}</span></div>
         </div>
         ${busy ? '<div class="loading-overlay"><div class="loader"></div></div>' : ''}
@@ -416,7 +543,7 @@ function battleLayout() {
         <h3 class="panel-heading">Battle Command</h3>
         <div class="command-list">
           <button class="command" data-battle="attack" ${busy ? 'disabled' : ''}><strong>连携攻击</strong><span>造成伤害 · 焦点 +8</span></button>
-          <button class="command" data-battle="skill" ${state.focus >= 30 && !busy ? '' : 'disabled'}><strong>${escapeHtml(leader.battleSkill)}</strong><span>消耗 30 焦点</span></button>
+          <button class="command" data-battle="skill" ${state.focus >= 30 && !busy ? '' : 'disabled'}><strong>${escapeHtml(battleSkillOf(leader.id))}</strong><span>消耗 30 焦点</span></button>
           <button class="command" data-battle="guard" ${busy ? 'disabled' : ''}><strong>稳住阵型</strong><span>减伤 · 焦点 +16</span></button>
           <button class="command" data-battle="item" ${state.potions > 0 && !busy ? '' : 'disabled'}><strong>星露药 ×${state.potions}</strong><span>恢复最多 30 生命</span></button>
         </div>
@@ -433,9 +560,10 @@ function aftermathLayout() {
       <aside class="left-panel">${rosterHtml()}<div style="height:18px"></div>${questHtml()}</aside>
       <section class="center-stage">
         <div class="aftermath-stage">
+          ${stageBackdrop(ART.cg('aftermath-snow'), 'backdrop-aftermath')}
           <div class="artifact-wrap">
             <div class="eyebrow">THE DAWN SEED IS AWAKE</div>
-            <div class="artifact" aria-hidden="true"></div>
+            <div class="dawn-seed" aria-hidden="true"><img src="${ART.ui('dawn-seed')}" alt="" data-fallback-hide></div>
             <h1>世界应该记住什么？</h1>
             <p class="muted">三名队友不会替你决定，但她们会根据你此前的态度，记住你为什么这样选择。</p>
             <div class="decision-grid">
@@ -460,13 +588,20 @@ function aftermathLayout() {
 function endingScreen() {
   const ending = state.ending;
   const partner = characterMeta(ending.partnerId);
+  const hiddenRoute = Boolean(state.flags.fourthPath || ending.rank === 'S');
+  const endingCg = ENDING_CG[state.decisionId] || ENDING_CG.seal;
   return `
     <main class="game-page">
       <section class="ending-screen">
-        <article class="ending-card">
+        <article class="ending-card ${hiddenRoute ? 'is-hidden-route' : ''}">
           <div class="ending-visual">
-            <div class="ending-rank">${escapeHtml(ending.rank)}</div>
-            <img src="${partner.portrait}" alt="${escapeHtml(partner.name)}">
+            <img class="ending-bg" src="${ART.scene('ending-bg')}" alt="" aria-hidden="true" data-fallback-hide>
+            <img class="ending-cg" src="${ART.cg(endingCg)}" alt="${escapeHtml(ending.title)}" data-fallback-hide>
+            <div class="ending-rank-wrap">
+              <div class="ending-rank">${escapeHtml(ending.rank)}</div>
+              ${hiddenRoute ? `<img class="ending-crest" src="${ART.ui('eclipse-crest')}" alt="隐藏路线徽记" title="隐藏路线达成">` : ''}
+            </div>
+            <figure class="ending-partner"><img src="${partner.portrait}" alt="${escapeHtml(partner.name)}" data-fallback="${ART.portrait(partner.id)}"></figure>
           </div>
           <div class="ending-body">
             <div class="eyebrow">PROLOGUE COMPLETE · ${escapeHtml(partner.title)}</div>
@@ -492,7 +627,20 @@ function endingScreen() {
     </main>`;
 }
 
+// 切换页面或剧情场景时回到顶部（同一场景内的重绘保留滚动位置，例如手机战斗连续点指令）
+let lastViewKey = '';
 function render() {
+  renderView();
+  // 顶部导航的 Credit 计量：creditMeter 只在召唤页拉取过，其余页面首次进入会显示 0；已有账户时顺手刷新
+  if (playerId && !creditMeter && document.querySelector('.nav-credit')) refreshCredit();
+  const viewKey = `${screen}:${screen === 'title' || !state ? '' : state.scene}`;
+  if (viewKey !== lastViewKey) {
+    lastViewKey = viewKey;
+    window.scrollTo(0, 0);
+  }
+}
+
+function renderView() {
   if (screen === 'map') {
     app.innerHTML = mapPage();
     bindNavEvents();
@@ -510,6 +658,7 @@ function render() {
     bindNavEvents();
     bindGachaEvents();
     loadGachaPool();
+    ensureAccount().then(refreshCredit).catch(() => {});
     return;
   }
   if (screen === 'costume') {
@@ -537,6 +686,7 @@ function render() {
     loadChapters();
     return;
   }
+  if (screen === 'title' || !state || state.scene !== 'battle') lastBossPhase = null;
   if (screen === 'title' || !state) {
     app.innerHTML = titleScreen();
   } else if (state.scene === 'ending') {
@@ -572,6 +722,9 @@ function bindGachaEvents() {
       currentGachaPool = tab.dataset.pool;
       document.querySelectorAll('.gacha-tab').forEach((t) => t.classList.remove('active'));
       tab.classList.add('active');
+      // 切换卡池时清掉上一个卡池的召唤结果，避免角色结果显示在服饰池下面
+      const result = document.querySelector('#gachaResult');
+      if (result) { result.style.display = 'none'; result.innerHTML = ''; }
       loadGachaPool();
     });
   });
@@ -605,7 +758,7 @@ function bindSettingsPageEvents() {
 
 function bindEvents() {
   bindNavEvents();
-  document.querySelector('#newGame')?.addEventListener('click', startNewGame);
+  document.querySelector('#newGame')?.addEventListener('click', () => startNewGame());
   document.querySelector('#continueGame')?.addEventListener('click', () => {
     screen = 'game';
     selectedCharacterId = state.selectedCharacterId || 'lia';
@@ -614,16 +767,24 @@ function bindEvents() {
   });
   document.querySelector('#titleHelp')?.addEventListener('click', () => helpDialog.showModal());
   document.querySelector('#galleryButton')?.addEventListener('click', async () => {
-    const sid = state?.id || '';
-    const r = await fetch(`/api/gallery?sessionId=${sid}`).then(r => r.json());
-    if (!r.ok) return;
-    showGallery(r.gallery, r.unlocked, r.total);
+    try {
+      const r = await apiGet(`/api/gallery?sessionId=${encodeURIComponent(state?.id || '')}`);
+      showGallery(r.gallery, r.unlocked, r.total);
+    } catch (error) {
+      showToast(error.message, 'error');
+    }
   });
   document.querySelector('#helpButton')?.addEventListener('click', () => helpDialog.showModal());
   document.querySelector('#modeToggle')?.addEventListener('click', async () => {
     const next = state.dialogueMode === 'ai' ? 'story' : 'ai';
-    const r = await api('/api/mode', { sessionId: state.id, mode: next });
-    if (r.ok) { state = r.state; render(); toast(next === 'ai' ? '已切换：AI自由对话' : '已切换：固定故事模式'); }
+    try {
+      const r = await apiPost('/api/mode', { sessionId: state.id, mode: next });
+      state = r.state;
+      render();
+      showToast(next === 'ai' ? '已切换：AI自由对话' : '已切换：固定故事模式');
+    } catch (error) {
+      showToast(error.message, 'error');
+    }
   });
   document.querySelector('#settingsButton')?.addEventListener('click', openSettings);
   document.querySelector('#backToTitle')?.addEventListener('click', () => { screen = 'title'; render(); });
@@ -678,10 +839,11 @@ function bindEvents() {
   document.querySelector('#restartGame')?.addEventListener('click', restartGame);
 }
 
-async function startNewGame() {
+// nextScreen：标题页「开始序章」进入大地图；地图城镇面板里没有存档时直接进入剧情
+async function startNewGame(nextScreen = 'map') {
   if (busy) return;
   const nameInput = document.querySelector('#playerName');
-  const playerName = nameInput?.value.trim() || '队长';
+  const playerName = nameInput?.value.trim() || localStorage.getItem('moonlit:name') || '队长';
   busy = true;
   render();
   try {
@@ -689,7 +851,7 @@ async function startNewGame() {
     state = payload.state;
     meta = payload.meta || meta;
     selectedCharacterId = state.selectedCharacterId || 'lia';
-    screen = 'map'; // 开始序章后进入大地图
+    screen = nextScreen;
     localStorage.setItem('moonlit:session', state.id);
     localStorage.setItem('moonlit:name', state.playerName);
     beep('skill');
@@ -699,6 +861,7 @@ async function startNewGame() {
   } finally {
     busy = false;
     render();
+    announceCgUnlocks();
   }
 }
 
@@ -738,6 +901,7 @@ async function runMutation(path, body, sound = 'click', after) {
   } finally {
     busy = false;
     render();
+    announceCgUnlocks();
   }
 }
 
@@ -757,6 +921,7 @@ async function restartGame() {
   } finally {
     busy = false;
     render();
+    announceCgUnlocks();
   }
 }
 
@@ -771,6 +936,77 @@ async function copyEnding() {
   } catch {
     showToast('浏览器不允许自动复制，请手动截图。', 'error');
   }
+}
+
+/* ═══ CG 解锁提示 ═══
+   引擎在 state.unlockedCgs 记录解锁，并写一条「CG解锁：「标题」」系统事件。
+   每个存档的每张 CG 只提示一次（记在 localStorage，刷新页面也不会重复）。 */
+const CG_SEEN_KEY = 'moonlit:cgSeen';
+const cgSeen = new Set((() => {
+  try { return JSON.parse(localStorage.getItem(CG_SEEN_KEY) || '[]'); } catch { return []; }
+})());
+let cgCatalog = null;
+
+function cgSeenKey(snapshot, cgId) {
+  return `${snapshot.id}:${cgId}`;
+}
+
+function rememberCgUnlocks(snapshot) {
+  if (!snapshot?.unlockedCgs) return;
+  snapshot.unlockedCgs.forEach((cgId) => cgSeen.add(cgSeenKey(snapshot, cgId)));
+  try { localStorage.setItem(CG_SEEN_KEY, JSON.stringify([...cgSeen].slice(-300))); } catch { /* storage optional */ }
+}
+
+async function loadCgCatalog() {
+  if (cgCatalog) return cgCatalog;
+  try {
+    const r = await apiGet('/api/gallery');
+    cgCatalog = r.gallery || [];
+  } catch {
+    cgCatalog = [];
+  }
+  return cgCatalog;
+}
+
+async function announceCgUnlocks() {
+  const snapshot = state;
+  const fresh = (snapshot?.unlockedCgs || []).filter((cgId) => !cgSeen.has(cgSeenKey(snapshot, cgId)));
+  if (!fresh.length) return;
+  rememberCgUnlocks(snapshot);
+  const catalog = await loadCgCatalog();
+  fresh.forEach((cgId, index) => {
+    const cg = catalog.find((item) => item.id === cgId) || { id: cgId, title: '新的事件回忆', file: '' };
+    setTimeout(() => showCgUnlock(cg), index * 450);
+  });
+}
+
+function showCgUnlock(cg) {
+  let stack = document.querySelector('#cgUnlockStack');
+  if (!stack) {
+    stack = document.createElement('div');
+    stack.id = 'cgUnlockStack';
+    stack.className = 'cg-unlock-stack';
+    stack.setAttribute('aria-live', 'polite');
+    document.body.appendChild(stack);
+  }
+  const card = document.createElement('button');
+  card.type = 'button';
+  card.className = 'cg-unlock';
+  card.title = '点击关闭';
+  card.innerHTML = `
+    <span class="cg-unlock-thumb">${cg.file ? `<img src="${escapeHtml(cg.file)}" alt="" data-fallback-icon="film">` : `<span class="img-placeholder">${icon('film', { size: 28 })}</span>`}</span>
+    <span class="cg-unlock-text"><span class="eyebrow">${icon('sparkle', { size: 12 })} CG 解锁</span><strong>${escapeHtml(cg.title)}</strong><small>已收录至 CG 图库</small></span>`;
+  let timer = null;
+  const dismiss = () => {
+    clearTimeout(timer);
+    card.classList.remove('show');
+    card.classList.add('leaving');
+    setTimeout(() => card.remove(), 320);
+  };
+  card.addEventListener('click', dismiss);
+  stack.appendChild(card);
+  requestAnimationFrame(() => card.classList.add('show'));
+  timer = setTimeout(dismiss, 3200);
 }
 
 function openSettings() {
@@ -794,18 +1030,22 @@ soundToggle.addEventListener('click', () => {
 });
 
 /* ═══ 导航栏 ═══ */
+const NAV_ITEMS = [
+  { id: 'title', label: '首页', icon: 'home' },
+  { id: 'map', label: '地图', icon: 'map' },
+  { id: 'chapters', label: '章节', icon: 'book' },
+  { id: 'gacha', label: '召唤', icon: 'sparkle' },
+  { id: 'costume', label: '换衣', icon: 'dress' },
+  { id: 'shop', label: '商店', icon: 'cart' },
+  { id: 'settings', label: '设置', icon: 'settings' }
+];
+
 function navBar() {
   return `
     <nav class="top-nav">
       <div class="nav-brand"><span class="brand-mark"></span><strong>月蚀契约</strong><span class="nav-studio">阳之亮面出品</span></div>
       <div class="nav-links">
-        <button class="nav-btn ${screen === 'title' ? 'active' : ''}" data-nav="title">首页</button>
-        <button class="nav-btn ${screen === 'map' ? 'active' : ''}" data-nav="map">地图</button>
-        <button class="nav-btn ${screen === 'chapters' ? 'active' : ''}" data-nav="chapters">章节</button>
-        <button class="nav-btn ${screen === 'gacha' ? 'active' : ''}" data-nav="gacha">召唤</button>
-        <button class="nav-btn ${screen === 'costume' ? 'active' : ''}" data-nav="costume">换衣</button>
-        <button class="nav-btn ${screen === 'shop' ? 'active' : ''}" data-nav="shop">商店</button>
-        <button class="nav-btn ${screen === 'settings' ? 'active' : ''}" data-nav="settings">设置</button>
+        ${NAV_ITEMS.map((item) => `<button class="nav-btn ${screen === item.id ? 'active' : ''}" data-nav="${item.id}">${icon(item.icon, { size: 16 })}<span>${item.label}</span></button>`).join('')}
       </div>
       <div class="nav-credit">${creditMeterHtml()}</div>
     </nav>`;
@@ -815,20 +1055,40 @@ function creditMeterHtml() {
   const balance = creditMeter?.balance ?? playerAccount?.credits ?? 0;
   const todayUsed = creditMeter?.todayUsed ?? 0;
   return `<div class="credit-meter" title="Credit余额 / 今日消耗">
-    <span class="credit-icon">◈</span>
+    <span class="credit-icon">${icon('credit', { size: 18, title: 'Credit' })}</span>
     <span class="credit-value">${balance}</span>
-    <span class="credit-used">-${todayUsed}today</span>
+    <span class="credit-used">今日 -${todayUsed}</span>
   </div>`;
 }
 
 /* ═══ 大地图页面 ═══ */
+const MAP_W = 1000;
+const MAP_H = 560;
+
 function isTownUnlocked(town) {
   return completedChapters.includes(town.unlockChapter);
 }
 
+function townNodeSvg(town) {
+  const unlocked = isTownUnlocked(town);
+  const tx = town.x * MAP_W / 100;
+  const ty = town.y * MAP_H / 100;
+  return `<g class="town-node ${unlocked ? 'unlocked' : 'locked'}" data-town="${town.id}" transform="translate(${tx},${ty})" style="--town:${town.color}" role="button" tabindex="0" aria-label="${escapeHtml(town.name)}${unlocked ? '' : `（第${town.unlockChapter}章解锁）`}">
+    <circle class="town-halo" r="30"/>
+    <circle class="town-ring" r="21"/>
+    <circle class="town-core" r="16.5"/>
+    <g class="town-glyph" transform="translate(-11,-11)">${icon(unlocked ? town.icon : 'lock', { size: 22 })}</g>
+    <text class="town-label" text-anchor="middle" y="40">${escapeHtml(town.name)}</text>
+    ${unlocked ? '' : `<text class="town-sub" text-anchor="middle" y="54">第${town.unlockChapter}章解锁</text>`}
+  </g>`;
+}
+
+function playerMarkerTransform() {
+  return `transform:translate(${(playerPos.x * MAP_W / 100).toFixed(1)}px,${(playerPos.y * MAP_H / 100).toFixed(1)}px)`;
+}
+
 function mapPage() {
-  const W = 1000, H = 560;
-  const towns = MAP_TOWNS;
+  const lastChapter = Math.max(...MAP_TOWNS.map((t) => t.unlockChapter)) + 1;
   return `${navBar()}
     <main class="page-content map-page">
       <div class="page-header">
@@ -837,71 +1097,38 @@ function mapPage() {
         <p class="muted">点击城镇进入对应场景 · 完成章节解锁新城镇</p>
       </div>
       <div class="map-container" id="mapContainer">
-        <svg id="worldMap" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
+        <svg id="worldMap" viewBox="0 0 ${MAP_W} ${MAP_H}" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="月蚀大陆地图">
           <defs>
-            <radialGradient id="mapBg" cx="50%" cy="40%" r="80%">
-              <stop offset="0%" stop-color="#141230"/><stop offset="60%" stop-color="#0c0a20"/><stop offset="100%" stop-color="#060512"/>
+            <radialGradient id="markerGlow">
+              <stop offset="0%" stop-color="#5ee4ff" stop-opacity=".55"/><stop offset="100%" stop-color="#5ee4ff" stop-opacity="0"/>
             </radialGradient>
-            <filter id="mapGlow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
           </defs>
-          <!-- 背景 -->
-          <rect width="${W}" height="${H}" fill="url(#mapBg)" rx="16"/>
-          <!-- 装饰：月亮 -->
-          <circle cx="${W*0.82}" cy="${H*0.15}" r="35" fill="#d8c6ff" opacity=".12"/>
-          <circle cx="${W*0.82}" cy="${H*0.15}" r="28" fill="#e8ddff" opacity=".08"/>
-          <!-- 装饰：山脉 -->
-          <path d="M${W*0.3} ${H*0.35} L${W*0.35} ${H*0.2} L${W*0.4} ${H*0.35} Z" fill="#2a2650" opacity=".3"/>
-          <path d="M${W*0.32} ${H*0.35} L${W*0.35} ${H*0.25} L${W*0.38} ${H*0.35} Z" fill="#3a3570" opacity=".2"/>
-          <path d="M${W*0.55} ${H*0.45} L${W*0.6} ${H*0.3} L${W*0.65} ${H*0.45} Z" fill="#2a2650" opacity=".25"/>
-          <path d="M${W*0.57} ${H*0.45} L${W*0.6} ${H*0.35} L${W*0.63} ${H*0.45} Z" fill="#3a3570" opacity=".15"/>
-          <!-- 装饰：河流 -->
-          <path d="M${W*0.15} ${H*0.8} Q${W*0.3} ${H*0.7} ${W*0.45} ${H*0.75} T${W*0.75} ${H*0.65} T${W*0.95} ${H*0.7}" stroke="#1a3a5c" stroke-width="3" fill="none" opacity=".3" stroke-linecap="round"/>
-          <!-- 装饰：森林 -->
-          <ellipse cx="${W*0.2}" cy="${H*0.5}" rx="40" ry="25" fill="#1a2a1a" opacity=".3"/>
-          <ellipse cx="${W*0.5}" cy="${H*0.55}" rx="35" ry="20" fill="#1a2a1a" opacity=".25"/>
-          <ellipse cx="${W*0.75}" cy="${H*0.6}" rx="30" ry="18" fill="#1a2a1a" opacity=".2"/>
-          <!-- 铁路线（连接城镇） -->
-          ${towns.slice(0, -1).map((t, i) => {
-            const next = towns[i + 1];
-            return `<line x1="${t.x*W/100}" y1="${t.y*H/100}" x2="${next.x*W/100}" y2="${next.y*H/100}" stroke="#4a4570" stroke-width="2" stroke-dasharray="6 4" opacity=".4"/>`;
-          }).join('')}
-          <!-- 城镇节点 -->
-          ${towns.map(t => {
-            const unlocked = isTownUnlocked(t);
-            const tx = t.x * W / 100, ty = t.y * H / 100;
-            return `<g class="town-node ${unlocked ? 'unlocked' : 'locked'}" data-town="${t.id}" transform="translate(${tx},${ty})" style="cursor:${unlocked ? 'pointer' : 'not-allowed'}">
-              <circle r="22" fill="${unlocked ? t.color + '22' : '#1a1830'}" stroke="${unlocked ? t.color : '#3a3560'}" stroke-width="2" opacity="${unlocked ? 1 : 0.5}"/>
-              <circle r="16" fill="${unlocked ? t.color + '44' : '#0d0b20'}"/>
-              <text text-anchor="middle" dy="5" font-size="16" opacity="${unlocked ? 1 : 0.4}">${unlocked ? t.icon : '🔒'}</text>
-              <text text-anchor="middle" dy="38" font-size="10" fill="${unlocked ? t.color : '#5c5880'}" font-weight="600">${t.name}</text>
-              ${unlocked ? '' : `<text text-anchor="middle" dy="52" font-size="8" fill="#5c5880">第${t.unlockChapter}章解锁</text>`}
-            </g>`;
-          }).join('')}
-          <!-- 玩家标记 -->
-          <g id="playerMarker" transform="translate(${playerPos.x*W/100},${playerPos.y*H/100})" filter="url(#mapGlow)">
-            <circle r="10" fill="#5ee4ff" opacity=".3"><animate attributeName="r" values="8;12;8" dur="2s" repeatCount="indefinite"/></circle>
-            <circle r="6" fill="#5ee4ff"/>
-            <text text-anchor="middle" dy="4" font-size="10">🏃</text>
+          <image href="${ART.map}" x="0" y="0" width="${MAP_W}" height="${MAP_H}" preserveAspectRatio="xMidYMid slice" aria-hidden="true"/>
+          ${MAP_TOWNS.map(townNodeSvg).join('')}
+          <g id="playerMarker" style="${playerMarkerTransform()}" role="img" aria-label="你的位置">
+            <circle class="marker-glow" r="22" fill="url(#markerGlow)"/>
+            <circle class="marker-ring" r="13"/>
+            <g class="marker-glyph" transform="translate(-9,-9)">${icon('traveler', { size: 18 })}</g>
           </g>
         </svg>
       </div>
       <!-- 城镇信息面板 -->
-      <div class="map-info-panel" id="mapInfoPanel" style="display:none">
+      <div class="map-info-panel" id="mapInfoPanel" hidden>
         <div class="map-info-header">
-          <span id="infoIcon"></span>
+          <span id="infoIcon" class="map-info-icon"></span>
           <h3 id="infoName"></h3>
-          <button class="icon-button" onclick="document.getElementById('mapInfoPanel').style.display='none'">×</button>
+          <button class="icon-button" id="mapInfoClose" type="button" aria-label="关闭">${icon('close', { size: 18 })}</button>
         </div>
         <p id="infoDesc" class="muted"></p>
         <div class="map-info-actions" id="infoActions"></div>
       </div>
       <!-- 章节进度 -->
       <div class="map-progress">
-        <span class="muted">已完成章节: ${completedChapters.length}/${Math.max(...MAP_TOWNS.map(t => t.unlockChapter)) + 1}</span>
+        <span class="muted">已完成章节: ${completedChapters.length}/${lastChapter}</span>
         <div class="progress-track" style="flex:1;margin:0 12px;height:6px">
-          <div class="progress-fill" style="width:${Math.round(completedChapters.length / (Math.max(...MAP_TOWNS.map(t => t.unlockChapter)) + 1) * 100)}%;background:var(--diamond)"></div>
+          <div class="progress-fill" style="width:${Math.round(completedChapters.length / lastChapter * 100)}%"></div>
         </div>
-        <button class="button small" onclick="debugUnlockNext()">解锁下一章（测试）</button>
+        <button class="button small" id="debugUnlockNext" type="button">${icon('unlock', { size: 16 })}解锁下一章（测试）</button>
       </div>
     </main>`;
 }
@@ -916,67 +1143,73 @@ function bindMapEvents() {
     movePlayer(x, y);
   });
 
-  // 点击城镇
-  document.querySelectorAll('.town-node.unlocked').forEach(node => {
-    node.addEventListener('click', (e) => {
+  // 点击城镇（已解锁：移动并打开信息面板；未解锁：提示）
+  document.querySelectorAll('.town-node').forEach((node) => {
+    const activate = (e) => {
       e.stopPropagation();
-      const townId = node.dataset.town;
-      const town = MAP_TOWNS.find(t => t.id === townId);
-      if (town) showTownInfo(town);
+      const town = MAP_TOWNS.find((t) => t.id === node.dataset.town);
+      if (!town) return;
+      if (isTownUnlocked(town)) {
+        movePlayer(town.x + MARKER_OFFSET.x, town.y + MARKER_OFFSET.y);
+        showTownInfo(town);
+      } else {
+        showToast(`${town.name} 需要完成第 ${town.unlockChapter} 章解锁`, 'error');
+        beep('error');
+      }
+    };
+    node.addEventListener('click', activate);
+    node.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(e); }
     });
   });
 
-  // 悬停城镇显示提示
-  document.querySelectorAll('.town-node.locked').forEach(node => {
-    node.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const townId = node.dataset.town;
-      const town = MAP_TOWNS.find(t => t.id === townId);
-      if (town) showToast(`🔒 ${town.name} 需要完成第 ${town.unlockChapter} 章解锁`, 'error');
-    });
-  });
+  document.getElementById('mapInfoClose')?.addEventListener('click', hideTownInfo);
+  document.getElementById('debugUnlockNext')?.addEventListener('click', debugUnlockNext);
+}
+
+function hideTownInfo() {
+  const panel = document.getElementById('mapInfoPanel');
+  if (panel) panel.hidden = true;
 }
 
 function movePlayer(x, y) {
   playerPos = { x: Math.max(3, Math.min(97, x)), y: Math.max(3, Math.min(97, y)) };
   const marker = document.getElementById('playerMarker');
-  if (marker) {
-    const W = 1000, H = 560;
-    marker.setAttribute('transform', `translate(${playerPos.x*W/100},${playerPos.y*H/100})`);
-  }
+  if (marker) marker.setAttribute('style', playerMarkerTransform());
   beep('click');
 }
 
 function showTownInfo(town) {
   const panel = document.getElementById('mapInfoPanel');
   if (!panel) return;
-  document.getElementById('infoIcon').textContent = town.icon;
+  const iconEl = document.getElementById('infoIcon');
+  iconEl.innerHTML = icon(town.icon, { size: 28 });
+  iconEl.style.setProperty('--town', town.color);
   document.getElementById('infoName').textContent = town.name;
   document.getElementById('infoDesc').textContent = town.desc;
 
   const actions = document.getElementById('infoActions');
-  // 根据城镇决定进入哪个场景
-  const sceneMap = {
-    start: { label: '开始剧情', screen: 'game', action: () => { if (!state) startNewGame(); else { screen = 'game'; render(); } } },
-    station: { label: '进入营地', screen: 'game', action: () => { if (!state) startNewGame(); else { screen = 'game'; render(); } } },
-    mooncity: { label: '探索城市', screen: 'game', action: () => { screen = 'game'; render(); } },
-    frosttown: { label: '挑战Boss', screen: 'game', action: () => { screen = 'game'; render(); } },
-    valhalla: { label: '进入要塞', screen: 'game', action: () => { screen = 'game'; render(); } },
-    startower: { label: '登塔观星', screen: 'game', action: () => { screen = 'game'; render(); } },
-    nodgate: { label: '穿越之门', screen: 'game', action: () => { screen = 'game'; render(); } },
-    terminal: { label: '最终决战', screen: 'game', action: () => { screen = 'game'; render(); } },
+  // 目前所有城镇都进入同一段序章剧情；没有存档时先建档（否则 screen='game' 会因 state 为空落回标题页）
+  const enterStory = () => {
+    if (!state) startNewGame('game');
+    else { screen = 'game'; render(); }
   };
-  const scene = sceneMap[town.id] || { label: '进入', screen: 'game', action: () => { screen = 'game'; render(); } };
+  const sceneLabels = {
+    start: '开始剧情', station: '进入营地', mooncity: '探索城市', frosttown: '挑战Boss',
+    valhalla: '进入要塞', startower: '登塔观星', nodgate: '穿越之门', terminal: '最终决战'
+  };
+  const scene = { label: sceneLabels[town.id] || '进入', action: enterStory };
 
   actions.innerHTML = `
-    <button class="button primary" id="enterTownBtn">${scene.label}</button>
-    <button class="button secondary" onclick="document.getElementById('mapInfoPanel').style.display='none'">离开</button>
+    <button class="button primary" id="enterTownBtn" type="button">${scene.label}</button>
+    <button class="button secondary" id="leaveTownBtn" type="button">离开</button>
   `;
   document.getElementById('enterTownBtn')?.addEventListener('click', () => {
-    document.getElementById('mapInfoPanel').style.display = 'none';
+    hideTownInfo();
     scene.action();
   });
-  panel.style.display = 'block';
+  document.getElementById('leaveTownBtn')?.addEventListener('click', hideTownInfo);
+  panel.hidden = false;
 }
 
 function debugUnlockNext() {
@@ -1020,7 +1253,7 @@ async function loadShop() {
     if (grid) {
       grid.innerHTML = data.tiers.map((t) => `
         <div class="membership-card tier-${t.id}">
-          <div class="tier-badge">${t.badge || '🛡'}</div>
+          <div class="tier-badge">${icon(TIER_ICON[t.id] || 'shield', { size: 40 })}</div>
           <h3>${escapeHtml(t.name)}</h3>
           <div class="tier-price">¥${t.price}<span>/月</span></div>
           <div class="tier-credit">每日 ${t.dailyCredit} Credit</div>
@@ -1034,7 +1267,7 @@ async function loadShop() {
     if (dGrid) {
       dGrid.innerHTML = data.packs.map((p) => `
         <div class="diamond-card">
-          <div class="diamond-amount">💎 ${p.diamonds}</div>
+          <div class="diamond-amount">${icon('diamond', { size: 22, title: '钻石' })} ${p.diamonds}</div>
           ${p.bonus ? `<div class="diamond-bonus">+${p.bonus} 赠送</div>` : ''}
           <div class="diamond-price">¥${p.price}</div>
           <button class="button secondary full" data-pack="${p.id}">购买</button>
@@ -1073,7 +1306,7 @@ function gachaPage() {
   return `${navBar()}
     <main class="page-content">
       <div class="page-header"><div class="eyebrow">SUMMON · 星轨召唤</div><h1>召唤系统</h1>
-        <p class="muted">角色池：8位角色（5位主线解锁） · 服饰池：6套主题服饰 × 8角色 · 90抽保底5星</p>
+        <p class="muted">角色池：8位角色（全部初始可用） · 服饰池：6套主题服饰 × 8角色 · 90抽保底5星</p>
       </div>
       <div class="gacha-tabs">
         <button class="gacha-tab active" data-pool="character">角色池</button>
@@ -1090,6 +1323,12 @@ function gachaPage() {
 
 let currentGachaPool = 'character';
 
+const GACHA_RARITY_LABEL = { 5: 'SSR', 4: 'SR', 3: 'R' };
+
+function costumeTypeOf(item) {
+  return item.type || String(item.id || '').split('_').pop();
+}
+
 async function loadGachaPool() {
   try {
     const data = await apiGet('/api/gacha/pools');
@@ -1098,22 +1337,24 @@ async function loadGachaPool() {
     if (currentGachaPool === 'character') {
       pool.innerHTML = `<div class="gacha-grid">${data.characters.map((c) => `
         <div class="gacha-char-card rarity-${c.rarity}">
-          <div class="gacha-char-avatar"><img src="${c.portrait || '/assets/lia.png'}" alt="" onerror="this.src='/assets/lia.png'"></div>
+          ${faceThumb(c.portrait || ART.portrait(c.id), { cls: 'gacha-char-avatar', alt: c.name })}
           <div class="gacha-char-name">${escapeHtml(c.name)}</div>
-          <div class="gacha-char-title">${escapeHtml(c.title)}</div>
-          <div class="gacha-stars">${'★'.repeat(c.rarity)}${'☆'.repeat(5 - c.rarity)}</div>
-          ${c.unlockChapter ? `<div class="gacha-lock">Ch.${c.unlockChapter}解锁</div>` : '<div class="gacha-free">初始可用</div>'}
+          <div class="gacha-char-title">${escapeHtml(c.title)} · ${escapeHtml(c.element || '')}</div>
+          <div class="gacha-stars">${starsHtml(c.rarity, 5)}</div>
+          ${c.unlockChapter ? `<div class="gacha-lock">${icon('lock', { size: 12 })}Ch.${c.unlockChapter}解锁</div>` : '<div class="gacha-free">初始可用</div>'}
         </div>`).join('')}</div>`;
     } else {
-      const types = [...new Set(data.costumes.map((c) => c.type))];
+      const shortNames = Object.fromEntries(data.characters.map((c) => [c.id, c.name.split('·')[0]]));
+      const types = [...new Set(data.costumes.map(costumeTypeOf))];
       pool.innerHTML = types.map((type) => {
-        const items = data.costumes.filter((c) => c.type === type);
-        return `<div class="costume-type-group"><h3>${escapeHtml(items[0]?.name?.split('·')[0] || type)}</h3>
+        const items = data.costumes.filter((c) => costumeTypeOf(c) === type);
+        const typeLabel = items[0]?.name?.split('·')[1] || type;
+        return `<div class="costume-type-group"><h3>${icon(COSTUME_TYPE_META[type]?.icon || 'dress', { size: 18 })}${escapeHtml(typeLabel)}<span class="gacha-stars">${starsHtml(items[0]?.rarity || 3)}</span></h3>
           <div class="gacha-grid small">${items.map((c) => `
-            <div class="gacha-costume-card rarity-${c.rarity}">
-              <div class="costume-icon">👗</div>
-              <div class="gacha-char-name">${escapeHtml(c.characterId)}</div>
-              <div class="gacha-stars">${'★'.repeat(c.rarity)}</div>
+            <div class="gacha-costume-card rarity-${c.rarity}" title="${escapeHtml(c.description || c.name)}">
+              ${faceThumb(c.file || ART.costume(c.characterId, type), { cls: 'costume-thumb', alt: c.name, fallback: ART.portrait(c.characterId), lazy: true })}
+              <div class="gacha-char-name">${escapeHtml(shortNames[c.characterId] || c.characterId)}</div>
+              <div class="gacha-char-title">${escapeHtml(typeLabel)}</div>
             </div>`).join('')}</div></div>`;
       }).join('');
     }
@@ -1127,13 +1368,21 @@ async function doGachaPull(count) {
     const resultEl = document.querySelector('#gachaResult');
     if (resultEl && r.results) {
       resultEl.style.display = 'block';
-      resultEl.innerHTML = `<h3>召唤结果</h3><div class="gacha-results-grid">${r.results.map((item) => `
-        <div class="gacha-result-card rarity-${item.rarity || 3}">
-          <div class="result-icon">${item.rarity >= 5 ? '✦' : item.rarity >= 4 ? '◆' : '●'}</div>
+      resultEl.innerHTML = `<h3>召唤结果</h3><div class="gacha-results-grid">${r.results.map((item, index) => {
+        const rarity = item.rarity || 3;
+        const isCostume = Boolean(item.characterId);
+        const src = isCostume ? (item.file || ART.costume(item.characterId, costumeTypeOf(item))) : (item.portrait || ART.portrait(item.id));
+        return `
+        <div class="gacha-result-card rarity-${rarity}" style="--delay:${index * 70}ms">
+          <span class="result-rarity">${GACHA_RARITY_LABEL[rarity] || 'R'}</span>
+          ${faceThumb(src, { cls: 'result-thumb', alt: item.name || item.id, fallback: ART.portrait(isCostume ? item.characterId : item.id) })}
           <div class="result-name">${escapeHtml(item.name || item.id)}</div>
-          <div class="gacha-stars">${'★'.repeat(item.rarity || 3)}</div>
-        </div>`).join('')}</div>
+          <div class="gacha-stars">${starsHtml(rarity)}</div>
+        </div>`;
+      }).join('')}</div>
         <p class="muted">消耗 ${r.cost} Credit · 保底计数 ${r.pity || 0}/90</p>`;
+      // 结果区在卡池和按钮下方，桌面/手机都在首屏以外：滚到结果，避免「点了没反应」
+      resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
       beep(r.results.some((i) => (i.rarity || 3) >= 5) ? 'win' : 'skill');
     }
     refreshCredit();
@@ -1151,15 +1400,6 @@ function costumePage() {
     </main>`;
 }
 
-const COSTUME_TYPE_META = {
-  newyear: { emoji: '🧧', frame: 'frame-newyear' },
-  maid: { emoji: '🎀', frame: 'frame-maid' },
-  christmas: { emoji: '🎄', frame: 'frame-christmas' },
-  duanwu: { emoji: '🐉', frame: 'frame-duanwu' },
-  anniversary: { emoji: '🎂', frame: 'frame-anniversary' },
-  swimsuit: { emoji: '👙', frame: 'frame-swimsuit' }
-};
-
 async function loadCostumes() {
   await ensureAccount();
   try {
@@ -1171,6 +1411,7 @@ async function loadCostumes() {
     const ownedCostumes = data.ownedCostumes || [];
     const equipped = data.equipped || {};
     const types = data.types || {};
+    const branches = data.branches || {};
     const poolChars = (data.costumePool ? [...new Set(data.costumePool.map((c) => c.characterId))] : []);
     const charInfoMap = {};
     (await apiGet('/api/gacha/pools')).characters.forEach((c) => { charInfoMap[c.id] = c; });
@@ -1183,13 +1424,13 @@ async function loadCostumes() {
 
     if (ownedChars.length === 0) {
       html += `<div class="wardrobe-empty">
-        <div style="font-size:3rem">👗</div>
+        <div class="wardrobe-empty-icon">${icon('dress', { size: 44 })}</div>
         <h3>还没有抽到的角色</h3>
         <p class="muted">前往「召唤」抽取角色后，即可在这里为她们更换皮肤。</p>
         <button class="button primary" data-nav="gacha">去召唤</button>
       </div>`;
       section.innerHTML = html;
-      section.querySelector('[data-nav]')?.addEventListener('click', (e) => { screen = e.target.dataset.nav; render(); });
+      section.querySelector('[data-nav]')?.addEventListener('click', (e) => { screen = e.currentTarget.dataset.nav; render(); });
       document.querySelector('#grantAllCostumes')?.addEventListener('click', grantAllCostumesAction);
       return;
     }
@@ -1206,32 +1447,37 @@ async function loadCostumes() {
       const slots = ['default', ...Object.keys(types)].map((type) => {
         if (type === 'default') {
           const isActive = !equippedId;
-          return `<button class="costume-slot ${isActive ? 'active' : ''}" data-char="${charId}" data-costume="default">
-            <span class="costume-emoji">👤</span><span>默认服装</span>${isActive ? '<span class="slot-wearing">穿着中</span>' : ''}
+          return `<button class="costume-slot ${isActive ? 'active' : ''}" data-char="${charId}" data-costume="default" title="默认服装">
+            ${faceThumb(ART.portrait(charId), { cls: 'slot-thumb', lazy: true })}
+            <span class="slot-label">${icon('outfit-default', { size: 14 })}默认服装</span>${isActive ? '<span class="slot-wearing">穿着中</span>' : ''}
           </button>`;
         }
         const costumeId = `${charId}_${type}`;
         const owned = ownedCostumes.includes(costumeId);
         const isActive = equippedId === costumeId;
-        const meta = COSTUME_TYPE_META[type] || { emoji: '👗' };
+        const typeIcon = COSTUME_TYPE_META[type]?.icon || 'dress';
         return `<button class="costume-slot ${isActive ? 'active' : ''} ${owned ? '' : 'locked'}" data-char="${charId}" data-costume="${costumeId}" ${owned ? '' : 'disabled'}
           title="${owned ? '点击装备' : '未拥有 · 通过服饰召唤获取'}">
-          <span class="costume-emoji">${owned ? meta.emoji : '🔒'}</span>
-          <span>${escapeHtml(types[type])}</span>
+          ${owned
+            ? faceThumb(ART.costume(charId, type), { cls: 'slot-thumb', fallback: ART.portrait(charId), lazy: true })
+            : `<span class="slot-thumb slot-thumb-locked">${icon('lock', { size: 20 })}</span>`}
+          <span class="slot-label">${icon(typeIcon, { size: 14 })}${escapeHtml(types[type])}</span>
           ${isActive ? '<span class="slot-wearing">穿着中</span>' : ''}
         </button>`;
       }).join('');
 
+      const portraitSrc = equippedType ? ART.costume(charId, equippedType) : (ch.portrait || ART.portrait(charId));
       return `<div class="costume-char-block">
         <div class="wardrobe-main">
           <div class="wardrobe-portrait ${frameClass}">
-            <img src="${ch.portrait}" alt="${escapeHtml(ch.name)}" onerror="this.src='/assets/lia.png'">
-            ${equippedType ? `<span class="skin-badge">${COSTUME_TYPE_META[equippedType]?.emoji || '👗'}</span>` : ''}
+            <img ${imgSrcAttrs(portraitSrc, true)} alt="${escapeHtml(ch.name)}${equippedLabel ? ` · ${escapeHtml(equippedLabel)}` : ''}" data-fallback="${ART.portrait(charId)}">
+            ${equippedType ? `<span class="skin-badge" title="${escapeHtml(equippedLabel)}">${icon(COSTUME_TYPE_META[equippedType]?.icon || 'dress', { size: 18 })}</span>` : ''}
           </div>
           <div class="wardrobe-info">
             <h3>${escapeHtml(ch.name)}</h3>
             <p class="muted">${escapeHtml(ch.title || '')}</p>
-            <p class="wardrobe-current">${equippedLabel ? `当前皮肤：<strong>${COSTUME_TYPE_META[equippedType]?.emoji || ''} ${escapeHtml(equippedLabel)}</strong>` : '当前皮肤：默认服装'}</p>
+            <p class="wardrobe-current">${equippedLabel ? `当前皮肤：<strong>${icon(COSTUME_TYPE_META[equippedType]?.icon || 'dress', { size: 16 })} ${escapeHtml(equippedLabel)}</strong>` : `当前皮肤：<strong class="is-default">${icon('outfit-default', { size: 16 })} 默认服装</strong>`}</p>
+            ${equippedType && branches[equippedType] ? `<p class="wardrobe-branch muted">${icon('scroll', { size: 14 })}分支剧情「${escapeHtml(branches[equippedType].title)}」：${escapeHtml(branches[equippedType].description)}</p>` : ''}
           </div>
         </div>
         <div class="costume-grid">${slots}</div>
@@ -1406,6 +1652,12 @@ async function loadChapters() {
   } catch (e) { showToast(e.message, 'error'); }
 }
 
+// 剧本 JSON 里的说话人是角色 id（lia / mia / serena / narrator），阅读器显示中文名
+function speakerName(id) {
+  if (id === 'narrator') return '旁白';
+  return characterMeta(id)?.shortName || id;
+}
+
 async function openChapter(id) {
   try {
     const data = await apiGet(`/api/scenario/chapter/${id}`);
@@ -1413,11 +1665,11 @@ async function openChapter(id) {
     const overlay = document.createElement('div');
     overlay.className = 'gallery-overlay';
     overlay.innerHTML = `
-      <div class="gallery-card chapter-reader">
+      <div class="gallery-card chapter-reader" role="dialog" aria-modal="true" aria-label="${escapeHtml(ch.title)}">
         <div class="gallery-header">
           <div class="eyebrow">CHAPTER ${String(id).padStart(2, '0')}</div>
           <h2>${escapeHtml(ch.title)}</h2>
-          <button class="icon-button modal-close" id="chapterClose">×</button>
+          <button class="icon-button modal-close" id="chapterClose" type="button" aria-label="关闭">${icon('close', { size: 18 })}</button>
         </div>
         <div class="chapter-scenes">
           ${(ch.scenes || []).map((scene) => `
@@ -1426,18 +1678,33 @@ async function openChapter(id) {
               <p class="scene-bg muted">${escapeHtml(scene.background || '')}</p>
               <div class="scene-events">${(scene.events || []).map((ev) => {
                 if (ev.type === 'narration') return `<p class="ev-narration">${escapeHtml(ev.text)}</p>`;
-                if (ev.type === 'dialogue') return `<p class="ev-dialogue"><strong>${escapeHtml(ev.speaker)}：</strong>${escapeHtml(ev.text)}</p>`;
-                if (ev.type === 'choice') return `<div class="ev-choice">▸ ${escapeHtml(ev.prompt || '选择')}</div>`;
-                if (ev.type === 'cg') return `<p class="ev-cg">🎬 CG: ${escapeHtml(ev.description || ev.unlockCg)}</p>`;
+                if (ev.type === 'dialogue') return `<p class="ev-dialogue"><strong>${escapeHtml(speakerName(ev.speaker))}：</strong>${escapeHtml(ev.text)}</p>`;
+                if (ev.type === 'choice') return `<div class="ev-choice">${icon('chevron-right', { size: 14 })}${escapeHtml(ev.prompt || '选择')}</div>`;
+                if (ev.type === 'cg') return `<p class="ev-cg">${icon('film', { size: 14 })}CG: ${escapeHtml(ev.description || ev.unlockCg)}</p>`;
                 return '';
               }).join('')}</div>
             </div>`).join('')}
         </div>
       </div>`;
-    document.body.appendChild(overlay);
-    overlay.querySelector('#chapterClose').addEventListener('click', () => overlay.remove());
-    overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+    mountOverlay(overlay, '#chapterClose');
   } catch (e) { showToast(e.message, 'error'); }
+}
+
+// 叠层（CG 图库 / 章节阅读器）：点遮罩、关闭按钮或按 Esc 关闭；打开时焦点移到关闭按钮，关闭后还给原按钮
+function mountOverlay(overlay, closeSelector) {
+  const previousFocus = document.activeElement;
+  const closeButton = overlay.querySelector(closeSelector);
+  const close = () => {
+    overlay.remove();
+    document.removeEventListener('keydown', onKeydown);
+    if (previousFocus?.isConnected) previousFocus.focus();
+  };
+  const onKeydown = (e) => { if (e.key === 'Escape') close(); };
+  document.body.appendChild(overlay);
+  closeButton?.addEventListener('click', close);
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+  document.addEventListener('keydown', onKeydown);
+  closeButton?.focus();
 }
 
 /* ═══ 账户工具 ═══ */
@@ -1462,6 +1729,8 @@ async function refreshCredit() {
   try {
     const r = await apiGet(`/api/credit?playerId=${playerId}`);
     creditMeter = r.meter;
+    const navCredit = document.querySelector('.nav-credit');
+    if (navCredit) navCredit.innerHTML = creditMeterHtml();
   } catch { /* ignore */ }
 }
 
@@ -1477,6 +1746,7 @@ async function boot() {
         state = sessionPayload.state;
         meta = sessionPayload.meta || meta;
         selectedCharacterId = state.selectedCharacterId || 'lia';
+        rememberCgUnlocks(state); // 读档时已有的解锁不再弹提示
       } catch {
         localStorage.removeItem('moonlit:session');
       }
@@ -1492,23 +1762,21 @@ function showGallery(gallery, unlockedCount, total) {
   const overlay = document.createElement('div');
   overlay.className = 'gallery-overlay';
   overlay.innerHTML = `
-    <div class="gallery-card">
+    <div class="gallery-card" role="dialog" aria-modal="true" aria-label="CG 图库">
       <div class="gallery-header">
         <div class="eyebrow">CG GALLERY</div>
         <h2>事件回忆 · ${unlockedCount}/${total}</h2>
-        <button class="icon-button modal-close" id="galleryClose">×</button>
+        <button class="icon-button modal-close" id="galleryClose" type="button" aria-label="关闭">${icon('close', { size: 18 })}</button>
       </div>
       <div class="gallery-grid">
         ${gallery.map((cg) => `
           <div class="cg-item ${cg.unlocked ? 'unlocked' : 'locked'}">
-            <div class="cg-thumb">${cg.unlocked ? `<img src="${cg.file}" alt="${escapeHtml(cg.title)}" onerror="this.parentElement.innerHTML='<span class=\\'cg-placeholder\\'>🎬</span>'">` : '<span class="cg-placeholder">?</span>'}</div>
+            <div class="cg-thumb">${cg.unlocked ? `<img src="${escapeHtml(cg.file)}" alt="${escapeHtml(cg.title)}" loading="lazy" data-fallback-icon="film">` : `<span class="cg-placeholder">${icon('lock', { size: 28 })}</span>`}</div>
             <div class="cg-info"><strong>${cg.unlocked ? escapeHtml(cg.title) : '???'}</strong><p>${cg.unlocked ? escapeHtml(cg.description) : '尚未解锁'}</p></div>
           </div>`).join('')}
       </div>
     </div>`;
-  document.body.appendChild(overlay);
-  overlay.querySelector('#galleryClose').addEventListener('click', () => overlay.remove());
-  overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+  mountOverlay(overlay, '#galleryClose');
 }
 
 boot();

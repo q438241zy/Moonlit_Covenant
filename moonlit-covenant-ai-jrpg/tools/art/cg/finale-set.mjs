@@ -1,25 +1,23 @@
 #!/usr/bin/env node
 // Generates the five late-game CGs (1600x900 SVG) for 《月蚀契约》:
 //   public/assets/cg/battle-phase3.svg   「它想起了什么」
-//   public/assets/cg/aftermath-snow.svg  「记忆之雪」
 //   public/assets/cg/ending-seal.svg     「静默契约」
 //   public/assets/cg/ending-share.svg    「黎明公开」
 //   public/assets/cg/ending-destroy.svg  「永夜终章」
 // Usage: node tools/art/cg/finale-set.mjs [outDir] [name ...]
 // Zero dependencies; deterministic output (seeded PRNG). Companion of eclipse-cg-set.mjs.
+// aftermath-snow.svg 由 polish-set.mjs 输出（基于 finale-aftermath-snow.mjs 精修莉亚）。
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as L from './finale-lib.mjs';
 import battlePhase3 from './finale-battle-phase3.mjs';
-import aftermathSnow from './finale-aftermath-snow.mjs';
 import endingSeal from './finale-ending-seal.mjs';
 import endingShare from './finale-ending-share.mjs';
 import endingDestroy from './finale-ending-destroy.mjs';
 
 const scenes = {
   'battle-phase3': battlePhase3,
-  'aftermath-snow': aftermathSnow,
   'ending-seal': endingSeal,
   'ending-share': endingShare,
   'ending-destroy': endingDestroy,

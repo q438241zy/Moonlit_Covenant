@@ -1,7 +1,11 @@
 /* ═══════════════════════════════════════════════════════════
    月蚀契约·暗影对决 —— 前端 SPA（原生 JS，无依赖）
    界面：主菜单 / 抽卡 / 图鉴 / 组牌 / 战斗
+   美术：原创矢量卡面 /assets/cards/*.svg（进化版 *_e.svg）、女主立绘、
+         UI 图标统一来自 ./icons.js（不再用 emoji 充当美术）
    ═══════════════════════════════════════════════════════════ */
+
+import { icon } from './icons.js';
 
 // ─── API 客户端 ───
 async function api(path, opts) {
@@ -47,14 +51,31 @@ function toast(msg, isErr = false) {
 
 function modal(html) {
   const root = $('#modal-root');
-  root.innerHTML = `<div class="mask"><div class="sheet">${html}</div></div>`;
+  root.innerHTML = `<div class="mask"><div class="sheet" role="dialog" aria-modal="true">${html}</div></div>`;
   $('.mask', root).addEventListener('click', (e) => { if (e.target.classList.contains('mask')) closeModal(); });
 }
 function closeModal() { $('#modal-root').innerHTML = ''; }
 
 const CLASS_COLOR = { lia: 'var(--c-lia)', lilith: 'var(--c-lilith)', serena: 'var(--c-serena)', neutral: 'var(--c-neutral)' };
-const KEYWORD_ICON = { guard: '🛡️', rush: '👢', storm: '⚡', bane: '☠️', drain: '🩸' };
-const HERO_ICONS = { lia_hero: '🛡️', lilith_hero: '🗡️', serena_hero: '🔮', n_dragon: '🐉', n_angel: '👼️' };
+// 图标名（见 ./icons.js）
+const KEYWORD_ICON = { guard: 'guard', rush: 'rush', storm: 'storm', bane: 'bane', drain: 'blood' };
+const HERO_ICONS = { lia_hero: 'crown', lilith_hero: 'crown', serena_hero: 'crown', n_dragon: 'dragon', n_angel: 'angel' };
+const CLASS_ICON = { lia: 'guard', lilith: 'dagger', serena: 'moon-orb', neutral: 'sword' };
+const CLASS_PICK = [
+  ['lia', '莉亚·赫斯特', '守护 / 中速', '以守护随从稳住阵线，护甲与群体伤害收割'],
+  ['lilith', '莉莉丝·瓦尔哈拉', '快攻', '突进与疾驰抢节奏，直取敌方主战者'],
+  ['serena', '塞雷娜·诺克斯', '控制', '抽牌、消灭与群体法术掌控全场']
+];
+const CARD_BACK = '/assets/ui/card-back.svg';
+const CARD_PACK = '/assets/ui/card-pack.svg';
+// 货币/资源：图标 + 数值
+const cur = (name, n) => `<span class="cur cur-${name}">${icon(name, { size: '1.1em' })}<b>${n}</b></span>`;
+// 主战者头像（圆形、脸部居中的女主立绘；图片失败时露出职业图标）
+function avatarHTML(cls, extra = '') {
+  const info = S.meta?.classes?.[cls];
+  const img = info?.portrait ? `<img class="avatar-img" src="${info.portrait}" alt="" draggable="false">` : '';
+  return `<span class="avatar ${extra}" style="--accent:${info?.accent || '#666'}"><span class="avatar-fallback">${icon(CLASS_ICON[cls] || 'sword', { size: '55%' })}</span>${img}</span>`;
+}
 
 // ─── 程序化卡牌美术（SVG，零依赖、可离线，真实立绘就绪后自动让位给 <img>）───
 const CLASS_HEX = { lia: '#ff6b5e', lilith: '#b58cff', serena: '#7c6bff', neutral: '#9aa7b5' };
@@ -152,24 +173,25 @@ function cardArtSVG(card, evolved) {
   </svg>`;
 }
 
+// 卡牌类型徽记（图标名）：用于详情弹窗等处的小图标
 function cardIcon(card) {
   if (HERO_ICONS[card.id || card.cardId]) return HERO_ICONS[card.id || card.cardId];
   if (card.type === 'spell') {
     const e = card.effects || [];
-    if (e.some((x) => x.type === 'destroy')) return '☠️';
-    if (e.some((x) => x.type === 'damage' && x.targeting === 'allEnemyFollowers')) return '💥';
-    if (e.some((x) => x.type === 'damage')) return '✦';
-    if (e.some((x) => x.type === 'heal')) return '✨';
-    if (e.some((x) => x.type === 'draw')) return '📜';
-    if (e.some((x) => x.type === 'buff')) return '⬆️';
-    return '✧';
+    if (e.some((x) => x.type === 'destroy')) return 'skull';
+    if (e.some((x) => x.type === 'damage' && x.targeting === 'allEnemyFollowers')) return 'burst';
+    if (e.some((x) => x.type === 'damage')) return 'bolt';
+    if (e.some((x) => x.type === 'heal')) return 'sparkle';
+    if (e.some((x) => x.type === 'draw')) return 'scroll';
+    if (e.some((x) => x.type === 'buff')) return 'up-arrow';
+    return 'star4';
   }
   const kw = card.keywords || [];
-  if (kw.includes('guard')) return '🛡️';
-  if (kw.includes('bane')) return '☠️';
-  if (kw.includes('storm')) return '⚡';
-  if (kw.includes('rush')) return '🗡️';
-  return { lia: '🔥', lilith: '🌑', serena: '🌙', neutral: '⚔️' }[card.class] || '⚔️';
+  if (kw.includes('guard')) return 'guard';
+  if (kw.includes('bane')) return 'bane';
+  if (kw.includes('storm')) return 'storm';
+  if (kw.includes('rush')) return 'dagger';
+  return { lia: 'flame', lilith: 'eclipse', serena: 'moon', neutral: 'sword' }[card.class] || 'sword';
 }
 
 // 把战场实例合并成可渲染的卡面对象
@@ -182,33 +204,36 @@ function instToCard(inst) {
 function cardHTML(card, opts = {}) {
   const cc = CLASS_COLOR[card.class] || 'var(--c-neutral)';
   const rc = `var(--r-${card.rarity})`;
-  const icon = cardIcon(card);
-  const kwIcons = (card.keywords || []).map((k) => KEYWORD_ICON[k] || '').join('');
+  const kwIcons = (card.keywords || []).map((k) => KEYWORD_ICON[k] ? `<span class="kw-i kw-${k}">${icon(KEYWORD_ICON[k], { size: '100%', title: S.meta?.keywords?.[k] || k })}</span>` : '').join('');
   const isSpell = card.type === 'spell';
-  const cls = ['card', card.rarity, isSpell ? 'spell' : '', opts.evolved ? 'evolved' : '', opts.locked ? 'locked' : '', opts.isNew ? 'new' : '', opts.playable ? 'playable' : '', opts.sel ? 'sel' : '', opts.targetable ? 'targetable' : '', opts.attackerSel ? 'attackerSel' : ''].filter(Boolean).join(' ');
+  const cls = ['card', card.rarity, isSpell ? 'spell' : '', opts.evolved ? 'evolved' : '', opts.locked ? 'locked' : '', opts.isNew ? 'new' : '', opts.playable ? 'playable' : '', opts.sel ? 'sel' : '', opts.targetable ? 'targetable' : '', opts.attackerSel ? 'attackerSel' : '', opts.ready ? 'ready' : ''].filter(Boolean).join(' ');
   const atk = opts.evolved && card.evolveAttack != null ? card.evolveAttack : card.attack;
   const hp = opts.evolved && card.evolveHealth != null ? card.evolveHealth : card.health;
   const stats = isSpell ? '<div class="stats"></div>' : `<div class="stats"><div class="atk">${atk}</div><div class="hpv">${hp}</div></div>`;
   const count = opts.count > 1 ? `<div class="count-badge">×${opts.count}</div>` : '';
+  const shard = opts.shards ? `<div class="shard-badge">${icon('shard', { size: 11 })}+${opts.shards}</div>` : '';
   const evolveBtn = opts.canEvolve ? `<div class="evolve-btn" data-evolve="${card.uid}">进化</div>` : '';
   const dataAttr = opts.dataUid ? `data-uid="${card.uid}"` : '';
   const artUrl = (opts.evolved && card.artEvolve) ? card.artEvolve : card.art;
-  const artImg = artUrl ? `<img class="art-img" src="${artUrl}" alt="" loading="lazy">` : '';
+  // 矢量卡面叠在程序化 SVG 之上；加载失败由 init() 里的捕获监听隐藏，露出底层程序化美术
+  const artImg = artUrl ? `<img class="art-img" src="${artUrl}" alt="" loading="lazy" decoding="async" draggable="false">` : '';
   return `<div class="${cls}" style="--cc:${cc};--rc:${rc}" ${dataAttr}>
     <div class="cost">${card.cost}</div>
     ${kwIcons ? `<div class="kw">${kwIcons}</div>` : ''}
     <div class="art">${cardArtSVG(card, opts.evolved)}${artImg}</div>
     <div class="cname">${card.name}</div>
-    ${stats}${count}${evolveBtn}
+    ${stats}${count}${shard}${evolveBtn}
   </div>`;
 }
 
+function resChips() {
+  return `<span class="res diamond" title="钻石">${cur('diamond', S.summary?.diamonds ?? 0)}</span><span class="res shard" title="碎片">${cur('shard', S.summary?.shards ?? 0)}</span>`;
+}
+
 function topbar(title, showRes = true) {
-  const res = showRes && S.summary
-    ? `<span class="res diamond">💎${S.summary.diamonds}</span><span class="res shard">✦${S.summary.shards}</span>`
-    : '';
+  const res = showRes && S.summary ? resChips() : '';
   return `<div class="topbar">
-    <button class="back" data-nav="hub">‹</button>
+    <button class="back" data-nav="hub" aria-label="返回">${icon('chevron-left', { size: 18 })}</button>
     <div class="title">${title}</div>
     ${res}
   </div>`;
@@ -234,18 +259,20 @@ async function refreshSummary() {
 // ─── 主菜单 ───
 async function renderHub() {
   await refreshSummary();
-  app().innerHTML = `<div class="screen-wrap">
-    <div class="topbar"><div class="title" style="flex:1;text-align:left">月蚀契约</div>
-      <span class="res diamond">💎${S.summary?.diamonds ?? 0}</span><span class="res shard">✦${S.summary?.shards ?? 0}</span></div>
+  app().innerHTML = `<div class="screen-wrap hub-screen">
+    <div class="topbar"><div class="title hub-title">月蚀契约</div>${resChips()}</div>
     <div class="scroll">
-      <div class="hub-hero"><h1>暗影对决</h1><p>SHADOWVERSE-LIKE · 卡牌对战</p></div>
-      <div class="hub-menu">
-        <div class="hub-card wide" data-nav="battle"><div class="ico">⚔️</div><div class="name">开始对战</div><div class="desc">选择职业，与 AI 决斗</div></div>
-        <div class="hub-card" data-nav="pack"><div class="ico">🎴</div><div class="name">召唤卡包</div><div class="desc">抽取新卡牌</div></div>
-        <div class="hub-card" data-nav="deck"><div class="ico">📚</div><div class="name">组牌</div><div class="desc">编辑你的牌组</div></div>
-        <div class="hub-card" data-nav="collection"><div class="ico">🖼️</div><div class="name">图鉴</div><div class="desc">收录 ${S.summary?.ownedCards ?? 0}/${S.summary?.totalCards ?? 38}</div></div>
+      <div class="hub-hero">
+        <div class="hub-avatars">${['lilith', 'lia', 'serena'].map((c) => avatarHTML(c)).join('')}</div>
+        <h1>暗影对决</h1><p>SHADOWVERSE-LIKE · 卡牌对战</p>
       </div>
-      <div class="hub-credit">卡牌图标美术 · <a href="https://game-icons.net" target="_blank" rel="noopener">game-icons.net</a>（CC BY 3.0）</div>
+      <div class="hub-menu">
+        <div class="hub-card wide" data-nav="battle"><div class="ico">${icon('battle', { size: 34 })}</div><div class="txt"><div class="name">开始对战</div><div class="desc">选择职业，与 AI 决斗</div></div><div class="go">${icon('chevron-right', { size: 22 })}</div></div>
+        <div class="hub-card" data-nav="pack"><div class="ico">${icon('pack', { size: 30 })}</div><div class="name">召唤卡包</div><div class="desc">抽取新卡牌</div></div>
+        <div class="hub-card" data-nav="deck"><div class="ico">${icon('deck', { size: 30 })}</div><div class="name">组牌</div><div class="desc">编辑你的牌组</div></div>
+        <div class="hub-card" data-nav="collection"><div class="ico">${icon('collection', { size: 30 })}</div><div class="name">图鉴</div><div class="desc">收录 ${S.summary?.ownedCards ?? 0}/${S.summary?.totalCards ?? 38}</div></div>
+      </div>
+      <div class="hub-credit">卡面 / 立绘 / 图标：原创矢量美术 · 备用卡面剪影 <a href="https://game-icons.net" target="_blank" rel="noopener">game-icons.net</a>（CC BY 3.0）</div>
     </div>
   </div>`;
   bindNav();
@@ -254,15 +281,23 @@ async function renderHub() {
 // ─── 抽卡 ───
 async function renderPack() {
   await refreshSummary();
-  app().innerHTML = `<div class="screen-wrap">
+  app().innerHTML = `<div class="screen-wrap pack-screen">
     ${topbar('召唤卡包')}
     <div class="scroll"><div class="pack-stage" id="packStage">
-      <div style="text-align:center;color:var(--text-dim);font-size:13px">每包8张 · 单抽💎${S.meta.pack.costSingle} · 十连💎${S.meta.pack.costTen}<br>保底：每包至少1银+，每${S.meta.pack.legendaryPity}包至少1虹</div>
-      <div class="pack-box" id="packBox">🎁</div>
-      <div style="color:var(--text-dim);font-size:12px">当前保底计数：${S.summary?.packPity ?? 0}/${S.meta.pack.legendaryPity}</div>
-      <div class="row" style="width:100%;max-width:320px">
-        <button class="btn" id="pull1">单抽 💎${S.meta.pack.costSingle}</button>
-        <button class="btn primary" id="pull10">十连 💎${S.meta.pack.costTen}</button>
+      <div class="pack-info">每包8张 · 单抽${cur('diamond', S.meta.pack.costSingle)} · 十连${cur('diamond', S.meta.pack.costTen)}<br>保底：每包至少1银+，每${S.meta.pack.legendaryPity}包至少1虹</div>
+      <button class="pack-box" id="packBox" aria-label="开启 1 包">
+        <span class="pack-glow"></span>
+        <img class="pack-img" src="${CARD_PACK}" alt="月蚀卡包" draggable="false">
+        <span class="pack-shine"></span>
+      </button>
+      <div class="pack-tip">${icon('sparkle', { size: 13 })} 点击卡包开启 1 包</div>
+      <div class="pity">
+        <div class="pity-bar"><i style="width:${Math.min(100, (S.summary?.packPity ?? 0) / S.meta.pack.legendaryPity * 100)}%"></i></div>
+        <span>虹卡保底 ${S.summary?.packPity ?? 0}/${S.meta.pack.legendaryPity}</span>
+      </div>
+      <div class="row pack-btns">
+        <button class="btn" id="pull1">单抽 ${cur('diamond', S.meta.pack.costSingle)}</button>
+        <button class="btn primary" id="pull10">十连 ${cur('diamond', S.meta.pack.costTen)}</button>
       </div>
     </div></div>
   </div>`;
@@ -275,9 +310,12 @@ async function renderPack() {
 async function openPack(count) {
   if (S.busy) return;
   S.busy = true;
-  const r = await post('/api/cards/pack', { playerId: S.playerId, count });
+  const box = $('#packBox');
+  if (box) box.classList.add('opening');
+  // 开包动画至少播放一小段，避免请求太快时一闪而过
+  const [r] = await Promise.all([post('/api/cards/pack', { playerId: S.playerId, count }), new Promise((ok) => setTimeout(ok, 650))]);
   S.busy = false;
-  if (!r.ok) { toast(r.error?.message || '抽卡失败', true); return; }
+  if (!r.ok) { if (box) box.classList.remove('opening'); toast(r.error?.message || '抽卡失败', true); return; }
   await refreshSummary();
   showReveal(r.packs, count);
 }
@@ -285,16 +323,23 @@ async function openPack(count) {
 function showReveal(packs, count) {
   const stage = $('#packStage');
   const cards = packs.flat();
-  let html = `<div style="width:100%"><div style="text-align:center;margin-bottom:10px;font-weight:700">${count >= 10 ? '十连结果' : '抽取结果'}</div>`;
+  const fresh = cards.filter((c) => c.isNew).length;
+  const shards = cards.reduce((n, c) => n + (c.shardsGained || 0), 0);
+  const best = cards.some((c) => c.rarity === 'legendary') ? 'legendary' : cards.some((c) => c.rarity === 'gold') ? 'gold' : '';
+  let html = `<div class="reveal ${best}">
+    <div class="reveal-head">${icon(best === 'legendary' ? 'crown' : 'sparkle', { size: 20 })}<span>${count >= 10 ? '十连结果' : '抽取结果'}</span></div>
+    <div class="reveal-sum"><span>${icon('star', { size: 13 })} 新卡 ${fresh} 张</span>${shards ? `<span>${icon('shard', { size: 13 })} 重复转化碎片 +${shards}</span>` : ''}</div>`;
+  let k = 0;
   for (const pack of packs) {
-    html += `<div class="reveal-grid" style="margin-bottom:12px">`;
+    html += `<div class="reveal-grid">`;
     for (const c of pack) {
-      html += cardHTML(c.card, { isNew: c.isNew, evolved: false });
+      html += `<div class="reveal-slot" style="animation-delay:${(k++ % 8) * 70}ms">${cardHTML(c.card, { isNew: c.isNew, evolved: false, shards: c.converted ? c.shardsGained : 0 })}</div>`;
     }
     html += `</div>`;
   }
-  html += `<button class="btn primary block" id="revealOk">确认</button></div>`;
+  html += `<button class="btn primary block" id="revealOk">${icon('check', { size: 16 })} 确认</button></div>`;
   stage.innerHTML = html;
+  stage.parentElement.scrollTop = 0;
   $('#revealOk').onclick = () => renderPack();
 }
 
@@ -314,7 +359,7 @@ function drawCollection() {
   );
   const clsChips = [['all', '全部'], ['lia', '莉亚'], ['lilith', '莉莉丝'], ['serena', '塞雷娜'], ['neutral', '中立']];
   const rarChips = [['all', '全部'], ['bronze', '铜'], ['silver', '银'], ['gold', '金'], ['legendary', '虹']];
-  app().innerHTML = `<div class="screen-wrap">
+  app().innerHTML = `<div class="screen-wrap col-screen">
     ${topbar(`图鉴 ${S.collection.owned}/${S.collection.total} (${S.collection.completion}%)`)}
     <div class="filters">${clsChips.map(([v, l]) => `<span class="chip ${colFilter.cls === v ? 'active' : ''}" data-cls="${v}">${l}</span>`).join('')}</div>
     <div class="filters">${rarChips.map(([v, l]) => `<span class="chip ${colFilter.rarity === v ? 'active' : ''}" data-rar="${v}">${l}</span>`).join('')}</div>
@@ -330,17 +375,25 @@ function drawCollection() {
 }
 
 function showCardDetail(c) {
-  const def = S.cardById[c.id];
-  const kw = (def?.keywords || []).map((k) => S.meta.keywords[k] || k).join(' · ');
+  const def = S.cardById[c.id] || c;
+  const kw = (def.keywords || []).map((k) => `<span class="kw-tag">${icon(KEYWORD_ICON[k] || 'star4', { size: 13 })}${S.meta.keywords[k] || k}</span>`).join('');
+  const canEvolve = def.type === 'follower' && def.artEvolve;
+  const typeLabel = { follower: '随从', spell: '法术', amulet: '护符' }[def.type] || '';
+  const rar = S.meta.rarities?.[def.rarity];
   modal(`
-    <div class="detail-card">${cardHTML(c, { evolved: false })}</div>
-    <h3 style="text-align:center">${c.name}</h3>
-    <p style="text-align:center">${c.desc || ''}</p>
-    ${kw ? `<p style="text-align:center;color:var(--gold)">${kw}</p>` : ''}
-    <p style="text-align:center">已收录：${c.count} 张${c.owned ? '' : '（未收录）'}</p>
+    <div class="detail-cards">
+      <div class="detail-card">${cardHTML({ ...def, ...c }, { evolved: false })}<span class="detail-cap">基础</span></div>
+      ${canEvolve ? `<div class="detail-card evolved-preview">${cardHTML({ ...def, ...c }, { evolved: true })}<span class="detail-cap">${icon('sparkle', { size: 11 })}进化</span></div>` : ''}
+    </div>
+    <h3 class="detail-name">${icon(cardIcon(def), { size: 18 })}<span>${c.name}</span></h3>
+    <div class="detail-meta"><span style="color:${rar?.color || 'inherit'}">${rar?.name || ''}</span><span>${typeLabel}</span><span>${S.meta.classes?.[def.class]?.name || ''}</span></div>
+    ${kw ? `<div class="detail-kw">${kw}</div>` : ''}
+    <p class="detail-desc">${c.desc || ''}</p>
+    ${def.flavor ? `<p class="detail-flavor">${def.flavor}</p>` : ''}
+    <p class="detail-own">${c.owned ? `${icon('check', { size: 13 })} 已收录 ${c.count} 张` : `${icon('lock', { size: 13 })} 未收录`}</p>
     <div class="row" style="margin-top:12px">
       <button class="btn ghost" id="closeBtn">关闭</button>
-      <button class="btn primary" id="craftBtn">合成 ✦${c.craftCost}</button>
+      <button class="btn primary" id="craftBtn">合成 ${cur('shard', c.craftCost)}</button>
     </div>
   `);
   $('#closeBtn').onclick = () => closeModal();
@@ -367,28 +420,52 @@ function drawDeck() {
   const curve = Array(8).fill(0);
   for (const id of S.deckEdit) { const c = S.cardById[id]; if (c) curve[Math.min(7, c.cost)]++; }
   const maxCurve = Math.max(1, ...curve);
-  app().innerHTML = `<div class="screen-wrap">
+  // 当前牌组清单（按费用排序，点击移除一张）
+  const inDeck = Object.keys(counts).map((id) => S.cardById[id]).filter(Boolean)
+    .sort((a, b) => a.cost - b.cost || a.name.localeCompare(b.name, 'zh'));
+  const deckList = inDeck.length
+    ? inDeck.map((c) => `<button class="deck-chip ${c.rarity}" data-rm="${c.id}" style="--cc:${CLASS_COLOR[c.class] || 'var(--c-neutral)'};--rc:var(--r-${c.rarity})" title="移除一张 ${c.name}">
+        <img class="art-img chip-art" src="${c.art}" alt="" loading="lazy" draggable="false"><span class="chip-cost">${c.cost}</span><span class="chip-name">${c.name}</span><span class="chip-n">×${counts[c.id]}</span>
+      </button>`).join('')
+    : `<span class="deck-empty">${icon('deck', { size: 14 })} 牌组为空：点击下方卡牌加入</span>`;
+  // 加/减卡会整屏重绘：保留滚动位置（仅当已在组牌界面时）
+  const onDeck = !!$('.deck-list');
+  const keepScroll = onDeck ? $('.scroll')?.scrollTop || 0 : 0;
+  const keepList = onDeck ? $('.deck-list')?.scrollLeft || 0 : 0;
+  app().innerHTML = `<div class="screen-wrap deck-screen">
     ${topbar('组牌')}
-    <div class="filters">${[['lia','莉亚·守护'],['lilith','莉莉丝·快攻'],['serena','塞雷娜·控制']].map(([v,l]) => `<span class="chip ${cls===v?'active':''}" data-dcls="${v}">${l}</span>`).join('')}</div>
+    <div class="filters deck-classes">${[['lia','莉亚·守护'],['lilith','莉莉丝·快攻'],['serena','塞雷娜·控制']].map(([v,l]) => `<span class="chip ${cls===v?'active':''}" data-dcls="${v}">${avatarHTML(v, 'xs')}${l}</span>`).join('')}</div>
     <div class="deckbar">
-      <span>牌组：<span class="cnt" style="color:${S.deckEdit.length===40?'#7dffa0':'#ffb0b8'}">${S.deckEdit.length}/40</span></span>
+      <span class="deck-count">${icon('deck', { size: 15 })}牌组 <span class="cnt ${S.deckEdit.length === 40 ? 'ok' : 'bad'}">${S.deckEdit.length}/40</span></span>
       <span style="flex:1"></span>
-      <button class="btn ghost" id="deckReset" style="padding:6px 12px;font-size:12px">重置</button>
-      <button class="btn primary" id="deckSave" style="padding:6px 12px;font-size:12px">保存</button>
+      <button class="btn ghost small" id="deckReset">${icon('refresh', { size: 13 })} 重置</button>
+      <button class="btn primary small" id="deckSave">${icon('save', { size: 13 })} 保存</button>
     </div>
     <div class="curve">${curve.map((n,i)=>`<div class="bar" style="height:${n/maxCurve*100}%"><b>${n||''}</b><i>${i===7?'7+':i}</i></div>`).join('')}</div>
-    <div class="section-title">可用卡牌（点击加入牌组）</div>
+    <div class="deck-list">${deckList}</div>
+    <div class="section-title">可用卡牌（点击加入牌组 · 点击上方清单移除）</div>
     <div class="scroll"><div class="pad"><div class="grid">
       ${available.map((c) => cardHTML(c, { count: counts[c.id] || 0, locked: (counts[c.id]||0) >= 3 })).join('')}
     </div></div></div>
   </div>`;
   bindNav();
-  document.querySelectorAll('[data-dcls]').forEach((el) => el.onclick = () => { S.deckClass = el.dataset.dcls; S.deckEdit = [...(S.deckData[S.deckClass]?.deck || [])]; drawDeck(); });
+  document.querySelectorAll('[data-dcls]').forEach((el) => el.onclick = () => {
+    S.deckClass = el.dataset.dcls; S.deckEdit = [...(S.deckData[S.deckClass]?.deck || [])];
+    const sc = $('.scroll'); if (sc) sc.scrollTop = 0; // 换职业：卡池变了，回到顶部
+    const dl = $('.deck-list'); if (dl) dl.scrollLeft = 0;
+    drawDeck();
+  });
+  const sc = $('.scroll'); if (sc) sc.scrollTop = keepScroll;
+  const dl = $('.deck-list'); if (dl) dl.scrollLeft = keepList;
   document.querySelectorAll('.grid .card').forEach((el, i) => el.onclick = () => {
     const c = available[i];
     if ((counts[c.id] || 0) >= 3) { toast('同名卡最多3张', true); return; }
     if (S.deckEdit.length >= 40) { toast('牌组已满40张', true); return; }
     S.deckEdit.push(c.id); drawDeck();
+  });
+  document.querySelectorAll('[data-rm]').forEach((el) => el.onclick = () => {
+    const at = S.deckEdit.lastIndexOf(el.dataset.rm);
+    if (at >= 0) { S.deckEdit.splice(at, 1); drawDeck(); }
   });
   $('#deckReset').onclick = () => { S.deckEdit = []; drawDeck(); };
   $('#deckSave').onclick = async () => {
@@ -400,13 +477,17 @@ function drawDeck() {
 
 // ─── 对战设置 ───
 function renderBattleSetup() {
-  app().innerHTML = `<div class="screen-wrap">
+  app().innerHTML = `<div class="screen-wrap setup-screen">
     ${topbar('选择职业')}
     <div class="scroll"><div class="pad">
       <div class="section-title" style="padding-left:0">选择你的职业</div>
-      <div class="hub-menu" style="padding:0">
-        ${[['lia','莉亚·赫斯特','守护 / 中速','🛡️'],['lilith','莉莉丝·瓦尔哈拉','快攻','🗡️'],['serena','塞雷娜·诺克斯','控制','🔮']].map(([id,n,s,i])=>`
-          <div class="hub-card" data-pick="${id}"><div class="ico">${i}</div><div class="name">${n}</div><div class="desc">${s}</div></div>`).join('')}
+      <div class="class-pick">
+        ${CLASS_PICK.map(([id, n, st, d]) => `
+          <div class="pick-card" data-pick="${id}" style="--accent:${S.meta.classes?.[id]?.accent || '#888'}">
+            ${avatarHTML(id, 'lg')}
+            <div class="pick-txt"><div class="name">${n}</div><div class="style">${icon(CLASS_ICON[id], { size: 14 })}${st}</div><div class="desc">${d}</div></div>
+            <div class="go">${icon('play', { size: 18 })}</div>
+          </div>`).join('')}
       </div>
       <div class="section-title" style="padding-left:0;margin-top:16px">对手</div>
       <div class="filters" style="padding:0">
@@ -440,13 +521,13 @@ function leaderBlock(side, p, meta, active) {
   const info = meta.classes[cls];
   const hp = Math.max(0, p.leader.hp);
   const pct = hp / p.leader.maxHp * 100;
-  const icon = { lia: '🛡️', lilith: '🗡️', serena: '🔮' }[cls] || '⚔️';
-  return `<div class="b-leader">
-    <div class="portrait ${active ? 'active' : ''}" style="border-color:${info?.accent || '#666'}">${icon}</div>
+  const ppPips = Array.from({ length: p.pp.max }, (_, i) => `<i class="${i < p.pp.current ? 'on' : ''}"></i>`).join('');
+  return `<div class="b-leader ${side}">
+    <div class="portrait ${active ? 'active' : ''}" style="--accent:${info?.accent || '#666'}">${avatarHTML(cls)}</div>
     <div class="info">
-      <div class="lname">${info?.name || ''}${p.leader.armor > 0 ? ` 🛡${p.leader.armor}` : ''}</div>
-      <div class="hpbar"><div class="fill" style="width:${pct}%"></div><div class="txt">${hp}/${p.leader.maxHp}</div></div>
-      <div class="pips"><span class="pp">PP ${p.pp.current}/${p.pp.max}</span><span class="ep">EP ${p.ep}${p.canEvolve ? '✦' : ''}</span></div>
+      <div class="lname"><span>${info?.name || ''}</span>${p.leader.armor > 0 ? `<span class="armor" title="护甲">${icon('shield', { size: 12 })}${p.leader.armor}</span>` : ''}</div>
+      <div class="hpbar ${pct <= 30 ? 'low' : ''}"><div class="fill" style="width:${pct}%"></div><div class="txt">${icon('heart', { size: 10 })}${hp}/${p.leader.maxHp}</div></div>
+      <div class="pips"><span class="pp" title="PP">${icon('crystal', { size: 11 })}${p.pp.current}/${p.pp.max}<span class="pp-pips">${ppPips}</span></span><span class="ep ${p.canEvolve ? 'ready' : ''}" title="进化点">${icon('sparkle', { size: 11 })}EP ${p.ep}</span></div>
     </div>
   </div>`;
 }
@@ -472,19 +553,19 @@ function drawBattle() {
   // 选中了攻击者且可打脸 → 显示醒目的「攻击主战者」按钮
   const showAttackFace = !!S.selAttacker && targetLeader;
   const hint = targeting
-    ? '🎯 选择法术目标（点击高亮的敌方目标）'
-    : (S.selAttacker ? '⚔️ 选择攻击目标 — 点击敌方随从，或点击下方按钮直击主战者' : '');
+    ? `${icon('target', { size: 13 })} 选择法术目标（点击高亮的目标，或点「取消」）`
+    : (S.selAttacker ? `${icon('sword', { size: 13 })} 选择攻击目标 — 点击敌方随从${targetLeader ? '，或点击下方按钮直击主战者' : ''}` : '');
 
-  const oppHand = b.players.opponent.hand.map(() => `<div class="back"></div>`).join('');
+  const oppHand = b.players.opponent.hand.map(() => `<img class="back" src="${CARD_BACK}" alt="" draggable="false">`).join('');
   const oppField = b.players.opponent.field.map((inst) => {
     const c = instToCard(inst);
     return cardHTML(c, { evolved: inst.evolved, dataUid: true, targetable: targetUids.has(inst.uid) });
-  }).join('') || '<span style="color:var(--text-dim);font-size:11px">—</span>';
+  }).join('') || '<span class="field-empty">对手场上暂无随从</span>';
   const myField = b.players.player.field.map((inst) => {
     const c = instToCard(inst);
-    const canAtk = myTurn && attackTargets[inst.uid];
-    return cardHTML(c, { evolved: inst.evolved, dataUid: true, canEvolve: myTurn && evolvable.has(inst.uid), targetable: targetUids.has(inst.uid), attackerSel: S.selAttacker === inst.uid });
-  }).join('') || '<span style="color:var(--text-dim);font-size:11px">—</span>';
+    const canAtk = myTurn && !targeting && (attackTargets[inst.uid] || []).length > 0;
+    return cardHTML(c, { evolved: inst.evolved, dataUid: true, canEvolve: myTurn && evolvable.has(inst.uid), targetable: targetUids.has(inst.uid), attackerSel: S.selAttacker === inst.uid, ready: canAtk && S.selAttacker !== inst.uid });
+  }).join('') || '<span class="field-empty">我方场上暂无随从</span>';
   const myHand = b.players.player.hand.map((inst) => {
     const c = instToCard(inst);
     const playable = myTurn && legalUids.has(inst.uid);
@@ -494,26 +575,26 @@ function drawBattle() {
   const lastLog = (b.log && b.log.length) ? b.log[b.log.length - 1].msg : '';
   const turnTag = `第${b.turn}回合 · ${b.activePlayer === 'player' ? '你的回合' : '对手回合'}`;
 
-  app().innerHTML = `<div class="screen-wrap"><div class="battle">
+  app().innerHTML = `<div class="screen-wrap battle-screen"><div class="battle">
     <div class="b-side opp">
       ${leaderBlock('opponent', b.players.opponent, meta, b.activePlayer === 'opponent')}
-      <div class="b-hand-opp">${oppHand}</div>
+      <div class="b-hand-opp" title="对手手牌 ${b.players.opponent.hand.length} 张">${oppHand}<span class="opp-count">${b.players.opponent.hand.length}</span></div>
       <div class="b-field" id="oppField">${oppField}</div>
     </div>
     <div class="b-mid"><div class="b-divider"></div><div class="b-turntag">${turnTag}</div><div class="b-divider"></div></div>
     <div class="b-side me">
       <div class="b-field" id="myField">${myField}</div>
       ${leaderBlock('player', b.players.player, meta, b.activePlayer === 'player')}
-      <div class="b-hand" id="myHand">${myHand}</div>
+      <div class="b-hand" id="myHand" style="--n:${b.players.player.hand.length}">${myHand}</div>
     </div>
     <div class="b-controls">
       <button class="btn ghost" id="concedeBtn" style="padding:10px 12px">投降</button>
       ${targeting ? `<button class="btn ghost" id="cancelBtn" style="padding:10px 12px">取消</button>` : ''}
-      ${showAttackFace ? `<button class="btn danger face-atk" id="attackFaceBtn">⚔️ 攻击主战者</button>` : ''}
-      <button class="btn primary endturn" id="endTurnBtn" ${myTurn ? '' : 'disabled'}>${myTurn ? '结束回合 ▶' : '对手行动中…'}</button>
+      ${showAttackFace ? `<button class="btn danger face-atk" id="attackFaceBtn">${icon('sword', { size: 16 })} 攻击主战者</button>` : ''}
+      <button class="btn primary endturn" id="endTurnBtn" ${myTurn ? '' : 'disabled'}>${myTurn ? `结束回合 ${icon('play', { size: 14 })}` : targeting ? '选择目标中…' : b.phase === 'gameover' ? '对局结束' : '对手行动中…'}</button>
     </div>
     ${hint ? `<div class="b-hint">${hint}</div>` : ''}
-    <div style="text-align:center;font-size:10px;color:var(--text-dim);padding:0 8px 6px;min-height:14px">${lastLog}</div>
+    <div class="b-log">${lastLog}</div>
     ${b.phase === 'gameover' ? resultBanner(b.winner) : ''}
   </div></div>`;
 
@@ -530,12 +611,16 @@ function drawBattle() {
 
 function resultBanner(winner) {
   const win = winner === 'player';
-  return `<div class="result-banner">
-    <div class="big ${win ? 'win' : 'lose'}">${win ? '胜利' : winner === 'draw' ? '平局' : '败北'}</div>
-    <div style="color:var(--text-dim)">${win ? '对手主战者已被击破！' : '你的主战者倒下了…'}</div>
+  const draw = winner === 'draw';
+  const b = S.battle;
+  return `<div class="result-banner ${win ? 'win' : draw ? 'draw' : 'lose'}">
+    <div class="result-crest">${avatarHTML(win ? b.playerClass : b.opponentClass, 'xl')}<span class="result-glyph">${icon(win ? 'trophy' : draw ? 'shield' : 'moon', { size: 22 })}</span></div>
+    <div class="big ${win ? 'win' : 'lose'}">${win ? '胜利' : draw ? '平局' : '败北'}</div>
+    <div class="result-sub">${win ? '对手主战者已被击破！' : draw ? '双方同时倒下。' : '你的主战者倒下了…'}</div>
+    <div class="result-turn">${icon('clock', { size: 13 })} 共 ${b.turn} 回合</div>
     <div class="row" style="max-width:280px;width:100%">
-      <button class="btn ghost" id="backHub">返回</button>
-      <button class="btn primary" id="again">再来一局</button>
+      <button class="btn ghost" id="backHub">${icon('home', { size: 15 })} 返回</button>
+      <button class="btn primary" id="again">${icon('refresh', { size: 15 })} 再来一局</button>
     </div>
   </div>`;
 }
@@ -556,8 +641,9 @@ function bindBattleEvents(myTurn, attackTargets) {
   document.querySelectorAll('#myField .card').forEach((el) => {
     const uid = el.dataset.uid;
     el.onclick = () => {
+      // 选目标阶段：友方随从也可能是法术目标（如「战吼鼓舞」）
+      if (S.battle.phase === 'awaitingTarget') { resolveTarget(uid); return; }
       if (!myTurn) return;
-      if (S.battle.phase === 'awaitingTarget') return;
       if (attackTargets[uid]) {
         S.selAttacker = (S.selAttacker === uid) ? null : uid;
         S.pendingPlayUid = null;
@@ -595,6 +681,14 @@ function bindBattleEvents(myTurn, attackTargets) {
   };
   const concede = $('#concedeBtn');
   if (concede) concede.onclick = async () => {
+    // 投降紧挨结束回合，手机上容易误触：3 秒内再点一次才生效
+    if (!(S.concedeArmedAt && Date.now() - S.concedeArmedAt < 3000)) {
+      S.concedeArmedAt = Date.now();
+      concede.textContent = '确认投降？';
+      setTimeout(() => { if (concede.isConnected) concede.textContent = '投降'; }, 3000);
+      return;
+    }
+    S.concedeArmedAt = 0;
     const r = await post('/api/battle/concede', { playerId: S.playerId });
     if (r.ok) { S.battle = r.state; drawBattle(); }
   };
@@ -658,25 +752,35 @@ function bindNav() {
 
 // ─── 初始化 ───
 async function init() {
-  // 真实立绘加载失败时隐藏 <img>，露出底层程序化 SVG 美术（error 事件不冒泡，需捕获阶段）
+  // 卡面 / 头像图片加载失败时隐藏 <img>，露出底层程序化 SVG 美术或职业图标
+  // （CSP 禁止内联 onerror；error 事件不冒泡，需在捕获阶段统一监听）
   document.addEventListener('error', (e) => {
     const t = e.target;
-    if (t && t.tagName === 'IMG' && t.classList.contains('art-img')) t.style.display = 'none';
+    if (!t || t.tagName !== 'IMG') return;
+    if (t.classList.contains('art-img') || t.classList.contains('avatar-img')) {
+      t.style.display = 'none';
+      t.parentElement?.classList.add('img-failed');
+    }
   }, true);
+  // 卡牌详情弹层：Esc 关闭（与点遮罩、点「关闭」一致）
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && $('#modal-root').firstElementChild) closeModal();
+  });
   try {
     const [metaR, cardsR] = await Promise.all([get('/api/cards/meta'), get('/api/cards/all')]);
     S.meta = metaR;
     S.allCards = cardsR.cards;
     S.cardById = {};
     for (const c of cardsR.cards) S.cardById[c.id] = c;
-    // 玩家账户
+    // 玩家账户：账户只存在服务器内存里，服务器重启后本地记住的 id 会失效（抽卡/图鉴/对战全部 404），此时重新建号
     S.playerId = localStorage.getItem('moonlit:cardPlayerId');
-    if (!S.playerId) {
+    if (S.playerId) await refreshSummary();
+    if (!S.playerId || !S.summary) {
       const r = await post('/api/account/create', { playerName: '牌手' });
       S.playerId = r.account.id;
       localStorage.setItem('moonlit:cardPlayerId', S.playerId);
+      await refreshSummary();
     }
-    await refreshSummary();
     go('hub');
   } catch (err) {
     app().innerHTML = `<div class="boot"><div class="boot-logo">连接失败</div><div class="boot-sub">${err.message}</div><div class="boot-loading">请确认服务器已启动</div></div>`;
