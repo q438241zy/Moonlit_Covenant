@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createBattle } from '../cards/battle.mjs';
+import { createBattle, endTurn } from '../cards/battle.mjs';
 import { runAITurn } from '../cards/ai.mjs';
 import { buildStarterDeck, validateDeck, getDeckCurve, getDeckStats, DECK_SIZE } from '../cards/deck.mjs';
 
@@ -42,4 +42,17 @@ test('AI 不会做出非法动作（攻击/进化均合法）', () => {
     while (state.phase !== 'gameover' && turns++ < 120) runAITurn(state);
   });
   assert.equal(state.phase, 'gameover');
+});
+
+test('AI 会真正出牌：对手全程跳过时 AI 铺场并击败对方', () => {
+  const state = createBattle({ playerClass: 'lilith', playerDeck: buildStarterDeck('lilith'), opponentClass: 'lia', opponentDeck: buildStarterDeck('lia'), seed: 3 });
+  let plays = 0;
+  let turns = 0;
+  while (state.phase !== 'gameover' && turns++ < 30) {
+    endTurn(state); // 玩家什么都不做
+    runAITurn(state);
+    plays += state.aiActions.filter((a) => a.type === 'play').length;
+  }
+  assert.ok(plays > 0, 'AI 至少打出一张牌');
+  assert.equal(state.winner, 'opponent');
 });

@@ -2,11 +2,11 @@
 // turned to the captain. Her left fist is wrapped around the scabbard: the ring-guard pommel of the
 // rapier cracks down on the cloth. Right gauntlet planted on her hip.
 // Head drawn in local units (origin = between the eyes), placed by HEAD_T.
-import { pt, smooth, taper, path, line, linear, eye } from './polish-lib.mjs';
+import { smooth, taper, path, line, linear, eye } from './polish-lib.mjs';
 
 const S = (P) => smooth(P, true);
 const C = { lia: '#ff6b7c', oath: '#ffd091', brass: '#b88a4a', brassHi: '#ffd091', lamp: '#ffc670' };
-export const SKIN = { base: '#f7d8c8', lit: '#fff1e4', sh: '#d6a09a', deep: '#a06878', line: '#6a2f3a', blush: '#f08a8a' };
+const SKIN = { base: '#f7d8c8', lit: '#fff1e4', sh: '#d6a09a', deep: '#a06878', line: '#6a2f3a', blush: '#f08a8a' };
 const H = { base: '#c42a40', sh: '#80162a', deep: '#4a0a1a', hi: '#ff8a96', lit: '#ff9e8c', streak: '#5a0e20' };
 const AR = { base: '#aeb2cc', lit: '#f4dcc4', mid: '#7e7ea2', sh: '#4c4a6c', deep: '#272540', hi: '#ffffff', red: '#a32840', redSh: '#561020', redLit: '#e4566a' };
 const HEAD_T = 'translate(420 238) scale(.58) rotate(-3)';
@@ -21,24 +21,25 @@ export function lia(c) {
   def('lSideF', taper([[78, -64], [88, 10], [86, 96], [94, 184]], 30, 0.9, 0, 0.22));
   def('lFace', S([[-70, -56], [-75, -14], [-73, 22], [-66, 52], [-52, 78], [-31, 98], [-10, 110], [6, 114], [22, 107], [42, 90], [58, 64], [66, 34], [64, 6], [69, -24], [66, -60], [20, -92], [-40, -88]]));
   // body, canvas units
-  def('lPonyA', taper([[402, 146], [370, 112], [318, 102], [276, 128], [252, 184], [244, 264], [250, 350], [264, 430], [254, 508]], 66, 0.6, 0, 0.2));
-  def('lPonyB', taper([[396, 138], [350, 98], [296, 104], [256, 144], [232, 214], [226, 300], [234, 380], [222, 452]], 36, 0.6, 0, 0.22));
-  def('lPonyC', taper([[404, 152], [372, 140], [326, 154], [300, 206], [294, 290], [304, 380], [296, 444]], 30, 0.6, 0, 0.2));
+  def('lPonyA', taper([[402, 146], [370, 116], [320, 108], [278, 132], [252, 184], [244, 264], [250, 350], [264, 430], [254, 508]], 54, 0.6, 0, 0.2));
+  def('lPonyB', taper([[396, 140], [352, 104], [298, 110], [258, 148], [232, 214], [226, 300], [234, 380], [222, 452]], 30, 0.6, 0, 0.22));
+  def('lPonyC', taper([[404, 152], [372, 140], [326, 154], [300, 206], [294, 290], [304, 380], [296, 444]], 26, 0.6, 0, 0.2));
   def('lCape', S([[352, 344], [312, 362], [282, 430], [258, 520], [246, 620, 1], [384, 620, 1], [382, 470], [370, 390]]));
   def('lTorso', S([[372, 340], [428, 330], [474, 340], [490, 372], [494, 420], [482, 462], [472, 494], [484, 540], [488, 610, 1], [370, 610, 1], [374, 540], [386, 494], [372, 450], [360, 400], [360, 360]]));
   def('lArmN', S([[352, 396], [326, 414], [304, 446], [282, 474], [288, 500], [318, 520], [352, 542], [374, 554], [394, 540], [378, 520], [346, 494], [326, 478], [336, 452], [360, 424]]));
   def('lArmF', S([[476, 368], [502, 378], [514, 420], [520, 452], [550, 468], [592, 478], [606, 496], [596, 516], [552, 514], [510, 500], [488, 478], [478, 430], [468, 398]]));
   def('lPaulN', S([[364, 342], [334, 346], [312, 368], [304, 400], [314, 428], [340, 432], [370, 414], [390, 384], [392, 354]]));
+  c.sil('liaSilW', [['lArmF'], ['lTorso'], ['lArmN'], ['lPaulN'], ['lHair', HEAD_T], ['lSideF', HEAD_T], ['lFace', HEAD_T]]);
   c.sil('liaSil', [['lPonyA'], ['lPonyB'], ['lPonyC'], ['lCape'], ['lArmF'], ['lTorso'], ['lArmN'], ['lPaulN'], ['lBack', HEAD_T], ['lHair', HEAD_T], ['lSideN', HEAD_T], ['lSideF', HEAD_T], ['lFace', HEAD_T]]);
-  c.add(linear(`${p}-lPlate`, [[0, '#3a3858'], [0.38, '#8a88ae'], [0.62, '#e4dcec'], [1, '#ffe2c4']], 'x1="0" y1="0" x2="1" y2="0"')
-    + linear(`${p}-lShade`, [[0, '#14102a', 0.6], [0.4, '#14102a', 0.22], [0.62, '#14102a', 0]], 'gradientUnits="userSpaceOnUse" x1="226" y1="0" x2="470" y2="0"')
+  c.add(linear(`${p}-lPlate`, [[0, '#33314f'], [0.36, '#7e7ca4'], [0.6, '#cfc8de'], [0.85, '#f2d2b4'], [1, '#ffbf8a']], 'x1="0" y1="0" x2="1" y2="0"')
+    + linear(`${p}-lShade`, [[0, '#120e26', 0.7], [0.45, '#120e26', 0.3], [0.7, '#120e26', 0]], 'gradientUnits="userSpaceOnUse" x1="226" y1="0" x2="470" y2="0"')
     + linear(`${p}-lWarm`, [[0, '#ff9a4a', 0], [1, '#ffb060', 0.32]], 'gradientUnits="userSpaceOnUse" x1="420" y1="300" x2="620" y2="560"'));
 
   let s = '';
   // ---------------------------------------------------------------- glow + rims
   s += U('liaSil', C.lia, ` opacity=".5" filter="url(#${p}-b2)"`);
   s += U('liaSil', C.lia, ' transform="translate(-4 -2)"');
-  s += U('liaSil', '#ffc890', ' opacity=".8" transform="translate(2.5 1.5)"');
+  s += U('liaSilW', '#ffc890', ' opacity=".8" transform="translate(2.5 1.5)"');
   // ---------------------------------------------------------------- ponytail (gold tie at the crown)
   s += U('lPonyB', H.sh) + U('lPonyA', H.base) + U('lPonyC', H.sh);
   s += path(taper([[352, 120], [304, 126], [276, 170], [266, 250], [268, 340], [280, 420]], 24, 0.3, 0, 0.4), H.sh, ' opacity=".9"');
@@ -68,7 +69,11 @@ export function lia(c) {
   // breastplate ridge + the shadowed near half
   s += path(S([[372, 340], [420, 332], [428, 400], [426, 470], [416, 494], [386, 494], [372, 450], [360, 400], [360, 360]]), AR.mid, ' opacity=".55"');
   s += line('M432,336Q446,410 436,494', AR.hi, 2.4, ' opacity=".85"') + line('M428,338Q440,410 430,494', AR.sh, 1.6, ' opacity=".7"');
-  s += path(S([[452, 352], [482, 366], [488, 408], [474, 444], [462, 404]]), '#ffffff', ' opacity=".55"');
+  s += path(S([[454, 356], [480, 368], [486, 404], [474, 436], [464, 402]]), '#fff6ee', ' opacity=".5"');
+  // plate edges: crimson trim + gold rivets (as in her portrait)
+  s += line('M366,346Q420,330 474,342', '#b8344a', 3) + line('M362,360Q356,420 372,470', AR.deep, 2, ' opacity=".7"');
+  s += `<g fill="${C.oath}"><circle cx="380" cy="352" r="2.4"/><circle cx="462" cy="344" r="2.4"/><circle cx="396" cy="486" r="2.2"/><circle cx="464" cy="486" r="2.2"/></g>`;
+  s += path(S([[468, 360], [486, 372], [492, 420], [482, 462], [474, 440], [480, 404]]), '#ffd2a0', ' opacity=".45"');
   // waist: red sash + faulds
   s += path('M384,494Q430,486 474,494L478,520Q430,512 380,520Z', AR.red) + line('M384,494Q430,486 474,494', C.oath, 2.2);
   s += path('M380,520Q430,512 478,520L484,556Q430,548 376,556Z', AR.mid) + path('M376,556Q430,548 484,556L488,600Q430,592 372,600Z', AR.sh);
@@ -94,7 +99,7 @@ export function lia(c) {
   // near pauldron: domed cop + two lames
   s += U('lPaulN', AR.mid);
   s += path(S([[364, 342], [334, 346], [314, 366], [310, 386], [336, 378], [366, 370], [388, 368], [392, 354]]), AR.base);
-  s += line('M322,360Q344,346 380,348', AR.hi, 3);
+  s += line('M322,360Q344,346 380,348', AR.hi, 3) + line('M308,396Q330,388 362,376', '#b8344a', 2.6) + `<g fill="${C.oath}"><circle cx="322" cy="392" r="2.2"/><circle cx="346" cy="384" r="2.2"/></g>`;
   s += path(S([[308, 408], [304, 424], [318, 440], [346, 438], [370, 420], [346, 424], [322, 422]]), AR.sh);
   s += line('M310,404Q336,412 372,396M306,424Q330,432 362,418', AR.deep, 2);
   // far pauldron
@@ -115,7 +120,7 @@ function head(c) {
   s += U('lFace', SKIN.base, ` stroke="${SKIN.line}" stroke-width="2"`);
   s += path(S([[-72, -44], [-75, -10], [-73, 22], [-66, 52], [-52, 78], [-31, 98], [-12, 108], [-32, 84], [-46, 58], [-54, 28], [-54, -6], [-60, -40]]), SKIN.sh);
   s += path(S([[-70, -50], [-40, -32], [-6, -38], [30, -32], [66, -40], [66, -62], [0, -74], [-62, -66]]), SKIN.sh, ' opacity=".75"');
-  s += path(S([[42, 34], [62, 38], [56, 64], [40, 86], [22, 102], [30, 78], [38, 58]]), SKIN.lit);
+  s += path(S([[44, 34], [62, 38], [56, 64], [40, 86], [22, 102], [32, 78], [40, 58]]), SKIN.lit, ' opacity=".7"');
   s += `<ellipse cx="-42" cy="44" rx="16" ry="7" fill="${SKIN.blush}" opacity=".3"/><ellipse cx="44" cy="46" rx="12" ry="6" fill="${SKIN.blush}" opacity=".3"/>`;
   s += line('M-62,18L-53,31M-58,15L-50,27', '#b0606a', 1.6, ' opacity=".8"');
   // eyes on the captain
@@ -139,12 +144,11 @@ function head(c) {
   }
   s += path(sh, H.sh, ' opacity=".85"') + path(sep, H.deep, ' opacity=".6"');
   s += path(taper([[-30, -100], [-28, -40], [-22, 14]], 7, 0.8, 0, 0.3) + taper([[56, -100], [60, -40], [58, 22]], 6, 0.8, 0, 0.3), H.base);
-  s += path(taper([[62, -120], [66, -72], [60, -20]], 12, 0.8, 0, 0.3), H.streak);
+  s += path(taper([[58, -128], [68, -84], [66, -40], [56, -8]], 12, 0.1, 0, 0.4), H.streak);
   s += path(taper([[-78, -112], [-36, -136], [16, -138], [62, -118]], 11, 0, 0, 0.5), H.hi, ' opacity=".85"');
-  s += path(taper([[-62, -84], [-60, -64]], 6, 0.6, 0, 0.3) + taper([[-22, -98], [-20, -76]], 6, 0.6, 0, 0.3) + taper([[30, -96], [30, -76]], 6, 0.6, 0, 0.3), H.lit, ' opacity=".7"');
   // side locks
   s += U('lSideN', H.base) + path(taper([[-78, -50], [-84, 30], [-80, 110], [-88, 190], [-86, 246]], 13, 0.8, 0, 0.3), H.sh);
-  s += U('lSideF', H.base) + path(taper([[82, -40], [90, 30], [88, 104], [94, 172]], 11, 0.8, 0, 0.3), H.lit, ' opacity=".8"');
+  s += U('lSideF', H.base) + path(taper([[84, -30], [92, 40], [90, 110], [94, 160]], 7, 0.1, 0, 0.4), H.lit, ' opacity=".8"');
   s += `<g opacity=".45">${brows}</g>`;
   return s;
 }
@@ -174,4 +178,3 @@ export function liaSword(c) {
   s += path('M520,616q-4,-14 4,-22q2,10 -4,22zM536,612q2,-12 10,-16q-2,10 -10,16z', '#4a2a16') + `<circle cx="516" cy="590" r="3" fill="#4a2a16"/><circle cx="548" cy="592" r="2.4" fill="#4a2a16"/>`;
   return s;
 }
-export { pt };

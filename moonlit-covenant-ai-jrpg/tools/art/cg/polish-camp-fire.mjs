@@ -5,8 +5,10 @@
 // Mia hunches over her sphere drone Zero and peeks up at you ("你也不会告诉她的对吧？").
 // Key light = the brass table lamp (warm, from the table), back light = the eclipse window
 // (cool violet), rim light in each heroine's standard colour.
-import { f, pt, smooth, taper, path, line, radial, linear, blurs, rng, context } from './polish-lib.mjs';
+import { f, smooth, path, line, radial, linear, blurs, rng, context } from './polish-lib.mjs';
 import { lia, liaSword } from './polish-camp-lia.mjs';
+import { serena, serenaFront } from './polish-camp-serena.mjs';
+import { mia, miaFront } from './polish-camp-mia.mjs';
 
 const p = 'campFire';
 const C = {
@@ -14,8 +16,6 @@ const C = {
   oath: '#ffd091', moon: '#e8ddff', brass: '#b88a4a', brassHi: '#ffd091', brassSh: '#5e4223', lamp: '#ffc670',
 };
 const S = (P) => smooth(P, true);
-const O = (P) => smooth(P, false);
-const use = (id, fill, extra = '') => `<use href="#${p}-${id}" fill="${fill}"${extra}/>`;
 
 // ---------------------------------------------------------------------------------------------
 // environment: back wall, eclipse windows, booth seats
@@ -63,13 +63,12 @@ function room(R) {
   view += line(streak, '#cbb8ff', 1.2, ' opacity=".18"');
   // glass: diagonal sheen + the lamp's reflection in the pane
   view += `<g fill="#cbbcff" opacity=".05"><path d="M640,508L860,128H930L710,508Z"/><path d="M1040,508L1220,180V260L1110,508Z"/><path d="M60,508L250,128H290L100,508Z"/></g>`;
-  view += `<ellipse cx="1110" cy="420" rx="26" ry="16" fill="${C.lamp}" opacity=".22" filter="url(#${p}-b1)"/>`;
   s += `<g clip-path="url(#${p}-win)">${view}</g>`;
   // frames + mullions
   s += `<path d="${winPaths}" fill="none" stroke="#3a2614" stroke-width="12"/>`;
   s += `<path d="${winPaths}" fill="none" stroke="${C.brass}" stroke-width="3.5" opacity=".85"/>`;
-  s += line('M930,128V508M636,330H1224M171,128V508M24,330H318M1493,128V508', '#2a1a0e', 6);
-  s += line('M930,128V508M636,330H1224', C.brass, 1.6, ' opacity=".5"');
+  s += line('M780,128V508M1080,128V508M636,330H1224M171,128V508M24,330H318M1493,128V508', '#2a1a0e', 6);
+  s += line('M780,128V508M1080,128V508M636,330H1224', C.brass, 1.6, ' opacity=".5"');
   // window sill
   s += `<path d="M0,508H1600V522H0Z" fill="#3a2414"/><path d="M0,508H1600" stroke="${C.brassHi}" stroke-width="2" opacity=".5"/>`;
   // tied-back curtains
@@ -95,13 +94,15 @@ function room(R) {
 // ---------------------------------------------------------------------------------------------
 function table() {
   let d = '', s = '';
-  d += radial(`${p}-cloth`, [[0, '#fff1dc'], [0.18, '#f0d6b0'], [0.45, '#b68e66'], [0.75, '#5e4430'], [1, '#2a1c14']], 'gradientUnits="userSpaceOnUse" cx="720" cy="640" r="820" gradientTransform="translate(720 640) scale(1 .42) translate(-720 -640)"');
-  d += linear(`${p}-drape`, [[0, '#7a5c44'], [0.3, '#4a3424'], [1, '#160e0a']]);
+  d += radial(`${p}-cloth`, [[0, '#fff2dc'], [0.1, '#f6dcb4'], [0.26, '#c89c6e'], [0.5, '#6a4a32'], [0.78, '#2c1d14'], [1, '#140d09']], 'gradientUnits="userSpaceOnUse" cx="724" cy="650" r="760" gradientTransform="translate(724 650) scale(1 .46) translate(-724 -650)"');
+  d += linear(`${p}-drape`, [[0, '#5a4232'], [0.25, '#3a281c'], [1, '#0e0906']]);
   s += path('M206,588H1394L1560,806H40Z', `url(#${p}-cloth)`);
+  // cloth creases + the far hem in shadow
+  s += line('M430,600Q400,700 336,806M980,600Q1010,700 1070,806', '#3a2618', 3, ' opacity=".1"');
+  s += path('M206,588H1394L1404,602H198Z', '#2a1a10', ' opacity=".6"');
   s += path('M40,806H1560V900H40Z', `url(#${p}-drape)`);
-  s += line('M40,806H1560', '#ffe9c8', 2.5, ' opacity=".55"');
-  s += line('M206,588H1394', '#6a4c34', 2, ' opacity=".6"');
-  s += line('M300,812Q306,860 298,900M620,812Q628,860 622,900M940,812Q946,860 944,900M1260,812Q1268,860 1272,900', '#2a1c14', 3, ' opacity=".5"');
+  s += line('M40,806H1560', '#ffe2b8', 2.5, ' opacity=".4"');
+  s += line('M300,812Q306,860 298,900M620,812Q628,860 622,900M940,812Q946,860 944,900M1260,812Q1268,860 1272,900', '#000', 3, ' opacity=".35"');
   return { d, s };
 }
 
@@ -123,12 +124,16 @@ function lamp() {
 
 function props() {
   let s = '';
-  // map of the line with the rail route (centre front)
-  s += `<g transform="translate(820 724) rotate(-4)"><path d="M-150,-34L146,-40L162,38L-160,44Z" fill="#e6cfa2" opacity=".92"/><path d="M-138,14Q-70,-26,-6,6T150,-6" fill="none" stroke="#6a2a1e" stroke-width="2.4" stroke-dasharray="8 5"/><circle cx="-6" cy="6" r="5" fill="${C.liaDeep}"/><path d="M-120,-20h30M60,24h40M-60,30h26" stroke="#a5835a" stroke-width="1.6"/></g>`;
+  // cast shadows thrown away from the lamp
+  s += `<g fill="#1a0e08" opacity=".35"><ellipse cx="904" cy="702" rx="70" ry="10" transform="rotate(10 904 702)"/><ellipse cx="380" cy="752" rx="86" ry="14" transform="rotate(-8 380 752)"/><ellipse cx="1120" cy="668" rx="74" ry="11" transform="rotate(6 1120 668)"/></g>`;
+  // folded map of the line with the rail route (centre front)
+  s += `<g transform="translate(800 742) rotate(-6)"><path d="M-110,-30L112,-36L124,30L-118,36Z" fill="#d8bc8a"/><path d="M0,-33L4,33" stroke="#a88a5e" stroke-width="1.5"/><path d="M-100,10Q-50,-20,-4,4T110,-4" fill="none" stroke="#6a2a1e" stroke-width="2.2" stroke-dasharray="7 4"/><circle cx="-4" cy="4" r="4.5" fill="${C.liaDeep}"/><path d="M-90,-16h24M44,18h30" stroke="#9a7a50" stroke-width="1.5"/></g>`;
   // plate of crescent pastries (left front)
-  s += `<g transform="translate(420 734)"><ellipse rx="70" ry="16" fill="#3a2a1e" opacity=".35" transform="translate(4 6)"/><ellipse rx="68" ry="16" fill="#f3ece2"/><ellipse rx="52" ry="11" fill="none" stroke="${C.brass}" stroke-width="1.6"/><path d="M-34,-2a15,10 0 1 1 24,-6a11,8 0 1 0 -24,6z" fill="#d9944a"/><path d="M0,-4a15,10 0 1 1 24,-6a11,8 0 1 0 -24,6z" fill="#c47c36"/><path d="M-16,5a13,8 0 1 1 22,-5a10,7 0 1 0 -22,5z" fill="#e8a85e"/></g>`;
-  // teapot (Serena's), porcelain + gold
-  s += `<g transform="translate(1046 632)"><ellipse cx="2" cy="26" rx="44" ry="8" fill="#2a1c14" opacity=".4"/><path d="M-32,24Q-36,-8,0,-12Q36,-8,32,24Z" fill="#efe8de"/><path d="M-32,24Q-36,-8,0,-12Q-14,4-12,24Z" fill="#fffaf2"/><path d="M8,-10Q30,-4,32,24H12Q20,6,8,-10Z" fill="#b8a898"/><path d="M-32,2Q-56,-6-60,-22" fill="none" stroke="#efe8de" stroke-width="6" stroke-linecap="round"/><path d="M32,2Q48,0,46,18" fill="none" stroke="#a89888" stroke-width="5"/><circle cy="-13" r="5" fill="${C.brass}"/><path d="M-28,4H28" stroke="${C.brass}" stroke-width="2"/></g>`;
+  s += `<g transform="translate(420 734)"><ellipse rx="68" ry="16" fill="#e8dccb"/><ellipse rx="52" ry="11" fill="none" stroke="${C.brass}" stroke-width="1.6"/><path d="M-34,-2a15,10 0 1 1 24,-6a11,8 0 1 0 -24,6z" fill="#d9944a"/><path d="M0,-4a15,10 0 1 1 24,-6a11,8 0 1 0 -24,6z" fill="#c47c36"/><path d="M-16,5a13,8 0 1 1 22,-5a10,7 0 1 0 -22,5z" fill="#e8a85e"/></g>`;
+  // teapot (Serena's), porcelain + gold, lit from the lamp side
+  s += `<g transform="translate(856 666)"><path d="M-30,-4Q-46,-6-50,-20Q-54,-28-60,-30L-56,-34Q-46,-30-40,-20Q-36,-12-26,-12Z" fill="#f4e8d8"/><path d="M28,-12Q50,-14 48,2Q46,14 28,16" fill="none" stroke="#8a7a6c" stroke-width="5"/><ellipse cy="4" rx="34" ry="24" fill="#cfc2b0"/><path d="M-34,4A34,24 0 0 1 0,-20Q-20,-6-18,26Q-32,20-34,4Z" fill="#fff6ea"/><path d="M-34,2Q0,10 34,2" fill="none" stroke="${C.brass}" stroke-width="2"/><ellipse cy="-19" rx="16" ry="5" fill="#e8dccb"/><circle cy="-25" r="4.5" fill="${C.brass}"/></g>`;
+  // pocket watch left open on the cloth: the minutes before the battle
+  s += `<g transform="translate(1250 752) rotate(-10)"><ellipse rx="22" ry="9" fill="${C.brass}"/><ellipse rx="17" ry="6.5" fill="#efe6d4"/><path d="M0,0L8,-3M0,0L-3,-4" stroke="#3a2414" stroke-width="1.6"/><path d="M-22,0Q-40,-6-52,4" fill="none" stroke="${C.brass}" stroke-width="1.6" stroke-dasharray="3 2"/></g>`;
   return s;
 }
 
@@ -138,12 +143,12 @@ function props() {
 function player() {
   let s = '';
   const body = S([[-60, 900, 1], [-40, 800], [10, 742], [96, 712], [150, 690], [200, 700], [262, 736], [330, 790], [372, 850], [386, 900, 1]]);
-  const head = S([[60, 720], [52, 650], [74, 596], [122, 566], [176, 566], [222, 596], [244, 650], [236, 716], [204, 756], [150, 770], [100, 760]]);
+  const head = S([[56, 720], [48, 660], [58, 614], [70, 592], [86, 588], [94, 572], [112, 570], [126, 556], [150, 558], [170, 552], [192, 564], [214, 566], [226, 590], [244, 604], [244, 640], [248, 672], [238, 716], [206, 756], [150, 770], [100, 760]]);
   s += `<g filter="url(#${p}-b1)">`;
   s += path(body, '#0c0a12') + path(head, '#0e0b16');
-  s += line('M76,596Q122,560 176,564Q222,590 242,646', C.lamp, 5, ' opacity=".55"');
+  s += line('M84,590Q90,568 112,572Q126,552 150,560Q172,550 192,566Q216,566 224,590Q246,602 244,640', C.lamp, 4, ' opacity=".6"');
   s += line('M244,654Q240,712 206,754M262,738Q330,790 372,850', '#ffb45e', 4, ' opacity=".5"');
-  s += line('M96,600Q130,578 170,580', C.moon, 3, ' opacity=".25"');
+  s += line('M64,592L84,592L98,568', C.moon, 3, ' opacity=".3"');
   // coat collar
   s += path('M150,770L196,756L240,800L210,840Z', '#16121e');
   s += '</g>';
@@ -159,18 +164,27 @@ export function campFire() {
   const rm = room(R); defs += rm.d; body += rm.s;
   const tb = table(); defs += tb.d;
   const lp = lamp(); defs += lp.d;
-  defs += radial(`${p}-vig`, [[0.5, '#000', 0], [1, '#000', 0.78]], 'r="0.72"');
+  defs += radial(`${p}-vig`, [[0.5, '#000', 0], [1, '#000', 0.8]], 'r="0.72"');
   defs += linear(`${p}-bot`, [[0, '#070614', 0], [1, '#070614', 0.7]]);
+  defs += radial(`${p}-warm`, [[0, '#ffb060', 0.24], [0.5, '#ff9040', 0.08], [1, '#ff9040', 0]]);
   // lamp light spilling over the back of the room
-  body += `<ellipse cx="724" cy="560" rx="760" ry="520" fill="url(#${p}-lampGlow)" opacity=".5"/>`;
-  body += lia(c);
+  body += `<ellipse cx="724" cy="560" rx="760" ry="520" fill="url(#${p}-lampGlow)" opacity=".45"/>`;
+  body += serena(c) + mia(c) + lia(c);
+  body += `<ellipse cx="724" cy="520" rx="640" ry="420" fill="url(#${p}-warm)"/>`;
   body += tb.s;
-  body += `<ellipse cx="724" cy="660" rx="520" ry="120" fill="url(#${p}-lampGlow)" opacity=".7"/>`;
-  body += props();
-  body += liaSword(c);
+  body += `<ellipse cx="724" cy="660" rx="460" ry="110" fill="url(#${p}-lampGlow)" opacity=".6"/>`;
+  body += props() + serenaFront(c) + liaSword(c) + miaFront(c);
   body += lp.s;
   body += `<circle cx="724" cy="580" r="150" fill="url(#${p}-lampGlow)" opacity=".8"/>`;
+  let motes = '';
+  for (let i = 0; i < 46; i++) {
+    const a = R() * Math.PI * 2, r = 40 + R() * 300;
+    motes += `<circle cx="${f(724 + Math.cos(a) * r * 1.4)}" cy="${f(540 + Math.sin(a) * r * 0.7)}" r="${f(R.range(0.8, 2.2), 1)}" opacity="${f(R.range(0.25, 0.8), 1)}"/>`;
+  }
+  body += `<g fill="#ffe6b8">${motes}</g>`;
   body += player();
+  // camera push-in (x1.1 about 820,480), then vignette + UI fade
+  body = `<g transform="matrix(1.1 0 0 1.1 -82 -48)">${body}</g>`;
   body += `<rect width="1600" height="900" fill="url(#${p}-vig)"/>`;
   body += `<rect y="760" width="1600" height="140" fill="url(#${p}-bot)"/>`;
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="战前餐车：莉亚用剑柄敲桌子，塞蕾娜捧茶，米娅修理零号">\n<defs>${defs}${c.defs}</defs>\n${body}\n</svg>\n`;

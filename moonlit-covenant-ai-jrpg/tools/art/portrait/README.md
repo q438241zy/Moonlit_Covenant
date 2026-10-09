@@ -47,7 +47,7 @@ duplicate ids, ids without the file prefix, more than 4 `<filter>`s, and size ov
 ## 2. Canvas, layout, drawing order
 
 `viewBox="0 0 832 1216"`, no width/height. Centre line `x = 416`. Head top ≈ y172, eye line
-y440, chin y615, shoulders ≈ y776–850, bust continues to the bottom edge. Light: **moonlight
+y440, chin y596 (default face; per heroine via `face`, §4), shoulders ≈ y776–850, bust continues to the bottom edge. Light: **moonlight
 from the upper-left** (`#e8ddff`), so every element shades its **right / lower** side; the
 template adds the heroine's `accent` as a rim light on right-facing silhouette edges.
 
@@ -58,10 +58,10 @@ template adds the heroine's `accent` as a rim light on right-facing silhouette e
 2. figure group:
    1. **`hairBack`** – hair behind head/body (long hair, ponytail mass, back of the head)
    2. **`bodyBack`** – costume pieces behind the body (capes, big bows, wings)
-   3. *body skin*: neck, trapezius, shoulders, arms, collarbones, shadow under the chin
+   3. *body skin*: neck, trapezius, shoulders, arms, collarbones, the head's cast shadow on the neck (follows the jaw)
    4. **`outfit`** – the clothes (heroine default) or **`outfit.render(p)`** when a costume is composed
    5. **`neckAccessory`** – chokers, collars, pendants
-   6. *head*: ears (unless `face.ears === false`), face skin, right-side cel shadow, tapered jaw line
+   6. *head*: ears (unless `face.ears === false`), face skin (shape from `face`), right-side cel shadow, tapered jaw line
    7. *cast shadow of the bangs*: the `hairFront` silhouette offset by (4, 13), filled `skinShadow`, clipped to the face (automatic)
    8. *face features*: blush, nose, mouth, brows, eyes (driven by `expression` + `palette`);
       the optional **`irisDetail`** hook is drawn inside each iris (after the pupil, under the highlights)
@@ -87,7 +87,10 @@ throws if any layer throws, unless `lenient: true` (then the layer is skipped wi
 ## 3. Anchors (`p.anchors`, also `import { ANCHORS }`)
 
 Frozen template coordinates every module may rely on. `L` = viewer's left, `R` = viewer's right
-(always symmetric about x = 416).
+(always symmetric about x = 416). The **face anchors** (marked †) follow the heroine's face shape
+(`heroine.face`, §4): `p.anchors` holds her values, `import { ANCHORS }` the default-face values
+listed here. Everything from the neck down (`neckW`, `neckBase`, `sternum`, shoulders, arms…) never
+changes, so outfits and collars fit every face.
 
 | Anchor | Value | Meaning |
 |---|---|---|
@@ -100,14 +103,14 @@ Frozen template coordinates every module may rely on. `L` = viewer's left, `R` =
 | `templeL` / `templeR` | [268, 390] / [564, 390] | temples, on the face outline |
 | `browL` / `browR` | [349, 398] / [483, 398] | brow reference points (drawn brows sit ≈ y403–414, lower with `browAngle`) |
 | `eyeY` | 440 | eye line |
-| `eyeL` / `eyeR` | [350, 440] / [482, 440] | eye centres; eye width `eyeW` = 70 (corners at x 314–385 / 447–518) |
+| `eyeL` / `eyeR` † | [348, 440] / [484, 440] | eye centres; eye width `eyeW` † = 77 (corners at x 308–387 / 445–524; scaled by `face.eyeSize`) |
 | `earL` / `earR` | [256, 452] / [576, 452] | ear centres; ears span y 416–494, x 242–276 / 556–590 |
-| `cheekL` / `cheekR` | [320, 503] / [512, 503] | cheek / blush centres |
-| `noseTip` | [416, 506] | nose tip |
-| `mouth` | [416, 559] | mouth centre (default width 38) |
-| `jawL` / `jawR` | [333, 566] / [499, 566] | points on the jaw line |
-| `chin` | [416, 615] | chin point |
-| `neckL` / `neckR` | [374, 600] / [458, 600] | neck sides just under the jaw; `neckW` = 84 |
+| `cheekL` / `cheekR` † | [320, 501] / [512, 501] | cheek / blush centres |
+| `noseTip` † | [416, 505.5] | nose tip |
+| `mouth` † | [416, 546] | mouth centre (default width 38) |
+| `jawL` / `jawR` † | [333, 560] / [499, 560] | points on the jaw line |
+| `chin` † | [416, 596] | chin point |
+| `neckL` / `neckR` † | [374, 589.5] / [458, 589.5] | neck sides just under the jaw; `neckW` = 84 (fixed) |
 | `neckBase` | [416, 700] | base of the neck (where the trapezius starts) |
 | `sternum` | [416, 720] | jugular notch between the collarbones – anchor necklines here |
 | `clavicleL` / `clavicleR` | [296, 734] / [536, 734] | outer ends of the collarbones |
@@ -121,8 +124,12 @@ Frozen template coordinates every module may rely on. `L` = viewer's left, `R` =
 | `armInnerL` / `armInnerR` | [232, 1216] / [600, 1216] | inner arm line at the bottom edge |
 | `bottomY` | 1216 | canvas bottom |
 
-The full face outline runs (L side) 416,211 → 360,216 → 312,238 → 281,279 → 267,330 → 263,385 →
-265,434 → 270,472 → 281,505 → 298,532 → 321,555 → 346,576 → 370,595 → 392,609 → 416,615, mirrored for R.
+The default face outline runs (L side) 416,211 → 360,216 → 312,238 → 281,279 → 267,330 → 263,385 →
+264,434 → 267,458 → 274,481 → 284,502 → 297,522 → 313,541 → 330,557 → 349,572 → 370,583 → 392,592 →
+416,596, mirrored for R. The skull (down to y385) is shared by every heroine; below the cheekbone
+(264,434 – the ears attach there) the lower face is a superellipse quarter whose width, roundness and
+length come from `heroine.face`. Proportions: nose at 42 % and mouth at 68 % of the way from the eye
+line to the chin.
 The body silhouette runs 378,560 → 375,616 → 371,662 → 364,694 → 336,713 → 284,734 → 228,754 →
 192,773 → 166,802 → 150,846 → 140,918 → 134,1010 → 130,1216, mirrored for R.
 
@@ -130,7 +137,7 @@ The body silhouette runs 378,560 → 375,616 → 371,662 → 364,694 → 336,713
 
 | Key | Shape |
 |---|---|
-| `face` | closed face + skull silhouette (what the skin covers) |
+| `face` | closed face + skull silhouette (what the skin covers) – per heroine in `p.shapes` |
 | `body` | closed neck + shoulders + arms + torso silhouette down to the bottom edge |
 | `neck` | neck column (its top is hidden under the head) |
 | `torso` | trunk between the arms – clip vests / bodices / breastplates to it |
@@ -147,16 +154,35 @@ export default {
   name: '米娅·铃',           // used for aria-label
   palette: { ... },          // §4.1 – merged over DEFAULT_PALETTE
   expression: { ... },       // §4.2 – merged over DEFAULT_EXPRESSION + eye-shape preset
-  face: { ears: true, castShadow: 0.8 }, // optional: hide human ears (e.g. Mia's mechanical ears replace them); bangs cast-shadow opacity
+  face: { jaw: -0.5, chin: 4 }, // optional face shape + ears / bangs cast shadow, §4.0
   costumeLayers: ['bodyBack', 'neckAccessory'], // optional: heroine layers that belong to her DEFAULT costume (dropped when an outfit is worn)
   layers: { bgMotif, hairBack, bodyBack, outfit, neckAccessory, faceMarks, headBack, hairFront, headFront, foreground, irisDetail },
 };
 ```
 
+### 4.0 Face shape (`heroine.face`, all optional)
+
+| Key | Default | Meaning |
+|---|---|---|
+| `jaw` | 0 | −1..1: − sharper, more V-shaped jaw with a pointed chin · + rounder, softer jaw (keep within ±0.7 so faces stay adult) |
+| `chin` | 0 | px: + longer lower face (chin lower) · − shorter (keep within about −8..+10) |
+| `width` | 0 | px added to the lower-face half width: + fuller cheeks · − slimmer |
+| `eyeSize` | 1 | eye size multiplier on top of the template eye (≈0.95–1.06) |
+| `ears` | true | `false` hides the human ears (Mia's mechanical ears replace them) |
+| `castShadow` | 0.8 | opacity of the bangs' cast shadow on the face |
+
+The face anchors (§3 †), the face clip, the cheek shadow, the jaw line and the neck shadow all follow
+these values; the neck, shoulders and body never move. Current cast: Mia `jaw .6, width 4, chin −5,
+eyeSize 1.05` (round, soft) · Evelyn `jaw .5, width 2, chin −3` (soft) · Freya, Aila default ·
+Lia `jaw −.6, width −1, chin 4` · Lilith `jaw −.65, width −2, chin 4` (angular) · Ophelia `jaw −.7, width −2,
+chin 2` (sharp) · Serena `jaw −.5, width −4, chin 9, eyeSize .97` (longer, sharper).
+Anything drawn on the face (scars, moles, fangs) should use `p.anchors` (`noseTip`, `mouth`, `eyeL`…)
+rather than hard-coded coordinates so it follows the face shape.
+
 `irisDetail(p)` is called once per eye with `p.eye = { side: 'L' | 'R', cx, cy, rx, ry, eyeTop, eyeBottom, clip }`
 (iris centre/radii in canvas px; the markup is already clipped to the eye opening). Use it for
-Serena's star-rail rings, Mia's circuit glints, etc. Keep it to 1–3 thin elements – it renders
-at ≈ 35 px.
+Serena's star-rail rings, Mia's circuit glints, etc. Keep it to 1–3 thin elements – the iris
+is ≈ 41 × 47 canvas px.
 
 `costumeLayers` default is `['bodyBack', 'neckAccessory']`. Put anything that is *clothing or gear*
 (capes, chokers, a weapon in the foreground) there, so costume portraits don't show it; keep
@@ -207,6 +233,7 @@ Use the standard colours from `docs/ART-DIRECTION.md` §2 for `accent`/`accent2`
 | `lashWeight` | 1 | lash line thickness multiplier |
 | `lashFlick` | false | one extra lash flick above the wing |
 | `pupil` | `'round'` | `'round'` or `'slit'` (draconic / feline pupils) |
+| `browAsym` | 0 | one raised brow (≈ ±0.5–0.9): + lifts and arches the viewer's-right brow, − the viewer's-left; the other brow dips and angles in slightly (Lilith's smirk, Ophelia's playfulness) |
 
 ---
 
@@ -217,7 +244,7 @@ Use the standard colours from `docs/ART-DIRECTION.md` §2 for `accent`/`accent2`
 | `p.heroine` | `{ id, name }` |
 | `p.costume` | outfit `type` when a costume portrait is being composed, else `null` (lets a heroine layer adapt) |
 | `p.palette`, `p.expression` | merged values (§4.1, §4.2) |
-| `p.anchors`, `p.shapes` | §3 |
+| `p.anchors`, `p.shapes` | §3 – with this heroine's face anchors and face outline (`import { ANCHORS, SHAPES }` = default face) |
 | `p.id(name)` | unique id for this file. Heroine layers: `lia-name` (portrait) / `lia-maid-name` (costume file). Outfit layers: `lia-maid-o-name`. **Never start your own names with `t-`** (reserved for the template). |
 | `p.url(name)` | `url(#<p.id(name)>)` |
 | `p.def(markup)` | add markup (gradient, clipPath, pattern…) to the file's `<defs>`; returns `''`. Same id twice = last one wins |
@@ -315,7 +342,7 @@ Drawing an outfit:
   line up into an "angel ring"; darker inner layers (`hairShadow`/`hairDeep`) behind the face.
 - **ids**: only via `p.id()` / `p.lin()` / `p.rad()` / `p.clip()`; never hard-code ids.
 - **No** `<script>`, `<text>`, `<image>`, `<foreignObject>`, event attributes, external `href`, web fonts, `Math.random`.
-- **Size**: the template costs ≈ 19 KB, so a heroine has ≈ 50 KB for her layers (Lia ≈ 50 KB, of
+- **Size**: the template costs ≈ 20 KB, so a heroine has ≈ 50 KB for her layers (Lia ≈ 50 KB, of
   which her armour/cape/sword ≈ 18 KB are dropped in costumes); an outfit should stay ≤ 25 KB so every
   heroine × outfit fits 80 KB. Prefer `smoothQ`/`taper` for
   generated shapes, `mirrorPath` for symmetric parts, and few long paths over many tiny ones.

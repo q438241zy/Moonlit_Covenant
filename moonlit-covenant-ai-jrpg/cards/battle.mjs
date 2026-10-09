@@ -186,7 +186,8 @@ export function playCard(state, key, handUid, target = null) {
   const card = getCard(inst.cardId);
   if (card.cost > p.pp.current) throw new Error('PP不足。');
 
-  const needsTarget = (card.effects || []).some((e) => ['enemyFollower', 'enemyAny', 'friendlyFollower'].includes(e.targeting));
+  const { needsTarget, playable } = targetRequirement(state, key, card);
+  if (!playable) throw new Error('没有可选的目标。');
   if (needsTarget && target == null) {
     // 进入等待选目标状态
     state.phase = 'awaitingTarget';
@@ -448,7 +449,8 @@ export function getLegalPlays(state, key) {
     const card = getCard(inst.cardId);
     if (card.cost > p.pp.current) continue;
     if (card.type === 'follower' && p.field.length >= MAX_FIELD) continue;
-    const needsTarget = (card.effects || []).some((e) => ['enemyFollower', 'enemyAny', 'friendlyFollower'].includes(e.targeting));
+    const { needsTarget, playable } = targetRequirement(state, key, card);
+    if (!playable) continue;
     result.push({ uid: inst.uid, cardId: inst.cardId, needsTarget });
   }
   return result;
@@ -476,6 +478,15 @@ export function getEvolvableFollowers(state, key) {
   const p = state.players[key];
   if (!p.canEvolve || p.ep <= 0) return [];
   return p.field.filter((f) => !f.evolved).map((f) => f.uid);
+}
+
+// 指向性效果的出牌条件：有合法目标时需要选目标；没有时，随从照常入场（入场曲落空），法术则不能使用。
+// 否则前端会把无目标的法术高亮为可用、点了只能取消，带指向入场曲的随从（深渊吞噬者）在对手空场时也无法召唤。
+function targetRequirement(state, key, card) {
+  const targeted = (card.effects || []).some((e) => ['enemyFollower', 'enemyAny', 'friendlyFollower'].includes(e.targeting));
+  if (!targeted) return { needsTarget: false, playable: true };
+  if (getTargetOptions(state, key, card.id).length) return { needsTarget: true, playable: true };
+  return { needsTarget: false, playable: card.type !== 'spell' };
 }
 
 // 某张待出卡牌的合法目标（选目标阶段用）

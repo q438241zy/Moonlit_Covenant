@@ -35,8 +35,9 @@ function aiPlayPhase(state, key) {
     const play = chooseBestPlay(state, key);
     if (!play) break;
     try {
-      playCard(state, key, play.handUid, play.target ?? null);
-      state.aiActions.push({ type: 'play', handUid: play.handUid, cardId: play.cardId, target: play.target ?? null });
+      // getLegalPlays 返回的手牌实例 id 字段是 uid（此前误读 play.handUid 恒为 undefined，AI 一张牌都打不出）
+      playCard(state, key, play.uid, play.target ?? null);
+      state.aiActions.push({ type: 'play', handUid: play.uid, cardId: play.cardId, target: play.target ?? null });
     } catch {
       break; // 安全阀：任何非法即停止
     }

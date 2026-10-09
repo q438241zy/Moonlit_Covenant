@@ -321,6 +321,7 @@ function finishBattleIfNeeded(state) {
     state.partyHp = 70;
     state.focus = 65;
     state.enemy.hp = Math.max(80, state.enemy.hp);
+    state.battlePhase = battlePhaseForHp(state.enemy.hp);
     state.turn = 0;
     pushEvent(state, event('system', '黎明种触发局部时间回卷。战斗重置，但队友仍隐约记得你的失败。'));
     Object.values(state.characters).forEach((character) => {
@@ -485,6 +486,13 @@ export function chooseEnding(state, decisionId) {
   return state;
 }
 
+// 回卷会把食梦兽血量抬回去，阶段要跟着回退，阶段剧情与立绘才能重新触发且保持一致
+function battlePhaseForHp(hp) {
+  if (hp <= 50) return 3;
+  if (hp <= 100) return 2;
+  return 1;
+}
+
 export function resetBattle(state) {
   if (!['battle', 'aftermath'].includes(state.scene)) {
     throw new Error('当前无法重置战斗。');
@@ -495,6 +503,7 @@ export function resetBattle(state) {
   state.potions = 2;
   state.turn = 0;
   state.enemy.hp = state.enemy.maxHp;
+  state.battlePhase = 1;
   state.enemy.sealed = 0;
   state.enemy.broken = 0;
   state.flags.battleWon = false;

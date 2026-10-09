@@ -29,20 +29,37 @@ export function rng(seed) {
   return R;
 }
 
-/** Catmull-Rom curve through every point; emits S shorthand where the tangent is continuous. */
+// join numbers compactly: no separator before a minus sign
+const join = (nums) => nums.reduce((acc, v, i) => acc + (i && v[0] !== '-' ? ',' : '') + v, '');
+
+/**
+ * Catmull-Rom curve through every point, emitted as relative commands (c/s/l) so most
+ * coordinates are short deltas; S shorthand where the tangent is continuous.
+ */
 export function smooth(pts, closed = true, d = 0) {
   const N = pts.length;
   const get = (i) => (closed ? pts[(i + N) % N] : pts[clamp(i, 0, N - 1)]);
-  const sharp = (p) => p.length > 2 && p[2];
-  let out = `M${pt(pts[0], d)}`;
+  const sharp = (q) => q.length > 2 && q[2];
+  const k = 10 ** d;
+  const R = (v) => Math.round(v * k);
+  let cx = R(pts[0][0]), cy = R(pts[0][1]);
+  const rel = (q) => [R(q[0]) - cx, R(q[1]) - cy];
+  const num = (v) => f(v / k, d);
+  let out = `M${num(cx)},${num(cy)}`;
+  let prev = '';
   const segs = closed ? N : N - 1;
   for (let i = 0; i < segs; i++) {
     const p0 = get(i - 1), p1 = get(i), p2 = get(i + 1), p3 = get(i + 2);
     const c1 = sharp(p1) || (!closed && i === 0) ? p1 : [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6];
     const c2 = sharp(p2) || (!closed && i === N - 2) ? p2 : [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
-    if (c1 === p1 && c2 === p2) out += `L${pt(p2, d)}`;
-    else if (i > 0 && !sharp(p1) && c1 !== p1) out += `S${pt(c2, d)} ${pt(p2, d)}`;
-    else out += `C${pt(c1, d)} ${pt(c2, d)} ${pt(p2, d)}`;
+    let cmd, nums;
+    if (c1 === p1 && c2 === p2) { cmd = 'l'; nums = rel(p2); }
+    else if (i > 0 && !sharp(p1) && c1 !== p1) { cmd = 's'; nums = [...rel(c2), ...rel(p2)]; }
+    else { cmd = 'c'; nums = [...rel(c1), ...rel(c2), ...rel(p2)]; }
+    const body = join(nums.map(num));
+    out += (cmd === prev && body[0] === '-' ? '' : cmd === prev ? ' ' : cmd) + body;
+    prev = cmd;
+    cx = R(p2[0]); cy = R(p2[1]);
   }
   return closed ? out + 'Z' : out;
 }

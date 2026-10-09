@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 // Generates five prologue CGs (1600x900 SVG) for 《月蚀契约》:
 //   public/assets/cg/intro-eye.svg       「窗外的眼睛」
-//   public/assets/cg/camp-fire.svg       「战前餐车」
 //   public/assets/cg/corridor-frost.svg  「记忆之霜」
 //   public/assets/cg/battle-descend.svg  「食梦兽降临」
 //   public/assets/cg/battle-phase2.svg   「记忆崩塌」
+// camp-fire.svg 已由 polish-set.mjs 重绘接管。
 // Usage: node tools/art/cg/eclipse-cg-set.mjs [outDir]
 // Zero dependencies; deterministic output (seeded PRNG).
 import fs from 'node:fs';

@@ -1,4 +1,3 @@
-import { campFire } from './eclipse-cg-campfire.mjs';
 // Scene compositions for the five prologue CGs. Each scene is (L) => svg string, where L is
 // ./eclipse-cg-lib.mjs. Ids are prefixed with the camelCase file name.
 
@@ -623,7 +622,6 @@ function corridorFrost(L) {
 
 export const scenes = {
   'intro-eye': introEye,
-  'camp-fire': () => campFire(),
   'battle-descend': battleDescend,
   'battle-phase2': battlePhase2,
   'corridor-frost': corridorFrost,
