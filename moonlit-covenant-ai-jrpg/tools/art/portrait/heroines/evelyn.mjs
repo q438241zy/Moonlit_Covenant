@@ -29,6 +29,7 @@ export default {
     browAngle: -0.75, browRaise: 0.22, browWeight: 0.85, mouth: 'smile', mouthWidth: 0.62,
     blush: 0.52, lashWeight: 1, lashFlick: true, browsOverHair: 0.45,
   },
+  face: { jaw: 0.5, width: 2, chin: -3, eyeSize: 1.02 }, // soft, rounder face
   costumeLayers: ['bodyBack', 'neckAccessory', 'foreground'],
   layers: {
     bgMotif,
