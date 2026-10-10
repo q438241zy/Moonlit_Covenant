@@ -1249,3 +1249,9 @@ body:has(.game-frame) .cg-unlock-stack { top:10px; }
   .gallery-header { flex-wrap:wrap; row-gap:4px; }
   .gallery-header .eyebrow { flex-basis:100%; }
 }
+
+/* 厚涂位图预留位：Boss 厚涂图带深色底，用径向遮罩羽化边缘融进战斗背景 */
+.enemy-art[src*="/assets/paint/"] {
+  -webkit-mask-image: radial-gradient(closest-side, #000 48%, transparent 100%);
+  mask-image: radial-gradient(closest-side, #000 48%, transparent 100%);
+}

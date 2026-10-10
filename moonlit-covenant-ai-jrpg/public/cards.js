@@ -6,6 +6,7 @@
    ═══════════════════════════════════════════════════════════ */
 
 import { icon } from './icons.js';
+import { loadPaint, paint } from './paint.js';
 
 // ─── API 客户端 ───
 async function api(path, opts) {
@@ -73,7 +74,7 @@ const cur = (name, n) => `<span class="cur cur-${name}">${icon(name, { size: '1.
 // 主战者头像（圆形、脸部居中的女主立绘；图片失败时露出职业图标）
 function avatarHTML(cls, extra = '') {
   const info = S.meta?.classes?.[cls];
-  const img = info?.portrait ? `<img class="avatar-img" src="${info.portrait}" alt="" draggable="false">` : '';
+  const img = info?.portrait ? `<img class="avatar-img" src="${paint(info.portrait)}" alt="" draggable="false">` : '';
   return `<span class="avatar ${extra}" style="--accent:${info?.accent || '#666'}"><span class="avatar-fallback">${icon(CLASS_ICON[cls] || 'sword', { size: '55%' })}</span>${img}</span>`;
 }
 
@@ -214,7 +215,7 @@ function cardHTML(card, opts = {}) {
   const shard = opts.shards ? `<div class="shard-badge">${icon('shard', { size: 11 })}+${opts.shards}</div>` : '';
   const evolveBtn = opts.canEvolve ? `<div class="evolve-btn" data-evolve="${card.uid}">进化</div>` : '';
   const dataAttr = opts.dataUid ? `data-uid="${card.uid}"` : '';
-  const artUrl = (opts.evolved && card.artEvolve) ? card.artEvolve : card.art;
+  const artUrl = paint((opts.evolved && card.artEvolve) ? card.artEvolve : card.art);
   // 矢量卡面叠在程序化 SVG 之上；加载失败由 init() 里的捕获监听隐藏，露出底层程序化美术
   const artImg = artUrl ? `<img class="art-img" src="${artUrl}" alt="" loading="lazy" decoding="async" draggable="false">` : '';
   return `<div class="${cls}" style="--cc:${cc};--rc:${rc}" ${dataAttr}>
@@ -425,7 +426,7 @@ function drawDeck() {
     .sort((a, b) => a.cost - b.cost || a.name.localeCompare(b.name, 'zh'));
   const deckList = inDeck.length
     ? inDeck.map((c) => `<button class="deck-chip ${c.rarity}" data-rm="${c.id}" style="--cc:${CLASS_COLOR[c.class] || 'var(--c-neutral)'};--rc:var(--r-${c.rarity})" title="移除一张 ${c.name}">
-        <img class="art-img chip-art" src="${c.art}" alt="" loading="lazy" draggable="false"><span class="chip-cost">${c.cost}</span><span class="chip-name">${c.name}</span><span class="chip-n">×${counts[c.id]}</span>
+        <img class="art-img chip-art" src="${paint(c.art)}" alt="" loading="lazy" draggable="false"><span class="chip-cost">${c.cost}</span><span class="chip-name">${c.name}</span><span class="chip-n">×${counts[c.id]}</span>
       </button>`).join('')
     : `<span class="deck-empty">${icon('deck', { size: 14 })} 牌组为空：点击下方卡牌加入</span>`;
   // 加/减卡会整屏重绘：保留滚动位置（仅当已在组牌界面时）
@@ -767,7 +768,7 @@ async function init() {
     if (e.key === 'Escape' && $('#modal-root').firstElementChild) closeModal();
   });
   try {
-    const [metaR, cardsR] = await Promise.all([get('/api/cards/meta'), get('/api/cards/all')]);
+    const [metaR, cardsR] = await Promise.all([get('/api/cards/meta'), get('/api/cards/all'), loadPaint()]);
     S.meta = metaR;
     S.allCards = cardsR.cards;
     S.cardById = {};
