@@ -18,6 +18,7 @@ const KEYS = {
   auto: 'moonlit:story:autosave',
   progress: 'moonlit:story:progress',
   read: 'moonlit:story:read',
+  backlog: 'moonlit:story:backlog',
   save: (key) => `moonlit:story:save:${key}`,
 };
 const SPEEDS = { slow: { cps: 20, label: '慢' }, normal: { cps: 38, label: '中' }, fast: { cps: 80, label: '快' }, instant: { cps: 0, label: '瞬间' } };
@@ -174,6 +175,7 @@ async function renderStart() {
   S.view = 'start';
   S.chapter = null;
   S.run = null;
+  const renderId = (S.renderId = (S.renderId || 0) + 1);
   const save = load(KEYS.auto, null);
   const hasSave = Boolean(save?.run && save.chapterId);
   const ids = S.index.map((e) => e.id);
@@ -221,8 +223,8 @@ async function renderStart() {
   $('[data-act="continue"]')?.addEventListener('click', continueSave);
   bindSettings($('#start'));
 
-  const chapters = await Promise.all(ids.map((id) => loadChapter(id)));
-  if (S.view !== 'start') return;
+  const [chapters] = await Promise.all([Promise.all(ids.map((id) => loadChapter(id))), hasSave ? loadChapter(save.chapterId) : null]);
+  if (S.view !== 'start' || renderId !== S.renderId) return; // 期间又重绘过（连点返回标题等）
   if (hasSave) {
     const saveEntry = entryFor(save.chapterId);
     const meta = $('#continueMeta');
@@ -249,6 +251,7 @@ async function renderStart() {
   } else {
     begin.innerHTML = `${icon('lock', { size: 18 })}<span>主线制作中</span>`;
   }
+  if (S.focus && !S.chapters.get(S.focus)) toast(`「${entryFor(S.focus).label}」尚未开放`, 'warn');
 }
 
 function chapterCardHtml(id, chapter) {
@@ -262,8 +265,7 @@ function chapterCardHtml(id, chapter) {
   if (!chapter) meta.push('尚未开放');
   else {
     if (e.minutes) meta.push(`约 ${e.minutes} 分钟`);
-    if (done) meta.push('已完成');
-    else if (!unlocked) meta.push(`完成「${reqEntry?.label || e.requires}」后解锁`);
+    if (!done && !unlocked) meta.push(`完成「${reqEntry?.label || e.requires}」后解锁`);
   }
   const canonLink = chapter && e.requires
     ? `<button class="link-btn" type="button" data-start="${esc(id)}" data-canon="1">从本章开始（使用默认正史）</button>` : '';
@@ -318,7 +320,9 @@ async function continueSave() {
   storeName(name);
   run.playerName = name;
   run.mode = S.settings.mode;
-  enterPlay(chapter, run, { fresh: false });
+  const log = load(KEYS.backlog, null);
+  const backlog = log?.chapterId === save.chapterId && Array.isArray(log.lines) ? log.lines.filter((l) => l && typeof l.text === 'string') : [];
+  enterPlay(chapter, run, { fresh: false, backlog });
 }
 
 function confirmDialog(message, okLabel = '确定') {
@@ -516,17 +520,23 @@ function renderPlay() {
   bindSettings(P.play);
 }
 
+// 叠层打开时让底下的播放界面不可聚焦（Tab 不会跑到遮罩后面）
+function setBackdropInert(overlay, on) {
+  if (!P.play) return;
+  for (const el of P.play.children) if (el !== overlay && el !== P.live) el.inert = on;
+}
+
 function onStageClick(e) {
   if (e.target.closest('button, a, input, textarea, label, select, .hud, .ask, .backlog, .pop, .end-screen, .fatal, .modal, .play-bar')) return;
   advance();
 }
 
-function enterPlay(chapter, run, { fresh }) {
+function enterPlay(chapter, run, { fresh, backlog = [] }) {
   cancelPlay();
   S.chapter = chapter;
   S.run = run;
   S.startRun = fresh ? clone(run) : null;
-  S.backlog = [];
+  S.backlog = backlog.slice(-500);
   S.auto = false;
   S.skip = false;
   renderPlay();
@@ -579,6 +589,7 @@ async function runLoop(my) {
 function autosave() {
   if (!S.run || !S.chapter) return;
   store(KEYS.auto, { run: S.run, chapterId: S.chapter.id, savedAt: Date.now() });
+  store(KEYS.backlog, { chapterId: S.chapter.id, lines: S.backlog.slice(-200) });
   flushRead();
 }
 
@@ -732,9 +743,21 @@ async function showLine(beat, my) {
   P.dlg.classList.remove('waiting', 'enter');
   if (wasIdle) { void P.dlg.offsetWidth; P.dlg.classList.add('enter'); }
 
+  P.shown.parentElement.scrollTop = 0;
   await typeText(line.text, (S.skip && seen) || SPEEDS[S.settings.speed]?.cps === 0);
   if (my !== S.token) return;
   await waitAdvance({ autoDelay: autoDelayFor(line.text) + (line.kind === 'voice' ? 600 : 0), seen });
+}
+
+// 超长文本在对话框内滚动时，让正在打字的那一行保持可见
+function followCaret() {
+  const box = P.shown.parentElement;
+  if (box.scrollHeight <= box.clientHeight + 1) return;
+  const rects = P.shown.getClientRects();
+  const last = rects[rects.length - 1];
+  if (!last) return;
+  const over = last.bottom - box.getBoundingClientRect().bottom;
+  if (over > 0) box.scrollTop += over + 4;
 }
 
 function typeText(text, instant) {
@@ -774,6 +797,7 @@ function typeText(text, instant) {
         n = k;
         P.shown.textContent = chars.slice(0, n).join('');
         P.rest.textContent = chars.slice(n).join('');
+        followCaret();
       }
       if (n >= chars.length) { finish(); return; }
       raf = requestAnimationFrame(tick);
@@ -1241,7 +1265,7 @@ async function onEnd(end) {
 
   const e = entryFor(ch.id, ch);
   const lines = (end?.summary || []).filter((s) => s?.text && evalCond(run, s.when)).map((s) => interpolate(s.text, run));
-  const inputs = Object.keys(run.inputs || {}).length;
+  const inputs = Object.keys(run.inputs || {}).filter((id) => findNode(ch, id)).length; // 只算本章（run.inputs 会跨章继承）
   const scr = P.endScreen;
   scr.innerHTML = `<div class="end-card" role="dialog" aria-modal="true" aria-labelledby="endTitle">
       <img class="end-crest" src="/assets/ui/eclipse-crest.svg" alt="" />
@@ -1250,7 +1274,7 @@ async function onEnd(end) {
       <div class="end-rule"></div>
       <h3 class="end-sub">${icon('book', { size: 15 })}正史记录</h3>
       <ul class="end-summary">${(lines.length ? lines : ['你的每一次回应都已记录在案。']).map((t) => `<li>${esc(t)}</li>`).join('')}</ul>
-      <p class="end-save">${icon('save', { size: 14 })}已存档 · ${esc(run.playerName)} · ${inputs} 次自由回应</p>
+      <p class="end-save">${icon('save', { size: 14 })}已存档 · ${esc(run.playerName)} · 本章 ${inputs} 次自由回应</p>
       <div class="end-actions">
         <button class="btn primary large" type="button" data-end="next" disabled>${icon('arrow-right', { size: 18 })}<span>下一章</span></button>
         <button class="btn secondary" type="button" data-end="replay">${icon('refresh', { size: 16 })}重玩本章</button>
@@ -1258,6 +1282,7 @@ async function onEnd(end) {
       </div>
     </div>`;
   scr.hidden = false;
+  setBackdropInert(scr, true);
   scr.classList.remove('show');
   void scr.offsetWidth;
   scr.classList.add('show');
@@ -1316,10 +1341,12 @@ function toggleBacklog(open) {
   if (open) {
     renderBacklog();
     P.backlog.hidden = false;
+    setBackdropInert(P.backlog, true);
     P.backlogList.scrollTop = P.backlogList.scrollHeight;
     $('[data-act="close-log"]', P.backlog).focus();
   } else {
     P.backlog.hidden = true;
+    setBackdropInert(P.backlog, false);
     $('[data-act="log"]')?.focus();
   }
 }
@@ -1332,6 +1359,7 @@ function showFatal(err) {
   P.fatal.innerHTML = `<div class="end-card"><p class="eyebrow">STORY ERROR</p><h2>剧情数据出错了</h2><p class="muted">${esc(err?.message || String(err))}</p>
     <div class="end-actions"><button class="btn primary" type="button" data-act="fatal-title">返回标题</button></div></div>`;
   P.fatal.hidden = false;
+  setBackdropInert(P.fatal, true);
   $('[data-act="fatal-title"]', P.fatal).addEventListener('click', () => renderStart());
 }
 

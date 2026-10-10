@@ -14,6 +14,7 @@ const steps = [
   ['Boss', 'tools/art/boss/build.mjs'],
   ['场景与 UI', 'tools/art/stage/build.mjs'],
   ['世界地图', 'tools/art/map/build-map.mjs'],
+  ['主线场景与 NPC', 'tools/art/story/build.mjs'],
   ['卡面 中立/莉亚', 'tools/art/cards/neutral-lia.mjs'],
   ['卡面 莉莉丝/塞蕾娜', 'tools/art/cards/lilith-serena.mjs'],
   ['进化卡面', 'tools/art/build-cards.mjs'],

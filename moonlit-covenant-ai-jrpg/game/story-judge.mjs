@@ -8,6 +8,8 @@ import { fileURLToPath } from 'node:url';
 import { AI_CONFIG } from './ai.mjs';
 import { demoJudge, findNode, sanitizeLines, cleanName } from '../public/story/engine.js';
 
+const withName = (text, playerName) => String(text ?? '').replaceAll('{PLAYER_NAME}', playerName);
+
 const storyDir = join(dirname(fileURLToPath(import.meta.url)), '..', 'public', 'story');
 const chapterCache = new Map();
 let speakerCache = null;
@@ -65,13 +67,13 @@ const JUDGE_SCHEMA = (node) => ({
 function buildPrompt(chapter, node, playerName, recent) {
   const names = speakers(chapter);
   const who = (node.focus || []).map((id) => `${id}=${String(names[id]?.name || id).replace('{PLAYER_NAME}', playerName)}`).join('，') || '（无，只能用 narr 叙述）';
-  const intents = node.intents.map((x) => `- ${x.id}：${x.label}${x.desc ? `——${x.desc}` : ''}`).join('\n');
+  const intents = node.intents.map((x) => `- ${x.id}：${withName(x.label, playerName)}${x.desc ? `——${withName(x.desc, playerName)}` : ''}`).join('\n');
   const history = recent.map((r) => `- ${r.id}：「${r.text}」→ ${r.intent}`).join('\n') || '（无）';
   return [
     `你是《月蚀契约》主线剧情的判定器。主角名叫${playerName}，玩家用自由文字描述${playerName}的台词或行动。`,
-    `章节：${chapter.title}。当前节点：${node.id}（${node.kind}）。界面提示：${node.prompt}`,
-    `场景事实：\n${(node.context || []).map((s) => `- ${s}`).join('\n') || '（无）'}`,
-    `演出原则：\n${(node.principles || []).map((s) => `- ${s}`).join('\n') || '（无）'}`,
+    `章节：${chapter.title}。当前节点：${node.id}（${node.kind}）。界面提示：${withName(node.prompt, playerName)}`,
+    `场景事实：\n${(node.context || []).map((s) => `- ${withName(s, playerName)}`).join('\n') || '（无）'}`,
+    `演出原则：\n${(node.principles || []).map((s) => `- ${withName(s, playerName)}`).join('\n') || '（无）'}`,
     `可选意图（intent 必须取其一${node.multi ? '；secondary 可给出同时成立的第二个意图，没有则为空字符串' : '；secondary 填空字符串'}）：\n${intents}`,
     `玩家最近的输入：\n${history}`,
     '判定要求：',

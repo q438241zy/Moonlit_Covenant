@@ -1,0 +1,4226 @@
+{
+  "id": "ch002",
+  "number": 2,
+  "scriptId": "CH002_RED_HAIRED_GIRL",
+  "title": "第二章｜红发女孩",
+  "shortTitle": "红发女孩",
+  "estimatedMinutes": 13,
+  "source": "剧本/02紅髮女孩.md",
+  "canon": {
+    "flags": {
+      "FLAG_CH000_HEMAI_DESTROYED": true,
+      "FLAG_CH000_BLACK_DRAGON_SEEN": true,
+      "FLAG_CH000_MOTHER_STATUS_UNKNOWN": true,
+      "FLAG_CH000_TOBY_SURVIVED_CAVE": true,
+      "FLAG_CH000_DRAGON_VOW": true,
+      "FLAG_CH000_DRAGON_REMAINS_OVER_HEMAI": true,
+      "FLAG_CH001_BLACK_DRAGON_REPELLED_BY_KERN": true,
+      "FLAG_CH001_BLACK_DRAGON_ABDOMEN_WOUNDED": true,
+      "FLAG_CH001_MOTHER_DEATH_CONFIRMED": true,
+      "FLAG_CH001_TOBY_UNDER_KERN_GUARDIANSHIP": true,
+      "FLAG_CH001_ARK_RECEIVED_GUILD_LETTER": true,
+      "FLAG_CH001_KERN_MENTOR_IDEAL": true
+    },
+    "items": {
+      "ITEM_FAMILY_SHEPHERD_WHISTLE": 1,
+      "ITEM_MOTHER_WHEAT_HAIRPIN": 1
+    },
+    "vars": {
+      "PLAYER_VOW_PRIMARY": "VOW_REVENGE",
+      "PLAYER_GUILT_TOTAL": 0,
+      "ITEM_FAMILY_SHEPHERD_WHISTLE_OWNER": "TOBY",
+      "PLAYER_PROMISE_RETURN_TO_TOBY": true
+    },
+    "memories": {
+      "MEMORY_MOTHER_WORDS_FIND_WAY_HOME": "艾琳：“我吹这个，你就知道该往哪边回。”",
+      "MEMORY_FAMILY_ROLL_CALL": "艾琳：“报数！”——“我在！”“我、我也在！”",
+      "MEMORY_BORIN_LAST_WORDS": "先看清该砍谁",
+      "MEMORY_CH001_PROMISE_RETURN_TO_TOBY": "托比：“你一定要回来拿。”——“一定。”"
+    }
+  },
+  "speakers": {
+    "stranger_girl": {
+      "name": "陌生少女",
+      "color": "#ff6b7c",
+      "art": null
+    },
+    "burly_adventurer": {
+      "name": "壮汉冒险者",
+      "color": "#a5a1b8",
+      "art": null
+    },
+    "female_archer": {
+      "name": "女弓手",
+      "color": "#b7a8c9",
+      "art": null
+    },
+    "soup_vendor": {
+      "name": "汤摊老板",
+      "color": "#c9a27a",
+      "art": null
+    },
+    "rocky_thief": {
+      "name": "窃贼罗奇",
+      "color": "#8f9a6b",
+      "art": "/assets/story/npc/rocky.svg"
+    }
+  },
+  "shots": [
+    {
+      "id": "02-01",
+      "title": "一座没有被烧掉的城镇",
+      "bg": "chime-town-gate",
+      "music": "bright_woodwind_street_drums",
+      "ambience": [
+        "cart_wheels",
+        "vendor_calls",
+        "bell_tower_chime",
+        "blacksmith_hammer"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "晨钟镇的东门在清晨完全敞开。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "商队排着长列入城，驴车上绑着金属零件、草药和成筐水果。城墙没有焦痕，屋顶没有黑烟，街边的人会为一枚掉在地上的铜币停下来争吵。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}站在人流里，忽然觉得这些声音吵得过分。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "一名小贩将刚出炉的麦饼递给客人。香味飘过来时，他下意识看向身旁。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "那里没有艾琳，也没有正准备偷走一半的托比。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "他把手伸进衣襟，碰了一下烧黑的麦穗发夹。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "城门卫兵抬起长枪。"
+        },
+        {
+          "t": "say",
+          "who": "guard",
+          "text": "进城做什么？"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}取出白蜡封口的信。"
+        },
+        {
+          "t": "say",
+          "who": "aku",
+          "text": "注册冒险者。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "卫兵看了看他腰间磨损的长剑，又看了看信上的印记。"
+        },
+        {
+          "t": "say",
+          "who": "guard",
+          "text": "那你走对门了。进去直走，看到全镇最吵、酒味最重、门修得最多次的房子，就是公会。"
+        }
+      ]
+    },
+    {
+      "id": "02-02",
+      "title": "冒险者公会不是英雄殿堂",
+      "bg": "guild-hall",
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "公会大门上有三道新旧不同的修补痕迹。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}推门进去。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "里面没有吟游诗人口中的金色英雄雕像。左边是一排满是泥脚印的长椅，右边是药水、绳索与干粮柜台。几名冒险者正为任务报酬争论，角落里有人趴在桌上补眠。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "墙上最大的告示不是讨伐魔王，而是："
+        },
+        {
+          "t": "narr",
+          "style": "caption",
+          "text": "禁止把活史莱姆带进大厅。第三次警告。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "一只淡蓝色史莱姆正从告示下方悄悄爬过。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "柜台后的登记官梅芙抬起眼睛。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "她约三十岁，黑发用羽毛笔随意盘起，左眼戴着一片单镜式魔力读取片。"
+        },
+        {
+          "t": "say",
+          "who": "maeve",
+          "text": "注册、交任务、找失物，还是来投诉楼上的打呼声？"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}递出信。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "梅芙看见白蜡印，原本漫不经心的神色稍微收敛。"
+        },
+        {
+          "t": "say",
+          "who": "maeve",
+          "text": "白·可恩介绍的？"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "她拆开信，迅速读完。"
+        },
+        {
+          "t": "say",
+          "who": "maeve",
+          "text": "嗯。他只写了两句。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}等着。"
+        },
+        {
+          "t": "say",
+          "who": "maeve",
+          "text": "“这孩子会七律。每一律都弱得让人放心。”"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "附近几名冒险者笑出声。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "梅芙将信翻到背面。"
+        },
+        {
+          "t": "say",
+          "who": "maeve",
+          "text": "还有一句。“别因为上一句小看他。”"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "笑声停了。"
+        }
+      ]
+    },
+    {
+      "id": "02-03",
+      "title": "没有选项的注册问答",
+      "bg": "guild-hall",
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "梅芙拿出一张空白登记纸，把羽毛笔放到指间转了一圈。"
+        },
+        {
+          "t": "say",
+          "who": "maeve",
+          "text": "姓名。"
+        },
+        {
+          "t": "say",
+          "who": "aku",
+          "text": "{PLAYER_NAME}。"
+        },
+        {
+          "t": "say",
+          "who": "maeve",
+          "text": "年龄。"
+        },
+        {
+          "t": "say",
+          "who": "aku",
+          "text": "十八。"
+        },
+        {
+          "t": "say",
+          "who": "maeve",
+          "text": "武器。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}轻拍长剑剑鞘。"
+        },
+        {
+          "t": "say",
+          "who": "maeve",
+          "text": "会用，还是只是带着比较像冒险者？"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "她没有嘲笑，只是真的在等答案。"
+        },
+        {
+          "t": "input",
+          "id": "FI_CH002_SC03_GUILD_REGISTRATION_001",
+          "kind": "dialogue",
+          "prompt": "登记官询问：你为什么想成为冒险者？（她也还在等你回答剑会不会用。）你可以自由说明，也可以回避、撒谎、反问或沉默。",
+          "placeholder": "回答梅芙，或者写下你的反应……",
+          "focus": [
+            "maeve",
+            "burly_adventurer",
+            "female_archer"
+          ],
+          "context": [
+            "晨钟镇冒险者公会一楼的登记柜台。登记官梅芙（约三十岁，黑发用羽毛笔盘起，左眼戴单镜式魔力读取片）正为{PLAYER_NAME}填写登记纸，周围有几名看热闹的冒险者。",
+            "白·可恩的引荐信只写了两句：“这孩子会七律。每一律都弱得让人放心。”“别因为上一句小看他。”",
+            "梅芙已问过姓名、年龄（十八）和武器（腰间磨损的长剑），刚问过“会用，还是只是带着比较像冒险者？”，现在问：你为什么想成为冒险者？",
+            "{PLAYER_NAME}七天前失去了故乡赫麦村和母亲艾琳（黑龙焚村），弟弟托比由白·可恩监护，住在晨钟镇北侧的白塔；他在序章立下了追上黑龙的誓言。他衣着朴素，衣服上还有焦痕，贴身带着母亲烧黑的麦穗发夹。"
+          ],
+          "principles": [
+            "判定维度：是否回答了问题（ANSWER_RELEVANCE）；主要动机——复仇、保护、金钱、自由、名声、真相、家人、生存或其他（MOTIVE_PRIMARY）；与序章誓言及既有记忆是否一致（HONESTY_ESTIMATE）；是否有明显自毁或滥用同伴倾向（RISK_PROFILE）；语气偏直率、寡言、幽默、戒备或挑衅（VOICE_PROFILE_UPDATE）。",
+            "梅芙不因动机不高尚而拒绝注册。为赚钱、逃离故乡或复仇都是真实常见理由。",
+            "她会拒绝明确宣称“想合法杀人”或“找能随意欺负的队友”的人直接领取武装资格，要求追加评估。",
+            "玩家撒谎不会被模型神奇看穿，但若与可恩信件、衣着和先前承诺矛盾，梅芙会追问。",
+            "固定承接（所有人都会发生，反应里不要提前写）：梅芙写完最后一笔，说“理由不会替你活下来，但会决定你在快死的时候往哪里走”，然后推来七角形测律晶盘。"
+          ],
+          "intents": [
+            {
+              "id": "kill_license",
+              "label": "想合法杀人／欺负队友",
+              "desc": "明确宣称想合法杀人，或想找能随意欺负、使唤、拿来垫背的队友。梅芙不直接给武装资格，要求追加评估。",
+              "keywords": [
+                "合法杀人",
+                "想杀人",
+                "砍人",
+                "欺负",
+                "使唤",
+                "随便打",
+                "出气",
+                "垫背",
+                "杀人"
+              ],
+              "voice": "aggressive",
+              "morality": -2,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "梅芙停下笔，抬眼看着他，第一次没有接话。"
+                },
+                {
+                  "t": "say",
+                  "who": "maeve",
+                  "text": "这句我会原样写进去。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "她在“武装资格”一栏画了一个红圈。"
+                },
+                {
+                  "t": "say",
+                  "who": "maeve",
+                  "text": "登记照做，武装资格先不批。你需要追加评估。"
+                }
+              ],
+              "set": {
+                "flags": {
+                  "FLAG_CH002_GUILD_EXTRA_ASSESSMENT": true
+                },
+                "vars": {
+                  "PLAYER_GUILD_MOTIVE": "VIOLENCE",
+                  "PLAYER_RISK_PROFILE": "VIOLENT"
+                }
+              }
+            },
+            {
+              "id": "reckless",
+              "label": "自毁倾向",
+              "desc": "表现出不在乎自己死活、想同归于尽的自毁倾向（RISK_PROFILE）。不拒绝注册，但会被记作风险偏高。",
+              "keywords": [
+                "同归于尽",
+                "死了也",
+                "不要命",
+                "豁出去",
+                "死就死",
+                "拼上性命",
+                "无所谓"
+              ],
+              "voice": "reckless",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "梅芙的笔停了。"
+                },
+                {
+                  "t": "say",
+                  "who": "maeve",
+                  "text": "不在乎自己死活的人，我在备注里写“风险偏高”。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "她在登记纸角落画了个小记号，才继续往下写。"
+                }
+              ],
+              "set": {
+                "flags": {
+                  "FLAG_CH002_GUILD_RISK_NOTED": true
+                },
+                "vars": {
+                  "PLAYER_GUILD_MOTIVE": "OTHER",
+                  "PLAYER_RISK_PROFILE": "SELF_DESTRUCTIVE"
+                }
+              }
+            },
+            {
+              "id": "lie",
+              "label": "明显矛盾的说辞",
+              "desc": "说出与可恩信件（七律都很弱）、朴素带焦痕的衣着或先前承诺明显矛盾的身份或动机，例如自称贵族、大魔法师、天才。不会被神奇看穿，但梅芙会追问。",
+              "keywords": [
+                "贵族",
+                "王子",
+                "大魔法师",
+                "我很强",
+                "天才",
+                "少爷",
+                "有钱人",
+                "皇室",
+                "骑士团",
+                "从没去过"
+              ],
+              "voice": "boastful",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "梅芙抬眼，看了看他袖口的焦痕，又低头看了看可恩那封信。"
+                },
+                {
+                  "t": "say",
+                  "who": "maeve",
+                  "text": "可恩说你七律都弱得让人放心。你衣服上的焦痕，也不像是从宴会上带出来的。"
+                },
+                {
+                  "t": "say",
+                  "who": "maeve",
+                  "text": "再说一次？这次说你自己的。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}没有再编下去。梅芙也没有逼问，只在纸上补了一行小字。"
+                }
+              ],
+              "set": {
+                "flags": {
+                  "FLAG_CH002_REGISTRATION_LIE_QUESTIONED": true
+                },
+                "vars": {
+                  "PLAYER_GUILD_MOTIVE": "UNCLEAR"
+                }
+              }
+            },
+            {
+              "id": "revenge",
+              "label": "复仇",
+              "desc": "为了向黑龙复仇、讨回血债而当冒险者。",
+              "keywords": [
+                "报仇",
+                "复仇",
+                "血债",
+                "屠龙",
+                "杀了那条龙",
+                "黑龙",
+                "仇人",
+                "讨回来",
+                "偿命",
+                "以牙还牙"
+              ],
+              "voice": "vengeful",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "梅芙在“动机”一栏写下两个字，笔尖没有停顿。"
+                },
+                {
+                  "t": "say",
+                  "who": "maeve",
+                  "text": "复仇。常见理由，不丢人，也不加分。"
+                }
+              ],
+              "set": {
+                "vars": {
+                  "PLAYER_GUILD_MOTIVE": "REVENGE"
+                }
+              }
+            },
+            {
+              "id": "protect",
+              "label": "保护／家人",
+              "desc": "为了保护别人、不想再让重要的人被夺走，或为了弟弟托比和家人。",
+              "keywords": [
+                "保护",
+                "守护",
+                "不想再失去",
+                "重要的人",
+                "护住",
+                "弟弟",
+                "托比",
+                "家人",
+                "养家",
+                "照顾"
+              ],
+              "voice": "protective",
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "maeve",
+                  "text": "保护。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "她写下来，又看了一眼他磨损的剑鞘。"
+                },
+                {
+                  "t": "say",
+                  "who": "maeve",
+                  "text": "那先学会保护你自己。公会的绷带不是无限供应的。"
+                }
+              ],
+              "set": {
+                "vars": {
+                  "PLAYER_GUILD_MOTIVE": "PROTECTION"
+                }
+              }
+            },
+            {
+              "id": "practical",
+              "label": "钱／名声／活路／离开故乡",
+              "desc": "世俗而实在的理由：赚钱谋生、出名当一流冒险者、活下去、离开原来的地方。都是真实常见的理由，梅芙照登不误。",
+              "keywords": [
+                "赚钱",
+                "报酬",
+                "金币",
+                "谋生",
+                "活下去",
+                "生存",
+                "出名",
+                "名声",
+                "一流",
+                "自由",
+                "离开",
+                "闯荡",
+                "钱"
+              ],
+              "voice": "pragmatic",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "梅芙写得很快。"
+                },
+                {
+                  "t": "say",
+                  "who": "maeve",
+                  "text": "钱、名声、活路、离开原来的地方——都是真理由。至少比“为了正义”好核对。"
+                }
+              ],
+              "set": {
+                "vars": {
+                  "PLAYER_GUILD_MOTIVE": "PRACTICAL"
+                }
+              }
+            },
+            {
+              "id": "truth",
+              "label": "真相",
+              "desc": "想查明黑龙为什么袭击赫麦村，弄清真相。",
+              "keywords": [
+                "真相",
+                "查明",
+                "查清",
+                "弄清楚",
+                "原因",
+                "调查",
+                "搞明白",
+                "来龙去脉"
+              ],
+              "voice": "curious",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "maeve",
+                  "text": "真相。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "她在旁边画了一个小小的问号。"
+                },
+                {
+                  "t": "say",
+                  "who": "maeve",
+                  "text": "这种人通常会多问很多问题。没关系，我领薪水就是被问的。"
+                }
+              ],
+              "set": {
+                "vars": {
+                  "PLAYER_GUILD_MOTIVE": "TRUTH"
+                }
+              }
+            },
+            {
+              "id": "evade",
+              "label": "回避／反问／打岔",
+              "desc": "不正面回答：回避、不想说、反问梅芙、打岔开玩笑或顶撞。",
+              "keywords": [
+                "不想说",
+                "不方便",
+                "你呢",
+                "你为什么",
+                "有必要吗",
+                "关你什么事",
+                "秘密",
+                "不告诉你",
+                "开玩笑",
+                "少废话"
+              ],
+              "voice": "guarded",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "梅芙用羽毛笔尾端敲了敲纸面。"
+                },
+                {
+                  "t": "say",
+                  "who": "maeve",
+                  "text": "问问题的是我，登记纸上也没有我这一栏。"
+                },
+                {
+                  "t": "say",
+                  "who": "maeve",
+                  "text": "不想正面回答也行。这一栏先写“未申报”。"
+                }
+              ],
+              "set": {
+                "vars": {
+                  "PLAYER_GUILD_MOTIVE": "UNDECLARED"
+                }
+              }
+            },
+            {
+              "id": "fallback",
+              "label": "其他理由",
+              "desc": "给出了以上类别之外的理由，或回答含糊。",
+              "keywords": [
+                "说不清",
+                "不好说",
+                "大概吧",
+                "就是想",
+                "没想过"
+              ],
+              "voice": "neutral",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "梅芙听完，把他的话简短地记进“动机”一栏。"
+                },
+                {
+                  "t": "say",
+                  "who": "maeve",
+                  "text": "行。登记纸不评分。"
+                }
+              ],
+              "set": {
+                "vars": {
+                  "PLAYER_GUILD_MOTIVE": "OTHER"
+                }
+              }
+            },
+            {
+              "id": "silent",
+              "label": "沉默",
+              "desc": "不回答。沉默不会导致拒绝注册。",
+              "voice": "quiet",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}没有开口。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "梅芙等了三秒，在“动机”一栏写下“未申报”。"
+                },
+                {
+                  "t": "say",
+                  "who": "maeve",
+                  "text": "沉默也算一种回答。至少比编的好。"
+                }
+              ],
+              "set": {
+                "vars": {
+                  "PLAYER_GUILD_MOTIVE": "UNDECLARED"
+                }
+              }
+            }
+          ],
+          "silent": "silent",
+          "fallback": "fallback"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "梅芙写完最后一笔。"
+        },
+        {
+          "t": "say",
+          "who": "maeve",
+          "text": "理由不会替你活下来，但会决定你在快死的时候往哪里走。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "她起身，把一块七角形测律晶盘推到{PLAYER_NAME}面前。"
+        }
+      ]
+    },
+    {
+      "id": "02-04",
+      "title": "七色小火花",
+      "bg": "guild-hall",
+      "beats": [
+        {
+          "t": "say",
+          "who": "maeve",
+          "text": "手放上去。别用力，上一个用力的人赔了三个月薪水。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}把手掌按在晶盘中央。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "第一秒，什么都没有发生。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "第二秒，金色亮了一点。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "接着是木、水、火、土、光、暗。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "七种颜色绕着晶盘依次闪烁，每一格都弱得像快要熄灭的烛火。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "旁边一名壮汉探头。"
+        },
+        {
+          "t": "say",
+          "who": "burly_adventurer",
+          "text": "七种？"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "另一名冒险者挑眉。"
+        },
+        {
+          "t": "say",
+          "who": "female_archer",
+          "text": "加起来有一种的量吗？"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "梅芙敲了一下晶盘。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "七色全部熄灭。"
+        },
+        {
+          "t": "say",
+          "who": "maeve",
+          "text": "结果：适性很广，输出很窄。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "她把一块灰黑色铁牌放到柜台上。"
+        },
+        {
+          "t": "say",
+          "who": "maeve",
+          "text": "从铁牌开始。可以接采集、护送、低危魔物与公会协作任务。禁止单独接魔王级，禁止把“我觉得能打”当成风险评估。"
+        },
+        {
+          "t": "say",
+          "who": "aku",
+          "text": "多久能升到一流？"
+        },
+        {
+          "t": "say",
+          "who": "maeve",
+          "text": "你先活过第一个月，我再回答。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "她把铁牌、城市简图和一小卷绷带推给他。"
+        },
+        {
+          "t": "say",
+          "who": "maeve",
+          "text": "恭喜。现在开始，你闯的祸有正式编号了。"
+        },
+        {
+          "t": "set",
+          "flags": {
+            "PLAYER_GUILD_REGISTERED": true
+          },
+          "vars": {
+            "PLAYER_GUILD_RANK": "IRON"
+          },
+          "items": {
+            "ITEM_GUILD_IRON_BADGE": 1,
+            "ITEM_BASIC_BANDAGE": 1
+          }
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "FLAG_CH002_GUILD_EXTRA_ASSESSMENT"
+          },
+          "then": [
+            {
+              "t": "say",
+              "who": "maeve",
+              "text": "武装资格那一栏，等追加评估过了再盖章。在那之前，剑留在鞘里。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "02-05",
+      "title": "新手的第一分钟自由",
+      "bg": "market",
+      "music": "light_breather",
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}走出公会，把铁牌挂在腰侧。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "牌子比他想象中轻，也比他想象中普通。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "街上有人叫卖草莓蛋糕、护具扣与驱哥布林香粉。两个孩子追着木轮跑过去，一名魔具工匠在路边测试会自动扫地的铜制甲虫，结果甲虫一路追着他的鞋刷。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}打开城市简图。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "图画反了。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "他转了半圈，仍觉得钟楼跑到了不该在的位置。"
+        },
+        {
+          "t": "input",
+          "id": "FI_CH002_SC05_FIRST_MINUTE_001",
+          "kind": "free",
+          "prompt": "第一次独自站在晨钟镇的街上。你可以问路、先找旅店、看看委托、买点吃的，或者给托比带点东西。",
+          "placeholder": "四处看看、问路、买点东西……（也可以跳过）",
+          "optional": true,
+          "focus": [
+            "townsfolk"
+          ],
+          "context": [
+            "晨钟镇冒险者公会外、中央市集入口，清晨。{PLAYER_NAME}刚拿到铁牌、城市简图和一小卷绷带。简图他拿反了，转了半圈仍觉得钟楼跑到了不该在的位置。",
+            "街上有人叫卖草莓蛋糕、护具扣与驱哥布林香粉；两个孩子追着木轮跑过去；一名魔具工匠在路边测试会自动扫地的铜制甲虫，结果甲虫一路追着他的鞋刷。",
+            "弟弟托比住在晨钟镇北侧白·可恩的白塔。七天前赫麦村刚被黑龙烧毁。"
+          ],
+          "principles": [
+            "玩家可询问路人、决定先找旅店、查看委托、买食物，或给托比带东西。",
+            "此节点主要生成初入城的生活记忆，不改变主线事件。",
+            "固定承接（反应里不要提前写）：就在{PLAYER_NAME}收起地图时，市集另一端传来一声极清楚的喝令“站住！”。"
+          ],
+          "intents": [
+            {
+              "id": "ask_way",
+              "label": "问路",
+              "desc": "向路人打听方向、请人看地图。",
+              "keywords": [
+                "问路",
+                "请问",
+                "打听",
+                "怎么走",
+                "路人",
+                "问一下",
+                "钟楼在哪"
+              ],
+              "voice": "curious",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}拦住一名路过的镇民，把简图递过去。"
+                },
+                {
+                  "t": "say",
+                  "who": "townsfolk",
+                  "text": "你拿反了。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "对方伸手把图转了半圈，往远处一指。钟楼终于回到了它该在的位置。"
+                }
+              ],
+              "set": {
+                "memories": {
+                  "MEMORY_CH002_FIRST_MINUTE": "初到晨钟镇，他把地图拿反了，是路人帮他转正的。"
+                }
+              }
+            },
+            {
+              "id": "inn",
+              "label": "找旅店",
+              "desc": "先找落脚的旅店或住处。",
+              "keywords": [
+                "旅店",
+                "住处",
+                "客栈",
+                "落脚",
+                "床位",
+                "住宿",
+                "过夜"
+              ],
+              "voice": "pragmatic",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}在简图上找了一会儿，圈出两处画着床铺记号的地方。都离公会不远——大概是方便冒险者被抬回来。"
+                }
+              ],
+              "set": {
+                "memories": {
+                  "MEMORY_CH002_FIRST_MINUTE": "初到晨钟镇，他先在地图上圈出了落脚的旅店。"
+                }
+              }
+            },
+            {
+              "id": "commissions",
+              "label": "查看委托",
+              "desc": "回头看看公会的委托板、铁牌能接什么任务。",
+              "keywords": [
+                "委托",
+                "任务",
+                "告示板",
+                "接活",
+                "找工作",
+                "委托板"
+              ],
+              "voice": "earnest",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}回头看了一眼公会门口的委托板。铁牌能接的单子写满了半面墙：采集草药、护送货车、清理地窖里的大老鼠。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "没有一张写着“黑龙”。"
+                }
+              ],
+              "set": {
+                "memories": {
+                  "MEMORY_CH002_FIRST_MINUTE": "初到晨钟镇，他先去看了铁牌能接的委托。"
+                }
+              }
+            },
+            {
+              "id": "toby_gift",
+              "label": "给托比带东西",
+              "desc": "给住在白塔的弟弟托比买点东西、带礼物。",
+              "keywords": [
+                "托比",
+                "弟弟",
+                "带给",
+                "礼物",
+                "白塔",
+                "带回去",
+                "带点"
+              ],
+              "voice": "warm",
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}在糖果摊前停下，买了一小包麦芽糖，用布仔细包好。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "下次回白塔时，托比大概会先偷走一半。"
+                }
+              ],
+              "set": {
+                "memories": {
+                  "MEMORY_CH002_FIRST_MINUTE": "初到晨钟镇，他给托比买了一小包麦芽糖。"
+                },
+                "flags": {
+                  "FLAG_CH002_GIFT_FOR_TOBY": true
+                }
+              }
+            },
+            {
+              "id": "food",
+              "label": "买吃的",
+              "desc": "买麦饼、草莓蛋糕之类的食物。",
+              "keywords": [
+                "吃",
+                "麦饼",
+                "草莓蛋糕",
+                "饿",
+                "买点",
+                "食物",
+                "零食"
+              ],
+              "voice": "warm",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}在路边摊买了一块麦饼。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "很香，只是不是家里的味道。"
+                }
+              ],
+              "set": {
+                "memories": {
+                  "MEMORY_CH002_FIRST_MINUTE": "初到晨钟镇，他买了一块麦饼。很香，只是不是家里的味道。"
+                }
+              }
+            },
+            {
+              "id": "watch",
+              "label": "看热闹",
+              "desc": "四处闲逛、看街景、看那只追鞋刷的铜甲虫。",
+              "keywords": [
+                "甲虫",
+                "逛逛",
+                "四处看看",
+                "热闹",
+                "看看街上",
+                "工匠",
+                "闲逛"
+              ],
+              "voice": "curious",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}看着那只铜制甲虫追着工匠的鞋刷跑了半条街，最后一头撞上卖护具扣的摊子。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "工匠连声道歉，摊主连声叹气。没有人在逃命。"
+                }
+              ],
+              "set": {
+                "memories": {
+                  "MEMORY_CH002_FIRST_MINUTE": "初到晨钟镇，他看一只铜甲虫追着工匠的鞋刷跑了半条街。"
+                }
+              }
+            },
+            {
+              "id": "fallback",
+              "label": "随意走走",
+              "desc": "其他生活化的举动。",
+              "keywords": [
+                "嗯",
+                "好吧",
+                "先走",
+                "随便"
+              ],
+              "voice": "neutral",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}在人流里站了一会儿，慢慢适应这座城镇的吵闹。"
+                }
+              ]
+            },
+            {
+              "id": "silent",
+              "label": "跟着人流走",
+              "desc": "跳过或不做什么。",
+              "voice": "quiet",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}把简图又转了半圈，决定先跟着人流走。"
+                }
+              ]
+            }
+          ],
+          "silent": "silent",
+          "fallback": "fallback"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "就在{PLAYER_NAME}收起地图时，市集另一端传来一声极清楚的喝令。"
+        },
+        {
+          "t": "say",
+          "who": "stranger_girl",
+          "text": "站住！"
+        }
+      ]
+    },
+    {
+      "id": "02-06",
+      "title": "红色马尾穿过人群",
+      "bg": "market",
+      "music": "tempo_rising",
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "一名瘦高男人抱着黑色皮袋从人群里撞出来。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "他推开菜篮、踢翻木箱，头也不回地往{PLAYER_NAME}方向冲。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "后方，一名红发少女正追着他。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "她约十九岁，赤红长发绑成高马尾，奔跑时像一束在风里甩动的火。她穿着轻重甲混搭的战斗服，背后扣着一面几乎遮住半身的塔盾，却跑得比许多没有负重的人更快。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}看了她一眼。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "然后又看了一眼。"
+        },
+        {
+          "t": "think",
+          "text": "好看。"
+        },
+        {
+          "t": "think",
+          "text": "这是{PLAYER_NAME}脑中第一个非常诚实、也非常没有战术价值的判断。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "红发少女发现他正站在小偷前方。"
+        },
+        {
+          "t": "say",
+          "who": "lia_unknown",
+          "text": "金发的！拦住他！"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}回神。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "小偷已经只剩五步远。"
+        }
+      ]
+    },
+    {
+      "id": "02-07",
+      "title": "自由输入：怎么拦",
+      "bg": "market",
+      "beats": [
+        {
+          "t": "input",
+          "id": "FI_CH002_SC07_STOP_THIEF_001",
+          "kind": "action",
+          "prompt": "小偷正冲向你，只剩五步。左边是堆满空木篮的水果摊，右边挂着一条晾湿布的染布绳，脚下是洗街留下的积水，周围全是人。你可以说话、移动、用环境、拔剑、使用低阶属性，或选择不插手。",
+          "placeholder": "怎么拦？写下你的动作或喊话……",
+          "focus": [
+            "lia_unknown",
+            "townsfolk"
+          ],
+          "context": [
+            "晨钟镇中央市集，清晨，人群密集。一名瘦高的小偷抱着黑色皮袋冲向{PLAYER_NAME}，只剩五步。后方一名约十九岁的红发少女背着塔盾追来，喊：“金发的！拦住他！”",
+            "左侧是堆满空木篮的水果摊。右侧有一条挂着湿布的染布绳。地面因清晨洗街仍有积水。",
+            "人群密集，拔剑横斩可能误伤镇民。",
+            "{PLAYER_NAME}的土律能让脚下短暂稳定；水律只能牵动少量积水；金律能强化物件一瞬。七律都极弱。",
+            "{PLAYER_NAME}手里还拿着刚领到的城市简图。"
+          ],
+          "principles": [
+            "合理成功示例：拉落染布绳，迫使小偷改变方向；用肩膀封住通道，不使用剑刃；踢出空木篮让小偷失去步幅；大喊提醒前方镇民散开，再追击。",
+            "玩家反应太慢，小偷撞开{PLAYER_NAME}；红发少女会追过去，{PLAYER_NAME}仍可选择跟上。",
+            "玩家用高危斩击，红发少女会以盾挡住剑路并怒斥，早期信赖起点下降。",
+            "玩家完全不插手，小偷会顺手扯走{PLAYER_NAME}刚领到的城市简图，形成追赶理由；但不会假装这是英雄行为。",
+            "超出当前能力的招式（火球、冰墙等）不会成功，世界不配合生成奇迹。",
+            "固定承接（所有人都会发生，反应里不要提前写）：小偷把皮袋朝另一侧一抛，红发少女本能接住，小偷趁机拐进窄巷；她喊“他有同伙！别追直线——”，{PLAYER_NAME}已经追了进去。"
+          ],
+          "intents": [
+            {
+              "id": "rope",
+              "label": "拉落染布绳",
+              "desc": "拉下染布绳上的湿布，迫使小偷改变方向或减速。",
+              "keywords": [
+                "染布绳",
+                "绳子",
+                "拉绳",
+                "湿布",
+                "扯下",
+                "拉下来",
+                "踩住绳",
+                "晾布",
+                "拽绳",
+                "布帘"
+              ],
+              "voice": "resourceful",
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}一脚踩住染布绳末端，抓住绳子猛地向下一拉。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "湿布像一道软墙落下。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "小偷急忙低头钻过，速度慢了半拍。红发少女趁机靠近，用盾缘撞向他的肩膀。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "flags": {
+                  "FLAG_CH002_THIEF_SLOWED": true
+                }
+              }
+            },
+            {
+              "id": "body",
+              "label": "用身体拦截",
+              "desc": "不用剑刃，用肩膀或身体封住通道，或徒手扑抓、拽住小偷（可借土律站稳）。",
+              "keywords": [
+                "肩膀",
+                "封住",
+                "堵住",
+                "挡住去路",
+                "用身体挡",
+                "张开双臂",
+                "土律",
+                "抓住",
+                "扑",
+                "揪住",
+                "拽住"
+              ],
+              "voice": "steady",
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}没有拔剑，侧身横在通道正中。土律让他脚下一沉，稳稳钉在湿滑的石板上。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "小偷一肩撞上来，像撞上一根木桩，被弹得斜退半步，只能硬生生改向。红发少女趁机靠近，用盾缘撞向他的肩膀。"
+                }
+              ],
+              "set": {
+                "flags": {
+                  "FLAG_CH002_THIEF_SLOWED": true
+                }
+              }
+            },
+            {
+              "id": "basket",
+              "label": "踢出空木篮",
+              "desc": "踢出水果摊的空木篮，让小偷失去步幅。",
+              "keywords": [
+                "木篮",
+                "篮子",
+                "水果摊",
+                "踢过去",
+                "绊他",
+                "箩筐",
+                "踢翻"
+              ],
+              "voice": "clever",
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}一脚把水果摊边的空木篮踢了出去。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "木篮滚进小偷脚下，他步幅一乱，踉跄着跳过去，速度慢了半拍。红发少女趁机靠近，用盾缘撞向他的肩膀。"
+                }
+              ],
+              "set": {
+                "flags": {
+                  "FLAG_CH002_THIEF_SLOWED": true
+                }
+              }
+            },
+            {
+              "id": "warn",
+              "label": "大喊让镇民散开",
+              "desc": "先大喊提醒前方镇民散开，再追击。",
+              "keywords": [
+                "散开",
+                "让开",
+                "大家",
+                "小心",
+                "有小偷",
+                "快躲",
+                "前面的人",
+                "大喊",
+                "提醒"
+              ],
+              "voice": "commanding",
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}朝前方大喊，让挡在路上的镇民散开。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "人群往两边一闪，让出一条直路。没有人被撞倒，红发少女也少了顾忌，几步就追到小偷身后，用盾缘撞向他的肩膀。"
+                }
+              ],
+              "set": {
+                "flags": {
+                  "FLAG_CH002_WARNED_CROWD": true
+                },
+                "add": {
+                  "LEAH_TRUST": 1
+                }
+              }
+            },
+            {
+              "id": "ineffective",
+              "label": "没能拦住",
+              "desc": "只是喊话（“站住”“放下”），或想用火球、冰墙之类当前做不到的高阶招式——小偷不会因此减速，世界不配合生成奇迹。",
+              "keywords": [
+                "站住",
+                "别跑",
+                "放下",
+                "住手",
+                "火球",
+                "冰墙",
+                "闪电",
+                "雷",
+                "大魔法",
+                "火律"
+              ],
+              "voice": "bold",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "这一下没能让小偷减速。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "他一肩把{PLAYER_NAME}撞了个趔趄。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "红发少女从他身旁掠过，几步就追到了小偷身后。"
+                }
+              ],
+              "set": {
+                "flags": {
+                  "FLAG_CH002_STOP_THIEF_FAILED": true
+                }
+              }
+            },
+            {
+              "id": "element",
+              "label": "低阶属性",
+              "desc": "用水律牵动少量积水、金律强化物件一瞬等低阶属性小把戏。",
+              "keywords": [
+                "积水",
+                "水律",
+                "金律",
+                "水洼",
+                "打滑",
+                "水花",
+                "低阶属性"
+              ],
+              "voice": "clever",
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}抬手一引。水律只牵动了脚边一小片积水——刚好够泼到小偷落脚的地方。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "小偷脚底一滑，险些跪倒，硬是撑着站稳，速度慢了半拍。红发少女趁机靠近，用盾缘撞向他的肩膀。"
+                }
+              ],
+              "set": {
+                "flags": {
+                  "FLAG_CH002_THIEF_SLOWED": true
+                }
+              }
+            },
+            {
+              "id": "slash",
+              "label": "高危斩击",
+              "desc": "在密集人群中拔剑横斩、劈砍，可能误伤镇民。红发少女以盾挡住剑路并怒斥，早期信赖下降。",
+              "keywords": [
+                "拔剑",
+                "砍",
+                "斩",
+                "劈",
+                "横扫",
+                "刺他",
+                "挥剑",
+                "一剑"
+              ],
+              "voice": "reckless",
+              "morality": -1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}拔剑横斩——剑路正对着小偷，也正对着他身后挤成一团的镇民。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "一面塔盾抢先横进剑路。“锵”的一声，剑刃被弹开。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia_unknown",
+                  "text": "收剑！这里全是人！"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "小偷趁机从两人之间钻了过去。红发少女反手去抓他的后领——"
+                }
+              ],
+              "set": {
+                "flags": {
+                  "FLAG_CH002_RECKLESS_SLASH": true
+                },
+                "add": {
+                  "LEAH_TRUST": -1
+                }
+              }
+            },
+            {
+              "id": "passive",
+              "label": "不插手",
+              "desc": "让开、旁观、完全不插手。小偷会顺手扯走城市简图；这不是英雄行为。",
+              "keywords": [
+                "不插手",
+                "不管",
+                "旁观",
+                "袖手",
+                "躲到一边",
+                "让他过去",
+                "退开",
+                "往旁边",
+                "看热闹",
+                "不关我"
+              ],
+              "voice": "careless",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}往旁边让了一步。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "小偷从他身旁擦过，顺手扯走了他手里刚领到的城市简图。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "红发少女从他身边掠过时，只来得及看了他一眼。几步之后，她已经追到小偷身后。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}低头看了看空空的手。"
+                }
+              ],
+              "set": {
+                "flags": {
+                  "FLAG_CH002_DID_NOT_INTERVENE": true,
+                  "FLAG_CH002_MAP_SNATCHED": true
+                }
+              }
+            },
+            {
+              "id": "fallback",
+              "label": "临场应变（默认演出）",
+              "desc": "无法明确归类的拦截尝试；按剧本默认演出处理：踩住染布绳拉下湿布。",
+              "keywords": [
+                "拦住",
+                "拦他",
+                "挡他",
+                "阻止他",
+                "拦截"
+              ],
+              "voice": "neutral",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}一脚踩住染布绳末端，抓住绳子猛地向下一拉。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "湿布像一道软墙落下。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "小偷急忙低头钻过，速度慢了半拍。红发少女趁机靠近，用盾缘撞向他的肩膀。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "flags": {
+                  "FLAG_CH002_THIEF_SLOWED": true
+                }
+              }
+            },
+            {
+              "id": "silent",
+              "label": "反应太慢",
+              "desc": "没有反应。小偷撞开{PLAYER_NAME}，红发少女追过去。",
+              "voice": "quiet",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}慢了半拍。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "小偷一肩把他撞开，他踩着积水连退两步才站稳。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "红发少女从他身旁掠过，几步就追到了小偷身后。"
+                }
+              ],
+              "set": {
+                "flags": {
+                  "FLAG_CH002_STOP_THIEF_FAILED": true
+                }
+              }
+            }
+          ],
+          "silent": "silent",
+          "fallback": "fallback"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "小偷却把怀里皮袋朝另一侧一抛。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "红发少女本能伸手接住皮袋。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "小偷趁这一瞬拐进窄巷。"
+        },
+        {
+          "t": "say",
+          "who": "lia_unknown",
+          "text": "他有同伙！别追直线——"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}已经追了进去。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "她额角微微一跳。"
+        },
+        {
+          "t": "say",
+          "who": "lia_unknown",
+          "text": "……新手。"
+        }
+      ]
+    },
+    {
+      "id": "02-08",
+      "title": "晨钟镇追逐战",
+      "bg": "dye-alley",
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "小偷穿过染布巷，把两排挂布扯落在身后。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}侧身穿过。暗律让他的脚步短暂变轻，却因不熟悉石板坡度，落地时差点撞上一名端汤的老板。"
+        },
+        {
+          "t": "say",
+          "who": "soup_vendor",
+          "text": "我的锅！"
+        },
+        {
+          "t": "say",
+          "who": "aku",
+          "text": "晚点赔！"
+        },
+        {
+          "t": "say",
+          "who": "soup_vendor",
+          "text": "你最好活着回来赔！"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "红发少女从另一条平行巷道追上，隔着木栏对{PLAYER_NAME}喊："
+        },
+        {
+          "t": "say",
+          "who": "lia_unknown",
+          "text": "前面左转！右边是死巷！"
+        },
+        {
+          "t": "input",
+          "id": "FI_CH002_SC08_CHASE_ROUTE_001",
+          "kind": "action",
+          "prompt": "红发少女隔着木栏喊你左转，说右边是死巷。前面就是酒桶坡的岔口——你怎么追？",
+          "placeholder": "往哪追？听她的、自己判断，还是回她一句……",
+          "focus": [
+            "lia_unknown",
+            "soup_vendor"
+          ],
+          "context": [
+            "从中央市集追进染布巷，往酒桶坡方向。小偷扯落两排挂布；{PLAYER_NAME}靠暗律让脚步短暂变轻，却差点撞翻汤摊老板的锅。",
+            "红发少女在另一条平行巷道追，隔着木栏喊：“前面左转！右边是死巷！”",
+            "小偷故意往左侧丢下一串脚印；右边酒桶旁有刚被踩碎的水渍。右边转角后是伏击区（小偷有同伙）。"
+          ],
+          "principles": [
+            "听从指挥，{PLAYER_NAME}从左侧包抄；红发少女对其可指挥性留下正面记录。",
+            "坚持右转，{PLAYER_NAME}更快撞入伏击区；但仍能通过战斗脱困。",
+            "反问或挑衅会消耗追击时间；红发少女会简短回应，不停下来吵架。",
+            "默认演出：{PLAYER_NAME}注意到右边的新水渍，改往右侧；红发少女先是皱眉“我说左——”，看见水渍后改口“右边有新脚印。小心转角！”。",
+            "固定承接（反应里不要提前写伏击内容）：警告晚了一瞬。"
+          ],
+          "intents": [
+            {
+              "id": "observe",
+              "label": "看痕迹判断（默认演出）",
+              "desc": "注意到左边的脚印是故意留下的、右边有新水渍，据此改往右侧。",
+              "keywords": [
+                "水渍",
+                "脚印",
+                "观察",
+                "痕迹",
+                "地上",
+                "注意到",
+                "踩碎",
+                "看地面",
+                "足迹"
+              ],
+              "voice": "clever",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}听见“左转”，却看见小偷故意往左侧丢下一串脚印。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "他注意到右边酒桶旁有刚被踩碎的水渍。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}改往右侧。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "红发少女看见后皱眉。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia_unknown",
+                  "text": "我说左——"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "下一秒，她也看见水渍，立刻改口。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia_unknown",
+                  "text": "右边有新脚印。小心转角！"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "flags": {
+                  "FLAG_CH002_READ_TRACKS": true
+                }
+              }
+            },
+            {
+              "id": "question",
+              "label": "反问",
+              "desc": "边跑边反问她为什么、怎么知道。",
+              "keywords": [
+                "为什么",
+                "你怎么知道",
+                "凭什么",
+                "确定吗",
+                "真的吗",
+                "你是谁"
+              ],
+              "voice": "curious",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "lia_unknown",
+                  "text": "没空解释。左转！"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "她连脚步都没停。几句话的工夫，小偷已经甩开了一段距离。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}追到岔口时，右边酒桶旁有刚被踩碎的水渍。他咬牙改往右侧。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia_unknown",
+                  "text": "右边有新脚印。小心转角！"
+                }
+              ],
+              "set": {
+                "flags": {
+                  "FLAG_CH002_CHASE_TIME_LOST": true
+                }
+              }
+            },
+            {
+              "id": "provoke",
+              "label": "挑衅",
+              "desc": "嫌她指挥、顶嘴、挑衅。",
+              "keywords": [
+                "少命令",
+                "你谁啊",
+                "别指挥",
+                "管好你自己",
+                "轮不到你",
+                "啰嗦",
+                "闭嘴"
+              ],
+              "voice": "defiant",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "lia_unknown",
+                  "text": "要吵等抓到人再吵。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "她连头都没回。几句话的工夫，小偷已经甩开了一段距离。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}追到岔口时，右边酒桶旁有刚被踩碎的水渍。他咬牙改往右侧。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia_unknown",
+                  "text": "右边有新脚印。小心转角！"
+                }
+              ],
+              "set": {
+                "flags": {
+                  "FLAG_CH002_CHASE_TIME_LOST": true
+                }
+              }
+            },
+            {
+              "id": "left",
+              "label": "听从指挥左转",
+              "desc": "照红发少女说的往左，从左侧包抄。",
+              "keywords": [
+                "左转",
+                "听她的",
+                "往左",
+                "左边",
+                "照她说的",
+                "明白",
+                "包抄",
+                "左侧"
+              ],
+              "voice": "measured",
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}应声拐进左侧窄道，沿着酒桶坡另一头包抄过去。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "红发少女隔着木栏看了他一眼，没有说话，脚下却更快了。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "下一秒，她看见右边酒桶旁有刚被踩碎的水渍。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia_unknown",
+                  "text": "右边有新脚印。小心转角！"
+                }
+              ],
+              "set": {
+                "flags": {
+                  "FLAG_CH002_FOLLOWED_LEAH_ORDER": true
+                },
+                "add": {
+                  "LEAH_TRUST": 1
+                }
+              }
+            },
+            {
+              "id": "right",
+              "label": "坚持右转",
+              "desc": "不理会指挥，执意往右冲（没有依据痕迹）。",
+              "keywords": [
+                "右转",
+                "往右",
+                "右边",
+                "不听",
+                "偏要",
+                "我自己判断",
+                "直接冲",
+                "右侧"
+              ],
+              "voice": "stubborn",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}没理会，径直冲进右边。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "红发少女看见后皱眉。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia_unknown",
+                  "text": "我说左——"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "下一秒，她看见右边酒桶旁有刚被踩碎的水渍，立刻改口。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia_unknown",
+                  "text": "右边有新脚印。小心转角！"
+                }
+              ],
+              "set": {
+                "flags": {
+                  "FLAG_CH002_IGNORED_LEAH_ORDER": true
+                }
+              }
+            },
+            {
+              "id": "fallback",
+              "label": "继续追（默认演出）",
+              "desc": "其他追击动作；按剧本默认演出处理。",
+              "keywords": [
+                "继续追",
+                "跟上去",
+                "快跑"
+              ],
+              "voice": "neutral",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}听见“左转”，却看见小偷故意往左侧丢下一串脚印。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "他注意到右边酒桶旁有刚被踩碎的水渍。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}改往右侧。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "红发少女看见后皱眉。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia_unknown",
+                  "text": "我说左——"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "下一秒，她也看见水渍，立刻改口。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia_unknown",
+                  "text": "右边有新脚印。小心转角！"
+                }
+              ],
+              "reactionFixed": true
+            },
+            {
+              "id": "silent",
+              "label": "闷头追（默认演出）",
+              "desc": "不说话，只顾追；按剧本默认演出处理。",
+              "voice": "quiet",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}听见“左转”，却看见小偷故意往左侧丢下一串脚印。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "他注意到右边酒桶旁有刚被踩碎的水渍。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}改往右侧。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "红发少女看见后皱眉。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia_unknown",
+                  "text": "我说左——"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "下一秒，她也看见水渍，立刻改口。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia_unknown",
+                  "text": "右边有新脚印。小心转角！"
+                }
+              ],
+              "reactionFixed": true
+            }
+          ],
+          "silent": "silent",
+          "fallback": "fallback"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "警告晚了一瞬。"
+        }
+      ]
+    },
+    {
+      "id": "02-09",
+      "title": "小偷的回马刀",
+      "bg": "barrel-alley",
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}转过墙角。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "小偷不再逃跑。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "他贴在墙边，手里多出一把短匕首。刀光从{PLAYER_NAME}视线死角刺来。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}仓促侧身，匕首划过左臂护套，割开一道浅口。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "同一时间，屋檐上响起弩弦声。"
+        },
+        {
+          "t": "fx",
+          "fx": "shake",
+          "ms": 450
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "另一名同伙从高处射下一支钝头弩箭，正中{PLAYER_NAME}肩膀，把他打得撞上酒桶。"
+        },
+        {
+          "t": "say",
+          "who": "rocky_thief",
+          "text": "刚拿铁牌就想当英雄？"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "他瞥见{PLAYER_NAME}腰间崭新的公会牌，咧嘴一笑。"
+        },
+        {
+          "t": "say",
+          "who": "rocky",
+          "text": "今天运气不错。袋子拿回来，再添一块牌。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "巷口被第三个人推倒的木架堵住。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "红发少女正在另一侧绕行，短时间内无法进入。"
+        },
+        {
+          "t": "narr",
+          "style": "caption",
+          "text": "遭遇战开始：街巷伏击"
+        },
+        {
+          "t": "narr",
+          "style": "caption",
+          "text": "敌人：窃贼罗奇、弩手同伙"
+        },
+        {
+          "t": "narr",
+          "style": "caption",
+          "text": "胜利条件：制服或迫使敌人投降"
+        },
+        {
+          "t": "narr",
+          "style": "caption",
+          "text": "附加条件：避免波及住宅与路人"
+        }
+      ]
+    },
+    {
+      "id": "02-10",
+      "title": "第一场正式战斗",
+      "bg": "barrel-alley",
+      "beats": [
+        {
+          "t": "narr",
+          "style": "caption",
+          "text": "罗奇擅长快速突刺，弩手会在{PLAYER_NAME}攻击后射击破绽。"
+        },
+        {
+          "t": "battle",
+          "id": "BATTLE_CH002_STREET_AMBUSH",
+          "title": "街巷伏击",
+          "objective": "制服或迫使敌人投降",
+          "bonus": "避免波及住宅与路人",
+          "player": {
+            "hp": 10
+          },
+          "enemies": [
+            {
+              "id": "rocky",
+              "name": "窃贼罗奇",
+              "hp": 4
+            },
+            {
+              "id": "bowman",
+              "name": "弩手同伙",
+              "hp": 2
+            }
+          ],
+          "intel": [
+            "罗奇右脚在前，匕首藏于肘后。",
+            "屋檐弩手正在重新上弦。",
+            "酒桶里有水，木架承重点已松动。"
+          ],
+          "untilDefeated": true,
+          "rounds": [
+            {
+              "t": "input",
+              "id": "FI_CH002_SC10_STREET_BATTLE_001",
+              "kind": "tactic",
+              "prompt": "描述{PLAYER_NAME}要说的话、移动方式、攻击目标或使用的环境与属性。可以是一句简短命令，也可以是完整战术。",
+              "placeholder": "一句命令或一整套战术都可以……",
+              "focus": [
+                "rocky",
+                "bowman",
+                "lia_unknown"
+              ],
+              "context": [
+                "旧酒桶巷。{PLAYER_NAME}左臂被匕首割开一道浅口，肩膀刚挨了一支钝头弩箭。巷口被第三个人推倒的木架堵住；红发少女正在另一侧绕行，需要时间才能破开路障。",
+                "窃贼罗奇擅长快速突刺：右脚在前，匕首藏于肘后。屋檐上的弩手正在重新上弦，会在{PLAYER_NAME}攻击后射击破绽。",
+                "战场物件：三个空酒桶、一滩洗桶水（酒桶里有水）、松动木架（承重点已松动）、低矮屋檐、窄巷墙面。两侧是住宅。",
+                "{PLAYER_NAME}的七律都极弱：水律只能牵动一小片水膜，光律亮度只比烛火强一点，土律能稳住脚步，金律能强化物件一瞬，火律只有一小簇火苗。"
+              ],
+              "principles": [
+                "“先踢翻酒桶，用水让罗奇脚下打滑，再以剑背击手腕。”——可执行、低误伤、使用水律增幅，优质战术。",
+                "“用火把整条巷子烧掉。”——目前火律不足，且存在住宅风险；动作失败或被角色自行收敛，不会凭空生成高阶火海。",
+                "“假装倒下，引他靠近。”——可行但有受伤风险；若表演不自然，罗奇会先踢开长剑。",
+                "“把红发女孩叫来救我。”——{PLAYER_NAME}可呼救；红发少女需要时间破开路障，不会瞬间传送。",
+                "胜利条件：制服或迫使敌人投降；附加条件：避免波及住宅与路人。这一战最后由红发少女撞穿路障、以塔盾收束（反应里不要让她提前进场）。"
+              ],
+              "intents": [
+                {
+                  "id": "feign",
+                  "label": "假装倒下",
+                  "desc": "装作被击倒，引罗奇靠近再反击。可行但有受伤风险；罗奇会先踢开长剑。",
+                  "keywords": [
+                    "假装",
+                    "装死",
+                    "装倒",
+                    "引他靠近",
+                    "诱他",
+                    "示弱",
+                    "躺下"
+                  ],
+                  "voice": "cunning",
+                  "morality": 0,
+                  "reaction": [
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "{PLAYER_NAME}闷哼一声，顺着酒桶滑坐在地，像是被那一箭打得站不起来。"
+                    },
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "罗奇没有立刻靠近。他先一脚把{PLAYER_NAME}手边的长剑踢开，这才俯身去摸他腰间的铁牌。"
+                    },
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "{PLAYER_NAME}猛地抓住他的脚踝一拽。罗奇摔在湿滑的石板上，匕首脱手又被他捞了回来；屋檐上的弩箭紧跟着擦过{PLAYER_NAME}的小腿。"
+                    },
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "{PLAYER_NAME}翻身滚到墙边，把长剑捞了回来。"
+                    }
+                  ],
+                  "effect": {
+                    "enemy": {
+                      "rocky": -2
+                    },
+                    "player": -2,
+                    "collateral": 0
+                  }
+                },
+                {
+                  "id": "fire",
+                  "label": "放火（鲁莽）",
+                  "desc": "想用火烧掉巷子、放火攻击。火律不足，且有住宅风险：动作失败或自行收敛，并波及住户。",
+                  "keywords": [
+                    "火律",
+                    "放火",
+                    "烧掉",
+                    "点火",
+                    "火海",
+                    "烧了",
+                    "火焰",
+                    "烧死",
+                    "整条巷子"
+                  ],
+                  "voice": "reckless",
+                  "morality": -1,
+                  "reaction": [
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "{PLAYER_NAME}催动火律——掌心只窜起指甲盖大的一簇火苗。七律每一律都弱得让人放心，火律也不例外。"
+                    },
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "火星被风一卷，舔上屋檐下晾着的一角床单。{PLAYER_NAME}只好慌忙伸手把它拍灭。"
+                    },
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "罗奇抓住这一瞬破绽，匕首直刺过来；屋檐上的弩手也趁机放了一箭。"
+                    }
+                  ],
+                  "set": {
+                    "flags": {
+                      "FLAG_CH002_RECKLESS_FIRE": true
+                    }
+                  },
+                  "effect": {
+                    "enemy": {},
+                    "player": -3,
+                    "collateral": 1
+                  }
+                },
+                {
+                  "id": "overreach",
+                  "label": "超出能力的魔法",
+                  "desc": "想用冰、雷、召唤、一击必杀之类当前做不到的高阶招式。世界不配合生成奇迹。",
+                  "keywords": [
+                    "冰",
+                    "闪电",
+                    "雷",
+                    "大魔法",
+                    "召唤",
+                    "大招",
+                    "禁咒",
+                    "秒杀",
+                    "一击必杀"
+                  ],
+                  "voice": "bold",
+                  "morality": 0,
+                  "reaction": [
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "{PLAYER_NAME}把魔力一口气推向指尖——只亮起一点微光，连罗奇的影子都没照亮。"
+                    },
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "世界没有配合他。罗奇咧嘴一笑，匕首已经到了胸前；{PLAYER_NAME}狼狈后仰，刀锋擦过护肩。"
+                    }
+                  ],
+                  "effect": {
+                    "enemy": {},
+                    "player": -2,
+                    "collateral": 0
+                  }
+                },
+                {
+                  "id": "call_help",
+                  "label": "呼救",
+                  "desc": "喊红发少女来帮忙。她需要时间破开路障，不会瞬间赶到。",
+                  "keywords": [
+                    "救命",
+                    "红发",
+                    "帮忙",
+                    "来人",
+                    "喊她",
+                    "快来",
+                    "支援",
+                    "叫她",
+                    "救我"
+                  ],
+                  "voice": "pragmatic",
+                  "morality": 0,
+                  "reaction": [
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "{PLAYER_NAME}朝巷口大喊。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "lia_unknown",
+                      "text": "撑住！路障要时间！",
+                      "note": "画外"
+                    },
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "木架后传来盾牌撞击的闷响——一下，又一下。路障还没开。"
+                    },
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "罗奇趁他分神，匕首擦着他的肋侧掠过。"
+                    }
+                  ],
+                  "set": {
+                    "flags": {
+                      "FLAG_CH002_CALLED_LEAH": true
+                    }
+                  },
+                  "effect": {
+                    "enemy": {},
+                    "player": -1,
+                    "collateral": 0
+                  }
+                },
+                {
+                  "id": "sword",
+                  "label": "正面挥剑",
+                  "desc": "直接持剑攻击罗奇。罗奇突刺更快，弩手会在攻击后射击破绽。",
+                  "keywords": [
+                    "攻击",
+                    "砍",
+                    "刺",
+                    "斩",
+                    "冲上去",
+                    "挥剑",
+                    "正面",
+                    "劈"
+                  ],
+                  "voice": "bold",
+                  "morality": 0,
+                  "reaction": [
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "{PLAYER_NAME}举剑直取罗奇。"
+                    },
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "罗奇比他快。匕首一格一挑，把剑锋带偏；{PLAYER_NAME}刚露出破绽，屋檐上的弩箭就到了，钝头箭砸在他的护肩上。"
+                    },
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "他的剑尖只来得及在罗奇袖口划开一道口子。"
+                    }
+                  ],
+                  "effect": {
+                    "enemy": {
+                      "rocky": -1
+                    },
+                    "player": -2,
+                    "collateral": 0
+                  }
+                },
+                {
+                  "id": "env_combo",
+                  "label": "环境连携（优质战术）",
+                  "desc": "利用酒桶里的水与水律让罗奇打滑、用剑背或剑鞘击手腕、光律晃弩手的眼、借松动木架等低误伤的环境＋弱属性连携。",
+                  "keywords": [
+                    "酒桶",
+                    "踢翻",
+                    "洗桶水",
+                    "打滑",
+                    "滑倒",
+                    "剑背",
+                    "剑鞘",
+                    "手腕",
+                    "水膜",
+                    "水律",
+                    "光律",
+                    "晃眼",
+                    "木架",
+                    "绳结"
+                  ],
+                  "voice": "clever",
+                  "morality": 1,
+                  "reaction": [
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "{PLAYER_NAME}一脚踢翻酒桶。"
+                    },
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "桶水沿石板流出。他以水律牵动最前方一小片水膜，罗奇踏入时鞋底一滑，匕首偏离原本轨迹。"
+                    },
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "{PLAYER_NAME}用剑鞘撞开对方手腕。"
+                    },
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "弩手完成上弦。"
+                    },
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "{PLAYER_NAME}抬起左手，掌心光律亮起。"
+                    },
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "亮度只比烛火强一点，却正好让一直盯着暗巷的弩手短暂眨眼。弩箭擦过{PLAYER_NAME}耳侧，射断松动木架的绳结。"
+                    },
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "木架倾倒。"
+                    },
+                    {
+                      "t": "fx",
+                      "fx": "shake",
+                      "ms": 400
+                    },
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "{PLAYER_NAME}以土律稳住脚步，反身用剑背击中罗奇腹部。罗奇后退两步，仍想把匕首掷向{PLAYER_NAME}。"
+                    }
+                  ],
+                  "reactionFixed": true,
+                  "set": {
+                    "flags": {
+                      "FLAG_CH002_BATTLE_ENV_TACTIC": true
+                    }
+                  },
+                  "effect": {
+                    "enemy": {
+                      "rocky": -4,
+                      "bowman": -2
+                    },
+                    "player": 0,
+                    "collateral": 0
+                  }
+                },
+                {
+                  "id": "defend",
+                  "label": "防守／后撤",
+                  "desc": "格挡、找掩护、后退或想撤出巷子（巷口已被木架堵住）。",
+                  "keywords": [
+                    "防守",
+                    "格挡",
+                    "躲",
+                    "掩护",
+                    "后退",
+                    "闪避",
+                    "撤退",
+                    "逃",
+                    "退到",
+                    "守住",
+                    "护住"
+                  ],
+                  "voice": "measured",
+                  "morality": 0,
+                  "reaction": [
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "{PLAYER_NAME}往后退——巷口被倒下的木架堵得死死的。他只能背靠酒桶，用剑鞘挡住罗奇的第一刺。"
+                    },
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "屋檐上的弩箭“咚”地钉进桶板。他守住了，却也被压在原地，动弹不得。"
+                    }
+                  ],
+                  "effect": {
+                    "enemy": {},
+                    "player": 0,
+                    "collateral": 0
+                  }
+                },
+                {
+                  "id": "talk",
+                  "label": "劝降／威吓",
+                  "desc": "劝敌人投降、谈判、搬出卫兵。罗奇不吃这一套。",
+                  "keywords": [
+                    "投降",
+                    "束手就擒",
+                    "放下武器",
+                    "你们跑不了",
+                    "谈谈",
+                    "商量",
+                    "自首",
+                    "卫兵"
+                  ],
+                  "voice": "earnest",
+                  "morality": 0,
+                  "reaction": [
+                    {
+                      "t": "say",
+                      "who": "rocky",
+                      "text": "投降？你先看看你腰上那块牌子是什么颜色。"
+                    },
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "罗奇笑着欺身而上，匕首逼得{PLAYER_NAME}连退两步。"
+                    }
+                  ],
+                  "effect": {
+                    "enemy": {},
+                    "player": -1,
+                    "collateral": 0
+                  }
+                },
+                {
+                  "id": "fallback",
+                  "label": "本能应对（默认演出）",
+                  "desc": "无法明确归类的战斗行动；按剧本默认战斗演出处理，但效果不如明确的连携。",
+                  "keywords": [
+                    "反击",
+                    "应战",
+                    "迎上去",
+                    "动手",
+                    "对付"
+                  ],
+                  "voice": "neutral",
+                  "morality": 0,
+                  "reaction": [
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "{PLAYER_NAME}一脚踢翻酒桶。"
+                    },
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "桶水沿石板流出。他以水律牵动最前方一小片水膜，罗奇踏入时鞋底一滑，匕首偏离原本轨迹。"
+                    },
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "{PLAYER_NAME}用剑鞘撞开对方手腕。"
+                    },
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "弩手完成上弦。"
+                    },
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "{PLAYER_NAME}抬起左手，掌心光律亮起。"
+                    },
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "亮度只比烛火强一点，却正好让一直盯着暗巷的弩手短暂眨眼。弩箭擦过{PLAYER_NAME}耳侧，射断松动木架的绳结。"
+                    },
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "木架倾倒。"
+                    },
+                    {
+                      "t": "fx",
+                      "fx": "shake",
+                      "ms": 400
+                    },
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "{PLAYER_NAME}以土律稳住脚步，反身用剑背击中罗奇腹部。罗奇后退两步，仍想把匕首掷向{PLAYER_NAME}。"
+                    }
+                  ],
+                  "reactionFixed": true,
+                  "effect": {
+                    "enemy": {
+                      "rocky": -3,
+                      "bowman": -1
+                    },
+                    "player": 0,
+                    "collateral": 0
+                  }
+                },
+                {
+                  "id": "silent",
+                  "label": "迟疑",
+                  "desc": "没有行动。",
+                  "voice": "quiet",
+                  "morality": 0,
+                  "reaction": [
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "{PLAYER_NAME}一时没有动作。"
+                    },
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "罗奇的匕首已经到了眼前。他狼狈地偏头躲开，屋檐上的弩箭紧接着砸中他的手臂。"
+                    }
+                  ],
+                  "effect": {
+                    "enemy": {},
+                    "player": -3,
+                    "collateral": 0
+                  }
+                }
+              ],
+              "silent": "silent",
+              "fallback": "fallback"
+            },
+            {
+              "t": "input",
+              "id": "FI_CH002_SC10_STREET_BATTLE_002",
+              "kind": "tactic",
+              "prompt": "罗奇还握着匕首，屋檐上的弩手又在上弦。下一步怎么做？",
+              "placeholder": "一句命令或一整套战术都可以……",
+              "focus": [
+                "rocky",
+                "bowman",
+                "lia_unknown"
+              ],
+              "context": [
+                "旧酒桶巷。{PLAYER_NAME}左臂被匕首割开一道浅口，肩膀刚挨了一支钝头弩箭。巷口被第三个人推倒的木架堵住；红发少女正在另一侧绕行，需要时间才能破开路障。",
+                "窃贼罗奇擅长快速突刺：右脚在前，匕首藏于肘后。屋檐上的弩手正在重新上弦，会在{PLAYER_NAME}攻击后射击破绽。",
+                "战场物件：三个空酒桶、一滩洗桶水（酒桶里有水）、松动木架（承重点已松动）、低矮屋檐、窄巷墙面。两侧是住宅。",
+                "{PLAYER_NAME}的七律都极弱：水律只能牵动一小片水膜，光律亮度只比烛火强一点，土律能稳住脚步，金律能强化物件一瞬，火律只有一小簇火苗。",
+                "这是追加的一回合：上一回合没能制服两人。"
+              ],
+              "principles": [
+                "“先踢翻酒桶，用水让罗奇脚下打滑，再以剑背击手腕。”——可执行、低误伤、使用水律增幅，优质战术。",
+                "“用火把整条巷子烧掉。”——目前火律不足，且存在住宅风险；动作失败或被角色自行收敛，不会凭空生成高阶火海。",
+                "“假装倒下，引他靠近。”——可行但有受伤风险；若表演不自然，罗奇会先踢开长剑。",
+                "“把红发女孩叫来救我。”——{PLAYER_NAME}可呼救；红发少女需要时间破开路障，不会瞬间传送。",
+                "胜利条件：制服或迫使敌人投降；附加条件：避免波及住宅与路人。这一战最后由红发少女撞穿路障、以塔盾收束（反应里不要让她提前进场）。"
+              ],
+              "intents": [
+                {
+                  "id": "light",
+                  "label": "光律晃眼",
+                  "desc": "用光律的微光晃屋檐弩手的眼睛，打乱他射击。",
+                  "keywords": [
+                    "光律",
+                    "晃眼",
+                    "刺眼",
+                    "亮光",
+                    "闪光",
+                    "照他眼睛",
+                    "掌心发光"
+                  ],
+                  "voice": "clever",
+                  "morality": 1,
+                  "reaction": [
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "{PLAYER_NAME}抬起左手，掌心光律对着屋檐一闪。"
+                    },
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "弩手被晃得一眯眼，这一箭射进了对面的墙缝；伸手去摸箭袋时，弩箭撒了一地。"
+                    }
+                  ],
+                  "effect": {
+                    "enemy": {
+                      "bowman": -2
+                    },
+                    "player": 0,
+                    "collateral": 0
+                  }
+                },
+                {
+                  "id": "rack",
+                  "label": "木架",
+                  "desc": "利用木架或散落的横木攻击、阻挡。",
+                  "keywords": [
+                    "木架",
+                    "横木",
+                    "木条",
+                    "绳结",
+                    "推倒",
+                    "砸",
+                    "承重"
+                  ],
+                  "voice": "resourceful",
+                  "morality": 1,
+                  "reaction": [
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "{PLAYER_NAME}扯下木架上一根松脱的横木，朝罗奇的小腿横扫过去。"
+                    },
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "罗奇被扫得单膝一软，撞在墙上，半天没能把匕首举稳。"
+                    }
+                  ],
+                  "effect": {
+                    "enemy": {
+                      "rocky": -2
+                    },
+                    "player": 0,
+                    "collateral": 0
+                  }
+                },
+                {
+                  "id": "barrel",
+                  "label": "酒桶与水",
+                  "desc": "再用酒桶、桶水和水律让罗奇失去平衡。",
+                  "keywords": [
+                    "酒桶",
+                    "踢翻",
+                    "打滑",
+                    "滑倒",
+                    "水律",
+                    "水膜",
+                    "滚"
+                  ],
+                  "voice": "clever",
+                  "morality": 1,
+                  "reaction": [
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "{PLAYER_NAME}把另一只空酒桶踢向罗奇。空桶在湿石板上滚得飞快，正撞上他的膝盖。"
+                    },
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "罗奇踉跄后退，脚下一滑，一屁股坐进了水里。"
+                    }
+                  ],
+                  "effect": {
+                    "enemy": {
+                      "rocky": -2
+                    },
+                    "player": 0,
+                    "collateral": 0
+                  }
+                },
+                {
+                  "id": "throw",
+                  "label": "投掷打弩手",
+                  "desc": "朝屋檐上的弩手扔东西，或想爬上屋檐。",
+                  "keywords": [
+                    "扔",
+                    "投掷",
+                    "石头",
+                    "丢",
+                    "桶箍",
+                    "屋檐",
+                    "爬上"
+                  ],
+                  "voice": "bold",
+                  "morality": 0,
+                  "reaction": [
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "{PLAYER_NAME}抄起地上的桶箍朝屋檐甩去。桶箍砸在弩手手背上，他的弩险些脱手。"
+                    },
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "罗奇趁机逼近，在{PLAYER_NAME}手臂上又添了一道擦伤。"
+                    }
+                  ],
+                  "effect": {
+                    "enemy": {
+                      "bowman": -1
+                    },
+                    "player": -1,
+                    "collateral": 0
+                  }
+                },
+                {
+                  "id": "fire",
+                  "label": "放火（鲁莽）",
+                  "desc": "再次想用火攻。火律不足，且波及住宅。",
+                  "keywords": [
+                    "火律",
+                    "放火",
+                    "烧",
+                    "点火",
+                    "火海",
+                    "火焰"
+                  ],
+                  "voice": "reckless",
+                  "morality": -1,
+                  "reaction": [
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "{PLAYER_NAME}掌心的火苗只窜起一瞬，溅上屋檐下的木窗框，留下一块焦黑。"
+                    },
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "窗后传来住户的惊叫。{PLAYER_NAME}分神去看，罗奇的匕首便到了。"
+                    }
+                  ],
+                  "set": {
+                    "flags": {
+                      "FLAG_CH002_RECKLESS_FIRE": true
+                    }
+                  },
+                  "effect": {
+                    "enemy": {},
+                    "player": -2,
+                    "collateral": 1
+                  }
+                },
+                {
+                  "id": "call_help",
+                  "label": "呼救",
+                  "desc": "再次喊红发少女。她正在破路障，需要时间。",
+                  "keywords": [
+                    "救命",
+                    "红发",
+                    "帮忙",
+                    "来人",
+                    "喊她",
+                    "快来",
+                    "支援",
+                    "叫她",
+                    "救我"
+                  ],
+                  "voice": "pragmatic",
+                  "morality": 0,
+                  "reaction": [
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "{PLAYER_NAME}朝巷口大喊。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "lia_unknown",
+                      "text": "马上！",
+                      "note": "画外"
+                    },
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "木架后的撞击声一下比一下重。罗奇咬牙加快了攻势，匕首擦过{PLAYER_NAME}的手背。"
+                    }
+                  ],
+                  "set": {
+                    "flags": {
+                      "FLAG_CH002_CALLED_LEAH": true
+                    }
+                  },
+                  "effect": {
+                    "enemy": {},
+                    "player": -1,
+                    "collateral": 0
+                  }
+                },
+                {
+                  "id": "sword",
+                  "label": "挥剑进攻",
+                  "desc": "持剑攻击罗奇。弩手会射击破绽。",
+                  "keywords": [
+                    "攻击",
+                    "砍",
+                    "刺",
+                    "斩",
+                    "冲上去",
+                    "挥剑",
+                    "剑背",
+                    "劈",
+                    "腹部"
+                  ],
+                  "voice": "bold",
+                  "morality": 0,
+                  "reaction": [
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "{PLAYER_NAME}抢上一步挥剑。罗奇侧身让开，屋檐上的弩箭正好钉在{PLAYER_NAME}脚边，碎石溅上他的小腿。"
+                    },
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "他的剑背只擦到了罗奇的肩。"
+                    }
+                  ],
+                  "effect": {
+                    "enemy": {
+                      "rocky": -1
+                    },
+                    "player": -2,
+                    "collateral": 0
+                  }
+                },
+                {
+                  "id": "defend",
+                  "label": "守住拖时间",
+                  "desc": "背靠掩体守住，拖到红发少女破开路障。",
+                  "keywords": [
+                    "防守",
+                    "格挡",
+                    "躲",
+                    "掩护",
+                    "拖时间",
+                    "撑住",
+                    "等她",
+                    "后退",
+                    "守住"
+                  ],
+                  "voice": "measured",
+                  "morality": 0,
+                  "reaction": [
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "{PLAYER_NAME}背靠酒桶守住，不求伤人，只求撑到路障被破开。"
+                    },
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "罗奇连刺三下，都没能突破他的剑鞘。"
+                    }
+                  ],
+                  "effect": {
+                    "enemy": {},
+                    "player": 0,
+                    "collateral": 0
+                  }
+                },
+                {
+                  "id": "fallback",
+                  "label": "咬牙迎战",
+                  "desc": "其他战斗行动。",
+                  "keywords": [
+                    "反击",
+                    "应战",
+                    "迎上去",
+                    "动手",
+                    "对付"
+                  ],
+                  "voice": "neutral",
+                  "morality": 0,
+                  "reaction": [
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "{PLAYER_NAME}咬紧牙关迎了上去，一边用剑鞘格开匕首，一边往酒桶后挪，避开屋檐上的射线。"
+                    }
+                  ],
+                  "effect": {
+                    "enemy": {
+                      "rocky": -1
+                    },
+                    "player": -1,
+                    "collateral": 0
+                  }
+                },
+                {
+                  "id": "silent",
+                  "label": "喘息",
+                  "desc": "没有行动。",
+                  "voice": "quiet",
+                  "morality": 0,
+                  "reaction": [
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "{PLAYER_NAME}喘着气，没能抢回节奏。"
+                    },
+                    {
+                      "t": "narr",
+                      "style": "picture",
+                      "text": "罗奇的匕首和屋檐上的弩箭一前一后压过来，他只能硬挨了一下。"
+                    }
+                  ],
+                  "effect": {
+                    "enemy": {},
+                    "player": -2,
+                    "collateral": 0
+                  }
+                }
+              ],
+              "silent": "silent",
+              "fallback": "fallback"
+            }
+          ],
+          "after": [
+            {
+              "t": "narr",
+              "style": "picture",
+              "text": "巷口突然传来木材爆裂声。"
+            },
+            {
+              "t": "fx",
+              "fx": "shake",
+              "ms": 600
+            },
+            {
+              "t": "narr",
+              "style": "picture",
+              "text": "一面赤红塔盾撞穿路障。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "02-11",
+      "title": "她用盾结束战斗",
+      "bg": "barrel-alley",
+      "music": "battle_cut_on_shield_hit",
+      "beats": [
+        {
+          "t": "if",
+          "when": {
+            "battle": "BATTLE_CH002_STREET_AMBUSH",
+            "is": "collateral"
+          },
+          "then": [
+            {
+              "t": "set",
+              "add": {
+                "LEAH_TRUST": -1
+              }
+            }
+          ]
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "红发少女踏进巷口。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "她没有先喊{PLAYER_NAME}退开，而是快速确认{PLAYER_NAME}、罗奇和屋檐弩手的位置。"
+        },
+        {
+          "t": "say",
+          "who": "lia_unknown",
+          "text": "低头。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "这不是商量的语气。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}本能俯身。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "她将塔盾底端插进石板缝，整个人借力旋转。盾面像一扇突然关上的铁门，正中罗奇侧身，把他撞进空酒桶堆里。"
+        },
+        {
+          "t": "fx",
+          "fx": "shake",
+          "ms": 500
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "屋檐弩手转身要逃。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "红发少女拔出盾后短剑，没有投向人，而是斩断他脚边的晾衣绳。湿布落下，把弩手连人带弩缠住。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "战斗结束。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "她走到罗奇面前，一脚踩住匕首，再用束带反扣他的双手。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "罗奇痛得直叫。"
+        },
+        {
+          "t": "say",
+          "who": "lia_unknown",
+          "text": "能叫这么大声，肋骨就没断。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "她抬眼看向{PLAYER_NAME}左臂的伤。"
+        },
+        {
+          "t": "say",
+          "who": "lia_unknown",
+          "text": "你用手臂接刀？"
+        },
+        {
+          "t": "say",
+          "who": "aku",
+          "text": "我躲开大半了。"
+        },
+        {
+          "t": "say",
+          "who": "lia_unknown",
+          "text": "所以剩下的小半就值得庆祝？"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "她从腰包里抽出一小卷止血布，直接丢到{PLAYER_NAME}怀里。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "这不是道谢。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "更像是嫌他把血滴在公共道路上。"
+        }
+      ]
+    },
+    {
+      "id": "02-12",
+      "title": "她真的没有道谢",
+      "bg": "barrel-alley",
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "红发少女捡起被窃贼抛出的黑色皮袋。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "她打开封扣，确认里面那块包着布的黑色晶石没有破损，神色才稍微放松。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}一边缠手臂，一边等她开口。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "她没有。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "她先检查罗奇的绳结，再把弩手从湿布里拖出来，最后捡起地上的匕首，全部放进证物袋。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}又等了两秒。"
+        },
+        {
+          "t": "say",
+          "who": "aku",
+          "text": "你是不是漏了什么？"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "红发少女看向地面。"
+        },
+        {
+          "t": "say",
+          "who": "lia_unknown",
+          "text": "你的城市简图掉在水里了。"
+        },
+        {
+          "t": "say",
+          "who": "aku",
+          "text": "不是那个。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "她看了看{PLAYER_NAME}，又看了看被撞坏的酒桶。"
+        },
+        {
+          "t": "say",
+          "who": "lia_unknown",
+          "text": "那你记得向店家赔酒桶。"
+        },
+        {
+          "t": "say",
+          "who": "aku",
+          "text": "也不是。"
+        },
+        {
+          "t": "input",
+          "id": "FI_CH002_SC12_EXPECT_THANKS_001",
+          "kind": "dialogue",
+          "prompt": "红发少女没有道谢。你可以直接讨一句谢谢、抱怨她没礼貌、开玩笑、自我介绍、询问皮袋内容，或不再纠缠。",
+          "placeholder": "说点什么，或者不再纠缠……",
+          "focus": [
+            "lia_unknown"
+          ],
+          "context": [
+            "旧酒桶巷，战斗刚结束。红发少女（约十九岁，红色高马尾，背塔盾）用盾撞倒罗奇、用湿布缠住弩手，又丢给{PLAYER_NAME}一卷止血布。",
+            "她确认黑色皮袋里那块包着布的黑色晶石没有破损，检查了绳结，把弩手从湿布里拖出来，把匕首收进证物袋——至今没有道谢。",
+            "{PLAYER_NAME}问“你是不是漏了什么？”她先说“你的城市简图掉在水里了”，又说“那你记得向店家赔酒桶”。",
+            "{PLAYER_NAME}无视了她“别追直线”的警告冲进窄巷，撞进伏击。她正在优先处理证物、犯人、同伙与公共安全，也确实不擅长柔和表达。",
+            "她的名字此时还没有被说出来，台词里不要透露她的名字。"
+          ],
+          "principles": [
+            "玩家直接说“至少说声谢谢”时，她会回答：“谢谢你愿意帮忙；但你无视警告冲进伏击，也让追捕变得更危险。”语气仍冷，不等于瞬间亲近。",
+            "玩家调戏外貌，她会明确拉开距离，指出此刻正在处理犯人；不把冒犯自动写成害羞奖励。",
+            "玩家询问黑晶，她只透露这是失窃的危险证物，要求新手不要碰。",
+            "玩家承认自己冲动，她会给出第一个微小正评价：“至少你知道问题在哪里。”",
+            "玩家无端辱骂，她会结束对话并把治安所位置告诉他，方便他自己解释损坏。",
+            "固定承接（所有人都会发生，反应里不要提前写）：她把两名窃贼的绳索扣在一起，说“我没有叫你追进死巷”“帮忙不是把自己变成第三个需要处理的问题”，然后拖着犯人往巷外走。"
+          ],
+          "intents": [
+            {
+              "id": "insult",
+              "label": "无端辱骂",
+              "desc": "辱骂、骂脏话、人身攻击。她结束对话，把治安所位置告诉他，让他自己去解释损坏。",
+              "keywords": [
+                "混蛋",
+                "白痴",
+                "贱",
+                "滚",
+                "臭",
+                "蠢",
+                "神经病",
+                "有病",
+                "泼妇",
+                "笨蛋"
+              ],
+              "voice": "harsh",
+              "morality": -2,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "红发少女没有回嘴。她直起身，朝巷外一指。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia_unknown",
+                  "text": "治安所在公会广场。撞坏的东西，你自己去解释。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "对话到此为止。"
+                }
+              ],
+              "set": {
+                "flags": {
+                  "FLAG_CH002_INSULTED_LEAH": true
+                },
+                "add": {
+                  "LEAH_TRUST": -2,
+                  "PLAYER_GUILT_LEAH": 1,
+                  "PLAYER_GUILT_TOTAL": 1
+                }
+              }
+            },
+            {
+              "id": "flirt",
+              "label": "调戏外貌",
+              "desc": "评论或调戏她的长相、身材，搭讪约会。她会明确拉开距离，不会害羞。",
+              "keywords": [
+                "好看",
+                "漂亮",
+                "美女",
+                "可爱",
+                "约会",
+                "长得",
+                "身材",
+                "交往",
+                "喜欢你",
+                "脸红"
+              ],
+              "voice": "playful",
+              "morality": -1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "红发少女往后退了半步，把距离拉开。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia_unknown",
+                  "text": "我在处理犯人。这种话，留给不忙的人。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "她的表情没有任何变化，转头继续检查绳结。"
+                }
+              ],
+              "set": {
+                "flags": {
+                  "FLAG_CH002_FLIRTED_LEAH": true
+                },
+                "add": {
+                  "LEAH_TRUST": -1
+                }
+              }
+            },
+            {
+              "id": "ask_thanks",
+              "label": "讨一句谢谢",
+              "desc": "直接要她道谢，例如“至少说声谢谢”。",
+              "keywords": [
+                "谢谢",
+                "道谢",
+                "谢一声",
+                "说声谢",
+                "感谢",
+                "谢意"
+              ],
+              "voice": "blunt",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "lia_unknown",
+                  "text": "谢谢你愿意帮忙；但你无视警告冲进伏击，也让追捕变得更危险。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "语气仍然很冷，听不出半点亲近。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "flags": {
+                  "FLAG_CH002_DEMANDED_THANKS": true
+                }
+              }
+            },
+            {
+              "id": "admit",
+              "label": "承认冲动",
+              "desc": "承认自己追得太冲动、没听警告。她给出第一个微小正评价。",
+              "keywords": [
+                "冲动",
+                "我错了",
+                "是我不对",
+                "太急",
+                "没听你",
+                "我的错",
+                "抱歉",
+                "对不起",
+                "不该追"
+              ],
+              "voice": "honest",
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "红发少女手上的动作停了一下。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia_unknown",
+                  "text": "至少你知道问题在哪里。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "她没有多说，转身继续检查绳结。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "flags": {
+                  "FLAG_CH002_ADMITTED_RASHNESS": true
+                },
+                "add": {
+                  "LEAH_TRUST": 1
+                }
+              }
+            },
+            {
+              "id": "ask_crystal",
+              "label": "询问黑晶",
+              "desc": "询问皮袋里的黑色晶石是什么。她只说是失窃的危险证物，让新手别碰。",
+              "keywords": [
+                "黑晶",
+                "晶石",
+                "袋子里",
+                "皮袋",
+                "什么东西",
+                "证物",
+                "石头",
+                "里面是"
+              ],
+              "voice": "curious",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "lia_unknown",
+                  "text": "失窃的危险证物。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "她把皮袋往身后收了收。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia_unknown",
+                  "text": "新手别碰。"
+                }
+              ],
+              "set": {
+                "flags": {
+                  "FLAG_CH002_ASKED_ABOUT_CRYSTAL": true
+                }
+              }
+            },
+            {
+              "id": "introduce",
+              "label": "自我介绍／问名字",
+              "desc": "报上自己的名字、说自己是刚注册的新人，或问她叫什么。她不报自己的名字（名字稍后由卫兵说出）。",
+              "keywords": [
+                "我叫",
+                "自我介绍",
+                "我的名字",
+                "新来的",
+                "认识一下",
+                "你叫什么",
+                "你的名字",
+                "怎么称呼",
+                "叫什么名字"
+              ],
+              "voice": "earnest",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "红发少女瞥了他一眼，手上没停。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia_unknown",
+                  "text": "名字等做笔录的时候再说。现在先把伤口按住。"
+                }
+              ],
+              "set": {
+                "flags": {
+                  "FLAG_CH002_NAME_EXCHANGE_ATTEMPTED": true
+                }
+              }
+            },
+            {
+              "id": "complain_rude",
+              "label": "抱怨她没礼貌",
+              "desc": "抱怨她冷淡、没礼貌、态度差（不带辱骂）。",
+              "keywords": [
+                "没礼貌",
+                "礼貌",
+                "教养",
+                "态度",
+                "冷淡",
+                "不客气",
+                "一句好话"
+              ],
+              "voice": "blunt",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "lia_unknown",
+                  "text": "礼貌可以等。犯人、证物和同伙不能。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "她头也不抬，继续收紧绳结。"
+                }
+              ]
+            },
+            {
+              "id": "joke",
+              "label": "开玩笑",
+              "desc": "用玩笑缓和气氛。她不笑。",
+              "keywords": [
+                "开玩笑",
+                "哈哈",
+                "逗你",
+                "笑一个",
+                "说笑",
+                "玩笑",
+                "嘿嘿"
+              ],
+              "voice": "playful",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "红发少女看了他一眼，没有笑。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia_unknown",
+                  "text": "等你把血止住，再练笑话。"
+                }
+              ]
+            },
+            {
+              "id": "fallback",
+              "label": "其他回应／不再纠缠",
+              "desc": "无法归入以上类别的回应，或说声“算了”不再纠缠。",
+              "keywords": [
+                "算了",
+                "没什么",
+                "当我没说",
+                "喂",
+                "话说"
+              ],
+              "voice": "neutral",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "红发少女听完，只“嗯”了一声，手上的动作没停。"
+                }
+              ]
+            },
+            {
+              "id": "silent",
+              "label": "沉默",
+              "desc": "不再说话。",
+              "voice": "quiet",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}张了张嘴，最后什么也没说。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "红发少女也没有等。"
+                }
+              ]
+            }
+          ],
+          "silent": "silent",
+          "fallback": "fallback"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "红发少女将两名窃贼的绳索扣在一起。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "not": {
+              "intent": "FI_CH002_SC12_EXPECT_THANKS_001",
+              "is": "insult"
+            }
+          },
+          "then": [
+            {
+              "t": "say",
+              "who": "lia_unknown",
+              "text": "我没有叫你追进死巷。"
+            },
+            {
+              "t": "say",
+              "who": "aku",
+              "text": "我是在帮你。"
+            },
+            {
+              "t": "say",
+              "who": "lia_unknown",
+              "text": "帮忙不是把自己变成第三个需要处理的问题。"
+            }
+          ]
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "她说完便拖着两名窃贼往巷外走。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "not": {
+              "intent": "FI_CH002_SC12_EXPECT_THANKS_001",
+              "is": "ask_thanks"
+            }
+          },
+          "then": [
+            {
+              "t": "narr",
+              "style": "picture",
+              "text": "真的没有道谢。"
+            }
+          ]
+        },
+        {
+          "t": "if",
+          "when": {
+            "intent": "FI_CH002_SC12_EXPECT_THANKS_001",
+            "is": "insult"
+          },
+          "then": [
+            {
+              "t": "set",
+              "vars": {
+                "LEAH_FIRST_IMPRESSION_OF_PLAYER": "HOSTILE_ROOKIE"
+              }
+            }
+          ],
+          "else": [
+            {
+              "t": "if",
+              "when": {
+                "intent": "FI_CH002_SC12_EXPECT_THANKS_001",
+                "is": "flirt"
+              },
+              "then": [
+                {
+                  "t": "set",
+                  "vars": {
+                    "LEAH_FIRST_IMPRESSION_OF_PLAYER": "FRIVOLOUS_ROOKIE"
+                  }
+                }
+              ],
+              "else": [
+                {
+                  "t": "if",
+                  "when": {
+                    "any": [
+                      {
+                        "intent": "FI_CH002_SC07_STOP_THIEF_001",
+                        "is": "slash"
+                      },
+                      {
+                        "battle": "BATTLE_CH002_STREET_AMBUSH",
+                        "is": "collateral"
+                      }
+                    ]
+                  },
+                  "then": [
+                    {
+                      "t": "set",
+                      "vars": {
+                        "LEAH_FIRST_IMPRESSION_OF_PLAYER": "DANGEROUS_ROOKIE"
+                      }
+                    }
+                  ],
+                  "else": [
+                    {
+                      "t": "if",
+                      "when": {
+                        "intent": "FI_CH002_SC07_STOP_THIEF_001",
+                        "is": "passive"
+                      },
+                      "then": [
+                        {
+                          "t": "set",
+                          "vars": {
+                            "LEAH_FIRST_IMPRESSION_OF_PLAYER": "BYSTANDER"
+                          }
+                        }
+                      ],
+                      "else": [
+                        {
+                          "t": "if",
+                          "when": {
+                            "any": [
+                              {
+                                "intent": "FI_CH002_SC12_EXPECT_THANKS_001",
+                                "is": "admit"
+                              },
+                              {
+                                "intent": "FI_CH002_SC08_CHASE_ROUTE_001",
+                                "is": "left"
+                              }
+                            ]
+                          },
+                          "then": [
+                            {
+                              "t": "set",
+                              "vars": {
+                                "LEAH_FIRST_IMPRESSION_OF_PLAYER": "TEACHABLE_ROOKIE"
+                              }
+                            }
+                          ],
+                          "else": [
+                            {
+                              "t": "set",
+                              "vars": {
+                                "LEAH_FIRST_IMPRESSION_OF_PLAYER": "EAGER_BUT_UNDISCIPLINED"
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "02-13",
+      "title": "看在好看的份上",
+      "bg": "barrel-alley",
+      "music": "light_selfmocking_phrase",
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}站在原地，看着她的背影。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "红色马尾随步伐左右晃动，塔盾边缘有不少修补痕迹。她走得很直，连拖着两名犯人都没有让肩线歪掉。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}低头看向手里那卷她丢来的止血布。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "all": [
+              {
+                "not": {
+                  "voice": "playful",
+                  "gte": 1
+                }
+              },
+              {
+                "any": [
+                  {
+                    "voice": "quiet",
+                    "gte": 4
+                  },
+                  {
+                    "voice": "guarded",
+                    "gte": 3
+                  },
+                  {
+                    "voice": "measured",
+                    "gte": 3
+                  }
+                ]
+              }
+            ]
+          },
+          "then": [
+            {
+              "t": "think",
+              "text": "她至少把绷带留下了。就当那是她不太会说出口的谢意。"
+            }
+          ],
+          "else": [
+            {
+              "t": "think",
+              "text": "很没礼貌。"
+            },
+            {
+              "t": "think",
+              "text": "非常没礼貌。"
+            },
+            {
+              "t": "think",
+              "text": "不过……确实很好看。"
+            },
+            {
+              "t": "think",
+              "text": "那就先原谅她一次。"
+            }
+          ]
+        },
+        {
+          "t": "narr",
+          "style": "voice",
+          "text": "这是{PLAYER_NAME}成为冒险者后做出的第一个私人裁决。"
+        },
+        {
+          "t": "narr",
+          "style": "voice",
+          "text": "没有证人，没有法律依据，而且相当偏心。"
+        }
+      ]
+    },
+    {
+      "id": "02-14",
+      "title": "莉亚·赫斯特",
+      "bg": "guard-square",
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "两名卫兵从治安所跑来。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "其中一人接过犯人，朝红发少女行了个简短军礼。"
+        },
+        {
+          "t": "say",
+          "who": "guard",
+          "text": "莉亚·赫斯特，证物追回了？"
+        },
+        {
+          "t": "say",
+          "who": "lia_unknown",
+          "text": "完好。犯人两名，还有至少一名接应者没出现。封锁西门半个时辰。"
+        },
+        {
+          "t": "say",
+          "who": "guard",
+          "text": "明白。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "她——莉亚——把黑色皮袋交出去，转身准备离开。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}在后方下意识念了一遍。"
+        },
+        {
+          "t": "say",
+          "who": "aku",
+          "text": "莉亚……"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "她听见了，回头看他一眼。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "伤口洗干净。巷子里的刀比人脏。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "仍然不是道谢。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "说完，她走进公会大门。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}腰侧的铁牌轻轻碰了一下剑鞘。"
+        },
+        {
+          "t": "fx",
+          "fx": "flash",
+          "ms": 220
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "剑柄上的火律微光无声亮起，又很快熄灭。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}没有注意到。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "公会外的委托钟在此刻响起。"
+        },
+        {
+          "t": "bg",
+          "bg": "guild-hall",
+          "fx": "fade"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "梅芙将一张新委托钉上告示板："
+        },
+        {
+          "t": "narr",
+          "style": "caption",
+          "text": "黑晶来源调查——最低两人队伍，铁牌需由高阶成员陪同。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "莉亚停在告示前。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}也推门走了进去。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "两人的视线第一次落在同一张委托纸上。"
+        },
+        {
+          "t": "fx",
+          "fx": "fade-black",
+          "ms": 1200
+        },
+        {
+          "t": "title",
+          "lines": [],
+          "title": "第二章｜红发女孩",
+          "subtitle": "赤色马尾与新手铁牌"
+        }
+      ]
+    }
+  ],
+  "end": {
+    "save": "SAVE_CH002_END_RED_HAIRED_GIRL",
+    "next": null,
+    "nextLabel": "CH003_PENDING_USER_OUTLINE",
+    "set": {
+      "flags": {
+        "FLAG_CH002_GUILD_REGISTERED": true,
+        "FLAG_CH002_LEAH_FIRST_SEEN": true,
+        "FLAG_CH002_THIEF_CAPTURED": true,
+        "FLAG_CH002_BLACK_CRYSTAL_EVIDENCE_RECOVERED": true,
+        "FLAG_CH002_FIRE_RESONANCE_FLICKER": true
+      },
+      "vars": {
+        "PLAYER_GUILD_RANK": "IRON",
+        "PLAYER_FIRST_IMPRESSION_OF_LEAH": "STRONG_POSITIVE_DEFAULT",
+        "LEAH_INTIMACY": 0,
+        "LEAH_SACRIFICE": 0
+      },
+      "add": {
+        "LEAH_TRUST": 0,
+        "PLAYER_GUILT_LEAH": 0
+      }
+    },
+    "summary": [
+      {
+        "when": {
+          "not": {
+            "flag": "FLAG_CH002_GUILD_EXTRA_ASSESSMENT"
+          }
+        },
+        "text": "你在晨钟镇冒险者公会注册，拿到了铁牌。测律结果：适性很广，输出很窄。"
+      },
+      {
+        "when": {
+          "flag": "FLAG_CH002_GUILD_EXTRA_ASSESSMENT"
+        },
+        "text": "你拿到了铁牌，但注册时说出的理由让梅芙在“武装资格”一栏画了红圈：需要追加评估。"
+      },
+      {
+        "when": {
+          "intent": "FI_CH002_SC07_STOP_THIEF_001",
+          "is": "slash"
+        },
+        "text": "你在人群中拔剑横斩，被红发少女用塔盾挡下了剑路。"
+      },
+      {
+        "when": {
+          "intent": "FI_CH002_SC07_STOP_THIEF_001",
+          "is": "passive"
+        },
+        "text": "小偷冲来时你没有插手，城市简图被顺手扯走。"
+      },
+      {
+        "when": {
+          "all": [
+            {
+              "flag": "FLAG_CH002_STOP_THIEF_FAILED"
+            },
+            {
+              "not": {
+                "intent": "FI_CH002_SC07_STOP_THIEF_001",
+                "in": [
+                  "slash",
+                  "passive"
+                ]
+              }
+            }
+          ]
+        },
+        "text": "小偷冲来时你没能拦住，被他一肩撞开——可你还是没等她说完“别追直线”，就追进了窄巷。"
+      },
+      {
+        "when": {
+          "not": {
+            "any": [
+              {
+                "flag": "FLAG_CH002_STOP_THIEF_FAILED"
+              },
+              {
+                "intent": "FI_CH002_SC07_STOP_THIEF_001",
+                "in": [
+                  "slash",
+                  "passive"
+                ]
+              }
+            ]
+          }
+        },
+        "text": "你帮红发少女拖慢了小偷，却没等她说完“别追直线”就追进了窄巷。"
+      },
+      {
+        "when": {
+          "battle": "BATTLE_CH002_STREET_AMBUSH",
+          "is": "clean"
+        },
+        "text": "旧酒桶巷的伏击里，你没有让住户和路人受到波及，撑到了她撞穿路障。"
+      },
+      {
+        "when": {
+          "battle": "BATTLE_CH002_STREET_AMBUSH",
+          "is": "hurt"
+        },
+        "text": "旧酒桶巷的伏击里，你挂了彩，勉强撑到她撞穿路障。"
+      },
+      {
+        "when": {
+          "battle": "BATTLE_CH002_STREET_AMBUSH",
+          "is": "collateral"
+        },
+        "text": "旧酒桶巷的伏击里，你的火苗燎到了住户的东西。"
+      },
+      {
+        "when": {
+          "not": {
+            "intent": "FI_CH002_SC12_EXPECT_THANKS_001",
+            "in": [
+              "insult",
+              "flirt",
+              "admit",
+              "ask_thanks"
+            ]
+          }
+        },
+        "text": "她用一面塔盾结束了战斗，丢给你一卷止血布——始终没有道谢。"
+      },
+      {
+        "when": {
+          "intent": "FI_CH002_SC12_EXPECT_THANKS_001",
+          "is": "ask_thanks"
+        },
+        "text": "你讨来了一句冷冰冰的“谢谢”，后面紧跟着一个“但是”。"
+      },
+      {
+        "when": {
+          "intent": "FI_CH002_SC12_EXPECT_THANKS_001",
+          "is": "admit"
+        },
+        "text": "你承认自己冲动了。她说：“至少你知道问题在哪里。”"
+      },
+      {
+        "when": {
+          "intent": "FI_CH002_SC12_EXPECT_THANKS_001",
+          "is": "flirt"
+        },
+        "text": "你对她的长相开了口，她明确地拉开了距离。"
+      },
+      {
+        "when": {
+          "intent": "FI_CH002_SC12_EXPECT_THANKS_001",
+          "is": "insult"
+        },
+        "text": "你出口伤人。她把治安所的位置告诉你，让你自己去解释损坏。"
+      },
+      {
+        "text": "她叫莉亚·赫斯特。你们的视线第一次落在同一张委托上：黑晶来源调查。"
+      }
+    ]
+  }
+}

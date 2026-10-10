@@ -68,6 +68,7 @@ button, input, textarea { font: inherit; color: inherit; }
 .btn:disabled { opacity: .45; cursor: not-allowed; }
 .btn.primary { color: #12091e; background: var(--grad-primary); box-shadow: 0 8px 24px rgba(150, 120, 220, .28); }
 .btn.primary:hover:not(:disabled) { box-shadow: 0 12px 32px rgba(150, 120, 220, .42), 0 0 40px rgba(180, 150, 255, .18); }
+.btn.primary:disabled { color: var(--muted); background: rgba(255, 255, 255, .07); border-color: var(--line); box-shadow: none; opacity: .8; }
 .btn.secondary { border-color: var(--line); background: rgba(255, 255, 255, .07); }
 .btn.secondary:hover:not(:disabled) { border-color: var(--accent); box-shadow: 0 0 20px rgba(180, 140, 255, .14); }
 .btn.ghost { color: var(--muted); }
@@ -266,9 +267,9 @@ button, input, textarea { font: inherit; color: inherit; }
   border-radius: 12px;
   background: rgba(255, 210, 125, .08);
   color: var(--gold);
-  font-size: .8rem;
+  font-size: .78rem;
   font-weight: 900;
-  letter-spacing: .1em;
+  letter-spacing: .04em;
   text-align: center;
   white-space: nowrap;
 }
@@ -278,6 +279,7 @@ button, input, textarea { font: inherit; color: inherit; }
 .ch-body h3 { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0; font-size: 1rem; }
 .ch-card.locked h3, .ch-card.unavailable h3 { color: var(--muted); }
 .ch-meta { margin: 4px 0 0; color: var(--muted); font-size: .78rem; }
+.ch-meta:empty { display: none; }
 .ch-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border: 1px solid var(--line); border-radius: 999px; color: var(--faint); font-size: .68rem; font-weight: 700; }
 .ch-badge.ok { color: var(--success); border-color: rgba(140, 240, 201, .35); }
 .ch-actions { display: flex; gap: 8px; }
@@ -348,6 +350,7 @@ button, input, textarea { font: inherit; color: inherit; }
   -webkit-user-select: none;
   cursor: pointer;
   isolation: isolate;
+  touch-action: manipulation;
 }
 .play textarea { user-select: text; -webkit-user-select: text; }
 .scene { position: absolute; inset: 0; z-index: 1; overflow: hidden; transition: filter var(--fx-ms, 1s) ease; }
@@ -365,6 +368,20 @@ button, input, textarea { font: inherit; color: inherit; }
 }
 .bg.show { opacity: 1; animation: drift 34s ease-in-out infinite alternate; }
 .bg.cut { transition: none !important; }
+/* 背景图缺失时的兜底：渐变 + 远近两层柔和山影，免得画面太平 */
+.bg.fallback::before {
+  content: "";
+  position: absolute;
+  left: -10%;
+  right: -10%;
+  bottom: 0;
+  height: 48%;
+  background:
+    radial-gradient(ellipse 30% 46% at 18% 100%, rgba(0, 0, 0, .34) 99%, transparent 100%),
+    radial-gradient(ellipse 42% 36% at 70% 100%, rgba(0, 0, 0, .26) 99%, transparent 100%),
+    radial-gradient(ellipse 70% 22% at 46% 100%, rgba(0, 0, 0, .3) 99%, transparent 100%);
+  filter: blur(2px);
+}
 .bg.fallback::after {
   content: "";
   position: absolute;
@@ -634,7 +651,7 @@ button, input, textarea { font: inherit; color: inherit; }
 .dlg-note { flex: none; color: var(--muted); font-size: .78rem; }
 .dlg.has-note .dlg-note::before { content: "（"; }
 .dlg.has-note .dlg-note::after { content: "）"; }
-.dlg-text { margin: 0; color: var(--text); font-size: clamp(1rem, 1.22vw, 1.14rem); line-height: 1.95; letter-spacing: .03em; white-space: pre-wrap; word-break: break-word; }
+.dlg-text { max-height: min(46vh, 420px); margin: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; color: var(--text); font-size: clamp(1rem, 1.22vw, 1.14rem); line-height: 1.95; letter-spacing: .03em; white-space: pre-wrap; word-break: break-word; }
 .dlg-rest { visibility: hidden; }
 .dlg[data-kind="say"] .dlg-text::before { content: "「"; color: color-mix(in srgb, var(--who) 70%, white); }
 .dlg[data-kind="say"] .dlg-text::after { content: "」"; color: color-mix(in srgb, var(--who) 70%, white); }
@@ -729,7 +746,7 @@ button, input, textarea { font: inherit; color: inherit; }
 .title-card {
   position: absolute;
   inset: 0;
-  z-index: 40;
+  z-index: 28;
   display: grid;
   place-items: center;
   padding: 24px;
