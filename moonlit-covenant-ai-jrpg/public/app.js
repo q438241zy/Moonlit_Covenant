@@ -1,4 +1,5 @@
 import { icon } from './icons.js';
+import { loadPaint, paint } from './paint.js';
 
 const app = document.querySelector('#app');
 const toast = document.querySelector('#toast');
@@ -230,12 +231,12 @@ function starsHtml(count, max = count) {
 
 // 头像徽章：832×1216 胸像立绘裁出脸部（立绘/服装立绘同构图，眼线约 y≈440）
 function faceThumb(src, { cls = '', alt = '', fallback = ART.fallbackPortrait, lazy = false } = {}) {
-  return `<span class="face-crop ${cls}"><img ${imgSrcAttrs(src, lazy)} alt="${escapeHtml(alt)}" data-fallback="${escapeHtml(fallback)}"></span>`;
+  return `<span class="face-crop ${cls}"><img ${imgSrcAttrs(paint(src), lazy)} alt=""${escapeHtml(alt)}" data-fallback="${escapeHtml(fallback)}"></span>`;
 }
 
 // 场景背景：铺满舞台、压暗，不参与交互
 function stageBackdrop(src, cls = '') {
-  return `<div class="stage-backdrop ${cls}" aria-hidden="true"><img src="${escapeHtml(src)}" alt="" data-fallback-hide></div>`;
+  return `<div class="stage-backdrop ${cls}" aria-hidden="true"><img src="${escapeHtml(paint(src))}" alt="" data-fallback-hide></div>`;
 }
 
 function bossPhase(enemy = state?.enemy) {
@@ -534,7 +535,7 @@ function battleLayout() {
         <div class="battle-stage boss-phase-${phase.phase}">
           ${stageBackdrop(ART.scene('battle-bg'), 'backdrop-battle')}
           <div class="battle-top"><div class="enemy-nameplate"><div class="eyebrow">MEMORY DEVOURER · TURN ${state.turn}</div><h2>${escapeHtml(state.enemy.name)} <span class="phase-pill">PHASE ${phase.phase} · ${escapeHtml(phase.label)}</span></h2><div class="hp-bar"><div class="hp-fill" style="--value:${enemyHp}%"></div></div><div class="muted" style="margin-top:7px">${state.enemy.hp}/${state.enemy.maxHp} · 压制 ${state.enemy.sealed}</div></div></div>
-          <div class="enemy-zone ${phaseChanged ? 'phase-enter' : ''}"><img class="enemy-art" src="${ART.boss(phase.phase)}" alt="${escapeHtml(state.enemy.name)} · ${escapeHtml(phase.label)}" data-fallback="${escapeHtml(state.enemy.portrait)}"></div>
+          <div class="enemy-zone ${phaseChanged ? 'phase-enter' : ''}"><img class="enemy-art" src="${paint(ART.boss(phase.phase))}" alt="${escapeHtml(state.enemy.name)} · ${escapeHtml(phase.label)}" data-fallback="${ART.boss(phase.phase)}"></div>
           <div class="battle-bottom"><span>主导战术：${escapeHtml(selectedStrategy.name)}</span><span>·</span><span>羁绊角色：${escapeHtml(leader.shortName)}</span></div>
         </div>
         ${busy ? '<div class="loading-overlay"><div class="loader"></div></div>' : ''}
@@ -595,8 +596,8 @@ function endingScreen() {
       <section class="ending-screen">
         <article class="ending-card ${hiddenRoute ? 'is-hidden-route' : ''}">
           <div class="ending-visual">
-            <img class="ending-bg" src="${ART.scene('ending-bg')}" alt="" aria-hidden="true" data-fallback-hide>
-            <img class="ending-cg" src="${ART.cg(endingCg)}" alt="${escapeHtml(ending.title)}" data-fallback-hide>
+            <img class="ending-bg" src="${paint(ART.scene('ending-bg'))}" alt="" aria-hidden="true" data-fallback-hide>
+            <img class="ending-cg" src="${paint(ART.cg(endingCg))}" alt="${escapeHtml(ending.title)}" data-fallback-hide>
             <div class="ending-rank-wrap">
               <div class="ending-rank">${escapeHtml(ending.rank)}</div>
               ${hiddenRoute ? `<img class="ending-crest" src="${ART.ui('eclipse-crest')}" alt="隐藏路线徽记" title="隐藏路线达成">` : ''}
@@ -994,7 +995,7 @@ function showCgUnlock(cg) {
   card.className = 'cg-unlock';
   card.title = '点击关闭';
   card.innerHTML = `
-    <span class="cg-unlock-thumb">${cg.file ? `<img src="${escapeHtml(cg.file)}" alt="" data-fallback-icon="film">` : `<span class="img-placeholder">${icon('film', { size: 28 })}</span>`}</span>
+    <span class="cg-unlock-thumb">${cg.file ? `<img src="${escapeHtml(paint(cg.file))}" alt="" data-fallback-icon="film">` : `<span class="img-placeholder">${icon('film', { size: 28 })}</span>`}</span>
     <span class="cg-unlock-text"><span class="eyebrow">${icon('sparkle', { size: 12 })} CG 解锁</span><strong>${escapeHtml(cg.title)}</strong><small>已收录至 CG 图库</small></span>`;
   let timer = null;
   const dismiss = () => {
@@ -1470,7 +1471,7 @@ async function loadCostumes() {
       return `<div class="costume-char-block">
         <div class="wardrobe-main">
           <div class="wardrobe-portrait ${frameClass}">
-            <img ${imgSrcAttrs(portraitSrc, true)} alt="${escapeHtml(ch.name)}${equippedLabel ? ` · ${escapeHtml(equippedLabel)}` : ''}" data-fallback="${ART.portrait(charId)}">
+            <img ${imgSrcAttrs(paint(portraitSrc), true)} alt="${escapeHtml(ch.name)}${equippedLabel ? ` · ${escapeHtml(equippedLabel)}` : ''}" data-fallback="${ART.portrait(charId)}">
             ${equippedType ? `<span class="skin-badge" title="${escapeHtml(equippedLabel)}">${icon(COSTUME_TYPE_META[equippedType]?.icon || 'dress', { size: 18 })}</span>` : ''}
           </div>
           <div class="wardrobe-info">
@@ -1737,7 +1738,7 @@ async function refreshCredit() {
 async function boot() {
   app.innerHTML = '<main class="title-screen"><div class="loader" aria-label="加载中"></div></main>';
   try {
-    const metaPayload = await apiGet('/api/meta');
+    const [metaPayload] = await Promise.all([apiGet('/api/meta'), loadPaint()]);
     meta = metaPayload.meta;
     const sessionId = localStorage.getItem('moonlit:session');
     if (sessionId) {
@@ -1771,7 +1772,7 @@ function showGallery(gallery, unlockedCount, total) {
       <div class="gallery-grid">
         ${gallery.map((cg) => `
           <div class="cg-item ${cg.unlocked ? 'unlocked' : 'locked'}">
-            <div class="cg-thumb">${cg.unlocked ? `<img src="${escapeHtml(cg.file)}" alt="${escapeHtml(cg.title)}" loading="lazy" data-fallback-icon="film">` : `<span class="cg-placeholder">${icon('lock', { size: 28 })}</span>`}</div>
+            <div class="cg-thumb">${cg.unlocked ? `<img src="${escapeHtml(paint(cg.file))}" alt="${escapeHtml(cg.title)}" loading="lazy" data-fallback-icon="film">` : `<span class="cg-placeholder">${icon('lock', { size: 28 })}</span>`}</div>
             <div class="cg-info"><strong>${cg.unlocked ? escapeHtml(cg.title) : '???'}</strong><p>${cg.unlocked ? escapeHtml(cg.description) : '尚未解锁'}</p></div>
           </div>`).join('')}
       </div>

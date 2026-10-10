@@ -14,7 +14,7 @@
     "art:cards": "node tools/art/build-cards.mjs",
     "art:paint": "node tools/art/raster/generate.mjs",
     "art:paint:finalize": "node tools/art/raster/finalize.mjs",
-    "check": "node --check server.mjs && node --check game/engine.mjs && node --check game/ai.mjs && node --check public/app.js && node --check public/icons.js && node --check public/cards.js && node --check public/gacha-system.js && node --check public/character-manager.js && node --check cards/database.mjs && node --check cards/battle.mjs && node --check cards/ai.mjs && node --check cards/deck.mjs && node --check cards/cardpack.mjs"
+    "check": "node --check server.mjs && node --check game/engine.mjs && node --check game/ai.mjs && node --check public/app.js && node --check public/icons.js && node --check public/paint.js && node --check public/cards.js && node --check public/gacha-system.js && node --check public/character-manager.js && node --check cards/database.mjs && node --check cards/battle.mjs && node --check cards/ai.mjs && node --check cards/deck.mjs && node --check cards/cardpack.mjs"
   },
   "engines": {
     "node": ">=20"

@@ -148,6 +148,8 @@ docs/                   市场、架构、美术规范与发行清单
 
 一键重建全部矢量资产：`npm run art`（按依赖顺序调用上述生成器，输出确定、可复现）。
 
+厚涂位图预留位：`public/assets/paint/`（文件名清单见该目录 README）。登记在 `manifest.json` 里的厚涂图会自动替换对应矢量图，未登记的继续用矢量；出图管线见 `tools/art/raster/`（`npm run art:paint` / `art:paint:finalize`）。
+
 游戏内的使用方式：召唤与换衣统一使用矢量立绘（换衣间会显示当前穿着的服装立绘）；大地图以 `world-map.svg` 为底图，城镇徽章使用 `icons.js` 图标；剧情舞台使用 CG / 场景作为背景；Boss 战按 HP 阶段切换三张食梦兽立绘；结局页叠加结局背景、对应抉择的 CG，隐藏路线显示月蚀纹章；解锁 CG 时会弹出一次非阻塞提示，并收录进 CG 图库。
 
 ### AI 生成的厚涂 PNG
