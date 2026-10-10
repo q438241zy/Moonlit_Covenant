@@ -3,3 +3,7 @@ node_modules/
 .DS_Store
 *.log
 coverage/
+
+# 厚涂出图的原始大图与参考图缓存（只提交 finalize 后的 public/assets/paint/）
+tools/art/raster/out/
+tools/art/raster/.cache/
