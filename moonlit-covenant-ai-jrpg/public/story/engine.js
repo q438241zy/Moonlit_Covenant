@@ -10,7 +10,7 @@ const INPUT_KINDS = new Set(['dialogue', 'action', 'tactic', 'vow', 'free']);
 const FX = new Set(['shake', 'flash', 'fade-black', 'fade-in', 'desaturate', 'restore', 'blackout']);
 const SILENCE = /^[\s.。…、，,!！?？~～—\-]*$|^[（(]?\s*(沉默|不说话|不语|无言|保持沉默|……)\s*[)）]?$/;
 // 没有命中任何意图时，这些描写按沉默处理（如「（把剑插进土里，一言不发）」「（愣住，说不出话）」）
-const SILENT_HINT = /一言不发|沉默|不说话|没有说话|说不出话|不发一语|默不作声|愣住|呆住|僵住/;
+const SILENT_HINT = /一言不发|沉默|不说话|没说话|没有说话|说不出话|不发一语|默不作声|不语|没吭声|不吭声|一声不吭|没出声|愣住|呆住|僵住/;
 
 const clone = (v) => (v === undefined ? v : JSON.parse(JSON.stringify(v)));
 const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
