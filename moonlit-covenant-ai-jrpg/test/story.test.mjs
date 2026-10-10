@@ -237,3 +237,50 @@ test('API: POST /api/story/judge returns a judgement and serves chapter files', 
     child.kill();
   }
 });
+
+test('API: openai mode uses the model judgement and falls back when the model output is invalid', async () => {
+  const http = await import('node:http');
+  const chapter = readJson('public/story/chapters/ch000.json');
+  let node = null;
+  eachBeat(chapter, (beat) => { if (!node && beat.t === 'input' && beat.focus?.length) node = beat; });
+  let reply = null;
+  const mock = http.createServer((req, res) => {
+    let body = '';
+    req.on('data', (c) => { body += c; });
+    req.on('end', () => {
+      const parsed = JSON.parse(body);
+      assert.ok(parsed.messages[0].content.includes(node.id), 'prompt names the node');
+      res.writeHead(200, { 'content-type': 'application/json' });
+      res.end(JSON.stringify({ choices: [{ message: { content: JSON.stringify(reply) } }] }));
+    });
+  });
+  await new Promise((r) => mock.listen(0, '127.0.0.1', r));
+  const port = await freePort();
+  const child = spawn(process.execPath, ['server.mjs'], {
+    cwd: projectDir,
+    env: { ...process.env, PORT: String(port), HOST: '127.0.0.1', AI_MODE: 'openai', AI_BASE_URL: `http://127.0.0.1:${mock.address().port}/v1`, AI_API_KEY: 'test', AI_TIMEOUT_MS: '4000' },
+    stdio: 'ignore',
+  });
+  const base = `http://127.0.0.1:${port}`;
+  const judge = async () => (await (await fetch(`${base}/api/story/judge`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ chapterId: 'ch000', nodeId: node.id, text: '我来帮忙', context: { playerName: '小克' } }) })).json()).judgement;
+  try {
+    const deadline = Date.now() + 6000;
+    while (Date.now() < deadline) {
+      try { if ((await fetch(`${base}/api/health`)).ok) break; } catch { /* starting */ }
+      await new Promise((r) => setTimeout(r, 80));
+    }
+    const intent = node.intents[0].id;
+    reply = { intent, secondary: '', quality: 2, morality: 1, feasible: true, reaction: [{ who: node.focus[0], text: '模型写的台词。' }], memory: '帮了忙' };
+    const good = await judge();
+    assert.equal(good.source, 'model');
+    assert.equal(good.intent, intent);
+    assert.equal(good.reaction[0].text, '模型写的台词。');
+    reply = { intent: 'NOT_AN_INTENT', quality: 2, morality: 0, feasible: true, reaction: [], memory: '' };
+    const bad = await judge();
+    assert.equal(bad.source, 'fallback');
+    assert.ok(node.intents.some((x) => x.id === bad.intent));
+  } finally {
+    child.kill();
+    mock.close();
+  }
+});
