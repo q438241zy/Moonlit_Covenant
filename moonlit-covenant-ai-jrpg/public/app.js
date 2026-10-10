@@ -28,9 +28,9 @@ const MAP_TOWNS = [
   { id:'station',  name:'银轨站',       icon:'station',    x:25, y:58, unlockChapter:1,  desc:'月蚀列车停靠站，通往各地的枢纽', color:'#6edcff' },
   { id:'mooncity', name:'月蚀城',       icon:'moon-city',  x:40, y:42, unlockChapter:3,  desc:'观测者的圣城，塞蕾娜的故乡', color:'#b996ff' },
   { id:'frosttown',name:'霜华镇',       icon:'frost',      x:55, y:25, unlockChapter:5,  desc:'永冬之地，芙蕾娅守护的边镇', color:'#8fd4f5' },
-  { id:'valhalla', name:'瓦尔哈拉要塞', icon:'fortress',   x:70, y:38, unlockChapter:7,  desc:'战乙女的钢铁要塞，莉莉丝与艾拉的家', color:'#c084fc' },
-  { id:'startower',name:'星咏塔',       icon:'star-tower', x:62, y:58, unlockChapter:9,  desc:'观星者的孤独高塔，伊芙琳在此守望', color:'#ffd98c' },
-  { id:'nodgate',  name:'诺德之门',     icon:'gate',       x:80, y:50, unlockChapter:11, desc:'月之领域的入口，奥菲利亚的领地', color:'#f472b6' },
+  { id:'valhalla', name:'瓦尔哈拉要塞', icon:'fortress',   x:70, y:38, unlockChapter:7,  desc:'瓦尔哈拉家族的钢铁旧要塞，莉莉丝与艾拉的家', color:'#c084fc' },
+  { id:'startower',name:'星咏塔',       icon:'star-tower', x:62, y:58, unlockChapter:9,  desc:'圣教的观星高塔，伊芙琳在此祈祷守望', color:'#ffd98c' },
+  { id:'nodgate',  name:'诺德之门',     icon:'gate',       x:80, y:50, unlockChapter:11, desc:'通往龙脊古国的古老石门，奥菲利亚的故乡', color:'#f472b6' },
   { id:'terminal', name:'终点站',       icon:'terminal',   x:90, y:68, unlockChapter:13, desc:'一切结束与开始的地方', color:'#ff8fb8' },
 ];
 // 玩家标记停在城镇徽章的右上方，避免盖住徽章

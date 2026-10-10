@@ -1,5 +1,5 @@
 // Lia Hest - the crimson-oath knight (reference heroine for the portrait template).
-// Canon: docs/CHARACTER-DESIGN.md section 1. Adult (age-appearance 24), drawn modest.
+// Canon: docs/CHARACTER-DESIGN.md section 1. Adult (age 19), drawn modest.
 const C = {
   silver: '#a3a7bb', silverLit: '#d9dcea', silverShade: '#6b6f88', silverDeep: '#43455e', metalLine: '#221e34',
   crimson: '#6c1a2b', crimsonLit: '#94283c', crimsonShade: '#45101d', crimsonLine: '#250910',

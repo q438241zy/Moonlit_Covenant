@@ -20,7 +20,7 @@ node tools/art/portrait/build.mjs --lenient --verbose   # keep going past a thro
 
 Rules for everything drawn here: `docs/ART-DIRECTION.md` (mandatory) and the character canon
 (`docs/CHARACTER-DESIGN.md`, `设定集/03_主角与八位女主角.md`). All heroines are drawn as clearly
-**adult women (age-appearance 20+), non-sexualised and modestly dressed** – this overrides any
+**adult women (aged 18–19), non-sexualised and modestly dressed** – this overrides any
 younger ages or suggestive wording in game data. "Summer" outfits are resort clothes, not swimwear.
 
 ---
