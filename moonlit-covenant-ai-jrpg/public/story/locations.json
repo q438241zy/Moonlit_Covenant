@@ -112,5 +112,17 @@
     "svg": "/assets/story/bg/guard-square.svg",
     "top": "#d8c8a8",
     "bottom": "#6a7a8a"
+  },
+  "mill-road-milestone": {
+    "name": "旧磨坊路·第二座里程石",
+    "svg": "/assets/story/bg/mill-road-milestone.svg",
+    "top": "#c9b48a",
+    "bottom": "#4a4a3a"
+  },
+  "mill-road-dusk": {
+    "name": "旧磨坊路·黄昏",
+    "svg": "/assets/story/bg/mill-road-dusk.svg",
+    "top": "#d98a5a",
+    "bottom": "#2a2030"
   }
 }

@@ -4422,8 +4422,8 @@
   ],
   "end": {
     "save": "SAVE_CH002_END_RED_HAIRED_GIRL",
-    "next": null,
-    "nextLabel": "CH003_PENDING_USER_OUTLINE",
+    "next": "ch003",
+    "nextLabel": "CH003_TEMPORARY_CONTRACT",
     "set": {
       "flags": {
         "FLAG_CH002_GUILD_REGISTERED": true,
