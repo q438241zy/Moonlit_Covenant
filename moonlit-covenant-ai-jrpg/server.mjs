@@ -22,6 +22,7 @@ import { COSTUME_TYPES, COSTUME_LABELS, equipCostume, getEquippedCostumes, getCo
 import { createAnalyticsStore, trackSession, trackDailyActive, getDashboardData, getRealtimeStats } from './game/analytics.mjs';
 import { AI_MODELS, getActiveModel, switchModel, createDefaultSettings } from './game/settings.mjs';
 import { loadChapterIndex, loadChapter, getChapterScene, getChapterEvents, getTotalChapters } from './scenario/index.mjs';
+import { judgeStoryInput } from './game/story-judge.mjs';
 // ─── 卡牌对战系统（暗影诗章式）───
 import { CARDS, CLASSES, RARITIES, KEYWORD_LABELS } from './cards/database.mjs';
 import {
@@ -396,6 +397,18 @@ async function handleApi(req, res, url) {
     const chapter = loadChapter(chapterId);
     if (!chapter) return sendError(res, 404, '章节不存在。', 'NO_CHAPTER');
     return sendJson(res, 200, { ok: true, chapter });
+  }
+
+  // ═══ 主线 · 亚克篇：自由输入判定（docs/STORY-ENGINE.md §8） ═══
+  if (req.method === 'POST' && url.pathname === '/api/story/judge') {
+    const body = await readJson(req);
+    try {
+      const judgement = await judgeStoryInput(body);
+      return sendJson(res, 200, { ok: true, judgement });
+    } catch (error) {
+      if (error.status) return sendError(res, error.status, error.message, error.code);
+      throw error;
+    }
   }
 
   // ═══ 卡牌对战系统 ═══

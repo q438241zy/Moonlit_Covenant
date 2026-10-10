@@ -1,0 +1,26 @@
+[
+  {
+    "id": "ch000",
+    "number": 0,
+    "title": "序章｜黑翼焚麦之夜",
+    "file": "/story/chapters/ch000.json",
+    "requires": null,
+    "source": "剧本/00起源.md"
+  },
+  {
+    "id": "ch001",
+    "number": 1,
+    "title": "第一章｜导师",
+    "file": "/story/chapters/ch001.json",
+    "requires": "ch000",
+    "source": "剧本/01導師.md"
+  },
+  {
+    "id": "ch002",
+    "number": 2,
+    "title": "第二章｜红发女孩",
+    "file": "/story/chapters/ch002.json",
+    "requires": "ch001",
+    "source": "剧本/02紅髮女孩.md"
+  }
+]

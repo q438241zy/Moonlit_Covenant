@@ -1,0 +1,102 @@
+{
+  "aku": {
+    "name": "{PLAYER_NAME}",
+    "color": "#e9c46a",
+    "art": "/assets/story/npc/aku.svg"
+  },
+  "erin": {
+    "name": "艾琳",
+    "color": "#d9a77a",
+    "art": "/assets/story/npc/erin.svg"
+  },
+  "toby": {
+    "name": "托比",
+    "color": "#f2d48b",
+    "art": "/assets/story/npc/toby.svg"
+  },
+  "mara": {
+    "name": "玛拉",
+    "color": "#e8b07a",
+    "art": "/assets/story/npc/mara.svg"
+  },
+  "borin": {
+    "name": "伯伦",
+    "color": "#c9875a",
+    "art": "/assets/story/npc/borin.svg"
+  },
+  "horn": {
+    "name": "霍恩",
+    "color": "#b8a07a",
+    "art": "/assets/story/npc/horn.svg"
+  },
+  "villager": {
+    "name": "村民",
+    "color": "#a89a86",
+    "art": null
+  },
+  "kern": {
+    "name": "白·可恩",
+    "color": "#e8edf7",
+    "art": "/assets/story/npc/kern.svg"
+  },
+  "maeve": {
+    "name": "梅芙",
+    "color": "#9fc6a8",
+    "art": "/assets/story/npc/maeve.svg"
+  },
+  "lia_unknown": {
+    "name": "红发少女",
+    "color": "#ff6b7c",
+    "art": "/assets/portraits/lia.svg"
+  },
+  "lia": {
+    "name": "莉亚",
+    "color": "#ff6b7c",
+    "art": "/assets/portraits/lia.svg"
+  },
+  "rocky": {
+    "name": "罗奇",
+    "color": "#8f9a6b",
+    "art": "/assets/story/npc/rocky.svg"
+  },
+  "bowman": {
+    "name": "弩手同伙",
+    "color": "#7d8a6a",
+    "art": null
+  },
+  "adventurer": {
+    "name": "冒险者",
+    "color": "#a5a1b8",
+    "art": null
+  },
+  "townsfolk": {
+    "name": "镇民",
+    "color": "#a89a86",
+    "art": null
+  },
+  "guard": {
+    "name": "卫兵",
+    "color": "#8fa3b8",
+    "art": null
+  },
+  "voice": {
+    "name": "神秘声音",
+    "color": "#b58cff",
+    "art": null
+  },
+  "blackrobe": {
+    "name": "黑袍人",
+    "color": "#7a5c9e",
+    "art": "/assets/story/npc/blackrobe.svg"
+  },
+  "ancient": {
+    "name": "古老声音",
+    "color": "#6b4f8f",
+    "art": null
+  },
+  "dragon": {
+    "name": "黑龙",
+    "color": "#a33b3b",
+    "art": null
+  }
+}
