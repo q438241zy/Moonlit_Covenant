@@ -1,0 +1,4571 @@
+{
+  "id": "ch000",
+  "number": 0,
+  "scriptId": "CH000_ORIGIN_BLACK_WING_NIGHT",
+  "title": "序章｜黑翼焚麦之夜",
+  "shortTitle": "黑翼焚麦之夜",
+  "estimatedMinutes": 24,
+  "source": "剧本/00起源.md",
+  "canon": {},
+  "shots": [
+    {
+      "id": "00-01",
+      "title": "风从麦穗上经过",
+      "bg": "black",
+      "music": "woodflute_pluck_pastoral",
+      "ambience": [
+        "wheat_wind",
+        "sheep_bell",
+        "waterwheel_far",
+        "children_laughter"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "黑画面中先传来一声清脆羊铃。"
+        },
+        {
+          "t": "bg",
+          "bg": "hemai-day",
+          "fx": "fade"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "画面缓慢亮起。午后的阳光从云缝落下，赫麦村像一小块被金色麦田托住的岛。几十间木屋沿着缓坡排列，屋顶冒着淡淡炊烟。村外的牧场没有围得很高，几只白羊把头伸过木栏，争抢刚割下来的苜蓿草。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "镜头掠过麦穗，最后停在一个金发青年的背影上。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}肩上扛着两捆草料，旧铁剑斜挂在腰后。剑鞘磨损得很厉害，柄端却被擦得干净。他走得不快，路过一只趴在泥地里的小羊时，还用靴尖把它身旁的尖石拨开。"
+        },
+        {
+          "t": "narr",
+          "style": "voice",
+          "text": "在七国地图上，赫麦村只是一个很难被找到的点。"
+        },
+        {
+          "t": "narr",
+          "style": "voice",
+          "text": "对{PLAYER_NAME}来说，这个点曾经就是整个世界。"
+        }
+      ]
+    },
+    {
+      "id": "00-02",
+      "title": "母亲的呼唤",
+      "bg": "pasture",
+      "music": "woodflute_pluck_pastoral",
+      "ambience": [
+        "sheep_bell",
+        "wheat_wind"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "艾琳站在羊圈门口，一手叉腰，一手拎着木桶。她把深棕色长发随意盘在脑后，围裙上沾着面粉，显然刚从厨房赶来。"
+        },
+        {
+          "t": "say",
+          "who": "erin",
+          "text": "{PLAYER_NAME}！我叫你喂羊，不是叫你和那捆草一起在路上晒干。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}放下草料。"
+        },
+        {
+          "t": "say",
+          "who": "erin",
+          "text": "太阳都快落到风车后面了。羊没吃饭，你弟弟没洗手，锅里的汤也快被他偷喝没了。你说，我应该先管哪一个？"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "她语气像是在训人，眼角却带着一点笑。"
+        },
+        {
+          "t": "input",
+          "id": "FI_CH000_SC02_MOTHER_CALL_001",
+          "kind": "dialogue",
+          "prompt": "艾琳正等着你的回答。你可以说话、行动，或者保持沉默。",
+          "placeholder": "说点什么，或写下你的动作……",
+          "focus": [
+            "erin"
+          ],
+          "context": [
+            "傍晚前的赫麦村牧场。艾琳站在羊圈门口，一手叉腰，一手拎着木桶，围裙上沾着面粉，刚从厨房赶来。",
+            "{PLAYER_NAME}扛着两捆草料在路上耽搁了，回来晚了：羊没吃饭，八岁的弟弟托比没洗手，锅里的汤快被托比偷喝没了。",
+            "艾琳问“我应该先管哪一个？”——语气像在训人，眼角却带着一点笑。"
+          ],
+          "principles": [
+            "玩家温和回应，艾琳会把木桶递给他，并顺手替他拍掉肩上的草屑。",
+            "玩家开玩笑，艾琳会接住玩笑，但仍让他先把羊喂完。",
+            "玩家沉默做事，艾琳不会逼他说话，只会低声补一句：“慢一点，别又把手划破。”",
+            "玩家无端刻薄，艾琳会明确指出他的态度；不会用“青春期”替他开脱。",
+            "本节点主要记录 PLAYER_VOICE_PROFILE，不设置传统正确答案。"
+          ],
+          "intents": [
+            {
+              "id": "warm",
+              "label": "温和回应",
+              "desc": "语气温和：答应、道歉、表示马上去喂羊，或主动接过木桶。",
+              "keywords": [
+                "马上去",
+                "知道了",
+                "这就去",
+                "对不起",
+                "抱歉",
+                "我错了",
+                "别生气",
+                "我来喂",
+                "接过木桶",
+                "辛苦了",
+                "我来吧",
+                "好的妈",
+                "马上喂"
+              ],
+              "voice": "warm",
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "艾琳把木桶递给他，顺手替他拍掉肩上的草屑。"
+                }
+              ]
+            },
+            {
+              "id": "joke",
+              "label": "开玩笑",
+              "desc": "用玩笑、打趣或耍贫嘴回应艾琳的数落。",
+              "keywords": [
+                "哈哈",
+                "开玩笑",
+                "逗你",
+                "嘿嘿",
+                "笑着",
+                "打趣",
+                "先管汤",
+                "先管我",
+                "先管托比",
+                "晒太阳",
+                "晒干",
+                "大英雄",
+                "贫嘴",
+                "眨眨眼"
+              ],
+              "voice": "playful",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "艾琳挑起眉，顺着他的话接了下去。"
+                },
+                {
+                  "t": "say",
+                  "who": "erin",
+                  "text": "行啊，那你就跟草料一起接着晒。晒之前，先把羊喂完。"
+                }
+              ]
+            },
+            {
+              "id": "quiet",
+              "label": "沉默做事",
+              "desc": "不说话，直接去做事：点头、默默接过木桶、低头喂羊。",
+              "keywords": [
+                "默默",
+                "点头",
+                "低头",
+                "一言不发",
+                "不吭声",
+                "没说话",
+                "闷头",
+                "径直",
+                "直接去喂",
+                "拎起木桶",
+                "提起木桶",
+                "扛起草料"
+              ],
+              "voice": "quiet",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "艾琳没有逼他说话，只在他经过时低声补了一句。"
+                },
+                {
+                  "t": "say",
+                  "who": "erin",
+                  "text": "慢一点，别又把手划破。"
+                }
+              ]
+            },
+            {
+              "id": "rude",
+              "label": "无端刻薄",
+              "desc": "不耐烦、顶嘴、嘲讽或无端刻薄地对待艾琳。",
+              "keywords": [
+                "烦死了",
+                "啰嗦",
+                "唠叨",
+                "少管我",
+                "别管我",
+                "吵死了",
+                "闭嘴",
+                "关你什么事",
+                "你自己去",
+                "烦不烦",
+                "真麻烦",
+                "滚开",
+                "翻白眼",
+                "不耐烦",
+                "管那么多"
+              ],
+              "voice": "harsh",
+              "morality": -1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "艾琳脸上的笑意淡了下去。"
+                },
+                {
+                  "t": "say",
+                  "who": "erin",
+                  "text": "你可以累，也可以烦。但刚才那种口气，不该拿来对我。"
+                }
+              ]
+            },
+            {
+              "id": "fallback",
+              "label": "其他回应",
+              "desc": "无法归入以上类别的回应；艾琳照常接话，把木桶交给他。",
+              "keywords": [
+                "嗯",
+                "这个嘛",
+                "让我想想"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "艾琳打量了他一眼，把木桶塞进他手里。"
+                }
+              ]
+            },
+            {
+              "id": "silent",
+              "label": "沉默",
+              "desc": "空输入或保持沉默；视为沉默做事。",
+              "voice": "quiet",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}没有说话，只是接过了木桶。艾琳没有逼他，只低声补了一句。"
+                },
+                {
+                  "t": "say",
+                  "who": "erin",
+                  "text": "慢一点，别又把手划破。"
+                }
+              ]
+            }
+          ],
+          "silent": "silent",
+          "fallback": "fallback"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "艾琳朝羊圈另一端抬抬下巴。"
+        },
+        {
+          "t": "say",
+          "who": "erin",
+          "text": "先别急着逞能。那里还有一位小麻烦，等你这位大英雄处理。"
+        }
+      ]
+    },
+    {
+      "id": "00-03",
+      "title": "弟弟指着一团蓝色东西",
+      "bg": "pasture",
+      "music": "woodflute_pluck_pastoral",
+      "ambience": [
+        "sheep_bell"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "羊圈木栏后，八岁的托比踮着脚站在饲料槽旁。他和哥哥一样有浅金色头发，只是头发总有几撮不肯服帖。此刻，他双手紧抓着一根比自己还高的牧羊杖，一动不敢动。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "托比看见{PLAYER_NAME}，立刻伸出手指。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "哥！那里！它、它把小白的晚饭吃掉了！"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "镜头顺着他的手指下移。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "一只拳头大小的草露史莱姆正陷在苜蓿草里。它通体淡蓝，身体里漂着几片没消化的叶子。史莱姆努力往饲料槽深处钻，结果被两根干草卡住，发出湿漉漉的“啵叽”声。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "旁边一只名叫“小白”的羊低头闻了闻它，史莱姆猛地缩成一团。小白反而被吓得后退半步。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "它是不是要吃羊？"
+        },
+        {
+          "t": "say",
+          "who": "erin",
+          "note": "画外",
+          "text": "照它那个个头，先被羊舔没的可能性比较大。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "托比仍然严肃地举着牧羊杖。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "那也不能让它吃晚饭。小白饿了会咬我的裤子。"
+        }
+      ]
+    },
+    {
+      "id": "00-04",
+      "title": "第一场小小的战斗",
+      "bg": "pasture",
+      "music": "daily_theme_light_percussion",
+      "ambience": [
+        "sheep_bell"
+      ],
+      "beats": [
+        {
+          "t": "input",
+          "id": "FI_CH000_SC04_SLIME_001",
+          "kind": "action",
+          "prompt": "史莱姆卡在饲料槽里，托比举着牧羊杖等你拿主意。说服、动手、利用身边的东西，或者试试你那七种微弱的属性——用你自己的话写下来。",
+          "placeholder": "写下你的办法……",
+          "focus": [
+            "toby",
+            "erin"
+          ],
+          "context": [
+            "史莱姆没有主动攻击，只因苜蓿草的水分被吸引而来。",
+            "木桶里有清水，墙边有空麻袋，羊圈外有潮湿草地。",
+            "托比愿意帮忙，但任何让8岁孩子正面承担危险的命令都会被艾琳制止。",
+            "{PLAYER_NAME}的七种属性均能产生反应，但强度极低。",
+            "拳头大小的草露史莱姆通体淡蓝，被两根干草卡在饲料槽里；小羊“小白”被它吓得后退半步。"
+          ],
+          "principles": [
+            "玩家可以说服托比、徒手抓史莱姆、用木桶引走、以剑背驱赶、尝试七属性魔法，或提出脚本未预设的办法。",
+            "金：指尖浮出一粒金光，让弯掉的桶扣短暂变硬。木：感知到史莱姆偏爱刚割下的嫩叶。水：凝出几滴水，在地面留下一条可供引诱的湿痕。",
+            "火：点亮如火柴般的火星，只够让史莱姆受惊缩起。土：稳住松软泥地，防止自己踩进水沟。光：掌心亮起微光，看清史莱姆体内没有黑晶。暗：压低自己的脚步声，从背后接近它。",
+            "任何单一属性都无法“轰飞”史莱姆。最佳体验来自把弱能力与环境组合，而不是比拼数值。",
+            "之后固定演出：亚克用嫩叶和水痕把史莱姆引进木桶（反应只演出尝试本身，不要提前把它引进桶里）。"
+          ],
+          "intents": [
+            {
+              "id": "toby_danger",
+              "label": "让托比去冒险",
+              "desc": "让八岁的托比正面去抓、去戳或去挡史莱姆。",
+              "keywords": [
+                "托比去",
+                "托比你去",
+                "托比，你去",
+                "让托比",
+                "叫托比",
+                "托比抓",
+                "托比上",
+                "弟弟去",
+                "你去抓",
+                "你去戳"
+              ],
+              "voice": "careless",
+              "morality": -1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "托比刚把牧羊杖往前一伸，艾琳已经从后面按住了杖头。"
+                },
+                {
+                  "t": "say",
+                  "who": "erin",
+                  "text": "让八岁的孩子打头阵？你是哥哥，你自己想办法。"
+                }
+              ]
+            },
+            {
+              "id": "calm_toby",
+              "label": "说服托比",
+              "desc": "先安抚或说服托比：史莱姆不会吃羊，只是被苜蓿草的水分吸引来的。",
+              "keywords": [
+                "别怕",
+                "不会吃羊",
+                "不吃羊",
+                "不会伤人",
+                "放下牧羊杖",
+                "放下杖",
+                "它只是渴",
+                "只是饿",
+                "没有恶意",
+                "不用怕",
+                "托比别",
+                "安慰托比"
+              ],
+              "voice": "warm",
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "托比犹豫着，把牧羊杖放低了一点。"
+                },
+                {
+                  "t": "say",
+                  "who": "toby",
+                  "text": "那……它只是来喝水的？"
+                },
+                {
+                  "t": "say",
+                  "who": "erin",
+                  "note": "画外",
+                  "text": "听见没有？你哥哥说话比你的牧羊杖管用。"
+                }
+              ]
+            },
+            {
+              "id": "lure",
+              "label": "用环境引走",
+              "desc": "利用木桶、清水、嫩叶、麻袋或潮湿草地把史莱姆引出来（不用魔法）。也是无法归类时的兜底。",
+              "keywords": [
+                "木桶",
+                "引诱",
+                "引它",
+                "引出来",
+                "嫩叶",
+                "苜蓿",
+                "清水",
+                "湿草地",
+                "麻袋",
+                "诱饵",
+                "装进桶"
+              ],
+              "voice": "pragmatic",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}看了看饲料槽：史莱姆身体里漂着的全是刚割下的嫩叶。木桶里还有半桶清水。他心里有了主意。"
+                }
+              ]
+            },
+            {
+              "id": "grab",
+              "label": "徒手或硬赶",
+              "desc": "直接伸手去抓、用麻袋硬罩，或用剑背、棍子把它赶出去。",
+              "keywords": [
+                "抓住",
+                "徒手",
+                "伸手抓",
+                "捏起",
+                "拎起它",
+                "剑背",
+                "拍它",
+                "赶出去",
+                "戳它",
+                "罩住",
+                "扑上去",
+                "揪出来"
+              ],
+              "voice": "bold",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}直接动了手。史莱姆滑得像一块湿肥皂，从他的指缝和剑背下溜走，又一头钻回苜蓿草深处。"
+                },
+                {
+                  "t": "say",
+                  "who": "toby",
+                  "text": "它跑了！它跑回去了！"
+                }
+              ]
+            },
+            {
+              "id": "magic_wood_water",
+              "label": "木律／水律引诱",
+              "desc": "尝试木属性或水属性：感知史莱姆的喜好、凝出水滴留下湿痕。",
+              "keywords": [
+                "水律",
+                "木律",
+                "水属性",
+                "木属性",
+                "水魔法",
+                "木魔法",
+                "凝出水",
+                "水滴",
+                "湿痕",
+                "感知"
+              ],
+              "voice": "curious",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}指尖碰到苜蓿草，一缕极淡的绿意告诉他：它只偏爱刚割下的嫩叶。他又试着凝水，掌心只渗出几滴，少得可怜。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "可几滴水，也够在地上留下一条湿痕了。"
+                }
+              ]
+            },
+            {
+              "id": "magic_fire",
+              "label": "火律／强行轰飞",
+              "desc": "尝试火属性，或想用魔法把史莱姆烧掉、轰飞。",
+              "keywords": [
+                "火律",
+                "火属性",
+                "火魔法",
+                "火星",
+                "点火",
+                "烧它",
+                "轰飞",
+                "炸飞",
+                "烤它",
+                "火球"
+              ],
+              "voice": "bold",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}指尖擦出一点火柴般的火星。史莱姆受惊，猛地缩成一团，却连一片草叶都没烧着。"
+                },
+                {
+                  "t": "say",
+                  "who": "toby",
+                  "text": "哥……它好像更不想出来了。"
+                }
+              ]
+            },
+            {
+              "id": "magic_metal_earth",
+              "label": "金律／土律辅助",
+              "desc": "尝试金属性或土属性：强化桶扣、稳住脚下的泥地。",
+              "keywords": [
+                "金律",
+                "土律",
+                "金属性",
+                "土属性",
+                "金魔法",
+                "土魔法",
+                "桶扣",
+                "金光",
+                "稳住泥地",
+                "加固"
+              ],
+              "voice": "curious",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}指尖浮出一粒金光，木桶上弯掉的桶扣短暂变硬了一瞬；一层土色微光稳住脚下松软的泥地，没让他踩进水沟。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "两种光都只亮了一下。任何一种，都不可能把史莱姆轰飞。"
+                }
+              ]
+            },
+            {
+              "id": "magic_light_dark",
+              "label": "光律／暗律观察",
+              "desc": "尝试光属性或暗属性：照亮史莱姆体内、压低脚步从背后接近。",
+              "keywords": [
+                "光律",
+                "暗律",
+                "光属性",
+                "暗属性",
+                "光魔法",
+                "暗魔法",
+                "微光",
+                "照亮",
+                "黑晶",
+                "压低脚步",
+                "悄悄",
+                "从背后"
+              ],
+              "voice": "curious",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}掌心亮起一点微光。史莱姆淡蓝的身体里只有几片嫩叶，看不见黑晶。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "他压低自己的脚步声，从背后慢慢接近它——可光是靠近，还不够把它请出饲料槽。"
+                }
+              ]
+            },
+            {
+              "id": "silent",
+              "label": "沉默观察",
+              "desc": "空输入或沉默：先蹲下观察。",
+              "voice": "quiet",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}没有说话，先蹲下来看了看饲料槽。史莱姆身体里漂着的全是刚割下的嫩叶。"
+                }
+              ]
+            }
+          ],
+          "silent": "silent",
+          "fallback": "lure"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}把少量嫩叶放进木桶，再用几滴水在地面拖出湿痕。史莱姆犹豫片刻，像一滴滚动的果冻般追着水痕爬进桶里。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "托比立刻把脸凑过去。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "抓到了！"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "史莱姆突然从桶里弹起，贴在托比额头上。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "呜哇——哥！它在吃我的脑子！"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}把史莱姆揭下来。史莱姆在他手里轻轻颤动，随后朝牧场外的湿草地方向伸出一小截身体。"
+        },
+        {
+          "t": "input",
+          "id": "FI_CH000_SC04_SLIME_FATE_002",
+          "kind": "action",
+          "prompt": "史莱姆在你手里轻轻颤动，朝牧场外的湿草地伸出一小截身体。你打算怎么处置它？",
+          "placeholder": "写下你的决定……",
+          "focus": [
+            "erin",
+            "toby"
+          ],
+          "context": [
+            "史莱姆刚从托比额头上被揭下来，没有伤人，只是饿了。",
+            "它朝牧场外的湿草地方向伸出一小截身体。",
+            "无论如何处置，史莱姆最终都会离开羊圈，消失在潮湿草丛里（反应里不要提前写它消失）。"
+          ],
+          "principles": [
+            "AI需区分“驱赶”“放生”“研究”“无必要伤害”等意图，并让艾琳和托比即时反应。",
+            "无必要伤害不会成功：史莱姆会从他手里挤走，艾琳与托比对此表示反对。"
+          ],
+          "intents": [
+            {
+              "id": "drive",
+              "label": "驱赶",
+              "desc": "把它扔出围栏、吓走、赶走，警告它别再来。",
+              "keywords": [
+                "赶走",
+                "轰走",
+                "扔出去",
+                "丢出去",
+                "吓唬",
+                "别再来",
+                "滚远点",
+                "撵走",
+                "扔到外面",
+                "甩出去"
+              ],
+              "voice": "pragmatic",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}托着它走到围栏边，作势一挥。史莱姆吓得缩成一团，随即拼命朝外滚去。"
+                },
+                {
+                  "t": "say",
+                  "who": "toby",
+                  "text": "再来偷小白的晚饭，我就——我就再拿杖指着你！"
+                }
+              ]
+            },
+            {
+              "id": "release",
+              "label": "放生",
+              "desc": "把它轻轻放到湿草地上，放它回去。",
+              "keywords": [
+                "放生",
+                "放了它",
+                "放它走",
+                "放回",
+                "轻轻放",
+                "湿草地",
+                "草丛里",
+                "回家吧",
+                "放到草地",
+                "让它走"
+              ],
+              "voice": "warm",
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}把它轻轻放在湿草地边缘。"
+                },
+                {
+                  "t": "say",
+                  "who": "toby",
+                  "text": "它……是不是在跟我们道别？"
+                },
+                {
+                  "t": "say",
+                  "who": "erin",
+                  "text": "它是在找下一顿饭。"
+                }
+              ]
+            },
+            {
+              "id": "study",
+              "label": "研究",
+              "desc": "仔细观察、戳一戳、研究它的身体或习性。",
+              "keywords": [
+                "研究",
+                "观察",
+                "仔细看",
+                "端详",
+                "戳一戳",
+                "看看它",
+                "举起来看",
+                "好奇",
+                "摸一摸",
+                "凑近看"
+              ],
+              "voice": "curious",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}把它举到眼前。淡蓝色的身体里漂着几片嫩叶，没有别的东西。"
+                },
+                {
+                  "t": "say",
+                  "who": "toby",
+                  "text": "哥，你在跟它比谁先眨眼吗？"
+                },
+                {
+                  "t": "say",
+                  "who": "erin",
+                  "text": "看够了就放下。天要黑了。"
+                }
+              ]
+            },
+            {
+              "id": "harm",
+              "label": "无必要伤害",
+              "desc": "捏碎、踩扁、砍、烧或以其他方式无必要地伤害它。",
+              "keywords": [
+                "捏碎",
+                "捏爆",
+                "踩扁",
+                "踩死",
+                "弄死",
+                "杀了它",
+                "砍了",
+                "砍死",
+                "烧死",
+                "摔死",
+                "宰了",
+                "弄碎"
+              ],
+              "voice": "harsh",
+              "morality": -1,
+              "set": {
+                "flags": {
+                  "FLAG_CH000_SLIME_HARM_ATTEMPT": true
+                }
+              },
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}手上一用力。托比一下子抓住了他的袖子。"
+                },
+                {
+                  "t": "say",
+                  "who": "toby",
+                  "text": "哥！它都要走了！"
+                },
+                {
+                  "t": "say",
+                  "who": "erin",
+                  "text": "它只是饿了。没必要。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "史莱姆趁机从他的指缝里挤了出去。"
+                }
+              ]
+            },
+            {
+              "id": "fallback",
+              "label": "其他处置",
+              "desc": "无法归类的处置方式。",
+              "keywords": [
+                "嗯",
+                "随它",
+                "看它怎么走"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "史莱姆在他掌心又颤了颤，像是在等他拿主意。"
+                }
+              ]
+            },
+            {
+              "id": "silent",
+              "label": "沉默",
+              "desc": "空输入或沉默：摊开手掌。",
+              "voice": "quiet",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}没有说话，只是摊开了手掌。"
+                }
+              ]
+            }
+          ],
+          "silent": "silent",
+          "fallback": "fallback"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "史莱姆最终离开羊圈，消失在潮湿草丛里。托比摸着额头，一脸心有余悸。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "它真的没有吃掉一点吗？"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "艾琳弯腰检查他。"
+        },
+        {
+          "t": "say",
+          "who": "erin",
+          "text": "有。吃掉了你今天忘记洗脸留下的那层灰。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "托比立刻用袖子猛擦脸。"
+        }
+      ]
+    },
+    {
+      "id": "00-05",
+      "title": "喂羊的时候，世界还很小",
+      "bg": "pasture",
+      "music": "warm_theme",
+      "ambience": [
+        "sheep_bell",
+        "wheat_wind"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}把草料均匀铺进饲料槽。羊群立刻围过来，托比学着哥哥的动作，抱起一小捆草，却被草叶遮住整张脸。"
+        },
+        {
+          "t": "say",
+          "who": "aku",
+          "text": "别一次抱那么多。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "你刚才一次抱了两捆。"
+        },
+        {
+          "t": "say",
+          "who": "erin",
+          "text": "因为他十八岁，你八岁。等你十八岁，就能像他一样，把该做的事拖到最后一刻再做。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "托比从草叶后探出头。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "那我不要十八岁。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "艾琳轻笑。{PLAYER_NAME}伸手扶住被小羊撞歪的弟弟。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "托比突然看向{PLAYER_NAME}腰后的旧铁剑。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "哥，你以后真的要当冒险者吗？"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "风吹过，剑柄上的旧布条轻轻摆动。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "冒险者会去很远的地方吧？比晨钟镇还远？"
+        },
+        {
+          "t": "say",
+          "who": "erin",
+          "text": "先让他学会在天黑前回来，再谈世界尽头。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "她说着，把一只小铜哨塞进{PLAYER_NAME}手里。"
+        },
+        {
+          "t": "say",
+          "who": "erin",
+          "text": "牧羊哨。你小时候总在麦田里走丢，我吹这个，你就知道该往哪边回。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "现在换我走丢了吗？"
+        },
+        {
+          "t": "say",
+          "who": "erin",
+          "text": "现在是怕你哥哥走丢。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "镜头停在{PLAYER_NAME}掌心。铜哨边缘磨得发亮，上面刻着一个很浅的麦穗纹。"
+        },
+        {
+          "t": "set",
+          "items": {
+            "ITEM_FAMILY_SHEPHERD_WHISTLE": 1
+          },
+          "memories": {
+            "MEMORY_MOTHER_WORDS_FIND_WAY_HOME": "艾琳：“我吹这个，你就知道该往哪边回。”"
+          }
+        }
+      ]
+    },
+    {
+      "id": "00-06",
+      "title": "母亲看见了七色火花",
+      "bg": "pasture",
+      "music": "warm_theme_uneasy",
+      "ambience": [
+        "sheep_bell"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "一只羊挤翻了水桶。铁制提环从腐朽的木板上脱落，眼看要砸到托比脚背。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}下意识伸手。"
+        },
+        {
+          "t": "fx",
+          "fx": "flash",
+          "ms": 300
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "七种极淡的光在他指间依次闪过。土色光芒让他脚下站稳，金色光点令铁环在半空僵硬一瞬。他及时把托比拉开，铁环落在泥里。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "整个过程只持续不到一秒。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "托比瞪大眼睛。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "七种！哥，你刚才有七种颜色！"
+        },
+        {
+          "t": "say",
+          "who": "aku",
+          "text": "每一种都弱得只能修桶。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "那你可以修七种桶。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}一怔。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "艾琳没有笑。她盯着{PLAYER_NAME}手背那道若隐若现的洗礼印，神情短暂僵住。"
+        },
+        {
+          "t": "say",
+          "who": "aku",
+          "text": "妈？"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "艾琳迅速蹲下去捡铁环。"
+        },
+        {
+          "t": "say",
+          "who": "erin",
+          "text": "没什么。天凉得快，把羊赶回棚里。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "她背对两个孩子，握着铁环的指节微微发白。"
+        }
+      ]
+    },
+    {
+      "id": "00-07",
+      "title": "村庄里每个人都有名字",
+      "bg": "village-road",
+      "music": "warm_theme",
+      "ambience": [
+        "village_evening"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}、艾琳和托比沿主路回家。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "面包师玛拉把一盘烤焦边的麦饼放到窗边散热。"
+        },
+        {
+          "t": "say",
+          "who": "mara",
+          "text": "{PLAYER_NAME}，接着。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "她扔来一块仍冒热气的麦饼。"
+        },
+        {
+          "t": "say",
+          "who": "mara",
+          "text": "明天帮我修烟囱。修不好，就把今天这块吐回来。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "托比已经掰走一半。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "那现在只要吐一半。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "老铁匠伯伦正在收起炉火。"
+        },
+        {
+          "t": "say",
+          "who": "borin",
+          "text": "你那把旧剑再不换鞘，迟早先割伤自己。"
+        },
+        {
+          "t": "say",
+          "who": "erin",
+          "text": "他舍不得。"
+        },
+        {
+          "t": "say",
+          "who": "borin",
+          "text": "舍不得东西的人，通常是因为东西替他记着什么。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "伯伦望向剑柄，又像什么都没看见般移开视线。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "村长霍恩带着两名青年加固井盖。"
+        },
+        {
+          "t": "say",
+          "who": "horn",
+          "text": "北边山里最近不太安静。夜里听见钟声，不论发生什么，先往北山走。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "山上有熊。"
+        },
+        {
+          "t": "say",
+          "who": "horn",
+          "text": "熊比不听话的小孩讲道理。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "那山上也有哥哥吗？"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "霍恩被问住，随后大笑。"
+        }
+      ]
+    },
+    {
+      "id": "00-08",
+      "title": "晚霞下的不祥影子",
+      "bg": "village-road",
+      "music": "daily_theme_bass_drone",
+      "ambience": [
+        "crows_wings"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "一家三口走到家门前时，羊群突然同时停下咀嚼。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "所有羊都抬头望向南方。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "远处的乌鸦像被什么从树林里惊起，成片飞向北方。它们没有鸣叫，只拼命振翅。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "托比仰头。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "它们也赶着回家吗？"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "艾琳望向越来越暗的南方云层。"
+        },
+        {
+          "t": "say",
+          "who": "erin",
+          "text": "进屋。"
+        },
+        {
+          "t": "say",
+          "who": "aku",
+          "text": "天气还没——"
+        },
+        {
+          "t": "say",
+          "who": "erin",
+          "text": "{PLAYER_NAME}，进屋。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "她的语气第一次完全没有玩笑。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "镜头越过屋顶，推向遥远山脊。云层后方似乎有一片比夜色更深的巨大阴影掠过，但只出现半秒。"
+        }
+      ]
+    },
+    {
+      "id": "00-09",
+      "title": "最后一顿完整的晚餐",
+      "bg": "kitchen-night",
+      "music": "family_theme_faint",
+      "ambience": [
+        "hearth_fire",
+        "oil_lamp"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "木桌上摆着蔬菜汤、黑麦面包和一小块腌肉。托比把腌肉一点点拨到自己碗边，假装没人发现。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "艾琳用勺柄敲了敲他的碗。"
+        },
+        {
+          "t": "say",
+          "who": "erin",
+          "text": "一人一半。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "我在帮哥哥保管。"
+        },
+        {
+          "t": "say",
+          "who": "aku",
+          "text": "保管进肚子里？"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "那里最安全。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "艾琳把腌肉切开，较大的一块放进{PLAYER_NAME}碗里。{PLAYER_NAME}正要换回去，她已经低头喝汤。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "桌角放着一封没有寄出的信，封蜡上压着圣教的七角晨星。艾琳发现{PLAYER_NAME}的视线，随手用布盖住信。"
+        },
+        {
+          "t": "say",
+          "who": "aku",
+          "text": "那是什么？"
+        },
+        {
+          "t": "say",
+          "who": "erin",
+          "text": "旧账单。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "你上次说旧账单已经烧了。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "厨房安静一瞬。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "艾琳瞪了托比一眼。"
+        },
+        {
+          "t": "say",
+          "who": "erin",
+          "text": "所以这是一张新的旧账单。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}能看出她在隐瞒，但还没来得及追问，屋外传来羊群急促的叫声。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "一只木杯里的水泛起细密波纹。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "一次。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "又一次。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "像有什么庞然大物，正踩着天空靠近。"
+        }
+      ]
+    },
+    {
+      "id": "00-10",
+      "title": "狗不敢叫，羊不敢动",
+      "bg": "kitchen-night",
+      "music": null,
+      "ambience": [
+        "silence",
+        "alarm_bell_far"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "屋外的村狗原本狂吠，忽然同时夹着尾巴钻进屋檐下。羊圈里的羊挤成一团，连铃铛都不再响。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "油灯火焰向南倾斜，颜色从暖黄变成病态的青白。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "托比放下勺子。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "哥……是不是刚才那只史莱姆回来报仇了？"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "没有人笑。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "艾琳起身，迅速把窗板扣上。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "远处传来第一声钟响。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "“当——”"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "不是礼拜钟的节奏。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "是村庄只在火灾、兽潮或战争时使用的警钟。"
+        },
+        {
+          "t": "fx",
+          "fx": "shake",
+          "ms": 600
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "第二声还没响完，一阵低沉到几乎听不见的震动穿过屋墙。碗碟在桌面上跳动，屋梁落下灰尘。"
+        }
+      ]
+    },
+    {
+      "id": "00-11",
+      "title": "黑翼遮月",
+      "bg": "kitchen-night",
+      "music": "dragon_wing_low_freq",
+      "ambience": [
+        "dragon_wings"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}推开一条窗缝。"
+        },
+        {
+          "t": "bg",
+          "bg": "dragon-sky",
+          "fx": "cut"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "月亮正从云后升起。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "下一秒，一片巨大的黑影从月面中央掠过。它的翼膜破损，边缘拖着像烟一样的黑雾。每一次振翼，屋顶瓦片都轻轻抬起。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "黑龙在村庄上空盘旋。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "它全身覆盖着没有反光的鳞片，胸腹缝隙却透出暗红光芒，仿佛体内烧着一座被压住的熔炉。颈侧隐约缠着数道黑色金属锁链，锁链末端没入鳞片，刻有看不清的紫色咒文。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "龙首缓慢转向赫麦村中央的祷堂。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "它张开嘴。"
+        },
+        {
+          "t": "bg",
+          "bg": "kitchen-night",
+          "fx": "cut"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "艾琳猛地扑上来，将{PLAYER_NAME}和托比按倒。"
+        },
+        {
+          "t": "fx",
+          "fx": "desaturate",
+          "ms": 800
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "窗外没有先出现火光，而是所有颜色突然被吞掉。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "随后，黑焰从龙口落下。"
+        }
+      ]
+    },
+    {
+      "id": "00-12",
+      "title": "钟楼倒下之前",
+      "bg": "kitchen-night",
+      "music": null,
+      "ambience": [
+        "alarm_bell",
+        "collapse",
+        "black_fire"
+      ],
+      "beats": [
+        {
+          "t": "fx",
+          "fx": "desaturate"
+        },
+        {
+          "t": "fx",
+          "fx": "shake",
+          "ms": 900
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "一声震耳欲聋的爆鸣。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "屋子剧烈摇晃，窗板被冲击掀开。黑焰落在村中央，却不像普通火焰那样照亮夜空。它沿着木墙和屋顶无声攀爬，被碰到的地方迅速失去颜色、开裂、坍塌。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "警钟仍在响。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "“当——当——”"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "第三声突然中断。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "从窗外可以看见钟楼上半部缓慢倾斜，随后砸进祷堂屋顶。碎石和黑烟腾起。",
+          "text15": "从窗外可以看见钟楼上半部缓慢倾斜，随后砸进祷堂屋顶。碎石和黑烟腾起。祷堂门前几个还没来得及跑开的人影被碎石扑倒，其中一个挣扎着爬了两步，便再也没有动。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "托比捂住耳朵，身体发抖。",
+          "text15": "托比捂住耳朵，身体发抖。他的手背被飞进窗内的木刺划开一道口子，血珠渗出来，他却像没有感觉。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "妈妈……那是什么？"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "艾琳没有回答怪物的名字。她抓起墙边早已准备好的布包，把一件外套裹到托比身上。"
+        },
+        {
+          "t": "say",
+          "who": "erin",
+          "text": "听我说。鞋穿好，抓住哥哥。无论看见什么，都不要松手。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "她转向{PLAYER_NAME}，眼神极其清醒。"
+        },
+        {
+          "t": "say",
+          "who": "erin",
+          "text": "北山。走旧牧道，不走主路。到了守羊洞，就点三次灯。"
+        },
+        {
+          "t": "say",
+          "who": "aku",
+          "text": "你呢？"
+        },
+        {
+          "t": "say",
+          "who": "erin",
+          "text": "我跟你们一起。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "她把那封盖着圣教封蜡的信塞进贴身口袋，没有解释。"
+        }
+      ]
+    },
+    {
+      "id": "00-13",
+      "title": "人们最先带走什么",
+      "bg": "village-burning",
+      "music": null,
+      "ambience": [
+        "crowd_panic",
+        "black_fire",
+        "livestock_screams"
+      ],
+      "beats": [
+        {
+          "t": "fx",
+          "fx": "restore",
+          "ms": 600
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "门一打开，风把黑烟灌进屋里。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "整条村道已经失去白天的秩序。有人背着装满铜币和衣服的箱子，有人只抱着一个还在哭的婴儿；一名老人试图牵走两头牛，被儿子强行割断缰绳拖走。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "粮袋、锅具、圣像和家谱散落一地，人们每跑几步就不得不放弃一件东西。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "村长霍恩站在井台上大喊。"
+        },
+        {
+          "t": "say",
+          "who": "horn",
+          "text": "不要回屋！财物放下！所有孩子走中间，能拿武器的守两侧！"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "一名村民抱着木箱逆着人流往回冲。"
+        },
+        {
+          "t": "say",
+          "who": "villager",
+          "text": "我家的地契还在里面！"
+        },
+        {
+          "t": "say",
+          "who": "horn",
+          "text": "地都要烧没了，你抱着纸给谁看！"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "面包师玛拉一手牵着女儿，一手提着装面包的篮子。篮底破了，面包一路掉在泥地上。她没有回头捡。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "老铁匠伯伦拖着一把长柄锤，朝{PLAYER_NAME}喊。"
+        },
+        {
+          "t": "say",
+          "who": "borin",
+          "text": "小子，别拔剑逞英雄！那不是你现在能碰的东西！"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "黑龙的影子再次覆盖村道。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "所有人本能地抬头。"
+        },
+        {
+          "t": "say",
+          "who": "erin",
+          "text": "别看！跑！"
+        }
+      ]
+    },
+    {
+      "id": "00-14",
+      "title": "自由输入：你只能先做一件事",
+      "bg": "village-burning",
+      "music": "tension_pulse",
+      "ambience": [
+        "crowd_panic",
+        "child_crying",
+        "sheep_stampede"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "前方同时发生三件事："
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "一辆装满行李的板车翻倒，堵住北山出口；车下传来孩子哭声。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "羊圈围栏被震塌，受惊羊群冲向逃难人群。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "玛拉的女儿被黑烟呛倒，她仍试图一手拖孩子、一手护住篮子。"
+        },
+        {
+          "t": "input",
+          "id": "FI_CH000_SC14_FIRST_CRISIS_001",
+          "kind": "action",
+          "prompt": "村道即将被黑龙再次俯冲。{PLAYER_NAME}只能先采取一个主要行动。",
+          "placeholder": "写下你最先做的那件事……",
+          "focus": [
+            "erin",
+            "toby",
+            "horn",
+            "borin",
+            "mara",
+            "villager"
+          ],
+          "context": [
+            "一辆装满行李的板车翻倒，堵住北山出口；车下传来孩子哭声。",
+            "羊圈围栏被震塌，受惊羊群冲向逃难人群。",
+            "玛拉的女儿被黑烟呛倒，她仍试图一手拖孩子、一手护住篮子。",
+            "村长霍恩在井台上指挥；老铁匠伯伦拖着长柄锤；艾琳护着托比；{PLAYER_NAME}腰后只有一把旧铁剑。",
+            "七属性低阶协作示例：土律固定板车一侧，金律强化弯曲车轴一瞬，让村民抬车救人；木律安抚羊群对草香的反应，以水律在侧路留下湿痕引流；光律照亮黑烟中的孩子位置，暗律压低脚步穿过惊慌牲畜；火律只能点燃一支信号火把，无法与龙焰对抗。"
+          ],
+          "principles": [
+            "玩家可以提出组合方案，但必须符合{PLAYER_NAME}当前体能与低阶魔法强度。",
+            "清晰、可执行的指令可以动员村民协作，不要求{PLAYER_NAME}亲手完成所有事情。",
+            "玩家若只顾财物，角色会据此反应；系统不把它自动美化为“战略撤退”。",
+            "玩家若命令托比承担危险，艾琳会拒绝并保护托比。",
+            "玩家若试图独自迎战黑龙，伯伦会拦截；若仍强冲，将被龙翼冲击掀回，不在序章提前获得不合理胜利。",
+            "固定结果：玩家的行动可决定部分村民是否受伤、是否成功进入逃生队列，也会写入第一条灾难记忆；但黑龙仍会发动第二次俯冲，迫使众人离村。"
+          ],
+          "intents": [
+            {
+              "id": "toby_danger",
+              "label": "让托比去冒险",
+              "desc": "命令或让八岁的托比去承担危险（钻车底、拉孩子、拦羊）。",
+              "keywords": [
+                "托比去",
+                "托比你去",
+                "托比，你去",
+                "让托比",
+                "叫托比",
+                "托比钻",
+                "托比帮",
+                "托比拦",
+                "弟弟去",
+                "让弟弟"
+              ],
+              "voice": "careless",
+              "morality": -1,
+              "set": {
+                "flags": {
+                  "FLAG_CH000_ORDERED_TOBY_DANGER": true
+                },
+                "memories": {
+                  "MEMORY_CH000_FIRST_DISASTER": "黑烟里，他差点把八岁的弟弟推出去。"
+                }
+              },
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "艾琳一把将托比拽回身后。"
+                },
+                {
+                  "t": "say",
+                  "who": "erin",
+                  "text": "他八岁！要去你自己去，别把他推出去！"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "托比被吓得抓紧她的衣角。板车那边，几名村民已经自己扑了上去。"
+                }
+              ]
+            },
+            {
+              "id": "cart",
+              "label": "救板车下的孩子",
+              "desc": "去处理翻倒的板车、救车下的孩子（可用土律稳车身、金律强化车轴、招呼人一起抬）。",
+              "keywords": [
+                "板车",
+                "车下",
+                "抬车",
+                "推车",
+                "车轴",
+                "掀开",
+                "翻倒的车",
+                "车底",
+                "撬开",
+                "木杠",
+                "顶住车"
+              ],
+              "voice": "brave",
+              "morality": 1,
+              "set": {
+                "flags": {
+                  "FLAG_CH000_CART_CHILD_SAVED": true
+                },
+                "memories": {
+                  "MEMORY_CH000_FIRST_DISASTER": "板车下的孩子被拖了出来，脸上全是泥，哭声很响。"
+                }
+              },
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}冲到翻倒的板车旁，用肩膀顶住车板。土色微光渗进泥地，车身一侧短暂稳住；金色光点钻进弯曲的车轴，让它硬了一瞬。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "这一瞬，只够两名村民把手伸进车底。孩子被拖了出来，脸上全是泥，哭声却很响。"
+                },
+                {
+                  "t": "say",
+                  "who": "horn",
+                  "text": "能哭就好！往北走，别停！"
+                }
+              ]
+            },
+            {
+              "id": "sheep",
+              "label": "引开受惊羊群",
+              "desc": "处理冲向人群的羊群（可用木律草香安抚、水律湿痕引流、牧羊哨召唤）。",
+              "keywords": [
+                "羊群",
+                "引开羊",
+                "赶羊",
+                "拦羊",
+                "羊圈",
+                "牧羊哨",
+                "吹哨",
+                "草香",
+                "侧路",
+                "引流"
+              ],
+              "voice": "clever",
+              "morality": 1,
+              "set": {
+                "flags": {
+                  "FLAG_CH000_SHEEP_DIVERTED": true
+                },
+                "memories": {
+                  "MEMORY_CH000_FIRST_DISASTER": "受惊的羊群被引进侧路，没有撞进逃难的人群。"
+                }
+              },
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}抓起一把散落的草料，木律的微光让草香浓了一点点；他又往侧路甩出一道湿痕。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "领头的几只羊迟疑着拐了弯。整群羊像一股白色的水流，从逃难人群身边擦过，冲进了侧路。"
+                },
+                {
+                  "t": "say",
+                  "who": "villager",
+                  "text": "羊……羊让开了！"
+                }
+              ]
+            },
+            {
+              "id": "mara",
+              "label": "救玛拉的女儿",
+              "desc": "去黑烟里救被呛倒的玛拉女儿，或帮玛拉放下篮子带走孩子（可用光律照亮、暗律穿过牲畜）。",
+              "keywords": [
+                "玛拉",
+                "女儿",
+                "小女孩",
+                "呛倒",
+                "背起",
+                "抱起孩子",
+                "篮子",
+                "捂住口鼻",
+                "湿布",
+                "黑烟里"
+              ],
+              "voice": "brave",
+              "morality": 1,
+              "set": {
+                "flags": {
+                  "FLAG_CH000_MARA_DAUGHTER_SAVED": true
+                },
+                "memories": {
+                  "MEMORY_CH000_FIRST_DISASTER": "黑烟里，玛拉的女儿被他抱了起来。"
+                }
+              },
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}掌心亮起一点微光，照出黑烟里那团小小的身影。暗色的气息压低了他的脚步声，他从惊慌的牲畜之间穿过去，把孩子抱了起来。"
+                },
+                {
+                  "t": "say",
+                  "who": "mara",
+                  "text": "谢谢……谢谢你！"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "玛拉松开了那只破篮子，接过女儿就跑。"
+                }
+              ]
+            },
+            {
+              "id": "rally",
+              "label": "指挥村民协作",
+              "desc": "下达清晰可执行的指令，分派村民同时处理多处险情（可用火律点燃一支信号火把）。",
+              "keywords": [
+                "你们几个",
+                "分头",
+                "大家",
+                "一起抬",
+                "听我说",
+                "帮忙",
+                "你们去",
+                "火把",
+                "信号",
+                "喊人",
+                "指挥",
+                "分工"
+              ],
+              "voice": "commanding",
+              "morality": 1,
+              "set": {
+                "flags": {
+                  "FLAG_CH000_VILLAGERS_RALLIED": true,
+                  "FLAG_CH000_CART_CHILD_SAVED": true
+                },
+                "memories": {
+                  "MEMORY_CH000_FIRST_DISASTER": "他举起一支小小的火把，村民照着他的话分头去救人。"
+                }
+              },
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}指尖擦出一点火星，点燃一支被丢下的火把，高高举起。火光在黑烟里很小，却足够让人看见他。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "几名青年愣了一下，随即照着他的话分头冲出去：有人钻到板车下抬车，有人挥着农具把羊往侧路赶，玛拉身边也多了一双手。"
+                },
+                {
+                  "t": "say",
+                  "who": "horn",
+                  "text": "听见没有！照他说的做！"
+                }
+              ]
+            },
+            {
+              "id": "valuables",
+              "label": "只顾财物",
+              "desc": "去抢救钱箱、粮袋、家当或自己的财物，而不是救人。",
+              "keywords": [
+                "钱箱",
+                "财物",
+                "地契",
+                "箱子",
+                "粮袋",
+                "值钱",
+                "家当",
+                "回屋",
+                "拿东西",
+                "铜币",
+                "细软",
+                "金币"
+              ],
+              "voice": "selfish",
+              "morality": -1,
+              "set": {
+                "flags": {
+                  "FLAG_CH000_CHOSE_VALUABLES": true
+                },
+                "memories": {
+                  "MEMORY_CH000_FIRST_DISASTER": "他在黑烟里抱起了箱子，身后还有孩子在哭。"
+                }
+              },
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}转身扑向散落一地的箱子和粮袋。"
+                },
+                {
+                  "t": "say",
+                  "who": "horn",
+                  "text": "放下！人都要烧没了，你抱着这些给谁看！"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "板车下的哭声还在，玛拉还在黑烟里拖着女儿。几个村民从他身边冲过去抬车，看他的眼神像在看一个陌生人。"
+                }
+              ]
+            },
+            {
+              "id": "fight",
+              "label": "独自迎战黑龙",
+              "desc": "拔剑冲向黑龙、用魔法攻击黑龙，或想独自引开、挡住黑龙。",
+              "keywords": [
+                "拔剑",
+                "迎战",
+                "黑龙",
+                "冲向龙",
+                "打龙",
+                "砍龙",
+                "杀龙",
+                "屠龙",
+                "挡住龙",
+                "对付龙",
+                "攻击龙",
+                "单挑",
+                "引开龙"
+              ],
+              "voice": "reckless",
+              "morality": 0,
+              "set": {
+                "flags": {
+                  "FLAG_CH000_CHARGED_DRAGON": true
+                },
+                "memories": {
+                  "MEMORY_CH000_FIRST_DISASTER": "他想拔剑冲向黑龙，被伯伦的锤杆拦了回来。"
+                }
+              },
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}的手按上剑柄，脚刚朝龙影的方向迈出一步，一柄长柄锤的锤杆就横在了他胸前。"
+                },
+                {
+                  "t": "say",
+                  "who": "borin",
+                  "text": "我刚说什么来着？那不是你现在能碰的东西！"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "伯伦几乎是把他拎回了人群里。旧剑只拔出了一半。"
+                }
+              ]
+            },
+            {
+              "id": "fallback",
+              "label": "其他行动",
+              "desc": "无法归入以上类别、但仍在努力做点什么的行动。",
+              "keywords": [
+                "冲过去",
+                "先跑",
+                "帮帮他们",
+                "拉一把"
+              ],
+              "voice": "earnest",
+              "morality": 0,
+              "set": {
+                "memories": {
+                  "MEMORY_CH000_FIRST_DISASTER": "黑烟、哭声和羊铃混在一起，他只来得及做一件事。"
+                }
+              },
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}朝离自己最近的混乱冲了过去。他能做的不多，可他一动，身边的几个人也跟着动了起来。"
+                }
+              ]
+            },
+            {
+              "id": "silent",
+              "label": "僵在原地",
+              "desc": "空输入或沉默：被眼前的混乱震住。",
+              "voice": "quiet",
+              "morality": 0,
+              "set": {
+                "flags": {
+                  "FLAG_CH000_FROZE_FIRST_CRISIS": true
+                },
+                "memories": {
+                  "MEMORY_CH000_FIRST_DISASTER": "那一刻，他什么都没能做。"
+                }
+              },
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}站在原地，黑烟呛得他睁不开眼。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "等他回过神，霍恩已经带着几个青年扑向板车，玛拉也被人搀了起来。"
+                },
+                {
+                  "t": "say",
+                  "who": "erin",
+                  "text": "{PLAYER_NAME}！跟上！"
+                }
+              ]
+            }
+          ],
+          "silent": "silent",
+          "fallback": "fallback"
+        }
+      ]
+    },
+    {
+      "id": "00-15",
+      "title": "龙焰从身后追来",
+      "bg": "village-burning",
+      "music": "percussion_accelerating",
+      "ambience": [
+        "dragon_wings",
+        "collapse"
+      ],
+      "beats": [
+        {
+          "t": "if",
+          "when": {
+            "intent": "FI_CH000_SC14_FIRST_CRISIS_001",
+            "in": [
+              "cart",
+              "sheep",
+              "mara",
+              "rally",
+              "fallback"
+            ]
+          },
+          "then": [
+            {
+              "t": "narr",
+              "style": "picture",
+              "text": "{PLAYER_NAME}完成第一轮救援后，伯伦抬头看见黑龙收拢双翼。"
+            }
+          ],
+          "else": [
+            {
+              "t": "narr",
+              "style": "picture",
+              "text": "村道上的第一轮救援刚刚结束，伯伦抬头看见黑龙收拢双翼。"
+            }
+          ]
+        },
+        {
+          "t": "say",
+          "who": "borin",
+          "text": "趴下——！"
+        },
+        {
+          "t": "fx",
+          "fx": "shake",
+          "ms": 1000
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "黑龙贴着屋顶俯冲而过。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "它没有喷火，只用一侧巨翼扫过村庄。风压把木板、瓦片和未关紧的门整片掀飞。村口的谷仓像被无形巨锤击中，从中间向内塌陷。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}将托比压在身下，土色微光从靴底扩散。他仍被推得在泥地滑出数米，手掌擦破。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "艾琳被吹倒，又立刻爬起来。"
+        },
+        {
+          "t": "say",
+          "who": "erin",
+          "text": "{PLAYER_NAME}！报数！"
+        },
+        {
+          "t": "say",
+          "who": "aku",
+          "text": "我在！"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "我、我也在！"
+        },
+        {
+          "t": "say",
+          "who": "erin",
+          "text": "抓紧彼此。走！"
+        },
+        {
+          "t": "set",
+          "memories": {
+            "MEMORY_FAMILY_ROLL_CALL": "艾琳：“报数！”——“我在！”“我、我也在！”"
+          }
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "黑龙掠过后，村外麦田被气流压出一道巨大的弧形痕迹。白天的金色麦浪，如今像被黑色利爪抓开。"
+        }
+      ]
+    },
+    {
+      "id": "00-16",
+      "title": "北山逃生道",
+      "bg": "north-trail-night",
+      "music": null,
+      "ambience": [
+        "footsteps_gravel",
+        "wild_beasts_far"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "逃难队伍离开村道，沿着羊群常走的旧路向山上移动。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "村民把孩子围在中间。能战斗的人站在队尾，用弓箭和农具对付被龙威惊动的野兽。没有人真的认为这些武器能伤到黑龙，他们只是需要做点什么，才能让双腿继续往前。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "托比一路回头。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "小白还在下面。"
+        },
+        {
+          "t": "say",
+          "who": "aku",
+          "text": "它会跟着羊群跑。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "玛拉婶婶的面包也掉了。"
+        },
+        {
+          "t": "say",
+          "who": "erin",
+          "text": "面包以后还能再烤。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "托比吸了吸鼻子。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "房子也能再盖吗？"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "艾琳没有立刻回答。"
+        },
+        {
+          "t": "say",
+          "who": "erin",
+          "text": "只要人还在，就能。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "她说完，抬头看向山路更高处，像是在说服自己。"
+        }
+      ]
+    },
+    {
+      "id": "00-17",
+      "title": "火光里有人回头",
+      "bg": "north-trail-night",
+      "music": null,
+      "ambience": [
+        "collapse_far",
+        "black_fire_far"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "身后传来倒塌声。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "众人回头，看见面包房的屋顶被黑焰吞没。玛拉停下脚步，双手捂住嘴。她的女儿紧紧抱住她的腰。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "玛拉只停了两秒，随后继续往山上跑。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "老铁匠伯伦却忽然转身。"
+        },
+        {
+          "t": "say",
+          "who": "horn",
+          "text": "伯伦！你去哪！"
+        },
+        {
+          "t": "say",
+          "who": "borin",
+          "text": "后面还有人！"
+        },
+        {
+          "t": "say",
+          "who": "horn",
+          "text": "你回去也只是多一个！"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "伯伦没有回答。他把长柄锤扛上肩，逆着逃难人群往火光里走。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}看见他经过时，伯伦用锤柄重重碰了一下{PLAYER_NAME}的旧剑鞘。"
+        },
+        {
+          "t": "say",
+          "who": "borin",
+          "text": "别让剑先替你发火。先看清该砍谁。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "他转身下山，很快被黑烟吞没。"
+        },
+        {
+          "t": "set",
+          "memories": {
+            "MEMORY_BORIN_LAST_WORDS": "先看清该砍谁"
+          }
+        }
+      ]
+    },
+    {
+      "id": "00-18",
+      "title": "母亲摔倒",
+      "bg": "north-trail-night",
+      "music": null,
+      "ambience": [
+        "panting",
+        "gravel_rolling",
+        "dragon_roar_far"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "山道在前方变窄。右侧是陡坡，左侧是长满荆棘的岩壁。"
+        },
+        {
+          "t": "fx",
+          "fx": "shake",
+          "ms": 700
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "黑龙在山脚发出一声咆哮。声浪让地面震动，松动的碎石从坡上滚下。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "艾琳一边护着托比，一边回头确认后方村民。她的脚踩在一块松石上，身体猛地失去平衡。"
+        },
+        {
+          "t": "say",
+          "who": "aku",
+          "text": "妈！"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}抓住她的手臂，两人一起跪倒在地。艾琳的右脚踝以不自然的角度扭了一下。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "她倒吸一口冷气，额头瞬间渗出冷汗。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "托比蹲下来。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "妈妈，你流血了吗？"
+        },
+        {
+          "t": "say",
+          "who": "erin",
+          "text": "没有。只是扭了一下。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "她试图站起，右腿刚一用力便再次跪下。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "山脚传来新的爆炸。黑焰已经爬上旧牧道入口。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "艾琳看一眼山洞方向，又看一眼两个儿子。她很快作出决定。"
+        },
+        {
+          "t": "say",
+          "who": "erin",
+          "text": "{PLAYER_NAME}，带托比走。"
+        }
+      ]
+    },
+    {
+      "id": "00-19",
+      "title": "“我不是在问你愿不愿意”",
+      "bg": "north-trail-night",
+      "music": null,
+      "ambience": [
+        "panting",
+        "dragon_roar_far"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "托比立刻摇头。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "不要！妈妈一起走！"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "艾琳抓住{PLAYER_NAME}的衣领，把他拉近。"
+        },
+        {
+          "t": "say",
+          "who": "erin",
+          "text": "听清楚。守羊洞离这里不到五分钟。你背着托比，三分钟就能到。"
+        },
+        {
+          "t": "say",
+          "who": "aku",
+          "text": "我背你。"
+        },
+        {
+          "t": "say",
+          "who": "erin",
+          "text": "你背着我，走不过窄坡。它下一次俯冲就会到这里。"
+        },
+        {
+          "t": "say",
+          "who": "aku",
+          "text": "那我留下。"
+        },
+        {
+          "t": "say",
+          "who": "erin",
+          "text": "然后让他一个八岁的孩子自己上山？"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}说不出话。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "艾琳的声音发抖，却没有移开视线。"
+        },
+        {
+          "t": "say",
+          "who": "erin",
+          "text": "我不是在问你愿不愿意。我是在把托比交给你。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "她把牧羊铜哨按进{PLAYER_NAME}掌心，强迫他握住。"
+        },
+        {
+          "t": "say",
+          "who": "erin",
+          "text": "带他进洞。点三次灯。听见我的哨声再出来。没有听见，就等天亮。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "托比哭着抱住她。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "我可以走慢一点，我不会拖累你们……"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "艾琳将他紧紧抱住，亲了一下他的额头。"
+        },
+        {
+          "t": "say",
+          "who": "erin",
+          "text": "你从来不是拖累。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "她抬头看向{PLAYER_NAME}。"
+        },
+        {
+          "t": "say",
+          "who": "erin",
+          "text": "你也不是。"
+        }
+      ]
+    },
+    {
+      "id": "00-20",
+      "title": "自由输入：对母亲说什么",
+      "bg": "north-trail-night",
+      "music": null,
+      "ambience": [
+        "panting",
+        "dragon_roar_far"
+      ],
+      "beats": [
+        {
+          "t": "input",
+          "id": "FI_CH000_SC20_LEAVE_MOTHER_001",
+          "kind": "dialogue",
+          "prompt": "艾琳把托比交给了你。你要对母亲说什么，或者做什么？",
+          "placeholder": "说点什么，或做点什么……",
+          "focus": [
+            "erin",
+            "toby",
+            "horn",
+            "mara"
+          ],
+          "context": [
+            "旧牧道第二折坡：右侧是陡坡，左侧是长满荆棘的岩壁，山道变窄。黑焰已经爬上旧牧道入口。",
+            "艾琳右脚踝扭伤，无法站立；守羊洞离这里不到五分钟，背着托比三分钟能到。",
+            "艾琳刚把牧羊铜哨按进他掌心：“带他进洞。点三次灯。听见我的哨声再出来。没有听见，就等天亮。”",
+            "艾琳刚说过：“你从来不是拖累。”“你也不是。”",
+            "路边有直树枝；霍恩与玛拉在后方的逃难队伍里。"
+          ],
+          "principles": [
+            "若玩家提出合理急救，{PLAYER_NAME}可用衣带和树枝临时固定艾琳脚踝，为她增加生还机会。",
+            "若玩家呼救，村长霍恩与玛拉可能短暂折返；他们可扶艾琳走另一条较缓但更危险的路线。",
+            "若玩家坚持背母亲，艾琳会让他尝试站起；在他发现无法同时保护托比并通过窄坡后，再次把决定交还给他，不用系统文字强行阻止。",
+            "若玩家辱骂或指责母亲“拖累”，她会受伤但仍先保护托比；写入罪恶感与家庭创伤。",
+            "若玩家保持沉默，艾琳会理解为他不敢告别，而不是默认无情。",
+            "玩家可以反对、承诺、愤怒、沉默、尝试背母亲、呼叫村民、寻找固定脚踝的方法，或提出其他行动（告别、道谢、表达爱也属于正常回应）。",
+            "无论表达如何，本章硬事件是：{PLAYER_NAME}必须先带托比进入守羊洞。艾琳是否由其他村民带离、暂时失踪或受困，留给后续章节确认。",
+            "高情绪节点：改变记忆与人物动机，不把玩家强制归类为善恶。"
+          ],
+          "intents": [
+            {
+              "id": "first_aid",
+              "label": "急救固定脚踝",
+              "desc": "用衣带、布条和树枝为艾琳临时固定脚踝。",
+              "keywords": [
+                "固定",
+                "包扎",
+                "树枝",
+                "夹板",
+                "衣带",
+                "布条",
+                "绑住",
+                "撕下",
+                "扭伤",
+                "急救",
+                "绑紧",
+                "固定脚踝"
+              ],
+              "voice": "steady",
+              "morality": 1,
+              "set": {
+                "flags": {
+                  "FLAG_CH000_MOTHER_ANKLE_SPLINTED": true
+                }
+              },
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}撕下外衣下摆，用两根直树枝固定艾琳的脚踝。动作因为手抖而几次打结失败。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "艾琳伸手压住他的手。"
+                },
+                {
+                  "t": "say",
+                  "who": "erin",
+                  "text": "看着我。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}抬头。"
+                },
+                {
+                  "t": "say",
+                  "who": "erin",
+                  "text": "你现在害怕，不代表你没用。去做下一件能做的事。"
+                }
+              ]
+            },
+            {
+              "id": "call_help",
+              "label": "呼救",
+              "desc": "向后方的村民、霍恩或玛拉大声呼救求援。",
+              "keywords": [
+                "救命",
+                "来人",
+                "有人吗",
+                "霍恩",
+                "玛拉",
+                "村长",
+                "喊人",
+                "呼救",
+                "快来",
+                "大声喊",
+                "帮帮我们"
+              ],
+              "voice": "resourceful",
+              "morality": 1,
+              "set": {
+                "flags": {
+                  "FLAG_CH000_VILLAGERS_CALLED": true
+                }
+              },
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}转身朝山道后方大喊。喊声几乎被龙吼盖过，却还是有人听见了。"
+                }
+              ]
+            },
+            {
+              "id": "carry",
+              "label": "坚持背母亲",
+              "desc": "坚持要背着、扶着或架着艾琳一起走。",
+              "keywords": [
+                "背你",
+                "背着你",
+                "背上妈",
+                "扶你",
+                "扶着你",
+                "架着你",
+                "一起走",
+                "抱着你",
+                "搀着",
+                "背起妈"
+              ],
+              "voice": "stubborn",
+              "morality": 1,
+              "set": {
+                "flags": {
+                  "FLAG_CH000_TRIED_CARRY_MOTHER": true
+                }
+              },
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}蹲下身，把艾琳架上后背。她没有拒绝，只让他试。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "他咬牙站起来。刚迈出一步，右侧陡坡的碎石便哗啦滑落；托比被挤在岩壁和荆棘之间，差点被带下坡去。{PLAYER_NAME}的膝盖在发抖。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "艾琳没有说“不行”。她只是低声问："
+                },
+                {
+                  "t": "say",
+                  "who": "erin",
+                  "text": "现在，你还能同时护住他吗？"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "她从他背上滑下来，把决定重新放回他手里。"
+                }
+              ]
+            },
+            {
+              "id": "promise",
+              "label": "承诺",
+              "desc": "向艾琳许下承诺：会保护托比、会回来接她、一定会再见。",
+              "keywords": [
+                "答应",
+                "保证",
+                "一定会",
+                "我发誓",
+                "放心",
+                "交给我",
+                "我会保护",
+                "会回来",
+                "来接你",
+                "等我"
+              ],
+              "voice": "earnest",
+              "morality": 1,
+              "set": {
+                "flags": {
+                  "FLAG_CH000_PROMISED_MOTHER": true
+                }
+              },
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "艾琳看着他，像要把这句话刻进心里。"
+                },
+                {
+                  "t": "say",
+                  "who": "erin",
+                  "text": "好。我记住了。现在，去把它做到。"
+                }
+              ]
+            },
+            {
+              "id": "refuse",
+              "label": "反对／愤怒",
+              "desc": "拒绝离开、坚持留下，或对这个处境表达愤怒（没有辱骂母亲）。",
+              "keywords": [
+                "不走",
+                "不行",
+                "我留下",
+                "留下来",
+                "不可能",
+                "不能丢下",
+                "不能扔下",
+                "我不同意",
+                "凭什么",
+                "不要丢下",
+                "我不要"
+              ],
+              "voice": "defiant",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "艾琳没有被他的怒气推开，反而把托比的手塞进他掌心。"
+                },
+                {
+                  "t": "say",
+                  "who": "erin",
+                  "text": "你可以生气，可以恨我。但先把他带上去。"
+                }
+              ]
+            },
+            {
+              "id": "farewell",
+              "label": "告别／表达爱",
+              "desc": "向艾琳告别、道谢或表达爱与不舍（例如回应“你也不是拖累”）。",
+              "keywords": [
+                "我爱你",
+                "爱你",
+                "不是拖累",
+                "不是累赘",
+                "谢谢你",
+                "舍不得",
+                "我会想你",
+                "再见",
+                "保重",
+                "抱住妈",
+                "抱紧妈"
+              ],
+              "voice": "tender",
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "艾琳把额头抵在他的额头上，停了半秒。"
+                },
+                {
+                  "t": "say",
+                  "who": "erin",
+                  "text": "我知道。我一直都知道。"
+                }
+              ]
+            },
+            {
+              "id": "blame",
+              "label": "指责母亲",
+              "desc": "辱骂母亲，或指责她是拖累、累赘、自找的。",
+              "keywords": [
+                "拖累我们",
+                "你拖累",
+                "就是拖累",
+                "累赘",
+                "都怪你",
+                "怪你",
+                "你的错",
+                "废物",
+                "活该",
+                "自找的",
+                "添乱"
+              ],
+              "voice": "harsh",
+              "morality": -2,
+              "set": {
+                "flags": {
+                  "FLAG_CH000_FAMILY_TRAUMA_MOTHER": true
+                },
+                "add": {
+                  "PLAYER_GUILT_TOTAL": 1
+                }
+              },
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "艾琳的脸色白了一瞬。她没有反驳，而是先把托比往{PLAYER_NAME}身边推。"
+                },
+                {
+                  "t": "say",
+                  "who": "erin",
+                  "text": "……对。我现在走不动。所以更要你带他走。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "托比愣愣地看着哥哥，像第一次不认识他。"
+                }
+              ]
+            },
+            {
+              "id": "fallback",
+              "label": "其他回应",
+              "desc": "无法归入以上类别的话或动作。",
+              "keywords": [
+                "妈",
+                "嗯",
+                "我知道"
+              ],
+              "voice": "earnest",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "艾琳听着，轻轻点了点头，像是把他的每个字都收下了。"
+                }
+              ]
+            },
+            {
+              "id": "silent",
+              "label": "沉默",
+              "desc": "空输入或保持沉默：艾琳理解为他不敢告别。",
+              "voice": "quiet",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}张了张嘴，什么也没能说出来。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "艾琳没有怪他。她明白，他只是不敢说再见。"
+                },
+                {
+                  "t": "say",
+                  "who": "erin",
+                  "text": "不用说。等天亮了，再说给我听。"
+                }
+              ]
+            }
+          ],
+          "silent": "silent",
+          "fallback": "fallback"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "山下响起龙翼扇动声。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "intent": "FI_CH000_SC20_LEAVE_MOTHER_001",
+            "in": [
+              "first_aid",
+              "call_help"
+            ]
+          },
+          "then": [
+            {
+              "t": "narr",
+              "style": "picture",
+              "text": "霍恩和玛拉从后方赶来。霍恩一把架住艾琳肩膀。"
+            },
+            {
+              "t": "say",
+              "who": "horn",
+              "text": "我带她走缓坡。你带孩子上去！"
+            },
+            {
+              "t": "set",
+              "flags": {
+                "FLAG_CH000_HORN_ESCORTED_MOTHER": true
+              }
+            }
+          ]
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "艾琳最后推了{PLAYER_NAME}一把。"
+        },
+        {
+          "t": "say",
+          "who": "erin",
+          "text": "跑！"
+        }
+      ]
+    },
+    {
+      "id": "00-21",
+      "title": "哥哥不能回头",
+      "bg": "north-trail-night",
+      "music": "heartbeat_low_drum",
+      "ambience": [
+        "gravel_rolling",
+        "panting"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}背起托比，沿窄坡向上冲。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "托比在他背上挣扎着回头。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "妈妈！妈妈还没来！"
+        },
+        {
+          "t": "say",
+          "who": "aku",
+          "text": "抓紧我！"
+        },
+        {
+          "t": "if",
+          "when": {
+            "intent": "FI_CH000_SC20_LEAVE_MOTHER_001",
+            "is": "promise"
+          },
+          "then": [
+            {
+              "t": "say",
+              "who": "toby",
+              "text": "你答应我，她会来的！"
+            }
+          ],
+          "else": [
+            {
+              "t": "say",
+              "who": "toby",
+              "text": "她会来的，对不对？"
+            }
+          ]
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "碎石不断从脚边滑落。{PLAYER_NAME}的土律只能让每一步稳定短短一瞬，金律勉强强化旧剑鞘，防止它在岩壁撞击中断裂。七种属性都在回应，但没有一种足以让他转身击退巨龙。"
+        },
+        {
+          "t": "fx",
+          "fx": "shake",
+          "ms": 500
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "身后传来一声巨响。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}本能地要回头，托比却在他背上突然抱紧他的脖子。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "哥，别把我丢下。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}脚步停顿半拍，继续向上。"
+        }
+      ]
+    },
+    {
+      "id": "00-22",
+      "title": "守羊人的山洞",
+      "bg": "shepherd-cave-night",
+      "music": null,
+      "ambience": [
+        "wind_cave",
+        "dragon_roar_far"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "山洞入口只容一人弯腰通过，里面堆着旧木柴、破毯和牧人冬季使用的油灯。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}把托比放下，立刻转身望向山路。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "黑烟已经遮住下方大半坡道。偶尔有人影从烟里冲出，又很快消失在另一条山路后。{PLAYER_NAME}分辨不出其中有没有艾琳。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "托比拉住他的手。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "三次灯。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}回过神，点亮油灯。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "第一次。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "熄灭。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "第二次。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "熄灭。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "第三次。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "他把灯放在洞口最高的石头上。微弱火光像一颗几乎要被黑夜吞掉的星。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "两人等待牧羊哨的回应。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "没有声音。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "只有远处的龙吼。"
+        }
+      ]
+    },
+    {
+      "id": "00-23",
+      "title": "从山洞看见故乡毁灭",
+      "bg": "shepherd-cave-night",
+      "music": "female_wordless_humming",
+      "ambience": [
+        "black_fire_far",
+        "collapse_far"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}和托比伏在洞口石壁后。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "从这里可以俯瞰整个赫麦村。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "白天走过的地方依次出现在火与黑烟中："
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "面包房的招牌烧断，落在泥地里。铁匠棚的炉火被黑焰覆盖，发出一次刺眼爆闪。村口水井旁挤满逃难者，霍恩站在井台上挥动火把，指引最后一批人往北走。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "黑龙落在祷堂废墟上。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "它的前爪压碎七角晨星石像，低头嗅闻地下，像是在寻找某种东西。颈侧锁链随动作收紧，紫色咒文一节节亮起。黑龙发出痛苦而愤怒的咆哮，随后把怒火倾泻到周围房屋。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}看不见锁链上的文字，只看见它毁掉自己的家。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "托比用双手捂住嘴，仍压不住哭声。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "我们的桌子……"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "他们家的屋顶在这一刻塌下。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "桌子、晚餐、艾琳盖住信件的那块布，全被黑烟遮住。"
+        }
+      ]
+    },
+    {
+      "id": "00-24",
+      "title": "那些没有跑上山的人",
+      "bg": "shepherd-cave-night",
+      "music": null,
+      "ambience": [
+        "black_fire_far",
+        "screams_far"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "一队村民从谷仓后方冲出，试图穿过麦田。黑龙转头，胸腔里的暗红光芒逐渐变亮。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}意识到它要做什么。"
+        },
+        {
+          "t": "say",
+          "who": "aku",
+          "text": "快跑……"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "洞口离村庄太远，没有人能听见。"
+        },
+        {
+          "t": "say",
+          "who": "aku",
+          "note": "更大声",
+          "text": "快跑！"
+        },
+        {
+          "t": "fx",
+          "fx": "desaturate",
+          "ms": 600
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "黑焰横扫麦田。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "画面不追随火焰中的人体，而是停在几支被丢下的火把上。火把一支接一支熄灭。刚才还混杂在夜色里的呼喊声，突然少了一大片。",
+          "text15": "画面不追随火焰中的人体，而是停在几支被丢下的火把上。火把一支接一支熄灭。刚才还混杂在夜色里的呼喊声，突然少了一大片。麦田边缘，有人拖着同伴往外爬，身后的泥地留下一道暗色的血迹。他停下来喊了两声同伴的名字，便不再喊了。"
+        },
+        {
+          "t": "fx",
+          "fx": "restore",
+          "ms": 1200
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "托比想冲出山洞。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "妈妈在下面！"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}从身后抱住他。托比用拳头不断打哥哥手臂。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "放开我！妈妈在下面！你放开我！"
+        },
+        {
+          "t": "input",
+          "id": "FI_CH000_SC24_HOLD_TOBY_001",
+          "kind": "action",
+          "optional": true,
+          "prompt": "托比拼命挣扎，要冲下山去。你从身后抱着他——要对他说什么吗？",
+          "placeholder": "说点什么，或者只是抱住他……",
+          "focus": [
+            "toby"
+          ],
+          "context": [
+            "黑焰刚横扫麦田，一队村民的呼喊突然少了一大片。",
+            "托比想冲出山洞找妈妈，用拳头不断打哥哥的手臂。",
+            "艾琳的嘱咐：带他进洞，点三次灯，听见哨声再出来，没有听见就等天亮。",
+            "无论说什么，{PLAYER_NAME}都不会松手（固定承接）。"
+          ],
+          "principles": [
+            "此处不因“强行拦住弟弟”增加欺负或罪恶感。这是明确的即时保护行为。",
+            "若玩家用羞辱、威胁或把责任推给托比的语言压制他，则另行记录家庭创伤。"
+          ],
+          "intents": [
+            {
+              "id": "hold",
+              "label": "抱紧保护",
+              "desc": "抱紧托比、告诉他不能下去、哥哥在这里。",
+              "keywords": [
+                "抱紧",
+                "我在",
+                "不能去",
+                "不准去",
+                "别去",
+                "不许去",
+                "不放",
+                "哥在这",
+                "不会丢下你",
+                "冷静"
+              ],
+              "voice": "protective",
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}把他箍得更紧，下巴抵在弟弟发顶上。拳头一下一下落在他手臂上，他一下也没躲。"
+                }
+              ]
+            },
+            {
+              "id": "remind",
+              "label": "提醒母亲的嘱咐",
+              "desc": "提醒托比艾琳的嘱咐：点灯、等哨声、等天亮。",
+              "keywords": [
+                "哨声",
+                "听见哨",
+                "等天亮",
+                "三次灯",
+                "妈妈说",
+                "她说过",
+                "点了灯",
+                "约好",
+                "吹哨"
+              ],
+              "voice": "steady",
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "托比的拳头停了一瞬。"
+                },
+                {
+                  "t": "say",
+                  "who": "toby",
+                  "text": "可是……可是哨声一直没有响……"
+                }
+              ]
+            },
+            {
+              "id": "shame",
+              "label": "羞辱或威胁",
+              "desc": "用羞辱、威胁或把责任推给托比的语言压制他。",
+              "keywords": [
+                "闭嘴",
+                "都怪你",
+                "你害",
+                "哭什么",
+                "再闹",
+                "揍你",
+                "就丢下你",
+                "就不管你",
+                "烦死",
+                "废物",
+                "都是因为你",
+                "没出息"
+              ],
+              "voice": "harsh",
+              "morality": -1,
+              "set": {
+                "flags": {
+                  "FLAG_CH000_FAMILY_TRAUMA_TOBY": true
+                },
+                "add": {
+                  "PLAYER_GUILT_TOTAL": 1
+                }
+              },
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "托比像被打了一下，整个人僵住。拳头停了，哭声却变得更碎。"
+                }
+              ]
+            },
+            {
+              "id": "fallback",
+              "label": "其他回应",
+              "desc": "无法归类的话或动作。",
+              "keywords": [
+                "托比",
+                "嗯"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "托比听不进去，只是一遍又一遍地挣扎。"
+                }
+              ]
+            },
+            {
+              "id": "silent",
+              "label": "沉默抱住",
+              "desc": "空输入、沉默或跳过：只是抱住他。",
+              "voice": "quiet",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}什么也没说，只是抱着他。"
+                }
+              ]
+            }
+          ],
+          "silent": "silent",
+          "fallback": "fallback"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}没有松手。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "他的指甲陷进自己掌心，血顺着牧羊铜哨的边缘流下。"
+        }
+      ]
+    },
+    {
+      "id": "00-25",
+      "title": "黑龙抬头看向山洞",
+      "bg": "shepherd-cave-night",
+      "music": "silence",
+      "ambience": [],
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "黑龙停止破坏。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "它缓慢抬起头，鼻孔喷出黑雾。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "龙首转向北山。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "镜头从龙的竖瞳切到洞口。{PLAYER_NAME}与托比藏在极小的火光旁，距离遥远得本不该被发现。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}手背上的洗礼印却突然灼痛。"
+        },
+        {
+          "t": "fx",
+          "fx": "flash",
+          "ms": 400
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "七种微光从皮肤下同时亮起，又在中心汇成一道黑色月牙。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "黑龙的瞳孔骤然收缩。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "它看见了{PLAYER_NAME}。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}也第一次清楚看见它左眼周围有一道像王冠般的裂痕。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "两者隔着整座燃烧的村庄对视。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "黑龙展开双翼，似乎准备向北山扑来。{PLAYER_NAME}立刻把托比推到身后，举起那把根本不可能挡住龙爪的旧剑。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "颈侧锁链却在此刻猛然发亮。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "锁链没有把黑龙拖走，而是强行扭转它的头，让它重新看向已经倒塌的祷堂。紫色咒文一节节没入鳞片，像某个远方的人正在命令它继续寻找。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "云层深处传来一个无法辨认男女的低语。"
+        },
+        {
+          "t": "say",
+          "who": "voice",
+          "text": "钥匙不在地下……"
+        },
+        {
+          "t": "fx",
+          "fx": "shake",
+          "ms": 700
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "黑龙痛苦咆哮，前爪重重踏碎祷堂残墙。它最终没有扑向山洞，而是转回村庄深处，用利爪继续翻开废墟。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}此时听不清完整低语，只听见失真的两个字："
+        },
+        {
+          "t": "say",
+          "who": "voice",
+          "note": "失真低语",
+          "text": "……活着。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "天际极远处，一点白光闪过。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "那道光正朝赫麦村靠近。"
+        }
+      ]
+    },
+    {
+      "id": "00-26",
+      "title": "弟弟的问题",
+      "bg": "shepherd-cave-night",
+      "music": "family_theme_fragment",
+      "ambience": [
+        "wind_cave"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "黑龙转回村庄深处后，夜色并没有恢复正常。赫麦村仍在燃烧，钟声再也没有响起。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "托比不再挣扎。他靠在{PLAYER_NAME}怀里，哭得几乎没有声音。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "很久以后，他才问："
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "哥……家是不是没有了？"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}望着山下，没有立刻回答。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "妈妈会找到我们吗？"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "风从洞口吹进来，油灯火焰摇晃。牧羊铜哨仍然没有传来回应。"
+        },
+        {
+          "t": "input",
+          "id": "FI_CH000_SC26_TOBY_AFTER_001",
+          "kind": "dialogue",
+          "prompt": "托比在等你的回答。",
+          "placeholder": "对托比说点什么，或者只是陪着他……",
+          "focus": [
+            "toby"
+          ],
+          "context": [
+            "守羊洞口。赫麦村仍在燃烧，钟声再也没有响起；牧羊铜哨没有传来回应。",
+            "托比问：“哥……家是不是没有了？”“妈妈会找到我们吗？”",
+            "{PLAYER_NAME}并不知道艾琳是否还活着。"
+          ],
+          "principles": [
+            "玩家可安慰、诚实说明不知道、许下承诺、沉默陪伴，或表现愤怒。",
+            "AI需区分“给孩子希望”和“明知无法保证却绝对承诺”。",
+            "亲情场景不以华丽措辞评分，清楚、真诚、留在身边即可获得高质量判定。",
+            "固定承接：无论玩家如何回答，托比最终都会抓住{PLAYER_NAME}的衣角，在疲惫中靠着他坐下。"
+          ],
+          "intents": [
+            {
+              "id": "comfort",
+              "label": "安慰",
+              "desc": "安抚托比的情绪（别怕、哥在、擦眼泪），不涉及对母亲下落的保证。",
+              "keywords": [
+                "别怕",
+                "不怕",
+                "哥在",
+                "我在这",
+                "我在呢",
+                "擦眼泪",
+                "摸摸头",
+                "拍拍",
+                "没事了",
+                "乖",
+                "别哭"
+              ],
+              "voice": "warm",
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}用拇指抹掉他脸上的灰和眼泪。"
+                },
+                {
+                  "t": "say",
+                  "who": "toby",
+                  "text": "……嗯。"
+                }
+              ]
+            },
+            {
+              "id": "honest",
+              "label": "诚实说不知道",
+              "desc": "坦白说自己也不知道答案，不骗他。",
+              "keywords": [
+                "不知道",
+                "说不准",
+                "不确定",
+                "不清楚",
+                "不骗你",
+                "实话",
+                "我也不懂"
+              ],
+              "voice": "honest",
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "toby",
+                  "text": "……你也不知道？"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "托比没有再追问。他只是往哥哥身边又挪近了一点。"
+                }
+              ]
+            },
+            {
+              "id": "promise",
+              "label": "绝对承诺",
+              "desc": "明知无法保证，却绝对承诺妈妈一定会来、一定没事。",
+              "keywords": [
+                "一定会",
+                "保证",
+                "答应你",
+                "肯定会",
+                "我发誓",
+                "一定没事",
+                "绝对",
+                "一定能"
+              ],
+              "voice": "reassuring",
+              "morality": 0,
+              "set": {
+                "flags": {
+                  "FLAG_CH000_ABSOLUTE_PROMISE_TOBY": true
+                }
+              },
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "托比用力点头，像抓住了一根绳子。"
+                },
+                {
+                  "t": "say",
+                  "who": "toby",
+                  "text": "你说的。你说的……"
+                }
+              ]
+            },
+            {
+              "id": "hope",
+              "label": "给孩子希望",
+              "desc": "给托比希望但不作绝对保证：也许、等天亮一起去找她。",
+              "keywords": [
+                "也许",
+                "说不定",
+                "一起等",
+                "天亮",
+                "去找她",
+                "一起找",
+                "找到她",
+                "希望",
+                "或许"
+              ],
+              "voice": "hopeful",
+              "morality": 1,
+              "set": {
+                "flags": {
+                  "FLAG_CH000_GAVE_TOBY_HOPE": true
+                }
+              },
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "toby",
+                  "text": "天亮……就能去找了吗？"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "托比抽噎着，把哥哥的话又小声重复了一遍。"
+                }
+              ]
+            },
+            {
+              "id": "stay",
+              "label": "沉默陪伴",
+              "desc": "不说话，用动作陪着他：抱住、搂紧、握住他的手。",
+              "keywords": [
+                "抱住",
+                "搂住",
+                "陪着",
+                "陪他",
+                "靠着",
+                "握住",
+                "默默",
+                "一直在",
+                "揽住",
+                "抱紧"
+              ],
+              "voice": "quiet",
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}没有说话，只是把弟弟揽得更近。托比的哭声慢慢变小了。"
+                }
+              ]
+            },
+            {
+              "id": "anger",
+              "label": "表现愤怒",
+              "desc": "对黑龙或这一切表现出愤怒、恨意。",
+              "keywords": [
+                "杀了它",
+                "那条龙",
+                "该死",
+                "混蛋",
+                "可恶",
+                "宰了",
+                "报仇",
+                "恨",
+                "不会放过",
+                "畜生"
+              ],
+              "voice": "fierce",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "托比被哥哥的声音吓得一缩。过了一会儿，他小声问："
+                },
+                {
+                  "t": "say",
+                  "who": "toby",
+                  "text": "哥……你会去打它吗？"
+                }
+              ]
+            },
+            {
+              "id": "fallback",
+              "label": "其他回应",
+              "desc": "无法归类的回答。",
+              "keywords": [
+                "嗯",
+                "睡吧",
+                "休息"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "托比听着，没有说话，只是把脸埋进哥哥的衣服里。"
+                }
+              ]
+            },
+            {
+              "id": "silent",
+              "label": "沉默",
+              "desc": "空输入或沉默。",
+              "voice": "quiet",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}没有回答。托比也没有再问。"
+                }
+              ]
+            }
+          ],
+          "silent": "silent",
+          "fallback": "fallback"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "托比最终抓住{PLAYER_NAME}的衣角，在疲惫中靠着他坐下。{PLAYER_NAME}把自己的外套盖在弟弟肩上，独自守在洞口。"
+        }
+      ]
+    },
+    {
+      "id": "00-27",
+      "title": "屠龙之誓",
+      "bg": "cave-dawn",
+      "music": "hero_theme_incomplete",
+      "ambience": [
+        "wind_cave",
+        "black_fire_far"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "天边开始出现极淡的灰色。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}走出洞口几步。旧铁剑被他拔出一半，剑身映不出火光，只映出他满是烟灰的脸。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "他想起白天的一切。"
+        },
+        {
+          "t": "say",
+          "who": "erin",
+          "note": "回忆",
+          "text": "怕你哥哥走丢。"
+        },
+        {
+          "t": "say",
+          "who": "borin",
+          "note": "回忆",
+          "text": "先看清该砍谁。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "note": "回忆",
+          "text": "家是不是没有了？"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}把剑彻底拔出，插进脚边泥土。"
+        },
+        {
+          "t": "fx",
+          "fx": "flash",
+          "ms": 500
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "剑刃发出从未有过的低鸣。金、木、水、火、土、光、暗七色微光沿剑脊一闪而过，每一种依旧弱小，却第一次没有彼此熄灭。"
+        },
+        {
+          "t": "input",
+          "id": "FI_CH000_SC27_DRAGON_VOW_001",
+          "kind": "vow",
+          "multi": true,
+          "storeAs": "PLAYER_VOW",
+          "prompt": "面对燃烧的赫麦村，{PLAYER_NAME}会立下怎样的誓言？",
+          "placeholder": "写下你的誓言，一个动作，或者保持沉默……",
+          "focus": [],
+          "context": [
+            "天边开始出现极淡的灰色。赫麦村仍在燃烧；托比在洞里睡着了；牧羊铜哨始终没有回应。",
+            "{PLAYER_NAME}把旧铁剑插进脚边泥土，七色微光沿剑脊一闪而过，每一种依旧弱小，却第一次没有彼此熄灭。",
+            "他想起：艾琳说“怕你哥哥走丢”；伯伦说“先看清该砍谁”；托比问“家是不是没有了？”",
+            "他看见过黑龙颈侧没入鳞片的锁链与紫色咒文，听见过云层里的低语“……活着”。"
+          ],
+          "principles": [
+            "AI从原文提取主要动机，但不把玩家限制为单一人格；多种动机可以同时成立（主/次意图）。",
+            "VOW_REVENGE：让黑龙偿还血债。VOW_PROTECTION：不再让重要的人被夺走。VOW_TRUTH：查明黑龙为何袭击赫麦村。",
+            "VOW_GUILT：认为自己没有救下所有人。VOW_POWER：追求足以压倒一切的力量。VOW_MERCY_CONFLICT：即使复仇，也记得伯伦“先看清该砍谁”的警告。",
+            "表达质量与道德倾向分开记录。誓言不要喊叫，越压低声音越好。",
+            "固定正史：无论玩家措辞如何，本章至少写入：{PLAYER_NAME}决定追寻这条黑龙，并终结它对赫麦村造成的灾难。若玩家完全沉默，则以动作和默认内心独白建立誓言。"
+          ],
+          "intents": [
+            {
+              "id": "VOW_REVENGE",
+              "label": "复仇",
+              "desc": "让黑龙偿还血债：杀了它、报仇、血债血偿。",
+              "keywords": [
+                "报仇",
+                "复仇",
+                "血债",
+                "偿还",
+                "杀了它",
+                "宰了",
+                "屠了",
+                "屠龙",
+                "血偿",
+                "以命",
+                "讨回",
+                "杀死",
+                "追上它",
+                "付出代价",
+                "不放过"
+              ],
+              "voice": "fierce",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}的声音很低，却没有发抖。剑刃的低鸣沉了下去，像替他记下了这笔血债。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "他望向黑龙消失的南方。不论它逃到哪里，他都会追上去。"
+                }
+              ]
+            },
+            {
+              "id": "VOW_PROTECTION",
+              "label": "守护",
+              "desc": "不再让重要的人被夺走：保护托比、守护家人与身边的人。",
+              "keywords": [
+                "保护",
+                "守护",
+                "再也不让",
+                "不会再让",
+                "护住",
+                "守住",
+                "重要的人",
+                "家人",
+                "托比",
+                "夺走"
+              ],
+              "voice": "protective",
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}回头看了一眼洞里睡着的托比。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "他握紧剑柄，鲜血沿掌纹渗入护手。要让这样的夜晚不再发生，他就得先追上那条黑龙。"
+                }
+              ]
+            },
+            {
+              "id": "VOW_TRUTH",
+              "label": "查明真相",
+              "desc": "查明黑龙为何袭击赫麦村、锁链背后是谁。",
+              "keywords": [
+                "为什么",
+                "真相",
+                "查明",
+                "查清",
+                "弄清",
+                "锁链",
+                "是谁",
+                "幕后",
+                "原因",
+                "钥匙",
+                "咒文"
+              ],
+              "voice": "resolute",
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}想起那几道没入鳞片的锁链，和云层深处那个分不清男女的低语。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "他望向黑龙消失的南方。不论答案藏在哪里，他都要先追上那条黑龙。"
+                }
+              ]
+            },
+            {
+              "id": "VOW_GUILT",
+              "label": "愧疚",
+              "desc": "认为自己没有救下所有人，带着愧疚立誓。",
+              "keywords": [
+                "没能救",
+                "没救下",
+                "我的错",
+                "怪我",
+                "对不起",
+                "赎罪",
+                "要是我",
+                "没用",
+                "救不了",
+                "太弱"
+              ],
+              "voice": "guilty",
+              "morality": 0,
+              "set": {
+                "add": {
+                  "PLAYER_GUILT_TOTAL": 1
+                }
+              },
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}握紧剑柄，鲜血沿掌纹渗入护手。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "火把一支接一支熄灭的画面，在他眼前怎么也挥不去。他欠下的，只能从那条黑龙身上一点点讨回来。"
+                }
+              ]
+            },
+            {
+              "id": "VOW_POWER",
+              "label": "追求力量",
+              "desc": "追求足以压倒一切的力量，变强、强到无人能敌。",
+              "keywords": [
+                "力量",
+                "变强",
+                "强大",
+                "更强",
+                "压倒",
+                "无人能敌",
+                "最强",
+                "强到"
+              ],
+              "voice": "ambitious",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "七色微光在剑脊上又闪了一下，依旧弱得可怜。{PLAYER_NAME}盯着它们，像盯着一个必须被填满的缺口。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "总有一天，这把剑要强到足以追上那条黑龙。"
+                }
+              ]
+            },
+            {
+              "id": "VOW_MERCY_CONFLICT",
+              "label": "复仇但先看清",
+              "desc": "即使复仇，也记得伯伦“先看清该砍谁”的警告；不滥杀、找到真正的敌人。",
+              "keywords": [
+                "看清",
+                "该砍谁",
+                "伯伦",
+                "不滥杀",
+                "无辜",
+                "真正的敌人",
+                "砍对人",
+                "不迁怒",
+                "分清"
+              ],
+              "voice": "measured",
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}想起伯伦经过时，锤柄碰在剑鞘上的那一下。"
+                },
+                {
+                  "t": "say",
+                  "who": "borin",
+                  "note": "回忆",
+                  "text": "先看清该砍谁。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "他望向黑龙消失的南方。他会追上那条黑龙——然后，看清楚。"
+                }
+              ]
+            },
+            {
+              "id": "fallback",
+              "label": "未表达明确誓言",
+              "desc": "输入里没有明确的誓言动机；播放默认誓言台词。",
+              "keywords": [
+                "随便",
+                "不知道该说什么"
+              ],
+              "morality": 0,
+              "reaction": []
+            },
+            {
+              "id": "silent",
+              "label": "沉默立誓",
+              "desc": "完全沉默：以动作和默认内心独白建立誓言。",
+              "voice": "quiet",
+              "morality": 0,
+              "reaction": []
+            }
+          ],
+          "silent": "silent",
+          "fallback": "fallback"
+        },
+        {
+          "t": "if",
+          "when": {
+            "intent": "FI_CH000_SC27_DRAGON_VOW_001",
+            "is": "silent"
+          },
+          "then": [
+            {
+              "t": "narr",
+              "style": "picture",
+              "text": "{PLAYER_NAME}没有出声。他握紧剑柄，鲜血沿掌纹渗入护手。"
+            },
+            {
+              "t": "think",
+              "text": "我发誓。"
+            },
+            {
+              "t": "think",
+              "text": "我会找到那条黑龙。"
+            },
+            {
+              "t": "think",
+              "text": "无论它逃到哪一国，无论是谁把它放到这里——我都会追上它。"
+            },
+            {
+              "t": "narr",
+              "style": "picture",
+              "text": "他望向黑龙消失的南方。"
+            },
+            {
+              "t": "think",
+              "text": "然后，亲手屠了它。"
+            },
+            {
+              "t": "set",
+              "flags": {
+                "FLAG_CH000_DEFAULT_VOW": true
+              },
+              "vars": {
+                "PLAYER_VOW_PRIMARY": "VOW_REVENGE"
+              }
+            }
+          ]
+        },
+        {
+          "t": "if",
+          "when": {
+            "intent": "FI_CH000_SC27_DRAGON_VOW_001",
+            "is": "fallback"
+          },
+          "then": [
+            {
+              "t": "say",
+              "who": "aku",
+              "text": "我发誓。"
+            },
+            {
+              "t": "narr",
+              "style": "picture",
+              "text": "他的声音很低，却没有发抖。"
+            },
+            {
+              "t": "say",
+              "who": "aku",
+              "text": "我会找到那条黑龙。"
+            },
+            {
+              "t": "narr",
+              "style": "picture",
+              "text": "{PLAYER_NAME}握紧剑柄，鲜血沿掌纹渗入护手。"
+            },
+            {
+              "t": "say",
+              "who": "aku",
+              "text": "无论它逃到哪一国，无论是谁把它放到这里——我都会追上它。"
+            },
+            {
+              "t": "narr",
+              "style": "picture",
+              "text": "他望向黑龙消失的南方。"
+            },
+            {
+              "t": "say",
+              "who": "aku",
+              "text": "然后，亲手屠了它。"
+            },
+            {
+              "t": "set",
+              "flags": {
+                "FLAG_CH000_DEFAULT_VOW": true
+              },
+              "vars": {
+                "PLAYER_VOW_PRIMARY": "VOW_REVENGE"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "00-28",
+      "title": "片名与隐藏钩子",
+      "bg": "cave-dawn",
+      "music": null,
+      "ambience": [],
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}拔起旧铁剑。"
+        },
+        {
+          "t": "fx",
+          "fx": "flash",
+          "ms": 250
+        },
+        {
+          "t": "bg",
+          "bg": "black",
+          "fx": "cut"
+        },
+        {
+          "t": "title",
+          "lines": [
+            "有些契约由神见证。",
+            "有些契约，由失去一切的人亲手写下。"
+          ],
+          "title": "《月蚀契约》",
+          "subtitle": "序章｜黑翼焚麦之夜"
+        },
+        {
+          "t": "bg",
+          "bg": "south-ridge",
+          "fx": "fade"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "距离赫麦村很远的南侧山脊，一只戴着黑手套的手悬在半空。数条只有施术者才能看见的黑色锁链，从他的指间延伸向村庄上空的黑龙。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "倒置七角晨星在手套背面微微发亮。"
+        },
+        {
+          "t": "say",
+          "who": "blackrobe",
+          "text": "它已经发现容器了。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "黑暗深处传来另一个更加古老的声音。"
+        },
+        {
+          "t": "say",
+          "who": "ancient",
+          "text": "继续烧。恐惧会让门自己打开。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "黑袍人正要收紧锁链，忽然转头看向北方。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "遥远地平线上，一名白袍男子正沿着山道走来。法杖顶端的三枚光环依次点亮。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "黑袍人沉默半秒。"
+        },
+        {
+          "t": "say",
+          "who": "blackrobe",
+          "text": "圣教丢掉的旧猎犬，也闻到味道了。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "古老声音发出一声很轻的笑。"
+        },
+        {
+          "t": "bg",
+          "bg": "cave-dawn",
+          "fx": "fade"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "远处传来牧羊铜哨的一声轻响。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "无法判断那是艾琳的回应，还是{PLAYER_NAME}在梦中听见的声音。"
+        }
+      ]
+    }
+  ],
+  "end": {
+    "save": "SAVE_CH000_END_ORIGIN",
+    "next": "ch001",
+    "nextLabel": "CH001_MENTOR_WHITE_ROBE",
+    "set": {
+      "flags": {
+        "FLAG_CH000_HEMAI_DESTROYED": true,
+        "FLAG_CH000_BLACK_DRAGON_SEEN": true,
+        "FLAG_CH000_MOTHER_STATUS_UNKNOWN": true,
+        "FLAG_CH000_TOBY_SURVIVED_CAVE": true,
+        "FLAG_CH000_DRAGON_VOW": true,
+        "FLAG_CH000_DRAGON_REMAINS_OVER_HEMAI": true
+      },
+      "items": {
+        "ITEM_FAMILY_SHEPHERD_WHISTLE": 1
+      },
+      "memories": {
+        "MEMORY_BORIN_LAST_WORDS": "先看清该砍谁"
+      },
+      "add": {
+        "PLAYER_GUILT_TOTAL": 0
+      }
+    },
+    "summary": [
+      {
+        "text": "赫麦村在黑焰中化为废墟。你背着托比逃进守羊洞，点了三次灯。"
+      },
+      {
+        "when": {
+          "any": [
+            {
+              "flag": "FLAG_CH000_CART_CHILD_SAVED"
+            },
+            {
+              "flag": "FLAG_CH000_SHEEP_DIVERTED"
+            },
+            {
+              "flag": "FLAG_CH000_MARA_DAUGHTER_SAVED"
+            }
+          ]
+        },
+        "text": "黑龙第二次俯冲之前，你在村道上救下了能救的人。"
+      },
+      {
+        "when": {
+          "flag": "FLAG_CH000_CHOSE_VALUABLES"
+        },
+        "text": "村道陷入混乱时，你先伸手去拿的是箱子。"
+      },
+      {
+        "when": {
+          "flag": "FLAG_CH000_ORDERED_TOBY_DANGER"
+        },
+        "text": "危急关头，你差点把八岁的弟弟推进黑烟——艾琳拦住了他。"
+      },
+      {
+        "when": {
+          "flag": "FLAG_CH000_CHARGED_DRAGON"
+        },
+        "text": "你想拔剑迎战黑龙，被伯伦的锤杆拦了回来。"
+      },
+      {
+        "when": {
+          "flag": "FLAG_CH000_FROZE_FIRST_CRISIS"
+        },
+        "text": "黑烟中你僵在原地，是村民们扑向了板车。"
+      },
+      {
+        "when": {
+          "flag": "FLAG_CH000_HORN_ESCORTED_MOTHER"
+        },
+        "text": "霍恩架着扭伤的艾琳走向缓坡。她此刻身在何处，无人知晓。"
+      },
+      {
+        "when": {
+          "flag": "FLAG_CH000_FAMILY_TRAUMA_MOTHER"
+        },
+        "text": "离别前，你对母亲说出了伤人的话。她仍先把托比推给了你。"
+      },
+      {
+        "when": {
+          "all": [
+            {
+              "not": {
+                "flag": "FLAG_CH000_HORN_ESCORTED_MOTHER"
+              }
+            },
+            {
+              "not": {
+                "flag": "FLAG_CH000_FAMILY_TRAUMA_MOTHER"
+              }
+            }
+          ]
+        },
+        "text": "艾琳独自留在了旧牧道的窄坡上，生死未卜。"
+      },
+      {
+        "when": {
+          "flag": "FLAG_CH000_ABSOLUTE_PROMISE_TOBY"
+        },
+        "text": "你向托比保证：妈妈一定会来。"
+      },
+      {
+        "text": "伯伦逆着人群走回火光，留下最后一句话：“先看清该砍谁。”"
+      },
+      {
+        "when": {
+          "var": "PLAYER_VOW_PRIMARY",
+          "eq": "VOW_REVENGE"
+        },
+        "text": "你立誓让那条黑龙偿还血债。"
+      },
+      {
+        "when": {
+          "var": "PLAYER_VOW_PRIMARY",
+          "eq": "VOW_PROTECTION"
+        },
+        "text": "你立誓不再让重要的人被夺走。"
+      },
+      {
+        "when": {
+          "var": "PLAYER_VOW_PRIMARY",
+          "eq": "VOW_TRUTH"
+        },
+        "text": "你立誓查明黑龙为何袭击赫麦村。"
+      },
+      {
+        "when": {
+          "var": "PLAYER_VOW_PRIMARY",
+          "eq": "VOW_GUILT"
+        },
+        "text": "你背着没能救下所有人的愧疚，立誓追上那条黑龙。"
+      },
+      {
+        "when": {
+          "var": "PLAYER_VOW_PRIMARY",
+          "eq": "VOW_POWER"
+        },
+        "text": "你立誓追求足以压倒一切的力量。"
+      },
+      {
+        "when": {
+          "var": "PLAYER_VOW_PRIMARY",
+          "eq": "VOW_MERCY_CONFLICT"
+        },
+        "text": "你立誓追上那条黑龙——但先看清该砍的是谁。"
+      }
+    ]
+  }
+}

@@ -1,0 +1,1377 @@
+// 主线播放界面 · 亚克篇（docs/STORY-ENGINE.md §9）
+// 纯前端：章节 JSON + engine.js 推进剧情；自由输入优先请求 /api/story/judge，任何失败都退回本地 demoJudge。
+// CSP：无内联脚本 / 内联事件，所有交互都在这里用 addEventListener 绑定。
+
+import {
+  ENGINE_VERSION, DEFAULT_PLAYER_NAME, cleanName, createRun, continueRun, next, resolveInput,
+  demoJudge, findNode, evalCond, interpolate, publicSummary, eachBeat,
+} from './engine.js';
+import { icon } from '../icons.js';
+import { loadPaint, paint } from '../paint.js';
+
+const root = document.getElementById('story');
+const toastRoot = document.getElementById('toasts');
+
+const KEYS = {
+  name: 'moonlit:name',
+  settings: 'moonlit:story:settings',
+  auto: 'moonlit:story:autosave',
+  progress: 'moonlit:story:progress',
+  read: 'moonlit:story:read',
+  save: (key) => `moonlit:story:save:${key}`,
+};
+const SPEEDS = { slow: { cps: 20, label: '慢' }, normal: { cps: 38, label: '中' }, fast: { cps: 80, label: '快' }, instant: { cps: 0, label: '瞬间' } };
+const PACES = { relaxed: { k: 1.35, label: '从容' }, normal: { k: 1, label: '标准' }, brisk: { k: 0.65, label: '紧凑' } };
+const RESULT_LABEL = { clean: '干净利落', hurt: '负伤', collateral: '波及路人' };
+const RESULT_ICON = { clean: 'sparkle', hurt: 'blood', collateral: 'flame' };
+const KIND_LABEL = { dialogue: '对话', action: '行动', tactic: '战术', vow: '誓言', free: '自由' };
+const KIND_ICON = { dialogue: 'mail', action: 'boot', tactic: 'target', vow: 'flame', free: 'feather' };
+const NOT_A_NAME = new Set(['队长', '旅行者']);
+const CANCEL = Symbol('cancel');
+const SKIP = Symbol('skip');
+const CN_DIGITS = '零一二三四五六七八九';
+
+const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// ─── 小工具 ───
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const $ = (sel, el = root) => el.querySelector(sel);
+const $$ = (sel, el = root) => [...el.querySelectorAll(sel)];
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const clone = (v) => JSON.parse(JSON.stringify(v));
+
+function load(key, fallback) {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw == null ? fallback : JSON.parse(raw);
+  } catch { return fallback; }
+}
+function store(key, value) {
+  try { localStorage.setItem(key, JSON.stringify(value)); return true; } catch { return false; }
+}
+function loadStoredName() {
+  let raw = '';
+  try { raw = localStorage.getItem(KEYS.name) || ''; } catch { /* 隐私模式 */ }
+  raw = raw.trim();
+  return raw && !NOT_A_NAME.has(raw) ? cleanName(raw) : DEFAULT_PLAYER_NAME;
+}
+function storeName(name) {
+  try { localStorage.setItem(KEYS.name, name); } catch { /* 隐私模式 */ }
+}
+
+function cnNum(n) {
+  if (!Number.isInteger(n) || n < 0) return String(n);
+  if (n < 10) return CN_DIGITS[n];
+  if (n < 20) return `十${n % 10 ? CN_DIGITS[n % 10] : ''}`;
+  if (n < 100) return `${CN_DIGITS[Math.floor(n / 10)]}十${n % 10 ? CN_DIGITS[n % 10] : ''}`;
+  return String(n);
+}
+function splitTitle(title, number) {
+  const [a, b] = String(title || '').split('｜');
+  if (b) return { label: a, name: b };
+  return { label: number === 0 ? '序章' : `第${cnNum(number)}章`, name: a };
+}
+function timeAgo(ts) {
+  const s = Math.max(0, (Date.now() - Number(ts || 0)) / 1000);
+  if (s < 60) return '刚刚';
+  if (s < 3600) return `${Math.floor(s / 60)} 分钟前`;
+  if (s < 86400) return `${Math.floor(s / 3600)} 小时前`;
+  return `${Math.floor(s / 86400)} 天前`;
+}
+function hash(str) {
+  let h = 5381;
+  for (let i = 0; i < str.length; i += 1) h = ((h << 5) + h + str.charCodeAt(i)) | 0;
+  return (h >>> 0).toString(36);
+}
+
+function toast(message, kind = '') {
+  const el = document.createElement('div');
+  el.className = `toast ${kind}`;
+  el.innerHTML = `${kind === 'memory' ? icon('feather', { size: 15 }) : kind === 'warn' ? icon('info', { size: 15 }) : ''}<span>${esc(message)}</span>`;
+  toastRoot.appendChild(el);
+  requestAnimationFrame(() => el.classList.add('show'));
+  setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 400); }, 2200);
+}
+
+// ─── 全局状态 ───
+const S = {
+  index: [], speakers: {}, locations: {},
+  chapters: new Map(),
+  settings: { mode: '12+', speed: 'normal', pace: 'normal', ...load(KEYS.settings, {}) },
+  focus: null,
+  view: 'boot',
+  chapter: null, run: null, startRun: null,
+  token: 0,
+  auto: false, skip: false,
+  gate: null, gateTimer: 0, typing: null, titleAnim: null, ask: null,
+  lineSeen: false,
+  backlog: [],
+  read: new Set(load(KEYS.read, [])),
+  readDirty: false,
+  bg: null, bgFront: 0,
+  hudBattle: null,
+};
+const P = {}; // 播放界面的 DOM 引用
+
+function saveSettings() { store(KEYS.settings, S.settings); }
+function flushRead() {
+  if (!S.readDirty) return;
+  S.readDirty = false;
+  let list = [...S.read];
+  if (list.length > 8000) { list = list.slice(-6000); S.read = new Set(list); }
+  store(KEYS.read, list);
+}
+
+// ─── 数据 ───
+async function fetchJson(url) {
+  try {
+    const res = await fetch(url, { cache: 'no-cache', headers: { accept: 'application/json' } });
+    if (!res.ok || !(res.headers.get('content-type') || '').includes('json')) return null;
+    return await res.json();
+  } catch { return null; }
+}
+
+async function loadChapter(id) {
+  if (!/^ch\d{3}$/.test(String(id || ''))) return null;
+  if (S.chapters.get(id)) return S.chapters.get(id);
+  const entry = S.index.find((e) => e.id === id);
+  const url = /^\/story\/chapters\/ch\d{3}\.json$/.test(entry?.file || '') ? entry.file : `/story/chapters/${id}.json`;
+  const chapter = await fetchJson(url);
+  if (!chapter || chapter.id !== id || !Array.isArray(chapter.shots) || !chapter.shots.length) return null;
+  S.chapters.set(id, chapter);
+  return chapter;
+}
+
+function entryFor(id, chapter = S.chapters.get(id)) {
+  const e = S.index.find((x) => x.id === id);
+  const number = e?.number ?? chapter?.number ?? Number(String(id).slice(2));
+  const title = chapter?.title || e?.title || id;
+  return { id, number, title, ...splitTitle(title, number), requires: e?.requires ?? null, minutes: chapter?.estimatedMinutes, inIndex: Boolean(e) };
+}
+
+function progress() { const p = load(KEYS.progress, {}); return p && typeof p === 'object' ? p : {}; }
+function isCompleted(id) { return Boolean(progress()[id]); }
+function isUnlocked(entry) { return !entry.requires || isCompleted(entry.requires); }
+function endSaveOf(id) {
+  const rec = progress()[id];
+  const save = rec?.save ? load(KEYS.save(rec.save), null) : null;
+  return save?.run ? save : null;
+}
+function speakerOf(who) { return S.chapter?.speakers?.[who] || S.speakers[who] || null; }
+
+// ═══════════════════════════════════════════════════════════
+// 标题 / 章节选择
+// ═══════════════════════════════════════════════════════════
+function currentName() {
+  const field = $('#nameField');
+  return cleanName(field ? field.value : loadStoredName());
+}
+
+async function renderStart() {
+  cancelPlay();
+  closeOverlays();
+  S.view = 'start';
+  S.chapter = null;
+  S.run = null;
+  const save = load(KEYS.auto, null);
+  const hasSave = Boolean(save?.run && save.chapterId);
+  const ids = S.index.map((e) => e.id);
+  if (S.focus && !ids.includes(S.focus)) ids.push(S.focus);
+
+  root.innerHTML = `
+    <main class="start" id="start">
+      <div class="start-bg" aria-hidden="true"><div class="start-moon"></div><div class="start-wings"></div></div>
+      <header class="start-top">
+        <a class="ghost-link" href="/">${icon('chevron-left', { size: 16 })}<span>返回主页</span></a>
+        <div class="start-top-actions">
+          <button class="icon-btn" type="button" data-act="settings" aria-haspopup="dialog" aria-expanded="false" aria-label="设置">${icon('settings', { size: 19 })}</button>
+        </div>
+        ${settingsHtml()}
+      </header>
+      <div class="start-grid">
+        <section class="start-hero" aria-labelledby="startTitle">
+          <img class="start-crest" src="/assets/ui/eclipse-crest.svg" alt="" />
+          <p class="eyebrow">MAIN STORY · 主线</p>
+          <h1 class="start-title" id="startTitle">月蚀契约<span>亚克篇</span></h1>
+          <p class="start-tag">黑翼焚毁故乡的那一夜，牧羊青年立下了屠龙之誓。<br>这里没有固定选项——你说出口的每一句话、做出的每一个动作，世界都会记住。</p>
+          <label class="name-field">
+            <span class="name-label">${icon('user', { size: 16 })}主角名字</span>
+            <input id="nameField" type="text" maxlength="12" autocomplete="nickname" spellcheck="false" value="${esc(loadStoredName())}" placeholder="${esc(DEFAULT_PLAYER_NAME)}" />
+          </label>
+          <div class="start-actions" id="startActions">
+            ${hasSave ? `<button class="btn primary large" type="button" data-act="continue">${icon('play', { size: 18 })}<span>继续</span><small id="continueMeta">${esc(timeAgo(save.savedAt))}</small></button>` : ''}
+            <button class="btn ${hasSave ? 'secondary' : 'primary'} large" type="button" data-act="begin" id="beginBtn" disabled>${icon('moon', { size: 18 })}<span>载入中…</span></button>
+          </div>
+          <p class="start-hint">${icon('feather', { size: 15 })}点击 / 空格推进 · 在输入框里用你自己的话回应</p>
+        </section>
+        <section class="start-chapters" aria-labelledby="chapterHeading">
+          <div class="chapters-head">
+            <h2 id="chapterHeading">章节</h2>
+            <span class="muted">完成上一章即可解锁下一章</span>
+          </div>
+          <ol class="ch-list" id="chList">
+            ${ids.map((id) => `<li class="ch-card loading" data-id="${esc(id)}"><div class="ch-num">${esc(entryFor(id).label)}</div><div class="ch-body"><h3>${esc(entryFor(id).name)}</h3><p class="ch-meta">读取中…</p></div></li>`).join('') || '<li class="ch-empty">章节目录读取失败，请刷新重试。</li>'}
+          </ol>
+        </section>
+      </div>
+    </main>`;
+
+  $('#nameField').addEventListener('change', (e) => { const n = cleanName(e.target.value); e.target.value = n; storeName(n); });
+  $('[data-act="continue"]')?.addEventListener('click', continueSave);
+  bindSettings($('#start'));
+
+  const chapters = await Promise.all(ids.map((id) => loadChapter(id)));
+  if (S.view !== 'start') return;
+  if (hasSave) {
+    const saveEntry = entryFor(save.chapterId);
+    const meta = $('#continueMeta');
+    if (meta) meta.textContent = `${saveEntry.label} · ${timeAgo(save.savedAt)}`;
+  }
+  const list = $('#chList');
+  ids.forEach((id, i) => {
+    const li = list.querySelector(`[data-id="${CSS.escape(id)}"]`);
+    if (li) li.outerHTML = chapterCardHtml(id, chapters[i]);
+  });
+  list.querySelectorAll('[data-start]').forEach((btn) => btn.addEventListener('click', () => startChapter(btn.dataset.start, { canon: btn.dataset.canon === '1' })));
+
+  // 主按钮：直达链接 > 第一个未完成且已解锁的章节 > 从序章重玩
+  const begin = $('#beginBtn');
+  const available = ids.filter((id, i) => chapters[i]);
+  let target = S.focus && S.chapters.get(S.focus) ? S.focus : null;
+  target ||= available.find((id) => isUnlocked(entryFor(id)) && !isCompleted(id)) || available[0] || null;
+  if (target) {
+    const e = entryFor(target);
+    const replay = isCompleted(target) && !S.focus;
+    begin.innerHTML = `${icon(replay ? 'refresh' : 'moon', { size: 18 })}<span>${replay ? '重玩' : '开始'}${esc(e.label)}</span>${S.focus ? `<small>${esc(e.name)}</small>` : ''}`;
+    begin.disabled = false;
+    begin.addEventListener('click', () => startChapter(target, { canon: false }));
+  } else {
+    begin.innerHTML = `${icon('lock', { size: 18 })}<span>主线制作中</span>`;
+  }
+}
+
+function chapterCardHtml(id, chapter) {
+  const e = entryFor(id, chapter);
+  const done = isCompleted(id);
+  const direct = S.focus === id;
+  const unlocked = isUnlocked(e) || direct;
+  const reqEntry = e.requires ? entryFor(e.requires) : null;
+  const cls = ['ch-card', !chapter ? 'unavailable' : unlocked ? 'open' : 'locked', done ? 'done' : '', direct ? 'focus' : ''].filter(Boolean).join(' ');
+  const meta = [];
+  if (!chapter) meta.push('尚未开放');
+  else {
+    if (e.minutes) meta.push(`约 ${e.minutes} 分钟`);
+    if (done) meta.push('已完成');
+    else if (!unlocked) meta.push(`完成「${reqEntry?.label || e.requires}」后解锁`);
+  }
+  const canonLink = chapter && e.requires
+    ? `<button class="link-btn" type="button" data-start="${esc(id)}" data-canon="1">从本章开始（使用默认正史）</button>` : '';
+  const mainBtn = chapter && unlocked
+    ? `<button class="btn ${done ? 'secondary' : 'primary'} small" type="button" data-start="${esc(id)}" aria-label="${done ? '重玩' : '开始'}${esc(e.label)}">${icon(done ? 'refresh' : 'play', { size: 15 })}${done ? '重玩' : '开始'}</button>` : '';
+  const badge = !chapter ? `<span class="ch-badge">${icon('clock', { size: 14 })}制作中</span>`
+    : done ? `<span class="ch-badge ok">${icon('check', { size: 14 })}已完成</span>`
+      : !unlocked ? `<span class="ch-badge">${icon('lock', { size: 14 })}未解锁</span>` : '';
+  return `<li class="${cls}" data-id="${esc(id)}">
+    <div class="ch-num">${esc(e.label)}</div>
+    <div class="ch-body">
+      <h3>${esc(e.name)} ${badge}</h3>
+      <p class="ch-meta">${esc(meta.join(' · '))}</p>
+      ${canonLink}
+    </div>
+    <div class="ch-actions">${mainBtn}</div>
+  </li>`;
+}
+
+async function startChapter(id, { canon = false } = {}) {
+  const chapter = await loadChapter(id);
+  if (!chapter) { toast('该章节尚未开放', 'warn'); return; }
+  const save = load(KEYS.auto, null);
+  if (save?.run && !save.run.done) {
+    const ok = await confirmDialog('开始新的进度会覆盖当前的自动存档（章末存档不受影响）。', '开始新进度');
+    if (!ok) return;
+  }
+  const name = currentName();
+  storeName(name);
+  const e = entryFor(id, chapter);
+  const prev = !canon && e.requires ? endSaveOf(e.requires) : null;
+  let run;
+  if (prev) {
+    run = continueRun(prev.run, chapter);
+    run.playerName = name;
+  } else {
+    run = createRun({ playerName: name, chapter, mode: S.settings.mode });
+  }
+  run.mode = S.settings.mode;
+  if (e.requires && !prev) toast('已按默认正史补齐前情');
+  enterPlay(chapter, run, { fresh: true });
+}
+
+async function continueSave() {
+  const save = load(KEYS.auto, null);
+  if (!save?.run || !save.chapterId) { toast('没有可继续的存档', 'warn'); return; }
+  const chapter = await loadChapter(save.chapterId);
+  if (!chapter) { toast('存档所在的章节尚未开放', 'warn'); return; }
+  const run = save.run;
+  if (run.v !== ENGINE_VERSION || !Array.isArray(run.stack)) { toast('存档版本不兼容，请重新开始本章', 'warn'); return; }
+  const name = currentName();
+  storeName(name);
+  run.playerName = name;
+  run.mode = S.settings.mode;
+  enterPlay(chapter, run, { fresh: false });
+}
+
+function confirmDialog(message, okLabel = '确定') {
+  return new Promise((resolve) => {
+    const prev = document.activeElement;
+    const wrap = document.createElement('div');
+    wrap.className = 'modal';
+    wrap.innerHTML = `<div class="modal-card" role="alertdialog" aria-modal="true" aria-labelledby="confirmMsg">
+      <p id="confirmMsg">${esc(message)}</p>
+      <div class="modal-actions">
+        <button class="btn secondary" type="button" data-v="0">取消</button>
+        <button class="btn primary" type="button" data-v="1">${esc(okLabel)}</button>
+      </div></div>`;
+    const done = (v) => { wrap.remove(); document.removeEventListener('keydown', onKey, true); prev?.focus?.(); resolve(v); };
+    const onKey = (e) => { if (e.key === 'Escape') { e.stopPropagation(); done(false); } };
+    wrap.addEventListener('click', (e) => {
+      const b = e.target.closest('[data-v]');
+      if (b) done(b.dataset.v === '1');
+      else if (e.target === wrap) done(false);
+    });
+    document.addEventListener('keydown', onKey, true);
+    root.appendChild(wrap);
+    wrap.querySelector('[data-v="1"]').focus();
+  });
+}
+
+// ─── 设置浮层（标题页与播放页共用） ───
+function settingsHtml() {
+  const seg = (name, legend, options, value) => `
+    <fieldset class="seg"><legend>${legend}</legend><div class="seg-row">
+      ${Object.entries(options).map(([v, o]) => `<label><input type="radio" name="${name}" value="${esc(v)}" ${v === value ? 'checked' : ''} /><span>${esc(o.label)}</span></label>`).join('')}
+    </div></fieldset>`;
+  return `<div class="pop" id="settingsPop" role="dialog" aria-label="设置" hidden>
+    <div class="pop-head"><strong>${icon('settings', { size: 16 })}设置</strong><button class="icon-btn sm" type="button" data-act="close-settings" aria-label="关闭设置">${icon('close', { size: 16 })}</button></div>
+    ${seg('mode', '内容模式', { '12+': { label: '12+' }, '15+': { label: '15+' } }, S.settings.mode)}
+    <p class="pop-note">15+ 会显示更直接的伤亡描写，主线剧情相同。</p>
+    ${seg('speed', '文字速度', SPEEDS, S.settings.speed)}
+    ${seg('pace', '自动播放', PACES, S.settings.pace)}
+  </div>`;
+}
+
+function bindSettings(scope) {
+  const pop = $('#settingsPop', scope);
+  const btn = $('[data-act="settings"]', scope);
+  if (!pop || !btn) return;
+  const close = (refocus = true) => {
+    if (pop.hidden) return;
+    pop.hidden = true;
+    btn.setAttribute('aria-expanded', 'false');
+    if (refocus) btn.focus();
+  };
+  const open = () => {
+    pop.hidden = false;
+    btn.setAttribute('aria-expanded', 'true');
+    pop.querySelector('input:checked')?.focus();
+  };
+  btn.addEventListener('click', (e) => { e.stopPropagation(); if (pop.hidden) open(); else close(); });
+  $('[data-act="close-settings"]', pop).addEventListener('click', () => close());
+  pop.addEventListener('change', (e) => {
+    const { name, value } = e.target;
+    if (name === 'mode') { S.settings.mode = value === '15+' ? '15+' : '12+'; if (S.run) S.run.mode = S.settings.mode; }
+    if (name === 'speed' && SPEEDS[value]) S.settings.speed = value;
+    if (name === 'pace' && PACES[value]) S.settings.pace = value;
+    saveSettings();
+    scheduleGateTimers();
+  });
+  pop.closeSelf = close;
+}
+
+function closeOverlays() {
+  const pop = $('#settingsPop');
+  if (pop && !pop.hidden) { pop.closeSelf?.(); return true; }
+  if (P.backlog && !P.backlog.hidden) { toggleBacklog(false); return true; }
+  return false;
+}
+
+// ═══════════════════════════════════════════════════════════
+// 播放界面
+// ═══════════════════════════════════════════════════════════
+function renderPlay() {
+  S.view = 'play';
+  const e = entryFor(S.chapter.id, S.chapter);
+  root.innerHTML = `
+    <main class="play" id="play" aria-label="${esc(S.chapter.title)}">
+      <div class="scene" id="scene">
+        <div class="bg" data-layer="0"></div><div class="bg" data-layer="1"></div>
+        <div class="vignette" aria-hidden="true"></div>
+        <div class="art art-left" data-side="left" aria-hidden="true"><img alt="" draggable="false" /></div>
+        <div class="art art-right" data-side="right" aria-hidden="true"><img alt="" draggable="false" /></div>
+      </div>
+      <div class="veil" id="veil" aria-hidden="true"></div>
+      <div class="flash" id="flash" aria-hidden="true"></div>
+
+      <header class="play-bar">
+        <button class="icon-btn" type="button" data-act="home" aria-label="返回标题（进度已自动保存）">${icon('home', { size: 19 })}</button>
+        <div class="bar-title"><span class="bar-label">${esc(e.label)}</span><span class="bar-name">${esc(e.name)}</span></div>
+        <div class="bar-actions">
+          <button class="bar-btn" type="button" data-act="auto" aria-pressed="false" title="自动播放（A）">${icon('play', { size: 16 })}<span>自动</span></button>
+          <button class="bar-btn" type="button" data-act="skip" aria-pressed="false" title="快进已读内容（S）">${icon('rush', { size: 16 })}<span>快进</span></button>
+          <button class="bar-btn" type="button" data-act="log" aria-haspopup="dialog" title="回看（L）">${icon('scroll', { size: 16 })}<span>回看</span></button>
+          <button class="bar-btn" type="button" data-act="settings" aria-haspopup="dialog" aria-expanded="false" title="设置">${icon('settings', { size: 16 })}<span>设置</span></button>
+        </div>
+        ${settingsHtml()}
+      </header>
+
+      <div class="shot-cap" id="shotCap" aria-hidden="true"></div>
+
+      <aside class="hud" id="hud" aria-label="战斗状态" hidden>
+        <div class="hud-head">
+          <span class="hud-tag">${icon('battle', { size: 14 })}遭遇战</span>
+          <strong class="hud-title"></strong>
+          <span class="hud-round"></span>
+          <button class="hud-toggle" type="button" aria-expanded="true" aria-label="收起情报">${icon('chevron-right', { size: 16 })}</button>
+        </div>
+        <div class="hud-detail">
+          <p class="hud-goal"><b>${icon('target', { size: 14 })}目标</b><span class="hud-objective"></span></p>
+          <p class="hud-goal bonus"><b>${icon('star4', { size: 14 })}加分</b><span class="hud-bonus"></span></p>
+          <ul class="hud-intel"></ul>
+        </div>
+        <div class="hud-bars"></div>
+        <div class="hud-result" hidden></div>
+      </aside>
+
+      <div class="banner" id="banner" hidden><span class="banner-text"></span></div>
+
+      <div class="dock idle" id="dock">
+        <div class="dlg" id="dlg" tabindex="0" role="button" aria-label="继续（点击、空格或回车）">
+          <div class="dlg-plate"><span class="dlg-name"></span><span class="dlg-note"></span></div>
+          <p class="dlg-text"><span class="dlg-shown"></span><span class="dlg-rest" aria-hidden="true"></span></p>
+          <span class="dlg-more" aria-hidden="true"></span>
+        </div>
+        <form class="ask" id="ask" hidden autocomplete="off">
+          <div class="ask-context" hidden><span class="ask-context-name"></span><span class="ask-context-text"></span></div>
+          <div class="ask-head"><span class="ask-kind"></span><p class="ask-prompt" id="askPrompt"></p></div>
+          <div class="ask-field">
+            <textarea id="askInput" rows="2" maxlength="300" aria-labelledby="askPrompt" enterkeyhint="send"></textarea>
+            <div class="ask-thinking" aria-hidden="true"><span class="ask-echo"></span><span class="dots"><i></i><i></i><i></i></span></div>
+          </div>
+          <div class="ask-actions">
+            <span class="ask-hint">Enter 提交 · Shift+Enter 换行</span>
+            <button class="btn ghost" type="button" data-ask="skip" hidden>跳过</button>
+            <button class="btn secondary" type="button" data-ask="silent">${icon('eye-off', { size: 16 })}保持沉默</button>
+            <button class="btn primary" type="submit">${icon('feather', { size: 16 })}行动</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="title-card" id="titleCard" hidden></div>
+      <div class="sr-only" id="live" aria-live="polite" aria-atomic="true"></div>
+
+      <div class="backlog" id="backlog" role="dialog" aria-modal="true" aria-labelledby="backlogTitle" hidden>
+        <div class="backlog-card">
+          <div class="backlog-head"><h2 id="backlogTitle">${icon('scroll', { size: 18 })}回看</h2><button class="icon-btn" type="button" data-act="close-log" aria-label="关闭回看">${icon('close', { size: 18 })}</button></div>
+          <ol class="backlog-list" tabindex="0"></ol>
+        </div>
+      </div>
+
+      <div class="end-screen" id="endScreen" hidden></div>
+      <div class="fatal" id="fatal" hidden></div>
+    </main>`;
+
+  Object.assign(P, {
+    play: $('#play'), scene: $('#scene'), bgLayers: $$('.bg'), veil: $('#veil'), flash: $('#flash'),
+    art: { left: $('.art-left'), right: $('.art-right') },
+    shotCap: $('#shotCap'), hud: $('#hud'), banner: $('#banner'), dock: $('#dock'), dlg: $('#dlg'),
+    name: $('.dlg-name'), note: $('.dlg-note'), shown: $('.dlg-shown'), rest: $('.dlg-rest'),
+    ask: $('#ask'), askKind: $('.ask-kind'), askPrompt: $('#askPrompt'), askInput: $('#askInput'),
+    askSkip: $('[data-ask="skip"]'), askSilent: $('[data-ask="silent"]'), askEcho: $('.ask-echo'),
+    askContext: $('.ask-context'),
+    titleCard: $('#titleCard'), live: $('#live'), backlog: $('#backlog'), backlogList: $('.backlog-list'),
+    endScreen: $('#endScreen'), fatal: $('#fatal'),
+    autoBtn: $('[data-act="auto"]'), skipBtn: $('[data-act="skip"]'),
+  });
+  S.bg = null;
+  S.bgFront = 0;
+  S.hudBattle = null;
+
+  P.play.addEventListener('click', onStageClick);
+  P.dlg.addEventListener('keydown', (e) => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); e.stopPropagation(); advance(); } });
+  $('[data-act="home"]').addEventListener('click', () => { flushRead(); renderStart(); });
+  P.autoBtn.addEventListener('click', () => setAuto(!S.auto));
+  P.skipBtn.addEventListener('click', () => setSkip(!S.skip));
+  // 鼠标点过的开关不留焦点，空格/回车继续用于推进剧情
+  $$('.bar-btn[aria-pressed]').forEach((b) => b.addEventListener('click', (e) => { if (e.detail > 0) P.dlg.focus({ preventScroll: true }); }));
+  $('[data-act="log"]').addEventListener('click', () => toggleBacklog(true));
+  $('[data-act="close-log"]').addEventListener('click', () => toggleBacklog(false));
+  P.backlog.addEventListener('click', (e) => { if (e.target === P.backlog) toggleBacklog(false); });
+  $('.hud-toggle').addEventListener('click', () => {
+    const collapsed = P.hud.classList.toggle('collapsed');
+    const t = $('.hud-toggle');
+    t.setAttribute('aria-expanded', String(!collapsed));
+    t.setAttribute('aria-label', collapsed ? '展开情报' : '收起情报');
+  });
+  bindAsk();
+  bindSettings(P.play);
+}
+
+function onStageClick(e) {
+  if (e.target.closest('button, a, input, textarea, label, select, .hud, .ask, .backlog, .pop, .end-screen, .fatal, .modal, .play-bar')) return;
+  advance();
+}
+
+function enterPlay(chapter, run, { fresh }) {
+  cancelPlay();
+  S.chapter = chapter;
+  S.run = run;
+  S.startRun = fresh ? clone(run) : null;
+  S.backlog = [];
+  S.auto = false;
+  S.skip = false;
+  renderPlay();
+  setBackground(run.bg || 'black', 'cut');
+  P.dlg.focus({ preventScroll: true });
+  const my = ++S.token;
+  runLoop(my);
+}
+
+function cancelPlay() {
+  S.token += 1;
+  S.typing?.finish();
+  S.titleAnim?.finish();
+  const g = S.gate;
+  S.gate = null;
+  clearTimeout(S.gateTimer);
+  g?.resolve();
+  const a = S.ask;
+  S.ask = null;
+  a?.resolve(CANCEL);
+}
+
+async function runLoop(my) {
+  while (my === S.token) {
+    let item;
+    try {
+      item = next(S.run, S.chapter);
+    } catch (err) {
+      showFatal(err);
+      return;
+    }
+    if (S.run.battle) renderHud(battleViewOf(S.run.battle));
+    try {
+      switch (item.kind) {
+        case 'shot': await onShot(item.shot); if (my === S.token) autosave(); break;
+        case 'beat': await onBeat(item.beat, my); break;
+        case 'input': await onInput(item, my); break;
+        case 'battle-start': await onBattleStart(item.battle); break;
+        case 'battle-end': await onBattleEnd(item.battle, my); break;
+        case 'end': if (my === S.token) await onEnd(item.end); return;
+        default: break;
+      }
+    } catch (err) {
+      if (my === S.token) showFatal(err);
+      return;
+    }
+  }
+}
+
+function autosave() {
+  if (!S.run || !S.chapter) return;
+  store(KEYS.auto, { run: S.run, chapterId: S.chapter.id, savedAt: Date.now() });
+  flushRead();
+}
+
+// ─── 推进控制 ───
+function waitAdvance({ autoDelay = 1800, seen = false } = {}) {
+  return new Promise((resolve) => {
+    S.gate = { resolve, autoDelay, seen };
+    P.dlg?.classList.add('waiting');
+    scheduleGateTimers();
+  });
+}
+function scheduleGateTimers() {
+  clearTimeout(S.gateTimer);
+  const g = S.gate;
+  if (!g) return;
+  if (S.skip && g.seen) S.gateTimer = setTimeout(openGate, 70);
+  else if (S.auto) S.gateTimer = setTimeout(openGate, g.autoDelay * (PACES[S.settings.pace]?.k || 1));
+}
+function openGate() {
+  const g = S.gate;
+  if (!g) return;
+  S.gate = null;
+  clearTimeout(S.gateTimer);
+  P.dlg?.classList.remove('waiting');
+  g.resolve();
+}
+function advance() {
+  if (S.view !== 'play' || S.ask) return;
+  if (S.typing) { S.typing.finish(); return; }
+  if (S.titleAnim) { S.titleAnim.finish(); return; }
+  openGate();
+}
+function setAuto(on) {
+  S.auto = Boolean(on);
+  if (S.auto && S.skip) setSkip(false, true);
+  P.autoBtn?.setAttribute('aria-pressed', String(S.auto));
+  P.play?.classList.toggle('is-auto', S.auto);
+  scheduleGateTimers();
+}
+function setSkip(on, quiet = false) {
+  S.skip = Boolean(on);
+  if (S.skip && S.auto) setAuto(false);
+  P.skipBtn?.setAttribute('aria-pressed', String(S.skip));
+  P.play?.classList.toggle('is-skip', S.skip);
+  if (S.skip && S.lineSeen) { S.typing?.finish(); S.titleAnim?.finish(); }
+  if (!quiet && S.skip && S.gate && !S.gate.seen) toast('快进只跳过已读内容', 'warn');
+  scheduleGateTimers();
+}
+function autoDelayFor(text) {
+  const n = Array.from(String(text || '')).length;
+  return Math.min(9000, 1300 + n * 75);
+}
+
+// ─── 节拍处理 ───
+async function onShot(shot) {
+  hideBanner();
+  clearArt();
+  P.dock.classList.add('idle');
+  liftVeilIfNeeded();
+  showShotCaption(shot);
+  if (shot.bg !== S.bg) await setBackground(shot.bg, 'fade');
+}
+
+function liftVeilIfNeeded() {
+  if (!P.veil.classList.contains('on')) return;
+  const beats = S.chapter.shots[S.run.shotIdx]?.beats || [];
+  const handles = beats.slice(0, 4).some((b) => b?.t === 'fx' && ['fade-in', 'fade-black', 'blackout'].includes(b.fx));
+  if (!handles) setVeil(false, 800);
+}
+
+function showShotCaption(shot) {
+  const loc = S.locations[shot.bg];
+  P.shotCap.innerHTML = `<span class="shot-id">${esc(shot.id)}</span><span class="shot-title">${esc(shot.title || '')}</span>${loc ? `<span class="shot-loc">${icon('compass', { size: 12 })}${esc(loc.name)}</span>` : ''}`;
+  P.shotCap.classList.remove('show');
+  void P.shotCap.offsetWidth;
+  if (shot.title || loc) P.shotCap.classList.add('show');
+}
+
+async function onBeat(beat, my) {
+  switch (beat.t) {
+    case 'narr': case 'say': case 'think': return showLine(beat, my);
+    case 'bg': {
+      const cut = beat.fx === 'cut';
+      await setBackground(beat.bg, cut ? 'cut' : 'fade');
+      if (!cut) await sleep(S.skip ? 120 : 650);
+      return undefined;
+    }
+    case 'fx': return runFx(beat.fx, beat.ms);
+    case 'title': return showTitleCard(beat, my);
+    default: return undefined;
+  }
+}
+
+function describeLine(beat) {
+  if (beat.t === 'say') {
+    const sp = speakerOf(beat.who);
+    return { kind: 'say', who: beat.who, name: interpolate(sp?.name ?? beat.who, S.run), color: sp?.color || '#d8cff0', note: beat.note || '', text: beat.text || '' };
+  }
+  if (beat.t === 'think') return { kind: 'think', who: 'aku', name: S.run.playerName, color: speakerOf('aku')?.color || '#e9c46a', note: '心声', text: beat.text || '' };
+  const kind = beat.style === 'voice' || beat.style === 'caption' ? beat.style : 'picture';
+  return { kind, name: '', text: beat.text || '' };
+}
+
+function readKey(beat) {
+  return `${S.chapter.id}:${S.run.shotIdx}:${hash(`${beat.t}|${beat.who || ''}|${beat.text || beat.title || ''}`)}`;
+}
+function markRead(key) {
+  if (S.read.has(key)) return true;
+  S.read.add(key);
+  S.readDirty = true;
+  return false;
+}
+
+function pushLog(line) {
+  S.backlog.push(line);
+  if (S.backlog.length > 500) S.backlog.splice(0, S.backlog.length - 500);
+  if (P.backlog && !P.backlog.hidden) renderBacklog();
+}
+function announce(text) {
+  if (!P.live) return;
+  P.live.textContent = '';
+  requestAnimationFrame(() => { if (P.live) P.live.textContent = text; });
+}
+
+async function showLine(beat, my) {
+  const line = describeLine(beat);
+  const seen = markRead(readKey(beat));
+  S.lineSeen = seen;
+  if (S.skip && !seen) { setSkip(false, true); toast('遇到未读内容，快进已停止'); }
+  pushLog(line);
+  announce(line.name ? `${line.name}${line.note && line.kind === 'say' ? `（${line.note}）` : ''}：${line.text}` : line.text);
+
+  if (line.kind === 'caption') {
+    P.dock.classList.add('idle');
+    showBanner(line.text, 'caption');
+    await waitAdvance({ autoDelay: 1700, seen });
+    if (my === S.token) hideBanner();
+    return;
+  }
+  hideBanner();
+  updateArt(beat);
+  const wasIdle = P.dock.classList.contains('idle');
+  P.dock.classList.remove('idle');
+  P.dlg.hidden = false;
+  P.dlg.dataset.kind = line.kind;
+  P.dlg.style.setProperty('--who', line.color || 'var(--accent)');
+  P.name.textContent = line.kind === 'say' || line.kind === 'think' ? line.name : '';
+  P.note.textContent = line.note || '';
+  P.dlg.classList.toggle('has-plate', line.kind === 'say' || line.kind === 'think');
+  P.dlg.classList.toggle('has-note', Boolean(line.note));
+  P.dlg.classList.remove('waiting', 'enter');
+  if (wasIdle) { void P.dlg.offsetWidth; P.dlg.classList.add('enter'); }
+
+  await typeText(line.text, (S.skip && seen) || SPEEDS[S.settings.speed]?.cps === 0);
+  if (my !== S.token) return;
+  await waitAdvance({ autoDelay: autoDelayFor(line.text) + (line.kind === 'voice' ? 600 : 0), seen });
+}
+
+function typeText(text, instant) {
+  const chars = Array.from(String(text));
+  const cps = SPEEDS[S.settings.speed]?.cps || 38;
+  if (instant || chars.length === 0) {
+    P.shown.textContent = text;
+    P.rest.textContent = '';
+    P.dlg.classList.add('done');
+    return Promise.resolve();
+  }
+  P.dlg.classList.remove('done');
+  // 标点处稍作停顿
+  const times = [];
+  let t = 0;
+  for (const ch of chars) {
+    times.push(t);
+    t += 1 + ('，、；：'.includes(ch) ? 3 : '。！？…—'.includes(ch) ? 6 : 0);
+  }
+  return new Promise((resolve) => {
+    const start = performance.now();
+    let n = -1;
+    let raf = 0;
+    const finish = () => {
+      cancelAnimationFrame(raf);
+      if (S.typing?.finish === finish) S.typing = null;
+      P.shown.textContent = text;
+      P.rest.textContent = '';
+      P.dlg.classList.add('done');
+      resolve();
+    };
+    const tick = (now) => {
+      const units = ((now - start) / 1000) * cps;
+      let k = n < 0 ? 0 : n;
+      while (k < chars.length && times[k] <= units) k += 1;
+      if (k !== n) {
+        n = k;
+        P.shown.textContent = chars.slice(0, n).join('');
+        P.rest.textContent = chars.slice(n).join('');
+      }
+      if (n >= chars.length) { finish(); return; }
+      raf = requestAnimationFrame(tick);
+    };
+    S.typing = { finish };
+    raf = requestAnimationFrame(tick);
+  });
+}
+
+// ─── 立绘 ───
+const imgCache = new Map();
+function preload(url) {
+  if (!url) return Promise.resolve(false);
+  if (!imgCache.has(url)) {
+    imgCache.set(url, new Promise((resolve) => {
+      const img = new Image();
+      img.decoding = 'async';
+      img.onload = () => resolve(img.naturalWidth > 0);
+      img.onerror = () => resolve(false);
+      img.src = url;
+    }));
+  }
+  return imgCache.get(url);
+}
+
+function updateArt(beat) {
+  if (beat.t !== 'say') { setArtActive(null); return; }
+  const sp = speakerOf(beat.who);
+  const side = beat.who === 'aku' ? 'left' : 'right';
+  if (sp?.art) setSlot(side, paint(sp.art));
+  setArtActive(sp?.art ? side : null);
+}
+function setSlot(side, url) {
+  const slot = P.art[side];
+  if (slot.dataset.url === url) return;
+  slot.dataset.url = url;
+  const wasOn = slot.classList.contains('on');
+  slot.classList.remove('on');
+  const my = S.token;
+  preload(url).then((ok) => {
+    if (my !== S.token || slot.dataset.url !== url) return;
+    if (!ok) { slot.dataset.url = ''; return; }
+    const img = slot.querySelector('img');
+    setTimeout(() => {
+      if (slot.dataset.url !== url) return;
+      img.src = url;
+      slot.classList.add('on');
+    }, wasOn ? 180 : 0);
+  });
+}
+function setArtActive(side) {
+  for (const s of ['left', 'right']) P.art[s].classList.toggle('active', s === side);
+  P.scene.classList.toggle('art-focus', Boolean(side));
+}
+function clearArt() {
+  for (const s of ['left', 'right']) {
+    const slot = P.art[s];
+    slot.classList.remove('on', 'active');
+    slot.dataset.url = '';
+  }
+}
+
+// ─── 背景 ───
+function gradientOf(loc) {
+  return `linear-gradient(180deg, ${loc.top || '#2a2440'} 0%, ${loc.bottom || '#06050c'} 100%)`;
+}
+async function setBackground(id, mode = 'fade') {
+  S.bg = id;
+  const loc = id && id !== 'black' ? S.locations[id] : null;
+  let image = '';
+  if (loc?.svg) {
+    const url = paint(loc.svg);
+    const ok = await Promise.race([preload(url), sleep(1600).then(() => false)]);
+    if (ok) image = `url("${String(url).replace(/["\\]/g, '')}")`;
+  }
+  if (S.bg !== id || !P.bgLayers) return;
+  const nextIdx = S.bgFront ^ 1;
+  const incoming = P.bgLayers[nextIdx];
+  const outgoing = P.bgLayers[S.bgFront];
+  incoming.style.backgroundColor = loc ? (loc.bottom || '#06050c') : '#000';
+  incoming.style.backgroundImage = loc ? (image ? `${image}, ${gradientOf(loc)}` : gradientOf(loc)) : 'none';
+  incoming.classList.toggle('fallback', Boolean(loc) && !image);
+  P.scene.dataset.bg = id || 'black';
+  P.scene.setAttribute('aria-label', loc ? `场景：${loc.name}` : '黑画面');
+  if (mode === 'cut' || reducedMotion) {
+    P.bgLayers.forEach((l) => l.classList.add('cut'));
+    incoming.classList.add('show');
+    outgoing.classList.remove('show');
+    void incoming.offsetWidth;
+    P.bgLayers.forEach((l) => l.classList.remove('cut'));
+  } else {
+    incoming.classList.add('show');
+    outgoing.classList.remove('show');
+  }
+  S.bgFront = nextIdx;
+}
+
+// ─── 特效 ───
+function setVeil(on, ms) {
+  P.veil.style.transitionDuration = `${Math.max(0, ms)}ms`;
+  P.veil.classList.toggle('on', on);
+}
+async function runFx(fx, ms) {
+  const k = S.skip ? 0.25 : 1;
+  const d = (fallback) => Math.round((Number(ms) > 0 ? Number(ms) : fallback) * k);
+  switch (fx) {
+    case 'shake': {
+      const dur = d(560);
+      if (reducedMotion) return;
+      P.play.style.setProperty('--fx-ms', `${dur}ms`);
+      P.play.classList.remove('shake');
+      void P.play.offsetWidth;
+      P.play.classList.add('shake');
+      await sleep(dur * 0.6);
+      setTimeout(() => P.play?.classList.remove('shake'), dur * 0.5);
+      return;
+    }
+    case 'flash': {
+      const dur = d(480);
+      P.flash.style.setProperty('--fx-ms', `${dur}ms`);
+      P.flash.classList.remove('go');
+      void P.flash.offsetWidth;
+      P.flash.classList.add('go');
+      await sleep(dur * 0.55);
+      return;
+    }
+    case 'fade-black': { const dur = d(900); setVeil(true, dur); await sleep(dur); return; }
+    case 'fade-in': { const dur = d(900); setVeil(false, dur); await sleep(dur * 0.8); return; }
+    case 'blackout': { setVeil(true, 0); await sleep(d(300)); return; }
+    case 'desaturate': {
+      const dur = d(1400);
+      P.scene.style.setProperty('--fx-ms', `${dur}ms`);
+      P.scene.classList.add('desat');
+      await sleep(Math.min(dur, 700));
+      return;
+    }
+    case 'restore': {
+      const dur = d(1000);
+      P.scene.style.setProperty('--fx-ms', `${dur}ms`);
+      P.scene.classList.remove('desat');
+      await sleep(Math.min(dur, 500));
+      return;
+    }
+    default:
+  }
+}
+
+// ─── 片名 ───
+async function showTitleCard(beat, my) {
+  const tc = P.titleCard;
+  const lines = (beat.lines || []).filter(Boolean);
+  tc.innerHTML = `<div class="tc-inner">
+      ${lines.map((l) => `<p class="tc-line">${esc(l)}</p>`).join('')}
+      <div class="tc-rule"></div>
+      <h1 class="tc-title">${esc(beat.title || '')}</h1>
+      ${beat.subtitle ? `<p class="tc-sub">${esc(beat.subtitle)}</p>` : ''}
+    </div><span class="tc-hint">点击继续</span>`;
+  const step = 650;
+  $$('.tc-line', tc).forEach((el, i) => el.style.setProperty('--d', `${i * step}ms`));
+  const base = lines.length * step;
+  tc.style.setProperty('--base', `${base}ms`);
+  tc.hidden = false;
+  tc.classList.remove('instant', 'out', 'play');
+  void tc.offsetWidth;
+  tc.classList.add('play');
+  P.dock.classList.add('idle');
+  hideBanner();
+  pushLog({ kind: 'caption', name: '', text: [...lines, beat.title, beat.subtitle].filter(Boolean).join(' · ') });
+  announce([...lines, beat.title, beat.subtitle].filter(Boolean).join('，'));
+  const seen = markRead(readKey(beat));
+  S.lineSeen = seen;
+  if (S.skip && !seen) setSkip(false, true);
+
+  await new Promise((resolve) => {
+    const timer = setTimeout(() => finish(), base + 2300);
+    const finish = () => { clearTimeout(timer); tc.classList.add('instant'); if (S.titleAnim?.finish === finish) S.titleAnim = null; resolve(); };
+    S.titleAnim = { finish };
+    if (reducedMotion || (S.skip && seen)) finish();
+  });
+  if (my !== S.token) return;
+  await waitAdvance({ autoDelay: 2400, seen });
+  if (my !== S.token) return;
+  tc.classList.add('out');
+  await sleep(S.skip ? 120 : 520);
+  if (my === S.token) { tc.hidden = true; tc.classList.remove('out', 'play', 'instant'); }
+}
+
+// ─── 横幅（系统字幕 / 战斗结果） ───
+function showBanner(text, kind = 'caption') {
+  P.banner.dataset.kind = kind;
+  $('.banner-text', P.banner).textContent = text;
+  P.banner.hidden = false;
+  P.banner.classList.remove('show');
+  void P.banner.offsetWidth;
+  P.banner.classList.add('show');
+}
+function hideBanner() {
+  if (P.banner) { P.banner.hidden = true; P.banner.classList.remove('show'); }
+}
+
+// ─── 自由输入 ───
+function bindAsk() {
+  P.ask.addEventListener('submit', (e) => { e.preventDefault(); submitAsk(P.askInput.value, { via: 'button' }); });
+  P.askInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey && !e.isComposing && e.keyCode !== 229) {
+      e.preventDefault();
+      submitAsk(P.askInput.value, { via: 'key' });
+    }
+    e.stopPropagation();
+  });
+  P.askSilent.addEventListener('click', () => submitAsk('', { via: 'silent' }));
+  P.askSkip.addEventListener('click', () => { const a = S.ask; if (a && !P.ask.classList.contains('thinking')) { S.ask = null; a.resolve(SKIP); } });
+}
+// 回车提交只接受非空内容，且忽略输入框刚出现时连按推进键带来的回车——沉默必须是玩家主动点「保持沉默」
+function submitAsk(text, { via = 'button' } = {}) {
+  const a = S.ask;
+  if (!a || P.ask.classList.contains('thinking')) return;
+  const value = String(text || '').trim();
+  const age = performance.now() - a.since;
+  if (via === 'key' && age < 450) return;
+  if (via === 'silent') { if (age < 250) return; }
+  else if (!value) { nudgeAsk(); return; }
+  S.ask = null;
+  a.resolve(value);
+}
+function nudgeAsk() {
+  P.ask.classList.remove('nudge');
+  void P.ask.offsetWidth;
+  P.ask.classList.add('nudge');
+  const hint = $('.ask-hint', P.ask);
+  if (hint) hint.textContent = '写点什么再提交；想沉默请点「保持沉默」';
+}
+
+function askPlayer(node) {
+  hideBanner();
+  P.dock.classList.remove('idle');
+  P.dlg.hidden = true;
+  P.ask.hidden = false;
+  P.ask.classList.remove('thinking');
+  P.ask.dataset.kind = node.kind;
+  P.askKind.innerHTML = `${icon(KIND_ICON[node.kind] || 'feather', { size: 14 })}${esc(KIND_LABEL[node.kind] || '自由')}`;
+  P.askPrompt.textContent = node.prompt;
+  P.askInput.value = '';
+  P.askInput.placeholder = node.placeholder || '说点什么，或写下你的动作……';
+  P.askInput.disabled = false;
+  P.ask.querySelectorAll('button').forEach((b) => { b.disabled = false; });
+  P.askSkip.hidden = !node.optional;
+  const last = [...S.backlog].reverse().find((l) => ['say', 'think', 'picture', 'voice'].includes(l.kind));
+  P.askContext.hidden = !last;
+  if (last) {
+    $('.ask-context-name', P.askContext).textContent = last.name || '';
+    $('.ask-context-name', P.askContext).style.setProperty('--who', last.color || 'var(--muted)');
+    $('.ask-context-text', P.askContext).textContent = last.text;
+  }
+  P.ask.classList.remove('enter');
+  void P.ask.offsetWidth;
+  P.ask.classList.add('enter');
+  announce(`轮到你了：${node.prompt}`);
+  if (finePointer) P.askInput.focus({ preventScroll: true });
+  const hint = $('.ask-hint', P.ask);
+  if (hint) hint.textContent = 'Enter 提交 · Shift+Enter 换行';
+  return new Promise((resolve) => { S.ask = { resolve, since: performance.now() }; });
+}
+
+function setThinking(text) {
+  P.ask.classList.add('thinking');
+  P.askInput.disabled = true;
+  P.ask.querySelectorAll('button').forEach((b) => { b.disabled = true; });
+  P.askEcho.textContent = text ? `「${text}」` : '（沉默）';
+}
+function hideAsk() {
+  if (!P.ask) return;
+  const hadFocus = P.ask.contains(document.activeElement);
+  P.ask.hidden = true;
+  P.ask.classList.remove('thinking');
+  P.dlg.hidden = false;
+  P.dock.classList.add('idle');
+  if (hadFocus) P.dlg.focus({ preventScroll: true });
+}
+
+async function judgeInput(nodeId, text, def) {
+  const t0 = performance.now();
+  let judgement = null;
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), 25000);
+  try {
+    const res = await fetch('/api/story/judge', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', accept: 'application/json' },
+      body: JSON.stringify({ chapterId: S.chapter.id, nodeId, text, context: publicSummary(S.run) }),
+      signal: ctrl.signal,
+    });
+    if (res.ok) {
+      const data = await res.json();
+      const j = data?.judgement ?? data;
+      if (j && typeof j.intent === 'string') judgement = j;
+    }
+  } catch { /* 离线或服务未就绪：本地判定 */ }
+  clearTimeout(timer);
+  if (!judgement) judgement = def ? { ...demoJudge(def, text), source: 'demo' } : { intent: null, source: 'demo' };
+  const wait = 700 - (performance.now() - t0);
+  if (wait > 0) await sleep(wait);
+  return judgement;
+}
+
+async function onInput(item, my) {
+  if (S.skip) setSkip(false, true);
+  autosave();
+  const node = item.node;
+  const def = findNode(S.chapter, node.id);
+  const answer = await askPlayer(node);
+  if (my !== S.token || answer === CANCEL) return;
+  let judgement;
+  let said = '';
+  if (answer === SKIP) {
+    judgement = def ? demoJudge(def, '') : { intent: null };
+  } else {
+    said = answer;
+    setThinking(said);
+    judgement = await judgeInput(node.id, said, def);
+    if (my !== S.token) return;
+  }
+  const aku = speakerOf('aku');
+  pushLog({ kind: 'input', name: S.run.playerName, color: aku?.color, text: said || (answer === SKIP ? '（跳过）' : '（保持沉默）') });
+  const memBefore = JSON.stringify(S.run.memories);
+  const flagsBefore = JSON.stringify(S.run.flags);
+  const result = resolveInput(S.run, S.chapter, judgement, said);
+  hideAsk();
+  if (result.battle) renderHud(result.battle, { animate: true });
+  if (JSON.stringify(S.run.memories) !== memBefore) toast('记住了', 'memory');
+  else if (JSON.stringify(S.run.flags) !== flagsBefore) toast('这件事会被记住', 'memory');
+  autosave();
+}
+
+// ─── 战斗 ───
+function battleViewOf(b) {
+  return { id: b.id, title: b.title, objective: b.objective, bonus: b.bonus, intel: b.intel, player: { ...b.player }, enemies: b.enemies.map((e) => ({ ...e })), collateral: b.collateral, round: b.round };
+}
+function battleDef(id) {
+  let found = null;
+  eachBeat(S.chapter, (beat) => { if (!found && beat?.t === 'battle' && beat.id === id) found = beat; });
+  return found;
+}
+
+function hpRow(key, name, hp, maxHp, side) {
+  const row = document.createElement('div');
+  row.className = `hp ${side}`;
+  row.dataset.key = key;
+  row.innerHTML = `<span class="hp-name"></span><span class="hp-track"><i class="hp-ghost"></i><i class="hp-fill"></i></span><span class="hp-num"></span>`;
+  $('.hp-name', row).textContent = name;
+  row.dataset.hp = String(hp);
+  updateHpRow(row, hp, maxHp, false);
+  return row;
+}
+function updateHpRow(row, hp, maxHp, animate) {
+  const prev = Number(row.dataset.hp);
+  const ratio = maxHp > 0 ? Math.max(0, Math.min(1, hp / maxHp)) : 0;
+  row.style.setProperty('--hp', ratio.toFixed(3));
+  $('.hp-num', row).textContent = hp <= 0 && row.classList.contains('enemy') ? '倒下' : `${hp}/${maxHp}`;
+  row.classList.toggle('down', hp <= 0);
+  row.classList.toggle('low', hp > 0 && ratio <= 0.5);
+  row.dataset.hp = String(hp);
+  if (animate && hp !== prev) {
+    const delta = hp - prev;
+    row.classList.remove('hit', 'heal');
+    void row.offsetWidth;
+    row.classList.add(delta < 0 ? 'hit' : 'heal');
+    const pop = document.createElement('span');
+    pop.className = `hp-pop ${delta < 0 ? 'minus' : 'plus'}`;
+    pop.textContent = `${delta > 0 ? '+' : ''}${delta}`;
+    row.appendChild(pop);
+    setTimeout(() => pop.remove(), 1200);
+  }
+}
+
+function renderHud(view, { animate = false } = {}) {
+  if (!view || !P.hud) return;
+  const hud = P.hud;
+  const def = battleDef(view.id);
+  const total = def?.rounds?.length || 0;
+  if (S.hudBattle !== view.id) {
+    S.hudBattle = view.id;
+    $('.hud-title', hud).textContent = view.title || '战斗';
+    $('.hud-objective', hud).textContent = view.objective || '—';
+    $('.hud-bonus', hud).textContent = view.bonus || '—';
+    $('.hud-bonus', hud).parentElement.hidden = !view.bonus;
+    $('.hud-intel', hud).innerHTML = (view.intel || []).map((t) => `<li>${icon('eye', { size: 13 })}<span>${esc(t)}</span></li>`).join('');
+    const bars = $('.hud-bars', hud);
+    bars.innerHTML = '';
+    bars.appendChild(hpRow('player', S.run.playerName, view.player.hp, view.player.maxHp, 'ally'));
+    for (const e of view.enemies) bars.appendChild(hpRow(`e:${e.id}`, e.name, e.hp, e.maxHp, 'enemy'));
+    $('.hud-result', hud).hidden = true;
+    hud.classList.remove('ended', 'leave');
+    hud.hidden = false;
+    hud.classList.remove('enter');
+    void hud.offsetWidth;
+    hud.classList.add('enter');
+    if (!finePointer && window.innerHeight < 700) hud.classList.add('collapsed');
+  }
+  const shownRound = Math.min(total || Infinity, (view.round || 0) + 1);
+  $('.hud-round', hud).textContent = total ? `回合 ${shownRound}/${total}` : `回合 ${shownRound}`;
+  const bars = $('.hud-bars', hud);
+  const pRow = bars.querySelector('[data-key="player"]');
+  if (pRow) updateHpRow(pRow, view.player.hp, view.player.maxHp, animate);
+  for (const e of view.enemies) {
+    const row = bars.querySelector(`[data-key="e:${CSS.escape(e.id)}"]`);
+    if (row) updateHpRow(row, e.hp, e.maxHp, animate);
+  }
+  let chip = $('.hud-collateral', hud);
+  if (view.collateral > 0) {
+    if (!chip) { chip = document.createElement('div'); chip.className = 'hud-collateral'; bars.after(chip); }
+    chip.innerHTML = `${icon('flame', { size: 13 })}波及住宅 / 路人 ×${view.collateral}`;
+  } else chip?.remove();
+}
+
+async function onBattleStart(view) {
+  S.hudBattle = null;
+  renderHud(view);
+  announce(`战斗开始：${view.title}。目标：${view.objective}`);
+  pushLog({ kind: 'caption', name: '', text: `战斗开始 · ${view.title}` });
+  await sleep(S.skip ? 120 : 650);
+}
+
+async function onBattleEnd(view, my) {
+  if (!view) return;
+  renderHud(view, { animate: true });
+  const label = RESULT_LABEL[view.result] || view.result;
+  const res = $('.hud-result', P.hud);
+  res.dataset.result = view.result;
+  res.innerHTML = `${icon(RESULT_ICON[view.result] || 'check', { size: 16 })}<span>战斗结束 · ${esc(label)}</span>`;
+  res.hidden = false;
+  P.hud.classList.add('ended');
+  P.dock.classList.add('idle');
+  showBanner(`战斗结束 · ${label}`, `result-${view.result}`);
+  announce(`战斗结束：${label}`);
+  pushLog({ kind: 'caption', name: '', text: `战斗结束 · ${label}` });
+  await waitAdvance({ autoDelay: 2000, seen: true });
+  if (my !== S.token) return;
+  hideBanner();
+  P.hud.classList.add('leave');
+  await sleep(S.skip ? 80 : 380);
+  if (my !== S.token) return;
+  P.hud.hidden = true;
+  P.hud.classList.remove('leave', 'ended', 'collapsed');
+  S.hudBattle = null;
+}
+
+// ─── 章末 ───
+async function onEnd(end) {
+  autosave();
+  const ch = S.chapter;
+  const run = S.run;
+  setAuto(false);
+  setSkip(false, true);
+  hideBanner();
+  hideAsk();
+  P.dock.classList.add('idle');
+  P.hud.hidden = true;
+  const saveKey = end?.save || `SAVE_${ch.id.toUpperCase()}_END`;
+  store(KEYS.save(saveKey), { run, chapterId: ch.id, savedAt: Date.now() });
+  const prog = progress();
+  prog[ch.id] = { save: saveKey, at: Date.now() };
+  store(KEYS.progress, prog);
+  flushRead();
+
+  const e = entryFor(ch.id, ch);
+  const lines = (end?.summary || []).filter((s) => s?.text && evalCond(run, s.when)).map((s) => interpolate(s.text, run));
+  const inputs = Object.keys(run.inputs || {}).length;
+  const scr = P.endScreen;
+  scr.innerHTML = `<div class="end-card" role="dialog" aria-modal="true" aria-labelledby="endTitle">
+      <img class="end-crest" src="/assets/ui/eclipse-crest.svg" alt="" />
+      <p class="eyebrow">CHAPTER COMPLETE · 章节完成</p>
+      <h2 id="endTitle"><span>${esc(e.label)}</span>${esc(e.name)}</h2>
+      <div class="end-rule"></div>
+      <h3 class="end-sub">${icon('book', { size: 15 })}正史记录</h3>
+      <ul class="end-summary">${(lines.length ? lines : ['你的每一次回应都已记录在案。']).map((t) => `<li>${esc(t)}</li>`).join('')}</ul>
+      <p class="end-save">${icon('save', { size: 14 })}已存档 · ${esc(run.playerName)} · ${inputs} 次自由回应</p>
+      <div class="end-actions">
+        <button class="btn primary large" type="button" data-end="next" disabled>${icon('arrow-right', { size: 18 })}<span>下一章</span></button>
+        <button class="btn secondary" type="button" data-end="replay">${icon('refresh', { size: 16 })}重玩本章</button>
+        <button class="btn ghost" type="button" data-end="title">${icon('home', { size: 16 })}返回标题</button>
+      </div>
+    </div>`;
+  scr.hidden = false;
+  scr.classList.remove('show');
+  void scr.offsetWidth;
+  scr.classList.add('show');
+  announce(`章节完成：${ch.title}`);
+  const nextBtn = $('[data-end="next"]', scr);
+  $('[data-end="replay"]', scr).addEventListener('click', replayChapter);
+  $('[data-end="title"]', scr).addEventListener('click', () => renderStart());
+  $('[data-end="replay"]', scr).focus({ preventScroll: true });
+
+  const nextId = end?.next || null;
+  const nextChapter = nextId ? await loadChapter(nextId) : null;
+  if (S.view !== 'play' || S.chapter !== ch) return;
+  if (nextChapter) {
+    const ne = entryFor(nextId, nextChapter);
+    nextBtn.disabled = false;
+    nextBtn.innerHTML = `${icon('arrow-right', { size: 18 })}<span>下一章</span><small>${esc(ne.label)}｜${esc(ne.name)}</small>`;
+    nextBtn.addEventListener('click', () => {
+      const run2 = continueRun(S.run, nextChapter);
+      run2.mode = S.settings.mode;
+      enterPlay(nextChapter, run2, { fresh: true });
+    });
+    nextBtn.focus({ preventScroll: true });
+  } else {
+    nextBtn.innerHTML = `${icon('clock', { size: 18 })}<span>下一章制作中</span>`;
+  }
+}
+
+function replayChapter() {
+  if (S.startRun) {
+    const run = clone(S.startRun);
+    run.mode = S.settings.mode;
+    enterPlay(S.chapter, run, { fresh: true });
+    return;
+  }
+  const ch = S.chapter;
+  const e = entryFor(ch.id, ch);
+  const prev = e.requires ? endSaveOf(e.requires) : null;
+  const run = prev ? continueRun(prev.run, ch) : createRun({ playerName: S.run.playerName, chapter: ch, mode: S.settings.mode });
+  run.playerName = S.run.playerName;
+  run.mode = S.settings.mode;
+  enterPlay(ch, run, { fresh: true });
+}
+
+// ─── 回看 ───
+function renderBacklog() {
+  const list = P.backlogList;
+  list.innerHTML = S.backlog.length ? S.backlog.map((l) => {
+    const name = l.kind === 'say' || l.kind === 'think' || l.kind === 'input'
+      ? `<span class="bl-name">${esc(l.kind === 'input' ? `${l.name}（你）` : l.name)}${l.note ? `<small>（${esc(l.note)}）</small>` : ''}</span>` : '';
+    return `<li class="bl bl-${esc(l.kind)}"${l.color ? ` data-color="${esc(l.color)}"` : ''}>${name}<p>${esc(l.text)}</p></li>`;
+  }).join('') : '<li class="bl-empty">还没有任何内容。</li>';
+  list.querySelectorAll('[data-color]').forEach((li) => li.style.setProperty('--who', li.dataset.color));
+}
+function toggleBacklog(open) {
+  if (!P.backlog) return;
+  if (open) {
+    renderBacklog();
+    P.backlog.hidden = false;
+    P.backlogList.scrollTop = P.backlogList.scrollHeight;
+    $('[data-act="close-log"]', P.backlog).focus();
+  } else {
+    P.backlog.hidden = true;
+    $('[data-act="log"]')?.focus();
+  }
+}
+
+// ─── 错误 ───
+function showFatal(err) {
+  console.warn('[story]', err);
+  if (!P.fatal) return;
+  cancelPlay();
+  P.fatal.innerHTML = `<div class="end-card"><p class="eyebrow">STORY ERROR</p><h2>剧情数据出错了</h2><p class="muted">${esc(err?.message || String(err))}</p>
+    <div class="end-actions"><button class="btn primary" type="button" data-act="fatal-title">返回标题</button></div></div>`;
+  P.fatal.hidden = false;
+  $('[data-act="fatal-title"]', P.fatal).addEventListener('click', () => renderStart());
+}
+
+// ─── 键盘 ───
+document.addEventListener('keydown', (e) => {
+  if (e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey) return;
+  if (e.key === 'Escape') { if (closeOverlays()) e.preventDefault(); return; }
+  if (S.view !== 'play') return;
+  if ((P.backlog && !P.backlog.hidden) || (P.endScreen && !P.endScreen.hidden) || (P.fatal && !P.fatal.hidden) || document.querySelector('.modal')) return;
+  const target = e.target;
+  if (target.closest?.('textarea, input, select, [contenteditable="true"], .pop')) return;
+  const onControl = target.closest?.('button, a');
+  if ((e.key === ' ' || e.key === 'Enter') && !onControl) { e.preventDefault(); advance(); return; }
+  const k = e.key.toLowerCase();
+  if (k === 'a') setAuto(!S.auto);
+  else if (k === 's') setSkip(!S.skip);
+  else if (k === 'l') toggleBacklog(true);
+});
+window.addEventListener('pagehide', flushRead);
+// 点击设置浮层之外的地方关闭它（全局只绑一次）
+document.addEventListener('pointerdown', (e) => {
+  const pop = $('#settingsPop');
+  if (pop && !pop.hidden && !pop.contains(e.target) && !e.target.closest?.('[data-act="settings"]')) pop.closeSelf?.(false);
+});
+
+// ─── 启动 ───
+async function boot() {
+  const params = new URLSearchParams(window.location.search);
+  const want = params.get('chapter');
+  S.focus = want && /^ch\d{3}$/.test(want) ? want : null;
+  const [index, speakers, locations] = await Promise.all([
+    fetchJson('/story/chapters/index.json'),
+    fetchJson('/story/speakers.json'),
+    fetchJson('/story/locations.json'),
+    loadPaint(),
+  ]);
+  S.index = Array.isArray(index) ? index.filter((e) => /^ch\d{3}$/.test(e?.id || '')) : [];
+  S.speakers = speakers && typeof speakers === 'object' ? speakers : {};
+  S.locations = locations && typeof locations === 'object' ? locations : {};
+  await renderStart();
+}
+
+boot();
