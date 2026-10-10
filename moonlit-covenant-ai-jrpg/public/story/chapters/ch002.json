@@ -1130,6 +1130,9 @@
               "set": {
                 "memories": {
                   "MEMORY_CH002_FIRST_MINUTE": "初到晨钟镇，他先在地图上圈出了落脚的旅店。"
+                },
+                "flags": {
+                  "FLAG_CH002_INN_CIRCLED": true
                 }
               }
             },

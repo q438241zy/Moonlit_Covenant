@@ -400,4 +400,136 @@ CAST.blackrobe = {
   },
 };
 
+// 芬恩 — twenties, the relief society's cart driver cowering in the ditch: soft cap knocked askew, head
+// sunk between raised shoulders, one hand thrown up palm-out; white wood shavings all over his vest,
+// the soup-bowl badge of the 湯碗救濟會 on its breast
+CAST.finn = {
+  id: 'finn', label: '芬恩：缩着肩、抬手求饶的年轻车夫，背心上沾满白木屑', rim: '#c9b48a',
+  sil: [
+    head(-14, 40, 0.96),
+    // soft flat cap, the brim jutting forward-left, pushed back on the crown
+    S([[200, 262], [166, 266, 1], [190, 248], [206, 222], [240, 190], [290, 170], [344, 172], [386, 194], [404, 232], [398, 262], [366, 254], [316, 246], [258, 250], [226, 260]]),
+    // hair escaping under the cap at the nape and over the ear
+    S([[376, 250], [404, 266], [410, 292, 1], [396, 284], [398, 314, 1], [380, 300], [366, 276]]),
+    neck(-14, 40, 0.9),
+    // hunched torso: shoulders pulled up toward the ears
+    S([[262, 386], [214, 394], [160, 400], [118, 424], [98, 472], [90, 560], [86, 700], [84, 820], [516, 820], [514, 700], [506, 560], [494, 472], [468, 420], [424, 398], [380, 390], [344, 378]]),
+    // forearm thrown up in front of the face, the hand open and splayed (please — don't)
+    S([[132, 470], [124, 444], [110, 426], [96, 406], [98, 396], [108, 396], [121, 404, 1], [120, 366], [116, 324], [120, 312], [129, 316], [134, 356, 1], [140, 310], [146, 298], [155, 304], [154, 352, 1], [164, 314], [171, 306], [177, 313], [172, 358, 1], [184, 332], [191, 326], [195, 334], [186, 376], [182, 424], [178, 470], [216, 560], [236, 640], [186, 652], [156, 560]]),
+  ],
+  tones: [
+    // cap cloth
+    [S([[200, 262], [166, 266], [190, 248], [206, 222], [240, 190], [290, 170], [344, 172], [386, 194], [404, 232], [398, 262], [366, 254], [316, 246], [258, 250], [226, 260]]), '#3a3226', 0.85],
+    // the vest (two open panels) over a lighter shirt, neckerchief at the throat
+    [S([[124, 450], [196, 418], [262, 410], [282, 470], [288, 820], [96, 820], [100, 560]]) + S([[340, 404], [420, 414], [480, 448], [500, 560], [506, 820], [330, 820], [322, 470]]), '#2c2622', 0.92],
+    [S([[262, 410], [340, 404], [322, 470], [330, 820], [288, 820], [282, 470]]), '#3a3844', 0.85],
+    [S([[256, 404], [300, 420], [346, 398], [338, 430], [304, 446], [270, 434]]) + S([[296, 440], [316, 440], [326, 494], [304, 486]]), '#5a3a2c', 0.9],
+    // the raised hand and sleeve, a shade lighter than the body
+    [S([[132, 470], [124, 444], [110, 426], [96, 406], [98, 396], [108, 396], [121, 404, 1], [120, 366], [116, 324], [120, 312], [129, 316], [134, 356, 1], [140, 310], [146, 298], [155, 304], [154, 352, 1], [164, 314], [171, 306], [177, 313], [172, 358, 1], [184, 332], [191, 326], [195, 334], [186, 376], [182, 424], [178, 470]]), '#34303a', 0.9],
+    [S([[132, 470], [178, 470], [216, 560], [236, 640], [186, 652], [156, 560]]), '#3a3844', 0.85],
+  ],
+  lines: [
+    // jaw/cheek rim, cap crown and seam, brim edge
+    [pl([[370, 296], [350, 344], [310, 386]]), 3.5, 0.85],
+    [pl([[206, 222], [240, 190], [290, 170], [344, 172], [386, 194], [404, 232]]) + pl([[248, 186], [300, 214], [338, 250]]), 2.5, 0.6],
+    [pl([[166, 266], [200, 262], [226, 260]]), 2.5, 0.75],
+    // shoulders hunched up; vest edges
+    [pl([[106, 456], [160, 404], [214, 394]]) + pl([[380, 390], [440, 404], [488, 450]]), 3, 0.6],
+    [pl([[262, 410], [282, 470], [288, 800]]) + pl([[340, 404], [322, 470], [330, 800]]), 2.5, 0.55],
+    // the raised hand's fingers and sleeve edge catching the rim
+    [pl([[120, 318], [124, 360]]) + pl([[146, 304], [148, 350]]) + pl([[171, 310], [168, 354]]) + pl([[192, 332], [186, 376], [182, 424]]), 2, 0.65],
+    [pl([[178, 470], [216, 560], [236, 640]]), 2.5, 0.6],
+  ],
+  front: ({ rim }) => {
+    // white wood shavings: little curled peels caught on the vest, the shoulders and the cap brim
+    let curls = '';
+    for (const [x, y, s, r] of [[226, 456, 0.9, 0], [248, 482, 0.6, 1], [204, 470, 0.5, 2], [262, 520, 0.7, 2], [210, 600, 0.8, 1], [244, 626, 0.55, 0], [126, 520, 0.7, 0], [140, 470, 0.6, 2], [252, 700, 0.6, 1], [360, 452, 1, 1], [384, 480, 0.6, 0], [402, 452, 0.5, 2], [436, 560, 0.8, 0], [356, 620, 0.6, 2], [470, 470, 0.55, 0], [214, 252, 0.6, 1], [300, 236, 0.5, 2]]) {
+      if (r === 2) curls += `M${x},${y}l${f(12 * s, 1)},${f(-4 * s, 1)}`;
+      else if (r === 1) curls += `M${x},${y}c${f(6 * s, 1)},${f(-6 * s, 1)} ${f(14 * s, 1)},${f(-2 * s, 1)} ${f(10 * s, 1)},${f(5 * s, 1)}c${f(-3 * s, 1)},${f(5 * s, 1)} ${f(-9 * s, 1)},${f(3 * s, 1)} ${f(-7 * s, 1)},${f(-2 * s, 1)}`;
+      else curls += `M${x},${y}c${f(-2 * s, 1)},${f(-7 * s, 1)} ${f(8 * s, 1)},${f(-10 * s, 1)} ${f(11 * s, 1)},${f(-3 * s, 1)}`;
+    }
+    let s = `<path d="${curls}" fill="none" stroke="#f2ead6" stroke-width="2.4" stroke-linecap="round" opacity=".8"/>`;
+    // soup-bowl badge on the vest breast
+    s += `<path d="M216,530h34a17,13 0 0 1 -34,0z" fill="#c9a868"/><path d="M220,530h26" stroke="#f0d898" stroke-width="2"/><path d="M226,522q-4,-6 0,-11M236,522q-4,-6 0,-11M246,522q-4,-6 0,-11" fill="none" stroke="#c9a868" stroke-width="2" stroke-linecap="round"/>`;
+    // wide frightened eye under the brim, brow pulled up, a bead of sweat at the temple
+    s += `<path d="M212,286q10,-8 24,-5" fill="none" stroke="${rim}" stroke-width="2.5" stroke-linecap="round" opacity=".8"/><circle cx="226" cy="300" r="4.5" fill="none" stroke="${rim}" stroke-width="2" opacity=".85"/><circle cx="225" cy="300" r="1.8" fill="#f4ecd8"/>`;
+    s += `<path d="M262,300q-5,9 0,12q5,-3 0,-12z" fill="#dde8f0" opacity=".7"/>`;
+    return s;
+  },
+};
+
+// 哥布林 — the smallest of the three crystal-bound scavengers, freed: a big bald head, long ears drooping,
+// huge wet eyes, a patched grain-sack poncho; both thin hands still clawing at the iron collar where a
+// black crystal shard is set, a violet chain snapped off it a few links down
+CAST.goblin = {
+  id: 'goblin', label: '哥布林：瘦小的拾荒哥布林，项圈嵌着黑色碎晶，紫色锁链已断', rim: '#7fa36b',
+  sil: [
+    // the near ear, long and limp, hanging out from under the pot down the back of the head
+    S([[380, 312], [428, 328], [488, 376], [540, 474, 1], [512, 458], [506, 440, 1], [492, 446], [470, 418], [424, 386], [384, 362]]),
+    circle(312, 336, 92),
+    // a dented cooking pot worn as a helmet
+    S([[200, 298, 1], [206, 280], [224, 268], [228, 236], [256, 206], [300, 190], [336, 190], [348, 202, 1], [362, 194], [392, 212], [416, 248], [420, 288], [436, 300], [434, 318, 1], [380, 312], [300, 302], [240, 298]]),
+    // small face under the pot rim: heavy brow, long drooping nose, little mouth, receding chin
+    S([[216, 296], [206, 318, 1], [196, 334], [180, 350], [166, 366, 1], [178, 374], [196, 378, 1], [202, 392], [212, 400, 1], [208, 410], [216, 424], [242, 438], [292, 446], [342, 434], [380, 402], [404, 348], [398, 300]]),
+    // thin neck, the sack hood pushed back and bunched behind it
+    S([[262, 420], [330, 420], [336, 486], [256, 486]]),
+    S([[236, 446], [300, 460], [384, 430], [430, 470], [300, 494], [200, 484]]),
+    // small sloping shoulders under the sack poncho
+    S([[206, 474], [160, 498], [128, 556], [108, 680], [100, 820], [500, 820], [494, 680], [476, 560], [450, 496], [420, 470], [300, 490]]),
+    // near arm raised to the collar
+    S([[150, 700], [174, 600], [208, 524], [232, 500], [252, 514], [230, 560], [204, 630], [186, 710]]),
+  ],
+  tones: [
+    // olive-grey skin on face and ear; the inside of the ear
+    [S([[216, 296], [206, 318], [196, 334], [180, 350], [166, 366], [178, 374], [196, 378], [202, 392], [212, 400], [208, 410], [216, 424], [242, 438], [292, 446], [342, 434], [380, 402], [404, 348], [398, 300]]) + S([[216, 296], [300, 304], [380, 314], [404, 348], [400, 400], [380, 440], [300, 448], [230, 430]]), '#2c3024', 0.8],
+    [S([[380, 312], [428, 328], [488, 376], [540, 474], [512, 458], [506, 440], [492, 446], [470, 418], [424, 386], [384, 362]]), '#2c3024', 0.8],
+    [S([[396, 330], [428, 346], [470, 390], [506, 444], [474, 418], [418, 374]]), '#4a3438', 0.75],
+    // tin pot, a darker band at its rim; the sack hood and poncho, sewn-on patch
+    [S([[200, 298], [206, 280], [224, 268], [228, 236], [256, 206], [300, 190], [336, 190], [348, 202], [362, 194], [392, 212], [416, 248], [420, 288], [436, 300], [434, 318], [380, 312], [300, 302], [240, 298]]), '#3e424c', 0.92],
+    [S([[204, 286], [300, 292], [380, 302], [434, 306], [434, 318], [380, 312], [300, 302], [200, 298]]), '#2a2c34', 0.9],
+    [S([[236, 446], [300, 460], [384, 430], [430, 470], [300, 494], [200, 484]]), '#3a3226', 0.9],
+    [S([[206, 474], [160, 498], [128, 556], [108, 680], [100, 820], [500, 820], [494, 680], [476, 560], [450, 496], [420, 470], [300, 490]]), '#332c22', 0.9],
+    [S([[360, 600], [432, 590], [440, 662], [366, 672]]), '#4a3e2c', 0.95],
+    [S([[150, 700], [174, 600], [208, 524], [232, 500], [252, 514], [230, 560], [204, 630], [186, 710]]), '#2c3024', 0.7],
+  ],
+  lines: [
+    // ear rim, the pot's lit dome and rim, the dent, jaw
+    [pl([[380, 312], [428, 328], [488, 376], [540, 474]]), 2.5, 0.8],
+    [`M392,318l16,8M394,330l14,14M386,334l6,16`, 2, 0.6],
+    [`M228,236C240,214 268,196 300,190`, 3, 0.8, '#e8ecf0'],
+    [pl([[200, 298], [300, 302], [380, 312], [434, 318]]) + pl([[336, 190], [348, 202], [362, 194]]), 2, 0.6],
+    [pl([[392, 212], [416, 248], [420, 288]]), 3, 0.75],
+    [`M380,402C366,428 340,442 300,448`, 2.5, 0.6],
+    // poncho shoulders + seams + patch stitches
+    [pl([[128, 556], [160, 498], [206, 474]]) + pl([[420, 470], [450, 496], [476, 560]]), 3, 0.6],
+    [`M300,500L304,800M180,560L160,800M420,560L440,800`, 2, 0.35],
+    [`M360,600L432,590L440,662L366,672Z M372,612l10,10M392,606l10,10M412,604l10,10M376,644l10,10M398,640l10,10`, 1.6, 0.5],
+  ],
+  defs: (p) => [`<radialGradient id="${p}-shardGlow"><stop offset="0" stop-color="#b58cff" stop-opacity=".6"/><stop offset="1" stop-color="#b58cff" stop-opacity="0"/></radialGradient>`],
+  front: ({ rim, p }) => {
+    // rivets on the pot's rim
+    let s = `<g fill="#9aa0aa">${[[236, 296], [300, 300], [372, 308]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="2.4"/>`).join('')}</g>`;
+    // iron collar around the neck, rivets
+    s += `<path d="M240,452C262,474 334,478 352,454L356,476C334,500 262,498 236,474Z" fill="#3a3640"/><path d="M240,452C262,474 334,478 352,454" fill="none" stroke="#8a8494" stroke-width="2" opacity=".8"/>`;
+    s += `<g fill="#8a8494">${[[252, 472], [322, 480], [342, 470]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="2.6"/>`).join('')}</g>`;
+    // the black crystal shard set in the collar, a faint violet heart
+    s += `<circle cx="284" cy="474" r="44" fill="url(#${p}-shardGlow)"/>`;
+    s += `<path d="M274,456L286,440L298,458L294,488L280,494L270,476Z" fill="#120c1a"/><path d="M286,440L290,466L280,494M290,466L298,458" fill="none" stroke="#b58cff" stroke-width="1.6" opacity=".9"/><path d="M276,458l8,-12" stroke="#e8dcff" stroke-width="2" stroke-linecap="round"/>`;
+    // the snapped violet chain: three links hanging from the shard, the last one broken open
+    const links = [[283, 506, 6, 11, 0], [284, 526, 3, 11, 1], [283, 546, 6, 11, 0]];
+    s += `<g fill="none" stroke="#9a72d8" stroke-width="3.2">${links.map(([x, y, rx, ry]) => `<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}"/>`).join('')}</g>`;
+    s += `<path d="M277,566a6,10 0 0 1 12,-2" fill="none" stroke="#9a72d8" stroke-width="3.2" stroke-linecap="round"/><path d="M279,558a6,10 0 0 0 -2,10" fill="none" stroke="#9a72d8" stroke-width="3.2" stroke-linecap="round" opacity=".6"/>`;
+    s += `<path d="M280,500v10M281,540v10" stroke="#e0d0ff" stroke-width="1.6" opacity=".8"/><g fill="#d8c4ff"><circle cx="296" cy="574" r="1.8"/><circle cx="270" cy="580" r="1.4"/><circle cx="288" cy="590" r="1.2"/></g>`;
+    // both hands clawing at the collar (long thin fingers over the iron band)
+    const near = S([[214, 520], [222, 484], [232, 462, 1], [240, 482], [248, 458, 1], [256, 480], [266, 462, 1], [268, 486], [262, 508], [236, 522]]);
+    const far = S([[338, 512], [332, 484], [338, 462, 1], [346, 480], [354, 460, 1], [360, 482], [370, 466, 1], [368, 496], [356, 516]]);
+    s += `<path d="${near}${far}" fill="url(#${p}-ink)"/><path d="${pl([[232, 462], [240, 482]])}${pl([[248, 458], [256, 480]])}${pl([[266, 462], [268, 486]])}${pl([[354, 460], [360, 482]])}${pl([[370, 466], [368, 496]])}" fill="none" stroke="${rim}" stroke-width="2" stroke-linecap="round" opacity=".7"/>`;
+    // the huge wet eye looking up, a sad upturned brow, a tear on the cheek
+    s += `<path d="M240,318q-14,-4 -26,-14" fill="none" stroke="${rim}" stroke-width="2.6" stroke-linecap="round" opacity=".85"/>`;
+    s += `<ellipse cx="228" cy="338" rx="9" ry="10" fill="#dfe8cc" opacity=".92"/><ellipse cx="225" cy="335" rx="5" ry="6" fill="#141a10"/><circle cx="223" cy="332" r="2" fill="#ffffff"/>`;
+    s += `<path d="M236,356q-4,8 0,11q4,-3 0,-11z" fill="#d6ecf4" opacity=".85"/>`;
+    return s;
+  },
+};
+
 export const npcBusts = Object.fromEntries(Object.entries(CAST).map(([id, spec]) => [id, (rim) => render(spec, rim)]));

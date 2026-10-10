@@ -24,7 +24,8 @@ const KEYS = {
 };
 const SPEEDS = { slow: { cps: 20, label: '慢' }, normal: { cps: 38, label: '中' }, fast: { cps: 80, label: '快' }, instant: { cps: 0, label: '瞬间' } };
 const PACES = { relaxed: { k: 1.35, label: '从容' }, normal: { k: 1, label: '标准' }, brisk: { k: 0.65, label: '紧凑' } };
-const RESULT_LABEL = { clean: '干净利落', hurt: '负伤', collateral: '波及路人' };
+// collateral 是「波及了不该波及的」：第二章是住户与路人，第三章是干芦苇起火——用不绑定具体对象的说法
+const RESULT_LABEL = { clean: '干净利落', hurt: '负伤', collateral: '殃及周遭' };
 const RESULT_ICON = { clean: 'sparkle', hurt: 'blood', collateral: 'flame' };
 const KIND_LABEL = { dialogue: '对话', action: '行动', tactic: '战术', vow: '誓言', free: '自由' };
 const KIND_ICON = { dialogue: 'mail', action: 'boot', tactic: 'target', vow: 'flame', free: 'feather' };
@@ -87,7 +88,20 @@ function hash(str) {
   return (h >>> 0).toString(36);
 }
 
+// 窄屏上战斗面板横跨整个屏幕顶部：轻提示改到面板下方，不压住战斗标题和回合数
+function placeToasts() {
+  let top = '';
+  const hud = P.hud;
+  if (S.view === 'play' && hud?.isConnected && !hud.hidden) {
+    const r = hud.getBoundingClientRect();
+    const cx = window.innerWidth / 2;
+    if (r.left < cx && r.right > cx && r.bottom < window.innerHeight * 0.7) top = `${Math.round(r.bottom + 10)}px`;
+  }
+  toastRoot.style.top = top;
+}
+
 function toast(message, kind = '') {
+  placeToasts();
   const el = document.createElement('div');
   el.className = `toast ${kind}`;
   el.innerHTML = `${kind === 'memory' ? icon('feather', { size: 15 }) : kind === 'warn' ? icon('info', { size: 15 }) : ''}<span>${esc(message)}</span>`;
@@ -114,6 +128,7 @@ const S = {
   bg: null, bgFront: 0,
   hudBattle: null,
   suppressClickUntil: 0,
+  lastInputAt: 0, // 最近一次推进类操作（按键 / 点按）的时间，章节完成页据此判断玩家是否已停手
 };
 const P = {}; // 播放界面的 DOM 引用
 
@@ -260,7 +275,7 @@ function chapterCardHtml(id, chapter) {
   const e = entryFor(id, chapter);
   const done = isCompleted(id);
   const direct = S.focus === id;
-  const unlocked = isUnlocked(e) || direct;
+  const unlocked = isUnlocked(e) || direct || done; // 用默认正史打通过的章节，前一章没完成也能直接重玩
   const reqEntry = e.requires ? entryFor(e.requires) : null;
   const cls = ['ch-card', !chapter ? 'unavailable' : unlocked ? 'open' : 'locked', done ? 'done' : '', direct ? 'focus' : ''].filter(Boolean).join(' ');
   const meta = [];
@@ -564,7 +579,8 @@ function restoreStage(stage) {
   }
   if (stage?.veil) setVeil(true, 0);
   const shot = S.chapter.shots[S.run.shotIdx];
-  if (shot && S.run.stack.length && !S.run.done) showShotCaption({ ...shot, bg: shot.bg || S.run.bg });
+  // 地点用当前背景（分镜里可能已经换过场景），不是分镜开头的那个
+  if (shot && S.run.stack.length && !S.run.done) showShotCaption({ ...shot, bg: S.run.bg || shot.bg });
 }
 function stageState() {
   return { desat: Boolean(P.scene?.classList.contains('desat')), veil: Boolean(P.veil?.classList.contains('on')) };
@@ -596,7 +612,7 @@ async function runLoop(my) {
     }
     // 自动存档记录「这一项之前」的存档：刷新后「继续」会重新演出当前这句 / 这个演出，而不是退回分镜开头
     if (['shot', 'beat', 'battle-start', 'battle-end'].includes(item.kind)) checkpoint(before, item.kind === 'shot');
-    if (S.run.battle) renderHud(battleViewOf(S.run.battle));
+    if (S.run.battle) renderHud(battleViewOf(S.run.battle), { pending: item.kind === 'input' });
     try {
       switch (item.kind) {
         case 'shot': await onShot(item.shot); break;
@@ -700,10 +716,12 @@ function liftVeilIfNeeded() {
 
 function showShotCaption(shot) {
   const loc = S.locations[shot.bg];
-  P.shotCap.innerHTML = `<span class="shot-id">${esc(shot.id)}</span><span class="shot-title">${esc(shot.title || '')}</span>${loc ? `<span class="shot-loc">${icon('compass', { size: 12 })}${esc(loc.name)}</span>` : ''}`;
+  // 读档时传进来的是章节里的原始分镜（标题可能带 {PLAYER_NAME}），这里统一替换
+  const title = interpolate(shot.title || '', S.run);
+  P.shotCap.innerHTML = `<span class="shot-id">${esc(shot.id)}</span><span class="shot-title">${esc(title)}</span>${loc ? `<span class="shot-loc">${icon('compass', { size: 12 })}${esc(loc.name)}</span>` : ''}`;
   P.shotCap.classList.remove('show');
   void P.shotCap.offsetWidth;
-  if (shot.title || loc) P.shotCap.classList.add('show');
+  if (title || loc) P.shotCap.classList.add('show');
 }
 
 async function onBeat(beat, my) {
@@ -711,6 +729,12 @@ async function onBeat(beat, my) {
     case 'narr': case 'say': case 'think': return showLine(beat, my);
     case 'bg': {
       const cut = beat.fx === 'cut';
+      // 分镜内换场景：上一处的人不跟着过来，谁在新场景开口谁再登场
+      clearArt();
+      // 淡入的换场是「走到了另一个地方」：重新亮出分镜小字，地点跟着换（cut 多是一闪而过的画面，不打扰）
+      if (!S.locations[beat.bg]) P.shotCap.classList.remove('show');
+      else if (!cut) showShotCaption({ ...S.chapter.shots[S.run.shotIdx], bg: beat.bg });
+      if (!cut) { hideBanner(); P.dock.classList.add('idle'); } // 上一处的台词不留在新场景上，和换分镜时一样先收起对话框
       await setBackground(beat.bg, cut ? 'cut' : 'fade');
       if (!cut) await sleep(S.skip ? 120 : 650);
       return undefined;
@@ -762,6 +786,7 @@ async function showLine(beat, my) {
 
   if (line.kind === 'caption') {
     P.dock.classList.add('idle');
+    setArtActive(null); // 系统字幕没有说话人：立绘退回暗态（手机上整个让开），字幕压在干净的画面上
     showBanner(line.text, 'caption');
     await waitAdvance({ autoDelay: 1700, seen });
     if (my === S.token) hideBanner();
@@ -863,7 +888,7 @@ function preload(url) {
 }
 
 // 画外音、回忆里的声音不在场：只显示名牌，不上立绘
-const OFFSTAGE_NOTE = /回忆|画外|远处|梦中/;
+const OFFSTAGE_NOTE = /回忆|记忆|画外|远处|梦中|脑海|幻听/;
 function updateArt(beat) {
   if (beat.t !== 'say' || OFFSTAGE_NOTE.test(beat.note || '')) { setArtActive(null); return; }
   const sp = speakerOf(beat.who);
@@ -1238,7 +1263,8 @@ function updateHpRow(row, hp, maxHp, animate) {
   }
 }
 
-function renderHud(view, { animate = false } = {}) {
+// pending：正在等玩家写下一回合（显示「即将进行的回合」）；否则显示刚结算、正在演出反应的那一回合
+function renderHud(view, { animate = false, pending = false } = {}) {
   if (!view || !P.hud) return;
   const hud = P.hud;
   const def = battleDef(view.id);
@@ -1252,6 +1278,9 @@ function renderHud(view, { animate = false } = {}) {
     $('.hud-intel', hud).innerHTML = (view.intel || []).map((t) => `<li>${icon('eye', { size: 13 })}<span>${esc(t)}</span></li>`).join('');
     const bars = $('.hud-bars', hud);
     bars.innerHTML = '';
+    // 名字列按最长的名字定宽（「小个子的晶链」这类六字敌人名不再被截成省略号），所有血条仍然左右对齐
+    const longest = Math.max(...[S.run.playerName, ...view.enemies.map((e) => e.name)].map((n) => Array.from(String(n || '')).length));
+    bars.style.setProperty('--hp-name', `${Math.min(7.2, Math.max(4.2, longest + 0.5))}em`);
     bars.appendChild(hpRow('player', S.run.playerName, view.player.hp, view.player.maxHp, 'ally'));
     for (const e of view.enemies) bars.appendChild(hpRow(`e:${e.id}`, e.name, e.hp, e.maxHp, 'enemy'));
     $('.hud-result', hud).hidden = true;
@@ -1264,7 +1293,8 @@ function renderHud(view, { animate = false } = {}) {
     // 竖屏手机先收起情报（横屏 / 矮窗口改为右侧栏布局，见 story.css）
     setHudCollapsed(!finePointer && window.innerHeight < 700 && window.innerWidth <= 640);
   }
-  const shownRound = Math.min(total || Infinity, (view.round || 0) + 1);
+  const round = view.round || 0;
+  const shownRound = Math.min(total || Infinity, Math.max(1, pending ? round + 1 : round));
   $('.hud-round', hud).textContent = total ? `回合 ${shownRound}/${total}` : `回合 ${shownRound}`;
   const bars = $('.hud-bars', hud);
   const pRow = bars.querySelector('[data-key="player"]');
@@ -1276,7 +1306,7 @@ function renderHud(view, { animate = false } = {}) {
   let chip = $('.hud-collateral', hud);
   if (view.collateral > 0) {
     if (!chip) { chip = document.createElement('div'); chip.className = 'hud-collateral'; bars.after(chip); }
-    chip.innerHTML = `${icon('flame', { size: 13 })}波及住宅 / 路人 ×${view.collateral}`;
+    chip.innerHTML = `${icon('flame', { size: 13 })}${RESULT_LABEL.collateral} ×${view.collateral}`;
   } else chip?.remove();
 }
 
@@ -1314,6 +1344,8 @@ async function onBattleEnd(view, my) {
   res.innerHTML = `${icon(RESULT_ICON[view.result] || 'check', { size: 16 })}<span>战斗结束 · ${esc(label)}</span>`;
   res.hidden = false;
   P.hud.classList.add('ended');
+  // 仗打完了情报就没用了：收起情报，只留血条与结果，免得展开的面板压住屏幕中间的结果横幅（手机上尤其明显）
+  setHudCollapsed(true);
   P.hud.scrollTop = P.hud.scrollHeight; // 矮屏右侧栏可滚动时，让结果条露出来
   P.dock.classList.add('idle');
   showBanner(`战斗结束 · ${label}`, `result-${view.result}`);
@@ -1376,9 +1408,31 @@ async function onEnd(end) {
   scr.classList.add('show');
   announce(`章节完成：${ch.title}`);
   const nextBtn = $('[data-end="next"]', scr);
-  $('[data-end="replay"]', scr).addEventListener('click', replayChapter);
-  $('[data-end="title"]', scr).addEventListener('click', () => renderStart());
-  $('[data-end="replay"]', scr).focus({ preventScroll: true });
+  const replayBtn = $('[data-end="replay"]', scr);
+  // 连按空格 / 回车 / 点击推进最后几句时，多出来的那一下会落在刚弹出的按钮上：直接跳进下一章或重玩，章节完成页一闪而过。
+  // 所以完成页先「上锁」（不可聚焦、不响应）：至少等入场动画走完，并且玩家停手（最近一次按键 / 点按之后静默一会儿），
+  // 解锁后再把焦点交给最合适的按钮——一直按着空格或连点不放，也不会替玩家按下按钮。
+  const armAt = performance.now() + (reducedMotion ? 350 : 900);
+  const QUIET_MS = 450;
+  let armed = false;
+  const guarded = (fn) => (e) => { if (armed) fn(e); };
+  scr.inert = true;
+  const focusBest = () => {
+    if (!armed || !scr.isConnected || scr.hidden) return;
+    (nextBtn.disabled ? replayBtn : nextBtn).focus({ preventScroll: true });
+  };
+  const tryArm = () => {
+    if (!scr.isConnected || scr.hidden || S.chapter !== ch) return;
+    const now = performance.now();
+    const wait = Math.max(armAt - now, S.lastInputAt + QUIET_MS - now);
+    if (wait > 0) { setTimeout(tryArm, wait + 16); return; }
+    armed = true;
+    scr.inert = false;
+    focusBest();
+  };
+  setTimeout(tryArm, Math.max(0, armAt - performance.now()));
+  replayBtn.addEventListener('click', guarded(replayChapter));
+  $('[data-end="title"]', scr).addEventListener('click', guarded(() => renderStart()));
 
   const nextId = end?.next || null;
   const wireNext = async () => {
@@ -1388,22 +1442,24 @@ async function onEnd(end) {
       const ne = entryFor(nextId, nextChapter);
       nextBtn.disabled = false;
       nextBtn.innerHTML = `${icon('arrow-right', { size: 18 })}<span>下一章</span><small>${esc(ne.label)}｜${esc(ne.name)}</small>`;
-      nextBtn.onclick = () => {
+      nextBtn.onclick = guarded(() => {
         const run2 = continueRun(S.run, nextChapter);
         run2.mode = S.settings.mode;
         enterPlay(nextChapter, run2, { fresh: true });
-      };
-      nextBtn.focus({ preventScroll: true });
+      });
+      focusBest();
     } else if (nextId && S.index.some((x) => x.id === nextId)) {
       // 目录里有下一章但没读到（离线 / 服务重启中）：别说「制作中」，给重试
       nextBtn.disabled = false;
       nextBtn.innerHTML = `${icon('refresh', { size: 18 })}<span>下一章读取失败，点此重试</span>`;
-      nextBtn.onclick = () => {
+      nextBtn.onclick = guarded(() => {
         nextBtn.onclick = null;
         nextBtn.disabled = true;
         nextBtn.innerHTML = `${icon('clock', { size: 18 })}<span>正在读取下一章…</span>`;
+        replayBtn.focus({ preventScroll: true }); // 按钮被禁用前把焦点挪开，别掉到 body
         wireNext();
-      };
+      });
+      focusBest();
     } else {
       nextBtn.disabled = true;
       nextBtn.innerHTML = `${icon('clock', { size: 18 })}<span>下一章制作中</span>`;
@@ -1491,6 +1547,9 @@ document.addEventListener('keydown', (e) => {
   else if (k === 's') setSkip(!S.skip);
   else if (k === 'l') toggleBacklog(true);
 });
+// 捕获阶段记录推进类操作的时间（含按住不放的自动重复），给章节完成页的「停手后再解锁」用
+document.addEventListener('keydown', (e) => { if (e.key === ' ' || e.key === 'Enter') S.lastInputAt = performance.now(); }, true);
+document.addEventListener('pointerdown', () => { S.lastInputAt = performance.now(); }, true);
 window.addEventListener('pagehide', flushRead);
 // 点击设置浮层之外的地方关闭它（全局只绑一次）
 // 这一下点击只用来关浮层，不再同时推进剧情

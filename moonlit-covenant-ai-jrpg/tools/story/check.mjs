@@ -29,6 +29,11 @@ function loadChapter(id) {
 // 按策略给出输入文本：使用目标意图的第一个关键词，保证 demoJudge 能命中
 function inputFor(node, strategy, counter) {
   const choices = (node.intents || []).filter((x) => x.id !== node.silent);
+  if (strategy && typeof strategy === 'object') {
+    // 定点策略：目标节点选目标意图，其余节点选第 j 个意图（用于触达只在特定前置选择后出现的追问节点）
+    const target = strategy.fixed[node.id] ? choices.find((x) => x.id === strategy.fixed[node.id]) : choices[strategy.j % choices.length];
+    return target?.keywords?.[0] || '';
+  }
   if (strategy === 'silent') return '';
   if (strategy === 'fallback') return '我挠了挠头，想了一下这件事到底意味着什么';
   const pick = choices[(strategy === 'rotate' ? counter : Number(strategy)) % choices.length];
@@ -98,8 +103,9 @@ for (const entry of index) {
   const allIntents = new Set();
   eachBeat(chapter, (beat) => { if (beat.t === 'input') beat.intents.forEach((x) => allIntents.add(`${beat.id}:${x.id}`)); });
   const covered = new Set();
-  const maxChoices = Math.max(1, ...[...allIntents].map(() => 1));
-  const strategies = ['silent', 'fallback', 'rotate', ...Array.from({ length: 8 }, (_, i) => String(i))];
+  let maxChoices = 1;
+  eachBeat(chapter, (beat) => { if (beat.t === 'input') maxChoices = Math.max(maxChoices, beat.intents.filter((x) => x.id !== beat.silent).length); });
+  const strategies = ['silent', 'fallback', 'rotate', ...Array.from({ length: maxChoices }, (_, i) => String(i))];
   let main = null;
   for (const s of strategies) {
     const r = play(chapter, s);
@@ -107,7 +113,16 @@ for (const entry of index) {
     r.hit.forEach((h) => covered.add(h));
     if (s === 'rotate') main = r;
   }
-  void maxChoices;
+  // 补触达：对仍未覆盖的意图，固定该节点的选择，其余节点逐一尝试第 j 个意图
+  for (const pair of [...allIntents].filter((h) => !covered.has(h))) {
+    if (covered.has(pair)) continue;
+    const [nodeId, intentId] = pair.split(':');
+    for (let j = 0; j < maxChoices && !covered.has(pair); j += 1) {
+      const r = play(chapter, { fixed: { [nodeId]: intentId }, j });
+      if (!r.ok) { failed = true; console.log(`✗ ${entry.id} 定点策略 ${pair}/${j} 未能走到章末`); break; }
+      r.hit.forEach((h) => covered.add(h));
+    }
+  }
   const minutes = main ? (main.chars / 320 + main.inputs * 0.4).toFixed(1) : '?';
   const unreached = [...allIntents].filter((h) => !covered.has(h));
   console.log(`✓ ${entry.id} ${chapter.title}：${chapter.shots.length} 分镜 · ${main?.beats} 节拍 · ${main?.inputs} 次输入 · ${main?.chars} 字 · 估算 ${minutes} 分钟 · 意图覆盖 ${covered.size}/${allIntents.size}`);

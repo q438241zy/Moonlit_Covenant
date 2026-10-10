@@ -424,10 +424,11 @@ button, input, textarea { font: inherit; color: inherit; }
   max-height: 100%;
   object-fit: contain;
   object-position: center bottom;
-  /* 下缘淡出 + 左右羽化：带底色的立绘（厚涂 JPEG / 全身立绘）也能融进场景 */
-  -webkit-mask-image: linear-gradient(180deg, #000 70%, transparent 99%), linear-gradient(90deg, transparent 0%, #000 13%, #000 87%, transparent 100%);
+  /* 上缘轻羽化 + 下缘淡出 + 左右羽化：带底色的立绘（莉亚的卡面立绘、厚涂 JPEG）不会在头顶留下一道硬边；
+     上缘只羽化 4%，透明底的剪影胸像最多淡掉梅芙发簪的羽毛尖 */
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 4%, #000 70%, transparent 99%), linear-gradient(90deg, transparent 0%, #000 13%, #000 87%, transparent 100%);
   -webkit-mask-composite: source-in;
-  mask-image: linear-gradient(180deg, #000 70%, transparent 99%), linear-gradient(90deg, transparent 0%, #000 13%, #000 87%, transparent 100%);
+  mask-image: linear-gradient(180deg, transparent 0%, #000 4%, #000 70%, transparent 99%), linear-gradient(90deg, transparent 0%, #000 13%, #000 87%, transparent 100%);
   mask-composite: intersect;
 }
 .art.on { opacity: .5; transform: none; filter: brightness(.55) saturate(.75); }
@@ -566,7 +567,7 @@ button, input, textarea { font: inherit; color: inherit; }
 .hud-intel li { display: flex; gap: 7px; color: var(--muted); font-size: .78rem; line-height: 1.5; }
 .hud-intel li .ico { margin-top: 3px; color: var(--accent); }
 .hud-bars { display: grid; gap: 9px; margin-top: 12px; }
-.hp { position: relative; display: grid; grid-template-columns: 5.6em minmax(0, 1fr) 3.4em; align-items: center; gap: 10px; font-size: .8rem; }
+.hp { position: relative; display: grid; grid-template-columns: var(--hp-name, 5.6em) minmax(0, 1fr) 3.4em; align-items: center; gap: 10px; font-size: .8rem; }
 .hp-name { overflow: hidden; font-weight: 700; white-space: nowrap; text-overflow: ellipsis; }
 .hp.ally .hp-name { color: var(--gold); }
 .hp.enemy .hp-name { color: #ffc4cc; }
@@ -877,7 +878,7 @@ button, input, textarea { font: inherit; color: inherit; }
 
   .hud { top: calc(54px + var(--safe-top)); left: 12px; right: 12px; width: auto; padding: 10px 12px 12px; border-radius: 16px; }
   .hud-goal, .hud-intel li { font-size: .76rem; }
-  .hp { grid-template-columns: 5em minmax(0, 1fr) 3.2em; font-size: .76rem; }
+  .hp { grid-template-columns: var(--hp-name, 5em) minmax(0, 1fr) 3.2em; font-size: .76rem; }
 
   .dock { padding: 0 10px calc(10px + var(--safe-bottom)); }
   .dlg { min-height: 150px; padding: 26px 18px 24px; border-radius: 18px; }
