@@ -19,6 +19,7 @@ const KEYS = {
   progress: 'moonlit:story:progress',
   read: 'moonlit:story:read',
   backlog: 'moonlit:story:backlog',
+  draft: 'moonlit:story:draft',
   save: (key) => `moonlit:story:save:${key}`,
 };
 const SPEEDS = { slow: { cps: 20, label: '慢' }, normal: { cps: 38, label: '中' }, fast: { cps: 80, label: '快' }, instant: { cps: 0, label: '瞬间' } };
@@ -112,6 +113,7 @@ const S = {
   readDirty: false,
   bg: null, bgFront: 0,
   hudBattle: null,
+  suppressClickUntil: 0,
 };
 const P = {}; // 播放界面的 DOM 引用
 
@@ -244,7 +246,7 @@ async function renderStart() {
   target ||= available.find((id) => isUnlocked(entryFor(id)) && !isCompleted(id)) || available[0] || null;
   if (target) {
     const e = entryFor(target);
-    const replay = isCompleted(target) && !S.focus;
+    const replay = isCompleted(target);
     begin.innerHTML = `${icon(replay ? 'refresh' : 'moon', { size: 18 })}<span>${replay ? '重玩' : '开始'}${esc(e.label)}</span>${S.focus ? `<small>${esc(e.name)}</small>` : ''}`;
     begin.disabled = false;
     begin.addEventListener('click', () => startChapter(target, { canon: false }));
@@ -322,7 +324,7 @@ async function continueSave() {
   run.mode = S.settings.mode;
   const log = load(KEYS.backlog, null);
   const backlog = log?.chapterId === save.chapterId && Array.isArray(log.lines) ? log.lines.filter((l) => l && typeof l.text === 'string') : [];
-  enterPlay(chapter, run, { fresh: false, backlog });
+  enterPlay(chapter, run, { fresh: false, backlog, stage: save.stage });
 }
 
 function confirmDialog(message, okLabel = '确定') {
@@ -368,19 +370,21 @@ function bindSettings(scope) {
   const pop = $('#settingsPop', scope);
   const btn = $('[data-act="settings"]', scope);
   if (!pop || !btn) return;
+  // refocus：true 回到设置按钮（键盘关闭）；'stage' 回到对话框（鼠标关闭后空格继续推进剧情）；false 不动焦点
   const close = (refocus = true) => {
     if (pop.hidden) return;
     pop.hidden = true;
     btn.setAttribute('aria-expanded', 'false');
-    if (refocus) btn.focus();
+    if (refocus === 'stage' && S.view === 'play') focusStage();
+    else if (refocus) btn.focus();
   };
   const open = () => {
     pop.hidden = false;
     btn.setAttribute('aria-expanded', 'true');
     pop.querySelector('input:checked')?.focus();
   };
-  btn.addEventListener('click', (e) => { e.stopPropagation(); if (pop.hidden) open(); else close(); });
-  $('[data-act="close-settings"]', pop).addEventListener('click', () => close());
+  btn.addEventListener('click', (e) => { e.stopPropagation(); if (pop.hidden) open(); else close(e.detail > 0 ? 'stage' : true); });
+  $('[data-act="close-settings"]', pop).addEventListener('click', (e) => close(e.detail > 0 ? 'stage' : true));
   pop.addEventListener('change', (e) => {
     const { name, value } = e.target;
     if (name === 'mode') { S.settings.mode = value === '15+' ? '15+' : '12+'; if (S.run) S.run.mode = S.settings.mode; }
@@ -454,7 +458,7 @@ function renderPlay() {
           <p class="dlg-text"><span class="dlg-shown"></span><span class="dlg-rest" aria-hidden="true"></span></p>
           <span class="dlg-more" aria-hidden="true"></span>
         </div>
-        <form class="ask" id="ask" hidden autocomplete="off">
+        <form class="ask" id="ask" hidden autocomplete="off" tabindex="-1" aria-labelledby="askPrompt">
           <div class="ask-context" hidden><span class="ask-context-name"></span><span class="ask-context-text"></span></div>
           <div class="ask-head"><span class="ask-kind"></span><p class="ask-prompt" id="askPrompt"></p></div>
           <div class="ask-field">
@@ -506,18 +510,22 @@ function renderPlay() {
   P.autoBtn.addEventListener('click', () => setAuto(!S.auto));
   P.skipBtn.addEventListener('click', () => setSkip(!S.skip));
   // 鼠标点过的开关不留焦点，空格/回车继续用于推进剧情
-  $$('.bar-btn[aria-pressed]').forEach((b) => b.addEventListener('click', (e) => { if (e.detail > 0) P.dlg.focus({ preventScroll: true }); }));
+  $$('.bar-btn[aria-pressed]').forEach((b) => b.addEventListener('click', (e) => { if (e.detail > 0) focusStage(); }));
   $('[data-act="log"]').addEventListener('click', () => toggleBacklog(true));
-  $('[data-act="close-log"]').addEventListener('click', () => toggleBacklog(false));
-  P.backlog.addEventListener('click', (e) => { if (e.target === P.backlog) toggleBacklog(false); });
-  $('.hud-toggle').addEventListener('click', () => {
-    const collapsed = P.hud.classList.toggle('collapsed');
-    const t = $('.hud-toggle');
-    t.setAttribute('aria-expanded', String(!collapsed));
-    t.setAttribute('aria-label', collapsed ? '展开情报' : '收起情报');
-  });
+  $('[data-act="close-log"]').addEventListener('click', (e) => toggleBacklog(false, e.detail > 0));
+  P.backlog.addEventListener('click', (e) => { if (e.target === P.backlog) toggleBacklog(false, true); });
+  $('.hud-toggle').addEventListener('click', () => setHudCollapsed(!P.hud.classList.contains('collapsed')));
   bindAsk();
   bindSettings(P.play);
+}
+
+// 把焦点交还给「当前该操作的东西」：输入框打开时是输入框（触屏不主动弹键盘，交给表单本身），否则是对话框
+function focusStage() {
+  if (!P.play) return;
+  if (S.ask && !P.ask.hidden) {
+    if (finePointer && !P.askInput.disabled) P.askInput.focus({ preventScroll: true });
+    else P.ask.focus({ preventScroll: true });
+  } else if (!P.dlg.hidden) P.dlg.focus({ preventScroll: true });
 }
 
 // 叠层打开时让底下的播放界面不可聚焦（Tab 不会跑到遮罩后面）
@@ -528,10 +536,11 @@ function setBackdropInert(overlay, on) {
 
 function onStageClick(e) {
   if (e.target.closest('button, a, input, textarea, label, select, .hud, .ask, .backlog, .pop, .end-screen, .fatal, .modal, .play-bar')) return;
+  if (performance.now() < S.suppressClickUntil) return; // 这一下点击是用来关掉设置浮层的
   advance();
 }
 
-function enterPlay(chapter, run, { fresh, backlog = [] }) {
+function enterPlay(chapter, run, { fresh, backlog = [], stage = null }) {
   cancelPlay();
   S.chapter = chapter;
   S.run = run;
@@ -541,9 +550,24 @@ function enterPlay(chapter, run, { fresh, backlog = [] }) {
   S.skip = false;
   renderPlay();
   setBackground(run.bg || 'black', 'cut');
+  if (!fresh) restoreStage(stage);
   P.dlg.focus({ preventScroll: true });
   const my = ++S.token;
   runLoop(my);
+}
+
+// 读档：恢复「吞色」「黑幕」这类跨节拍的画面状态，并重新亮出当前分镜标题
+function restoreStage(stage) {
+  if (stage?.desat) {
+    P.scene.style.setProperty('--fx-ms', '0ms');
+    P.scene.classList.add('desat');
+  }
+  if (stage?.veil) setVeil(true, 0);
+  const shot = S.chapter.shots[S.run.shotIdx];
+  if (shot && S.run.stack.length && !S.run.done) showShotCaption({ ...shot, bg: shot.bg || S.run.bg });
+}
+function stageState() {
+  return { desat: Boolean(P.scene?.classList.contains('desat')), veil: Boolean(P.veil?.classList.contains('on')) };
 }
 
 function cancelPlay() {
@@ -562,16 +586,20 @@ function cancelPlay() {
 async function runLoop(my) {
   while (my === S.token) {
     let item;
+    let before;
     try {
+      before = JSON.stringify(S.run);
       item = next(S.run, S.chapter);
     } catch (err) {
       showFatal(err);
       return;
     }
+    // 自动存档记录「这一项之前」的存档：刷新后「继续」会重新演出当前这句 / 这个演出，而不是退回分镜开头
+    if (['shot', 'beat', 'battle-start', 'battle-end'].includes(item.kind)) checkpoint(before, item.kind === 'shot');
     if (S.run.battle) renderHud(battleViewOf(S.run.battle));
     try {
       switch (item.kind) {
-        case 'shot': await onShot(item.shot); if (my === S.token) autosave(); break;
+        case 'shot': await onShot(item.shot); break;
         case 'beat': await onBeat(item.beat, my); break;
         case 'input': await onInput(item, my); break;
         case 'battle-start': await onBattleStart(item.battle); break;
@@ -588,9 +616,15 @@ async function runLoop(my) {
 
 function autosave() {
   if (!S.run || !S.chapter) return;
-  store(KEYS.auto, { run: S.run, chapterId: S.chapter.id, savedAt: Date.now() });
+  checkpoint(JSON.stringify(S.run), true);
+}
+function checkpoint(runJson, flush = false) {
+  if (!S.chapter) return;
+  try {
+    localStorage.setItem(KEYS.auto, `{"run":${runJson},"chapterId":${JSON.stringify(S.chapter.id)},"savedAt":${Date.now()},"stage":${JSON.stringify(stageState())}}`);
+  } catch { /* 隐私模式 / 配额已满：本次不存 */ }
   store(KEYS.backlog, { chapterId: S.chapter.id, lines: S.backlog.slice(-200) });
-  flushRead();
+  if (flush) flushRead();
 }
 
 // ─── 推进控制 ───
@@ -630,12 +664,16 @@ function setAuto(on) {
   scheduleGateTimers();
 }
 function setSkip(on, quiet = false) {
+  // 停在输入框或未读内容上时不进入快进（否则按钮亮着却什么都不跳）
+  if (on && !quiet) {
+    const blocked = S.ask ? '轮到你回应时无法快进' : ((S.gate && !S.gate.seen) || ((S.typing || S.titleAnim) && !S.lineSeen)) ? '快进只跳过已读内容' : '';
+    if (blocked) { toast(blocked, 'warn'); on = false; }
+  }
   S.skip = Boolean(on);
   if (S.skip && S.auto) setAuto(false);
   P.skipBtn?.setAttribute('aria-pressed', String(S.skip));
   P.play?.classList.toggle('is-skip', S.skip);
   if (S.skip && S.lineSeen) { S.typing?.finish(); S.titleAnim?.finish(); }
-  if (!quiet && S.skip && S.gate && !S.gate.seen) toast('快进只跳过已读内容', 'warn');
   scheduleGateTimers();
 }
 function autoDelayFor(text) {
@@ -734,6 +772,7 @@ async function showLine(beat, my) {
   const wasIdle = P.dock.classList.contains('idle');
   P.dock.classList.remove('idle');
   P.dlg.hidden = false;
+  if (!P.hud.hidden) requestAnimationFrame(fitHud);
   P.dlg.dataset.kind = line.kind;
   P.dlg.style.setProperty('--who', line.color || 'var(--accent)');
   P.name.textContent = line.kind === 'say' || line.kind === 'think' ? line.name : '';
@@ -823,15 +862,18 @@ function preload(url) {
   return imgCache.get(url);
 }
 
+// 画外音、回忆里的声音不在场：只显示名牌，不上立绘
+const OFFSTAGE_NOTE = /回忆|画外|远处|梦中/;
 function updateArt(beat) {
-  if (beat.t !== 'say') { setArtActive(null); return; }
+  if (beat.t !== 'say' || OFFSTAGE_NOTE.test(beat.note || '')) { setArtActive(null); return; }
   const sp = speakerOf(beat.who);
   const side = beat.who === 'aku' ? 'left' : 'right';
-  if (sp?.art) setSlot(side, paint(sp.art));
+  if (sp?.art) setSlot(side, paint(sp.art), beat.who);
   setArtActive(sp?.art ? side : null);
 }
-function setSlot(side, url) {
+function setSlot(side, url, who = '') {
   const slot = P.art[side];
+  slot.dataset.who = who;
   if (slot.dataset.url === url) return;
   slot.dataset.url = url;
   const wasOn = slot.classList.contains('on');
@@ -852,12 +894,20 @@ function setArtActive(side) {
   for (const s of ['left', 'right']) P.art[s].classList.toggle('active', s === side);
   P.scene.classList.toggle('art-focus', Boolean(side));
 }
-function clearArt() {
+function clearArt(keep = null) {
   for (const s of ['left', 'right']) {
     const slot = P.art[s];
+    if (keep && slot.dataset.who && keep.has(slot.dataset.who)) { slot.classList.remove('active'); continue; }
     slot.classList.remove('on', 'active');
     slot.dataset.url = '';
+    slot.dataset.who = '';
   }
+  P.scene.classList.remove('art-focus');
+}
+// 输入框打开时舞台交给玩家：只留下本节点 focus 里的角色（在场、等你回应的人），以「倾听」的暗态陪着；
+// 其余立绘（回忆里的人、已经不在场的人、主角自己）退场，背景保持不变。
+function artForInput(node) {
+  clearArt(new Set(node.focus || []));
 }
 
 // ─── 背景 ───
@@ -1002,11 +1052,16 @@ function hideBanner() {
 function bindAsk() {
   P.ask.addEventListener('submit', (e) => { e.preventDefault(); submitAsk(P.askInput.value, { via: 'button' }); });
   P.askInput.addEventListener('keydown', (e) => {
+    // 输入框刚弹出时，连按推进用的空格不要打进框里
+    if (e.key === ' ' && !e.isComposing && !P.askInput.value && S.ask && performance.now() - S.ask.since < 450) e.preventDefault();
     if (e.key === 'Enter' && !e.shiftKey && !e.isComposing && e.keyCode !== 229) {
       e.preventDefault();
       submitAsk(P.askInput.value, { via: 'key' });
     }
     e.stopPropagation();
+  });
+  P.askInput.addEventListener('input', () => {
+    if (S.ask && S.chapter) store(KEYS.draft, { chapterId: S.chapter.id, nodeId: S.ask.nodeId, text: P.askInput.value.slice(0, 300) });
   });
   P.askSilent.addEventListener('click', () => submitAsk('', { via: 'silent' }));
   P.askSkip.addEventListener('click', () => { const a = S.ask; if (a && !P.ask.classList.contains('thinking')) { S.ask = null; a.resolve(SKIP); } });
@@ -1023,6 +1078,9 @@ function submitAsk(text, { via = 'button' } = {}) {
   S.ask = null;
   a.resolve(value);
 }
+function clearDraft() {
+  try { localStorage.removeItem(KEYS.draft); } catch { /* 隐私模式 */ }
+}
 function nudgeAsk() {
   P.ask.classList.remove('nudge');
   void P.ask.offsetWidth;
@@ -1033,14 +1091,16 @@ function nudgeAsk() {
 
 function askPlayer(node) {
   hideBanner();
+  artForInput(node);
   P.dock.classList.remove('idle');
   P.dlg.hidden = true;
   P.ask.hidden = false;
-  P.ask.classList.remove('thinking');
+  P.ask.classList.remove('thinking', 'nudge');
   P.ask.dataset.kind = node.kind;
   P.askKind.innerHTML = `${icon(KIND_ICON[node.kind] || 'feather', { size: 14 })}${esc(KIND_LABEL[node.kind] || '自由')}`;
   P.askPrompt.textContent = node.prompt;
-  P.askInput.value = '';
+  const draft = load(KEYS.draft, null);
+  P.askInput.value = draft?.chapterId === S.chapter.id && draft.nodeId === node.id && typeof draft.text === 'string' ? draft.text : '';
   P.askInput.placeholder = node.placeholder || '说点什么，或写下你的动作……';
   P.askInput.disabled = false;
   P.ask.querySelectorAll('button').forEach((b) => { b.disabled = false; });
@@ -1057,12 +1117,16 @@ function askPlayer(node) {
   P.ask.classList.add('enter');
   announce(`轮到你了：${node.prompt}`);
   if (finePointer) P.askInput.focus({ preventScroll: true });
+  else if (P.dlg === document.activeElement) P.ask.focus?.({ preventScroll: true }); // 对话框被隐藏，焦点别丢到 body
   const hint = $('.ask-hint', P.ask);
   if (hint) hint.textContent = 'Enter 提交 · Shift+Enter 换行';
-  return new Promise((resolve) => { S.ask = { resolve, since: performance.now() }; });
+  requestAnimationFrame(fitHud);
+  return new Promise((resolve) => { S.ask = { resolve, since: performance.now(), nodeId: node.id }; });
 }
 
 function setThinking(text) {
+  // 禁用输入框会把焦点丢到 body：先把焦点挪到表单本身，判定结束后 hideAsk 再交还给对话框
+  if (P.ask.contains(document.activeElement)) P.ask.focus({ preventScroll: true });
   P.ask.classList.add('thinking');
   P.askInput.disabled = true;
   P.ask.querySelectorAll('button').forEach((b) => { b.disabled = true; });
@@ -1125,6 +1189,7 @@ async function onInput(item, my) {
   const memBefore = JSON.stringify(S.run.memories);
   const flagsBefore = JSON.stringify(S.run.flags);
   const result = resolveInput(S.run, S.chapter, judgement, said);
+  clearDraft(); // 判定落地后才清草稿：判定途中返回标题 / 刷新，回来时输入框里还是刚才那句话
   hideAsk();
   if (result.battle) renderHud(result.battle, { animate: true });
   if (JSON.stringify(S.run.memories) !== memBefore) toast('记住了', 'memory');
@@ -1192,10 +1257,12 @@ function renderHud(view, { animate = false } = {}) {
     $('.hud-result', hud).hidden = true;
     hud.classList.remove('ended', 'leave');
     hud.hidden = false;
+    P.play.classList.add('has-hud');
     hud.classList.remove('enter');
     void hud.offsetWidth;
     hud.classList.add('enter');
-    if (!finePointer && window.innerHeight < 700) hud.classList.add('collapsed');
+    // 竖屏手机先收起情报（横屏 / 矮窗口改为右侧栏布局，见 story.css）
+    setHudCollapsed(!finePointer && window.innerHeight < 700 && window.innerWidth <= 640);
   }
   const shownRound = Math.min(total || Infinity, (view.round || 0) + 1);
   $('.hud-round', hud).textContent = total ? `回合 ${shownRound}/${total}` : `回合 ${shownRound}`;
@@ -1211,6 +1278,23 @@ function renderHud(view, { animate = false } = {}) {
     if (!chip) { chip = document.createElement('div'); chip.className = 'hud-collateral'; bars.after(chip); }
     chip.innerHTML = `${icon('flame', { size: 13 })}波及住宅 / 路人 ×${view.collateral}`;
   } else chip?.remove();
+}
+
+function setHudCollapsed(on) {
+  if (!P.hud) return;
+  P.hud.classList.toggle('collapsed', on);
+  const t = $('.hud-toggle', P.hud);
+  t?.setAttribute('aria-expanded', String(!on));
+  t?.setAttribute('aria-label', on ? '展开情报' : '收起情报');
+}
+// 视口变矮（手机弹出软键盘、横屏）时，展开的情报面板会盖住输入框 / 对话框：自动收起
+function fitHud() {
+  if (!P.hud || P.hud.hidden || P.hud.classList.contains('collapsed') || S.view !== 'play') return;
+  const target = !P.ask.hidden ? P.ask : !P.dock.classList.contains('idle') ? P.dlg : null;
+  if (!target) return;
+  const h = P.hud.getBoundingClientRect();
+  const d = target.getBoundingClientRect();
+  if (h.left < d.right && h.right > d.left && h.bottom > d.top - 6) setHudCollapsed(true);
 }
 
 async function onBattleStart(view) {
@@ -1230,6 +1314,7 @@ async function onBattleEnd(view, my) {
   res.innerHTML = `${icon(RESULT_ICON[view.result] || 'check', { size: 16 })}<span>战斗结束 · ${esc(label)}</span>`;
   res.hidden = false;
   P.hud.classList.add('ended');
+  P.hud.scrollTop = P.hud.scrollHeight; // 矮屏右侧栏可滚动时，让结果条露出来
   P.dock.classList.add('idle');
   showBanner(`战斗结束 · ${label}`, `result-${view.result}`);
   announce(`战斗结束：${label}`);
@@ -1241,7 +1326,9 @@ async function onBattleEnd(view, my) {
   await sleep(S.skip ? 80 : 380);
   if (my !== S.token) return;
   P.hud.hidden = true;
-  P.hud.classList.remove('leave', 'ended', 'collapsed');
+  P.play.classList.remove('has-hud');
+  P.hud.classList.remove('leave', 'ended');
+  setHudCollapsed(false);
   S.hudBattle = null;
 }
 
@@ -1256,6 +1343,7 @@ async function onEnd(end) {
   hideAsk();
   P.dock.classList.add('idle');
   P.hud.hidden = true;
+  P.play.classList.remove('has-hud');
   const saveKey = end?.save || `SAVE_${ch.id.toUpperCase()}_END`;
   store(KEYS.save(saveKey), { run, chapterId: ch.id, savedAt: Date.now() });
   const prog = progress();
@@ -1293,21 +1381,35 @@ async function onEnd(end) {
   $('[data-end="replay"]', scr).focus({ preventScroll: true });
 
   const nextId = end?.next || null;
-  const nextChapter = nextId ? await loadChapter(nextId) : null;
-  if (S.view !== 'play' || S.chapter !== ch) return;
-  if (nextChapter) {
-    const ne = entryFor(nextId, nextChapter);
-    nextBtn.disabled = false;
-    nextBtn.innerHTML = `${icon('arrow-right', { size: 18 })}<span>下一章</span><small>${esc(ne.label)}｜${esc(ne.name)}</small>`;
-    nextBtn.addEventListener('click', () => {
-      const run2 = continueRun(S.run, nextChapter);
-      run2.mode = S.settings.mode;
-      enterPlay(nextChapter, run2, { fresh: true });
-    });
-    nextBtn.focus({ preventScroll: true });
-  } else {
-    nextBtn.innerHTML = `${icon('clock', { size: 18 })}<span>下一章制作中</span>`;
-  }
+  const wireNext = async () => {
+    const nextChapter = nextId ? await loadChapter(nextId) : null;
+    if (S.view !== 'play' || S.chapter !== ch || !nextBtn.isConnected) return;
+    if (nextChapter) {
+      const ne = entryFor(nextId, nextChapter);
+      nextBtn.disabled = false;
+      nextBtn.innerHTML = `${icon('arrow-right', { size: 18 })}<span>下一章</span><small>${esc(ne.label)}｜${esc(ne.name)}</small>`;
+      nextBtn.onclick = () => {
+        const run2 = continueRun(S.run, nextChapter);
+        run2.mode = S.settings.mode;
+        enterPlay(nextChapter, run2, { fresh: true });
+      };
+      nextBtn.focus({ preventScroll: true });
+    } else if (nextId && S.index.some((x) => x.id === nextId)) {
+      // 目录里有下一章但没读到（离线 / 服务重启中）：别说「制作中」，给重试
+      nextBtn.disabled = false;
+      nextBtn.innerHTML = `${icon('refresh', { size: 18 })}<span>下一章读取失败，点此重试</span>`;
+      nextBtn.onclick = () => {
+        nextBtn.onclick = null;
+        nextBtn.disabled = true;
+        nextBtn.innerHTML = `${icon('clock', { size: 18 })}<span>正在读取下一章…</span>`;
+        wireNext();
+      };
+    } else {
+      nextBtn.disabled = true;
+      nextBtn.innerHTML = `${icon('clock', { size: 18 })}<span>下一章制作中</span>`;
+    }
+  };
+  await wireNext();
 }
 
 function replayChapter() {
@@ -1336,18 +1438,29 @@ function renderBacklog() {
   }).join('') : '<li class="bl-empty">还没有任何内容。</li>';
   list.querySelectorAll('[data-color]').forEach((li) => li.style.setProperty('--who', li.dataset.color));
 }
-function toggleBacklog(open) {
+// byPointer：用鼠标 / 触摸关闭时把焦点交还对话框（空格继续推进），键盘关闭时回到「回看」按钮
+function toggleBacklog(open, byPointer = false) {
   if (!P.backlog) return;
   if (open) {
+    if (!P.backlog.hidden) return;
+    const opener = document.activeElement;
+    closeOverlays();
+    P.backlogOpener = opener && opener !== document.body && P.play.contains(opener) ? opener : null;
     renderBacklog();
     P.backlog.hidden = false;
     setBackdropInert(P.backlog, true);
     P.backlogList.scrollTop = P.backlogList.scrollHeight;
     $('[data-act="close-log"]', P.backlog).focus();
   } else {
+    if (P.backlog.hidden) return;
     P.backlog.hidden = true;
     setBackdropInert(P.backlog, false);
-    $('[data-act="log"]')?.focus();
+    // 键盘关闭：回到打开它的地方（按 L 打开就回对话框，点「回看」按钮打开就回按钮）
+    const opener = P.backlogOpener;
+    P.backlogOpener = null;
+    if (byPointer || S.ask) focusStage();
+    else if (opener?.isConnected && !opener.closest('[hidden]') && opener.offsetParent !== null) opener.focus({ preventScroll: true });
+    else focusStage();
   }
 }
 
@@ -1380,10 +1493,17 @@ document.addEventListener('keydown', (e) => {
 });
 window.addEventListener('pagehide', flushRead);
 // 点击设置浮层之外的地方关闭它（全局只绑一次）
+// 这一下点击只用来关浮层，不再同时推进剧情
 document.addEventListener('pointerdown', (e) => {
   const pop = $('#settingsPop');
-  if (pop && !pop.hidden && !pop.contains(e.target) && !e.target.closest?.('[data-act="settings"]')) pop.closeSelf?.(false);
+  if (pop && !pop.hidden && !pop.contains(e.target) && !e.target.closest?.('[data-act="settings"]')) {
+    pop.closeSelf?.(S.view === 'play' ? 'stage' : false);
+    S.suppressClickUntil = performance.now() + 700;
+  }
 });
+window.addEventListener('resize', fitHud);
+window.visualViewport?.addEventListener('resize', fitHud);
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') flushRead(); });
 
 // ─── 启动 ───
 async function boot() {

@@ -299,6 +299,8 @@ button, input, textarea { font: inherit; color: inherit; }
   animation: popIn .2s ease;
 }
 .play-bar .pop { right: clamp(12px, 2vw, 24px); top: calc(100% - 2px); }
+/* 横屏手机等矮视口：设置浮层可滚动，不被屏幕底边裁掉 */
+.pop { max-height: calc(100vh - 84px - var(--safe-top)); max-height: calc(100dvh - 84px - var(--safe-top)); overflow-y: auto; overscroll-behavior: contain; }
 .pop-head { display: flex; align-items: center; justify-content: space-between; }
 .pop-head strong { display: inline-flex; align-items: center; gap: 7px; font-size: .95rem; }
 .pop-note { margin: 6px 2px 0; color: var(--faint); font-size: .72rem; line-height: 1.5; }
@@ -627,7 +629,9 @@ button, input, textarea { font: inherit; color: inherit; }
   background: linear-gradient(90deg, transparent, var(--who), transparent);
   opacity: .75;
 }
-.dlg:focus-visible { outline-offset: 4px; }
+.dlg:focus { outline: none; }
+/* 对话框是剧情推进的默认焦点，键盘玩家整局都停在这里：用说话人色的描边代替粗外框，可见但不刺眼 */
+.dlg:focus-visible { border-color: color-mix(in srgb, var(--who) 55%, var(--line)); box-shadow: 0 24px 60px rgba(0, 0, 0, .55), inset 0 1px 0 rgba(255, 255, 255, .06), 0 0 0 1px color-mix(in srgb, var(--who) 30%, transparent), 0 0 30px color-mix(in srgb, var(--who) 16%, transparent); }
 .dock.idle .dlg { opacity: 0; transform: translateY(12px); pointer-events: none; }
 .dlg.enter { animation: dlgIn .32s ease; }
 @keyframes dlgIn { from { opacity: 0; transform: translateY(12px); } }
@@ -699,6 +703,7 @@ button, input, textarea { font: inherit; color: inherit; }
   -webkit-backdrop-filter: blur(14px);
   cursor: default;
 }
+.ask:focus { outline: none; }
 .ask.enter { animation: askIn .38s cubic-bezier(.2, .7, .2, 1); }
 .ask.nudge textarea { animation: nudge .4s ease; border-color: rgba(255, 210, 125, .6); }
 @keyframes nudge { 25% { transform: translateX(-5px); } 50% { transform: translateX(5px); } 75% { transform: translateX(-3px); } }
@@ -732,6 +737,7 @@ button, input, textarea { font: inherit; color: inherit; }
 .ask textarea::placeholder { color: var(--faint); }
 .ask-thinking { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; gap: 14px; padding: 0 16px; border-radius: 14px; background: rgba(12, 9, 28, .86); color: var(--muted); }
 .ask.thinking .ask-thinking { display: flex; animation: fadeIn .25s ease; }
+.ask.thinking textarea, .ask.thinking textarea::placeholder { color: transparent; }
 .ask-echo { overflow: hidden; max-width: 75%; font-size: .94rem; white-space: nowrap; text-overflow: ellipsis; }
 .dots { display: inline-flex; gap: 5px; }
 .dots i { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: dot 1.2s ease-in-out infinite; }
@@ -800,7 +806,9 @@ button, input, textarea { font: inherit; color: inherit; }
   inset: 0;
   z-index: 60;
   display: grid;
-  place-items: center;
+  /* 卡片比视口高时（手机 / 横屏）用 auto 外边距居中：放不下就从顶部开始，可以滚动看到全部 */
+  justify-items: center;
+  align-items: start;
   padding: calc(20px + var(--safe-top)) 16px calc(20px + var(--safe-bottom));
   overflow-y: auto;
   background: radial-gradient(ellipse at 50% 28%, rgba(84, 52, 146, .45), rgba(4, 3, 10, .94) 70%);
@@ -811,6 +819,7 @@ button, input, textarea { font: inherit; color: inherit; }
 .end-screen.show .end-card { animation: endIn .8s cubic-bezier(.2, .7, .2, 1); }
 @keyframes endIn { from { opacity: 0; transform: translateY(18px) scale(.98); } }
 .end-card {
+  margin: auto 0;
   width: min(620px, 100%);
   padding: 32px clamp(20px, 4vw, 38px) 28px;
   border: 1px solid var(--line-hot);
@@ -895,7 +904,25 @@ button, input, textarea { font: inherit; color: inherit; }
 @media (max-height: 560px) and (min-width: 641px) {
   .art { height: 92vh; }
   .dlg { min-height: 130px; padding-block: 24px 20px; }
-  .hud { max-height: calc(100vh - 220px); overflow-y: auto; }
+  /* 横屏手机 / 矮窗口：上下放不下情报面板和输入框，改成右侧栏，战斗中对话框让出右边 */
+  .hud { width: min(320px, 38vw); max-height: calc(100% - 72px - var(--safe-top)); overflow-y: auto; overscroll-behavior: contain; }
+  .play.has-hud .dock { padding-right: calc(min(320px, 38vw) + clamp(12px, 2vw, 28px) + 10px); }
+  .play.has-hud .banner { right: calc(min(320px, 38vw) + clamp(12px, 2vw, 28px)); }
+}
+
+/* 竖屏平板：桌面规则下立绘被限制在 44vw 宽，只剩一个头顶露在对话框上方 */
+@media (orientation: portrait) and (min-width: 641px) and (max-width: 1080px) {
+  .art { width: 68vw; height: min(62vh, 820px); }
+  .art-left { left: -4vw; }
+  .art-right { right: -4vw; }
+}
+
+/* 很矮的视口（手机弹出软键盘、横屏）：输入框收起「上一句」回顾，把空间留给提示语和输入框 */
+@media (max-height: 560px) {
+  .ask-context { display: none; }
+  .ask { padding-top: 14px; }
+  .ask-head { margin-bottom: 8px; }
+  .ask textarea { min-height: 52px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
