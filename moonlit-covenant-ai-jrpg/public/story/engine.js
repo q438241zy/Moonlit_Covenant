@@ -9,6 +9,8 @@ const BEAT_TYPES = new Set([...DISPLAY, 'set', 'if', 'input', 'battle']);
 const INPUT_KINDS = new Set(['dialogue', 'action', 'tactic', 'vow', 'free']);
 const FX = new Set(['shake', 'flash', 'fade-black', 'fade-in', 'desaturate', 'restore', 'blackout']);
 const SILENCE = /^[\s.。…、，,!！?？~～—\-]*$|^[（(]?\s*(沉默|不说话|不语|无言|保持沉默|……)\s*[)）]?$/;
+// 没有命中任何意图时，这些描写按沉默处理（如「（把剑插进土里，一言不发）」「（愣住，说不出话）」）
+const SILENT_HINT = /一言不发|沉默|不说话|没有说话|说不出话|不发一语|默不作声|愣住|呆住|僵住/;
 
 const clone = (v) => (v === undefined ? v : JSON.parse(JSON.stringify(v)));
 const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
@@ -165,7 +167,7 @@ export function next(run, chapter) {
       }
       run.stack.push({ path: ['shots', run.shotIdx, 'beats'], idx: 0 });
       if (shot.bg) run.bg = shot.bg;
-      return { kind: 'shot', shot: { id: shot.id, title: shot.title, bg: run.bg, music: shot.music || null, ambience: shot.ambience || [] } };
+      return { kind: 'shot', shot: { id: shot.id, title: interpolate(shot.title, run), bg: run.bg, music: shot.music || null, ambience: shot.ambience || [] } };
     }
     const list = top.lines || resolvePath(chapter, top.path) || [];
     if (top.battle && run.battle) {
@@ -296,6 +298,10 @@ export function demoJudge(node, text) {
     .filter((x) => x.id !== node.silent)
     .map((x, order) => ({ x, order, hits: (x.keywords || []).reduce((n, k) => n + (k && t.includes(String(k).toLowerCase()) ? 1 : 0), 0) }))
     .sort((a, b) => b.hits - a.hits || a.order - b.order);
+  if (!scored[0]?.hits && SILENT_HINT.test(raw) && find(node.silent)) {
+    const silent = find(node.silent);
+    return { intent: silent.id, secondary: null, quality: 1, morality: silent.morality || 0, feasible: true, source: 'demo' };
+  }
   const best = scored[0]?.hits ? scored[0].x : find(node.fallback) || intents[0];
   const second = node.multi ? scored.find((s) => s.hits > 0 && s.x.id !== best.id)?.x : null;
   const hits = scored[0]?.hits || 0;
