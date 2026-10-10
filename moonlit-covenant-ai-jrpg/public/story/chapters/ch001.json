@@ -1,0 +1,3110 @@
+{
+  "id": "ch001",
+  "number": 1,
+  "scriptId": "CH001_MENTOR_WHITE_ROBE",
+  "title": "第一章｜导师",
+  "shortTitle": "导师",
+  "estimatedMinutes": 12,
+  "source": "剧本/01導師.md",
+  "canon": {
+    "flags": {
+      "FLAG_CH000_HEMAI_DESTROYED": true,
+      "FLAG_CH000_BLACK_DRAGON_SEEN": true,
+      "FLAG_CH000_MOTHER_STATUS_UNKNOWN": true,
+      "FLAG_CH000_TOBY_SURVIVED_CAVE": true,
+      "FLAG_CH000_DRAGON_VOW": true,
+      "FLAG_CH000_DRAGON_REMAINS_OVER_HEMAI": true
+    },
+    "items": {
+      "ITEM_FAMILY_SHEPHERD_WHISTLE": 1
+    },
+    "vars": {
+      "PLAYER_VOW_PRIMARY": "VOW_REVENGE",
+      "PLAYER_GUILT_TOTAL": 0
+    },
+    "memories": {
+      "MEMORY_MOTHER_WORDS_FIND_WAY_HOME": "艾琳：“我吹这个，你就知道该往哪边回。”",
+      "MEMORY_FAMILY_ROLL_CALL": "艾琳：“报数！”——“我在！”“我、我也在！”",
+      "MEMORY_BORIN_LAST_WORDS": "先看清该砍谁"
+    }
+  },
+  "speakers": {
+    "kern_unknown": {
+      "name": "白袍男子",
+      "color": "#e8edf7",
+      "art": "/assets/story/npc/kern.svg"
+    }
+  },
+  "shots": [
+    {
+      "id": "01-01",
+      "title": "黎明一直没有来",
+      "bg": "cave-dawn",
+      "music": "low_drone_no_melody",
+      "ambience": [
+        "toby_breathing",
+        "wind_rock_crack",
+        "dragon_wing_hum",
+        "distant_collapse"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "守羊洞里的油灯只剩豆大火苗。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "托比裹着{PLAYER_NAME}的外衣，靠在石壁边睡着了。他睡得很不安稳，每当山下传来龙吼，手指便会抓紧衣角，嘴里含糊地喊一声“妈妈”。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}没有睡。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "他站在洞口，双手握着那把比山洞通道还要狭长的旧剑。剑尖朝外，刃口因握得太久微微颤动。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "山下的赫麦村仍在燃烧。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "黑龙没有离去。它在废墟上空一圈又一圈地盘旋，时而落下，掀开祷堂与民宅的残骸，像是在灰烬里寻找某件东西。"
+        },
+        {
+          "t": "narr",
+          "style": "voice",
+          "text": "{PLAYER_NAME}后来记不清那一夜究竟有多长。"
+        },
+        {
+          "t": "narr",
+          "style": "voice",
+          "text": "他只记得，天边明明已经泛白，太阳却像不敢升起。"
+        }
+      ]
+    },
+    {
+      "id": "01-02",
+      "title": "哥哥守在洞口",
+      "bg": "cave-dawn",
+      "beats": [
+        {
+          "t": "fx",
+          "fx": "shake",
+          "ms": 350
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "托比被一声爆响惊醒。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "哥！"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "他慌张地爬起来，先看向洞口，再看自己身旁。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "妈妈还没来吗？"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}没有立刻回答。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "托比走到他身旁，想探头往山下看。{PLAYER_NAME}横过剑鞘，挡住他的视线。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "我只看一下。"
+        },
+        {
+          "t": "say",
+          "who": "aku",
+          "text": "别看。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "可是她说会吹哨子。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "他盯着{PLAYER_NAME}掌心里那枚牧羊铜哨。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "是不是我们没听见？"
+        },
+        {
+          "t": "input",
+          "id": "FI_CH001_SC02_TOBY_WAITING_001",
+          "kind": "dialogue",
+          "prompt": "托比仍相信艾琳会来。{PLAYER_NAME}可以回答、安慰、承认自己不知道，或用行动陪着他。",
+          "placeholder": "对托比说点什么，或者用行动陪着他……",
+          "focus": [
+            "toby"
+          ],
+          "context": [
+            "守羊洞洞口，接近黎明。油灯只剩豆大火苗。山下赫麦村仍在燃烧，黑龙在废墟上空一圈又一圈地盘旋，时而落下翻找残骸。",
+            "托比（8岁）刚被一声爆响惊醒，裹着{PLAYER_NAME}的外衣。他问：“妈妈还没来吗？”“可是她说会吹哨子。”“是不是我们没听见？”",
+            "{PLAYER_NAME}掌心握着母亲交给他的牧羊铜哨；他横过剑鞘挡住托比，不让他往山下看。",
+            "艾琳在旧牧道窄坡扭伤了脚踝，至今没有消息；{PLAYER_NAME}并不知道她是否还活着。"
+          ],
+          "principles": [
+            "托比仍相信艾琳会来。{PLAYER_NAME}可以回答、安慰、承认自己不知道，或用行动陪着他。",
+            "真诚但无法保证的回答，优先提升家庭信赖。",
+            "绝对承诺“妈妈一定没事”会记录为安抚性承诺，后续真相揭露时产生回收。",
+            "斥责托比哭泣会增加家庭创伤；但单纯要求他压低声音以避免危险，不视为欺负。",
+            "玩家保持沉默时，{PLAYER_NAME}会把外衣重新披到托比肩上，不将沉默自动判定为冷漠。",
+            "固定承接（所有人都会发生，反应里不要提前写）：山下忽然亮起一圈黑红光芒，{PLAYER_NAME}把托比拉到身后，再次举起长剑。"
+          ],
+          "intents": [
+            {
+              "id": "scold",
+              "label": "斥责哭泣",
+              "desc": "嫌托比吵、骂他哭、叫他闭嘴，带着不耐烦或羞辱。单纯为了安全要求小声不算此类。",
+              "keywords": [
+                "不许哭",
+                "哭什么",
+                "闭嘴",
+                "烦死了",
+                "吵死了",
+                "没出息",
+                "再哭",
+                "哭哭啼啼",
+                "丢人",
+                "别烦我"
+              ],
+              "voice": "harsh",
+              "morality": -1,
+              "set": {
+                "flags": {
+                  "FLAG_CH001_FAMILY_TRAUMA_TOBY": true
+                },
+                "add": {
+                  "FAMILY_TRAUMA_TOTAL": 1
+                }
+              },
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "托比猛地闭上嘴。眼泪还挂在脸上，他却连抽泣都不敢出声了。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "他缩回石壁边，把{PLAYER_NAME}的外衣攥得紧紧的。"
+                }
+              ]
+            },
+            {
+              "id": "hope",
+              "label": "给希望但不保证",
+              "desc": "给托比留一点希望（也许、再等等、一起听哨声、等天亮），但没有做绝对保证。",
+              "keywords": [
+                "也许",
+                "说不定",
+                "再等等",
+                "一起等",
+                "一起听",
+                "认得路",
+                "等天亮",
+                "或许",
+                "还有希望"
+              ],
+              "voice": "warm",
+              "morality": 1,
+              "set": {
+                "add": {
+                  "FAMILY_TRUST": 1
+                }
+              },
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "toby",
+                  "text": "……那我们一起听。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "托比把耳朵转向洞口，好像只要够安静，就能从风声里分辨出那声哨响。"
+                }
+              ]
+            },
+            {
+              "id": "promise",
+              "label": "绝对承诺",
+              "desc": "明知无法保证，却向托比绝对承诺妈妈一定没事、一定会来（安抚性承诺，真相揭露时会被回收）。",
+              "keywords": [
+                "一定没事",
+                "一定会来",
+                "保证",
+                "答应你",
+                "肯定会",
+                "一定会",
+                "绝对",
+                "我发誓",
+                "一定能",
+                "肯定没事",
+                "会来的",
+                "会没事的"
+              ],
+              "voice": "reassuring",
+              "morality": 0,
+              "set": {
+                "flags": {
+                  "FLAG_CH001_ABSOLUTE_PROMISE_MOTHER_SAFE": true
+                },
+                "memories": {
+                  "MEMORY_CH001_PROMISE_MOTHER_SAFE": "守羊洞口，他对托比说：妈妈一定没事。"
+                }
+              },
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "托比用力点了点头，像是把这句话含进嘴里，再也不肯吐出来。"
+                },
+                {
+                  "t": "say",
+                  "who": "toby",
+                  "text": "嗯。那我等她吹哨子。"
+                }
+              ]
+            },
+            {
+              "id": "honest",
+              "label": "诚实说不知道",
+              "desc": "真诚承认自己也不知道母亲在哪、能不能来，不骗他，也不做保证（包括坦白她可能回不来）。",
+              "keywords": [
+                "不知道",
+                "说不准",
+                "不确定",
+                "不清楚",
+                "不骗你",
+                "不会骗你",
+                "实话",
+                "没法保证",
+                "没法",
+                "不敢保证",
+                "不敢",
+                "回不来",
+                "做好准备"
+              ],
+              "voice": "honest",
+              "morality": 1,
+              "set": {
+                "flags": {
+                  "FLAG_CH001_TOBY_HONEST_ANSWER": true
+                },
+                "add": {
+                  "FAMILY_TRUST": 1
+                }
+              },
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "toby",
+                  "text": "……哥也不知道？"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "托比没有哭出声。他往哥哥身边挪近了一点，把额头抵在他的手臂上。"
+                }
+              ]
+            },
+            {
+              "id": "hush",
+              "label": "要他压低声音",
+              "desc": "为了不被黑龙发现，要求托比小声、别探头——出于安全，不是责骂。",
+              "keywords": [
+                "小声",
+                "嘘",
+                "别出声",
+                "压低声音",
+                "安静",
+                "轻点",
+                "别让它听见",
+                "会被发现",
+                "捂住嘴",
+                "别探头"
+              ],
+              "voice": "protective",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "托比赶紧用两只手捂住自己的嘴，用力点头。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "他没有再往洞口探头，只是贴着哥哥的腿站着。"
+                }
+              ]
+            },
+            {
+              "id": "comfort",
+              "label": "安慰陪伴",
+              "desc": "用话语或动作安抚托比：抱住、摸头、拍背、给他披衣服、告诉他哥在。不涉及对母亲下落的保证。",
+              "keywords": [
+                "别怕",
+                "哥在",
+                "抱住",
+                "摸摸头",
+                "拍拍",
+                "搂住",
+                "陪着你",
+                "我在这",
+                "不怕",
+                "擦眼泪",
+                "披上",
+                "外衣",
+                "别哭",
+                "蹲下",
+                "握住他的手"
+              ],
+              "voice": "warm",
+              "morality": 1,
+              "set": {
+                "add": {
+                  "FAMILY_TRUST": 1
+                }
+              },
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "托比把脸埋进哥哥的衣服里，肩膀一抽一抽的。"
+                },
+                {
+                  "t": "say",
+                  "who": "toby",
+                  "text": "……嗯。"
+                }
+              ]
+            },
+            {
+              "id": "fallback",
+              "label": "其他回应",
+              "desc": "无法归入以上类别的回应。",
+              "keywords": [
+                "嗯",
+                "托比",
+                "睡吧",
+                "再睡会"
+              ],
+              "voice": "neutral",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "托比仰头看着哥哥，等了一会儿，又把视线落回那枚铜哨上。"
+                }
+              ]
+            },
+            {
+              "id": "silent",
+              "label": "沉默披衣",
+              "desc": "不说话。沉默不等于冷漠：{PLAYER_NAME}把外衣重新披到托比肩上。",
+              "voice": "quiet",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}没有回答。他把滑落的外衣重新披到托比肩上，又把衣领往上拢了拢。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "托比没有再问。他靠着哥哥的手臂，盯着那枚铜哨。"
+                }
+              ]
+            }
+          ],
+          "silent": "silent",
+          "fallback": "fallback"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "山下忽然亮起一圈黑红光芒。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}把托比拉到身后，再次举起长剑。"
+        }
+      ]
+    },
+    {
+      "id": "01-03",
+      "title": "有人逆着逃难的人走来",
+      "bg": "north-trail-night",
+      "music": "first_clear_high_note",
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "北山缓坡上，最后一批村民正在互相搀扶着往高处撤离。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "只有一个人逆着人流往下走。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "那是一名披着白色长袍的男子。袍角早已沾满泥灰，肩上没有圣教披风，也没有军队徽记。他手中握着一柄近两米高的银白法杖，杖首悬着三枚彼此不相连的光环。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "一名村民跌倒在碎石旁。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "白袍男子没有停下脚步，只把法杖向旁侧一点。一层薄光托住村民的后背，将人平稳推向安全位置。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "他抬头，看见黑龙正在祷堂上方张开巨口。"
+        },
+        {
+          "t": "say",
+          "who": "kern_unknown",
+          "text": "还没吃够吗？"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "黑龙的竖瞳转向他。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "白袍男子将法杖底端插进地面。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "三枚光环同时对准龙腹。"
+        }
+      ]
+    },
+    {
+      "id": "01-04",
+      "title": "一发光明弹",
+      "bg": "north-trail-night",
+      "music": "silence_then_burst",
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "白袍男子伸出左手，像握住一根看不见的弦。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "空气里的微光被瞬间抽向法杖。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "废墟中的火星、村民手里的提灯、天边即将出现的第一缕晨光，仿佛都在同一刻向他靠拢。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "三枚光环逐层收束。"
+        },
+        {
+          "t": "say",
+          "who": "kern_unknown",
+          "text": "光明弹。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "他松开手指。"
+        },
+        {
+          "t": "fx",
+          "fx": "flash",
+          "ms": 700
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "世界短暂失去声音。"
+        },
+        {
+          "t": "bg",
+          "bg": "hemai-sky-dawn",
+          "fx": "cut"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "一道只有拳头粗的白光从法杖射出，没有夸张地照亮整片天空，却笔直贯穿黑龙腹部最薄的一块鳞甲。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "下一秒，声音才追上光。"
+        },
+        {
+          "t": "fx",
+          "fx": "shake",
+          "ms": 800
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "轰——！"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "黑龙的身体在半空猛然折起。腹部被打出一道焦黑破口，黑色液体尚未落地便化作灰雾。它撞断半座钟楼残架，巨翼掀起的风压把废墟里的灰烬卷上天空。"
+        },
+        {
+          "t": "bg",
+          "bg": "cave-dawn",
+          "fx": "fade"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "守羊洞内，托比瞪大眼睛。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "哥……他把龙打穿了。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}一言不发。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "他看着自己长剑上那几乎看不见的七色微光，又看向山下那道仍在燃烧的白色轨迹。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "第一次如此清楚地理解——"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "真正的魔术师，和现在的自己，隔着多远。"
+        }
+      ]
+    },
+    {
+      "id": "01-05",
+      "title": "黑龙负伤逃离",
+      "bg": "north-trail-night",
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "黑龙痛苦咆哮，朝白袍男子喷出一束黑焰。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "男子拔起法杖，在身前画出半圆。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "一道薄得像玻璃的光壁升起。"
+        },
+        {
+          "t": "fx",
+          "fx": "desaturate"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "黑焰撞上光壁，整座山坡都被映成灰白。光壁表面迅速爬满裂纹，男子的靴子在泥地里向后滑出半步。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "他并非毫无压力。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "但一步也没有退开。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "光壁后方，是几名来不及逃远的村民。"
+        },
+        {
+          "t": "say",
+          "who": "kern_unknown",
+          "text": "飞得动，就滚。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "黑龙腹部的破口不断逸出黑雾。它愤怒地拍动双翼，几次试图俯冲，颈侧锁链却发出刺耳震鸣。"
+        },
+        {
+          "t": "fx",
+          "fx": "restore"
+        },
+        {
+          "t": "bg",
+          "bg": "hemai-sky-dawn",
+          "fx": "fade"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "最终，它拖着受伤的腹部升上天空。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "巨翼每挥动一次，便有黑色灰屑从伤口洒落。它向南方群山逃去，身影逐渐被雷云吞没。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "白袍男子抬起法杖，似乎只要再蓄一击便能追打。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "山坡后却传来伤者的呻吟。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "他放下法杖，转身走向村民。"
+        },
+        {
+          "t": "narr",
+          "style": "voice",
+          "text": "后来{PLAYER_NAME}曾经想过。"
+        },
+        {
+          "t": "narr",
+          "style": "voice",
+          "text": "那一刻真正让可恩显得强大的，也许不是他能打穿黑龙。"
+        },
+        {
+          "t": "narr",
+          "style": "voice",
+          "text": "而是他明明有机会追上去，却先回头救人。"
+        }
+      ]
+    },
+    {
+      "id": "01-06",
+      "title": "山洞里的长剑",
+      "bg": "cave-dawn",
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "半刻钟后，脚步声靠近洞口。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}立刻把托比推到岩壁后，长剑横在胸前。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "白袍男子弯腰走进洞口。洞内狭窄，他没有举起法杖，只将它平放在地上，双手留在{PLAYER_NAME}看得见的位置。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "剑尖对准他的喉咙。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "白袍男子看了一眼剑，再看{PLAYER_NAME}。"
+        },
+        {
+          "t": "say",
+          "who": "kern_unknown",
+          "text": "握得很用力。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}没有回话。"
+        },
+        {
+          "t": "say",
+          "who": "kern_unknown",
+          "text": "可惜这里太窄。你真砍下来，剑会先卡在洞顶。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "托比从{PLAYER_NAME}身后露出半张脸。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "你是来抓我们的吗？"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "白袍男子蹲低一点，让自己不显得那么高大。"
+        },
+        {
+          "t": "say",
+          "who": "kern_unknown",
+          "text": "不是。我来看洞里还有没有活人。"
+        },
+        {
+          "t": "input",
+          "id": "FI_CH001_SC06_CAVE_CONFRONT_001",
+          "kind": "free",
+          "prompt": "陌生的白袍魔术师正在剑尖前等待。{PLAYER_NAME}可以质问、警告、道谢、要求证明身份，或保持戒备。",
+          "placeholder": "说点什么，或写下你的动作……",
+          "focus": [
+            "kern_unknown",
+            "toby"
+          ],
+          "context": [
+            "守羊洞入口，洞内狭窄。白袍男子（尚未自报姓名）弯腰走进洞口，把法杖平放在地上，双手留在{PLAYER_NAME}看得见的位置。",
+            "{PLAYER_NAME}把托比推到岩壁后，长剑横在胸前，剑尖对准男子的喉咙。托比从他身后露出半张脸，问过：“你是来抓我们的吗？”",
+            "白袍男子刚说：“握得很用力。”“可惜这里太窄。你真砍下来，剑会先卡在洞顶。”“不是。我来看洞里还有没有活人。”",
+            "半刻钟前，{PLAYER_NAME}在洞口亲眼看见这名男子一发光明弹打穿黑龙腹部，又以光壁挡下黑焰；黑龙负伤向南逃去，他没有追击，转身救治村民。",
+            "男子是魔术师，肩上没有圣教披风，也没有军队徽记；真名白·可恩（白是姓）。村长霍恩正赶往洞口。"
+          ],
+          "principles": [
+            "陌生的白袍魔术师正在剑尖前等待。{PLAYER_NAME}可以质问、警告、道谢、要求证明身份，或保持戒备。",
+            "可恩不因{PLAYER_NAME}无礼而生气。他会把高度警戒视为昨夜创伤的正常反应。",
+            "玩家若直接攻击，可恩只用两指夹住剑脊并卸力，不伤害{PLAYER_NAME}；同时提醒“你弟弟就在剑的回弹方向”。",
+            "玩家若道谢，可恩不接受英雄化称赞，只回答：“我来晚了。”",
+            "玩家询问姓名时，他会说：“白·可恩。白是姓，不是因为我穿白袍。”",
+            "{PLAYER_NAME}的剑要等霍恩赶到后才会垂下；反应里不要让他收剑入鞘，也不要提前写霍恩出场。"
+          ],
+          "intents": [
+            {
+              "id": "attack",
+              "label": "直接攻击",
+              "desc": "挥剑砍、刺，或以其他方式攻击白袍男子。",
+              "keywords": [
+                "砍下去",
+                "砍过去",
+                "砍他",
+                "刺过去",
+                "刺向",
+                "劈",
+                "挥剑",
+                "出剑",
+                "攻击",
+                "捅",
+                "一剑"
+              ],
+              "voice": "aggressive",
+              "morality": -1,
+              "set": {
+                "flags": {
+                  "FLAG_CH001_ATTACKED_KERN": true
+                },
+                "memories": {
+                  "MEMORY_CH001_KERN_TWO_FINGERS": "他全力的一剑，被白袍男子用两根手指卸掉了。"
+                }
+              },
+              "reactionFixed": true,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "剑锋刚落，白袍男子便抬起右手，只用两根手指夹住剑脊，顺着来势轻轻一卸。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "那股力道像被抽走了，剑停在半空，没有伤到任何人。"
+                },
+                {
+                  "t": "say",
+                  "who": "kern_unknown",
+                  "text": "你弟弟就在剑的回弹方向。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "他松开手指，没有夺剑，也没有退开。"
+                }
+              ]
+            },
+            {
+              "id": "thank",
+              "label": "道谢或称赞",
+              "desc": "感谢他救了村民、赶走黑龙，或把他当英雄称赞。",
+              "keywords": [
+                "谢谢",
+                "谢了",
+                "多谢",
+                "感谢",
+                "救了我们",
+                "恩人",
+                "了不起",
+                "厉害",
+                "英雄"
+              ],
+              "voice": "grateful",
+              "morality": 1,
+              "reactionFixed": true,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "白袍男子没有接下那句称赞。"
+                },
+                {
+                  "t": "say",
+                  "who": "kern_unknown",
+                  "text": "我来晚了。"
+                }
+              ]
+            },
+            {
+              "id": "ask_name",
+              "label": "询问姓名",
+              "desc": "问他叫什么名字、是谁。",
+              "keywords": [
+                "你是谁",
+                "名字",
+                "叫什么",
+                "怎么称呼",
+                "姓名",
+                "什么人",
+                "哪位",
+                "报上名"
+              ],
+              "voice": "curious",
+              "morality": 0,
+              "set": {
+                "flags": {
+                  "FLAG_CH001_KERN_NAME_ASKED": true
+                }
+              },
+              "reactionFixed": true,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "kern_unknown",
+                  "text": "白·可恩。白是姓，不是因为我穿白袍。"
+                }
+              ]
+            },
+            {
+              "id": "prove",
+              "label": "要求证明身份",
+              "desc": "质疑他的来历与目的，要他证明身份、说明凭什么相信他（圣教？军队？来干什么？）。",
+              "keywords": [
+                "证明",
+                "凭什么",
+                "怎么信",
+                "不信",
+                "圣教",
+                "军队",
+                "身份",
+                "来历",
+                "目的",
+                "想干什么",
+                "来干什么",
+                "哪里来的"
+              ],
+              "voice": "guarded",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "白袍男子没有恼，也没有急着辩解。他把双手摊开，让掌心朝向{PLAYER_NAME}。"
+                },
+                {
+                  "t": "say",
+                  "who": "kern_unknown",
+                  "text": "我拿不出能证明自己的东西。你看得见我的手，也看得见法杖在地上。"
+                },
+                {
+                  "t": "say",
+                  "who": "kern_unknown",
+                  "text": "够不够，由你决定。"
+                }
+              ]
+            },
+            {
+              "id": "ask_night",
+              "label": "质问昨夜与黑龙",
+              "desc": "质问他为什么现在才来，或追问黑龙去向、山下与家人的情况。",
+              "keywords": [
+                "现在才来",
+                "早干什么",
+                "为什么不早",
+                "太晚",
+                "那条龙",
+                "龙呢",
+                "黑龙",
+                "逃了",
+                "山下",
+                "外面",
+                "村子",
+                "我妈",
+                "妈妈",
+                "母亲"
+              ],
+              "voice": "angry",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "kern_unknown",
+                  "text": "我来晚了。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "他没有替自己辩解，只补了一句："
+                },
+                {
+                  "t": "say",
+                  "who": "kern_unknown",
+                  "text": "龙往南逃了。山下还有活着的人。"
+                }
+              ]
+            },
+            {
+              "id": "warn",
+              "label": "警告或保持戒备",
+              "desc": "警告他别靠近、站住、退后，或明确表示不会放下剑。",
+              "keywords": [
+                "别过来",
+                "站住",
+                "别动",
+                "退后",
+                "不许靠近",
+                "离远点",
+                "出去",
+                "滚",
+                "盯着",
+                "不放下",
+                "警告",
+                "后退"
+              ],
+              "voice": "guarded",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "白袍男子真的没有再动，甚至把双手又抬高了一点。"
+                },
+                {
+                  "t": "say",
+                  "who": "kern_unknown",
+                  "text": "好，我不动。昨夜之后，换了谁都会这样。"
+                }
+              ]
+            },
+            {
+              "id": "trust",
+              "label": "半信半疑",
+              "desc": "表示愿意相信他、想收剑或为失礼道歉——但剑尖还没离开（霍恩赶到后才会垂下）。",
+              "keywords": [
+                "收剑",
+                "放下剑",
+                "相信你",
+                "信你",
+                "对不起",
+                "抱歉",
+                "好吧",
+                "垂下"
+              ],
+              "voice": "warm",
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}的剑尖往下沉了半寸，却终究没有收回去。"
+                },
+                {
+                  "t": "say",
+                  "who": "kern_unknown",
+                  "text": "不急。等你确认了再放。"
+                }
+              ]
+            },
+            {
+              "id": "fallback",
+              "label": "其他回应",
+              "desc": "无法归类的回应。",
+              "keywords": [
+                "嗯",
+                "哦"
+              ],
+              "voice": "neutral",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "白袍男子安静地听着，没有打断，也没有起身。"
+                }
+              ]
+            },
+            {
+              "id": "silent",
+              "label": "沉默戒备",
+              "desc": "一言不发，剑尖不动。",
+              "voice": "guarded",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}一个字也没有说。剑尖仍稳稳停在男子喉前。"
+                },
+                {
+                  "t": "say",
+                  "who": "kern_unknown",
+                  "text": "不说话也好。昨夜之后，谁都有权先戒备。"
+                }
+              ]
+            }
+          ],
+          "silent": "silent",
+          "fallback": "fallback"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "洞外传来急促喘息。"
+        },
+        {
+          "t": "say",
+          "who": "horn",
+          "note": "画外",
+          "text": "{PLAYER_NAME}！收剑！"
+        }
+      ]
+    },
+    {
+      "id": "01-07",
+      "title": "村长出面解围",
+      "bg": "cave-dawn",
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "村长霍恩扶着岩壁走进来。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "他的胡须被烧焦一半，左臂缠着临时撕下的布条，脸上全是烟灰。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "他看见{PLAYER_NAME}的剑，立刻挡在两人中间。"
+        },
+        {
+          "t": "say",
+          "who": "horn",
+          "text": "别动手！是他救了下面的人。那条龙也是他赶走的。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}的剑仍没有放下。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "霍恩压低声音。"
+        },
+        {
+          "t": "say",
+          "who": "horn",
+          "text": "孩子，我知道你现在谁都不信。但这一次，先信我。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "可恩伸手按住霍恩肩膀，把他轻轻拉到旁边。"
+        },
+        {
+          "t": "say",
+          "who": "kern",
+          "text": "不用替我挡。他有权先确认靠近弟弟的是什么人。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "他重新看向{PLAYER_NAME}。"
+        },
+        {
+          "t": "say",
+          "who": "kern",
+          "text": "现在确认完了吗？"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}慢慢垂下剑尖。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "可恩没有笑，也没有用胜利者的口气评价他，只弯腰捡起法杖。"
+        },
+        {
+          "t": "say",
+          "who": "kern",
+          "text": "山下还有人需要帮忙。你们能走吗？"
+        }
+      ]
+    },
+    {
+      "id": "01-08",
+      "title": "真正的强者先搬石头",
+      "bg": "hemai-ruins-dawn",
+      "music": "low_strings_dawn_motif",
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}牵着托比下山。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "赫麦村已经看不出原来的模样。黑焰虽然随龙离去而减弱，许多房屋却只剩灰白骨架。"
+        },
+        {
+          "t": "bg",
+          "bg": "north-slope-camp",
+          "fx": "fade"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "幸存者在北山脚搭起临时营地，有人包扎伤口，有人一遍遍报出失踪者姓名。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "可恩没有站在高处接受感谢。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "他先用光术封住一名老人的伤口，又和两个村民一起抬开压在木梁下的石块。法袍沾上血与泥，他也没有停下来整理。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "托比小声问："
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "他不是很厉害吗？为什么还要自己搬？"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}看着可恩把一名受伤孩子交还给父亲。"
+        },
+        {
+          "t": "say",
+          "who": "aku",
+          "text": "因为石头还在那里。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "可恩像是听见了，回头看他一眼。"
+        },
+        {
+          "t": "say",
+          "who": "kern",
+          "text": "这句比很多魔法咒语有用。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "他抬手指向营地后方。"
+        },
+        {
+          "t": "say",
+          "who": "kern",
+          "text": "你们先去找村长。我处理完这里就来。"
+        }
+      ]
+    },
+    {
+      "id": "01-09",
+      "title": "艾琳没有走上山",
+      "bg": "north-slope-camp",
+      "music": null,
+      "ambience": [
+        "wind",
+        "distant_crying"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "霍恩坐在一块倒下的界碑旁。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "他看见{PLAYER_NAME}和托比，原本想站起来，却只撑到一半便又坐了回去。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "托比先跑过去。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "村长爷爷，妈妈呢？"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "霍恩嘴唇动了动，没有发出声音。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}停在几步之外。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "他突然明白了。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "但托比还没有。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "她脚受伤了，你有扶她，对不对？她是不是在别的山洞？"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "霍恩低下头，从怀里拿出一枚被烧得发黑的麦穗发夹。那是艾琳每天盘起头发时使用的东西。"
+        },
+        {
+          "t": "say",
+          "who": "horn",
+          "text": "我们走缓坡。玛拉扶着她，我在前面开路。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "FLAG_CH000_MOTHER_ANKLE_SPLINTED"
+          },
+          "then": [
+            {
+              "t": "think",
+              "text": "她脚踝上那两根树枝，是我亲手绑上去的。"
+            }
+          ]
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "他的声音很哑。"
+        },
+        {
+          "t": "say",
+          "who": "horn",
+          "text": "黑龙第二次喷火的时候，坡上有个孩子摔倒了。艾琳把孩子推到我这边……"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "他握紧发夹。"
+        },
+        {
+          "t": "say",
+          "who": "horn",
+          "text": "我回头时，火已经把路截断。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "托比摇头。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "那就等火熄掉。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "霍恩闭上眼睛。"
+        },
+        {
+          "t": "say",
+          "who": "horn",
+          "text": "对不起。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "你去把她带回来。"
+        },
+        {
+          "t": "say",
+          "who": "horn",
+          "text": "托比——"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "你是村长！你叫大家往山上跑的！你去把她带回来！"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "他的声音终于碎掉。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "霍恩把发夹递向{PLAYER_NAME}。"
+        },
+        {
+          "t": "say",
+          "who": "horn",
+          "text": "艾琳……没有走出那片火。"
+        },
+        {
+          "t": "input",
+          "id": "FI_CH001_SC09_MOTHER_DEATH_001",
+          "kind": "free",
+          "prompt": "艾琳的死亡被正式确认。{PLAYER_NAME}可以质问、否认、愤怒、安慰托比、责怪霍恩、拔剑冲向废墟，或沉默。",
+          "placeholder": "说点什么，或写下你的动作……",
+          "focus": [
+            "horn",
+            "toby",
+            "kern"
+          ],
+          "context": [
+            "北山脚临时营地。村长霍恩坐在一块倒下的界碑旁，手里是艾琳每天盘头发用的麦穗发夹，已被烧得发黑，正递向{PLAYER_NAME}。",
+            "霍恩说：他们走缓坡，玛拉扶着艾琳，他在前面开路；黑龙第二次喷火时，坡上有个孩子摔倒，艾琳把孩子推到霍恩那边；霍恩回头时，火已经把路截断。“艾琳……没有走出那片火。”",
+            "托比否认、哭喊，要村长把妈妈带回来，声音已经碎掉。白·可恩站在几步外。山下的赫麦村废墟仍在冒烟。",
+            "本章正史：艾琳的死亡被正式确认，不展示遗体，也不会出现“其实没死”。"
+          ],
+          "principles": [
+            "艾琳的死亡被正式确认。{PLAYER_NAME}可以质问、否认、愤怒、安慰托比、责怪霍恩、拔剑冲向废墟，或沉默。",
+            "悲伤不评分“好坏”。本节点只判定{PLAYER_NAME}的行动是否危及自己或托比，以及他是否把责任强加给无力承担的人。",
+            "玩家责怪霍恩时，霍恩不反驳，只承认自己没能救回艾琳；后续可能形成修复支线。",
+            "玩家要冲回火场时，可恩会以身体挡住，但不说“冷静点”；他会问：“你现在进去，是找她，还是想让自己一起死？”",
+            "玩家照顾托比不代表压抑自己的悲伤。{PLAYER_NAME}可以一边哭、一边抱住弟弟。",
+            "若玩家僵住，可恩会接住倒下的托比，留给{PLAYER_NAME}数秒不被任何人要求坚强的时间。",
+            "默认承接（所有人都会发生，反应里不要提前写）：{PLAYER_NAME}接过发夹；托比用拳头打着他的胸口；{PLAYER_NAME}跪下让弟弟抱住自己；可恩摘下手套默哀。"
+          ],
+          "intents": [
+            {
+              "id": "blame",
+              "label": "责怪霍恩",
+              "desc": "把艾琳的死怪到霍恩头上（都怪你、你为什么没救她、你丢下了她）。",
+              "keywords": [
+                "都怪你",
+                "你的错",
+                "你害",
+                "为什么不救",
+                "为什么没救",
+                "你怎么不",
+                "没用的",
+                "你凭什么",
+                "你为什么不",
+                "怪你",
+                "你丢下"
+              ],
+              "voice": "angry",
+              "morality": -1,
+              "set": {
+                "flags": {
+                  "FLAG_CH001_BLAMED_HORN": true
+                },
+                "memories": {
+                  "MEMORY_CH001_BLAMED_HORN": "他把艾琳的死怪到了霍恩头上。霍恩没有反驳。"
+                }
+              },
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "霍恩没有反驳。他低着头，像是早就在等这句话。"
+                },
+                {
+                  "t": "say",
+                  "who": "horn",
+                  "text": "……是我没能把她带回来。"
+                }
+              ]
+            },
+            {
+              "id": "rush",
+              "label": "冲回火场",
+              "desc": "想冲下山、拔剑冲向废墟去找艾琳，危及自己。",
+              "keywords": [
+                "冲回",
+                "冲下",
+                "冲向",
+                "火场",
+                "去找她",
+                "我去找",
+                "去救",
+                "跑下山",
+                "回去找",
+                "拔剑",
+                "下山"
+              ],
+              "voice": "reckless",
+              "morality": 0,
+              "set": {
+                "flags": {
+                  "FLAG_CH001_TRIED_RUSH_FIRE": true
+                },
+                "memories": {
+                  "MEMORY_CH001_KERN_QUESTION": "可恩问：“你现在进去，是找她，还是想让自己一起死？”"
+                }
+              },
+              "reactionFixed": true,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}刚转身，一道白色身影已经挡在他面前。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "可恩没有举杖，也没有伸手抓他，只是用自己的身体堵住了下山的路。"
+                },
+                {
+                  "t": "say",
+                  "who": "kern",
+                  "text": "你现在进去，是找她，还是想让自己一起死？"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}的脚步停住了。"
+                }
+              ]
+            },
+            {
+              "id": "question",
+              "label": "质问或否认",
+              "desc": "追问细节、怀疑消息，或否认母亲已死（不可能、你看错了、她还活着）。",
+              "keywords": [
+                "不可能",
+                "骗人",
+                "不是真的",
+                "你骗我",
+                "胡说",
+                "看错",
+                "你确定",
+                "怎么会",
+                "为什么",
+                "在哪",
+                "还活着",
+                "不会的",
+                "我不信"
+              ],
+              "voice": "grief",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "horn",
+                  "text": "我回头的时候，路已经没了。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "他没有争辩，也没有再说一遍。他只是一直举着那枚发夹，手臂在发抖。"
+                }
+              ]
+            },
+            {
+              "id": "anger",
+              "label": "愤怒发泄",
+              "desc": "对黑龙、对命运愤怒：怒吼、砸地、咒骂，但没有把责任推给霍恩。",
+              "keywords": [
+                "该死",
+                "混蛋",
+                "可恶",
+                "怒吼",
+                "大吼",
+                "砸",
+                "捶",
+                "踹",
+                "杀了它",
+                "那条龙",
+                "宰了"
+              ],
+              "voice": "angry",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "没有人拦他，也没有人叫他小声。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "霍恩垂着头，可恩站在原地。他们只是让那声音过去。"
+                }
+              ]
+            },
+            {
+              "id": "comfort",
+              "label": "照顾托比",
+              "desc": "安慰、抱住托比；可以一边哭一边照顾弟弟。",
+              "keywords": [
+                "抱住托比",
+                "抱住",
+                "搂住",
+                "托比",
+                "弟弟",
+                "别怕",
+                "哥在",
+                "一边哭",
+                "拉过来"
+              ],
+              "voice": "warm",
+              "morality": 1,
+              "set": {
+                "flags": {
+                  "FLAG_CH001_HELD_TOBY_IN_GRIEF": true
+                }
+              },
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}伸手把托比拉到身边。他自己的眼泪也掉了下来，却没有松开弟弟。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "没有人对他说“你要坚强”。"
+                }
+              ]
+            },
+            {
+              "id": "grieve",
+              "label": "哭泣崩溃",
+              "desc": "放声哭泣、呼喊母亲、整个人崩溃。",
+              "keywords": [
+                "哭",
+                "眼泪",
+                "流泪",
+                "跪倒",
+                "崩溃",
+                "喊妈",
+                "妈妈",
+                "母亲",
+                "嚎"
+              ],
+              "voice": "grief",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}的视线一下子模糊了。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "霍恩没有说“节哀”，可恩也没有说“坚强”。在这片还在冒烟的山坡上，没有人要求他忍住。"
+                }
+              ]
+            },
+            {
+              "id": "frozen",
+              "label": "僵住",
+              "desc": "愣住、说不出话、一动不动。",
+              "keywords": [
+                "愣住",
+                "僵住",
+                "呆住",
+                "说不出话",
+                "发不出声",
+                "一动不动",
+                "一片空白",
+                "站着不动",
+                "发抖"
+              ],
+              "voice": "quiet",
+              "morality": 0,
+              "set": {
+                "flags": {
+                  "FLAG_CH001_FROZE_AT_DEATH_NEWS": true
+                }
+              },
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}僵在原地。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "托比哭得站不稳，膝盖一软就要倒下。可恩上前一步，接住了他。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "没有人催{PLAYER_NAME}开口，也没有人叫他坚强。那几秒钟，是只留给他一个人的。"
+                }
+              ]
+            },
+            {
+              "id": "fallback",
+              "label": "其他反应",
+              "desc": "无法归类的反应。",
+              "keywords": [
+                "嗯",
+                "发夹",
+                "接过"
+              ],
+              "voice": "neutral",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "霍恩的手仍伸在半空。那枚发夹在晨风里微微发颤。"
+                }
+              ]
+            },
+            {
+              "id": "silent",
+              "label": "沉默僵住",
+              "desc": "没有任何回应——视为僵住。",
+              "voice": "quiet",
+              "morality": 0,
+              "set": {
+                "flags": {
+                  "FLAG_CH001_FROZE_AT_DEATH_NEWS": true
+                }
+              },
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}僵在原地。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "托比哭得站不稳，膝盖一软就要倒下。可恩上前一步，接住了他。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "没有人催{PLAYER_NAME}开口，也没有人叫他坚强。那几秒钟，是只留给他一个人的。"
+                }
+              ]
+            }
+          ],
+          "silent": "silent",
+          "fallback": "fallback"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}接过发夹。"
+        },
+        {
+          "t": "set",
+          "flags": {
+            "FLAG_CH001_MOTHER_DEATH_CONFIRMED": true
+          },
+          "items": {
+            "ITEM_MOTHER_WHEAT_HAIRPIN": 1
+          }
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "金属仍带着一点余温。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "托比用拳头打着他的胸口。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "你说过她会来……"
+        },
+        {
+          "t": "if",
+          "when": {
+            "any": [
+              {
+                "intent": "FI_CH001_SC02_TOBY_WAITING_001",
+                "is": "promise"
+              },
+              {
+                "flag": "FLAG_CH000_ABSOLUTE_PROMISE_TOBY"
+              }
+            ]
+          },
+          "then": [
+            {
+              "t": "think",
+              "text": "我说过。说得那样笃定，好像只要说出口，就能成真。"
+            }
+          ]
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}没有躲。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "他跪下来，让弟弟抱住自己。两个人都没有再说话。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "可恩站在几步外，摘下手套，低头行了一个没有教派手势的默哀礼。"
+        }
+      ]
+    },
+    {
+      "id": "01-10",
+      "title": "可恩的提议",
+      "bg": "north-slope-camp",
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "晨光终于越过北山。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "可恩在一块干净布上放下两杯温水。他没有施法让水变甜，也没有说任何能把悲伤讲明白的大道理。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "托比双手捧着杯子，眼睛哭得通红。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "可恩坐在与他同样高度的石头上。"
+        },
+        {
+          "t": "say",
+          "who": "kern",
+          "text": "我在晨钟镇有一座白塔。地方不大，有书房、药圃，还有一位比我更会骂人的管家。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "托比抬头看他。"
+        },
+        {
+          "t": "say",
+          "who": "kern",
+          "text": "你可以跟我住。先吃饭、睡觉、识字。等你长大一些，再决定自己想去哪里。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "哥哥呢？"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "可恩转向{PLAYER_NAME}。"
+        },
+        {
+          "t": "say",
+          "who": "kern",
+          "text": "他十八岁了。我可以给他住处，可以教他，但不能替他选择一生。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "那我也不要你替我选。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "可恩没有因孩子顶嘴而不悦。"
+        },
+        {
+          "t": "say",
+          "who": "kern",
+          "text": "说得对。所以我在问你，不是在把你带走。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "托比看向{PLAYER_NAME}，手指重新抓住他的衣角。"
+        },
+        {
+          "t": "input",
+          "id": "FI_CH001_SC10_TOBY_GUARDIAN_001",
+          "kind": "dialogue",
+          "prompt": "可恩愿意收养托比。托比不想与哥哥分开，正在等待{PLAYER_NAME}回答。",
+          "placeholder": "对托比、对可恩说点什么……",
+          "focus": [
+            "toby",
+            "kern"
+          ],
+          "context": [
+            "约半小时后，临时营地边缘，晨光越过北山。可恩在干净布上放了两杯温水；托比双手捧着杯子，眼睛哭得通红。",
+            "可恩提议：他在晨钟镇有一座白塔（书房、药圃，还有一位比他更会骂人的管家）；托比可以跟他住，先吃饭、睡觉、识字，长大一些再决定去哪里。",
+            "可恩说{PLAYER_NAME}十八岁了：可以给他住处、可以教他，但不能替他选择一生；又对托比说：“我在问你，不是在把你带走。”",
+            "托比8岁，不想与哥哥分开，手指重新抓住{PLAYER_NAME}的衣角，正等他回答。",
+            "{PLAYER_NAME}身上带着母亲的牧羊铜哨与烧黑的麦穗发夹。黑龙负伤南逃，仍可能追踪赫麦村的幸存者。"
+          ],
+          "principles": [
+            "可恩愿意收养托比。托比不想与哥哥分开，正在等待{PLAYER_NAME}回答。",
+            "主线固定结果为托比接受可恩的监护，但玩家可以影响告别方式、承诺内容与托比对冒险者道路的态度。",
+            "玩家不能用“你是累赘”逼托比离开而不产生后果；此类回答会提高家庭创伤与玩家罪恶感。",
+            "玩家可承诺定期回信、回白塔探望、带回各国故事，并由系统生成可追踪承诺。",
+            "玩家若想带托比冒险，可恩会要求{PLAYER_NAME}先说明如何处理战斗、食宿、教育与黑龙追踪风险。无法给出可行方案时，托比会自己意识到跟随只会让哥哥分心。",
+            "默认承接（所有人都会发生，反应里不要提前写）：{PLAYER_NAME}把母亲的牧羊铜哨挂到托比颈前，约好回来时再吹给他听。"
+          ],
+          "intents": [
+            {
+              "id": "visit",
+              "label": "承诺回来探望",
+              "desc": "承诺会回白塔看他、常回来。",
+              "keywords": [
+                "回来看你",
+                "探望",
+                "常回来",
+                "回白塔",
+                "去看你",
+                "看你",
+                "有空就回",
+                "会回来",
+                "回来接你"
+              ],
+              "voice": "warm",
+              "morality": 1,
+              "set": {
+                "flags": {
+                  "FLAG_CH001_PROMISE_TOBY_VISIT": true
+                },
+                "vars": {
+                  "TOBY_VIEW_OF_ADVENTURE": "WAITING"
+                },
+                "memories": {
+                  "MEMORY_CH001_PROMISE_TOBY_VISIT": "他答应托比：会常回白塔看他。"
+                }
+              },
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "toby",
+                  "text": "……说好了。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "他把衣角攥得更紧，像是先替哥哥把回来的路抓住。"
+                }
+              ]
+            },
+            {
+              "id": "entrust",
+              "label": "劝他跟可恩住",
+              "desc": "温和地鼓励托比接受可恩的监护：好好吃饭、识字、长大；或告诉他他从来不是拖累。",
+              "keywords": [
+                "跟他住",
+                "跟可恩",
+                "好好吃饭",
+                "听话",
+                "识字",
+                "好好长大",
+                "照顾好自己",
+                "去吧",
+                "不是累赘",
+                "不是拖累",
+                "从来不是",
+                "白塔"
+              ],
+              "voice": "warm",
+              "morality": 1,
+              "set": {
+                "vars": {
+                  "TOBY_VIEW_OF_ADVENTURE": "WAITING"
+                }
+              },
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "托比咬着嘴唇，看了哥哥很久。"
+                },
+                {
+                  "t": "say",
+                  "who": "toby",
+                  "text": "……那你呢？"
+                }
+              ]
+            },
+            {
+              "id": "burden",
+              "label": "说他是累赘",
+              "desc": "用“你是累赘、拖累、碍事”逼托比离开（会提高家庭创伤与罪恶感）。",
+              "keywords": [
+                "累赘",
+                "拖累",
+                "碍事",
+                "拖后腿",
+                "麻烦精",
+                "包袱",
+                "碍手碍脚",
+                "甩掉",
+                "别缠着我"
+              ],
+              "voice": "harsh",
+              "morality": -2,
+              "set": {
+                "flags": {
+                  "FLAG_CH001_TOBY_CALLED_BURDEN": true
+                },
+                "vars": {
+                  "TOBY_VIEW_OF_ADVENTURE": "HURT"
+                },
+                "add": {
+                  "PLAYER_GUILT_TOTAL": 1,
+                  "FAMILY_TRAUMA_TOTAL": 1
+                },
+                "memories": {
+                  "MEMORY_CH001_TOBY_CALLED_BURDEN": "哥哥说他是累赘。托比松开了衣角。"
+                }
+              },
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "托比抓着衣角的手指一下子松开了。他低下头，盯着杯里的水，很久没有出声。"
+                },
+                {
+                  "t": "say",
+                  "who": "toby",
+                  "text": "……妈妈说过，我不是拖累。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "可恩看了{PLAYER_NAME}一眼，没有替他圆场。"
+                }
+              ]
+            },
+            {
+              "id": "letters",
+              "label": "承诺写信",
+              "desc": "承诺定期给托比写信、回信。",
+              "keywords": [
+                "写信",
+                "回信",
+                "寄信",
+                "来信",
+                "每个月",
+                "定期",
+                "捎信"
+              ],
+              "voice": "warm",
+              "morality": 1,
+              "set": {
+                "flags": {
+                  "FLAG_CH001_PROMISE_TOBY_LETTERS": true
+                },
+                "vars": {
+                  "TOBY_VIEW_OF_ADVENTURE": "WAITING"
+                },
+                "memories": {
+                  "MEMORY_CH001_PROMISE_TOBY_LETTERS": "他答应托比：会定期写信回来。"
+                }
+              },
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "托比吸了吸鼻子。"
+                },
+                {
+                  "t": "say",
+                  "who": "toby",
+                  "text": "要写很多字。我会学认字，自己读。"
+                }
+              ]
+            },
+            {
+              "id": "stories",
+              "label": "承诺带回故事",
+              "desc": "承诺把各国见闻、冒险故事带回来讲给他听。",
+              "keywords": [
+                "故事",
+                "讲给你听",
+                "各国",
+                "见闻",
+                "冒险的事",
+                "带礼物",
+                "好玩的"
+              ],
+              "voice": "warm",
+              "morality": 1,
+              "set": {
+                "flags": {
+                  "FLAG_CH001_PROMISE_TOBY_STORIES": true
+                },
+                "vars": {
+                  "TOBY_VIEW_OF_ADVENTURE": "CURIOUS"
+                },
+                "memories": {
+                  "MEMORY_CH001_PROMISE_TOBY_STORIES": "他答应托比：会把各国的故事带回来讲给他听。"
+                }
+              },
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "托比的眼睛动了一下。"
+                },
+                {
+                  "t": "say",
+                  "who": "toby",
+                  "text": "……要讲很长很长的。"
+                }
+              ]
+            },
+            {
+              "id": "take_along",
+              "label": "想带托比走",
+              "desc": "想带托比一起去冒险、由自己照顾他。",
+              "keywords": [
+                "带上他",
+                "带他走",
+                "一起走",
+                "跟我走",
+                "带着托比",
+                "带着他",
+                "一起去",
+                "我照顾他",
+                "我养他",
+                "不分开"
+              ],
+              "voice": "protective",
+              "morality": 0,
+              "set": {
+                "flags": {
+                  "FLAG_CH001_ASKED_TO_TAKE_TOBY": true
+                },
+                "vars": {
+                  "TOBY_VIEW_OF_ADVENTURE": "UNDERSTANDS_DISTRACTION"
+                }
+              },
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "kern",
+                  "text": "那先告诉我：遇上战斗，他站在哪里？你们住哪里、吃什么？谁教他识字？那条龙要是循着幸存者追来，你怎么办？"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}张了张嘴，一时一个答案也给不出来。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "托比看看哥哥，又看看可恩，慢慢松开了衣角。"
+                },
+                {
+                  "t": "say",
+                  "who": "toby",
+                  "text": "……我跟着你，你就会一直回头看我，对不对？"
+                }
+              ]
+            },
+            {
+              "id": "ask_kern",
+              "label": "托付或询问可恩",
+              "desc": "对可恩道谢、托付托比，或问他为什么愿意收养托比。",
+              "keywords": [
+                "拜托",
+                "谢谢",
+                "麻烦你",
+                "交给你",
+                "为什么帮",
+                "请你照顾",
+                "你为什么"
+              ],
+              "voice": "grateful",
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "kern",
+                  "text": "我会让他吃饱、睡好、识字。剩下的，等他自己长大了再选。"
+                }
+              ]
+            },
+            {
+              "id": "fallback",
+              "label": "其他回应",
+              "desc": "无法归类的回应。",
+              "keywords": [
+                "嗯",
+                "托比"
+              ],
+              "voice": "neutral",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "托比没有松开衣角。他在等哥哥把话说完。"
+                }
+              ]
+            },
+            {
+              "id": "silent",
+              "label": "沉默",
+              "desc": "不说话。",
+              "voice": "quiet",
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}没有回答。他只是把手覆在托比抓着衣角的那只手上。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "托比低下头，没有再问。"
+                }
+              ]
+            }
+          ],
+          "silent": "silent",
+          "fallback": "fallback"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}把母亲的牧羊铜哨挂到托比颈前。"
+        },
+        {
+          "t": "set",
+          "flags": {
+            "FLAG_CH001_TOBY_UNDER_KERN_GUARDIANSHIP": true
+          },
+          "vars": {
+            "ITEM_FAMILY_SHEPHERD_WHISTLE_OWNER": "TOBY"
+          }
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "这是妈妈给你的。"
+        },
+        {
+          "t": "say",
+          "who": "aku",
+          "text": "所以你替我保管。等我回来，再吹给我听。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "托比握住铜哨，沉默很久。"
+        },
+        {
+          "t": "say",
+          "who": "toby",
+          "text": "你一定要回来拿。"
+        },
+        {
+          "t": "say",
+          "who": "aku",
+          "text": "一定。"
+        },
+        {
+          "t": "set",
+          "vars": {
+            "PLAYER_PROMISE_RETURN_TO_TOBY": true
+          },
+          "memories": {
+            "MEMORY_CH001_PROMISE_RETURN_TO_TOBY": "托比：“你一定要回来拿。”——“一定。”"
+          }
+        },
+        {
+          "t": "narr",
+          "style": "caption",
+          "text": "此承诺写入长期记忆。"
+        }
+      ]
+    },
+    {
+      "id": "01-11",
+      "title": "七种都很弱",
+      "bg": "north-slope-camp",
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "可恩带{PLAYER_NAME}走到营地外一块空地。"
+        },
+        {
+          "t": "say",
+          "who": "kern",
+          "text": "把剑拔出来。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}照做。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "可恩用法杖末端轻点剑脊。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "金、木、水、火、土、光、暗七种微光依次亮起。每一种都只有烛火般微弱，却没有任何一种被其他属性排斥。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "可恩第一次露出明显意外的神色。"
+        },
+        {
+          "t": "say",
+          "who": "kern",
+          "text": "七律。"
+        },
+        {
+          "t": "say",
+          "who": "aku",
+          "text": "但都很弱。"
+        },
+        {
+          "t": "say",
+          "who": "kern",
+          "text": "对。弱得很公平。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}皱眉。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "可恩用法杖敲了敲他的剑鞘。"
+        },
+        {
+          "t": "say",
+          "who": "kern",
+          "text": "别急着觉得自己特殊。七把钝刀，不会自动变成一把神兵。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "他停了一下。"
+        },
+        {
+          "t": "say",
+          "who": "kern",
+          "text": "但如果你学会何时用哪一把，也许能做别人做不到的事。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "可恩从袍内取出一封以白蜡封口的信。"
+        },
+        {
+          "t": "say",
+          "who": "kern",
+          "text": "晨钟镇冒险者公会。把信交给登记官梅芙，她会让你参加测试。"
+        },
+        {
+          "t": "say",
+          "who": "aku",
+          "text": "你不收我当学生？"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "可恩看向仍在冒烟的村庄。"
+        },
+        {
+          "t": "say",
+          "who": "kern",
+          "text": "你现在想学的是怎么杀龙。我教不了一个只看得见仇人的学生。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}握紧信封。"
+        },
+        {
+          "t": "set",
+          "flags": {
+            "FLAG_CH001_ARK_RECEIVED_GUILD_LETTER": true
+          }
+        },
+        {
+          "t": "say",
+          "who": "kern",
+          "text": "先去学会救人、迷路、失败、撤退，还有怎么相信队友。等你拿到铜牌，再来问我一次。"
+        }
+      ]
+    },
+    {
+      "id": "01-12",
+      "title": "什么叫一流冒险者",
+      "bg": "north-slope-camp",
+      "music": "kern_theme_first_full",
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "可恩转身准备回到伤者中间。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}在他身后开口。"
+        },
+        {
+          "t": "say",
+          "who": "aku",
+          "text": "我会成为一流冒险者。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "可恩停步。"
+        },
+        {
+          "t": "say",
+          "who": "kern",
+          "text": "为了杀那条龙？"
+        },
+        {
+          "t": "if",
+          "when": {
+            "var": "PLAYER_VOW_PRIMARY",
+            "eq": "VOW_PROTECTION"
+          },
+          "then": [
+            {
+              "t": "think",
+              "text": "守羊洞外，我对着燃烧的赫麦村发过誓——不再让重要的人被夺走。"
+            }
+          ],
+          "else": [
+            {
+              "t": "if",
+              "when": {
+                "var": "PLAYER_VOW_PRIMARY",
+                "eq": "VOW_TRUTH"
+              },
+              "then": [
+                {
+                  "t": "think",
+                  "text": "守羊洞外，我对着燃烧的赫麦村发过誓——要查明那条黑龙为什么来。"
+                }
+              ],
+              "else": [
+                {
+                  "t": "if",
+                  "when": {
+                    "var": "PLAYER_VOW_PRIMARY",
+                    "eq": "VOW_GUILT"
+                  },
+                  "then": [
+                    {
+                      "t": "think",
+                      "text": "守羊洞外，我对着燃烧的赫麦村发过誓。那时我想的，是自己没能救下所有人。"
+                    }
+                  ],
+                  "else": [
+                    {
+                      "t": "if",
+                      "when": {
+                        "var": "PLAYER_VOW_PRIMARY",
+                        "eq": "VOW_POWER"
+                      },
+                      "then": [
+                        {
+                          "t": "think",
+                          "text": "守羊洞外，我对着燃烧的赫麦村发过誓——要得到足以压倒一切的力量。"
+                        }
+                      ],
+                      "else": [
+                        {
+                          "t": "if",
+                          "when": {
+                            "var": "PLAYER_VOW_PRIMARY",
+                            "eq": "VOW_MERCY_CONFLICT"
+                          },
+                          "then": [
+                            {
+                              "t": "think",
+                              "text": "守羊洞外，我对着燃烧的赫麦村发过誓——也记着伯伦那句“先看清该砍谁”。"
+                            }
+                          ],
+                          "else": [
+                            {
+                              "t": "think",
+                              "text": "守羊洞外，我对着燃烧的赫麦村发过誓——要让那条黑龙偿还血债。"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "t": "input",
+          "id": "FI_CH001_SC12_FIRST_CLASS_VOW_001",
+          "kind": "vow",
+          "prompt": "可恩正在问{PLAYER_NAME}：他为什么要成为一流冒险者？你可以自由说明复仇、保护、力量、真相、养活弟弟，或彼此矛盾的多重动机。",
+          "placeholder": "回答可恩：你为什么要成为一流冒险者？",
+          "focus": [
+            "kern"
+          ],
+          "context": [
+            "灾民营地，清晨。可恩刚把晨钟镇冒险者公会的引荐信交给{PLAYER_NAME}（交给登记官梅芙），并拒绝现在收他当学生：“我教不了一个只看得见仇人的学生。”",
+            "可恩用法杖测出{PLAYER_NAME}身具“七律”：金木水火土光暗七种属性能够共存，但每一种都只有烛火般微弱。",
+            "{PLAYER_NAME}刚说：“我会成为一流冒险者。”可恩停步反问：“为了杀那条龙？”",
+            "黑龙腹部被光明弹打穿，负伤向南逃去；艾琳已确认死亡；托比将由可恩监护。上一章，{PLAYER_NAME}在守羊洞外对燃烧的赫麦村立下了誓言。"
+          ],
+          "principles": [
+            "可恩正在问{PLAYER_NAME}：他为什么要成为一流冒险者？玩家可自由说明复仇、保护、力量、真相、养活弟弟，或彼此矛盾的多重动机。",
+            "不把“复仇”自动判定为低品质；可恩会追问复仇之外的代价与目标。",
+            "玩家若只追求力量，可恩会提醒力量会放大原本的选择，不会替人决定方向。",
+            "玩家若承认不知道，可恩反而会接受：“不知道比假装知道安全。”",
+            "此节点更新 PLAYER_VOW_PRIMARY 与 MENTOR_FIRST_IMPRESSION。",
+            "默认承接（所有人都会发生，反应里不要提前写）：{PLAYER_NAME}说出“我要强到能追上它”，可恩以“一流不是公会牌子上的颜色”作答。"
+          ],
+          "intents": [
+            {
+              "id": "mixed",
+              "label": "多重矛盾动机",
+              "desc": "同时说出几个彼此拉扯的理由（复仇又想保护、想变强又想查真相），或坦白自己的动机互相矛盾。",
+              "keywords": [
+                "不只是",
+                "不止",
+                "也为了",
+                "都有",
+                "又想",
+                "既想",
+                "矛盾",
+                "一半"
+              ],
+              "voice": "conflicted",
+              "morality": 0,
+              "set": {
+                "flags": {
+                  "FLAG_CH001_VOW_MIXED_MOTIVES": true
+                },
+                "vars": {
+                  "MENTOR_FIRST_IMPRESSION": "CONFLICTED_HONEST"
+                }
+              },
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "kern",
+                  "text": "复仇、保护，还有别的——全塞在一起了。"
+                },
+                {
+                  "t": "say",
+                  "who": "kern",
+                  "text": "不急着拆开。只是别让最大声的那个，替其他几个做决定。"
+                }
+              ]
+            },
+            {
+              "id": "revenge",
+              "label": "复仇",
+              "desc": "为了杀那条黑龙、报仇、讨回血债。",
+              "keywords": [
+                "报仇",
+                "复仇",
+                "血债",
+                "杀了它",
+                "杀那条龙",
+                "屠龙",
+                "偿命",
+                "宰了",
+                "没错",
+                "是的",
+                "对，"
+              ],
+              "voice": "vengeful",
+              "morality": 0,
+              "set": {
+                "vars": {
+                  "PLAYER_VOW_PRIMARY": "VOW_REVENGE",
+                  "MENTOR_FIRST_IMPRESSION": "REVENGE_DRIVEN"
+                }
+              },
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "kern",
+                  "text": "好。那杀了它之后呢？"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "他没有说复仇是错的，只是又问了一句："
+                },
+                {
+                  "t": "say",
+                  "who": "kern",
+                  "text": "你打算拿什么去换？换完之后，你还剩下什么？"
+                }
+              ]
+            },
+            {
+              "id": "protect",
+              "label": "保护",
+              "desc": "为了保护别人，不再让重要的人被夺走，下次有人需要时能出手。",
+              "keywords": [
+                "保护",
+                "守护",
+                "再也不让",
+                "不再让",
+                "有人需要",
+                "护住",
+                "救人",
+                "不想再",
+                "不再有人"
+              ],
+              "voice": "protective",
+              "morality": 1,
+              "set": {
+                "vars": {
+                  "PLAYER_VOW_PRIMARY": "VOW_PROTECTION",
+                  "MENTOR_FIRST_IMPRESSION": "PROTECTOR"
+                }
+              },
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "可恩看了他一会儿。"
+                },
+                {
+                  "t": "say",
+                  "who": "kern",
+                  "text": "保护比杀难。杀只要赢一次，保护要每一次都在。"
+                }
+              ]
+            },
+            {
+              "id": "provide",
+              "label": "养活弟弟",
+              "desc": "为了赚钱、养活托比、撑起剩下的家。",
+              "keywords": [
+                "养活",
+                "赚钱",
+                "挣钱",
+                "养托比",
+                "养弟弟",
+                "养家",
+                "供他",
+                "托比",
+                "弟弟"
+              ],
+              "voice": "responsible",
+              "morality": 1,
+              "set": {
+                "vars": {
+                  "PLAYER_VOW_PRIMARY": "VOW_PROVIDE",
+                  "MENTOR_FIRST_IMPRESSION": "PROVIDER"
+                }
+              },
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "kern",
+                  "text": "托比在白塔饿不着。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "他顿了顿。"
+                },
+                {
+                  "t": "say",
+                  "who": "kern",
+                  "text": "不过，想亲手把弟弟扛起来——这个理由，我不笑你。"
+                }
+              ]
+            },
+            {
+              "id": "power",
+              "label": "追求力量",
+              "desc": "只想变强，得到足以压倒一切的力量。",
+              "keywords": [
+                "力量",
+                "变强",
+                "更强",
+                "最强",
+                "强大",
+                "没人能",
+                "压倒",
+                "实力"
+              ],
+              "voice": "ambitious",
+              "morality": 0,
+              "set": {
+                "vars": {
+                  "PLAYER_VOW_PRIMARY": "VOW_POWER",
+                  "MENTOR_FIRST_IMPRESSION": "POWER_SEEKER"
+                }
+              },
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "kern",
+                  "text": "力量不会替你决定方向。"
+                },
+                {
+                  "t": "say",
+                  "who": "kern",
+                  "text": "它只会把你原本的选择放大——好的放大，坏的也一样。"
+                }
+              ]
+            },
+            {
+              "id": "truth",
+              "label": "查明真相",
+              "desc": "想弄清黑龙为什么袭击赫麦村、它背后是谁（颈侧的锁链）。",
+              "keywords": [
+                "真相",
+                "查明",
+                "为什么袭击",
+                "锁链",
+                "幕后",
+                "是谁",
+                "弄清楚",
+                "为什么来",
+                "原因"
+              ],
+              "voice": "curious",
+              "morality": 0,
+              "set": {
+                "vars": {
+                  "PLAYER_VOW_PRIMARY": "VOW_TRUTH",
+                  "MENTOR_FIRST_IMPRESSION": "TRUTH_SEEKER"
+                }
+              },
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "可恩的目光在他脸上停了一瞬。"
+                },
+                {
+                  "t": "say",
+                  "who": "kern",
+                  "text": "想知道真相的人，得先活得够久。"
+                }
+              ]
+            },
+            {
+              "id": "unsure",
+              "label": "承认不知道",
+              "desc": "老实承认自己还不知道为什么、还没想清楚。",
+              "keywords": [
+                "不知道",
+                "说不清",
+                "说不上来",
+                "还没想好",
+                "没想过",
+                "不确定",
+                "不清楚"
+              ],
+              "voice": "honest",
+              "morality": 0,
+              "set": {
+                "vars": {
+                  "MENTOR_FIRST_IMPRESSION": "HONEST_UNSURE"
+                },
+                "memories": {
+                  "MEMORY_CH001_KERN_NOT_KNOWING": "可恩：“不知道比假装知道安全。”"
+                }
+              },
+              "reactionFixed": true,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "可恩反而点了点头。"
+                },
+                {
+                  "t": "say",
+                  "who": "kern",
+                  "text": "不知道比假装知道安全。"
+                }
+              ]
+            },
+            {
+              "id": "fallback",
+              "label": "其他回答",
+              "desc": "无法归类的回答。",
+              "keywords": [
+                "嗯",
+                "大概"
+              ],
+              "voice": "neutral",
+              "morality": 0,
+              "set": {
+                "vars": {
+                  "MENTOR_FIRST_IMPRESSION": "RESERVED"
+                }
+              },
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "可恩没有催他。"
+                },
+                {
+                  "t": "say",
+                  "who": "kern",
+                  "text": "想好了再说也行。"
+                }
+              ]
+            },
+            {
+              "id": "silent",
+              "label": "沉默",
+              "desc": "没有回答。",
+              "voice": "quiet",
+              "morality": 0,
+              "set": {
+                "vars": {
+                  "MENTOR_FIRST_IMPRESSION": "QUIET_RESOLVE"
+                }
+              },
+              "reaction": [
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "{PLAYER_NAME}没有回答，只是握紧了那封信。"
+                },
+                {
+                  "t": "narr",
+                  "style": "picture",
+                  "text": "可恩等了一会儿，没有追问。"
+                }
+              ]
+            }
+          ],
+          "silent": "silent",
+          "fallback": "fallback"
+        },
+        {
+          "t": "say",
+          "who": "aku",
+          "text": "我要强到能追上它。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "他看向托比，又看向营地里失去家人的村民。"
+        },
+        {
+          "t": "say",
+          "who": "aku",
+          "text": "也要强到下一次有人需要我的时候，我不只能躲在山洞里看着。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "可恩沉默片刻。"
+        },
+        {
+          "t": "say",
+          "who": "kern",
+          "text": "那就记住，一流不是公会牌子上的颜色。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "他指向一名正在替陌生伤者包扎的村民。"
+        },
+        {
+          "t": "say",
+          "who": "kern",
+          "text": "真正的一流，是事情全坏掉时，别人仍愿意把背后交给你。"
+        },
+        {
+          "t": "set",
+          "memories": {
+            "MEMORY_CH001_KERN_FIRST_CLASS": "可恩：“真正的一流，是事情全坏掉时，别人仍愿意把背后交给你。”"
+          }
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "可恩重新迈步。"
+        },
+        {
+          "t": "say",
+          "who": "kern",
+          "text": "先从不迟到开始。梅芙最讨厌迟到。"
+        }
+      ]
+    },
+    {
+      "id": "01-13",
+      "title": "导师的背影",
+      "bg": "north-slope-camp",
+      "beats": [
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "可恩走回营地中央。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "他一手抱起因疲惫睡着的托比，一手用法杖撑起遮雨光幕，让幸存者不必在晨间冷雨里继续发抖。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "白袍上满是焦痕与泥水，已经不再洁白。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "{PLAYER_NAME}却觉得，那是自己看过最耀眼的颜色。"
+        },
+        {
+          "t": "narr",
+          "style": "picture",
+          "text": "他低头看向手中的公会引荐信，再把艾琳烧黑的麦穗发夹收进贴身口袋。"
+        },
+        {
+          "t": "narr",
+          "style": "voice",
+          "text": "在那个早晨以前，{PLAYER_NAME}以为强大就是能把敌人斩倒。"
+        },
+        {
+          "t": "narr",
+          "style": "voice",
+          "text": "在那个早晨以后，他心里第一次有了另一种强者的形状。"
+        },
+        {
+          "t": "narr",
+          "style": "voice",
+          "text": "那个形状，名叫白·可恩。"
+        },
+        {
+          "t": "fx",
+          "fx": "fade-black",
+          "ms": 1200
+        },
+        {
+          "t": "title",
+          "lines": [],
+          "title": "第一章｜导师",
+          "subtitle": "白袍照亮灰烬"
+        }
+      ]
+    }
+  ],
+  "end": {
+    "save": "SAVE_CH001_END_MENTOR",
+    "next": "ch002",
+    "nextLabel": "CH002_RED_HAIRED_GIRL",
+    "set": {
+      "flags": {
+        "FLAG_CH001_BLACK_DRAGON_REPELLED_BY_KERN": true,
+        "FLAG_CH001_BLACK_DRAGON_ABDOMEN_WOUNDED": true,
+        "FLAG_CH001_MOTHER_DEATH_CONFIRMED": true,
+        "FLAG_CH001_TOBY_UNDER_KERN_GUARDIANSHIP": true,
+        "FLAG_CH001_ARK_RECEIVED_GUILD_LETTER": true,
+        "FLAG_CH001_KERN_MENTOR_IDEAL": true
+      },
+      "items": {
+        "ITEM_MOTHER_WHEAT_HAIRPIN": 1
+      },
+      "vars": {
+        "ITEM_FAMILY_SHEPHERD_WHISTLE_OWNER": "TOBY"
+      }
+    },
+    "summary": [
+      {
+        "text": "白·可恩一发光明弹打穿黑龙腹部。他没有追击，先回头救人；黑龙负伤向南逃去。"
+      },
+      {
+        "text": "霍恩确认：艾琳没有走出那片火。她烧黑的麦穗发夹，如今收在你贴身的口袋里。"
+      },
+      {
+        "when": {
+          "intent": "FI_CH001_SC09_MOTHER_DEATH_001",
+          "is": "blame"
+        },
+        "text": "噩耗传来时，你把责任推给了霍恩。他没有反驳。"
+      },
+      {
+        "when": {
+          "intent": "FI_CH001_SC09_MOTHER_DEATH_001",
+          "is": "rush"
+        },
+        "text": "你想冲回火场，被可恩用身体挡了下来。"
+      },
+      {
+        "when": {
+          "intent": "FI_CH001_SC09_MOTHER_DEATH_001",
+          "in": [
+            "frozen",
+            "silent"
+          ]
+        },
+        "text": "得知噩耗的那一刻，你僵在原地。是可恩接住了倒下的托比。"
+      },
+      {
+        "when": {
+          "intent": "FI_CH001_SC09_MOTHER_DEATH_001",
+          "is": "comfort"
+        },
+        "text": "你一边掉眼泪，一边抱紧了托比。"
+      },
+      {
+        "text": "托比将由可恩监护，住进晨钟镇的白塔。你把牧羊铜哨交给他保管，答应一定回来拿。"
+      },
+      {
+        "when": {
+          "intent": "FI_CH001_SC10_TOBY_GUARDIAN_001",
+          "is": "burden"
+        },
+        "text": "你对托比说出了“累赘”。他抓着你衣角的手松开了。"
+      },
+      {
+        "when": {
+          "intent": "FI_CH001_SC10_TOBY_GUARDIAN_001",
+          "is": "take_along"
+        },
+        "text": "你想带托比一起走。可恩问起战斗、食宿与那条龙，托比自己松开了手。"
+      },
+      {
+        "when": {
+          "intent": "FI_CH001_SC10_TOBY_GUARDIAN_001",
+          "is": "letters"
+        },
+        "text": "你还答应托比：会定期写信给他。"
+      },
+      {
+        "when": {
+          "intent": "FI_CH001_SC10_TOBY_GUARDIAN_001",
+          "is": "visit"
+        },
+        "text": "你还答应托比：会常回白塔看他。"
+      },
+      {
+        "when": {
+          "intent": "FI_CH001_SC10_TOBY_GUARDIAN_001",
+          "is": "stories"
+        },
+        "text": "你还答应托比：会把各国的故事带回来讲给他听。"
+      },
+      {
+        "text": "你带着可恩的引荐信前往晨钟镇冒险者公会。可恩说：等你拿到铜牌，再来问他一次。"
+      }
+    ]
+  }
+}

@@ -271,8 +271,9 @@ function titleScreen() {
           <p class="title-tagline">你可以对队友说任何话，但<strong>每一句承诺都会被记住</strong>。三名各怀秘密的少女、一次月蚀列车危机，以及一个不在选项里的结局。</p>
           <input id="playerName" class="name-field" maxlength="16" autocomplete="nickname" value="${escapeHtml(state?.playerName || localStorage.getItem('moonlit:name') || '队长')}" aria-label="玩家称呼" placeholder="输入队长称呼">
           <div class="title-actions">
-            <button id="newGame" class="button primary large">开始序章</button>
-            ${hasSave ? `<button id="continueGame" class="button secondary large">继续 · ${escapeHtml(currentScene)}</button>` : ''}
+            <a class="button primary large story-main-cta" href="/story.html">${icon('moon', { size: 18 })}主线 · 亚克篇</a>
+            <button id="newGame" class="button secondary large">${icon('station', { size: 18 })}银轨号外传</button>
+            ${hasSave ? `<button id="continueGame" class="button secondary large">继续外传 · ${escapeHtml(currentScene)}</button>` : ''}
             ${externalCta(meta?.marketing?.wishlistUrl, '加入 Steam 愿望单', 'secondary large')}
             <button id="titleHelp" class="button ghost large">${icon('help', { size: 18 })}玩法说明</button>
             <button id="galleryButton" class="button ghost large">${icon('collection', { size: 18 })}CG图库</button>
@@ -1199,7 +1200,10 @@ function showTownInfo(town) {
     start: '开始剧情', station: '进入营地', mooncity: '探索城市', frosttown: '挑战Boss',
     valhalla: '进入要塞', startower: '登塔观星', nodgate: '穿越之门', terminal: '最终决战'
   };
-  const scene = { label: sceneLabels[town.id] || '进入', action: enterStory };
+  // 起点村是亚克的故乡线：进入主线 · 亚克篇播放页
+  const scene = town.id === 'start'
+    ? { label: '主线 · 亚克篇', action: () => { window.location.href = '/story.html'; } }
+    : { label: sceneLabels[town.id] || '进入', action: enterStory };
 
   actions.innerHTML = `
     <button class="button primary" id="enterTownBtn" type="button">${scene.label}</button>
@@ -1627,13 +1631,45 @@ function chaptersPage() {
   return `${navBar()}
     <main class="page-content">
       <div class="page-header"><div class="eyebrow">STORY · 剧本系统</div><h1>章节选择</h1>
-        <p class="muted">共15章 · 剧本数据独立存储，支持热更新</p>
+        <p class="muted">主线 · 亚克篇为自由输入的视觉小说；银轨号外传为原有 15 章剧本</p>
       </div>
+      <section class="chapters-section story-mainline" aria-labelledby="mainlineTitle">
+        <h2 class="section-title" id="mainlineTitle">主线 · 亚克篇</h2>
+        <div class="chapter-grid" id="mainlineChapters"><div class="loader">加载中…</div></div>
+      </section>
+      <h2 class="section-title chapters-side-title">银轨号外传</h2>
       <section class="chapters-section" id="chaptersSection"><div class="loader">加载中…</div></section>
     </main>`;
 }
 
+// 主线 · 亚克篇章节目录（public/story/chapters/index.json），点开进入独立播放页 /story.html
+async function loadMainlineChapters() {
+  const box = document.querySelector('#mainlineChapters');
+  if (!box) return;
+  try {
+    const res = await fetch('/story/chapters/index.json', { headers: { accept: 'application/json' } });
+    const list = res.ok ? await res.json() : [];
+    const done = (() => { try { return JSON.parse(localStorage.getItem('moonlit:story:progress') || '{}') || {}; } catch { return {}; } })();
+    const items = (Array.isArray(list) ? list : []).filter((ch) => /^ch\d{3}$/.test(ch?.id || ''));
+    box.innerHTML = items.length ? items.map((ch) => {
+      const [label, name] = String(ch.title || ch.id).split('｜');
+      return `
+      <a class="chapter-card mainline-card" href="/story.html?chapter=${encodeURIComponent(ch.id)}">
+        <div class="chapter-num">${String(ch.number ?? '').padStart(2, '0')}</div>
+        <div class="chapter-info">
+          <h3>${escapeHtml(name ? `${label}｜${name}` : label)}</h3>
+          <span class="pill">${done[ch.id] ? `${icon('check', { size: 13 })}已完成` : `${icon('feather', { size: 13 })}自由输入 · 视觉小说`}</span>
+        </div>
+        ${icon('chevron-right', { size: 18, cls: 'mainline-go' })}
+      </a>`;
+    }).join('') : '<p class="muted">主线章节目录暂不可用。</p>';
+  } catch {
+    box.innerHTML = '<p class="muted">主线章节目录暂不可用。</p>';
+  }
+}
+
 async function loadChapters() {
+  loadMainlineChapters();
   try {
     const data = await apiGet('/api/scenario/index');
     const section = document.querySelector('#chaptersSection');

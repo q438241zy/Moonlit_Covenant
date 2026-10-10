@@ -1255,3 +1255,17 @@ body:has(.game-frame) .cg-unlock-stack { top:10px; }
   -webkit-mask-image: radial-gradient(closest-side, #000 48%, transparent 100%);
   mask-image: radial-gradient(closest-side, #000 48%, transparent 100%);
 }
+
+/* ═══ 主线 · 亚克篇入口（标题页 / 章节页） ═══ */
+.button.story-main-cta { position:relative; box-shadow:0 8px 26px rgba(150,120,220,.32), 0 0 0 1px rgba(255,210,125,.35), 0 0 34px rgba(255,190,120,.18); }
+.button.story-main-cta::after { content:""; position:absolute; inset:-1px; border-radius:inherit; box-shadow:0 0 0 1px rgba(255,210,125,.5); opacity:0; animation:storyCtaGlow 3.2s ease-in-out infinite; pointer-events:none; }
+@keyframes storyCtaGlow { 50% { opacity:1; box-shadow:0 0 0 1px rgba(255,210,125,.55), 0 0 26px rgba(255,200,120,.3); } }
+.story-mainline { margin-bottom:28px; }
+.chapters-side-title { margin-top:8px; }
+.chapter-card.mainline-card { text-decoration:none; border-color:rgba(255,210,125,.28); background:linear-gradient(90deg, rgba(255,210,125,.07), rgba(255,255,255,.03)); }
+.chapter-card.mainline-card:hover { border-color:rgba(255,210,125,.6); }
+.chapter-card.mainline-card .chapter-num { color:var(--gold); }
+.chapter-card.mainline-card .chapter-info { flex:1; min-width:0; }
+.chapter-card.mainline-card .pill { gap:5px; }
+.mainline-go { color:var(--gold); opacity:.7; }
+@media (prefers-reduced-motion: reduce) { .button.story-main-cta::after { animation:none; } }
