@@ -1,5 +1,5 @@
 // Serena Nox - the eclipse observer. Canon: docs/CHARACTER-DESIGN.md section 3.
-// Adult (age-appearance 26), drawn modest. Signature silhouette: very long silky straight
+// Adult (age 19), drawn modest. Signature silhouette: very long silky straight
 // purple-black hair whose lengths fade to moon-white, a thin braid on her left (viewer's right)
 // threaded with a silver moon-phase disc (waning gibbous), calm half-lidded scrutiny.
 // Matte velvet robe with silver orbit-equation seals; closed-eyelid pendant.

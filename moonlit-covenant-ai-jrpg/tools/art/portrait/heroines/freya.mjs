@@ -1,5 +1,5 @@
 // Freya Frostbloom (芙蕾娅·霜华) - ice mage and tomb keeper of the Ice-Crown chapel.
-// Canon: 设定集/03 section 5. Drawn as an adult (age-appearance 24-26), tall, gentle and modest.
+// Canon: 设定集/03 section 5. Drawn as an adult (age 19), tall, gentle and modest.
 // Signature silhouette: long flowing WAVY cyan-blue hair whose tips frost over, an ice-crystal
 // comb fanning out of the hair on her right (viewer's left), hair tucked behind her left ear
 // with a crystal drop earring, white fur stole over layered northern robes, staff "Spring Sleep"

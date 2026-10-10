@@ -1,4 +1,4 @@
-// Ophelia Shinord - dragon-clan saint (土律). Canon: 设定集/03 §8. Adult (age-appearance 23), drawn modest.
+// Ophelia Shinord - dragon-clan saint (土律). Canon: 设定集/03 §8. Adult (age 19), drawn modest.
 // Signature silhouette: a wild, flaring copper-red mane, two small swept dragon horns at the
 // temples (deep scale-blue fading to silver-violet), heterochromia (gold / violet, slit pupils) and a
 // playful grin with one small fang. Ancient priestess vestment: ivory stand collar and tabard, a

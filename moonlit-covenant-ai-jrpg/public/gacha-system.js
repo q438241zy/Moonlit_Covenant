@@ -20,11 +20,11 @@ const CHARACTERS = [
   {id:'lia',name:'莉亚·赫斯特',type:'character',rarity:'legendary',icon:'sword',title:'赤誓骑士'},
   {id:'mia',name:'米娅·铃',type:'character',rarity:'legendary',icon:'wrench',title:'猫耳机关师'},
   {id:'serena',name:'塞蕾娜·诺克斯',type:'character',rarity:'legendary',icon:'moon',title:'月蚀观测者'},
-  {id:'freya',name:'芙蕾娅·霜华',type:'character',rarity:'legendary',icon:'snowflake',title:'霜华术师'},
-  {id:'lilith',name:'莉莉丝·瓦尔哈拉',type:'character',rarity:'legendary',icon:'lily',title:'战乙女审判者'},
-  {id:'evelyn',name:'伊芙琳·星歌',type:'character',rarity:'legendary',icon:'star',title:'星咏者'},
-  {id:'ophelia',name:'奥菲利亚·使诺德',type:'character',rarity:'legendary',icon:'fang',title:'诺德使徒'},
-  {id:'ayla',name:'艾拉·瓦尔哈拉',type:'character',rarity:'legendary',icon:'dove',title:'圣疗骑士'}
+  {id:'freya',name:'芙蕾娅·霜华',type:'character',rarity:'legendary',icon:'snowflake',title:'冰系魔法师'},
+  {id:'lilith',name:'莉莉丝·瓦尔哈拉',type:'character',rarity:'legendary',icon:'dagger',title:'暗影刺客'},
+  {id:'evelyn',name:'伊芙琳·星歌',type:'character',rarity:'legendary',icon:'star',title:'圣教圣女'},
+  {id:'ophelia',name:'奥菲利亚·使诺德',type:'character',rarity:'legendary',icon:'dragon',title:'龙族圣女'},
+  {id:'ayla',name:'艾拉·瓦尔哈拉',type:'character',rarity:'legendary',icon:'shield',title:'光明骑士'}
 ];
 
 // ===== 武器池 =====
@@ -34,9 +34,9 @@ const WEAPONS = [
   {id:'w_mia',name:'九命回路核心',type:'weapon',rarity:'legendary',icon:'orb',owner:'mia',stats:'攻击力+38 技能冷却-20%'},
   {id:'w_serena',name:'静月封界仪',type:'weapon',rarity:'legendary',icon:'eclipse',owner:'serena',stats:'攻击力+42 封印强度+30%'},
   {id:'w_freya',name:'霜华星杖',type:'weapon',rarity:'legendary',icon:'wand',owner:'freya',stats:'攻击力+40 冻结时间+2s'},
-  {id:'w_lilith',name:'瓦尔哈拉双刃',type:'weapon',rarity:'legendary',icon:'battle',owner:'lilith',stats:'攻击力+48 审判伤害+25%'},
-  {id:'w_evelyn',name:'星咏竖琴',type:'weapon',rarity:'legendary',icon:'harp',owner:'evelyn',stats:'攻击力+35 预知回合+1'},
-  {id:'w_ophelia',name:'诺德之眼',type:'weapon',rarity:'legendary',icon:'eye',owner:'ophelia',stats:'攻击力+44 认知污染+15%'},
+  {id:'w_lilith',name:'瓦尔哈拉双刃',type:'weapon',rarity:'legendary',icon:'battle',owner:'lilith',stats:'攻击力+48 背击伤害+25%'},
+  {id:'w_evelyn',name:'圣歌弓·微光',type:'weapon',rarity:'legendary',icon:'bow',owner:'evelyn',stats:'攻击力+35 治疗量+20%'},
+  {id:'w_ophelia',name:'龙纹法杖·祖语',type:'weapon',rarity:'legendary',icon:'wand',owner:'ophelia',stats:'攻击力+44 龙语增益+15%'},
   {id:'w_ayla',name:'圣光羽盾',type:'weapon',rarity:'legendary',icon:'guard',owner:'ayla',stats:'防御力+35 治疗量+40%'},
   // 史诗
   {id:'w_e1',name:'赤焰之刃',type:'weapon',rarity:'epic',icon:'flame',stats:'攻击力+32 灼烧附加'},

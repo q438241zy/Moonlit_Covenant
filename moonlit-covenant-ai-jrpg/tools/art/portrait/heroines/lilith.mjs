@@ -1,5 +1,5 @@
 // Lilith Valhalla (莉莉丝·瓦尔哈拉) - shadow assassin of the fallen Valhalla house.
-// Canon: 设定集/03 section 6. Drawn as an adult (age-appearance 22), lithe and modest.
+// Canon: 设定集/03 section 6. Drawn as an adult (age 19), lithe and modest.
 // Signature silhouette: long golden hair tied HIGH, the tail bound with gold rings and flaring
 // out to the viewer's right; twin dagger hilts ("Day-Blind" / "Night-Wake") jutting above both
 // shoulders from crossed sheaths on her back; hood down behind the neck; short one-sided cape.

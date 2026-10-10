@@ -1,5 +1,5 @@
 // Evelyn Starsong (伊芙琳·星歌) - saint of the Holy Church, keeper of the "Pure Bond".
-// Canon: 设定集/03 section 7. Drawn as an ADULT woman (age-appearance 20), gentle, shy and modest
+// Canon: 设定集/03 section 7. Drawn as an ADULT woman (age 18), gentle, shy and modest
 // (this overrides the younger age in the setting files).
 // Signature silhouette: pale gold, almost white long hair with a loose side braid over her right
 // shoulder (viewer's left) ending in a ribbon and a tiny prayer bell; a thin gold circlet with a

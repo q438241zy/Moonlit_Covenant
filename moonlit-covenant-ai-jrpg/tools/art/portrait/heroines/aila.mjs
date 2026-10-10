@@ -1,5 +1,5 @@
 // Aila Valhalla - knight of light (光律), Lilith's younger sister. Canon: 设定集/03 §9.
-// Drawn as a clearly adult woman (age-appearance 20), cheerful and bold - never flirtatious.
+// Drawn as a clearly adult woman (age 18), cheerful and bold - never flirtatious.
 // Signature silhouette: a golden shoulder-length bob with flicked-out ends, side-swept bangs, the
 // viewer's-right side tucked behind the ear under a gold eight-ray star clip with blue ribbon tails, and a radiant
 // longsword hilt rising over her right shoulder. Blue-and-gold light plate over a white arming coat;

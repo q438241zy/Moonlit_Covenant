@@ -12,14 +12,14 @@ export const PITY_THRESHOLD = 90;
 
 // 角色池：8位主角全部初始可用（portrait 统一使用原创矢量立绘，召唤/换衣画风一致）
 export const CHARACTER_POOL = [
-  { id: 'lia', name: '莉亚·赫斯特', title: '盾战士', rarity: 5, element: '火', portrait: '/assets/portraits/lia.svg', unlockChapter: 0, age: 17, desc: '赤红高马尾的赤誓骑士，队伍前锋。嘴硬心软，把承诺看得比命还重；喜欢草莓蛋糕，被夸奖时会别过脸整理肩甲。' },
-  { id: 'mia', name: '米娅·玲', title: '魔具发明狂魔', rarity: 4, element: '雷', portrait: '/assets/portraits/mia.svg', unlockChapter: 0, age: 16, desc: '青蓝短发的猫耳机关师，猫耳其实是接收失踪姐姐讯号的改造天线。语速飞快、点子不断，最怕安静下来。' },
-  { id: 'serena', name: '塞雷娜·诺克斯', title: '暗系魔法师', rarity: 5, element: '暗', portrait: '/assets/portraits/serena.svg', unlockChapter: 0, age: 18, desc: '紫黑长发的月蚀观测者，冷静克制，开口总是“观测结果显示”。格外在意你是否对她诚实，右手的白手套从不摘下。' },
-  { id: 'freya', name: '芙蕾娅·霜华', title: '冰系魔法师', rarity: 5, element: '冰', portrait: '/assets/portraits/freya.svg', unlockChapter: 0, age: 20, desc: '青蓝长发的北境冰术师，温柔可靠、习惯默默照顾所有人；战斗时眼神却冷静得像冻结的湖面。' },
-  { id: 'lilith', name: '莉莉丝·瓦尔哈拉', title: '暗影刺客', rarity: 5, element: '暗', portrait: '/assets/portraits/lilith.svg', unlockChapter: 0, age: 17, desc: '金发高束的暗影刺客，好胜又冲动，动作像猫科动物一样敏捷。嘴上从不服输，被认可时会偷偷高兴。' },
-  { id: 'evelyn', name: '伊芙琳·星歌', title: '圣教圣女', rarity: 4, element: '光', portrait: '/assets/portraits/evelyn.svg', unlockChapter: 0, age: 16, desc: '浅金长发的圣教圣女，胆小爱哭却从不放弃。喜欢草莓蛋糕，总在远处注视那个敢为平民发声的冒险者。' },
+  { id: 'lia', name: '莉亚·赫斯特', title: '盾战士', rarity: 5, element: '火', portrait: '/assets/portraits/lia.svg', unlockChapter: 0, age: 19, desc: '赤红高马尾的赤誓骑士，队伍前锋。嘴硬心软，把承诺看得比命还重；喜欢草莓蛋糕，被夸奖时会别过脸整理肩甲。' },
+  { id: 'mia', name: '米娅·玲', title: '魔具发明狂魔', rarity: 4, element: '雷', portrait: '/assets/portraits/mia.svg', unlockChapter: 0, age: 18, desc: '青蓝短发的猫耳机关师，猫耳其实是接收失踪姐姐讯号的改造天线。语速飞快、点子不断，最怕安静下来。' },
+  { id: 'serena', name: '塞雷娜·诺克斯', title: '暗系魔法师', rarity: 5, element: '暗', portrait: '/assets/portraits/serena.svg', unlockChapter: 0, age: 19, desc: '紫黑长发的月蚀观测者，冷静克制，开口总是“观测结果显示”。格外在意你是否对她诚实，右手的白手套从不摘下。' },
+  { id: 'freya', name: '芙蕾娅·霜华', title: '冰系魔法师', rarity: 5, element: '冰', portrait: '/assets/portraits/freya.svg', unlockChapter: 0, age: 19, desc: '青蓝长发的北境冰术师，温柔可靠、习惯默默照顾所有人；战斗时眼神却冷静得像冻结的湖面。' },
+  { id: 'lilith', name: '莉莉丝·瓦尔哈拉', title: '暗影刺客', rarity: 5, element: '暗', portrait: '/assets/portraits/lilith.svg', unlockChapter: 0, age: 19, desc: '金发高束的暗影刺客，好胜又冲动，动作像猫科动物一样敏捷。嘴上从不服输，被认可时会偷偷高兴。' },
+  { id: 'evelyn', name: '伊芙琳·星歌', title: '圣教圣女', rarity: 4, element: '光', portrait: '/assets/portraits/evelyn.svg', unlockChapter: 0, age: 18, desc: '浅金长发的圣教圣女，胆小爱哭却从不放弃。喜欢草莓蛋糕，总在远处注视那个敢为平民发声的冒险者。' },
   { id: 'ophelia', name: '奥菲利亚·使诺德', title: '龙族圣女', rarity: 5, element: '火', portrait: '/assets/portraits/ophelia.svg', unlockChapter: 0, age: 19, desc: '远古龙族后裔，铜红长发、额侧小角，可化为龙形。爽朗爱闹，表达亲近的方式带着一点龙族特色。' },
-  { id: 'aila', name: '艾拉·瓦尔哈拉', title: '光明骑士', rarity: 4, element: '光', portrait: '/assets/portraits/aila.svg', unlockChapter: 0, age: 16, desc: '莉莉丝的妹妹，金色齐肩发的光明骑士。开朗大胆、爱挑战强者，一心想证明自己不输给姐姐。' }
+  { id: 'aila', name: '艾拉·瓦尔哈拉', title: '光明骑士', rarity: 4, element: '光', portrait: '/assets/portraits/aila.svg', unlockChapter: 0, age: 18, desc: '莉莉丝的妹妹，金色齐肩发的光明骑士。开朗大胆、爱挑战强者，一心想证明自己不输给姐姐。' }
 ];
 
 // 服装类型定义

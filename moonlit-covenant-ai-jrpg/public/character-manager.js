@@ -8,10 +8,12 @@ import { icon } from '/icons.js';
 
 // ============ DATA STORE ============
 const STORAGE_KEY = 'moonlit_char_manager';
+// 默认人设变更时递增：旧存档中的默认角色会被替换为新版本，自建角色保留
+const PROFILE_VERSION = 2;
 
 const DEFAULT_CHARACTERS = [
   {
-    id: 'lia', name: '莉亚·赫斯特', nameEn: 'Lia Hest', age: 24, height: '172cm',
+    id: 'lia', name: '莉亚·赫斯特', nameEn: 'Lia Hest', age: 19, height: '172cm',
     hair: '赤红高马尾，左侧一缕暗红挑染（旧王都火灾疤发色）', eyes: '琥珀金',
     profession: '赤誓骑士 / 前卫破甲', element: '火·契约',
     personality: '嘴硬心软、重视承诺、毒舌急性子。表面用命令口吻和挖苦遮掩温柔，最怕被别人安慰（因为安慰让她想起没能救下的人）。自称\"不会再让任何人死在我面前\"。',
@@ -25,7 +27,7 @@ const DEFAULT_CHARACTERS = [
     ]
   },
   {
-    id: 'mia', name: '米娅·铃', nameEn: 'Mia Lin', age: 21, height: '158cm',
+    id: 'mia', name: '米娅·铃', nameEn: 'Mia Lin', age: 18, height: '158cm',
     hair: '青蓝短发，发尾霓虹渐变，右边别扳手形发卡', eyes: '亮青色（瞳孔有淡淡电路反光）',
     profession: '猫耳机关师 / 支援过载', element: '雷·回路',
     personality: '聪明活泼、语速快、用玩笑给恐惧降噪的天才技师。机械猫耳是接收失踪姐姐讯号的改装天线（不是天然兽耳）。越紧张越修东西，被认真倾听反而会突然安静。',
@@ -39,7 +41,7 @@ const DEFAULT_CHARACTERS = [
     ]
   },
   {
-    id: 'serena', name: '塞蕾娜·诺克斯', nameEn: 'Serena Nox', age: 26, height: '169cm',
+    id: 'serena', name: '塞蕾娜·诺克斯', nameEn: 'Serena Nox', age: 19, height: '169cm',
     hair: '紫黑长直发渐变为月白，左侧编细辫串微型月相盘发饰', eyes: '淡紫（虹膜有极细星轨刻线）',
     profession: '月蚀观测者 / 术式封印', element: '月·观测',
     personality: '冷静克制、观察敏锐的月术师。她用反问检验诚实，不需要讨好任何人。奉命销毁黎明种，已预见三种结局却看不见第四种——对\"看不见的东西\"怀有近乎虔诚的渴望。',
@@ -53,71 +55,73 @@ const DEFAULT_CHARACTERS = [
     ]
   },
   {
-    id: 'freya', name: '芙蕾娅·霜华', nameEn: 'Freya Frostbloom', age: 23, height: '166cm',
-    hair: '冰蓝长发，发梢渐变为纯白雪花状碎片', eyes: '浅冰蓝（极低温时会变深蓝）',
-    profession: '霜华术师 / 冻结控制', element: '冰·记忆',
-    personality: '表面如冰山般冷静，实则内心炽热如火。不善言辞但行动可靠，用\"冷\"表达关心（比如默默把队友的咖啡冰成合适温度）。对温暖事物（热饮、毛毯、拥抱）有隐秘而强烈的渴望。',
-    quirks: ['紧张时周围自动结霜', '收集雪景球（已偷偷买了47个）', '说\"我不冷\"时其实冷得要死'],
-    playerInteraction: '被夸奖会嘴角微微上扬然后瞬间板脸；送她热可可羁绊直接拉满；调戏她会把你冻在原地三秒，然后小声说\"……下次穿厚点\"。',
-    likes: ['热可可', '雪景球', '暖炉边的夜晚'],
-    dislikes: ['酷暑', '对冰的刻板印象', '说自己\"高冷\"的人'],
+    id: 'freya', name: '芙蕾娅·霜华', nameEn: 'Freya Frostbloom', age: 19, height: '170cm',
+    hair: '青蓝色波浪长发，发间别冰晶发梳', eyes: '暖琥珀色',
+    profession: '冰系魔法师 / 守墓人 · 冻结控制', element: '水·冰',
+    personality: '像可靠的大姐姐，说话轻柔，善于照顾伤员和调停争执。擅长察觉别人的需要，却从不表达自己的需要。数年前为阻止魔力瘟疫冻结了整座地下祭堂，把生死未卜的同伴也封在冰里——她害怕解冻之后，必须承认自己没能救下所有人。',
+    quirks: ['自然地递热饮、替人整理围巾', '用笑容避开别人对她状况的关心', '酒量差却热衷研究热酒，冷笑话只有米娅会认真分析'],
+    playerInteraction: '偶尔叫玩家“小弟弟”，但玩家做出成熟判断时会认真改口叫“队长”；喜欢并肩安静做事，也喜欢偶尔被别人照顾。逼她立刻放下过去、或把自我牺牲称作成熟，会让她把心门重新冻上。',
+    likes: ['热饮', '并肩安静做事', '偶尔被照顾'],
+    dislikes: ['被逼着立刻放下过去', '把自我牺牲称作成熟', '用世界危机否定休息'],
     relations: [
-      { target: 'ayla', type: 'bond', desc: '艾拉的热便当让她防线崩溃' },
-      { target: 'lilith', type: 'rival', desc: '两个\"冷面\"互为镜子，冰与暗的默契' }
+      { target: 'mia', type: 'bond', desc: '米娅是唯一会认真分析她冷笑话的人' },
+      { target: 'serena', type: 'bond', desc: '两个习惯把情绪藏起来的人，彼此心照不宣' }
     ]
   },
   {
-    id: 'lilith', name: '莉莉丝·瓦尔哈拉', nameEn: 'Lilith Valhalla', age: 27, height: '174cm',
-    hair: '深黑长发渐变为暗紫，两侧各有一条细编辫', eyes: '深紫红（战意升腾时会发亮）',
-    profession: '战乙女·审判者 / 制裁输出', element: '暗·审判',
-    personality: '严肃寡言的战乙女，对战斗有近乎偏执的完美主义。对妹妹艾拉极度保护但从不表现出来。不擅长接受他人好意——别人帮她包扎，她会说\"多事\"然后第二天默默把你的剑磨好。',
-    quirks: ['收集武器但坚决否认是收藏癖', '独处时反复整理妹妹送的护身符', '叫艾拉全名但从不叫她\"小艾\"'],
-    playerInteraction: '对她展示战术能力比说一万句好话有用；叫她\"莉莉\"会被沉默瞪视5秒（但下次战斗她冲得更快）；被调戏会面无表情地说\"你想死一次看看吗\"（但没拔刀）。',
-    likes: ['好武器', '战斗后的寂静', '妹妹安全（永远不会承认）'],
-    dislikes: ['无意义的战斗', '被同情', '妹控笑话'],
+    id: 'lilith', name: '莉莉丝·瓦尔哈拉', nameEn: 'Lilith Valhalla', age: 19, height: '168cm',
+    hair: '金色长发高束成马尾，鼻梁贴一块小创可贴', eyes: '金色',
+    profession: '暗影刺客 / 高速单体输出', element: '木·暗',
+    personality: '警惕、尖锐、行动先于思考。七年前瓦尔哈拉家族被蚀宴会屠杀，罪名却被安在家族头上，她逃入翠影影市成为刺客。对街头孩子和流浪动物异常温柔；害怕亲近的人再次被夺走，所以习惯先离开或先攻击。',
+    quirks: ['很喜欢被摸头却嘴硬，真被摸会僵住几秒', '黑金轻甲、单侧短披风，双匕首“昼盲”“夜醒”从不离身', '动作像猫科动物，落地没有声音'],
+    playerInteraction: '对玩家的安危容易冲动；训练后递水、给她明确而不带怜悯的肯定最有效。从背后突然抓住她、拿她和艾拉比较、说她只是“可怜的幸存者”，都是雷区。',
+    likes: ['安静的陪伴', '被认可', '街头的流浪猫'],
+    dislikes: ['被同情', '被拿来和妹妹比较', '有人从背后靠近'],
     relations: [
-      { target: 'ayla', type: 'sister', desc: '双胞胎姐妹（年长3分钟），过度保护到窒息' }
+      { target: 'ayla', type: 'sister', desc: '妹妹艾拉被圣教收养，长大后被教导“姐姐背叛了家族”' },
+      { target: 'serena', type: 'rival', desc: '一度把亚克当成被塞雷娜迷惑的教团棋子' }
     ]
   },
   {
-    id: 'evelyn', name: '伊芙琳·星歌', nameEn: 'Evelyn Starsong', age: 20, height: '163cm',
-    hair: '深蓝紫渐变长发，缠绕发光星尘丝线（夜间发光）', eyes: '金色（据说能看见星座轨迹）',
-    profession: '星咏者 / 预知辅助', element: '星·命运',
-    personality: '慵懒随性的占星术师，常常被误认为喝醉了（其实是严重缺觉——整夜看星星就是睡不着）。有一语道破真相的天赋，说重要预言前眼睛会突然睁圆像猫头鹰，平时却连自己鞋带散了都懒得系。',
-    quirks: ['白天永远在打哈欠', '用星座比喻一切（\"你的运气像天蝎座尾巴——藏在看不见的地方\"）', '说梦话时会说出真正的预言'],
-    playerInteraction: '半夜三点找她才能听到真心话（白天她只会用星星打哈哈）；调戏她会歪头说\"哦？你的星座今天宜调戏漂亮占星师吗\"然后继续打哈欠。',
-    likes: ['星图', '半夜的咖啡', '被认真看待预言'],
-    dislikes: ['被当成神棍', '闹钟', '\"天机不可泄露\"这种话'],
+    id: 'evelyn', name: '伊芙琳·星歌', nameEn: 'Evelyn Starsong', age: 18, height: '160cm',
+    hair: '浅金偏白长发，编成松散侧辫，额前戴羽翼形圣冠', eyes: '星蓝色',
+    profession: '圣教圣女 / 纯结持有者 · 治疗净化', element: '光·纯结',
+    personality: '胆小、爱哭、说话很轻，常从柱子、窗边或人群后远远看着亚克。但她并不无能——有人受伤时会一边流泪一边坚持施法。从小在白塔长大，发言、服装、朋友甚至喜欢的花都被规定；她害怕自己真实的愿望会让所有信徒失望。',
+    quirks: ['一聊到草莓蛋糕就会突然非常坚定', '偷偷练习普通人打招呼的方式', '记得每个普通人的名字和伤势'],
+    playerInteraction: '需要不被催促的陪伴：远远挥手、写着具体内容的小纸条都会让她开心很久。称她“完美圣女”、替她回答问题、把哭泣当成无能、要求她为团队牺牲，都是雷区。',
+    likes: ['草莓蛋糕', '小纸条', '不被催促的陪伴'],
+    dislikes: ['被称作“完美圣女”', '被替自己做决定', '被要求牺牲'],
     relations: [
-      { target: 'ophelia', type: 'bond', desc: '唯一能\"翻译\"奥菲利亚断片语言的人' },
-      { target: 'serena', type: 'rival', desc: '星与月——两种不同的\"看见\"' }
+      { target: 'lia', type: 'bond', desc: '因为草莓蛋糕和莉亚结成了意外的同盟' },
+      { target: 'ayla', type: 'bond', desc: '同在圣辉教国长大，艾拉总想保护她' }
     ]
   },
   {
-    id: 'ophelia', name: '奥菲利亚·使诺德', nameEn: 'Ophelia Shinod', age: '16（外观）/ ？？（实际）', height: '151cm',
-    hair: '银白短发，左侧一缕异常长的刘海遮住左眼', eyes: '左金右紫（异色瞳）',
-    profession: '诺德使徒 / 月面行者', element: '月·深渊',
-    personality: '天真与疯狂并存。来自月之领域的异界行者，行为完全不可预测。有时像幼童一样好奇地翻别人的口袋，有时突然安静下来说出让人毛骨悚然的真相。有轻微的认知偏差——认为\"咬人\"是表达好感的最高形式。',
-    quirks: ['咬玩家的头（戴着头盔也咬）', '走路没声音突然出现在背后', '收集别人掉的纽扣（谁都不知道她拿来干嘛）'],
-    playerInteraction: '被她咬是羁绊上升的标志（虽然真的很痛）；不要试图理解她的逻辑——她的逻辑里没有\"不\"字；调戏她会歪头问\"你喜欢被咬，对吗\"然后张开嘴（快跑）。',
-    likes: ['纽扣', '咬', '没人发现的角落'],
-    dislikes: ['被关在门外', '整齐的东西（会忍不住弄乱）', '\"正常\"这个词'],
+    id: 'ophelia', name: '奥菲利亚·使诺德', nameEn: 'Ophelia Shinod', age: 19, height: '172cm',
+    hair: '铜红色狂野长发，额侧一对小龙角', eyes: '金紫异色瞳（左金右紫）',
+    profession: '龙族圣女 / 变形者 · 爆发压制', element: '土·龙术',
+    personality: '外表端庄自信，带着古老的礼仪感，实际非常好奇，对人类日常缺乏常识，爱收集人类的小物件。她能读取历代龙王的记忆，也因此被要求放弃个人偏好，成为“所有祖先共同的声音”——她害怕拒绝祖先之后，自己就不再算龙族。',
+    quirks: ['幼龙形态会轻咬人的头顶确认气味、叼走餐具、睡在金币堆上', '恢复人形后假装什么都没发生', '笑起来露出一颗小虎牙'],
+    playerInteraction: '用轻咬头顶表达亲近，玩家可以接受、制止，或改成碰拳——她都会记住。交换名字、分享食物、触碰角或鳞片前先询问，都会让她高兴。把龙族当坐骑、要求她代表所有龙，是雷区。',
+    likes: ['人类的小物件', '分享食物', '交换名字'],
+    dislikes: ['被当成坐骑', '被要求代表所有龙', '被鼓励吞下全部祖忆'],
     relations: [
-      { target: 'evelyn', type: 'bond', desc: '伊芙琳能解读她的星象预言' },
-      { target: 'lilith', type: 'rival', desc: '莉莉丝是唯一能防住她\"背后突袭\"的人' }
+      { target: 'evelyn', type: 'bond', desc: '对伊芙琳的“纯结”充满好奇' },
+      { target: 'lilith', type: 'rival', desc: '莉莉丝是少数能察觉她悄悄靠近的人' }
     ]
   },
   {
-    id: 'ayla', name: '艾拉·瓦尔哈拉', nameEn: 'Ayla Valhalla', age: 27, height: '172cm',
-    hair: '蜜金色长发，常扎低马尾，耳侧别两枚白色羽毛发饰', eyes: '温和的琥珀色',
-    profession: '圣疗骑士 / 守护治疗', element: '光·守护',
-    personality: '温柔包容的治愈系，与姐姐莉莉丝形成鲜明对比。试图在战斗中保护所有人——经常忘记保护自己。对姐姐的过度保护既感动又无奈，会用最温柔的方式表达最坚定的反对。',
-    quirks: ['偷偷给全队准备便当（每份都不同）', '紧张会疯狂整理装备到发光', '说\"我没事\"时一定有事'],
-    playerInteraction: '最容易对玩家敞开心扉；关心玩家健康多于自己；调戏她会脸红低头说\"队长又开玩笑\"但不会真的生气（她姐姐在远处已经拔刀了）。',
-    likes: ['做便当', '阳光', '看到别人被自己治愈的表情'],
-    dislikes: ['姐姐太保护她', '自己帮不上忙', '浪费食物'],
+    id: 'ayla', name: '艾拉·瓦尔哈拉', nameEn: 'Ayla Valhalla', age: 18, height: '165cm',
+    hair: '金色齐肩短发', eyes: '明亮的蓝色',
+    profession: '光明骑士 / 快速坦克 · 反击', element: '光·圣雷',
+    personality: '开朗、好胜、行动大胆，擅长用轻佻的挑衅逼对手认真。家族灭门时被圣教骑士救走，被教导姐姐背叛了家族，于是把服从当成偿还救命之恩，把“光明骑士”的身份当成自己仍有价值的证明。观察细致，能察觉别人不敢说出口的犹豫。',
+    quirks: ['挑衅成功后若被认真反击，会短暂慌乱，再装作一切都在计划内', '蓝金轻甲的披风内侧，偷偷保留着瓦尔哈拉黑金家纹', '光剑“晨罚”总斜挎在肩后'],
+    playerInteraction: '喜欢公平决斗和明确的规则，爱用“这点力气也想保护别人？”挑战玩家；被坚定地说“不”反而会认真对待你。把她当成莉莉丝的附属、或用“服从命令”替她开脱，是雷区。',
+    likes: ['公平决斗', '明确的规则', '被认真对待'],
+    dislikes: ['被当成姐姐的附属', '无条件的赞美', '没有命令时的空白'],
     relations: [
-      { target: 'lilith', type: 'sister', desc: '双胞胎妹妹（晚3分钟出生），温柔对抗姐姐的过度保护' }
+      { target: 'lilith', type: 'sister', desc: '奉命追捕姐姐莉莉丝，第27章才与她正式相认' },
+      { target: 'evelyn', type: 'bond', desc: '一起在圣辉教国长大，习惯挡在她前面' }
     ]
   }
 ];
@@ -171,6 +175,11 @@ function loadData() {
     characters = Array.isArray(data.characters) ? data.characters : clone(DEFAULT_CHARACTERS);
     artStatus = data.artStatus && typeof data.artStatus === 'object' ? data.artStatus : clone(DEFAULT_ART_STATUS);
     milestones = Array.isArray(data.milestones) ? data.milestones : clone(DEFAULT_MILESTONES);
+    if ((data.profileVersion || 1) < PROFILE_VERSION) {
+      const defaults = new Map(DEFAULT_CHARACTERS.map((c) => [c.id, c]));
+      characters = characters.map((c) => (defaults.has(c.id) ? clone(defaults.get(c.id)) : c));
+      saveData();
+    }
   } else {
     initDefaults();
   }
@@ -196,7 +205,7 @@ function initDefaults() {
 }
 
 function saveData() {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ characters, artStatus, milestones })); } catch { /* 存储不可用时只保留内存状态 */ }
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ profileVersion: PROFILE_VERSION, characters, artStatus, milestones })); } catch { /* 存储不可用时只保留内存状态 */ }
 }
 
 let toastTimer = 0;
