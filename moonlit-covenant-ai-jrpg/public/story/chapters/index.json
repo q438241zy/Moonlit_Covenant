@@ -22,5 +22,13 @@
     "file": "/story/chapters/ch002.json",
     "requires": "ch001",
     "source": "剧本/02紅髮女孩.md"
+  },
+  {
+    "id": "ch003",
+    "number": 3,
+    "title": "第三章｜临时契约",
+    "file": "/story/chapters/ch003.json",
+    "requires": "ch002",
+    "source": "剧本/03臨時契約.md"
   }
 ]

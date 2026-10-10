@@ -98,5 +98,15 @@
     "name": "黑龙",
     "color": "#a33b3b",
     "art": null
+  },
+  "finn": {
+    "name": "芬恩",
+    "color": "#c9b48a",
+    "art": "/assets/story/npc/finn.svg"
+  },
+  "goblin": {
+    "name": "哥布林",
+    "color": "#7fa36b",
+    "art": "/assets/story/npc/goblin.svg"
   }
 }
