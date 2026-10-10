@@ -1,8 +1,8 @@
 // 厚涂位图预留位：public/assets/paint/manifest.json 里登记的图优先显示，其余继续用矢量 SVG。
 // 出图后运行 tools/art/raster/finalize.mjs 会写入 JPEG 并更新清单，无需改代码。
-// 清单格式：{ "portraits": ["freya"], "costumes": ["freya_maid"], "cg": [], "boss": [], "scenes": [], "cards": [] }
+// 清单格式：{ "portraits": ["freya"], "costumes": ["freya_maid"], "cg": [], "boss": [], "scenes": [], "cards": [], "story-bg": [], "story-npc": [] }
 
-const SVG_PATH = /^\/assets\/(portraits|costumes|cg|boss|scenes|cards)\/([\w-]+?)(?:_e)?\.svg$/;
+const SVG_PATH = /^\/assets\/(portraits|costumes|cg|boss|scenes|cards|story\/bg|story\/npc)\/([\w-]+?)(?:_e)?\.svg$/;
 let ready = new Map();
 
 export async function loadPaint() {
@@ -18,6 +18,7 @@ export async function loadPaint() {
 export function paint(url) {
   const m = typeof url === 'string' ? url.match(SVG_PATH) : null;
   if (!m) return url;
-  const [, group, name] = m;
+  const group = m[1].replace('/', '-'); // story/bg -> story-bg
+  const name = m[2];
   return ready.get(group)?.has(name) ? `/assets/paint/${group}/${name}.jpg` : url;
 }

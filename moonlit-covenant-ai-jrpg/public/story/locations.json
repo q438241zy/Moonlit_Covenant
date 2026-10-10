@@ -1,0 +1,116 @@
+{
+  "hemai-day": {
+    "name": "赫麦村·午后",
+    "svg": "/assets/story/bg/hemai-day.svg",
+    "top": "#d9b86a",
+    "bottom": "#7a8f4a"
+  },
+  "pasture": {
+    "name": "牧场羊圈",
+    "svg": "/assets/story/bg/pasture.svg",
+    "top": "#e0c27a",
+    "bottom": "#6f8a4a"
+  },
+  "village-road": {
+    "name": "赫麦村村道·傍晚",
+    "svg": "/assets/story/bg/village-road.svg",
+    "top": "#d98f5a",
+    "bottom": "#4a3a5a"
+  },
+  "kitchen-night": {
+    "name": "亚克家厨房·油灯",
+    "svg": "/assets/story/bg/kitchen-night.svg",
+    "top": "#c9854a",
+    "bottom": "#2a1e1a"
+  },
+  "dragon-sky": {
+    "name": "黑翼遮月",
+    "svg": "/assets/story/bg/dragon-sky.svg",
+    "top": "#3a3550",
+    "bottom": "#0a0814"
+  },
+  "village-burning": {
+    "name": "黑焰中的赫麦村",
+    "svg": "/assets/story/bg/village-burning.svg",
+    "top": "#5a4a6a",
+    "bottom": "#0c0a12"
+  },
+  "north-trail-night": {
+    "name": "北山旧牧道·夜",
+    "svg": "/assets/story/bg/north-trail-night.svg",
+    "top": "#3a4058",
+    "bottom": "#0c0e18"
+  },
+  "shepherd-cave-night": {
+    "name": "守羊洞·俯瞰故乡",
+    "svg": "/assets/story/bg/shepherd-cave-night.svg",
+    "top": "#4a3a40",
+    "bottom": "#0a0810"
+  },
+  "south-ridge": {
+    "name": "南侧山脊",
+    "svg": "/assets/story/bg/south-ridge.svg",
+    "top": "#2a2440",
+    "bottom": "#06050c"
+  },
+  "cave-dawn": {
+    "name": "守羊洞·黎明前",
+    "svg": "/assets/story/bg/cave-dawn.svg",
+    "top": "#6a6a88",
+    "bottom": "#1a1a2a"
+  },
+  "hemai-sky-dawn": {
+    "name": "赫麦村上空·破晓",
+    "svg": "/assets/story/bg/hemai-sky-dawn.svg",
+    "top": "#8a7a9a",
+    "bottom": "#2a2440"
+  },
+  "hemai-ruins-dawn": {
+    "name": "赫麦村废墟·黎明",
+    "svg": "/assets/story/bg/hemai-ruins-dawn.svg",
+    "top": "#9a8a7a",
+    "bottom": "#3a3440"
+  },
+  "north-slope-camp": {
+    "name": "北山缓坡·灾民营地",
+    "svg": "/assets/story/bg/north-slope-camp.svg",
+    "top": "#9a9a8a",
+    "bottom": "#3a3a40"
+  },
+  "chime-town-gate": {
+    "name": "晨钟镇东门·清晨",
+    "svg": "/assets/story/bg/chime-town-gate.svg",
+    "top": "#e8d8b0",
+    "bottom": "#8a9ab0"
+  },
+  "guild-hall": {
+    "name": "晨钟镇冒险者公会",
+    "svg": "/assets/story/bg/guild-hall.svg",
+    "top": "#c9a46a",
+    "bottom": "#3a2a20"
+  },
+  "market": {
+    "name": "晨钟镇中央市集",
+    "svg": "/assets/story/bg/market.svg",
+    "top": "#e8c890",
+    "bottom": "#8a7a6a"
+  },
+  "dye-alley": {
+    "name": "染布巷",
+    "svg": "/assets/story/bg/dye-alley.svg",
+    "top": "#b0a0c8",
+    "bottom": "#3a3450"
+  },
+  "barrel-alley": {
+    "name": "旧酒桶巷",
+    "svg": "/assets/story/bg/barrel-alley.svg",
+    "top": "#8a7a6a",
+    "bottom": "#1e1a1a"
+  },
+  "guard-square": {
+    "name": "治安所前·公会广场",
+    "svg": "/assets/story/bg/guard-square.svg",
+    "top": "#d8c8a8",
+    "bottom": "#6a7a8a"
+  }
+}
