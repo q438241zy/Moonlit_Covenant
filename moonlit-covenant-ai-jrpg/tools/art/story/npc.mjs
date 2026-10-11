@@ -31,7 +31,7 @@ const torso = (w = 214, sy = 470, slope = 1, dx = 0) => S([[300 - 48 + dx, sy - 
 function render(spec, rimArg) {
   const { id, label, dir = -1 } = spec;
   const rim = rimArg || spec.rim;
-  const p = `sbNpc${id[0].toUpperCase()}${id.slice(1)}`;
+  const p = `sbNpc${id[0].toUpperCase()}${id.slice(1).replace(/_(\w)/g, (m, c) => c.toUpperCase())}`; // goblin_chief -> sbNpcGoblinChief
   const mirror = dir > 0 ? ' transform="matrix(-1 0 0 1 600 0)"' : '';
   const inkTop = mix('#1d1838', rim, 0.1), inkMid = mix('#0e0b1e', rim, 0.05);
   const defs = [
@@ -654,6 +654,111 @@ CAST.acolyte = {
     s += `<circle cx="314" cy="552" r="40" fill="url(#${p}-shard)"/><path d="M306,532L316,520L326,536L322,566L312,574L302,556Z" fill="#120c1a"/><path d="M316,520L318,548L312,574M318,548L326,536" fill="none" stroke="#b58cff" stroke-width="1.5" opacity=".9"/><path d="M308,536l7,-10" stroke="#e8dcff" stroke-width="1.8" stroke-linecap="round"/>`;
     // a downcast, anxious eye under a knit brow
     s += `<path d="M228,270q8,-2 14,-8M244,264q6,0 12,3" fill="none" stroke="${rim}" stroke-width="2.4" stroke-linecap="round" opacity=".85"/><ellipse cx="240" cy="284" rx="6" ry="4.6" fill="#e4e0ec" opacity=".85"/><circle cx="237" cy="286" r="3" fill="#14121a"/><path d="M233,280q7,-3 14,0" fill="none" stroke="#14121a" stroke-width="2"/>`;
+    return s;
+  },
+};
+
+// 哥布林咒徒长 — chapter 05: the old goblin that hauls the cult's cart. Human height, not a giant and not an ogre:
+// goblin head and ears, but bowed and hunched, the neck and shoulders swollen thick (fed on black crystal — shown
+// only as bulk and a cold violet cast in the shadow of the hump, nothing grown out of him); the cart harness strapped
+// across the bare chest; the huge new collar with its crystal seat and the trace chain hanging from it (only the
+// collar's outside — never its inside); the eyes ink-black while the collar holds him. He has no lines: this bust
+// is for the roars and the moments he is on screen. A victim, not a monster: no gore, no wounds.
+// sparse long grey hair: single strands from the crown, falling back over the skull and the hump
+const CHIEF_HAIR = ['M306,158C344,150 388,170 420,212S462,300 470,330', 'M318,154C360,152 404,176 436,220S474,292 486,318', 'M296,164C326,166 356,190 378,232S398,300 396,322',
+  'M330,152C372,156 418,184 450,230S488,296 500,312', 'M312,160C340,170 366,198 384,242', 'M342,150C384,160 428,192 458,240'];
+const CHIEF_BODY = S([[212, 384], [196, 412], [150, 440], [94, 466], [52, 500], [30, 552], [28, 612], [36, 660], [26, 720], [18, 820], [584, 820], [578, 720], [568, 650], [580, 590], [576, 520], [556, 452], [530, 400], [498, 350], [462, 310], [420, 292], [396, 312], [362, 366], [300, 404]]);
+const chiefAx = (t) => { // the trace chain's path down the chest and out of frame (t 0 = shackle, 1 = bottom-left edge)
+  const x = 262 - 40 * t - 200 * t * t, y = 492 + 330 * t - 20 * t * t;
+  return [x, y];
+};
+CAST.goblin_chief = {
+  id: 'goblin_chief', label: '哥布林咒徒长：佝偻的老哥布林首领，肩颈肿厚，胸前勒着拉车的皮套，粗大颈圈嵌着晶座并连着粗链，眼睛墨黑', rim: '#6f8f5c',
+  sil: [
+    // the near ear: long, swept back and up, two old notches bitten out of its lower edge
+    S([[370, 232], [420, 212], [478, 188], [528, 166], [560, 152, 1], [540, 182], [522, 198], [508, 196, 1], [500, 210, 1], [482, 222], [468, 220, 1], [460, 236, 1], [430, 258], [392, 288]]),
+    // bald, heavy skull
+    circle(318, 238, 86),
+    // the face, low and thrust forward: beetling brow, long hooked nose, the underslung jaw
+    S([[256, 172], [228, 196], [214, 220], [202, 236, 1], [214, 248], [206, 260], [188, 280], [168, 302], [152, 322, 1], [164, 334], [184, 334], [198, 330, 1], [194, 344], [184, 358, 1], [192, 374], [208, 388], [238, 400], [278, 404], [318, 394], [354, 366], [382, 318], [396, 266], [386, 208]]),
+    // neck, swollen trapezius hump rising behind the head, the bowed shoulders and long arms falling out of frame
+    CHIEF_BODY,
+  ],
+  tones: [
+    // olive-grey old skin: skull, face, ear; the ear's inside
+    [circle(318, 238, 86) + S([[256, 172], [228, 196], [214, 220], [202, 236], [214, 248], [206, 260], [188, 280], [168, 302], [152, 322], [164, 334], [184, 334], [198, 330], [194, 344], [184, 358], [192, 374], [208, 388], [238, 400], [278, 404], [318, 394], [354, 366], [382, 318], [396, 266], [386, 208]]), '#20261e', 0.55],
+    [S([[370, 232], [420, 212], [478, 188], [528, 166], [560, 152], [540, 182], [522, 198], [508, 196], [500, 210], [482, 222], [468, 220], [460, 236], [430, 258], [392, 288]]), '#283024', 0.72],
+    [S([[392, 244], [436, 226], [486, 204], [530, 180], [508, 200], [470, 222], [430, 246], [400, 266]]), '#43302e', 0.75],
+    // bare torso, the hump in a colder, violet-tinged shadow where the crystal has fed it
+    [CHIEF_BODY, '#1c2119', 0.78],
+    [S([[396, 312], [420, 292], [462, 310], [500, 352], [536, 420], [552, 480], [520, 470], [470, 420], [420, 388], [380, 380]]), '#2a2638', 0.75],
+    [S([[150, 440], [94, 468], [64, 500], [110, 500], [170, 470]]), '#2e2a3c', 0.45],
+    // the harness: breast band across the chest, a strap down from each shoulder to the iron ring
+    [S([[22, 606, 1], [160, 620], [330, 628], [480, 616], [584, 596, 1], [584, 636, 1], [480, 656], [330, 668], [160, 660], [22, 646, 1]]), '#3a2a1e', 0.95],
+    [S([[506, 404, 1], [540, 430, 1], [354, 628, 1], [318, 612, 1]]), '#3a2a1e', 0.95],
+    [S([[96, 470, 1], [128, 458, 1], [328, 610, 1], [306, 628, 1]]), '#33251c', 0.95],
+  ],
+  lines: [
+    // ear rim and its notches; skull dome; a pale old scar across the scalp
+    [pl([[370, 232], [420, 212], [478, 188], [528, 166], [560, 152]]), 2.6, 0.8],
+    [pl([[540, 182], [522, 198], [508, 196], [500, 210], [482, 222], [468, 220], [460, 236]]), 2, 0.55],
+    [`M318,152C356,154 392,176 404,214`, 3, 0.8],
+    [`M330,170l26,36`, 2.4, 0.55, '#a8b098'],
+    // brow ridge, forehead and cheek wrinkles, the nose's hook, the jaw
+    [`M206,236C214,226 230,222 246,226`, 3, 0.85],
+    [`M232,200q14,-6 28,-2M240,186q12,-4 24,0M262,246q10,8 8,20`, 1.8, 0.55],
+    [`M210,262C220,284 222,300 208,320M226,330q18,10 36,8`, 1.8, 0.5],
+    [`M394,268C384,320 356,370 318,394`, 3.2, 0.85],
+    [`M196,346q10,6 26,6`, 2, 0.6],
+    // the grey strands: a dark under-stroke, then the lit hair
+    [CHIEF_HAIR.join(''), 4, 0.6, '#0e0c12'],
+    [CHIEF_HAIR.join(''), 1.8, 0.8, '#a8aca0'],
+    // the hump and bowed shoulders, the swell of the trapezius, the long arms
+    [pl([[420, 292], [462, 310], [500, 352], [536, 420], [562, 500], [576, 590]]), 3.4, 0.8],
+    [`M404,330C436,348 466,376 488,412M160,444C120,462 84,484 62,520`, 2.2, 0.5],
+    [`M524,440C552,474 566,520 562,584M70,486C46,516 38,560 44,606`, 2.2, 0.45],
+    [`M562,600C552,630 552,660 566,690M44,622C52,648 50,672 38,700`, 1.8, 0.35],
+    [`M110,560C160,578 210,586 250,584M372,586C420,580 470,566 512,546`, 1.8, 0.3],
+    // harness edges and stitching
+    [`M22,606C160,620 330,628 480,616C540,610 570,602 584,596M22,646C160,660 330,668 480,656C540,650 570,642 584,636`, 2.2, 0.6],
+    [`M40,626h12M80,630h12M120,634h12M420,640h12M470,638h12M520,632h12`, 1.4, 0.4],
+    [pl([[540, 430], [354, 628]]) + pl([[128, 458], [328, 610]]), 2, 0.5],
+  ],
+  defs: (p) => [
+    `<radialGradient id="${p}-seat"><stop offset="0" stop-color="#b58cff" stop-opacity=".75"/><stop offset=".4" stop-color="#8a5ad8" stop-opacity=".28"/><stop offset="1" stop-color="#8a5ad8" stop-opacity="0"/></radialGradient>`,
+  ],
+  front: ({ rim, p }) => {
+    let s = '';
+    // the collar: a thick iron band round the swollen neck (its outside only), riveted, the near edge lit
+    const band = `M200,390C236,420 336,430 410,394C426,386 440,378 448,372C452,392 446,414 430,430C340,480 232,470 204,440C196,428 196,404 200,390Z`;
+    s += `<path d="${band}" fill="#34303a"/><path d="M200,390C236,420 336,430 424,388" fill="none" stroke="#9a94a4" stroke-width="2.4" opacity=".85"/><path d="M204,440C232,470 340,480 430,430" fill="none" stroke="#14111a" stroke-width="3"/><path d="M404,398C424,390 440,380 448,372C452,392 446,414 430,430C420,420 410,410 404,398Z" fill="#1a1720" opacity=".85"/>`;
+    s += `<path d="M204,404C238,432 336,442 426,402" fill="none" stroke="#1e1a24" stroke-width="2" opacity=".8"/>`;
+    s += `<g fill="#8a8494">${[[214, 420], [318, 446], [356, 440], [392, 424], [414, 410]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="3"/>`).join('')}</g>`;
+    s += `<g fill="#3a2e52" opacity=".35"><ellipse cx="420" cy="350" rx="22" ry="12"/><ellipse cx="470" cy="388" rx="16" ry="9"/><ellipse cx="380" cy="372" rx="12" ry="7"/></g>`;
+    // the crystal seat at the throat: a pronged iron mount, the black crystal in it, its violet heart
+    s += `<circle cx="262" cy="446" r="78" fill="url(#${p}-seat)"/>`;
+    s += `<path d="M234,418L290,418L298,458L262,492L226,458Z" fill="#24202a"/><path d="M234,418L226,458L262,492" fill="none" stroke="#8a8494" stroke-width="1.8" opacity=".7"/>`;
+    s += `<path d="M262,410L278,430L274,466L262,482L248,464L248,430Z" fill="#100a18"/><path d="M262,410L266,446L262,482M266,446L278,430" fill="none" stroke="#b58cff" stroke-width="1.8" opacity=".95"/><path d="M252,432l8,-14" stroke="#ece0ff" stroke-width="2.2" stroke-linecap="round"/>`;
+    s += `<path d="M230,422l10,8M294,422l-10,8M228,456l10,-4M296,456l-10,-4" stroke="#4a4652" stroke-width="4" stroke-linecap="round"/>`;
+    // the shackle under the seat and the heavy trace chain hanging from it, down over the harness and off to the left
+    s += `<path d="M250,488a12,12 0 1 0 24,0" fill="none" stroke="#2a2630" stroke-width="7"/><path d="M250,488a12,12 0 1 0 24,0" fill="none" stroke="#7a7484" stroke-width="2" opacity=".8"/>`;
+    let dark = '', hi = '';
+    for (let i = 0; i < 9; i++) {
+      const t0 = 0.035 + i * 0.118, a = chiefAx(t0), b = chiefAx(t0 + 0.02), ang = Math.atan2(b[1] - a[1], b[0] - a[0]) * 180 / Math.PI;
+      const [cx, cy] = chiefAx(t0 + 0.05);
+      if (i % 2 === 0) { dark += `<ellipse cx="${r0(cx)}" cy="${r0(cy)}" rx="25" ry="14" transform="rotate(${r0(ang)} ${r0(cx)} ${r0(cy)})"/>`; hi += `<path d="M${r0(cx - 18)},${r0(cy - 8)}a25,14 0 0 1 30,-4" transform="rotate(${r0(ang)} ${r0(cx)} ${r0(cy)})"/>`; }
+      else { dark += `<rect x="${r0(cx - 25)}" y="${r0(cy - 6)}" width="50" height="12" rx="6" transform="rotate(${r0(ang)} ${r0(cx)} ${r0(cy)})"/>`; hi += `<path d="M${r0(cx - 18)},${r0(cy - 4)}h32" transform="rotate(${r0(ang)} ${r0(cx)} ${r0(cy)})"/>`; }
+    }
+    s += `<g fill="none" stroke="#0e0c12" stroke-width="13">${dark}</g><g fill="none" stroke="#3a3640" stroke-width="7">${dark}</g><g fill="none" stroke="#8a8494" stroke-width="1.8" opacity=".7">${hi}</g>`;
+    // the harness ring where the straps meet, a buckle on the band
+    s += `<circle cx="334" cy="620" r="17" fill="none" stroke="#1a161c" stroke-width="7"/><circle cx="334" cy="620" r="17" fill="none" stroke="#6a6270" stroke-width="2.4"/><path d="M462,618h26v34h-26z" fill="none" stroke="#6a6270" stroke-width="3"/>`;
+    // the eye under the brow: ink-black, no white and no pupil, a thin violet sheen from the seat along the lower lid
+    s += `<path d="M206,250q14,-10 34,-6" fill="none" stroke="#0a0810" stroke-width="5" stroke-linecap="round"/>`;
+    s += `<path d="M204,256q20,-12 44,-4q2,16 -12,22q-20,4 -32,-18z" fill="#0c0a10" opacity=".8"/>`;
+    s += `<path d="M210,262q14,-11 32,-5q-4,14 -18,14q-10,0 -14,-9z" fill="#020104"/><path d="M214,268q12,7 26,-7" fill="none" stroke="#b58cff" stroke-width="1.8" opacity=".9"/><path d="M224,259q5,-2 9,0" fill="none" stroke="#e0d4ff" stroke-width="1.4" stroke-linecap="round" opacity=".75"/>`;
+    s += `<path d="M210,252q14,-8 32,-4" fill="none" stroke="${rim}" stroke-width="2.4" stroke-linecap="round" opacity=".8"/>`;
+    // the underbite: two short worn tusks over the upper lip, a grim mouth line
+    s += `<path d="M192,344l2,-12l6,11zM214,350l3,-11l5,11z" fill="#c8c2ac"/><path d="M186,350q20,8 44,4" fill="none" stroke="#0a0810" stroke-width="2.4" stroke-linecap="round"/>`;
     return s;
   },
 };

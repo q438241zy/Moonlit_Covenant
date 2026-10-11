@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 // Build the story-mode art (主线剧情背景 + NPC 剪影胸像).
 //   node tools/art/story/build.mjs               -> everything
-//   node tools/art/story/build.mjs bg            -> all 24 backgrounds
-//   node tools/art/story/build.mjs npc           -> all 14 NPC busts
+//   node tools/art/story/build.mjs bg            -> all 25 backgrounds
+//   node tools/art/story/build.mjs npc           -> all 15 NPC busts
 //   node tools/art/story/build.mjs hemai-day aku -> just those ids
 // Output: public/assets/story/bg/<id>.svg (1600×900) and public/assets/story/npc/<id>.svg (600×800, transparent).
 // Every file is validated against docs/ART-DIRECTION.md §4 (self-contained, no text/script/external refs,

@@ -11,7 +11,15 @@
 //                    pulsing violet, two thin chains under the cloth of the cage, the table with slate and
 //                    ledger, the row of collars and one huge collar on the wall, sacks and old flour dust,
 //                    the trapdoor by the shaft, and lamplight leaking down the stair from the attic.
-import { Scene, W, H, f, pz, pl, cloud, cloudCluster, ridge, band, tree, stars, bird, noise1, persp } from './lib.mjs';
+// 大车之夜 (chapter 05):
+//   old-mill-floor-cart — the same room the night the cart came (the same composition, seed and camera, darker):
+//                    the rack on the shaft stripped bare (only its empty hooks left) and the chain gone from the
+//                    shaft, a new iron-banded box beside it with a thread of violet in its seams, the two thin
+//                    chains now running from the box to the cage and the heavy trace chain from the box into the
+//                    dark, the huge collar's hook empty, the slate gone with the manager, the attic dark and the
+//                    acolyte's lamp on the stair the only warm light, and the loading door in the right wall burst
+//                    open on a moonless black. No goblin in the picture and never the inside of a collar.
+import { Scene, W, H, f, pz, pl, cloud, cloudCluster, ridge, band, tree, stars, bird, noise1, persp, rng } from './lib.mjs';
 import { plume } from './bg-mill.mjs';
 
 const r0 = (v) => f(v, 0);
@@ -393,10 +401,18 @@ function oldMillDusk() {
 
 // ---------------------------------------------------------------------------------------------
 // 旧磨坊·磨盘间 — a low timber room, seen from a crouch beside the trapdoor
+// cart = true paints old-mill-floor-cart (chapter 05) from the same code, camera and seed: every shared random
+// detail (floorboards, dust, cage hem, sack shapes, motes) comes out identical, the cart-only details draw from
+// their own stream (R2), and the floor itself (cart = false) is unchanged byte for byte.
 // ---------------------------------------------------------------------------------------------
-function oldMillFloor() {
-  const S = new Scene('sbMillFloor', '旧磨坊·磨盘间：穿过地板直通屋顶的水车轴，轴上一圈挂满黑晶的晶架泛着紫光，盖布的笼子，桌上的石板与账本，墙上一排颈圈', 6202);
-  const R = S.R;
+function oldMillFloor(cart = false) {
+  const S = cart
+    ? new Scene('sbMillCart', '旧磨坊·磨盘间·大车之夜：晶架已空的水车轴，轴边一口新箱子，箱缝透出一线紫光，墙上大颈圈的钩子空着，楼梯上一盏灯，装卸台的门被撞开，门外是没有月亮的黑', 6202)
+    : new Scene('sbMillFloor', '旧磨坊·磨盘间：穿过地板直通屋顶的水车轴，轴上一圈挂满黑晶的晶架泛着紫光，盖布的笼子，桌上的石板与账本，墙上一排颈圈', 6202);
+  const R = S.R, R2 = rng(6205);
+  const over = []; // cart: light painted over the darkening pass (the lamp, warm rims, the violet in the box seams)
+  const BOX = { x0: 0.12, x1: 0.88, z0: 3.72, z1: 4.27, h: 0.55, lid: 0.12 }; // cart: the new box beside the shaft
+  const LAMP = [3.3, 1.08, 6.97]; // cart: the acolyte's lamp set on the fourth step
   const FL = 760, EYE = 1.15, VY = 400;
   const pr = persp({ vp: [800, VY], F: FL, eye: EYE });
   const q = (pts) => pr.quad(pts);
@@ -405,6 +421,10 @@ function oldMillFloor() {
   const VIO = '#a07ae0', VIO_HI = '#dcc8ff', WARM = '#ffb860';
   const SX = 0.15, SZ = 4.8, SR = 0.24, HY = 1.85, HR = 1.2; // the shaft and the crystal hoop
   const gU = (y0, y1) => `gradientUnits="userSpaceOnUse" x1="0" y1="${r0(y0)}" x2="0" y2="${r0(y1)}"`;
+  // cart: the box's outline on screen, and a clip that keeps light painted later off it
+  const boxSil = () => { const { x0, x1, z0, z1, h } = BOX, e = 0.016; return pr.poly([[x0 - e, 0, z1], [x0 - e, 0, z0 - e], [x1 + e, 0, z0 - e], [x1 + e, h + 0.01, z0 - e], [x1 + e, h + 0.01, z1], [x0 - e, h + 0.01, z1]]); };
+  let noBoxId = null;
+  const noBox = () => { if (!noBoxId) { noBoxId = S.id('nobox'); S.def(`<clipPath id="${noBoxId}"><path clip-rule="evenodd" d="M0,0H${W}V${H}H0Z${pz(boxSil())}"/></clipPath>`); } return `url(#${noBoxId})`; };
   // grain sacks: [X, Z, width, height, raised-by] each, with old flour dust on their tops
   const sacks = (list, fill = '#2e2630') => list.map(([x, z, w, h, up]) => {
     const a = pr(x, 0, z), k = kAt(z), ww = w * k, hh = h * k, yb = a[1] - up * k;
@@ -437,8 +457,15 @@ function oldMillFloor() {
 
   // --- the violet light of the rack spilling over everything --------------------------------------------
   const hc = pr(SX, HY - 0.15, SZ);
-  S.add(`<circle cx="${r0(hc[0])}" cy="${r0(hc[1])}" r="620" fill="${S.rad([[0, '#b48cff', 0.5], [0.18, '#8a5ad8', 0.26], [0.5, '#5a3a9a', 0.08], [1, '#5a3a9a', 0]])}"/>`);
-  { const fc = pr(SX, 0, SZ); S.add(`<ellipse cx="${r0(fc[0])}" cy="${r0(fc[1])}" rx="430" ry="70" fill="${S.rad([[0, '#c8a8ff', 0.4], [1, '#8a5ad8', 0]])}"/>`); }
+  if (!cart) {
+    S.add(`<circle cx="${r0(hc[0])}" cy="${r0(hc[1])}" r="620" fill="${S.rad([[0, '#b48cff', 0.5], [0.18, '#8a5ad8', 0.26], [0.5, '#5a3a9a', 0.08], [1, '#5a3a9a', 0]])}"/>`);
+    { const fc = pr(SX, 0, SZ); S.add(`<ellipse cx="${r0(fc[0])}" cy="${r0(fc[1])}" rx="430" ry="70" fill="${S.rad([[0, '#c8a8ff', 0.4], [1, '#8a5ad8', 0]])}"/>`); }
+  } else {
+    // the rack is bare: what is left is the lamp's warmth from the stair (back right) and a cold residue of violet round the box
+    const lp = pr(...LAMP), bc = pr((BOX.x0 + BOX.x1) / 2, 0.3, BOX.z0);
+    S.add(`<circle cx="${r0(lp[0])}" cy="${r0(lp[1])}" r="560" fill="${S.rad([[0, '#ffb070', 0.3], [0.25, '#c87850', 0.12], [0.6, '#6a4048', 0.04], [1, '#6a4048', 0]])}"/>`);
+    S.add(`<circle cx="${r0(bc[0])}" cy="${r0(bc[1])}" r="330" fill="${S.rad([[0, '#8a5ad8', 0.22], [0.4, '#5a3a9a', 0.08], [1, '#5a3a9a', 0]])}"/>`);
+  }
 
   // --- back wall: the row of collars, one huge collar -------------------------------------------------------
   {
@@ -454,17 +481,25 @@ function oldMillFloor() {
     S.add(`<path d="${rail}" fill="#2e2432"/><path d="${pegs}" stroke="#08060a" stroke-width="2"/><g fill="none" stroke="#3a3440" stroke-width="3.2">${rings}</g><path d="${glints}" fill="none" stroke="${VIO_HI}" stroke-width="1.4" opacity=".7"/>`);
     // the huge one: a thick riveted band, big enough for an ox
     const bp = pr(-0.95, 1.56, BACK - 0.03), br = 0.27 * kb;
-    let riv = '';
-    for (let i = 0; i < 9; i++) { const a = Math.PI * (0.15 + i * 0.09) + Math.PI * 0.55; riv += `<circle cx="${r0(bp[0] + Math.cos(a) * br)}" cy="${r0(bp[1] + br + 6 + Math.sin(a) * br * 1.05)}" r="2"/>`; }
-    S.add(`<path d="M${r0(bp[0])},${r0(bp[1])}v8" stroke="#08060a" stroke-width="3"/><ellipse cx="${r0(bp[0])}" cy="${r0(bp[1] + br + 6)}" rx="${f(br)}" ry="${f(br * 1.05)}" fill="none" stroke="#141018" stroke-width="${f(0.075 * kb + 3)}"/><ellipse cx="${r0(bp[0])}" cy="${r0(bp[1] + br + 6)}" rx="${f(br)}" ry="${f(br * 1.05)}" fill="none" stroke="#3e3646" stroke-width="${f(0.075 * kb)}"/><g fill="#6a6074">${riv}</g><path d="M${r0(bp[0] - br * 0.95)},${r0(bp[1] + br * 1.3 + 6)}a${f(br)},${f(br * 1.05)} 0 0 1 ${r0(br * 0.7)},${r0(-br * 0.98)}" fill="none" stroke="${VIO_HI}" stroke-width="2" opacity=".75"/>`);
+    if (!cart) {
+      let riv = '';
+      for (let i = 0; i < 9; i++) { const a = Math.PI * (0.15 + i * 0.09) + Math.PI * 0.55; riv += `<circle cx="${r0(bp[0] + Math.cos(a) * br)}" cy="${r0(bp[1] + br + 6 + Math.sin(a) * br * 1.05)}" r="2"/>`; }
+      S.add(`<path d="M${r0(bp[0])},${r0(bp[1])}v8" stroke="#08060a" stroke-width="3"/><ellipse cx="${r0(bp[0])}" cy="${r0(bp[1] + br + 6)}" rx="${f(br)}" ry="${f(br * 1.05)}" fill="none" stroke="#141018" stroke-width="${f(0.075 * kb + 3)}"/><ellipse cx="${r0(bp[0])}" cy="${r0(bp[1] + br + 6)}" rx="${f(br)}" ry="${f(br * 1.05)}" fill="none" stroke="#3e3646" stroke-width="${f(0.075 * kb)}"/><g fill="#6a6074">${riv}</g><path d="M${r0(bp[0] - br * 0.95)},${r0(bp[1] + br * 1.3 + 6)}a${f(br)},${f(br * 1.05)} 0 0 1 ${r0(br * 0.7)},${r0(-br * 0.98)}" fill="none" stroke="${VIO_HI}" stroke-width="2" opacity=".75"/>`);
+    } else {
+      // the huge one is gone: its hook hangs empty over the clean ring it left in the soot of the planks
+      const cy = bp[1] + br + 6;
+      S.add(`<ellipse cx="${r0(bp[0])}" cy="${r0(cy)}" rx="${f(br)}" ry="${f(br * 1.05)}" fill="none" stroke="#3a3046" stroke-width="${f(0.075 * kb + 2)}" opacity=".7"/><ellipse cx="${r0(bp[0])}" cy="${r0(cy)}" rx="${f(br)}" ry="${f(br * 1.05)}" fill="none" stroke="#463a54" stroke-width="${f(0.03 * kb)}" opacity=".5"/>`);
+      S.add(`<path d="M${r0(bp[0] - 4)},${r0(bp[1] - 2)}h8v6h-8z" fill="#08060a"/><path d="M${r0(bp[0])},${r0(bp[1] + 3)}v9q0,8 -7,8q-6,0 -6,-6" fill="none" stroke="#4e4658" stroke-width="3.2" stroke-linecap="round"/><path d="M${r0(bp[0] + 1.5)},${r0(bp[1] + 5)}v7" stroke="#9a8ea8" stroke-width="1.2" opacity=".6"/>`);
+    }
   }
 
   // --- the stair up to the attic (back right), lamplight leaking down it ---------------------------------
   {
     const sx0 = 3.0, sx1 = 3.9;
     const top = pr.poly([[sx0, CEIL, 5.7], [sx1, CEIL, 5.7], [sx1, CEIL, 6.4], [sx0, CEIL, 6.4]]);
-    S.add(`<path d="${pz(top)}" fill="#ffcf8a"/><path d="${pz(top)}" fill="none" stroke="#2a1c1a" stroke-width="3"/>`);
-    S.add(`<path d="${pz([pr(sx0, CEIL, 5.7), pr(sx1, CEIL, 5.7), pr(sx1, 0, 5.2), pr(sx0 - 0.9, 0, 4.4), pr(sx0 - 0.4, 0, 5.4)])}" fill="${WARM}" opacity=".12" filter="${S.blur(2)}"/>`);
+    // (cart: the attic is dark now — the lamp came down with the acolyte)
+    S.add(`<path d="${pz(top)}" fill="${cart ? '#3a2a24' : '#ffcf8a'}"/><path d="${pz(top)}" fill="none" stroke="#2a1c1a" stroke-width="3"/>`);
+    if (!cart) S.add(`<path d="${pz([pr(sx0, CEIL, 5.7), pr(sx1, CEIL, 5.7), pr(sx1, 0, 5.2), pr(sx0 - 0.9, 0, 4.4), pr(sx0 - 0.4, 0, 5.4)])}" fill="${WARM}" opacity=".12" filter="${S.blur(2)}"/>`);
     let steps = '', lit = '';
     for (let i = 0; i < 10; i++) {
       const y = i * 0.27, z = 7.3 - i * 0.13;
@@ -473,6 +508,19 @@ function oldMillFloor() {
     }
     S.add(`<path d="${steps}" fill="#2a2024"/><path d="${lit}" stroke="${WARM}" stroke-width="2" opacity=".45"/>`);
     S.add(`<path d="${pl(pr.poly([[sx0, 0.9, 7.3], [sx0, CEIL + 0.1, 5.9]]))}" stroke="#140e12" stroke-width="7"/><path d="${pl(pr.poly([[sx0 - 0.02, 0, 7.3], [sx0 - 0.02, 0.9, 7.3]]))}" stroke="#140e12" stroke-width="5"/>`);
+    if (cart) {
+      // the acolyte's lamp set down on the fourth step: an iron lantern, its light on the treads above and below
+      const [lx, ly, lz] = LAMP, lp = pr(lx, ly, lz), k = kAt(lz), w = 0.07 * k, h = 0.13 * k;
+      let edges = '';
+      for (let i = 1; i < 8; i++) { const y = i * 0.27, z = 7.3 - i * 0.13, d = Math.abs(i - 3.5); edges += `<path d="${pl(pr.poly([[sx0 + 0.04, y + 0.27, z], [sx1, y + 0.27, z]]))}" stroke="#ffc880" stroke-width="2.4" opacity="${f(Math.max(0.15, 0.9 - d * 0.22), 2)}"/>`; }
+      over.push(edges);
+      over.push(`<path d="${pz([pr(sx0, 0.27 * 4, 6.91), pr(sx1, 0.27 * 4, 6.91), pr(sx1, 0.27 * 4, 7.04), pr(sx0, 0.27 * 4, 7.04)])}" fill="#ffb868" opacity=".35"/>`);
+      over.push(`<circle cx="${r0(lp[0])}" cy="${r0(lp[1] - h * 0.5)}" r="150" fill="${S.rad([[0, '#ffd890', 0.55], [0.18, '#ffb060', 0.22], [0.55, '#ff9040', 0.06], [1, '#ff9040', 0]])}"/>`);
+      over.push(`<path d="M${r0(lp[0] - w * 0.6)},${r0(lp[1])}h${r0(w * 1.2)}v${r0(-h * 0.12)}h${r0(-w * 1.2)}z" fill="#1a1416"/><path d="M${r0(lp[0] - w * 0.45)},${r0(lp[1] - h * 0.12)}h${r0(w * 0.9)}v${r0(-h * 0.62)}h${r0(-w * 0.9)}z" fill="#ffcf7a"/><path d="M${r0(lp[0] - w * 0.25)},${r0(lp[1] - h * 0.2)}h${r0(w * 0.5)}v${r0(-h * 0.44)}h${r0(-w * 0.5)}z" fill="#fff0c4"/><path d="M${r0(lp[0] - w * 0.55)},${r0(lp[1] - h * 0.74)}L${r0(lp[0])},${r0(lp[1] - h)}L${r0(lp[0] + w * 0.55)},${r0(lp[1] - h * 0.74)}z" fill="#1a1416"/><path d="M${r0(lp[0])},${r0(lp[1] - h * 0.12)}v${r0(-h * 0.62)}" stroke="#2a2018" stroke-width="1.6"/><path d="M${r0(lp[0] - 3)},${r0(lp[1] - h)}a3,3 0 0 1 6,0" fill="none" stroke="#1a1416" stroke-width="1.6"/>`);
+      // its light along the stringer and on the right wall by the door
+      over.push(`<path d="${pl(pr.poly([[sx0 + 0.03, 0.95, 7.2], [sx0 + 0.03, 2.2, 6.3]]))}" stroke="#ffb868" stroke-width="2" opacity=".55"/>`);
+      over.push(`<path d="${q([[X1, 0, 5.6], [X1, CEIL, 5.6], [X1, CEIL, 7.4], [X1, 0, 7.4]])}" fill="${S.lin([[0, '#ff9a50', 0], [0.5, '#ff9a50', 0.13], [1, '#ff9a50', 0]], 'x1="0" y1="0" x2="1" y2="0"')}"/>`);
+    }
   }
 
   // --- millstones: a spare runner stone leaning on the back wall, another lying flat before it ------------
@@ -506,10 +554,13 @@ function oldMillFloor() {
     for (const [x, z] of [[t0 + 0.06, z0 + 0.05], [t1 - 0.06, z0 + 0.05], [t0 + 0.06, z1 - 0.05], [t1 - 0.06, z1 - 0.05]]) legs += pz(pr.poly([[x - 0.04, 0, z], [x + 0.04, 0, z], [x + 0.04, ty - 0.08, z], [x - 0.04, ty - 0.08, z]]));
     S.add(`<path d="${legs}" fill="#1a1218"/><path d="${pl(pr.poly([[t0, ty, z0], [t1, ty, z0]]))}" stroke="${VIO}" stroke-width="1.6" opacity=".45"/>`);
     // the slate propped upright against a crock at the back of the table: three chalk lines, the first struck out
+    // (cart: the manager went out with the slate under his arm — it is still worked out, unseen, so the
+    // random stream stays in step with the floor)
     const sl = pr.poly([[-2.32, ty, z1 - 0.06], [-2.32, ty + 0.42, z1 - 0.12], [-1.72, ty + 0.42, z1 - 0.12], [-1.72, ty, z1 - 0.06]]);
-    S.add(`<path d="${pz(sl)}" fill="#5a4a3a"/>`);
+    if (!cart) S.add(`<path d="${pz(sl)}" fill="#5a4a3a"/>`);
     const inner = pr.poly([[-2.28, ty + 0.03, z1 - 0.065], [-2.28, ty + 0.39, z1 - 0.115], [-1.76, ty + 0.39, z1 - 0.115], [-1.76, ty + 0.03, z1 - 0.065]]);
-    S.add(`<path d="${pz(inner)}" fill="#2a2c34"/>`);
+    if (!cart) S.add(`<path d="${pz(inner)}" fill="#2a2c34"/>`);
+    else S.add(`<path d="${pl([sl[0], sl[3]])}" stroke="#4a3e40" stroke-width="2" opacity=".6"/>`);
     const L = (u0, u1, v) => { const a = [inner[0][0] + (inner[3][0] - inner[0][0]) * u0, inner[0][1] + (inner[1][1] - inner[0][1]) * v], b = [inner[0][0] + (inner[3][0] - inner[0][0]) * u1, a[1]]; return [a, b]; };
     let chalk = '';
     for (const [u0, u1, v] of [[0.1, 0.78, 0.78], [0.1, 0.5, 0.52], [0.1, 0.66, 0.26]]) {
@@ -519,7 +570,7 @@ function oldMillFloor() {
       while (x < b[0] - 3) { const w = R.range(4, 9); chalk += `M${r0(x)},${r0(a[1] + R.range(-1, 1))}h${r0(w)}`; x += w + R.range(2, 4); }
     }
     const [s0, s1] = L(0.06, 0.84, 0.78);
-    S.add(`<path d="${chalk}" stroke="#d8d4dc" stroke-width="2" stroke-linecap="round" opacity=".8"/><path d="M${r0(s0[0])},${r0(s0[1] + 3)}L${r0(s1[0])},${r0(s1[1] - 3)}" stroke="#e8e4ec" stroke-width="2.2" opacity=".85"/>`);
+    if (!cart) S.add(`<path d="${chalk}" stroke="#d8d4dc" stroke-width="2" stroke-linecap="round" opacity=".8"/><path d="M${r0(s0[0])},${r0(s0[1] + 3)}L${r0(s1[0])},${r0(s1[1] - 3)}" stroke="#e8e4ec" stroke-width="2.2" opacity=".85"/>`);
     { const a = pr(-1.57, ty, z1 - 0.1), kk = kAt(z1 - 0.1), w2 = 0.09 * kk, h2 = 0.2 * kk; S.add(`<path d="M${r0(a[0] - w2 * 0.8)},${r0(a[1])}q${r0(-w2 * 0.3)},${r0(-h2 * 0.6)} ${r0(w2 * 0.2)},${r0(-h2 * 0.85)}v${r0(-h2 * 0.15)}h${r0(w2 * 1.2)}v${r0(h2 * 0.15)}q${r0(w2 * 0.5)},${r0(h2 * 0.25)} ${r0(w2 * 0.2)},${r0(h2 * 0.85)}z" fill="#3a2e34"/><path d="M${r0(a[0] - w2 * 0.9)},${r0(a[1] - h2 * 0.5)}q${r0(w2 * 0.1)},${r0(-h2 * 0.3)} ${r0(w2 * 0.35)},${r0(-h2 * 0.36)}" fill="none" stroke="${VIO}" stroke-width="1.4" opacity=".5"/>`); }
     // the open ledger in front: two pale pages, ruled columns, one page lifting
     const lp = (x0, x1) => pr.poly([[x0, ty + 0.01, z0 + 0.12], [x0, ty + 0.01, z0 + 0.5], [x1, ty + 0.01, z0 + 0.5], [x1, ty + 0.01, z0 + 0.12]]);
@@ -563,11 +614,21 @@ function oldMillFloor() {
     S.add(`<path d="${folds}" fill="none" stroke="#0e0a12" stroke-width="2.5" opacity=".65"/><path d="M${r0(C[0])},${r0(C[1])}${curve(C, sagS, A)}${curve(A, sagF, B)}" fill="none" stroke="${VIO_HI}" stroke-width="1.8" opacity=".55"/><path d="${pl(sideHem)}" fill="none" stroke="${VIO}" stroke-width="1.6" opacity=".5"/>`);
     // two thin chains from the hoop's front-right down to the cloth, slipping beneath it
     let chains = '';
-    for (const [a, ex, ey] of [[0.2, 1.46, 0.72], [0.62, 1.1, 0.84]]) {
-      const s0 = pr(SX + Math.cos(a) * HR, HY - 0.02, SZ + Math.sin(a) * HR), e = pr(ex, ey, z0 - o);
-      chains += `M${r0(s0[0])},${r0(s0[1])}Q${r0((s0[0] + e[0]) / 2 + 8)},${r0(Math.max(s0[1], e[1]) + 18)} ${r0(e[0])},${r0(e[1])}`;
+    if (!cart) {
+      for (const [a, ex, ey] of [[0.2, 1.46, 0.72], [0.62, 1.1, 0.84]]) {
+        const s0 = pr(SX + Math.cos(a) * HR, HY - 0.02, SZ + Math.sin(a) * HR), e = pr(ex, ey, z0 - o);
+        chains += `M${r0(s0[0])},${r0(s0[1])}Q${r0((s0[0] + e[0]) / 2 + 8)},${r0(Math.max(s0[1], e[1]) + 18)} ${r0(e[0])},${r0(e[1])}`;
+      }
+      S.add(`<path d="${chains}" fill="none" stroke="#2a1a3e" stroke-width="4"/><path d="${chains}" fill="none" stroke="${VIO}" stroke-width="2.4" stroke-dasharray="4 2.5"/><path d="${chains}" fill="none" stroke="${VIO}" stroke-width="6" opacity=".25" filter="${S.blur(1)}"/>`);
+    } else {
+      // unhooked from the shaft and hung on the box: the two thin chains now rise from behind the box to the cloth
+      for (const [sx, ex, ey] of [[BOX.x1 - 0.08, 1.46, 0.72], [BOX.x1 - 0.3, 1.1, 0.84]]) {
+        const s0 = pr(sx, BOX.h - 0.06, BOX.z1 + 0.02), e = pr(ex, ey, z0 - o);
+        chains += `M${r0(s0[0])},${r0(s0[1])}Q${r0((s0[0] + e[0]) / 2 + 10)},${r0(Math.max(s0[1], e[1]) + 26)} ${r0(e[0])},${r0(e[1])}`;
+      }
+      S.add(`<path d="${chains}" fill="none" stroke="#1e1628" stroke-width="4"/><path d="${chains}" fill="none" stroke="#6a52a0" stroke-width="2.2" stroke-dasharray="4 2.5"/>`);
+      over.push(`<path d="${chains}" fill="none" stroke="${VIO}" stroke-width="2" stroke-dasharray="4 2.5" opacity=".55" clip-path="${noBox()}"/>`);
     }
-    S.add(`<path d="${chains}" fill="none" stroke="#2a1a3e" stroke-width="4"/><path d="${chains}" fill="none" stroke="${VIO}" stroke-width="2.4" stroke-dasharray="4 2.5"/><path d="${chains}" fill="none" stroke="${VIO}" stroke-width="6" opacity=".25" filter="${S.blur(1)}"/>`);
   }
 
   // --- the shaft through the floor and ceiling, the crystal hoop around it ------------------------------
@@ -588,38 +649,122 @@ function oldMillFloor() {
   const backArc = hoop.filter((h) => h.back).map((h) => h.p);
   let struts = '';
   for (let i = 0; i < 6; i++) { const a = i / 6 * Math.PI * 2 + 0.26; struts += pl([pr(SX + Math.cos(a) * SR, HY + 0.12, SZ + Math.sin(a) * SR), pr(SX + Math.cos(a) * HR, HY, SZ + Math.sin(a) * HR)]); }
-  S.add(`<path d="${pl(backArc)}" fill="none" stroke="#1a1220" stroke-width="7"/><path d="${pl(backArc)}" fill="none" stroke="${VIO}" stroke-width="1.6" opacity=".5"/>`);
-  S.add(`<path d="${pz(hoop.map((h) => h.p))}" fill="none" stroke="#b48cff" stroke-width="34" opacity=".22" filter="${S.blur(2)}"/>`);
-  S.add(`<g filter="${S.blur(1)}">${drawShards(true)}</g>`);
-  S.add(drawShards(true));
+  // cart: the rack stripped bare — only the little wire hooks the shards hung from are left on the hoop
+  const emptyHooks = (back) => {
+    let d = '';
+    for (let i = 0; i < 40; i++) {
+      const a = (i + 0.5) / 40 * Math.PI * 2;
+      if ((Math.sin(a) > 0) !== back) continue;
+      const X = SX + Math.cos(a) * HR, Z = SZ + Math.sin(a) * HR, t = pr(X, HY - 0.02, Z), b = pr(X, HY - 0.075, Z), k = kAt(Z), c = 0.02 * k;
+      d += `M${r0(t[0])},${r0(t[1])}L${r0(b[0])},${r0(b[1])}q0,${f(c, 1)} ${f(-c, 1)},${f(c, 1)}`;
+    }
+    return `<path d="${d}" fill="none" stroke="#3a3044" stroke-width="1.6" stroke-linecap="round"/>`;
+  };
+  if (!cart) {
+    S.add(`<path d="${pl(backArc)}" fill="none" stroke="#1a1220" stroke-width="7"/><path d="${pl(backArc)}" fill="none" stroke="${VIO}" stroke-width="1.6" opacity=".5"/>`);
+    S.add(`<path d="${pz(hoop.map((h) => h.p))}" fill="none" stroke="#b48cff" stroke-width="34" opacity=".22" filter="${S.blur(2)}"/>`);
+    S.add(`<g filter="${S.blur(1)}">${drawShards(true)}</g>`);
+    S.add(drawShards(true));
+  } else {
+    S.add(`<path d="${pl(backArc)}" fill="none" stroke="#1a1220" stroke-width="7"/><path d="${pl(backArc)}" fill="none" stroke="#5a4a6a" stroke-width="1.4" opacity=".45"/>${emptyHooks(true)}`);
+  }
   // the shaft: an eight-sided timber, lit violet on the left; iron bands; floor collar and ceiling bearing
+  // (cart: bare and unlit — no rack, no chain; only the lamp behind it on the right picks out its edge)
   {
     const L0 = pr(SX - SR, 0, SZ), L1 = pr(SX - SR, CEIL, SZ), R0 = pr(SX + SR, 0, SZ), R1 = pr(SX + SR, CEIL, SZ);
-    S.add(`<path d="${pz([L0, L1, R1, R0])}" fill="${S.lin([[0, '#6a5080'], [0.28, '#4a3858'], [0.62, '#2a2030'], [1, '#141018']], 'x1="0" y1="0" x2="1" y2="0"')}"/>`);
+    S.add(`<path d="${pz([L0, L1, R1, R0])}" fill="${S.lin(cart ? [[0, '#2e2636'], [0.28, '#251e2c'], [0.7, '#1c1620'], [1, '#2a2026']] : [[0, '#6a5080'], [0.28, '#4a3858'], [0.62, '#2a2030'], [1, '#141018']], 'x1="0" y1="0" x2="1" y2="0"')}"/>`);
     let facets = '';
     for (const u of [0.28, 0.62]) facets += pl([pr(SX - SR + 2 * SR * u, 0, SZ), pr(SX - SR + 2 * SR * u, CEIL, SZ)]);
-    S.add(`<path d="${facets}" stroke="#0c0a10" stroke-width="1.6" opacity=".55"/><path d="${pl([L0, L1])}" stroke="${VIO_HI}" stroke-width="2" opacity=".6"/>`);
+    if (!cart) S.add(`<path d="${facets}" stroke="#0c0a10" stroke-width="1.6" opacity=".55"/><path d="${pl([L0, L1])}" stroke="${VIO_HI}" stroke-width="2" opacity=".6"/>`);
+    else {
+      S.add(`<path d="${facets}" stroke="#0c0a10" stroke-width="1.6" opacity=".55"/>`);
+      // pale bands where the chain was wound and has been taken off
+      let worn = '';
+      for (let i = 0; i < 6; i++) { const y = 0.62 + i * 0.16; worn += pz([pr(SX - SR, y - 0.03, SZ), pr(SX - SR, y + 0.03, SZ), pr(SX + SR, y + 0.03, SZ), pr(SX + SR, y - 0.03, SZ)]); }
+      S.add(`<path d="${worn}" fill="#4a3e50" opacity=".16"/>`);
+    }
     let bands = '';
     for (const y of [0.3, 2.35]) bands += pz([pr(SX - SR - 0.01, y, SZ), pr(SX - SR - 0.01, y + 0.06, SZ), pr(SX + SR + 0.01, y + 0.06, SZ), pr(SX + SR + 0.01, y, SZ)]);
     S.add(`<path d="${bands}" fill="#0e0b12"/>`);
     const fl = ring(SR + 0.14, 0.04, 24).map((h) => h.p);
-    S.add(`<path d="${pz(fl)}" fill="#1a1420"/><path d="${pl(fl.slice(10, 22))}" fill="none" stroke="${VIO}" stroke-width="1.5" opacity=".5"/>`);
+    S.add(`<path d="${pz(fl)}" fill="#1a1420"/>${cart ? '' : `<path d="${pl(fl.slice(10, 22))}" fill="none" stroke="${VIO}" stroke-width="1.5" opacity=".5"/>`}`);
     S.add(`<path d="${pz([pr(SX - SR - 0.12, CEIL - 0.3, SZ), pr(SX - SR - 0.12, CEIL - 0.48, SZ), pr(SX + SR + 0.12, CEIL - 0.48, SZ), pr(SX + SR + 0.12, CEIL - 0.3, SZ)])}" fill="#1e1822"/>`);
     // the violet chain wound round and round the shaft (front halves of each turn)
-    let turns = '';
-    for (let i = 0; i < 6; i++) {
-      const y = 0.62 + i * 0.16;
-      const pts = Array.from({ length: 13 }, (_, j) => { const a = Math.PI * j / 12; return pr(SX + Math.cos(a) * (SR + 0.02), y - 0.05 + 0.1 * j / 12, SZ - Math.sin(a) * (SR + 0.02)); });
-      turns += pl(pts);
+    if (!cart) {
+      let turns = '';
+      for (let i = 0; i < 6; i++) {
+        const y = 0.62 + i * 0.16;
+        const pts = Array.from({ length: 13 }, (_, j) => { const a = Math.PI * j / 12; return pr(SX + Math.cos(a) * (SR + 0.02), y - 0.05 + 0.1 * j / 12, SZ - Math.sin(a) * (SR + 0.02)); });
+        turns += pl(pts);
+      }
+      S.add(`<path d="${turns}" fill="none" stroke="#2a1a3e" stroke-width="5"/><path d="${turns}" fill="none" stroke="${VIO}" stroke-width="3" stroke-dasharray="5 3"/><path d="${turns}" fill="none" stroke="${VIO_HI}" stroke-width="1" stroke-dasharray="2 6" opacity=".9"/>`);
     }
-    S.add(`<path d="${turns}" fill="none" stroke="#2a1a3e" stroke-width="5"/><path d="${turns}" fill="none" stroke="${VIO}" stroke-width="3" stroke-dasharray="5 3"/><path d="${turns}" fill="none" stroke="${VIO_HI}" stroke-width="1" stroke-dasharray="2 6" opacity=".9"/>`);
   }
   // struts and the front half of the hoop, front shards
-  S.add(`<path d="${struts}" stroke="#1a1220" stroke-width="5"/><path d="${struts}" stroke="${VIO}" stroke-width="1.2" opacity=".45"/>`);
   const frontArc = hoop.filter((h) => !h.back).map((h) => h.p);
-  S.add(`<path d="${pl(frontArc)}" fill="none" stroke="#1a1220" stroke-width="9"/><path d="${pl(frontArc)}" fill="none" stroke="${VIO_HI}" stroke-width="2" opacity=".75" transform="translate(0 -3)"/>`);
-  S.add(`<g filter="${S.blur(1)}" opacity=".9">${drawShards(false)}</g>`);
-  S.add(drawShards(false));
+  if (!cart) {
+    S.add(`<path d="${struts}" stroke="#1a1220" stroke-width="5"/><path d="${struts}" stroke="${VIO}" stroke-width="1.2" opacity=".45"/>`);
+    S.add(`<path d="${pl(frontArc)}" fill="none" stroke="#1a1220" stroke-width="9"/><path d="${pl(frontArc)}" fill="none" stroke="${VIO_HI}" stroke-width="2" opacity=".75" transform="translate(0 -3)"/>`);
+    S.add(`<g filter="${S.blur(1)}" opacity=".9">${drawShards(false)}</g>`);
+    S.add(drawShards(false));
+  } else {
+    S.add(`<path d="${struts}" stroke="#1a1220" stroke-width="5"/><path d="${struts}" stroke="#4a3e58" stroke-width="1.2" opacity=".5"/>`);
+    S.add(`<path d="${pl(frontArc)}" fill="none" stroke="#1a1220" stroke-width="9"/><path d="${pl(frontArc)}" fill="none" stroke="#6a5a7a" stroke-width="2" opacity=".5" transform="translate(0 -3)"/>${emptyHooks(false)}`);
+  }
+
+  // --- cart: the new box beside the shaft — pale new boards, iron straps and corners, a carrying ring on its side;
+  // the lid seam and the cracks between the boards let out a thread of violet ------------------------------------
+  if (cart) {
+    const { x0, x1, z0, z1, h, lid } = BOX, ov = 0.018;
+    const b = [];
+    const front = (ya, yb, xa = x0, xb = x1, z = z0) => q([[xa, ya, z], [xa, yb, z], [xb, yb, z], [xb, ya, z]]);
+    const side = (ya, yb, za = z0, zb = z1, x = x0) => q([[x, ya, za], [x, yb, za], [x, yb, zb], [x, ya, zb]]);
+    const fy0 = pr(x0, h, z0)[1], fy1 = pr(x0, 0, z0)[1];
+    b.push(`<ellipse cx="${r0(pr((x0 + x1) / 2, 0, (z0 + z1) / 2)[0] - 6)}" cy="${r0(fy1 - 4)}" rx="${r0((x1 - x0) * kAt(z0) * 0.62)}" ry="${r0(0.07 * kAt(z0))}" fill="#050308" opacity=".7"/>`);
+    // body: shaded left side, front, lid band with a little overhang, the top
+    b.push(`<path d="${side(0, h - lid)}" fill="#38302a"/><path d="${front(0, h - lid)}" fill="${S.lin([[0, '#66584a'], [1, '#463c34']], gU(fy0, fy1))}"/>`);
+    b.push(`<path d="${side(h - lid, h, z0 - ov, z1, x0 - ov)}" fill="#443a32"/><path d="${front(h - lid, h, x0 - ov, x1 + ov, z0 - ov)}" fill="#726252"/>`);
+    b.push(`<path d="${q([[x0 - ov, h, z0 - ov], [x0 - ov, h, z1], [x1 + ov, h, z1], [x1 + ov, h, z0 - ov]])}" fill="#82705e"/>`);
+    // boards: two on the front and side below the lid, three running back across the lid
+    let seams = pl(pr.poly([[x0, (h - lid) / 2, z0], [x1, (h - lid) / 2, z0]])) + pl(pr.poly([[x0, (h - lid) / 2, z0], [x0, (h - lid) / 2, z1]]));
+    for (const u of [1 / 3, 2 / 3]) seams += pl(pr.poly([[x0 + (x1 - x0) * u, h, z0 - ov], [x0 + (x1 - x0) * u, h, z1]]));
+    b.push(`<path d="${seams}" stroke="#241a16" stroke-width="1.6" opacity=".8"/>`);
+    // grain on the new wood
+    let grain = '';
+    for (let i = 0; i < 9; i++) { const y = R2.range(0.03, h - lid - 0.03), xa = R2.range(x0 + 0.05, x1 - 0.3); grain += pl(pr.poly([[xa, y, z0], [xa + R2.range(0.12, 0.26), y + R2.range(-0.008, 0.008), z0]])); }
+    b.push(`<path d="${grain}" stroke="#3a2c22" stroke-width="1" opacity=".5"/>`);
+    // iron: two straps over the front and across the lid, angle irons on the near corners, rivets
+    let iron = '', riv = '';
+    for (const xs of [x0 + 0.1, x1 - 0.1]) {
+      iron += pz(pr.poly([[xs - 0.025, 0, z0 - 0.004], [xs - 0.025, h, z0 - ov - 0.004], [xs + 0.025, h, z0 - ov - 0.004], [xs + 0.025, 0, z0 - 0.004]]));
+      iron += pz(pr.poly([[xs - 0.025, h + 0.003, z0 - ov], [xs - 0.025, h + 0.003, z1], [xs + 0.025, h + 0.003, z1], [xs + 0.025, h + 0.003, z0 - ov]]));
+      for (const y of [0.06, (h - lid) / 2 + 0.05, h - 0.05]) { const p = pr(xs, y, z0 - 0.02); riv += `<circle cx="${r0(p[0])}" cy="${r0(p[1])}" r="1.8"/>`; }
+    }
+    iron += pz(pr.poly([[x0 - 0.005, 0, z0 - 0.005], [x0 - 0.005, h, z0 - 0.005], [x0 + 0.04, h, z0 - 0.005], [x0 + 0.04, 0, z0 - 0.005]]));
+    iron += pz(pr.poly([[x0 - 0.005, 0, z0], [x0 - 0.005, h, z0], [x0 - 0.005, h, z0 + 0.05], [x0 - 0.005, 0, z0 + 0.05]]));
+    iron += pz(pr.poly([[x1 - 0.04, 0, z0 - 0.005], [x1 - 0.04, h, z0 - 0.005], [x1 + 0.005, h, z0 - 0.005], [x1 + 0.005, 0, z0 - 0.005]]));
+    iron += pz(pr.poly([[x0 - 0.006, 0, z1 - 0.05], [x0 - 0.006, h, z1 - 0.05], [x0 - 0.006, h, z1], [x0 - 0.006, 0, z1]]));
+    b.push(`<path d="${iron}" fill="#1e1a20"/><g fill="#6a6270">${riv}</g>`);
+    b.push(`<path d="${pl(pr.poly([[x0 + 0.075, h, z0 - ov - 0.004], [x0 + 0.075, 0, z0 - 0.004]]))}${pl(pr.poly([[x1 - 0.125, h, z0 - ov - 0.004], [x1 - 0.125, 0, z0 - 0.004]]))}" stroke="#5a5260" stroke-width="1.2" opacity=".7"/>`);
+    // hasp and pin at the middle of the lid seam
+    {
+      const xc = (x0 + x1) / 2, a = pr(xc - 0.035, h - lid - 0.05, z0 - 0.02), c = pr(xc + 0.035, h - 0.015, z0 - 0.02), pin = pr(xc, h - lid - 0.02, z0 - 0.03);
+      b.push(`<path d="M${r0(a[0])},${r0(a[1])}H${r0(c[0])}V${r0(c[1])}H${r0(a[0])}z" fill="#1a161c"/><circle cx="${r0(pin[0])}" cy="${r0(pin[1])}" r="4" fill="none" stroke="#5a5260" stroke-width="2"/>`);
+    }
+    // the carrying ring on the side (the trace chain is hooked through it)
+    const ringPts = (cx, cy, cz, rr) => Array.from({ length: 16 }, (_, i) => { const t = i / 16 * Math.PI * 2; return pr(cx - 0.01, cy + Math.cos(t) * rr, cz + Math.sin(t) * rr); });
+    const RING = [x0, 0.27, (z0 + z1) / 2 - 0.02];
+    b.push(`<path d="${pz(pr.poly([[x0 - 0.008, RING[1] + 0.06, RING[2] - 0.03], [x0 - 0.008, RING[1] + 0.1, RING[2] - 0.03], [x0 - 0.008, RING[1] + 0.1, RING[2] + 0.03], [x0 - 0.008, RING[1] + 0.06, RING[2] + 0.03]]))}" fill="#1a161c"/><path d="${pz(ringPts(RING[0], RING[1], RING[2], 0.06))}" fill="none" stroke="#141016" stroke-width="5"/><path d="${pz(ringPts(RING[0], RING[1], RING[2], 0.06))}" fill="none" stroke="#4e4656" stroke-width="2.4"/>`);
+    S.add(b.join(''));
+    // the violet in the seams (over the darkening pass): lid seam, the board joints, two thin cracks
+    const vs = pl(pr.poly([[x0 + 0.03, h - lid, z0 - 0.003], [x1 - 0.005, h - lid, z0 - 0.003]]));
+    const vf = pl(pr.poly([[x0 + 0.13, (h - lid) / 2, z0 - 0.002], [x1 - 0.13, (h - lid) / 2, z0 - 0.002]])) + pl(pr.poly([[x0 + 0.16, 0.08, z0 - 0.002], [x0 + 0.3, 0.1, z0 - 0.002], [x0 + 0.36, 0.09, z0 - 0.002]])) + pl(pr.poly([[x1 - 0.32, 0.34, z0 - 0.002], [x1 - 0.2, 0.36, z0 - 0.002]]));
+    // (the glow is a thin filled band, not a stroke: a level line has a zero-height box and its blur would vanish)
+    const vg = pz(pr.poly([[x0 + 0.03, h - lid - 0.018, z0 - 0.003], [x0 + 0.03, h - lid + 0.018, z0 - 0.003], [x1 - 0.005, h - lid + 0.018, z0 - 0.003], [x1 - 0.005, h - lid - 0.018, z0 - 0.003]]));
+    over.push(`<path d="${vg}" fill="${VIO}" opacity=".45" filter="${S.blur(1)}"/><path d="${vs}" stroke="${VIO_HI}" stroke-width="1.8" opacity=".8"/><path d="${vf}" stroke="#c8a8ff" stroke-width="1.2" opacity=".55"/>`);
+    // the lamp behind picks out the box's back edge and the far end of the lid
+    over.push(`<path d="${pl(pr.poly([[x0 - ov, h, z1], [x1 + ov, h, z1], [x1 + ov, h, z0 - ov]]))}" fill="none" stroke="#ffc080" stroke-width="1.8" opacity=".55"/>`);
+  }
 
   // --- the trapdoor beside the shaft (where he came up), its iron ring --------------------------------------
   {
@@ -629,15 +774,87 @@ function oldMillFloor() {
     S.add(`<ellipse cx="${r0(rg[0])}" cy="${r0(rg[1])}" rx="${f(0.06 * kk)}" ry="${f(0.025 * kk)}" fill="none" stroke="#3e3646" stroke-width="2.5"/>`);
   }
 
+  // --- cart: the heavy trace chain hooked through the box's ring, slack across the floor into the dark (left) -----
+  if (cart) {
+    const { x0 } = BOX, rz = (BOX.z0 + BOX.z1) / 2 - 0.02;
+    const path = [[x0 - 0.02, 0.24, rz], [x0 - 0.07, 0.1, rz - 0.04], [x0 - 0.14, 0.035, rz - 0.1], [x0 - 0.3, 0.035, rz - 0.3], [x0 - 0.62, 0.035, 3.38], [x0 - 1.05, 0.035, 3.3], [x0 - 1.5, 0.035, 3.36], [x0 - 1.95, 0.035, 3.22], [x0 - 2.35, 0.035, 2.96], [x0 - 2.9, 0.035, 2.74], [x0 - 3.5, 0.035, 2.6]];
+    const segs = [];
+    for (let i = 1; i < path.length; i++) segs.push([path[i - 1], path[i], Math.hypot(path[i][0] - path[i - 1][0], path[i][1] - path[i - 1][1], path[i][2] - path[i - 1][2])]);
+    const total = segs.reduce((a, s) => a + s[2], 0), pitch = 0.085, Lk = 0.12, Wk = 0.065;
+    const at = (d) => { for (const [a, bb, len] of segs) { if (d <= len) { const t = d / len; return { p: [a[0] + (bb[0] - a[0]) * t, a[1] + (bb[1] - a[1]) * t, a[2] + (bb[2] - a[2]) * t], u: [(bb[0] - a[0]) / len, (bb[1] - a[1]) / len, (bb[2] - a[2]) / len] }; } d -= len; } return null; };
+    let dark = '', hi = '';
+    for (let i = 0, d = 0.02; d < total - 0.02; i++, d += pitch) {
+      const { p, u } = at(d);
+      // the plane of the link: alternate links lie flat / stand on edge
+      let v = [-u[2], 0, u[0]]; const vl = Math.hypot(v[0], v[2]) || 1; v = [v[0] / vl, 0, v[2] / vl];
+      if (Math.abs(u[1]) > 0.8) v = [1, 0, 0];
+      const w = i % 2 ? [u[1] * v[2] - u[2] * v[1], u[2] * v[0] - u[0] * v[2], u[0] * v[1] - u[1] * v[0]] : v;
+      const pts = Array.from({ length: 14 }, (_, j) => { const t = j / 14 * Math.PI * 2; return pr(p[0] + u[0] * Math.cos(t) * Lk / 2 + w[0] * Math.sin(t) * Wk / 2, p[1] + u[1] * Math.cos(t) * Lk / 2 + w[1] * Math.sin(t) * Wk / 2, p[2] + u[2] * Math.cos(t) * Lk / 2 + w[2] * Math.sin(t) * Wk / 2); });
+      dark += pz(pts);
+      hi += pl(pts.slice(8, 13));
+    }
+    S.add(`<path d="${dark}" fill="none" stroke="#0e0b10" stroke-width="7" stroke-linejoin="round"/><path d="${dark}" fill="none" stroke="#2e2a34" stroke-width="3.6" stroke-linejoin="round"/><path d="${hi}" fill="none" stroke="#6a6274" stroke-width="1.4" opacity=".6"/>`);
+  }
+
+  // --- cart: the loading door in the right wall, burst inward — the leaf hangs from its top hinge, swung round
+  // toward the stair, a board stove in where the shield hit; the jamb splintered at the bar; outside, moonless black ---
+  if (cart) {
+    const dz0 = 4.62, dz1 = 5.5, dh = 1.95, T = 0.24, X = X1, o2 = [];
+    // casing boards round the opening, the black beyond, the far reveal and the lintel's underside
+    o2.push(`<path d="${q([[X - 0.004, 0, dz1], [X - 0.004, dh + 0.1, dz1], [X - 0.004, dh + 0.1, dz1 + 0.1], [X - 0.004, 0, dz1 + 0.1]])}${q([[X - 0.004, 0, dz0 - 0.1], [X - 0.004, dh + 0.1, dz0 - 0.1], [X - 0.004, dh + 0.1, dz0], [X - 0.004, 0, dz0]])}${q([[X - 0.004, dh, dz0], [X - 0.004, dh + 0.1, dz0], [X - 0.004, dh + 0.1, dz1], [X - 0.004, dh, dz1]])}" fill="#2a2026"/>`);
+    o2.push(`<path d="${q([[X, 0, dz0], [X, dh, dz0], [X, dh, dz1], [X, 0, dz1]])}" fill="${S.lin([[0, '#06060c'], [1, '#020203']])}"/>`);
+    over.push(`<path d="${pl(pr.poly([[X + T, 0.5, dz1], [X + T, dh, dz1], [X + T, dh, dz0 + 0.1]]))}" fill="none" stroke="#3a4262" stroke-width="1.4" opacity=".5"/>`);
+    o2.push(`<path d="${q([[X, 0, dz1], [X, dh, dz1], [X + T, dh, dz1], [X + T, 0, dz1]])}" fill="#1c1418"/><path d="${q([[X, dh, dz0], [X + T, dh, dz0], [X + T, dh, dz1], [X, dh, dz1]])}" fill="#140e14"/>`);
+    // the iron bar keeper torn out of the near jamb: a raw pale wound and splinters standing out into the room
+    {
+      const sp = [[1.02, 0.0, 0], [1.06, -0.16, 0.02], [1.1, -0.02, 0], [1.12, -0.12, 0.04], [1.16, 0, 0], [0.98, -0.1, -0.01]];
+      let wound = pz(pr.poly([[X - 0.006, 0.96, dz0 - 0.08], [X - 0.006, 1.2, dz0 - 0.07], [X - 0.006, 1.18, dz0], [X - 0.006, 0.95, dz0]]));
+      let spl = '';
+      for (const [y, dx, dz] of sp) spl += pl(pr.poly([[X - 0.006, y, dz0 - 0.03], [X - 0.006 + dx, y + 0.03 + dz, dz0 - 0.05 - Math.abs(dx) * 0.4]]));
+      o2.push(`<path d="${wound}" fill="#7a5e48"/><path d="${spl}" stroke="#a88a68" stroke-width="2.2" stroke-linecap="round"/>`);
+    }
+    // the leaf: hinged at the far jamb, swung in ~70°, dropped on its torn lower hinge so the free corner drags
+    {
+      const th = 70 * Math.PI / 180, wl = dz1 - dz0, hx = X - 0.03, hz = dz1 - 0.02, fx = hx - wl * Math.sin(th), fz = hz - wl * Math.cos(th), sag = 0.15;
+      const P = (u, v) => { const yb = 0.12 - sag * u, yt = dh - 0.05 - sag * u; return [hx + (fx - hx) * u, yb + (yt - yb) * v, hz + (fz - hz) * u]; };
+      const leaf = pr.poly([P(0, 0), P(0, 1), P(1, 1), P(1, 0)]);
+      o2.push(`<path d="${pz(leaf)}" fill="${S.lin([[0, '#46343a'], [1, '#2e2226']], 'x1="0" y1="0" x2="1" y2="0"')}"/>`);
+      // battens (top and bottom) and the Z brace on the outside face, the planks between
+      const band = (v0, v1) => pz(pr.poly([P(0.02, v0), P(0.02, v1), P(0.98, v1), P(0.98, v0)]));
+      const brace = pz(pr.poly([P(0.06, 0.2), P(0.18, 0.2), P(0.94, 0.78), P(0.82, 0.78)]));
+      o2.push(`<path d="${band(0.12, 0.2)}${band(0.78, 0.86)}${brace}" fill="#56403c"/>`);
+      let planks = '';
+      for (let i = 1; i < 6; i++) planks += pl(pr.poly([P(i / 6, 0.01), P(i / 6, 0.99)]));
+      o2.push(`<path d="${planks}" stroke="#140c10" stroke-width="1.6" opacity=".8"/>`);
+      // strap hinges from the hinge side, the lower one twisted off its pintle
+      o2.push(`<path d="${pz(pr.poly([P(0, 0.88), P(0, 0.92), P(0.42, 0.915), P(0.42, 0.885)]))}${pz(pr.poly([P(0, 0.07), P(0, 0.11), P(0.38, 0.12), P(0.38, 0.09)]))}" fill="#141016"/>`);
+      // the board stove in near the latch edge: a jagged dark hole fringed with pale splinters
+      const hole = [[0.68, 0.46], [0.74, 0.4], [0.8, 0.44], [0.86, 0.38], [0.97, 0.43], [0.97, 0.62], [0.88, 0.66], [0.82, 0.6], [0.74, 0.65], [0.7, 0.56]];
+      o2.push(`<path d="${pz(pr.poly(hole.map(([u, v]) => P(u, v))))}" fill="#08050a"/>`);
+      over.push(`<path d="${pz(pr.poly(hole.map(([u, v]) => P(u * 0.94 + 0.05, v * 0.86 + 0.07))))}" fill="#c07a44" opacity=".55"/><path d="${pl(pr.poly([P(0.005, 0.04), P(0.005, 0.96)]))}" stroke="#ffb070" stroke-width="2" opacity=".5"/>`);
+      o2.push(`<path d="${pl(pr.poly(hole.slice(0, 5).map(([u, v]) => P(u, v))))}" fill="none" stroke="#a88a68" stroke-width="1.8" opacity=".85"/><path d="${pl(pr.poly([P(0.82, 0.6), P(0.78, 0.7)]))}${pl(pr.poly([P(0.88, 0.38), P(0.9, 0.3)]))}" stroke="#8a6e54" stroke-width="2" stroke-linecap="round"/>`);
+      // lamp-rims (over the darkening pass): the free edge, the top edge, the torn board's lip
+      over.push(`<path d="${pl(pr.poly([P(1, 0.5), P(1, 1), P(0, 1)]))}" fill="none" stroke="#ffb878" stroke-width="2.2" stroke-linejoin="round" opacity=".7"/>`);
+      over.push(`<path d="${pl(pr.poly([[X - 0.004, dh + 0.1, dz1 + 0.1], [X - 0.004, 0.6, dz1 + 0.1]]))}" stroke="#ffb878" stroke-width="1.6" opacity=".5"/>`);
+    }
+    S.add(o2.join(''));
+  }
+
   // --- sacks heaped in the right foreground (cover on the way along the wall to the cage) -------------------
   S.add(sacks([[2.3, 4.5, 0.72, 0.5, 0], [2.95, 4.6, 0.72, 0.52, 0], [2.6, 4.55, 0.68, 0.44, 0.46], [1.95, 3.9, 0.7, 0.48, 0], [2.6, 3.95, 0.74, 0.52, 0], [3.3, 4.0, 0.7, 0.5, 0], [2.3, 3.95, 0.66, 0.42, 0.47]], '#352c34'));
-  { const a = pr(1.95, 0, 3.9), k = kAt(3.9); S.add(`<path d="M${r0(a[0] - 4)},${r0(a[1] - 0.3 * k)}q${r0(0.03 * k)},${r0(-0.16 * k)} ${r0(0.14 * k)},${r0(-0.2 * k)}" fill="none" stroke="${VIO_HI}" stroke-width="2" opacity=".5"/><ellipse cx="${r0(a[0] + 0.3 * k)}" cy="${r0(a[1] + 4)}" rx="${r0(0.6 * k)}" ry="${r0(0.05 * k)}" fill="#9a8eaa" opacity=".18"/>`); }
+  { const a = pr(1.95, 0, 3.9), k = kAt(3.9); S.add(`<path d="M${r0(a[0] - 4)},${r0(a[1] - 0.3 * k)}q${r0(0.03 * k)},${r0(-0.16 * k)} ${r0(0.14 * k)},${r0(-0.2 * k)}" fill="none" stroke="${VIO_HI}" stroke-width="2" opacity="${cart ? '.2' : '.5'}"/><ellipse cx="${r0(a[0] + 0.3 * k)}" cy="${r0(a[1] + 4)}" rx="${r0(0.6 * k)}" ry="${r0(0.05 * k)}" fill="#9a8eaa" opacity=".18"/>`); }
 
   // --- motes of old flour drifting in the violet light --------------------------------------------------------
   {
     let m = '';
     for (let i = 0; i < 70; i++) { const a = R() * Math.PI * 2, d = R() ** 0.7 * 340; m += `<circle cx="${r0(hc[0] + Math.cos(a) * d * 1.3)}" cy="${r0(hc[1] + 60 + Math.sin(a) * d * 0.6)}" r="${f(R.range(0.8, 2))}" opacity="${f(R.range(0.2, 0.7), 2)}"/>`; }
-    S.add(`<g fill="#e4d6ff">${m}</g>`);
+    S.add(cart ? `<g fill="#d8c8e8" opacity=".3">${m}</g>` : `<g fill="#e4d6ff">${m}</g>`);
+  }
+
+  // --- cart: the darkening pass, then the light that is left in the room ----------------------------------------
+  if (cart) {
+    S.add(`<rect width="${W}" height="${H}" fill="#05040a" opacity=".46"/>`);
+    S.add(...over);
   }
 
   // --- grading: dark corners, the calm floor under the dialogue box ---------------------------------------------
@@ -648,5 +865,6 @@ function oldMillFloor() {
 
 export const oldMillBgs = {
   'old-mill-dusk': oldMillDusk,
-  'old-mill-floor': oldMillFloor,
+  'old-mill-floor': () => oldMillFloor(false),
+  'old-mill-floor-cart': () => oldMillFloor(true),
 };

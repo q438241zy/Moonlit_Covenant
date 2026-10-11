@@ -142,5 +142,11 @@
     "svg": "/assets/story/bg/old-mill-floor.svg",
     "top": "#3a2a4a",
     "bottom": "#0e0b12"
+  },
+  "old-mill-floor-cart": {
+    "name": "旧磨坊·磨盘间·大车之夜",
+    "svg": "/assets/story/bg/old-mill-floor-cart.svg",
+    "top": "#2a2036",
+    "bottom": "#08070b"
   }
 }

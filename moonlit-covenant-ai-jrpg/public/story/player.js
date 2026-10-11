@@ -127,6 +127,7 @@ const S = {
   readDirty: false,
   bg: null, bgFront: 0,
   hudBattle: null,
+  hudHold: null, // 结束战斗的那一回合：敌方血条先停在出手前，等「战斗结束」再落下（见 holdFinalBlow）
   suppressClickUntil: 0,
   lastInputAt: 0, // 最近一次推进类操作（按键 / 点按）的时间，章节完成页据此判断玩家是否已停手
 };
@@ -519,6 +520,7 @@ function renderPlay() {
   S.bg = null;
   S.bgFront = 0;
   S.hudBattle = null;
+  S.hudHold = null;
 
   P.play.addEventListener('click', onStageClick);
   P.dlg.addEventListener('keydown', (e) => { if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); e.stopPropagation(); advance(); } });
@@ -579,12 +581,15 @@ function restoreStage(stage) {
     P.scene.classList.add('desat');
   }
   if (stage?.veil) setVeil(true, 0);
+  // 刷新在「结束战斗那一回合」的反应演出中途：血条照旧停在出手前，等战斗结束再落下
+  const hold = stage?.hudHold;
+  if (hold && S.run.battle?.id === hold.id && hold.enemies && typeof hold.enemies === 'object') S.hudHold = { id: hold.id, enemies: { ...hold.enemies } };
   const shot = S.chapter.shots[S.run.shotIdx];
   // 地点用当前背景（分镜里可能已经换过场景），不是分镜开头的那个
   if (shot && S.run.stack.length && !S.run.done) showShotCaption({ ...shot, bg: S.run.bg || shot.bg });
 }
 function stageState() {
-  return { desat: Boolean(P.scene?.classList.contains('desat')), veil: Boolean(P.veil?.classList.contains('on')) };
+  return { desat: Boolean(P.scene?.classList.contains('desat')), veil: Boolean(P.veil?.classList.contains('on')), ...(S.hudHold ? { hudHold: S.hudHold } : {}) };
 }
 
 function cancelPlay() {
@@ -1249,10 +1254,14 @@ async function onInput(item, my) {
   pushLog({ kind: 'input', name: S.run.playerName, color: aku?.color, text: said || (answer === SKIP ? '（跳过）' : '（保持沉默）') });
   const memBefore = JSON.stringify(S.run.memories);
   const flagsBefore = JSON.stringify(S.run.flags);
+  const hpBefore = S.run.battle ? Object.fromEntries(S.run.battle.enemies.map((e) => [e.id, e.hp])) : null;
   const result = resolveInput(S.run, S.chapter, judgement, said);
   clearDraft(); // 判定落地后才清草稿：判定途中返回标题 / 刷新，回来时输入框里还是刚才那句话
   hideAsk();
-  if (result.battle) renderHud(result.battle, { animate: true });
+  if (result.battle) {
+    holdFinalBlow(result.battle, hpBefore);
+    renderHud(result.battle, { animate: true });
+  }
   if (JSON.stringify(S.run.memories) !== memBefore) toast('记住了', 'memory');
   else if (JSON.stringify(S.run.flags) !== flagsBefore) toast('这件事会被记住', 'memory');
   autosave();
@@ -1299,9 +1308,24 @@ function updateHpRow(row, hp, maxHp, animate) {
   }
 }
 
+// 结束战斗的那一回合，判定一落地敌人就显示「倒下」，可反应里往往还在写「剑弹开」「够不着」，直到最后一拍才「喀」——
+// 所以这一回合敌方血条先停在出手前，到「战斗结束」时再一起落下（主角受伤、波及照常立刻显示）。
+function holdFinalBlow(view, hpBefore) {
+  S.hudHold = null;
+  if (!hpBefore) return;
+  const def = battleDef(view.id);
+  const total = def?.rounds?.length || 0;
+  const allDown = view.enemies.length > 0 && view.enemies.every((e) => e.hp <= 0);
+  if ((allDown && def?.untilDefeated) || (total > 0 && view.round >= total)) S.hudHold = { id: view.id, enemies: hpBefore };
+}
+
 // pending：正在等玩家写下一回合（显示「即将进行的回合」）；否则显示刚结算、正在演出反应的那一回合
 function renderHud(view, { animate = false, pending = false } = {}) {
   if (!view || !P.hud) return;
+  const hold = S.hudHold;
+  if (hold && hold.id === view.id && !view.result) {
+    view = { ...view, enemies: view.enemies.map((e) => (Number.isFinite(hold.enemies[e.id]) ? { ...e, hp: hold.enemies[e.id] } : e)) };
+  }
   const hud = P.hud;
   const def = battleDef(view.id);
   const total = def?.rounds?.length || 0;
@@ -1365,6 +1389,7 @@ function fitHud() {
 
 async function onBattleStart(view) {
   S.hudBattle = null;
+  S.hudHold = null;
   renderHud(view);
   announce(`战斗开始：${view.title}。目标：${view.objective}`);
   pushLog({ kind: 'caption', sys: true, name: '', text: `战斗开始 · ${view.title}` });
@@ -1373,6 +1398,7 @@ async function onBattleStart(view) {
 
 async function onBattleEnd(view, my) {
   if (!view) return;
+  S.hudHold = null; // 结束一击此刻落下：敌方血条在结果横幅出现时一起掉到「倒下」
   renderHud(view, { animate: true });
   const label = RESULT_LABEL[view.result] || view.result;
   const res = $('.hud-result', P.hud);

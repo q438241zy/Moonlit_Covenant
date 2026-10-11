@@ -123,5 +123,15 @@
     "name": "西门卫兵",
     "color": "#8fa3b8",
     "art": null
+  },
+  "goblin_chief": {
+    "name": "哥布林咒徒长",
+    "color": "#6f8f5c",
+    "art": "/assets/story/npc/goblin_chief.svg"
+  },
+  "police_lead": {
+    "name": "治安所带队",
+    "color": "#8fa3b8",
+    "art": null
   }
 }
