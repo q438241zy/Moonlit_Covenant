@@ -501,10 +501,18 @@ button, input, textarea { font: inherit; color: inherit; }
   opacity: 0;
   pointer-events: none;
 }
+/* 亮背景（日出训练场、白天的里程石路）左上角是浅色天空和云：垫一层很淡的暗晕，小字不被吃掉 */
+.shot-cap::before {
+  content: '';
+  position: absolute;
+  inset: -16px -64px -16px -28px;
+  z-index: -1;
+  background: radial-gradient(closest-side, rgba(6, 5, 15, .5), rgba(6, 5, 15, .3) 60%, transparent);
+}
 .shot-cap.show { animation: capIn 4.4s ease forwards; }
-.shot-id { color: var(--gold); font-size: .66rem; font-weight: 800; letter-spacing: .32em; }
+.shot-id { color: var(--gold); font-size: .66rem; font-weight: 800; letter-spacing: .32em; text-shadow: 0 1px 6px rgba(0, 0, 0, .8); }
 .shot-title { color: rgba(255, 255, 255, .94); font-size: .98rem; font-weight: 700; letter-spacing: .06em; text-shadow: 0 2px 12px rgba(0, 0, 0, .85); }
-.shot-loc { display: inline-flex; align-items: center; gap: 5px; color: rgba(225, 215, 245, .8); font-size: .72rem; text-shadow: 0 1px 8px rgba(0, 0, 0, .8); }
+.shot-loc { display: inline-flex; align-items: center; gap: 5px; color: rgba(232, 224, 250, .92); font-size: .72rem; text-shadow: 0 1px 3px rgba(0, 0, 0, .85), 0 1px 10px rgba(0, 0, 0, .7); }
 @keyframes capIn { 0% { opacity: 0; transform: translateX(-12px); } 12% { opacity: 1; transform: none; } 78% { opacity: 1; } 100% { opacity: 0; } }
 
 /* 横幅：系统字幕 / 战斗结果 */
@@ -523,7 +531,9 @@ button, input, textarea { font: inherit; color: inherit; }
   backdrop-filter: blur(6px);
   pointer-events: none;
 }
-.banner-text { color: var(--text); font-size: clamp(1rem, 2.1vw, 1.4rem); font-weight: 800; letter-spacing: .3em; text-align: center; text-shadow: 0 0 22px rgba(200, 160, 255, .45); }
+.banner-text { max-width: min(100%, 46rem); color: var(--text); font-size: clamp(1rem, 2.1vw, 1.4rem); font-weight: 800; line-height: 1.6; letter-spacing: .3em; text-align: center; text-shadow: 0 0 22px rgba(200, 160, 255, .45); text-wrap: balance; }
+/* 长字幕（潜入情报、委托告示）：字距收窄、限宽折行，留在横幅中间不透明的那一段里 */
+.banner.long .banner-text { font-size: clamp(.95rem, 1.6vw, 1.12rem); letter-spacing: .14em; }
 .banner.show { animation: bannerIn .55s cubic-bezier(.2, .7, .2, 1); }
 .banner[data-kind="result-clean"] .banner-text { color: var(--success); text-shadow: 0 0 22px rgba(140, 240, 201, .45); }
 .banner[data-kind="result-hurt"] .banner-text { color: var(--gold); text-shadow: 0 0 22px rgba(255, 210, 125, .45); }
@@ -713,6 +723,22 @@ button, input, textarea { font: inherit; color: inherit; }
 .ask-context-name { flex: none; color: var(--who, var(--muted)); font-weight: 700; }
 .ask-context-name:empty { display: none; }
 .ask-context-text { display: -webkit-box; overflow: hidden; color: var(--muted); line-height: 1.6; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+/* 情报：上一次回应之后以横幅闪过的系统字幕（第四章潜入的正门 / 水渠 / 绳长……），写行动时随时可以对照 */
+.ask-intel { margin: -2px 0 12px; border: 1px solid rgba(255, 210, 125, .22); border-radius: 12px; background: rgba(255, 210, 125, .045); }
+.ask-intel > summary { display: flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 11px; color: var(--gold); font-size: .76rem; font-weight: 800; letter-spacing: .12em; list-style: none; cursor: pointer; user-select: none; }
+.ask-intel > summary::-webkit-details-marker { display: none; }
+.ask-intel > summary::after { content: ''; width: 6px; height: 6px; margin-left: auto; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg); transition: transform .2s ease; }
+.ask-intel[open] > summary::after { transform: translateY(2px) rotate(-135deg); }
+.ask-intel > summary:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.ask-intel-count { padding: 0 7px; border-radius: 999px; background: rgba(255, 210, 125, .16); font-size: .7rem; letter-spacing: 0; }
+.ask-intel-list { display: grid; gap: 3px; max-height: min(26vh, 210px); margin: 0; padding: 0 12px 9px 12px; overflow-y: auto; overscroll-behavior: contain; list-style: none; }
+.ask-intel-list li { position: relative; padding-left: 12px; color: #ddd4ef; font-size: .8rem; line-height: 1.6; }
+.ask-intel-list li::before { content: ''; position: absolute; top: .68em; left: 0; width: 4px; height: 4px; border-radius: 50%; background: rgba(255, 210, 125, .7); }
+/* 宽屏：两栏（先排满左栏再右栏），十来条情报不用滚动，输入框也不会顶到屏幕上半 */
+@media (min-width: 900px) and (min-height: 600px) {
+  .ask-intel-list { display: block; max-height: none; columns: 2; column-gap: 28px; }
+  .ask-intel-list li { margin-bottom: 3px; break-inside: avoid; }
+}
 .ask-head { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; }
 .ask-kind { display: inline-flex; flex: none; align-items: center; gap: 5px; margin-top: 2px; padding: 4px 10px; border-radius: 999px; background: var(--grad-primary); color: #12091e; font-size: .72rem; font-weight: 800; letter-spacing: .14em; }
 .ask[data-kind="tactic"] .ask-kind { background: linear-gradient(135deg, #ff9aa8, #ffd27d); }

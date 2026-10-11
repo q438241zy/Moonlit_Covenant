@@ -533,13 +533,13 @@ CAST.goblin = {
 };
 
 // 波莉 — Mara's daughter, about six (smaller than Toby): a tangle of uncombed hair, the cage's wool blanket
-// pulled round her shoulders, a small fist pressed to her mouth to swallow a sob or a cough, the forearm
-// wrapped in an old cloth strip; big wet eyes. (The wrap is the injured-branch look, the canon default; the
-// bust has no second variant.)
+// pulled round her shoulders, a small fist pressed to her mouth to swallow a sob or a cough; big wet eyes. No arm wrap: her only
+// spoken line (and so the only time the bust shows) is the FLAG_CH000_MARA_DAUGHTER_SAVED branch, where she
+// just has a chill; on the injured branch she stays silent and appears in narration only.
 const pollyAx = (t, v) => [292 - 46 * t + 0.966 * v, 600 - 172 * t - 0.258 * v]; // forearm axis: t 0 = blanket opening, 1 = wrist
 const POLLY_ARM = S([pollyAx(-0.15, -22), pollyAx(1, -16), pollyAx(1, 16), pollyAx(-0.15, 22)]);
 CAST.polly = {
-  id: 'polly', label: '波莉：约六岁的女孩，乱发，裹着毛毯，缠着旧布的小手捂在嘴边', rim: '#e6c9a8',
+  id: 'polly', label: '波莉：约六岁的女孩，乱发，裹着毛毯，小手捂在嘴边', rim: '#e6c9a8',
   sil: [
     // hair: the tangled mass behind the head falling past the shoulders, flyaway ends at the back
     S([[262, 290], [300, 248], [356, 242], [404, 268], [428, 312], [436, 360], [450, 400, 1], [440, 408], [452, 446, 1], [434, 444], [444, 490, 1], [420, 478], [404, 504, 1], [396, 470], [372, 450], [350, 400], [330, 360], [290, 340]]),
@@ -582,13 +582,7 @@ CAST.polly = {
     [`M196,566C240,578 290,592 334,588C346,592 356,598 362,606`, 2.4, 0.55],
   ],
   front: ({ rim }) => {
-    // the old cloth strip wound round the forearm (bands across its axis), a loose tail
-    const wrap = pz([pollyAx(0.28, -21), pollyAx(0.28, 21), pollyAx(0.72, 19), pollyAx(0.72, -19)]);
-    let bands = '';
-    for (const t of [0.34, 0.44, 0.54, 0.64]) bands += pl([pollyAx(t, -21), pollyAx(t + 0.04, 20)]);
-    let s = `<path d="${wrap}" fill="#8a7e6e" opacity=".85"/><path d="${bands}" stroke="#4e463e" stroke-width="2" opacity=".8"/>`;
-    const tail = pollyAx(0.4, 20);
-    s += `<path d="M${r0(tail[0])},${r0(tail[1])}q10,0 14,8q-7,-2 -11,3z" fill="#a89a86" opacity=".9"/><path d="${pl([pollyAx(0.28, 21), pollyAx(0.72, 19)])}" stroke="${rim}" stroke-width="1.8" opacity=".65"/>`;
+    let s = '';
     // knuckles of the fist pressed to her mouth
     s += `<path d="M222,404q6,-8 14,-8M220,418q8,-6 16,-4M224,432q8,-4 14,-2" fill="none" stroke="${rim}" stroke-width="2" stroke-linecap="round" opacity=".8"/>`;
     // a reed seed-head caught in her hair

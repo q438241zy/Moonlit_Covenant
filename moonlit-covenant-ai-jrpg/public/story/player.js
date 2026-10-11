@@ -475,6 +475,7 @@ function renderPlay() {
         </div>
         <form class="ask" id="ask" hidden autocomplete="off" tabindex="-1" aria-labelledby="askPrompt">
           <div class="ask-context" hidden><span class="ask-context-name"></span><span class="ask-context-text"></span></div>
+          <details class="ask-intel" hidden><summary>${icon('eye', { size: 14 })}<span>情报</span><b class="ask-intel-count"></b></summary><ul class="ask-intel-list"></ul></details>
           <div class="ask-head"><span class="ask-kind"></span><p class="ask-prompt" id="askPrompt"></p></div>
           <div class="ask-field">
             <textarea id="askInput" rows="2" maxlength="300" aria-labelledby="askPrompt" enterkeyhint="send"></textarea>
@@ -510,7 +511,7 @@ function renderPlay() {
     name: $('.dlg-name'), note: $('.dlg-note'), shown: $('.dlg-shown'), rest: $('.dlg-rest'),
     ask: $('#ask'), askKind: $('.ask-kind'), askPrompt: $('#askPrompt'), askInput: $('#askInput'),
     askSkip: $('[data-ask="skip"]'), askSilent: $('[data-ask="silent"]'), askEcho: $('.ask-echo'),
-    askContext: $('.ask-context'),
+    askContext: $('.ask-context'), askIntel: $('.ask-intel'),
     titleCard: $('#titleCard'), live: $('#live'), backlog: $('#backlog'), backlogList: $('.backlog-list'),
     endScreen: $('#endScreen'), fatal: $('#fatal'),
     autoBtn: $('[data-act="auto"]'), skipBtn: $('[data-act="skip"]'),
@@ -707,11 +708,18 @@ async function onShot(shot) {
   if (shot.bg !== S.bg) await setBackground(shot.bg, 'fade');
 }
 
-function liftVeilIfNeeded() {
+// 黑幕（fade-black / blackout）只在接下来几拍自己会处理它时才留着，否则换分镜 / 换地点时掀开
+function liftVeilIfNeeded(upcoming = (S.chapter.shots[S.run.shotIdx]?.beats || []).slice(0, 4)) {
   if (!P.veil.classList.contains('on')) return;
-  const beats = S.chapter.shots[S.run.shotIdx]?.beats || [];
-  const handles = beats.slice(0, 4).some((b) => b?.t === 'fx' && ['fade-in', 'fade-black', 'blackout'].includes(b.fx));
+  const handles = upcoming.some((b) => b?.t === 'fx' && ['fade-in', 'fade-black', 'blackout'].includes(b.fx));
   if (!handles) setVeil(false, 800);
+}
+// 引擎刚交出的那一拍之后、同一层里还没演的几拍（分镜、分支、意图反应都一样）
+function upcomingBeats(n = 4) {
+  const top = S.run.stack[S.run.stack.length - 1];
+  if (!top) return [];
+  const list = top.lines || (top.path || []).reduce((o, k) => (o == null ? o : o[k]), S.chapter);
+  return Array.isArray(list) ? list.slice(top.idx, top.idx + n) : [];
 }
 
 function showShotCaption(shot) {
@@ -735,6 +743,8 @@ async function onBeat(beat, my) {
       if (!S.locations[beat.bg]) P.shotCap.classList.remove('show');
       else if (!cut) showShotCaption({ ...S.chapter.shots[S.run.shotIdx], bg: beat.bg });
       if (!cut) { hideBanner(); P.dock.classList.add('idle'); } // 上一处的台词不留在新场景上，和换分镜时一样先收起对话框
+      // 分镜里「熄灯」（blackout）后淡入另一个地方：黑幕跟着换场掀开，否则新场景整段都是黑的（第四章 04-10 冲上楼梯）
+      if (!cut) liftVeilIfNeeded(upcomingBeats());
       await setBackground(beat.bg, cut ? 'cut' : 'fade');
       if (!cut) await sleep(S.skip ? 120 : 650);
       return undefined;
@@ -1040,7 +1050,7 @@ async function showTitleCard(beat, my) {
   tc.classList.add('play');
   P.dock.classList.add('idle');
   hideBanner();
-  pushLog({ kind: 'caption', name: '', text: [...lines, beat.title, beat.subtitle].filter(Boolean).join(' · ') });
+  pushLog({ kind: 'caption', sys: true, name: '', text: [...lines, beat.title, beat.subtitle].filter(Boolean).join(' · ') });
   announce([...lines, beat.title, beat.subtitle].filter(Boolean).join('，'));
   const seen = markRead(readKey(beat));
   S.lineSeen = seen;
@@ -1063,6 +1073,8 @@ async function showTitleCard(beat, my) {
 // ─── 横幅（系统字幕 / 战斗结果） ───
 function showBanner(text, kind = 'caption') {
   P.banner.dataset.kind = kind;
+  // 长字幕（潜入情报、委托告示）收窄字距、限宽折成均衡的两行，不再一行顶满整屏、伸进横幅两端的透明渐隐里
+  P.banner.classList.toggle('long', Array.from(String(text)).length > 16);
   $('.banner-text', P.banner).textContent = text;
   P.banner.hidden = false;
   P.banner.classList.remove('show');
@@ -1089,6 +1101,8 @@ function bindAsk() {
     if (S.ask && S.chapter) store(KEYS.draft, { chapterId: S.chapter.id, nodeId: S.ask.nodeId, text: P.askInput.value.slice(0, 300) });
   });
   P.askSilent.addEventListener('click', () => submitAsk('', { via: 'silent' }));
+  // 只记玩家亲手开合「情报」的选择（程序设置 open 也会触发 toggle，所以听 summary 的点击）
+  $('summary', P.askIntel).addEventListener('click', () => { S.intelOpen = !P.askIntel.open; });
   P.askSkip.addEventListener('click', () => { const a = S.ask; if (a && !P.ask.classList.contains('thinking')) { S.ask = null; a.resolve(SKIP); } });
 }
 // 回车提交只接受非空内容，且忽略输入框刚出现时连按推进键带来的回车——沉默必须是玩家主动点「保持沉默」
@@ -1137,6 +1151,7 @@ function askPlayer(node) {
     $('.ask-context-name', P.askContext).style.setProperty('--who', last.color || 'var(--muted)');
     $('.ask-context-text', P.askContext).textContent = last.text;
   }
+  renderIntel(S.run.battle ? [] : recentIntel()); // 战斗中情报在战斗面板里
   P.ask.classList.remove('enter');
   void P.ask.offsetWidth;
   P.ask.classList.add('enter');
@@ -1147,6 +1162,27 @@ function askPlayer(node) {
   if (hint) hint.textContent = 'Enter 提交 · Shift+Enter 换行';
   requestAnimationFrame(fitHud);
   return new Promise((resolve) => { S.ask = { resolve, since: performance.now(), nodeId: node.id }; });
+}
+
+// 潜入情报这类系统字幕只以横幅一闪而过：轮到玩家写行动时，把上一次回应之后出现过的字幕收进输入框上方的「情报」折叠栏
+// （从回看记录里取，刷新后「继续」也还在）。只有一两句的零散字幕不算情报。
+function recentIntel() {
+  const out = [];
+  for (let i = S.backlog.length - 1; i >= 0 && out.length < 16; i -= 1) {
+    const l = S.backlog[i];
+    if (!l || l.kind === 'input') break;
+    if (l.kind === 'caption' && !l.sys && !/^战斗(开始|结束) · /.test(l.text)) out.unshift(l.text);
+  }
+  return out.length >= 2 ? out : [];
+}
+function renderIntel(lines) {
+  const box = P.askIntel;
+  box.hidden = !lines.length;
+  if (!lines.length) return;
+  $('.ask-intel-count', box).textContent = String(lines.length);
+  $('.ask-intel-list', box).innerHTML = lines.map((t) => `<li>${esc(t)}</li>`).join('');
+  // 默认：宽敞的屏幕展开，手机收起（展开后输入框会顶到屏幕上半）；玩家自己开合过就照他的
+  box.open = S.intelOpen ?? (window.innerWidth >= 700 && window.innerHeight >= 760);
 }
 
 function setThinking(text) {
@@ -1331,7 +1367,7 @@ async function onBattleStart(view) {
   S.hudBattle = null;
   renderHud(view);
   announce(`战斗开始：${view.title}。目标：${view.objective}`);
-  pushLog({ kind: 'caption', name: '', text: `战斗开始 · ${view.title}` });
+  pushLog({ kind: 'caption', sys: true, name: '', text: `战斗开始 · ${view.title}` });
   await sleep(S.skip ? 120 : 650);
 }
 
@@ -1350,7 +1386,7 @@ async function onBattleEnd(view, my) {
   P.dock.classList.add('idle');
   showBanner(`战斗结束 · ${label}`, `result-${view.result}`);
   announce(`战斗结束：${label}`);
-  pushLog({ kind: 'caption', name: '', text: `战斗结束 · ${label}` });
+  pushLog({ kind: 'caption', sys: true, name: '', text: `战斗结束 · ${label}` });
   await waitAdvance({ autoDelay: 2000, seen: true });
   if (my !== S.token) return;
   hideBanner();
@@ -1540,7 +1576,7 @@ document.addEventListener('keydown', (e) => {
   if ((P.backlog && !P.backlog.hidden) || (P.endScreen && !P.endScreen.hidden) || (P.fatal && !P.fatal.hidden) || document.querySelector('.modal')) return;
   const target = e.target;
   if (target.closest?.('textarea, input, select, [contenteditable="true"], .pop')) return;
-  const onControl = target.closest?.('button, a');
+  const onControl = target.closest?.('button, a, summary');
   if ((e.key === ' ' || e.key === 'Enter') && !onControl) { e.preventDefault(); advance(); return; }
   const k = e.key.toLowerCase();
   if (k === 'a') setAuto(!S.auto);
