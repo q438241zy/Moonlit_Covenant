@@ -4,6 +4,7 @@
 //   node tools/story/check.mjs ch000 --transcript      导出逐字稿（默认玩法）到 stdout，便于与剧本对照
 //   node tools/story/check.mjs ch000 --play intent=0   每个节点都选第 N 个非沉默意图试玩
 // 试玩策略：silent（全部沉默）、fallback（无法归类的输入）、每个意图各跑一遍（逐节点轮换），确保所有分支都能走到章末。
+// 意图覆盖同时统计「从本章开始」和「接续上一章各策略的存档」两种开局：只在特定前章结果下才出现的节点也算进覆盖。
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -82,7 +83,7 @@ function findDef(chapter, id) {
 }
 
 let failed = false;
-let prevRun = null;
+let prevRuns = [];
 for (const entry of index) {
   if (only.length && !only.includes(entry.id)) continue;
   const chapter = loadChapter(entry.id);
@@ -107,11 +108,23 @@ for (const entry of index) {
   eachBeat(chapter, (beat) => { if (beat.t === 'input') maxChoices = Math.max(maxChoices, beat.intents.filter((x) => x.id !== beat.silent).length); });
   const strategies = ['silent', 'fallback', 'rotate', ...Array.from({ length: maxChoices }, (_, i) => String(i))];
   let main = null;
+  const runs = [];
   for (const s of strategies) {
     const r = play(chapter, s);
     if (!r.ok) { failed = true; console.log(`✗ ${entry.id} 策略 ${s} 未能走到章末`); break; }
     r.hit.forEach((h) => covered.add(h));
+    runs.push(r.run);
     if (s === 'rotate') main = r;
+  }
+  // 跨章继承：上一章每种策略的章末存档接进本章，再按各策略试玩
+  let carried = 0;
+  for (const prev of prevRuns) {
+    for (const s of strategies) {
+      const r = play(chapter, s, continueRun(prev, chapter));
+      if (!r.ok) { failed = true; console.log(`✗ ${entry.id} 从上一章存档继续（策略 ${s}）时未能走到章末`); break; }
+      r.hit.forEach((h) => covered.add(h));
+      carried += 1;
+    }
   }
   // 补触达：对仍未覆盖的意图，固定该节点的选择，其余节点逐一尝试第 j 个意图
   for (const pair of [...allIntents].filter((h) => !covered.has(h))) {
@@ -125,14 +138,8 @@ for (const entry of index) {
   }
   const minutes = main ? (main.chars / 320 + main.inputs * 0.4).toFixed(1) : '?';
   const unreached = [...allIntents].filter((h) => !covered.has(h));
-  console.log(`✓ ${entry.id} ${chapter.title}：${chapter.shots.length} 分镜 · ${main?.beats} 节拍 · ${main?.inputs} 次输入 · ${main?.chars} 字 · 估算 ${minutes} 分钟 · 意图覆盖 ${covered.size}/${allIntents.size}`);
+  console.log(`✓ ${entry.id} ${chapter.title}：${chapter.shots.length} 分镜 · ${main?.beats} 节拍 · ${main?.inputs} 次输入 · ${main?.chars} 字 · 估算 ${minutes} 分钟 · 意图覆盖 ${covered.size}/${allIntents.size}${carried ? ` · 接续存档试玩 ${carried} 局` : ''}`);
   if (unreached.length) console.log(`   演示判定无法触达的意图（关键词与其他意图冲突？）：${unreached.slice(0, 12).join('，')}${unreached.length > 12 ? '…' : ''}`);
-  // 跨章继承检查
-  if (prevRun && main) {
-    const cont = continueRun(prevRun, chapter);
-    const r = play(chapter, 'rotate', cont);
-    if (!r.ok) { failed = true; console.log(`✗ ${entry.id} 从上一章存档继续时未能走到章末`); }
-  }
-  prevRun = main?.run || null;
+  prevRuns = runs;
 }
 process.exitCode = failed ? 1 : 0;
