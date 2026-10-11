@@ -4,7 +4,7 @@
   "scriptId": "CH004_OLD_MILL",
   "title": "第四章｜旧磨坊",
   "shortTitle": "旧磨坊",
-  "estimatedMinutes": 12,
+  "estimatedMinutes": 11,
   "source": "剧本/04舊磨坊.md",
   "canon": {
     "flags": {
@@ -5311,7 +5311,7 @@
     {
       "id": "04-04",
       "title": "两个名字一起画押",
-      "bg": "chime-town-gate",
+      "bg": "west-gate-day",
       "ambience": [
         "gate_water_trough",
         "dry_reeds_rustle"
@@ -11534,7 +11534,7 @@
     {
       "id": "04-12",
       "title": "自由输入：我在生气",
-      "bg": "mill-road-dusk",
+      "bg": "mill-road-night",
       "ambience": [
         "night_wind",
         "rope_coil"
@@ -13352,7 +13352,7 @@
     {
       "id": "04-13",
       "title": "名字写在报告上",
-      "bg": "chime-town-gate",
+      "bg": "west-gate-night",
       "ambience": [
         "guild_night_hush"
       ],

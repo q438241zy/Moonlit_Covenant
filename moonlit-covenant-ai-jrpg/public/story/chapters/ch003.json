@@ -474,7 +474,7 @@
     {
       "id": "03-04",
       "title": "自由输入：往东的车",
-      "bg": "chime-town-gate",
+      "bg": "west-gate-day",
       "beats": [
         {
           "t": "narr",
@@ -1103,7 +1103,7 @@
     {
       "id": "03-05",
       "title": "自由输入：临时契约",
-      "bg": "chime-town-gate",
+      "bg": "west-gate-day",
       "ambience": [
         "wind",
         "shield_metal_echo"

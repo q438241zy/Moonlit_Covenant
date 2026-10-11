@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // Build the story-mode art (主线剧情背景 + NPC 剪影胸像).
 //   node tools/art/story/build.mjs               -> everything
-//   node tools/art/story/build.mjs bg            -> all 25 backgrounds
+//   node tools/art/story/build.mjs bg            -> all backgrounds (every locations.json entry, plus generators
+//                                                  not wired into locations.json yet, e.g. new variants)
 //   node tools/art/story/build.mjs npc           -> all 15 NPC busts
 //   node tools/art/story/build.mjs hemai-day aku -> just those ids
 // Output: public/assets/story/bg/<id>.svg (1600×900) and public/assets/story/npc/<id>.svg (600×800, transparent).
@@ -56,7 +57,12 @@ for (const id of Object.keys(locations)) {
   if (!bgs[id]) { console.error(`missing background generator for location "${id}"`); process.exitCode = 1; continue; }
   if (pick('bg', id)) jobs.push({ id, rel: `public/assets/story/bg/${id}.svg`, make: bgs[id], w: 1600, h: 900, budget: BG_BUDGET });
 }
-for (const id of Object.keys(bgs)) if (!locations[id]) console.warn(`note: generator "${id}" has no entry in locations.json`);
+// generators without a locations.json entry are still built, so a new variant exists before a chapter uses it
+for (const id of Object.keys(bgs)) {
+  if (locations[id]) continue;
+  console.warn(`note: generator "${id}" has no entry in locations.json (built anyway)`);
+  if (pick('bg', id)) jobs.push({ id, rel: `public/assets/story/bg/${id}.svg`, make: bgs[id], w: 1600, h: 900, budget: BG_BUDGET });
+}
 for (const [id, make] of Object.entries(npcBusts)) {
   if (!speakers[id]) console.warn(`note: bust "${id}" has no entry in speakers.json`);
   if (pick('npc', id)) jobs.push({ id, rel: `public/assets/story/npc/${id}.svg`, make: () => make(speakers[id]?.color), w: 600, h: 800, budget: NPC_BUDGET });

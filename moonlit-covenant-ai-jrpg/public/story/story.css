@@ -322,7 +322,7 @@ button, input, textarea { font: inherit; color: inherit; }
 .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
 
 /* ─── 轻提示 ─── */
-.toasts { position: fixed; top: calc(64px + var(--safe-top)); left: 50%; z-index: 100; display: flex; flex-direction: column; align-items: center; gap: 8px; transform: translateX(-50%); pointer-events: none; width: max-content; max-width: calc(100vw - 24px); }
+.toasts { position: fixed; top: calc(64px + var(--safe-top)); left: 50%; z-index: 100; display: flex; flex-direction: column; align-items: center; gap: 8px; transform: translateX(-50%); pointer-events: none; width: max-content; max-width: calc(100vw - 24px); transition: top .25s ease; }
 .toast {
   display: inline-flex;
   align-items: center;
@@ -431,7 +431,8 @@ button, input, textarea { font: inherit; color: inherit; }
   mask-image: linear-gradient(180deg, transparent 0%, #000 4%, #000 70%, transparent 99%), linear-gradient(90deg, transparent 0%, #000 13%, #000 87%, transparent 100%);
   mask-composite: intersect;
 }
-.art.on { opacity: .5; transform: none; filter: brightness(.55) saturate(.75); }
+/* 旁聽中的立繪保持不透明、只壓暗：半透明會讓白天背景（常春藤、牆面）從臉上透出來 */
+.art.on { opacity: 1; transform: none; filter: brightness(.5) saturate(.7); }
 .art.on.active { opacity: 1; filter: drop-shadow(0 10px 30px rgba(0, 0, 0, .55)); }
 
 /* 演出层 */
@@ -955,4 +956,8 @@ button, input, textarea { font: inherit; color: inherit; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   .bg.show { animation: none; }
+  /* 分镜小字：上面的 .01ms 会让 capIn 一开场就停在最后一帧（透明），减少动态的玩家永远看不到分镜标题和地点。
+     改成不位移、照常亮 4 秒再淡出（只有透明度变化） */
+  .shot-cap.show { animation: capStill 4.4s linear forwards !important; }
 }
+@keyframes capStill { 0%, 78% { opacity: 1; } 100% { opacity: 0; } }

@@ -1,11 +1,14 @@
-// 旧磨坊路 (the old mill road west of 晨钟镇): mill-road-milestone (afternoon) and mill-road-dusk.
+// 旧磨坊路 (the old mill road west of 晨钟镇): mill-road-milestone (afternoon), mill-road-dusk and mill-road-night.
 // A dirt road through man-high dry reeds; the irrigation ditch along the right; the second milestone on
 // the right shoulder where the wheel ruts leave the road; the relief society's grain cart overturned at
 // the ditch, its cracked crate pulsing violet; the disused windmill standing still on a far knoll.
-// Both variants share one layout (same seed, same geometry); only the light and grading change:
-//   day  — afternoon, the sun behind the viewer's left shoulder ("太阳在你背后"), shadows fall away/right;
-//   dusk — the sun low ahead-left behind the reeds, the crate's light smothered, smoke over the old mill.
-import { Scene, W, H, f, pz, pl, cloud, cloudCluster, ridge, rays, band, tree, persp, smoke, bird, noise1 } from './lib.mjs';
+// All variants share one layout (same seed, same geometry); only the light, grading and a few props change:
+//   day   — afternoon, the sun behind the viewer's left shoulder ("太阳在你背后"), shadows fall away/right;
+//   dusk  — the sun low ahead-left behind the reeds, the crate's light smothered, smoke over the old mill;
+//   night — a moonless starlit night (chapters 04/05: "门外没有月亮"); the crate gone (seized on day 7, it sits
+//           in the guard post's evidence shed), the cart wreck and the milestone in cold starlight, and the one
+//           point of lamplight in the distant mill ("远处磨坊的一点灯", 04-12).
+import { Scene, W, H, f, pz, pl, cloud, cloudCluster, ridge, rays, band, tree, persp, smoke, bird, noise1, stars, rng } from './lib.mjs';
 
 const r0 = (v) => f(v, 0);
 const VPX = 600, HZ = 452, F = 900, EYE = 1.6;
@@ -63,6 +66,30 @@ const PAL = {
     sack: ['#a8786a', '#6e4a4a'], grain: '#d89a6a',
     glow: false,
     grade: { warm: '#ff9a60', warmOp: 0.14, cool: '#2a1a4a', coolOp: 0.32, vig: '#140c1c', vigOp: 0.6, bottom: '#140c1c', bottomOp: 0.68 },
+  },
+  night: {
+    sky: [[0, '#0a0b1c'], [0.2, '#121630'], [0.38, '#1e2442'], [0.47, '#2c3354'], [0.5, '#363c5e'], [1, '#121420']],
+    cloud: { lit: '#1c1f36', shade: '#111326', rim: '#3a4064' },
+    cloudFar: { lit: '#262a46', shade: '#1c2038', rim: null },
+    ridge: { fill: '#1e2238', shade: '#161a2c', rim: '#4e5676' },
+    knoll: [[0, '#1c2032'], [1, '#151828']], knollRim: '#454c6c',
+    treeFar: { lit: '#171b2c', shade: '#10131f', trunk: '#0c0e18' },
+    mill: { lit: '#1e2234', shade: '#151827', roof: '#1a1d2e', frame: '#0e1019', door: '#0a0b13', house: '#1b1e2f', houseShade: '#141726', houseRoof: '#171a2a', chimney: '#1a1d2e' },
+    haze: '#3e4670', reedSea: '#1e2234',
+    ground: [[0, '#272b40'], [1, '#0a0b12']],
+    road: [[0, '#3c4058'], [0.35, '#272b3e'], [1, '#0c0d14']],
+    verge: [[0, '#2a2e42'], [0.4, '#1c1f2d'], [1, '#0a0a10']],
+    bankIn: '#12141e', bankOut: '#30344a',
+    water: [[0, '#4e5680'], [0.5, '#2a3052'], [1, '#10121e']], waterHi: '#c8d0ff', waterDark: '#0a0b14',
+    leftReed: { fill: [[0, '#1c1e2e'], [0.3, '#141622'], [1, '#08080e']], stalk: '#0c0c14', plume: '#3c4058', rim: '#6e76a0', leaf: '#10121c' },
+    rightReed: { fill: [[0, '#2e3248'], [0.3, '#202436'], [1, '#0c0d16']], stalk: '#161a26', hi: '#4a5070', plume: '#50567a', rim: '#8e96c0', leaf: '#1c2030' },
+    rut: '#141620', gravel: '#23273a', gravelHi: '#5e668e', print: '#181a28',
+    shadow: '#05060c', shadowOp: 0.35,
+    stone: { side: '#464c6c', front: '#2c3046', top: '#565c80', edge: '#10121c', crack: '#14161f', lichen: ['#3a4052', '#4a5062'], moss: '#1a2020', groove: '#0e0f18', grooveHi: '#6e76a0' },
+    wood: { lit: '#363a4e', mid: '#272b3b', shade: '#181a26', top: '#42465c', dark: '#0c0d14', iron: '#0e0f16', hi: '#6e76a0' },
+    sack: ['#3a3e52', '#262a3a'], grain: '#5a6078',
+    glow: false,
+    grade: { warm: '#6a78b0', warmOp: 0.06, cool: '#05061a', coolOp: 0.35, vig: '#04050c', vigOp: 0.62, bottom: '#04050c', bottomOp: 0.72 },
   },
 };
 
@@ -135,7 +162,8 @@ function reedWall(S, R, pr, o) {
 }
 
 // The disused windmill: tapered tower, boat-shaped cap, bare sail frames (one arm snapped), mill house.
-function oldMill(x, y, s, pal) {
+// Also used for the distant view through the west gate (bg-town.mjs `westGate`).
+export function oldMill(x, y, s, pal) {
   const out = [];
   const tw = 46 * s, tt = 27 * s, th = 116 * s;
   // mill house on the right, its chimney
@@ -228,8 +256,8 @@ function sack(x, y, k, P, lean = 0, split = false) {
 // ---------------------------------------------------------------------------------------------
 function millRoad(v) {
   const P = PAL[v];
-  const day = v === 'day';
-  const S = new Scene(day ? 'sbMillRoad' : 'sbMillDusk', day ? '旧磨坊路·第二座里程石：干芦苇间的土路，沟边翻倒的粮车，裂开的木箱透出紫光' : '旧磨坊路·黄昏：远处停工两年的旧磨坊升起炊烟', 5101);
+  const day = v === 'day', night = v === 'night';
+  const S = new Scene(day ? 'sbMillRoad' : night ? 'sbMillNight' : 'sbMillDusk', day ? '旧磨坊路·第二座里程石：干芦苇间的土路，沟边翻倒的粮车，裂开的木箱透出紫光' : night ? '旧磨坊路·夜：没有月亮的星空下，第二座里程石与沟边翻倒的粮车，远处旧磨坊亮着一点灯' : '旧磨坊路·黄昏：远处停工两年的旧磨坊升起炊烟', 5101);
   const R = S.R;
   const pr = persp({ vp: [VPX, HZ], F, eye: EYE });
   const q = (pts) => pr.quad(pts);
@@ -240,13 +268,18 @@ function millRoad(v) {
   if (day) {
     // the sun is behind the viewer's left shoulder: warm light pours in from the upper-left corner
     S.add(`<circle cx="-60" cy="-80" r="980" fill="${S.rad([[0, '#fff4d6', 0.75], [0.25, '#ffe8b4', 0.38], [0.6, '#ffe0a0', 0.08], [1, '#ffe0a0', 0]])}"/>`);
+  } else if (night) {
+    // no moon: stars (their own stream, so the shared layout keeps the same random sequence) and a faint milky band
+    const RN = rng(5177);
+    S.add(`<ellipse cx="1060" cy="150" rx="760" ry="70" transform="rotate(-12 1060 150)" fill="${S.rad([[0, '#8a94d0', 0.16], [0.6, '#8a94d0', 0.06], [1, '#8a94d0', 0]])}"/>`);
+    S.add(stars(RN, 240, [0, 0, W, 420], { maxR: 1.4, fill: '#e6e4ff', op: [0.2, 0.9] }));
   } else {
     S.add(`<circle cx="430" cy="404" r="820" fill="${S.rad([[0, '#fff0c0', 1], [0.07, '#ffd08a', 0.85], [0.25, '#ff9a64', 0.4], [0.6, '#d0607a', 0.12], [1, '#d0607a', 0]])}"/>`);
     S.add(`<circle cx="430" cy="404" r="54" fill="#fff0c8" filter="${S.blur(2)}"/><circle cx="430" cy="404" r="33" fill="#fffaea"/>`);
   }
   const cfar = P.cloudFar, cc = P.cloud;
-  S.add(`<g opacity="${day ? 0.75 : 0.8}">${cloud(R, 1010, 302, 230, 34, cfar, { bumps: 5 })}${cloud(R, 1330, 330, 200, 30, cfar, { bumps: 5 })}${cloud(R, 140, 250, 180, 30, cfar, { bumps: 4 })}</g>`);
-  S.add(`<path d="${band(560, 1500, 352, 10, R)}" fill="${day ? '#fff4e0' : '#ffc89a'}" opacity=".5"/><path d="${band(980, 1640, 398, 7, R)}" fill="${day ? '#f6ead4' : '#f0a07a'}" opacity=".45"/>`);
+  S.add(`<g opacity="${day ? 0.75 : night ? 0.6 : 0.8}">${cloud(R, 1010, 302, 230, 34, cfar, { bumps: 5 })}${cloud(R, 1330, 330, 200, 30, cfar, { bumps: 5 })}${cloud(R, 140, 250, 180, 30, cfar, { bumps: 4 })}</g>`);
+  S.add(`<path d="${band(560, 1500, 352, 10, R)}" fill="${day ? '#fff4e0' : night ? '#3e4466' : '#ffc89a'}" opacity=".5"/><path d="${band(980, 1640, 398, 7, R)}" fill="${day ? '#f6ead4' : night ? '#343a5a' : '#f0a07a'}" opacity=".45"/>`);
   S.add(cloudCluster(R, 1110, 168, 330, 90, cc, { bumps: 6 }));
   S.add(cloud(R, 470, 104, 220, 42, cc, { bumps: 5 }) + cloud(R, 1400, 92, 170, 32, cc, { bumps: 5 }));
   if (day) S.add(`<g filter="${S.blur(3)}">${rays(-60, -80, [[28, 3, 1700], [37, 4, 1700], [46, 3, 1600], [56, 2.5, 1400]], '#fff2cc', 0.16)}</g>`);
@@ -258,7 +291,7 @@ function millRoad(v) {
   S.add(`<path d="${knoll}" fill="${S.lin(P.knoll, 'gradientUnits="userSpaceOnUse" x1="0" y1="390" x2="0" y2="456"')}"/><path d="M500,452C590,436,676,398,782,392" fill="none" stroke="${P.knollRim}" stroke-width="2" opacity=".65"/>`);
   for (const [x, y, s] of [[640, 420, 0.3], [668, 414, 0.26], [912, 404, 0.28], [944, 410, 0.32], [1010, 426, 0.26]]) S.add(tree(R, x, y, s, P.treeFar));
   const mill = oldMill(796, 396, 0.86, P.mill);
-  if (!day) {
+  if (!day && !night) {
     // today's smoke over the mill that has stood idle for two years
     const [cx, cy] = mill.chimney;
     // soft puffs swelling as they rise and lean away on the evening wind, fading toward the top
@@ -273,7 +306,12 @@ function millRoad(v) {
     S.add(`<g filter="${S.blur(1)}"><path d="${puffs}" fill="${fade('#3a2a40', 0.9)}"/><path d="${lit}" fill="${fade('#b88084', 0.5)}"/></g>`);
   }
   S.add(mill.svg);
-  if (!day) {
+  if (night) {
+    // the one point of lamplight in the mill: the small tower window
+    const wx = 796, wy = 396 - 116 * 0.86 * 0.62 + 4;
+    S.add(`<circle cx="${wx}" cy="${r0(wy)}" r="34" fill="${S.rad([[0, '#ffc870', 0.6], [0.25, '#ffa850', 0.24], [1, '#ffa850', 0]])}"/><path d="M${wx - 3},${r0(wy - 4)}h5v9h-5z" fill="#ffd890"/><circle cx="${wx - 0.5}" cy="${r0(wy)}" r="1.6" fill="#fffbe8"/>`);
+  }
+  if (!day && !night) {
     let birds = '';
     for (const [x, y, s, fl] of [[700, 300, 0.7, 0.2], [736, 284, 0.6, 0.8], [766, 306, 0.55, 0.5], [640, 318, 0.5, 0.9]]) birds += bird(x, y, s, fl);
     S.add(`<path d="${birds}" fill="#2a1a2e"/>`);
@@ -306,7 +344,7 @@ function millRoad(v) {
     const Z = 3.2 + R() ** 1.7 * 45, X = R() < 0.65 ? BK0 + R.range(-0.04, 0.04) : BK1 + R.range(-0.04, 0.1), p = pr(X, 0, Z), k = kAt(Z), h = Math.min(30, R.range(0.12, 0.3) * k), d = X > 4 ? -1 : 1;
     lip += `M${r0(p[0])},${r0(p[1])}q${f(d * h * 0.08, 0)},${r0(-h * 0.6)} ${f(d * h * R.range(0.15, 0.35), 0)},${r0(-h)}`;
   }
-  S.add(`<path d="${lip}" fill="none" stroke="${day ? '#6e5a36' : '#3e2830'}" stroke-width="1.8" stroke-linecap="round" opacity=".7"/>`);
+  S.add(`<path d="${lip}" fill="none" stroke="${day ? '#6e5a36' : night ? '#1a1c2a' : '#3e2830'}" stroke-width="1.8" stroke-linecap="round" opacity=".7"/>`);
   S.add(`<path d="${pl(pr.poly([[3.7, -0.35, 3.2], [3.78, -0.35, 40]]))}" stroke="${P.waterHi}" stroke-width="5" opacity=".35"/><path d="${pl(pr.poly([[WT0 + 0.02, -0.35, ZN], [WT0 + 0.02, -0.35, ZF]]))}" stroke="${P.waterDark}" stroke-width="3" opacity=".45"/>`);
   // road: wheel ruts, the cart's tracks swerving off at the milestone, gravel, footprints
   let ruts = '';
@@ -336,7 +374,7 @@ function millRoad(v) {
     const Z = 2.8 + R() ** 1.8 * 40, X = R.range(RD + 0.05, BK0 - 0.05), p = pr(X, 0, Z), k = kAt(Z), h = R.range(0.1, 0.22) * k;
     gr += `M${r0(p[0])},${r0(p[1])}q${f(0.01 * k, 0)},${r0(-h * 0.6)} ${f(R.range(-0.04, 0.09) * k, 0)},${r0(-h)}`;
   }
-  S.add(`<path d="${gr}" fill="none" stroke="${day ? '#8a7448' : '#5a3634'}" stroke-width="1.6" stroke-linecap="round" opacity=".55"/>`);
+  S.add(`<path d="${gr}" fill="none" stroke="${day ? '#8a7448' : night ? '#2e3246' : '#5a3634'}" stroke-width="1.6" stroke-linecap="round" opacity=".55"/>`);
   // the shade of the left reed wall falls across the near edge of the road (afternoon only)
   if (day) S.add(`<path d="${pz([pr(-1.85, 0, ZN), pr(-1.85, 0, 70), pr(-1.25, 0, 70), pr(-0.95, 0, 14), pr(-0.7, 0, ZN)])}" fill="${P.shadow}" opacity=".26" filter="${S.blur(2)}"/>`);
 
@@ -347,12 +385,13 @@ function millRoad(v) {
   const kC = kAt(11.5), cl = pr(0.85, 0, 11.5);
   const cShadow = day
     ? pz([pr(0.9, 0, 11.5), pr(WT0, -0.3, 11.5), pr(WT0 + 0.9, -0.35, 13.2), pr(1.9, 0, 13.2)])
+    : night ? pz([pr(0.8, 0, 11.3), pr(WT0, -0.3, 11.3), pr(WT0 + 0.2, -0.35, 12.1), pr(1.0, 0, 12.1)])
     : pz([pr(0.9, 0, 11.5), pr(WT0, -0.3, 11.5), pr(WT0 + 1.4, -0.35, 10.1), pr(2.3, 0, 10.1)]);
   S.add(`<path d="${cShadow}" fill="${P.shadow}" opacity="${P.shadowOp}" filter="${S.blur(1)}"/>`);
   S.add(cart(cl[0], cl[1], kC, 9, P));
   const sk1 = pr(-0.25, 0, 10.6), sk2 = pr(2.1, 0, 9.9);
   S.add(sack(sk1[0], sk1[1], kAt(10.6), P, -8, true) + sack(sk2[0], sk2[1], kAt(9.9), P, 6));
-  {
+  if (!night) {
     const Z = 9.3, X = 0.52, k = kAt(Z), c = pr(X, 0, Z), cw = 0.74 * k, ch = 0.52 * k, td = 0.12 * k;
     const crate = [];
     if (P.glow) crate.push(`<circle cx="${r0(c[0])}" cy="${r0(c[1] - ch * 0.5)}" r="${r0(2.4 * k)}" fill="${S.rad([[0, '#dcc0ff', 0.55], [0.2, '#a87af0', 0.28], [0.55, '#8a5ad8', 0.08], [1, '#8a5ad8', 0]])}"/>`);
@@ -397,12 +436,13 @@ function millRoad(v) {
     // cast shadow
     const sh = day
       ? pz([pr(X0, 0, Z0), pr(X1, 0, Z0), pr(X1, 0, Z1), pr(X1 + 0.85, 0, Z1 + 1.6), pr(X0 + 0.75, 0, Z1 + 1.7)])
+      : night ? pz([pr(X0 - 0.08, 0, Z0 - 0.06), pr(X1 + 0.1, 0, Z0 - 0.06), pr(X1 + 0.16, 0, Z1 + 0.3), pr(X0 - 0.04, 0, Z1 + 0.3)])
       : pz([pr(X0, 0, Z0), pr(X0, 0, Z1), pr(X1, 0, Z1), pr(X1 + 1.9, 0, Z0 - 0.9), pr(X1 + 1.5, 0, Z0 - 1.25)]);
     S.add(`<path d="${sh}" fill="${P.shadow}" opacity="${P.shadowOp + 0.05}" filter="${S.blur(1)}"/>`);
     // pressed grass on the road side of the stone, with black crystal grit caught in it
     let pg = '';
     for (let i = 0; i < 26; i++) { const Z = R.range(6.6, 8.6), X = R.range(1.85, 2.55), p = pr(X, 0, Z), kk = kAt(Z), l = R.range(0.12, 0.26) * kk; pg += `M${r0(p[0])},${r0(p[1])}q${r0(l * 0.5)},${r0(-l * 0.16)} ${r0(l)},${r0(-l * 0.1)}`; }
-    S.add(`<path d="${pg}" fill="none" stroke="${day ? '#7a6a40' : '#4a3032'}" stroke-width="2.2" stroke-linecap="round" opacity=".75"/>`);
+    S.add(`<path d="${pg}" fill="none" stroke="${day ? '#7a6a40' : night ? '#1e2030' : '#4a3032'}" stroke-width="2.2" stroke-linecap="round" opacity=".75"/>`);
     let grit = '', glint = '';
     for (let i = 0; i < 9; i++) { const p = pr(R.range(1.9, 2.5), 0, R.range(6.9, 8.2)), s = R.range(2.2, 4.2); grit += `M${r0(p[0])},${r0(p[1] - s)}l${f(s * 0.7, 1)},${f(s, 1)}l${f(-s * 1.3, 1)},${f(-s * 0.2, 1)}z`; glint += `M${r0(p[0])},${r0(p[1] - s)}l1,1.5`; }
     S.add(`<path d="${grit}" fill="#120c1a"/>${day ? `<path d="${glint}" stroke="#d4b8ff" stroke-width="1.4" opacity=".9"/>` : ''}`);
@@ -435,17 +475,17 @@ function millRoad(v) {
       ns += `M${x},${H + 10}Q${x + lean * 0.4},${(H + top) / 2} ${x + lean},${top}`;
       np += plume(x + lean, top + 4, 92, 36 + lean, 0.2).body;
     }
-    S.add(`<g filter="${S.blur(1)}" opacity=".9"><path d="${ns}" fill="none" stroke="${day ? '#3a2e22' : '#120a14'}" stroke-width="5" stroke-linecap="round"/><path d="${np}" fill="${day ? '#8a7656' : '#4a2a34'}"/></g>`);
+    S.add(`<g filter="${S.blur(1)}" opacity=".9"><path d="${ns}" fill="none" stroke="${day ? '#3a2e22' : night ? '#06060c' : '#120a14'}" stroke-width="5" stroke-linecap="round"/><path d="${np}" fill="${day ? '#8a7656' : night ? '#22263a' : '#4a2a34'}"/></g>`);
   }
   // foreground: low dark tufts on the right shoulder (calm area under the dialogue box)
   let tuft = '';
   for (let i = 0; i < 40; i++) { const y = R.range(700, 920), x = R.range(VPX + (y - HZ) * RD / EYE + 10, VPX + (y - HZ) * BK0 / EYE - 6), h = R.range(12, 28) * (y / 760); tuft += `M${r0(x - 5)},${r0(y)}q2,${r0(-h * 0.6)} ${r0(R.range(-6, 6))},${r0(-h)}q2,${r0(h * 0.5)} 6,${r0(h)}z`; }
-  S.add(`<path d="${tuft}" fill="${day ? '#3e3220' : '#1e1218'}" opacity=".5"/>`);
+  S.add(`<path d="${tuft}" fill="${day ? '#3e3220' : night ? '#08080e' : '#1e1218'}" opacity=".5"/>`);
 
   // --- grading ------------------------------------------------------------------------------------------
   const g = P.grade;
   S.add(`<rect width="${W}" height="${H}" fill="${S.lin([[0, g.warm, g.warmOp], [0.5, g.warm, 0], [1, g.cool, g.coolOp]], 'x1="0" y1="0" x2="1" y2="1"')}"/>`);
-  S.add(`<rect width="${W}" height="${H}" fill="${S.rad([[day ? 0.55 : 0.45, g.vig, 0], [1, g.vig, g.vigOp]], 'cx="0.5" cy="0.42" r="0.78"')}"/>`);
+  S.add(`<rect width="${W}" height="${H}" fill="${S.rad([[day ? 0.55 : night ? 0.4 : 0.45, g.vig, 0], [1, g.vig, g.vigOp]], 'cx="0.5" cy="0.42" r="0.78"')}"/>`);
   S.add(`<rect y="600" width="${W}" height="300" fill="${S.lin([[0, g.bottom, 0], [1, g.bottom, g.bottomOp]])}"/>`);
   return S.out();
 }
@@ -453,4 +493,5 @@ function millRoad(v) {
 export const millBgs = {
   'mill-road-milestone': () => millRoad('day'),
   'mill-road-dusk': () => millRoad('dusk'),
+  'mill-road-night': () => millRoad('night'),
 };

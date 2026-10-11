@@ -1,6 +1,8 @@
-// 晨钟镇 (Chime Town): chime-town-gate, guild-hall, market, dye-alley, barrel-alley, guard-square, training-ground-dawn.
+// 晨钟镇 (Chime Town): chime-town-gate, guild-hall, market, dye-alley, barrel-alley, guard-square, training-ground-dawn,
+// and the west gate (west-gate-day / west-gate-dusk / west-gate-night).
 // A lively market town that was never burned: warm plaster, timber frames, red tiles, the bell tower.
 import { Scene, W, H, f, pz, pl, shape, cloud, cloudCluster, ridge, rays, stars, smoke, band, tree, rock, persp, bellTower, star7, mix, TOWN, townhouse, stall, person, bird, fence, rng } from './lib.mjs';
+import { oldMill, plume } from './bg-mill.mjs';
 
 const r0 = (v) => f(v, 0);
 const TOWER_PAL = { lit: '#eadcc4', shade: '#a8967e', hole: '#3a3040', bell: '#d0a050', trim: '#7a6a5a', roof: '#5e6888', roofShade: '#3e4664', win: '#4a4050', star: '#ffd77a' };
@@ -601,6 +603,347 @@ function trainingGround() {
   return S.out();
 }
 
+// ---------------------------------------------------------------------------------------------
+// 晨钟镇西门 — the back gate the old mill road leaves from, seen from INSIDE the town looking west
+// (the east gate, chime-town-gate, is seen from outside with the town behind it). One broad gatehouse
+// with a timber hoarding and a red hip roof over a single arch; the portcullis (闸门) in the passage;
+// the postern (小门) with its lantern, the guards' notice board and register desk on the left; the
+// spouted stone horse trough (城门水槽) on the right; the stair up to the wall-walk; through the arch
+// the mill road runs out across the reed flats to the disused windmill (bg-mill `oldMill`, the 204° arm
+// snapped). Three variants share one layout (same seed, same geometry); light, sky and gate state change:
+//   day   — late morning (03-04/03-05, 04-04): the sun behind the viewer's left shoulder lights the inner
+//           face; the gate open, the portcullis up, fresh wheel ruts on the mud outside.
+//   dusk  — sunset before the gate closes (05-01): the sun sits on the reeds right under the raised
+//           portcullis ("夕阳压在西门的闸门上"); the wall backlit, light pouring through the passage.
+//   night — after the gate is shut (04-13, 05-11): the portcullis down, no moon (05: "门外没有月亮"),
+//           only the postern lantern and the guardroom window lit.
+// ---------------------------------------------------------------------------------------------
+const WGP = {
+  day: {
+    id: 'sbWGateDay', label: '晨钟镇西门·上午：从镇内望向敞开的西门与升起的闸门，门外旧磨坊路穿过芦苇滩，远处是断了一臂的旧磨坊；左侧小门与提灯，右侧城门水槽',
+    sky: [[0, '#7ea4cc'], [0.28, '#b4c8d6'], [0.5, '#e8dec2'], [0.56, '#f0e2c0'], [1, '#c8b08a']],
+    cloud: { lit: '#fffaf0', shade: '#d8d0d4', rim: '#ffffff' },
+    far: { ridge: '#b6b4c4', ridgeShade: '#9c9ab0', ridgeRim: '#fff4e0', haze: '#f2e4c2', hazeOp: 0.5, sea: '#d8c08c', flats: [[0, '#d2ba86'], [1, '#a88e5e']], reed: '#b8995e', plume: '#f2e4c4', road: [[0, '#d4bc94'], [1, '#b49a72']], rut: '#8a7254', knoll: '#b8ae86', tree: { lit: '#aaa878', shade: '#83866a', trunk: '#6a5a4c' } },
+    mill: { lit: '#d4c6b0', shade: '#a0948c', roof: '#94695a', frame: '#605452', door: '#4e4240', house: '#c6b69e', houseShade: '#94887c', houseRoof: '#8a6454', chimney: '#a09080' },
+    wall: [[0, '#d6c6a6'], [1, '#ab9b7e']], wallLine: '#7e6e58', lineOp: 0.35, parapet: '#c8b898', merlon: '#d2c2a2', ledge: '#8e7e66', moss: '#8a9a5a', ivy: ['#6e8a4a', '#4e6a3a'], rim: '#fff4dc', rimOp: 0.75,
+    gh: [[0, '#dccaa8'], [1, '#b4a282']], ring: '#b8a688', ringLine: '#857560', roof: ['#b85c3e', '#80402e'], hoard: ['#7a5638', '#4e3424'], slot: '#2e2420', win: '#3a3040', winLit: false,
+    pass: [[0, '#5e5246'], [1, '#8e7e68']], passFloor: '#b49e7c', port: '#3a3236', portHi: '#8a7e78',
+    door: ['#76523a', '#54382a'], iron: '#2c2a2e', stair: [[0, '#cdbd9e'], [1, '#a49478']], stairEdge: '#fff0d4', niche: '#3a3036',
+    ground: [[0, '#cfb994'], [0.4, '#a88e6a'], [1, '#4a3a2a']], street: '#c8b088', cobble: '#9a8262',
+    trough: { top: '#d0c4ac', front: '#a89a82', side: '#8a7e6a', water: [[0, '#b8ccd2'], [1, '#7e98a4']], hi: '#ffffff' },
+    house: { plaster: '#ecdcc0', shade: '#bca88a', timber: '#5a3a2a', stone: '#bcae98', roof: '#a8543a', glass: '#3a4256', lit: false },
+    wood: '#7a5a3c', paper: '#f0e4c8', lampGlass: '#5a5048', shadow: '#3a2c22', shadowOp: 0.22,
+    grade: { warm: '#fff0c8', warmOp: 0.14, cool: '#3a3040', coolOp: 0.18, vig: '#2a1e14', vigOp: 0.38, bottom: '#2a1e14', bottomOp: 0.55 },
+  },
+  dusk: {
+    id: 'sbWGateDusk', label: '晨钟镇西门·黄昏：夕阳正压在升起的闸门下，逆光的城墙与门楼，光从门洞里倒进来；门外芦苇滩与旧磨坊的剪影',
+    sky: [[0, '#2e2850'], [0.2, '#5e3e6c'], [0.36, '#b4607a'], [0.47, '#ec9a66'], [0.54, '#f8c07a'], [1, '#6a4a4a']],
+    cloud: { lit: '#e8907a', shade: '#5e3c5e', rim: '#ffcf9a' },
+    far: { ridge: '#7a5070', ridgeShade: '#5a3a5a', ridgeRim: '#ffc090', haze: '#ffc488', hazeOp: 0.6, sea: '#a8645a', flats: [[0, '#b8704e'], [1, '#6a4038']], reed: '#5e3634', plume: '#f0a274', road: [[0, '#e0a078'], [1, '#9a6050']], rut: '#5e3e3e', knoll: '#6a4458', tree: { lit: '#6e4a5a', shade: '#4e3448', trunk: '#3a2838' } },
+    mill: { lit: '#5a3c50', shade: '#3e2a3e', roof: '#4a2e3e', frame: '#2e2030', door: '#22182a', house: '#523848', houseShade: '#3a283a', houseRoof: '#3e283a', chimney: '#4a3446' },
+    wall: [[0, '#6e5266'], [1, '#463444']], wallLine: '#2e2232', lineOp: 0.4, parapet: '#5e4458', merlon: '#664a5e', ledge: '#3a2a3a', moss: '#4a4a3a', ivy: ['#3e3a3a', '#2e2a30'], rim: '#ffb888', rimOp: 0.85,
+    gh: [[0, '#6a4e62'], [1, '#4a3646']], ring: '#5a4254', ringLine: '#2e2232', roof: ['#5e3442', '#3e2232'], hoard: ['#4a2e36', '#2e1c24'], slot: '#1e141c', win: '#241a26', winLit: false,
+    pass: [[0, '#2a1e2a'], [1, '#5a3a40']], passFloor: '#e8a478', port: '#2a1c26', portHi: '#ffb27a',
+    door: ['#56363a', '#3a2428'], iron: '#1e1620', stair: [[0, '#6a5064'], [1, '#4a3646']], stairEdge: '#e89a78', niche: '#1e1620',
+    ground: [[0, '#7a5458'], [0.4, '#4e3440'], [1, '#1a1018']], street: '#8a5e5a', cobble: '#4a3038',
+    trough: { top: '#8a6a70', front: '#4e3846', side: '#3a2a36', water: [[0, '#ffc890'], [1, '#a86a6a']], hi: '#fff0c8' },
+    house: { plaster: '#6a5260', shade: '#4e3a4a', timber: '#2e1e26', stone: '#5a4452', roof: '#4a2a34', glass: '#2a1e2a', lit: false },
+    wood: '#4e3436', paper: '#b49088', lampGlass: '#3a2a30', shadow: '#1a0e18', shadowOp: 0.4,
+    grade: { warm: '#ff9a60', warmOp: 0.1, cool: '#2a1a4a', coolOp: 0.3, vig: '#140c1c', vigOp: 0.55, bottom: '#140c1c', bottomOp: 0.66 },
+  },
+  night: {
+    id: 'sbWGateNight', label: '晨钟镇西门·入夜：闸门已落，小门上的提灯还亮着，门楼一扇窗透出灯光；没有月亮的星空',
+    sky: [[0, '#0b0c1e'], [0.3, '#161a32'], [0.52, '#262a46'], [0.56, '#2a2c48'], [1, '#121220']],
+    cloud: { lit: '#2a2c46', shade: '#181a2c', rim: null },
+    far: { ridge: '#22243a', ridgeShade: '#1a1c2e', ridgeRim: '#4a4c6a', haze: '#3a3e5a', hazeOp: 0.45, sea: '#1c1e2c', flats: [[0, '#1e2030'], [1, '#121420']], reed: '#0e0f18', plume: '#3a3c54', road: [[0, '#2e3044'], [1, '#1a1c2a']], rut: '#121420', knoll: '#1a1c2c', tree: { lit: '#1e2032', shade: '#14152a', trunk: '#101020' } },
+    mill: { lit: '#1a1a2a', shade: '#141422', roof: '#161624', frame: '#10101c', door: '#0c0c16', house: '#181828', houseShade: '#121220', houseRoof: '#141422', chimney: '#161626' },
+    wall: [[0, '#3a3c54'], [1, '#262838']], wallLine: '#14141e', lineOp: 0.4, parapet: '#34364c', merlon: '#3a3c54', ledge: '#1c1c28', moss: '#2a3030', ivy: ['#1e2626', '#161c1e'], rim: '#7a7ea0', rimOp: 0.5,
+    gh: [[0, '#3c3e56'], [1, '#2a2c3e']], ring: '#33354a', ringLine: '#14141e', roof: ['#3e2a32', '#2a1c24'], hoard: ['#2e2228', '#1c1418'], slot: '#0e0c12', win: '#14121c', winLit: true,
+    pass: [[0, '#101018'], [1, '#22222e']], passFloor: '#2a2a36', port: '#0c0c12', portHi: '#4a4a62',
+    door: ['#2e2a30', '#201c22'], iron: '#0e0e14', stair: [[0, '#36384e'], [1, '#262838']], stairEdge: '#6a6e8e', niche: '#0e0e16',
+    ground: [[0, '#2e2e3e'], [0.4, '#1e1e2a'], [1, '#08080e']], street: '#2c2c3a', cobble: '#16161e',
+    trough: { top: '#3a3a4e', front: '#24243a', side: '#1a1a2a', water: [[0, '#2a3048'], [1, '#14182a']], hi: '#c8ccf0' },
+    house: { plaster: '#363648', shade: '#28283a', timber: '#16141c', stone: '#2e2e40', roof: '#2a1e26', glass: '#141420', lit: true },
+    wood: '#2e2628', paper: '#6a6470', lampGlass: '#ffd890', shadow: '#05050a', shadowOp: 0.35,
+    grade: { warm: '#ffb870', warmOp: 0.06, cool: '#0a0c24', coolOp: 0.35, vig: '#05050c', vigOp: 0.62, bottom: '#05050c', bottomOp: 0.7 },
+  },
+};
+
+function westGate(v) {
+  const P = WGP[v], day = v === 'day', dusk = v === 'dusk', night = v === 'night';
+  const S = new Scene(P.id, P.label, 4111);
+  // S.R and RS (shared props) are identical in every variant; R2 drives the sky, which differs per variant
+  const R = S.R, RS = rng(4117), R2 = rng(4118 + (day ? 0 : dusk ? 1 : 2));
+  const VX = 860, HZ = 488, GYd = 600, WT = 330;
+  // the passage in perspective: inner arch (k = 1), portcullis groove (k = .9), outer arch (k = .82)
+  const sec = (k) => ({ x0: VX - 120 * k, x1: VX + 120 * k, sp: HZ - (HZ - 460) * k, r: 120 * k, gy: HZ + (GYd - HZ) * k });
+  const IN = sec(1), PORT = sec(0.9), OUT = sec(0.82);
+  const arch = (a) => `M${f(a.x0, 1)},${f(a.gy, 1)}V${f(a.sp, 1)}A${f(a.r, 1)},${f(a.r, 1)} 0 0 1 ${f(a.x1, 1)},${f(a.sp, 1)}V${f(a.gy, 1)}Z`;
+  const SUN = [826, 472], MILL = [918, 487];
+
+  // --- sky -------------------------------------------------------------------------------------------
+  S.add(`<rect width="${W}" height="${H}" fill="${S.lin(P.sky)}"/>`);
+  if (day) S.add(`<circle cx="-80" cy="-120" r="1150" fill="${S.rad([[0, '#fff6dc', 0.75], [0.25, '#ffe8b4', 0.35], [0.6, '#ffe0a0', 0.08], [1, '#ffe0a0', 0]])}"/>`);
+  if (dusk) S.add(`<circle cx="${SUN[0]}" cy="${SUN[1]}" r="1000" fill="${S.rad([[0, '#fff0c0', 1], [0.06, '#ffd08a', 0.85], [0.22, '#ff9a64', 0.42], [0.55, '#d0607a', 0.12], [1, '#d0607a', 0]])}"/>`);
+  if (night) {
+    S.add(stars(R2, 190, [0, 0, W, 330], { maxR: 1.4, fill: '#e4e2ff', op: [0.2, 0.9] }));
+    S.add(`<rect y="300" width="${W}" height="230" fill="${S.lin([[0, '#3a4064', 0], [0.75, '#3a4064', 0.35], [1, '#3a4064', 0]])}"/>`);
+  }
+  const cc = P.cloud;
+  if (night) S.add(`<g opacity=".7"><path d="${band(-40, 700, 120, 14, R2, 14)}" fill="${cc.lit}"/><path d="${band(980, 1660, 72, 10, R2, 12)}" fill="${cc.lit}"/><path d="${band(300, 1200, 210, 8, R2, 10)}" fill="${cc.shade}"/></g>`);
+  else {
+    S.add(cloudCluster(R2, 1240, 120, 300, 70, cc, { bumps: 6 }) + cloud(R2, 380, 92, 230, 40, cc, { bumps: 5 }) + cloud(R2, 760, 60, 160, 28, cc, { bumps: 4 }));
+    if (dusk) S.add(`<path d="${band(-40, 600, 236, 9, R2)}" fill="#ffc89a" opacity=".45"/><path d="${band(1100, 1660, 214, 7, R2)}" fill="#f0a07a" opacity=".45"/>`);
+  }
+  if (dusk) {
+    let birds = '';
+    for (const [x, y, s, fl] of [[420, 190, 0.7, 0.2], [452, 176, 0.6, 0.8], [486, 198, 0.55, 0.5], [1180, 230, 0.5, 0.9]]) birds += bird(x, y, s, fl);
+    S.add(`<path d="${birds}" fill="#2a1a2e"/>`);
+  }
+
+  // --- the land beyond the gate (only seen through the arch) ---------------------------------------------
+  const F = P.far, fx0 = 700, fx1 = 1020;
+  S.add(`<path d="M${fx0},${HZ - 6}C780,${HZ - 14} 840,${HZ - 9} 900,${HZ - 12}C950,${HZ - 15} 990,${HZ - 8} ${fx1},${HZ - 10}V${HZ + 4}H${fx0}Z" fill="${F.ridge}"/><path d="M${fx0},${HZ - 6}C780,${HZ - 14} 840,${HZ - 9} 900,${HZ - 12}" fill="none" stroke="${F.ridgeRim}" stroke-width="1.5" opacity=".5"/>`);
+  S.add(`<rect x="${fx0}" y="${HZ - 40}" width="${fx1 - fx0}" height="48" fill="${S.lin([[0, F.haze, 0], [0.7, F.haze, F.hazeOp], [1, F.haze, 0]])}"/>`);
+  if (dusk) S.add(`<circle cx="${SUN[0]}" cy="${SUN[1]}" r="46" fill="#fff0c8" filter="${S.blur(2)}"/><circle cx="${SUN[0]}" cy="${SUN[1]}" r="27" fill="#fffaea"/>`);
+  // the knoll with the disused windmill, a few trees
+  S.add(`<path d="M872,${HZ + 1}C890,${HZ - 4} 905,${HZ - 9} 922,${HZ - 9}C942,${HZ - 9} 958,${HZ - 4} 980,${HZ + 1}Z" fill="${F.knoll}"/>`);
+  S.add(tree(RS, 890, HZ - 3, 0.16, F.tree) + tree(RS, 952, HZ - 4, 0.15, F.tree));
+  S.add(oldMill(MILL[0], MILL[1] - 7, 0.4, P.mill).svg);
+  // reed flats, the mill road with fresh wheel ruts running out of the gate
+  S.add(`<path d="M${fx0},${HZ - 1}H${fx1}V${HZ + 6}H${fx0}Z" fill="${F.sea}"/>`);
+  S.add(`<path d="M${fx0},${HZ + 4}H${fx1}V${OUT.gy + 2}H${fx0}Z" fill="${S.lin(F.flats, `gradientUnits="userSpaceOnUse" x1="0" y1="${HZ}" x2="0" y2="${r0(OUT.gy)}"`)}"/>`);
+  const RVX = 884;
+  S.add(`<path d="M${RVX - 1},${HZ + 1}L${RVX + 1},${HZ + 1}L${f(OUT.x1 - 18, 0)},${f(OUT.gy + 2, 0)}L${f(OUT.x0 + 22, 0)},${f(OUT.gy + 2, 0)}Z" fill="${S.lin(F.road, `gradientUnits="userSpaceOnUse" x1="0" y1="${HZ}" x2="0" y2="${r0(OUT.gy)}"`)}"/>`);
+  S.add(`<path d="M${RVX},${HZ + 2}L${f(OUT.x0 + 70, 0)},${f(OUT.gy + 2, 0)}M${RVX + 1},${HZ + 2}L${f(OUT.x1 - 62, 0)},${f(OUT.gy + 2, 0)}" stroke="${F.rut}" stroke-width="${day ? 2.4 : 1.8}" opacity="${day ? 0.8 : 0.55}"/>`);
+  // reeds on both sides of the road just outside the gate, plumes catching the light; a plume haze on the flats
+  let hp = '';
+  for (let x = fx0; x < fx1; x += 4) if (RS() < 0.6) hp += plume(x, HZ + 3 + RS.range(0, 3), RS.range(3, 5), RS.range(30, 60), 0.24).body;
+  S.add(`<path d="${hp}" fill="${F.plume}" opacity=".55"/>`);
+  // the reed walls stand along both road edges: tall at the threshold, shrinking toward the horizon
+  const roadL = [OUT.x0 + 22, OUT.gy + 2], roadR = [OUT.x1 - 18, OUT.gy + 2];
+  let rd = '', st = '', pb = '';
+  for (const [edge, far, side] of [[roadL, fx0, -1], [roadR, fx1, 1]]) {
+    const top = [], base = [];
+    for (let i = 0; i <= 26; i++) {
+      const t = (i / 26) ** 1.4, bx = edge[0] + (RVX + side * 3 - edge[0]) * t, by = edge[1] + (HZ + 1 - edge[1]) * t;
+      const h = (by - HZ) * RS.range(0.78, 0.98), tx = bx + side * RS.range(-1, 1);
+      top.push([tx, by - h]); base.push([bx, by]);
+      if (h > 4 && RS() < 0.6) pb += plume(tx, by - h + 1, Math.max(3, h * 0.24), RS.range(30, 62), 0.22).body;
+      if (h > 10 && RS() < 0.5) st += `M${r0(tx)},${r0(by - h * RS.range(0.5, 0.85))}V${r0(by - h * 0.2)}`;
+    }
+    // the outer part of each wall runs back behind the arch jamb at threshold height
+    const outer = [];
+    for (let x = edge[0] + side * 6; side < 0 ? x > far : x < far; x += side * 5) {
+      const y = edge[1] - (edge[1] - HZ) * RS.range(0.8, 0.95);
+      outer.push([x, y]);
+      if (RS() < 0.55) pb += plume(x, y + 1, RS.range(12, 19), RS.range(30, 62), 0.22).body;
+      if (RS() < 0.35) st += `M${r0(x)},${r0(y + RS.range(6, 20))}V${r0(y + RS.range(30, 64))}`;
+    }
+    rd += pz([[far, edge[1]], ...outer.reverse(), ...top, ...base.reverse()]);
+  }
+  S.add(`<path d="${rd}" fill="${F.reed}"/><path d="${st}" stroke="${mix(F.reed, '#1a1210', 0.35)}" stroke-width="1.4" opacity=".45"/><path d="${pb}" fill="${F.plume}" opacity=".9"/>`);
+
+  // --- the passage: vault and side walls, floor, the portcullis -------------------------------------------
+  S.add(`<path d="${arch(IN)}${arch(OUT)}" fill-rule="evenodd" fill="${S.lin(P.pass, `gradientUnits="userSpaceOnUse" x1="0" y1="${IN.sp - IN.r}" x2="0" y2="${GYd}"`)}"/>`);
+  S.add(`<path d="M${IN.x0},${GYd}L${f(OUT.x0, 1)},${f(OUT.gy, 1)}H${f(OUT.x1, 1)}L${IN.x1},${GYd}Z" fill="${P.passFloor}"/>`);
+  S.add(`<path d="M${f(PORT.x0, 1)},${f(PORT.gy, 1)}V${f(PORT.sp, 1)}A${f(PORT.r, 1)},${f(PORT.r, 1)} 0 0 1 ${f(PORT.x1, 1)},${f(PORT.sp, 1)}V${f(PORT.gy, 1)}" fill="none" stroke="${P.slot}" stroke-width="5" opacity=".8"/>`);
+  if (dusk) S.add(`<path d="M${f(OUT.x0, 1)},${f(OUT.gy, 1)}V${f(OUT.sp, 1)}A${f(OUT.r, 1)},${f(OUT.r, 1)} 0 0 1 ${f(OUT.x1, 1)},${f(OUT.sp, 1)}V${f(OUT.gy, 1)}" fill="none" stroke="#ffc890" stroke-width="3" opacity=".8"/>`);
+  {
+    const bot = night ? PORT.gy - 1 : PORT.sp - PORT.r + 34, top = PORT.sp - PORT.r - 4;
+    let bars = '', spikes = '';
+    for (let x = PORT.x0 + 6; x < PORT.x1; x += 19) { bars += `M${r0(x)},${r0(top)}V${r0(bot)}`; spikes += `M${r0(x - 3.5)},${r0(bot)}h7l-3.5,10z`; }
+    for (let y = bot - 6; y > top; y -= 27) bars += `M${r0(PORT.x0)},${r0(y)}H${r0(PORT.x1)}`;
+    const clip = S.clip(arch(PORT));
+    S.add(`<g clip-path="${clip}"><path d="${bars}" stroke="${P.port}" stroke-width="6"/><path d="${bars}" stroke="${P.portHi}" stroke-width="1.2" opacity="${night ? 0.35 : 0.5}" transform="translate(-2 0)"/>${night ? '' : `<path d="${spikes}" fill="${P.port}"/>`}</g>`);
+  }
+
+  // --- the wall (inner face), parapet and merlons --------------------------------------------------------
+  S.add(`<path d="M-20,${WT}H1620V${GYd}H-20Z${arch(IN)}" fill-rule="evenodd" fill="${S.lin(P.wall, `gradientUnits="userSpaceOnUse" x1="0" y1="${WT}" x2="0" y2="${GYd}"`)}"/>`);
+  let courses = '';
+  for (let y = WT + 46; y < GYd; y += 38) courses += `M-20,${y}H650M1070,${y}H1620`;
+  for (let y = WT + 46, k = 0; y < GYd - 38; y += 38, k++) for (let x = -20 + (k % 2) * 46; x < 1620; x += 92) if (x < 640 || x > 1080) courses += `M${x},${y}v38`;
+  S.add(`<path d="${courses}" stroke="${P.wallLine}" stroke-width="2" opacity="${P.lineOp}"/>`);
+  let stains = '';
+  for (let i = 0; i < 12; i++) { const x = R.range(0, 1600), y = R.range(WT + 50, GYd - 10); if (x > 620 && x < 1100) continue; stains += `<ellipse cx="${r0(x)}" cy="${r0(y)}" rx="${r0(R.range(18, 56))}" ry="${r0(R.range(6, 16))}"/>`; }
+  S.add(`<g fill="${P.moss}" opacity=".22">${stains}</g>`);
+  let cren = '';
+  for (let x = -20; x < 1620; x += 52) cren += `M${x},292v-30h30v30z`;
+  S.add(`<path d="M-20,292H1620V${WT - 6}H-20Z" fill="${P.parapet}"/><path d="${cren}" fill="${P.merlon}"/>`);
+  S.add(`<path d="M-20,${WT - 8}H1620V${WT + 6}H-20Z" fill="${P.ledge}"/><path d="M-20,${WT + 6}H1620" stroke="${P.wallLine}" stroke-width="2" opacity=".5"/>`);
+  S.add(`<path d="M-20,${WT + 6}H1620V${WT + 22}H-20Z" fill="${P.shadow}" opacity="${P.shadowOp * 0.8}"/>`);
+  // a few weathered blocks, and ivy hanging from the parapet over the trough (the old back wall)
+  let blk = '';
+  for (let i = 0; i < 26; i++) { const k = Math.floor(RS.range(1, 7)), y = WT + 46 + k * 38, x = -20 + (k % 2) * 46 + Math.floor(RS.range(0, 18)) * 92; if (x > 600 && x < 1090) continue; blk += `M${x},${y}h92v-38h-92z`; }
+  S.add(`<path d="${blk}" fill="${P.wallLine}" opacity=".1"/>`);
+  {
+    let ivy = '', ivy2 = '';
+    for (const [cx, len, n] of [[1140, 150, 26], [1176, 110, 18], [1300, 190, 30], [1338, 120, 18], [370, 96, 14]]) {
+      for (let i = 0; i < n; i++) {
+        const t = i / n, y = 300 + len * t + RS.range(-4, 4), x = cx + Math.sin(t * 9 + cx) * 10 + RS.range(-14, 14) * (1 - t * 0.6), r = RS.range(4.5, 8) * (1 - t * 0.35);
+        const leaf = `M${r0(x - r)},${r0(y)}q${r0(r)},${r0(-r * 1.3)} ${r0(r * 2)},0q${r0(-r)},${r0(r * 1.1)} ${r0(-r * 2)},0z`;
+        if (RS() < 0.6) ivy += leaf; else ivy2 += leaf;
+      }
+    }
+    S.add(`<path d="${ivy2}" fill="${P.ivy[1]}"/><path d="${ivy}" fill="${P.ivy[0]}"/>`);
+  }
+  let rimT = '';
+  for (let x = -20; x < 1620; x += 52) rimT += `M${x},262h30`;
+  S.add(`<path d="${rimT}M-20,292H1620" stroke="${P.rim}" stroke-width="${dusk ? 3 : 2}" opacity="${P.rimOp}"/>`);
+
+  // --- the gatehouse over the arch: hoarding, hip roof, weathervane --------------------------------------
+  const G0 = 650, G1 = 1070, GT = 196;
+  S.add(`<path d="M${G0},${GYd}V${GT}H${G1}V${GYd}Z${arch(IN)}" fill-rule="evenodd" fill="${S.lin(P.gh, `gradientUnits="userSpaceOnUse" x1="0" y1="${GT}" x2="0" y2="${GYd}"`)}"/>`);
+  let gc = '';
+  for (let y = GT + 40; y < GYd; y += 38) gc += `M${G0},${y}H${y > 330 ? IN.x0 : G1}${y > 330 ? `M${IN.x1},${y}H${G1}` : ''}`;
+  S.add(`<path d="${gc}" stroke="${P.wallLine}" stroke-width="1.6" opacity="${P.lineOp * 0.8}"/>`);
+  S.add(`<path d="M${G0},${GYd}V${GT}" stroke="${P.rim}" stroke-width="2.5" opacity="${P.rimOp * 0.8}"/><path d="M${G1},${GYd}V${GT}" stroke="${P.wallLine}" stroke-width="3" opacity=".45"/>`);
+  // voussoirs around the inner arch, keystone
+  {
+    let vs = '', jl = '';
+    const n = 15, r1 = IN.r, r2 = IN.r + 26;
+    for (let i = 0; i <= n; i++) {
+      const a = Math.PI * i / n, c = Math.cos(a), s = Math.sin(a);
+      jl += `M${f(VX - c * r1, 1)},${f(IN.sp - s * r1, 1)}L${f(VX - c * r2, 1)},${f(IN.sp - s * r2, 1)}`;
+    }
+    vs = `M${IN.x0 - 26},${IN.sp}A${r2},${r2} 0 0 1 ${IN.x1 + 26},${IN.sp}H${IN.x1}A${r1},${r1} 0 0 0 ${IN.x0},${IN.sp}Z`;
+    S.add(`<path d="${vs}" fill="${P.ring}"/><path d="${jl}" stroke="${P.ringLine}" stroke-width="2" opacity=".55"/>`);
+    S.add(`<path d="M${VX - 14},${IN.sp - r1 + 2}L${VX - 18},${IN.sp - r2 - 6}H${VX + 18}L${VX + 14},${IN.sp - r1 + 2}Z" fill="${P.ring}" stroke="${P.ringLine}" stroke-width="2" stroke-opacity=".6"/>`);
+    S.add(`<path d="M${IN.x0 - 26},${IN.sp}A${r2},${r2} 0 0 1 ${VX},${IN.sp - r2}" fill="none" stroke="${P.rim}" stroke-width="2" opacity="${P.rimOp * 0.7}"/>`);
+    // jamb stones down both sides
+    let jb = '';
+    for (let y = IN.sp + 4; y < GYd - 10; y += 30) jb += `M${IN.x0 - 22},${y}h22v24h-22zM${IN.x1},${y + 15}h22v${Math.min(24, GYd - y - 15)}h-22z`;
+    S.add(`<path d="${jb}" fill="${P.ring}" stroke="${P.ringLine}" stroke-width="1.5" stroke-opacity=".45"/>`);
+  }
+  // guardroom windows (the portcullis winch room)
+  S.add(`<path d="M738,242h26v36h-26zM956,242h26v36h-26z" fill="${P.win}"/><path d="M736,240h30M954,240h30" stroke="${P.ringLine}" stroke-width="3" opacity=".5"/>`);
+  if (P.winLit) S.add(`<circle cx="969" cy="260" r="70" fill="${S.rad([[0, '#ffc870', 0.4], [1, '#ffc870', 0]])}"/><path d="M956,242h26v36h-26z" fill="#ffd690"/><path d="M969,242v36M956,258h26" stroke="#5a3a26" stroke-width="2"/>`);
+  // timber hoarding on top, red hip roof, iron weathervane
+  S.add(`<path d="M${G0 - 22},${GT}V152H${G1 + 22}V${GT}Z" fill="${P.hoard[0]}"/>`);
+  let hb = '', hs = '';
+  for (let x = G0 - 22; x < G1 + 22; x += 14) hb += `M${x},154V${GT}`;
+  for (let x = G0 + 8; x < G1 - 20; x += 64) hs += `M${x},166h18v18h-18z`;
+  S.add(`<path d="${hb}" stroke="${P.hoard[1]}" stroke-width="2" opacity=".6"/><path d="${hs}" fill="${P.slot}"/><path d="M${G0 - 22},${GT}H${G1 + 22}" stroke="${P.hoard[1]}" stroke-width="6"/>`);
+  let brk = '';
+  for (let x = G0 - 10; x < G1 + 20; x += 52) brk += `M${x},${GT}l10,16h6l-4,-16z`;
+  S.add(`<path d="${brk}" fill="${P.hoard[1]}"/><path d="M${G0},${GT + 6}H${G1}V${GT + 30}H${G0}Z" fill="${P.shadow}" opacity="${P.shadowOp}"/>`);
+  S.add(`<path d="M${G0 - 40},154L${VX - 96},92H${VX + 96}L${G1 + 40},154Z" fill="${P.roof[0]}"/><path d="M${VX + 96},92L${G1 + 40},154H${VX + 150}Z" fill="${P.roof[1]}" opacity=".6"/>`);
+  let tl = '';
+  for (let k = 1; k < 4; k++) { const y = 92 + 62 * k / 4, dx = 96 + (G1 + 40 - VX - 96) * k / 4; tl += `M${r0(VX - dx)},${r0(y)}H${r0(VX + dx)}`; }
+  S.add(`<path d="${tl}" stroke="#000" stroke-opacity=".16" stroke-width="2"/><path d="M${G0 - 40},154L${VX - 96},92H${VX + 96}" fill="none" stroke="${P.rim}" stroke-width="2.5" opacity="${P.rimOp}"/>`);
+  S.add(`<path d="M${VX + 40},92V52M${VX + 26},62H${VX + 58}" stroke="${P.iron}" stroke-width="3"/><path d="M${VX + 58},62l-10,-6v12z" fill="${P.iron}"/>`);
+
+  // --- the street: cobbles, the worn path out through the gate ---------------------------------------------
+  S.add(`<path d="M-20,${GYd}H1620V${H}H-20Z" fill="${S.lin(P.ground, `gradientUnits="userSpaceOnUse" x1="0" y1="${GYd}" x2="0" y2="${H}"`)}"/>`);
+  S.add(`<path d="M${IN.x0},${GYd}H${IN.x1}L1200,${H}H520Z" fill="${S.lin([[0, P.street, day ? 0.75 : 0.45], [1, P.street, day ? 0.2 : 0.1]])}"/>`);
+  S.add(`<path d="M-20,${GYd}H1620V${GYd + 14}H-20Z" fill="${P.shadow}" opacity="${P.shadowOp * 1.2}"/>`);
+  S.add(cobbles(R, GYd + 4, H, P.cobble, 240));
+  if (dusk) {
+    // the low sun pours through the passage and lays a long tongue of light up the street
+    const sx = SUN[0], sl = (OUT.x0 - sx) / (OUT.gy - HZ), sr = (OUT.x1 - sx) / (OUT.gy - HZ);
+    S.add(`<path d="M${f(OUT.x0, 1)},${f(OUT.gy, 1)}H${f(OUT.x1, 1)}L${r0(sx + sr * (H - HZ))},${H}H${r0(sx + sl * (H - HZ))}Z" fill="${S.lin([[0, '#ffd8a0', 0.75], [0.15, '#ffb070', 0.42], [0.6, '#ff9060', 0.12], [1, '#ff9060', 0]], `gradientUnits="userSpaceOnUse" x1="0" y1="${r0(OUT.gy)}" x2="0" y2="${H}"`)}" filter="${S.blur(2)}"/>`);
+    S.add(`<path d="${arch(OUT)}" fill="${S.rad([[0, '#fff0c8', 0.35], [1, '#fff0c8', 0]], 'cx="0.33" cy="0.75" r="0.7"')}"/>`);
+  }
+  if (night) S.add(`<ellipse cx="548" cy="${GYd + 26}" rx="250" ry="46" fill="${S.rad([[0, '#ffc070', 0.32], [1, '#ffc070', 0]])}"/>`);
+
+  // --- the gate leaves, swung in against the gatehouse -----------------------------------------------------
+  for (const s of [-1, 1]) {
+    const hx = s < 0 ? IN.x0 : IN.x1, ex = hx + s * 64;
+    S.add(`<path d="M${hx},${GYd}V${IN.sp + 6}L${ex},${IN.sp - 8}V${GYd + 18}Z" fill="${s < 0 ? P.door[0] : P.door[1]}"/>`);
+    let pk = '';
+    for (const t of [0.25, 0.5, 0.75]) pk += `M${r0(hx + s * 64 * t)},${r0(GYd + 18 * t)}V${r0(IN.sp + 6 - 14 * t)}`;
+    S.add(`<path d="${pk}" stroke="${P.iron}" stroke-width="1.5" opacity=".35"/><path d="M${hx},${IN.sp + 40}L${ex},${IN.sp + 30}M${hx},${GYd - 40}L${ex},${GYd - 34}" stroke="${P.iron}" stroke-width="5"/>`);
+    if (dusk) S.add(`<path d="M${ex},${IN.sp - 8}V${GYd + 18}" stroke="#ffb888" stroke-width="2" opacity=".6"/>`);
+  }
+
+  // --- left: the stair to the wall-walk, the postern with its lantern, notice board, register desk ---------
+  {
+    const sx0 = 96, sx1 = 438, sy0 = GYd, sy1 = WT + 4, n = 12;
+    let steps = `M${sx0},${sy0}`;
+    for (let i = 0; i < n; i++) { const x = sx0 + (sx1 - sx0) * i / n, y = sy0 - (sy0 - sy1) * (i + 1) / n; steps += `V${r0(y)}H${r0(x + (sx1 - sx0) / n)}`; }
+    steps += `H${sx1 + 30}V${GYd}Z`;
+    S.add(`<path d="${steps}" fill="${S.lin(P.stair, 'x1="0" y1="0" x2="1" y2="0"')}"/>`);
+    let edge = '';
+    for (let i = 0; i < n; i++) { const x = sx0 + (sx1 - sx0) * i / n, y = sy0 - (sy0 - sy1) * (i + 1) / n; edge += `M${r0(x)},${r0(y)}h${r0((sx1 - sx0) / n)}`; }
+    S.add(`<path d="${edge}" stroke="${P.stairEdge}" stroke-width="2.5" opacity="${P.rimOp * 0.8}"/>`);
+    S.add(`<path d="M${sx0 + 6},${GYd}L${sx1 + 6},${sy1 + 30}" stroke="${P.wallLine}" stroke-width="2" opacity=".4"/>`);
+    // arched niche under the stair with a barrel
+    S.add(`<path d="M318,${GYd}V532A36,36 0 0 1 390,532V${GYd}Z" fill="${P.niche}"/><path d="M330,${GYd}v-44h34v44z" fill="${P.wood}" opacity=".85"/><path d="M328,${GYd - 14}h38M328,${GYd - 34}h38" stroke="${P.iron}" stroke-width="3" opacity=".7"/>`);
+    if (day) S.add(`<path d="M${sx1 + 30},${GYd}V${sy1 + 8}L${sx1 + 62},${sy1 + 40}V${GYd}Z" fill="${P.shadow}" opacity="${P.shadowOp}"/>`);
+  }
+  {
+    // the postern: a small arched door in the wall, iron-strapped; ajar at night with a black gap
+    const px0 = 512, px1 = 576, pt = 512;
+    S.add(`<path d="M${px0 - 12},${GYd}V${pt}A${(px1 - px0) / 2 + 12},${(px1 - px0) / 2 + 12} 0 0 1 ${px1 + 12},${pt}V${GYd}Z" fill="${P.ring}"/>`);
+    S.add(`<path d="M${px0},${GYd}V${pt}A${(px1 - px0) / 2},${(px1 - px0) / 2} 0 0 1 ${px1},${pt}V${GYd}Z" fill="${night ? '#05050a' : P.door[1]}"/>`);
+    const dx1 = night ? px1 - 12 : px1;
+    S.add(`<path d="M${px0},${GYd}V${pt}A${(px1 - px0) / 2},${(px1 - px0) / 2} 0 0 1 ${dx1},${pt - (night ? 26 : 0)}V${GYd}Z" fill="${P.door[0]}"/>`);
+    S.add(`<path d="M${px0},${pt + 18}H${dx1}M${px0},${GYd - 26}H${dx1}" stroke="${P.iron}" stroke-width="4"/><path d="M${px0 + 21},${pt - 26}V${GYd}M${px0 + 42},${pt - 26}V${GYd}" stroke="${P.iron}" stroke-width="1.2" opacity=".35"/><circle cx="${dx1 - 10}" cy="${GYd - 52}" r="3" fill="${P.iron}"/>`);
+    // the postern's lantern, hung from a curled iron arm right above the door
+    const lx = (px0 + px1) / 2, ly = 432;
+    S.add(`<path d="M${lx - 30},404H${lx + 4}q8,0 8,8M${lx - 30},420q16,-2 20,-16" fill="none" stroke="${P.iron}" stroke-width="3"/><path d="M${lx - 30},398v28" stroke="${P.iron}" stroke-width="4"/><path d="M${lx},404v16" stroke="${P.iron}" stroke-width="2"/>`);
+    if (night) S.add(`<circle cx="${lx}" cy="${ly + 10}" r="260" fill="${S.rad([[0, '#ffdc90', 0.6], [0.1, '#ffb858', 0.36], [0.4, '#e8823a', 0.1], [1, '#e8823a', 0]])}"/>`);
+    S.add(`<path d="M${lx - 12},${ly - 4}h24l-4,-8h-16z" fill="${P.iron}"/><path d="M${lx - 10},${ly - 4}h20v28h-20z" fill="${P.lampGlass}"/><path d="M${lx - 10},${ly - 4}h20v28h-20zM${lx},${ly - 4}v28" fill="none" stroke="${P.iron}" stroke-width="2"/><path d="M${lx - 12},${ly + 24}h24v4h-24z" fill="${P.iron}"/>`);
+    if (night) S.add(`<circle cx="${lx}" cy="${ly + 10}" r="9" fill="#fffbe8" filter="${S.blur(1)}"/>`);
+    // notice board with the 治安所 order pinned up (no legible text)
+    S.add(`<path d="M594,486h62v56h-62z" fill="${P.wood}"/><path d="M594,486h62" stroke="${P.rim}" stroke-width="1.5" opacity="${P.rimOp * 0.6}"/>`);
+    S.add(`<path d="M600,492h22v28h-22zM628,494h22v20h-22zM626,518h24v18h-24z" fill="${P.paper}"/><path d="M604,500h14M604,506h14M604,512h10M632,500h14M632,506h12" stroke="${P.wallLine}" stroke-width="1.5" opacity=".5"/><circle cx="611" cy="494" r="2" fill="#b03a3a"/><circle cx="639" cy="496" r="2" fill="#b03a3a"/>`);
+    // the register desk: a slanted lectern with the open book
+    S.add(`<path d="M602,${GYd}V570M650,${GYd}V570" stroke="${P.wood}" stroke-width="5"/><path d="M596,566L654,558V572L596,578Z" fill="${P.wood}"/><path d="M600,564L624,560L626,568L602,572ZM626,560L650,556L652,564L628,568Z" fill="${P.paper}"/>`);
+    if (day) S.add(`<path d="M656,${GYd}V560l14,8V${GYd}Z" fill="${P.shadow}" opacity="${P.shadowOp}"/>`);
+  }
+
+  // --- right: the spouted horse trough, a bucket --------------------------------------------------------
+  {
+    const T0 = 1112, T1 = 1336, TT = 562, TF = 574, TB = 614, T = P.trough;
+    S.add(`<path d="M1206,${GYd - 92}h28v26h-28z" fill="${P.ring}" stroke="${P.ringLine}" stroke-width="2" stroke-opacity=".5"/><circle cx="1220" cy="${GYd - 79}" r="7" fill="${P.ringLine}" opacity=".7"/>`);
+    S.add(`<path d="M1220,${GYd - 72}v18q0,8 8,8h4" fill="none" stroke="${P.iron}" stroke-width="6" stroke-linecap="round"/>`);
+    S.add(`<path d="M1233,${GYd - 46}q4,14 2,${TF - GYd + 50}" fill="none" stroke="${T.hi}" stroke-width="3" opacity=".55"/>`);
+    if (day) S.add(`<path d="M${T1},${TB}L${T1},${TT}L${T1 + 40},${TT + 14}V${TB}Z" fill="${P.shadow}" opacity="${P.shadowOp}"/>`);
+    S.add(`<path d="M${T0},${TT}H${T1}L${T1 + 8},${TF}H${T0 - 8}Z" fill="${T.top}"/>`);
+    S.add(`<path d="M${T0 + 10},${TT + 3}H${T1 - 10}L${T1 - 6},${TF - 3}H${T0 + 6}Z" fill="${S.lin(T.water)}"/>`);
+    S.add(`<path d="M${T0 + 40},${TT + 7}h60M${T0 + 140},${TT + 6}h40" stroke="${T.hi}" stroke-width="1.5" opacity=".6"/><ellipse cx="1236" cy="${TT + 7}" rx="12" ry="2.5" fill="none" stroke="${T.hi}" stroke-width="1.2" opacity=".6"/>`);
+    S.add(`<path d="M${T0 - 8},${TF}H${T1 + 8}V${TB}H${T0 - 8}Z" fill="${T.front}"/><path d="M${T1 - 50},${TF}H${T1 + 8}V${TB}H${T1 - 50}Z" fill="${T.side}" opacity=".45"/><path d="M${T0 - 8},${TF}H${T1 + 8}" stroke="${P.rim}" stroke-width="2" opacity="${P.rimOp * 0.7}"/>`);
+    S.add(`<path d="M${T0 + 60},${TF}V${TB}M${T0 + 150},${TF}V${TB}" stroke="${P.wallLine}" stroke-width="2" opacity=".35"/>`);
+    S.add(`<path d="M1356,${TB}l-4,-34h30l-4,34z" fill="${P.wood}"/><path d="M1353,${TB - 26}h28M1355,${TB - 8}h24" stroke="${P.iron}" stroke-width="2.5"/><path d="M1352,${TB - 34}q15,-18 30,0" fill="none" stroke="${P.iron}" stroke-width="2"/>`);
+  }
+
+  // --- framing: the last houses of the town at both edges --------------------------------------------------
+  {
+    const Hs = P.house;
+    const edgeHouse = (x0, x1, gy, top, side) => {
+      const o = [];
+      const fh = (gy - top) / 3;
+      o.push(`<path d="M${x0},${gy}V${top}H${x1}V${gy}Z" fill="${Hs.plaster}"/>`);
+      o.push(`<path d="M${x0},${gy}V${gy - fh}H${x1}V${gy}Z" fill="${Hs.stone}"/>`);
+      o.push(`<path d="M${side < 0 ? x1 - 26 : x0},${gy}V${top}h26V${gy}Z" fill="${Hs.shade}" opacity=".6"/>`);
+      let tb = `M${x0},${gy - fh}H${x1}M${x0},${gy - 2 * fh}H${x1}M${x0},${top}H${x1}`;
+      for (let x = x0 + 6; x < x1; x += 64) tb += `M${x},${top}V${gy - fh}`;
+      for (let x = x0 + 6; x < x1 - 32; x += 128) tb += `M${x},${gy - fh}L${x + 64},${gy - 2 * fh}M${x},${gy - 2 * fh}L${x + 64},${top}`;
+      o.push(`<path d="${tb}" stroke="${Hs.timber}" stroke-width="5" fill="none"/>`);
+      return o.join('');
+    };
+    // right: front corner of a townhouse, its eave cutting the sky
+    S.add(edgeHouse(1430, 1640, 660, 236, 1));
+    S.add(`<path d="M1404,244L1640,150V196L1424,262Z" fill="${Hs.roof}"/><path d="M1404,244L1640,150" stroke="${P.rim}" stroke-width="2.5" opacity="${P.rimOp * 0.8}"/>`);
+    const lit = Hs.lit ? '#ffd690' : Hs.glass;
+    // windows sit in the brace-free panel between the posts at x 1500 and 1564
+    S.add(`<path d="M1513,412h38v62h-38zM1513,272h38v58h-38z" fill="${Hs.glass}"/><path d="M1507,474h50v6h-50zM1507,330h50v6h-50z" fill="${Hs.timber}"/>`);
+    if (Hs.lit) S.add(`<circle cx="1532" cy="443" r="80" fill="${S.rad([[0, '#ffc870', 0.32], [1, '#ffc870', 0]])}"/><path d="M1513,412h38v62h-38z" fill="${lit}"/><path d="M1532,412v62M1513,440h38" stroke="${Hs.timber}" stroke-width="3"/>`);
+    S.add(`<path d="M1462,660V566a24,24 0 0 1 48,0V660Z" fill="${Hs.timber}"/><path d="M1542,${660 - 112}h70v52h-70z" fill="${Hs.glass}"/>`);
+    // left: the corner of the house by the stair foot, mostly cropped
+    S.add(edgeHouse(-40, 72, 668, 250, -1));
+    S.add(`<path d="M-40,232L100,270V292L-40,256Z" fill="${Hs.roof}"/>`);
+  }
+
+  // --- grading: light, vignette, calm bottom for the dialogue box ------------------------------------------
+  const g = P.grade;
+  S.add(`<rect width="${W}" height="${H}" fill="${S.lin([[0, g.warm, g.warmOp], [0.5, g.warm, 0], [1, g.cool, g.coolOp]], 'x1="0" y1="0" x2="1" y2="1"')}"/>`);
+  S.add(`<rect width="${W}" height="${H}" fill="${S.rad([[night ? 0.4 : 0.52, g.vig, 0], [1, g.vig, g.vigOp]], 'cx="0.52" cy="0.46" r="0.78"')}"/>`);
+  S.add(`<rect y="612" width="${W}" height="288" fill="${S.lin([[0, g.bottom, 0], [1, g.bottom, g.bottomOp]])}"/>`);
+  return S.out();
+}
+
 export const townBgs = {
   'guild-hall': guildHall,
   'guard-square': guardSquare,
@@ -609,4 +952,7 @@ export const townBgs = {
   'chime-town-gate': chimeGate,
   'market': market,
   'training-ground-dawn': trainingGround,
+  'west-gate-day': () => westGate('day'),
+  'west-gate-dusk': () => westGate('dusk'),
+  'west-gate-night': () => westGate('night'),
 };

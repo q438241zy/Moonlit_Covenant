@@ -148,5 +148,29 @@
     "svg": "/assets/story/bg/old-mill-floor-cart.svg",
     "top": "#2a2036",
     "bottom": "#08070b"
+  },
+  "west-gate-day": {
+    "name": "晨钟镇西门·上午",
+    "svg": "/assets/story/bg/west-gate-day.svg",
+    "top": "#e2d2ae",
+    "bottom": "#6a5842"
+  },
+  "west-gate-dusk": {
+    "name": "晨钟镇西门·黄昏",
+    "svg": "/assets/story/bg/west-gate-dusk.svg",
+    "top": "#e89a6a",
+    "bottom": "#2e1e2a"
+  },
+  "west-gate-night": {
+    "name": "晨钟镇西门·入夜",
+    "svg": "/assets/story/bg/west-gate-night.svg",
+    "top": "#2e3048",
+    "bottom": "#0a0a12"
+  },
+  "mill-road-night": {
+    "name": "旧磨坊路·夜",
+    "svg": "/assets/story/bg/mill-road-night.svg",
+    "top": "#262c4a",
+    "bottom": "#0a0b14"
   }
 }

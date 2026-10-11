@@ -88,24 +88,34 @@ function hash(str) {
   return (h >>> 0).toString(36);
 }
 
-// 窄屏上战斗面板横跨整个屏幕顶部：轻提示改到面板下方，不压住战斗标题和回合数
+// 窄屏上战斗面板横跨整个屏幕顶部：轻提示改到面板下方，不压住战斗标题和回合数。
+// 手机上左上角的分镜小字也伸到屏幕中线附近：小字亮着时轻提示让到它下面，不盖住分镜标题和地点
+// （「从本章开始」的「已按默认正史补齐前情」正好和第一个分镜的小字同时出现）
 function placeToasts() {
-  let top = '';
-  const hud = P.hud;
-  if (S.view === 'play' && hud?.isConnected && !hud.hidden) {
-    const r = hud.getBoundingClientRect();
+  let top = 0;
+  if (S.view === 'play') {
     const cx = window.innerWidth / 2;
-    if (r.left < cx && r.right > cx && r.bottom < window.innerHeight * 0.7) top = `${Math.round(r.bottom + 10)}px`;
+    const hud = P.hud;
+    if (hud?.isConnected && !hud.hidden) {
+      const r = hud.getBoundingClientRect();
+      if (r.left < cx && r.right > cx && r.bottom < window.innerHeight * 0.7) top = Math.round(r.bottom + 10);
+    }
+    const cap = P.shotCap;
+    if (cap?.isConnected && cap.classList.contains('show') && performance.now() < (S.capUntil || 0) && toastRoot.childElementCount) {
+      const half = toastRoot.getBoundingClientRect().width / 2;
+      const r = cap.getBoundingClientRect();
+      if (r.right + 8 > cx - half && r.left < cx + half) top = Math.max(top, Math.round(r.bottom + 12));
+    }
   }
-  toastRoot.style.top = top;
+  toastRoot.style.top = top ? `${top}px` : '';
 }
 
 function toast(message, kind = '') {
-  placeToasts();
   const el = document.createElement('div');
   el.className = `toast ${kind}`;
   el.innerHTML = `${kind === 'memory' ? icon('feather', { size: 15 }) : kind === 'warn' ? icon('info', { size: 15 }) : ''}<span>${esc(message)}</span>`;
   toastRoot.appendChild(el);
+  placeToasts(); // 放进去之后再量宽度
   requestAnimationFrame(() => el.classList.add('show'));
   setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 400); }, 2200);
 }
@@ -126,6 +136,7 @@ const S = {
   read: new Set(load(KEYS.read, [])),
   readDirty: false,
   bg: null, bgFront: 0,
+  capUntil: 0, // 分镜小字（capIn 动画）亮到什么时候，轻提示据此让位
   hudBattle: null,
   hudHold: null, // 结束战斗的那一回合：敌方血条先停在出手前，等「战斗结束」再落下（见 holdFinalBlow）
   suppressClickUntil: 0,
@@ -734,7 +745,11 @@ function showShotCaption(shot) {
   P.shotCap.innerHTML = `<span class="shot-id">${esc(shot.id)}</span><span class="shot-title">${esc(title)}</span>${loc ? `<span class="shot-loc">${icon('compass', { size: 12 })}${esc(loc.name)}</span>` : ''}`;
   P.shotCap.classList.remove('show');
   void P.shotCap.offsetWidth;
-  if (title || loc) P.shotCap.classList.add('show');
+  if (title || loc) {
+    P.shotCap.classList.add('show');
+    S.capUntil = performance.now() + 4400; // 与 story.css 的 capIn 时长一致
+    placeToasts(); // 已经亮着的轻提示（如「已按默认正史补齐前情」）让到小字下面
+  }
 }
 
 async function onBeat(beat, my) {
@@ -750,7 +765,9 @@ async function onBeat(beat, my) {
       if (!cut) { hideBanner(); P.dock.classList.add('idle'); } // 上一处的台词不留在新场景上，和换分镜时一样先收起对话框
       // 分镜里「熄灯」（blackout）后淡入另一个地方：黑幕跟着换场掀开，否则新场景整段都是黑的（第四章 04-10 冲上楼梯）
       if (!cut) liftVeilIfNeeded(upcomingBeats());
-      await setBackground(beat.bg, cut ? 'cut' : 'fade');
+      // 换到画面上已经是的那张背景（第五章 05-10 里程石→回城路，深夜都是 mill-road-night）：照样当一次换场，
+      // 但不拿同一张图和自己交叉淡化——旧层一摘 .show 漂移动画就停了，两张错开约 2% 的同图叠着，整整一秒是重影加变暗（和 onShot 一样跳过）
+      if (beat.bg !== S.bg) await setBackground(beat.bg, cut ? 'cut' : 'fade');
       if (!cut) await sleep(S.skip ? 120 : 650);
       return undefined;
     }
