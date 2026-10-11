@@ -108,5 +108,20 @@
     "name": "哥布林",
     "color": "#7fa36b",
     "art": "/assets/story/npc/goblin.svg"
+  },
+  "polly": {
+    "name": "波莉",
+    "color": "#e6c9a8",
+    "art": "/assets/story/npc/polly.svg"
+  },
+  "acolyte": {
+    "name": "念祷文的人",
+    "color": "#9a98ad",
+    "art": "/assets/story/npc/acolyte.svg"
+  },
+  "west_guard": {
+    "name": "西门卫兵",
+    "color": "#8fa3b8",
+    "art": null
   }
 }

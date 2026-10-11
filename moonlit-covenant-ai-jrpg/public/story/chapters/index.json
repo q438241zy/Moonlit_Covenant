@@ -30,5 +30,13 @@
     "file": "/story/chapters/ch003.json",
     "requires": "ch002",
     "source": "剧本/03臨時契約.md"
+  },
+  {
+    "id": "ch004",
+    "number": 4,
+    "title": "第四章｜旧磨坊",
+    "file": "/story/chapters/ch004.json",
+    "requires": "ch003",
+    "source": "剧本/04舊磨坊.md"
   }
 ]

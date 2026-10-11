@@ -124,5 +124,23 @@
     "svg": "/assets/story/bg/mill-road-dusk.svg",
     "top": "#d98a5a",
     "bottom": "#2a2030"
+  },
+  "training-ground-dawn": {
+    "name": "晨钟镇训练场·日出",
+    "svg": "/assets/story/bg/training-ground-dawn.svg",
+    "top": "#e8b878",
+    "bottom": "#3e4a5a"
+  },
+  "old-mill-dusk": {
+    "name": "旧磨坊·黄昏芦苇",
+    "svg": "/assets/story/bg/old-mill-dusk.svg",
+    "top": "#c9785a",
+    "bottom": "#1e2620"
+  },
+  "old-mill-floor": {
+    "name": "旧磨坊·磨盘间",
+    "svg": "/assets/story/bg/old-mill-floor.svg",
+    "top": "#3a2a4a",
+    "bottom": "#0e0b12"
   }
 }

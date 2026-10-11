@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 // Build the story-mode art (主线剧情背景 + NPC 剪影胸像).
 //   node tools/art/story/build.mjs               -> everything
-//   node tools/art/story/build.mjs bg            -> all 21 backgrounds
-//   node tools/art/story/build.mjs npc           -> all 12 NPC busts
+//   node tools/art/story/build.mjs bg            -> all 24 backgrounds
+//   node tools/art/story/build.mjs npc           -> all 14 NPC busts
 //   node tools/art/story/build.mjs hemai-day aku -> just those ids
 // Output: public/assets/story/bg/<id>.svg (1600×900) and public/assets/story/npc/<id>.svg (600×800, transparent).
 // Every file is validated against docs/ART-DIRECTION.md §4 (self-contained, no text/script/external refs,
@@ -15,13 +15,14 @@ import { nightBgs } from './bg-night.mjs';
 import { dawnBgs } from './bg-dawn.mjs';
 import { townBgs } from './bg-town.mjs';
 import { millBgs } from './bg-mill.mjs';
+import { oldMillBgs } from './bg-oldmill.mjs';
 import { npcBusts } from './npc.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const locations = JSON.parse(fs.readFileSync(path.join(root, 'public/story/locations.json'), 'utf8'));
 const speakers = JSON.parse(fs.readFileSync(path.join(root, 'public/story/speakers.json'), 'utf8'));
 
-const bgs = { ...villageBgs, ...nightBgs, ...dawnBgs, ...townBgs, ...millBgs };
+const bgs = { ...villageBgs, ...nightBgs, ...dawnBgs, ...townBgs, ...millBgs, ...oldMillBgs };
 const BG_BUDGET = 90 * 1024, NPC_BUDGET = 70 * 1024;
 
 function validate(rel, svg, { w, h, budget }) {

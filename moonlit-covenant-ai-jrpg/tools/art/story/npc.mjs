@@ -532,4 +532,136 @@ CAST.goblin = {
   },
 };
 
+// 波莉 — Mara's daughter, about six (smaller than Toby): a tangle of uncombed hair, the cage's wool blanket
+// pulled round her shoulders, a small fist pressed to her mouth to swallow a sob or a cough, the forearm
+// wrapped in an old cloth strip; big wet eyes. (The wrap is the injured-branch look, the canon default; the
+// bust has no second variant.)
+const pollyAx = (t, v) => [292 - 46 * t + 0.966 * v, 600 - 172 * t - 0.258 * v]; // forearm axis: t 0 = blanket opening, 1 = wrist
+const POLLY_ARM = S([pollyAx(-0.15, -22), pollyAx(1, -16), pollyAx(1, 16), pollyAx(-0.15, 22)]);
+CAST.polly = {
+  id: 'polly', label: '波莉：约六岁的女孩，乱发，裹着毛毯，缠着旧布的小手捂在嘴边', rim: '#e6c9a8',
+  sil: [
+    // hair: the tangled mass behind the head falling past the shoulders, flyaway ends at the back
+    S([[262, 290], [300, 248], [356, 242], [404, 268], [428, 312], [436, 360], [450, 400, 1], [440, 408], [452, 446, 1], [434, 444], [444, 490, 1], [420, 478], [404, 504, 1], [396, 470], [372, 450], [350, 400], [330, 360], [290, 340]]),
+    head(16, 110, 0.76, true),
+    // messy crown and fringe: uneven tufts, strands over the brow
+    S([[238, 330], [236, 302, 1], [250, 308], [256, 276, 1], [274, 286], [286, 252, 1], [302, 274], [320, 242, 1], [332, 266], [362, 248, 1], [362, 276], [396, 266, 1], [388, 292], [414, 302, 1], [396, 318], [380, 310], [350, 300], [314, 302], [284, 314], [262, 326], [252, 350, 1], [246, 334]]),
+    neck(16, 116, 0.66),
+    // the blanket over small shoulders, falling wide to the bottom edge
+    S([[262, 478], [222, 490], [184, 514], [150, 556], [128, 620], [114, 700], [106, 820], [506, 820], [498, 690], [484, 610], [462, 548], [436, 510], [404, 490], [372, 478], [330, 486], [296, 490]]),
+    // the forearm raised out of the blanket's opening, the small fist at her mouth
+    POLLY_ARM,
+    circle(240, 414, 24),
+  ],
+  tones: [
+    // hair: dark brown, the back mass and the tufts
+    [S([[262, 290], [300, 248], [356, 242], [404, 268], [428, 312], [436, 360], [450, 400], [440, 408], [452, 446], [434, 444], [444, 490], [420, 478], [404, 504], [396, 470], [372, 450], [350, 400], [330, 360], [290, 340]]), '#3e2e24', 0.9],
+    [S([[238, 330], [236, 302], [250, 308], [256, 276], [274, 286], [286, 252], [302, 274], [320, 242], [332, 266], [362, 248], [362, 276], [396, 266], [388, 292], [414, 302], [396, 318], [380, 310], [350, 300], [314, 302], [284, 314], [262, 326], [252, 350], [246, 334]]), '#4a3628', 0.9],
+    // the grey wool blanket, a woven darker band near its edge, the dark dress in its opening
+    [S([[262, 478], [222, 490], [184, 514], [150, 556], [128, 620], [114, 700], [106, 820], [506, 820], [498, 690], [484, 610], [462, 548], [436, 510], [404, 490], [372, 478], [330, 486], [296, 490]]), '#2e2a36', 0.92],
+    [S([[176, 530], [214, 504], [228, 520], [196, 546], [160, 600], [140, 660], [128, 820], [112, 820], [120, 660], [140, 596]]), '#1e1a26', 0.9],
+    [S([[266, 496], [300, 508], [342, 504], [362, 600], [376, 820], [262, 820], [258, 600]]), '#15121b', 0.92],
+    // the bare forearm and fist, a shade lighter; a ragged sleeve cuff where it leaves the blanket
+    [POLLY_ARM, '#3e3846', 0.95],
+    [circle(240, 414, 24), '#443c4a', 0.95],
+    [S([pollyAx(0.06, -23), pollyAx(0.16, -22), pollyAx(0.16, 22), pollyAx(0.06, 23)]), '#26222e', 0.95],
+    // the blanket's edge folded back over her elbow
+    [S([[196, 566], [240, 578], [290, 592], [334, 588], [362, 606], [350, 650], [300, 664], [240, 650], [190, 616]]), '#2e2a36', 1],
+  ],
+  lines: [
+    // hair strands, flyaways, the jaw
+    [`M286,260C292,282 284,302 272,318M332,250C340,274 334,296 320,306M372,260C380,282 374,300 360,308`, 2.5, 0.7],
+    [`M404,276C420,308 428,350 436,388M392,302C404,340 412,382 420,430`, 2, 0.55],
+    [`M300,248C296,234 304,222 318,218M352,248C360,234 372,230 384,234`, 2, 0.6],
+    [pl([[381, 362], [366, 400], [334, 435]]), 3, 0.8],
+    // blanket edge and folds, the opening, the forearm's lit edge
+    [pl([[150, 556], [184, 514], [222, 490], [262, 478]]) + pl([[404, 490], [436, 510], [462, 548], [484, 610]]), 3, 0.6],
+    [`M420,570C430,640 436,720 438,810M210,590C200,660 196,740 194,810`, 2, 0.35],
+    [pl([[342, 504], [362, 600], [376, 820]]), 2, 0.4],
+    [pl([pollyAx(0.16, 22), pollyAx(1, 16)]), 2.2, 0.7],
+    [`M196,566C240,578 290,592 334,588C346,592 356,598 362,606`, 2.4, 0.55],
+  ],
+  front: ({ rim }) => {
+    // the old cloth strip wound round the forearm (bands across its axis), a loose tail
+    const wrap = pz([pollyAx(0.28, -21), pollyAx(0.28, 21), pollyAx(0.72, 19), pollyAx(0.72, -19)]);
+    let bands = '';
+    for (const t of [0.34, 0.44, 0.54, 0.64]) bands += pl([pollyAx(t, -21), pollyAx(t + 0.04, 20)]);
+    let s = `<path d="${wrap}" fill="#8a7e6e" opacity=".85"/><path d="${bands}" stroke="#4e463e" stroke-width="2" opacity=".8"/>`;
+    const tail = pollyAx(0.4, 20);
+    s += `<path d="M${r0(tail[0])},${r0(tail[1])}q10,0 14,8q-7,-2 -11,3z" fill="#a89a86" opacity=".9"/><path d="${pl([pollyAx(0.28, 21), pollyAx(0.72, 19)])}" stroke="${rim}" stroke-width="1.8" opacity=".65"/>`;
+    // knuckles of the fist pressed to her mouth
+    s += `<path d="M222,404q6,-8 14,-8M220,418q8,-6 16,-4M224,432q8,-4 14,-2" fill="none" stroke="${rim}" stroke-width="2" stroke-linecap="round" opacity=".8"/>`;
+    // a reed seed-head caught in her hair
+    s += `<path d="M410,302q14,-8 22,-2q-10,0 -16,8z" fill="#d8c4a0" opacity=".85"/>`;
+    // the big wet eye above the fist, a worried brow, a tear-bright glint
+    s += `<path d="M254,350q8,-7 20,-6" fill="none" stroke="${rim}" stroke-width="2.4" stroke-linecap="round" opacity=".85"/>`;
+    s += `<ellipse cx="264" cy="367" rx="7" ry="8.5" fill="#efe4d6" opacity=".9"/><ellipse cx="261" cy="368" rx="4.4" ry="5.6" fill="#1a1410"/><circle cx="259" cy="365" r="1.8" fill="#ffffff"/>`;
+    s += `<path d="M268,383q-3,7 0,10q3,-3 0,-10z" fill="#dde8f0" opacity=".8"/>`;
+    return s;
+  },
+};
+
+// 念祷文的人 — the relief society's young acolyte at the mill: thin and gaunt, cropped hair, a plain grey robe
+// with the hood pushed back, a black crystal shard hung on a cord at his breast; he holds up an iron lantern
+// by its ring and the hand shakes (a faint double image of the lantern, tremor marks at the fingers).
+CAST.acolyte = {
+  id: 'acolyte', label: '念祷文的人：瘦削的年轻人，灰袍，胸前吊着一片黑晶，提灯的手在发抖', rim: '#9a98ad',
+  sil: [
+    head(-6, 26, 0.9),
+    // cropped hair, a ragged fringe, close at the nape
+    S([[226, 236], [230, 196], [258, 166], [304, 150], [352, 158], [388, 186], [400, 226], [396, 264], [382, 288], [370, 250], [344, 222], [306, 212], [270, 214], [248, 230], [240, 252, 1], [236, 238]]),
+    neck(-6, 30, 0.78),
+    // the hood pushed back, bunched behind the neck and shoulders
+    S([[316, 360], [362, 340], [408, 352], [436, 392], [446, 436], [420, 452], [380, 430], [330, 420], [290, 424]]),
+    torso(176, 500, 1.45, -4),
+    // the near arm held up: wide grey sleeve from the elbow, the bony hand gripping the lantern's ring
+    S([[300, 820], [282, 740], [256, 664], [226, 600], [204, 566], [196, 544], [210, 528], [230, 534], [246, 556], [272, 600], [306, 660], [338, 740], [352, 820]]),
+    S([[196, 544], [190, 520], [194, 500], [206, 492], [218, 498], [224, 516], [222, 534], [210, 540]]),
+    // the lantern hanging from the ring: peaked cap, cage, base
+    S([[192, 534, 1], [226, 556, 1], [154, 556, 1]]) + S([[152, 556], [228, 556], [230, 652], [150, 652]]) + S([[142, 652], [238, 652], [230, 670], [150, 670]]),
+    `M190,536C182,524 184,510 194,504L198,508C190,514 190,524 194,534Z`,
+  ],
+  tones: [
+    // hair
+    [S([[226, 236], [230, 196], [258, 166], [304, 150], [352, 158], [388, 186], [400, 226], [396, 264], [382, 288], [370, 250], [344, 222], [306, 212], [270, 214], [248, 230], [240, 252], [236, 238]]), '#2a2830', 0.9],
+    // the grey robe, the hood's lining in shadow, the sleeve a shade lighter
+    [S([[96, 540], [150, 490], [230, 462], [300, 456], [370, 462], [440, 490], [500, 540], [516, 820], [84, 820]]), '#3a3a46', 0.88],
+    [S([[316, 360], [362, 340], [408, 352], [436, 392], [446, 436], [420, 452], [380, 430], [330, 420], [290, 424]]), '#2a2a34', 0.9],
+    [S([[300, 820], [282, 740], [256, 664], [226, 600], [204, 566], [196, 544], [210, 528], [230, 534], [246, 556], [272, 600], [306, 660], [338, 740], [352, 820]]), '#46465a', 0.85],
+    // gaunt hollow under the cheekbone
+    [S([[300, 316], [328, 300], [350, 316], [336, 344], [306, 346]]), '#000000', 0.25],
+  ],
+  lines: [
+    // cheekbone and jaw rim, the hood's folds, the robe's front seam and shoulders
+    [pl([[372, 268], [354, 314], [318, 348]]), 3.2, 0.85],
+    [pl([[230, 196], [258, 168], [304, 152], [352, 160], [388, 188]]), 2.5, 0.6],
+    [`M346,346C376,352 404,372 420,404M330,400C360,406 390,420 410,440`, 2, 0.5],
+    [pl([[124, 520], [180, 478], [240, 462]]) + pl([[372, 464], [440, 486], [490, 530]]), 2.8, 0.6],
+    [pl([[300, 470], [304, 820]]), 2, 0.4],
+    [pl([[246, 556], [272, 600], [306, 660], [338, 740]]), 2.2, 0.5],
+  ],
+  defs: (p) => [
+    `<radialGradient id="${p}-lamp"><stop offset="0" stop-color="#ffd890" stop-opacity=".75"/><stop offset=".35" stop-color="#ffb860" stop-opacity=".25"/><stop offset="1" stop-color="#ffb860" stop-opacity="0"/></radialGradient>`,
+    `<radialGradient id="${p}-shard"><stop offset="0" stop-color="#b58cff" stop-opacity=".6"/><stop offset="1" stop-color="#b58cff" stop-opacity="0"/></radialGradient>`,
+  ],
+  back: ({ p }) => `<circle cx="190" cy="604" r="190" fill="url(#${p}-lamp)"/>`,
+  front: ({ rim, p }) => {
+    // lamplight from below catching the chin, the fingers and the sleeve edge
+    let s = `<path d="M250,350q26,18 58,10M214,500q4,-8 12,-6M228,536q14,6 18,20M196,546q-8,-12 0,-26" fill="none" stroke="#ffcf8a" stroke-width="2.2" stroke-linecap="round" opacity=".8"/>`;
+    // the lantern: glowing panes, flame, frame bars; a faint second image where the hand shakes
+    s += `<path d="M152,556h78l2,96h-82zM192,534l34,22h-70z" fill="none" stroke="#e0c890" stroke-width="2" opacity=".42" transform="translate(-8 4)"/>`;
+    s += `<circle cx="190" cy="604" r="58" fill="url(#${p}-lamp)"/>`;
+    s += `<path d="M160,564h62v80h-62z" fill="#ffcf7a"/><path d="M168,572h46v64h-46z" fill="#fff0c4"/><path d="M191,626c-8,-8 -7,-19 0,-30c7,11 8,22 0,30z" fill="#ff9a40"/><path d="M191,620c-4,-4 -3,-9 0,-14c3,5 4,10 0,14z" fill="#fff8e0"/><path d="M191,564v80M160,604h62" stroke="#2a2420" stroke-width="3.5"/>`;
+    s += `<path d="M152,556h78M150,652h82" stroke="#4a4038" stroke-width="3.5"/><path d="M156,556L192,534L226,556" fill="none" stroke="#ffcf8a" stroke-width="1.6" opacity=".7"/>`;
+    // tremor marks beside the fingers
+    s += `<path d="M180,492q-8,6 -6,16M170,484q-11,10 -9,24M234,496q7,8 5,18M244,488q8,12 5,24" fill="none" stroke="${rim}" stroke-width="2" stroke-linecap="round" opacity=".75"/>`;
+    // the black crystal shard on its cord, a faint violet heart
+    s += `<path d="M262,452C276,500 300,520 312,528M372,456C356,500 330,520 316,528" fill="none" stroke="#1a1820" stroke-width="2.5"/>`;
+    s += `<circle cx="314" cy="552" r="40" fill="url(#${p}-shard)"/><path d="M306,532L316,520L326,536L322,566L312,574L302,556Z" fill="#120c1a"/><path d="M316,520L318,548L312,574M318,548L326,536" fill="none" stroke="#b58cff" stroke-width="1.5" opacity=".9"/><path d="M308,536l7,-10" stroke="#e8dcff" stroke-width="1.8" stroke-linecap="round"/>`;
+    // a downcast, anxious eye under a knit brow
+    s += `<path d="M228,270q8,-2 14,-8M244,264q6,0 12,3" fill="none" stroke="${rim}" stroke-width="2.4" stroke-linecap="round" opacity=".85"/><ellipse cx="240" cy="284" rx="6" ry="4.6" fill="#e4e0ec" opacity=".85"/><circle cx="237" cy="286" r="3" fill="#14121a"/><path d="M233,280q7,-3 14,0" fill="none" stroke="#14121a" stroke-width="2"/>`;
+    return s;
+  },
+};
+
 export const npcBusts = Object.fromEntries(Object.entries(CAST).map(([id, spec]) => [id, (rim) => render(spec, rim)]));

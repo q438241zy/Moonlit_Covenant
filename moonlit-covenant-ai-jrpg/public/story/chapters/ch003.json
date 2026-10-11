@@ -1535,6 +1535,9 @@
               ],
               "reactionFixed": true,
               "set": {
+                "flags": {
+                  "FLAG_CH003_INSULTED_LEAH": true
+                },
                 "add": {
                   "LEAH_TRUST": -2,
                   "PLAYER_GUILT_LEAH": 1
@@ -7822,8 +7825,8 @@
   ],
   "end": {
     "save": "SAVE_CH003_END_TEMPORARY_CONTRACT",
-    "next": null,
-    "nextLabel": "CH004_PENDING_USER_OUTLINE",
+    "next": "ch004",
+    "nextLabel": "CH004_OLD_MILL",
     "set": {
       "flags": {
         "FLAG_CH003_TEMP_PARTY_FORMED": true,

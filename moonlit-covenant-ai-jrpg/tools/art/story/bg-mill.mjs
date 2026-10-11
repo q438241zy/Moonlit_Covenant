@@ -71,7 +71,7 @@ const PAL = {
 // ---------------------------------------------------------------------------------------------
 
 // A plume: a soft feathered teardrop rising from (x, y), leaning `ang` degrees clockwise from vertical.
-function plume(x, y, L, ang, w = 0.22) {
+export function plume(x, y, L, ang, w = 0.22) {
   const a = ang * Math.PI / 180, c = Math.cos(a), s = Math.sin(a);
   const T = (u, v) => `${r0(x + v * c + u * s)},${r0(y + v * s - u * c)}`; // u: along the plume, v: across
   const body = `M${T(0, 0)}C${T(L * 0.3, -L * w)} ${T(L * 0.78, -L * w * 0.9)} ${T(L, L * 0.04)}C${T(L * 0.75, L * w * 0.7)} ${T(L * 0.3, L * w * 0.6)} ${T(0, 0)}Z`;

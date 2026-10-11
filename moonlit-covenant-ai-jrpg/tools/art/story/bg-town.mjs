@@ -1,6 +1,6 @@
-// 晨钟镇 (Chime Town): chime-town-gate, guild-hall, market, dye-alley, barrel-alley, guard-square.
+// 晨钟镇 (Chime Town): chime-town-gate, guild-hall, market, dye-alley, barrel-alley, guard-square, training-ground-dawn.
 // A lively market town that was never burned: warm plaster, timber frames, red tiles, the bell tower.
-import { Scene, W, H, f, pz, pl, shape, cloud, cloudCluster, ridge, rays, stars, smoke, band, tree, rock, persp, bellTower, star7, mix, TOWN, townhouse, stall, person, bird } from './lib.mjs';
+import { Scene, W, H, f, pz, pl, shape, cloud, cloudCluster, ridge, rays, stars, smoke, band, tree, rock, persp, bellTower, star7, mix, TOWN, townhouse, stall, person, bird, fence, rng } from './lib.mjs';
 
 const r0 = (v) => f(v, 0);
 const TOWER_PAL = { lit: '#eadcc4', shade: '#a8967e', hole: '#3a3040', bell: '#d0a050', trim: '#7a6a5a', roof: '#5e6888', roofShade: '#3e4664', win: '#4a4050', star: '#ffd77a' };
@@ -438,6 +438,169 @@ function guardSquare() {
   return S.out();
 }
 
+// ---------------------------------------------------------------------------------------------
+// 晨钟镇训练场·日出 (chapter 04) — the guild's sand yard before sunrise: dew on the wooden pells and the
+// bench at the field's back edge; the sun is just behind the bell tower, so the yard is still in cool shade,
+// the belfry blazes through, and a single line of gold runs along the tower's upper edges.
+// ---------------------------------------------------------------------------------------------
+function trainingGround() {
+  const S = new Scene('sbTraining', '晨钟镇训练场·日出：结露的木桩与场边长凳，太阳正要跳出钟塔，塔顶边缘一线金光', 4707);
+  const R = S.R;
+  const HZ = 500, FL = 900, EYE = 1.6;
+  const pr = persp({ vp: [800, HZ], F: FL, eye: EYE });
+  const kAt = (Z) => FL / Z;
+  const GOLD = '#ffd88a', GOLD_HI = '#fff4cc';
+  // --- dawn sky; the sun hidden behind the tower roof -------------------------------------------------
+  S.add(`<rect width="${W}" height="${H}" fill="${S.lin([[0, '#5a6088'], [0.2, '#9a8ea4'], [0.36, '#dcae8e'], [0.48, '#f4c88e'], [0.56, '#ffe2ac'], [0.64, '#d8b498'], [1, '#6a6a7a']])}"/>`);
+  const SUN = [842, 150];
+  S.add(`<circle cx="${SUN[0]}" cy="${SUN[1]}" r="980" fill="${S.rad([[0, '#fff8de', 1], [0.05, '#ffeab4', 0.85], [0.16, '#ffd08a', 0.45], [0.42, '#f0a87a', 0.14], [1, '#f0a87a', 0]])}"/>`);
+  S.add(stars(R, 14, [0, 0, 520, 140], { maxR: 1.1, fill: '#fff4ff', op: [0.15, 0.5] }) + stars(R, 10, [1180, 0, W, 130], { maxR: 1.1, fill: '#fff4ff', op: [0.15, 0.5] }));
+  S.add(`<g filter="${S.blur(3)}">${rays(SUN[0], SUN[1], [[-158, 4, 1200], [-140, 3, 1100], [-118, 5, 900], [-62, 5, 900], [-40, 3, 1100], [-22, 4, 1200], [-4, 3, 1100], [182, 3, 1000]], '#fff0c0', 0.22)}</g>`);
+  const cc = { lit: '#ffd6a4', shade: '#a88a9c', rim: '#fff6dc' }, cfar = { lit: '#f4c8a0', shade: '#b8a0aa', rim: null };
+  S.add(`<g opacity=".8">${cloud(R, 180, 330, 240, 30, cfar, { bumps: 5 })}${cloud(R, 1240, 300, 260, 32, cfar, { bumps: 5 })}</g>`);
+  S.add(`<path d="${band(-40, 700, 372, 9, R)}" fill="#ffe0b0" opacity=".55"/><path d="${band(980, 1640, 356, 8, R)}" fill="#ffe0b0" opacity=".5"/><path d="${band(420, 1300, 420, 6, R)}" fill="#fff0c8" opacity=".45"/>`);
+  S.add(cloud(R, 230, 150, 250, 46, cc, { bumps: 5 }) + cloudCluster(R, 1290, 170, 280, 64, cc, { bumps: 6 }));
+  // --- the town beyond the yard: a hazy far row of roofs, the bell tower, a nearer row hiding its foot --------
+  const skyline = (y, o) => {
+    let x = -60, out = '', win = '', rims = '', sm = '';
+    while (x < 1660) {
+      const w = R.range(o.w[0], o.w[1]), h = R.range(o.h[0], o.h[1]), kind = R.pick(['gable', 'side', 'gable', 'hip', 'side']);
+      const top = y - h;
+      let roof;
+      if (kind === 'gable') roof = [[x - 3, top], [x + w / 2, top - w * 0.58], [x + w + 3, top]];
+      else if (kind === 'side') roof = [[x - 5, top], [x + w * 0.16, top - w * 0.36], [x + w * 0.84, top - w * 0.36], [x + w + 5, top]];
+      else roof = [[x - 4, top], [x + w * 0.3, top - w * 0.3], [x + w * 0.7, top - w * 0.3], [x + w + 4, top]];
+      out += `<path d="${pz([[x, y + 60], [x, top], ...roof, [x + w, top], [x + w, y + 60]])}" fill="${o.col}"/>`;
+      out += `<path d="${pz([[x + w * 0.64, y + 60], [x + w * 0.64, top], ...roof.filter((p) => p[0] >= x + w * 0.64), [x + w, top], [x + w, y + 60]])}" fill="${o.side}"/>`;
+      rims += pl(roof.slice(0, 2));
+      if (R() < 0.5) { const cx = x + w * R.range(0.2, 0.75), cy = top - w * 0.22; out += `<path d="M${r0(cx)},${r0(cy + 10)}v${r0(-w * 0.2 - 10)}h${r0(w * 0.08 + 4)}v${r0(w * 0.2 + 10)}z" fill="${o.side}"/>`; if (o.smoke && R() < 0.6) sm += smoke(R, cx + w * 0.04 + 2, cy - w * 0.2, R.range(60, 120), 8, R.range(20, 50), 4700 + Math.round(x)); }
+      const nw = Math.max(1, Math.round(w / 46));
+      for (let i = 0; i < nw; i++) for (const fy of [0.3, 0.62]) if (h * fy > 22 && R() < 0.8) win += `<path d="M${r0(x + w * (i + 0.5) / nw - 5)},${r0(top + h * fy)}h10v${r0(Math.min(14, h * 0.18))}h-10z" fill="${R() < o.lit ? '#ffc874' : o.win}"/>`;
+      x += w + R.range(-6, 4);
+    }
+    return { svg: out + win, rims, sm };
+  };
+  const far = skyline(486, { w: [70, 150], h: [40, 90], col: '#8a7a92', side: '#7a6c88', win: '#6e6282', lit: 0.15 });
+  S.add(far.svg + `<path d="${far.rims}" stroke="#ffd8a8" stroke-width="2" opacity=".45"/>`);
+  S.add(`<rect y="400" width="${W}" height="120" fill="${S.lin([[0, '#ffd8b0', 0], [0.7, '#ffd8b0', 0.4], [1, '#ffd8b0', 0.1]])}"/>`);
+  // the bell tower, backlit: the belfry burns through, one line of gold along its upper edges
+  const TW = { lit: '#4a5070', shade: '#343a54', hole: '#fff0c4', bell: '#23263c', trim: '#383c58', roof: '#383d5c', roofShade: '#282c46', win: '#22243a', star: '#ffe08a' };
+  const tx = 780, tw = 92, th = 330, tb = 520;
+  const T = bellTower(tx, tb, tw, th, TW, { side: 'r' });
+  S.add(`<circle cx="${r0(tx + tw / 2)}" cy="${r0(tb - th * 0.78)}" r="120" fill="${S.rad([[0, '#fff2c8', 0.6], [1, '#fff2c8', 0]])}"/>`);
+  S.add(T.svg);
+  {
+    const top = tb - th, d = tw * 0.45, dy = -d * 0.3;
+    const L = [tx - tw * 0.08, top], B = [tx + tw + d + tw * 0.08, top + dy], ap = T.apex;
+    S.add(`<path d="${pl([L, ap, B])}" fill="none" stroke="${GOLD}" stroke-width="3.2" stroke-linejoin="round" opacity=".95"/><path d="${pl([L, ap, B])}" fill="none" stroke="${GOLD}" stroke-width="10" opacity=".35" filter="${S.blur(1)}"/>`);
+    S.add(`<path d="M${r0(tx - tw * 0.08)},${r0(top - tw * 0.02)}h${r0(tw * 1.16)}l${r0(d)},${r0(dy)}" fill="none" stroke="${GOLD}" stroke-width="2.2" opacity=".85"/><path d="M${r0(tx + tw + d)},${r0(top + dy)}V${r0(tb - th * 0.4)}" stroke="${GOLD}" stroke-width="2" opacity=".55"/>`);
+    S.add(`<path d="M${r0(ap[0])},${r0(ap[1])}v${r0(-tw * 0.35)}" stroke="${GOLD}" stroke-width="2" opacity=".8"/>`);
+    const g = [ap[0] + 24, ap[1] + 52];
+    S.add(`<circle cx="${r0(g[0])}" cy="${r0(g[1])}" r="26" fill="${S.rad([[0, GOLD_HI, 0.95], [0.4, GOLD, 0.45], [1, GOLD, 0]])}"/><path d="M${r0(g[0] - 40)},${r0(g[1])}h80M${r0(g[0])},${r0(g[1] - 30)}v60" stroke="${GOLD_HI}" stroke-width="1.6" opacity=".7"/>`);
+  }
+  const near = skyline(552, { w: [90, 170], h: [60, 110], col: '#4e506a', side: '#3e405a', win: '#34364c', lit: 0.3, smoke: true });
+  S.add(`<path d="${near.sm}" fill="#d8c4c4" opacity=".35"/>` + near.svg + `<path d="${near.rims}" stroke="#ffc890" stroke-width="2.2" opacity=".6"/>`);
+  // --- the yard: the back fence, morning mist, cool sand still in shade --------------------------------------
+  const ZB = 15, yB = pr(0, 0, ZB)[1];
+  S.add(`<path d="M-20,${r0(yB - 36)}H1620V${H}H-20Z" fill="${S.lin([[0, '#8a8494'], [0.12, '#767888'], [0.5, '#56606e'], [1, '#2e3644']], `gradientUnits="userSpaceOnUse" x1="0" y1="${r0(yB - 30)}" x2="0" y2="${H}"`)}"/>`);
+  // a warm sheen on the dew-wet sand toward the light
+  S.add(`<ellipse cx="830" cy="${r0(yB + 18)}" rx="620" ry="56" fill="${S.rad([[0, '#ffdcaa', 0.5], [1, '#ffdcaa', 0]])}"/>`);
+  // grass verges along the sides with dew on them
+  S.add(`<path d="${pz([pr(-6, 0, 3), pr(-6, 0, ZB), pr(-4.6, 0, ZB), pr(-4.2, 0, 3)])}${pz([pr(6, 0, 3), pr(6, 0, ZB), pr(4.8, 0, ZB), pr(4.4, 0, 3)])}" fill="#4e5e5a"/>`);
+  let blades = '', dew = '';
+  for (let i = 0; i < 150; i++) {
+    const side = i % 2 ? 1 : -1, Z = 3.2 + R() ** 1.5 * 11.5, X = side * R.range(4.35, 6.2), p = pr(X, 0, Z), k = kAt(Z), h = R.range(0.08, 0.18) * k;
+    blades += `M${r0(p[0])},${r0(p[1])}q${f(0.01 * k, 0)},${r0(-h * 0.6)} ${f(R.range(-0.05, 0.05) * k, 0)},${r0(-h)}`;
+    if (R() < 0.35) dew += `<circle cx="${r0(p[0] + R.range(-0.04, 0.04) * k)}" cy="${r0(p[1] - h * R.range(0.5, 1))}" r="${f(Math.max(0.8, 0.008 * k), 1)}"/>`;
+  }
+  S.add(`<path d="${blades}" fill="none" stroke="#3a4a46" stroke-width="1.6" stroke-linecap="round" opacity=".8"/><g fill="#fff8e8" opacity=".85">${dew}</g>`);
+  // the back fence (rails + posts), townhouse backs already behind it
+  {
+    const pts = [];
+    for (let X = -8; X <= 8.01; X += 1.6) pts.push(pr(X, 0, ZB));
+    const k = kAt(ZB);
+    S.add(fence(pts, k / 22 * 1.15, '#46465a'));
+    S.add(`<path d="${pl(pr.poly([[-8, 1.05, ZB], [8, 1.05, ZB]]))}" stroke="${GOLD}" stroke-width="1.4" opacity=".55"/>`);
+    // side fences running toward us
+    const sideL = [], sideR = [];
+    for (let Z = ZB; Z >= 4; Z -= 1.6) { sideL.push(pr(-6, 0, Z)); sideR.push(pr(6, 0, Z)); }
+    S.add(`<g opacity=".9">${fence(sideL, 1.3, '#3a3c4c')}${fence(sideR, 1.3, '#3a3c4c')}</g>`);
+  }
+  S.add(`<rect x="-20" y="${r0(yB - 44)}" width="1640" height="90" fill="${S.lin([[0, '#f6dcc4', 0], [0.55, '#f6dcc4', 0.42], [1, '#f6dcc4', 0]])}" filter="${S.blur(2)}"/>`);
+  // scuffed sand: arcs of footwork, a raked patch, pebbles
+  let scuff = '';
+  for (let i = 0; i < 40; i++) { const Z = R.range(4, 14), X = R.range(-4, 4), p = pr(X, 0, Z), k = kAt(Z), w = R.range(0.3, 0.9) * k; scuff += `M${r0(p[0] - w / 2)},${r0(p[1])}q${r0(w / 2)},${f(R.range(-0.04, 0.04) * k, 0)} ${r0(w)},0`; }
+  S.add(`<path d="${scuff}" fill="none" stroke="#2e3644" stroke-width="2" opacity=".35"/>`);
+  let peb = '';
+  for (let i = 0; i < 120; i++) { const Z = 3.5 + R() ** 1.8 * 11, p = pr(R.range(-4.4, 4.4), 0, Z), k = kAt(Z), rr = R.range(0.012, 0.03) * k; peb += `<ellipse cx="${r0(p[0])}" cy="${r0(p[1])}" rx="${f(rr, 1)}" ry="${f(rr * 0.5, 1)}"/>`; }
+  S.add(`<g fill="#3a4250" opacity=".55">${peb}</g>`);
+
+  // --- the bench at the back edge of the yard (Leah's seat), dew beaded on the plank ----------------------
+  {
+    const x0 = -2.4, x1 = 0.4, z = 13.6, hS = 0.46;
+    S.add(`<path d="${pz(pr.poly([[x0, hS, z], [x1, hS, z], [x1, hS, z + 0.4], [x0, hS, z + 0.4]]))}" fill="#7a6a62"/><path d="${pz(pr.poly([[x0, hS, z], [x1, hS, z], [x1, hS - 0.07, z], [x0, hS - 0.07, z]]))}" fill="#3e3438"/>`);
+    let legs = '';
+    for (const x of [x0 + 0.15, x1 - 0.15]) legs += pz(pr.poly([[x - 0.05, 0, z + 0.05], [x + 0.05, 0, z + 0.05], [x + 0.05, hS - 0.07, z + 0.05], [x - 0.05, hS - 0.07, z + 0.05]]));
+    S.add(`<path d="${legs}" fill="#2e2830"/><path d="${pl(pr.poly([[x0, hS, z + 0.4], [x1, hS, z + 0.4]]))}" stroke="${GOLD}" stroke-width="1.6" opacity=".7"/>`);
+    let dw = '';
+    for (let i = 0; i < 9; i++) { const p = pr(R.range(x0 + 0.1, x1 - 0.1), hS, z + R.range(0.05, 0.35)); dw += `<circle cx="${r0(p[0])}" cy="${r0(p[1])}" r="${f(R.range(0.8, 1.5), 1)}"/>`; }
+    S.add(`<g fill="${GOLD_HI}">${dw}</g>`);
+    // a whetstone and a water bucket left by the bench
+    const b = pr(x1 + 0.45, 0, z), kb = kAt(z);
+    S.add(`<path d="M${r0(b[0] - 0.16 * kb)},${r0(b[1])}l${r0(-0.03 * kb)},${r0(-0.34 * kb)}h${r0(0.38 * kb)}l${r0(-0.03 * kb)},${r0(0.34 * kb)}z" fill="#4a4250"/><ellipse cx="${r0(b[0])}" cy="${r0(b[1] - 0.34 * kb)}" rx="${r0(0.19 * kb)}" ry="${f(0.04 * kb, 1)}" fill="#c8b8a8"/><path d="M${r0(b[0] - 0.16 * kb)},${r0(b[1] - 0.24 * kb)}h${r0(0.32 * kb)}" stroke="#2a2430" stroke-width="2"/>`);
+  }
+
+  // --- the wooden pells, a straw dummy, the weapon rack: all backlit, wet with dew -------------------------
+  const pell = (X, Z, h = 1.9, wd = 0.24, seed = 1) => {
+    const k = kAt(Z), b = pr(X, 0, Z), t = pr(X, h, Z), w = wd * k;
+    const Rp = rng(seed);
+    let s = `<ellipse cx="${r0(b[0] + 0.1 * k)}" cy="${r0(b[1] + 0.03 * k)}" rx="${r0(0.55 * k)}" ry="${r0(0.07 * k)}" fill="#1e2430" opacity=".45"/>`;
+    s += `<path d="M${r0(b[0] - w / 2)},${r0(b[1])}V${r0(t[1] + w * 0.15)}q${r0(w / 2)},${r0(-w * 0.3)} ${r0(w)},0V${r0(b[1])}z" fill="#3e3640"/>`;
+    s += `<path d="M${r0(b[0] + w * 0.12)},${r0(b[1])}V${r0(t[1] + w * 0.1)}q${r0(w * 0.2)},${r0(-w * 0.05)} ${r0(w * 0.38)},${r0(w * 0.05)}V${r0(b[1])}z" fill="#2a242e"/>`;
+    // rope bindings and sword nicks
+    let rope = '', nicks = '';
+    for (const v of [0.42, 0.74]) { const y = b[1] + (t[1] - b[1]) * v; for (let j = 0; j < 3; j++) rope += `M${r0(b[0] - w / 2 - 1)},${r0(y + j * 0.035 * k)}l${r0(w + 2)},${r0(0.015 * k)}`; }
+    for (let j = 0; j < 5; j++) { const y = b[1] + (t[1] - b[1]) * Rp.range(0.25, 0.9), x = b[0] - w / 2 + w * Rp.range(0.1, 0.5); nicks += `M${r0(x)},${r0(y)}l${r0(w * 0.35)},${f(Rp.range(-0.03, 0.03) * k, 0)}`; }
+    s += `<path d="${rope}" stroke="#b09878" stroke-width="${f(Math.max(1.4, 0.02 * k), 1)}"/><path d="${nicks}" stroke="#14101a" stroke-width="${f(Math.max(1, 0.012 * k), 1)}" opacity=".8"/>`;
+    // gold rim along the top and the side toward the light; dew beads
+    s += `<path d="M${r0(b[0] - w / 2)},${r0(b[1] - (b[1] - t[1]) * 0.35)}V${r0(t[1] + w * 0.15)}q${r0(w / 2)},${r0(-w * 0.3)} ${r0(w)},0" fill="none" stroke="${GOLD}" stroke-width="${f(Math.max(1.2, 0.016 * k), 1)}" opacity=".8"/>`;
+    let d = '';
+    for (let j = 0; j < 7; j++) d += `<circle cx="${r0(b[0] - w / 2 + w * Rp.range(0.1, 0.9))}" cy="${r0(t[1] + (b[1] - t[1]) * Rp.range(0.02, 0.7))}" r="${f(Math.max(0.8, 0.007 * k), 1)}"/>`;
+    s += `<g fill="${GOLD_HI}" opacity=".9">${d}</g>`;
+    return s;
+  };
+  // straw dummy on a post with a crossbar, a sack head
+  {
+    const X = 1.55, Z = 10.5, k = kAt(Z), b = pr(X, 0, Z), y = (hh) => pr(X, hh, Z)[1];
+    S.add(`<ellipse cx="${r0(b[0] + 0.1 * k)}" cy="${r0(b[1] + 0.03 * k)}" rx="${r0(0.6 * k)}" ry="${r0(0.07 * k)}" fill="#1e2430" opacity=".45"/>`);
+    S.add(`<path d="M${r0(b[0] - 0.05 * k)},${r0(b[1])}V${r0(y(1.4))}h${r0(0.1 * k)}V${r0(b[1])}z" fill="#2e2830"/>`);
+    S.add(`<path d="M${r0(b[0] - 0.62 * k)},${r0(y(1.42))}h${r0(1.24 * k)}v${r0(0.08 * k)}h${r0(-1.24 * k)}z" fill="#3a3238"/>`);
+    S.add(`<path d="M${r0(b[0] - 0.24 * k)},${r0(y(0.7))}q${r0(-0.04 * k)},${r0(-0.4 * k)} ${r0(0.02 * k)},${r0(-0.72 * k)}h${r0(0.44 * k)}q${r0(0.06 * k)},${r0(0.32 * k)} ${r0(0.02 * k)},${r0(0.72 * k)}z" fill="#8a7458"/>`);
+    let straw = '';
+    for (let i = 0; i < 14; i++) { const x0 = b[0] - 0.22 * k + i * 0.032 * k; straw += `M${r0(x0)},${r0(y(0.72))}l${f(R.range(-0.04, 0.04) * k, 0)},${r0(0.12 * k)}`; }
+    S.add(`<path d="${straw}" stroke="#a88a5e" stroke-width="2" stroke-linecap="round"/><path d="M${r0(b[0] - 0.24 * k)},${r0(y(1.05))}h${r0(0.48 * k)}M${r0(b[0] - 0.25 * k)},${r0(y(0.85))}h${r0(0.5 * k)}" stroke="#4a3a2a" stroke-width="3"/>`);
+    S.add(`<ellipse cx="${r0(b[0])}" cy="${r0(y(1.62))}" rx="${r0(0.17 * k)}" ry="${r0(0.2 * k)}" fill="#7a6a56"/><path d="M${r0(b[0] - 0.08 * k)},${r0(y(1.76))}l${r0(-0.06 * k)},${r0(-0.06 * k)}M${r0(b[0] + 0.08 * k)},${r0(y(1.77))}l${r0(0.07 * k)},${r0(-0.05 * k)}" stroke="#5a4a3a" stroke-width="3"/>`);
+    S.add(`<path d="M${r0(b[0] - 0.62 * k)},${r0(y(1.42))}h${r0(1.24 * k)}M${r0(b[0] - 0.17 * k)},${r0(y(1.62))}a${r0(0.17 * k)},${r0(0.2 * k)} 0 0 1 ${r0(0.3 * k)},${r0(-0.12 * k)}M${r0(b[0] - 0.24 * k)},${r0(y(0.7))}q${r0(-0.04 * k)},${r0(-0.4 * k)} ${r0(0.02 * k)},${r0(-0.72 * k)}" fill="none" stroke="${GOLD}" stroke-width="1.6" opacity=".75"/>`);
+  }
+  // weapon rack against the right fence: wooden practice swords and staves
+  {
+    const Z0 = 9.5, Z1 = 13, X = 5.2;
+    const a = pr(X, 0, Z0), b = pr(X, 0, Z1), at = pr(X, 1.1, Z0), bt = pr(X, 1.1, Z1);
+    S.add(`<path d="M${r0(a[0])},${r0(a[1])}L${r0(at[0])},${r0(at[1])}L${r0(bt[0])},${r0(bt[1])}L${r0(b[0])},${r0(b[1])}M${r0(pr(X, 0.5, Z0)[0])},${r0(pr(X, 0.5, Z0)[1])}L${r0(pr(X, 0.5, Z1)[0])},${r0(pr(X, 0.5, Z1)[1])}" fill="none" stroke="#2e2830" stroke-width="4"/>`);
+    let w = '';
+    for (let i = 0; i < 9; i++) { const Z = Z0 + 0.2 + i * 0.36, p0 = pr(X - 0.25, 0, Z), p1 = pr(X + 0.05, i % 3 === 0 ? 1.7 : 1.3, Z + 0.05); w += `M${r0(p0[0])},${r0(p0[1])}L${r0(p1[0])},${r0(p1[1])}`; }
+    S.add(`<path d="${w}" stroke="#5a4a44" stroke-width="3.5" stroke-linecap="round"/><path d="${w}" stroke="${GOLD}" stroke-width="1" opacity=".5" transform="translate(-1 0)"/>`);
+  }
+  S.add(pell(-4.0, 12, 1.8, 0.24, 47071) + pell(3.5, 12.8, 1.8, 0.24, 47072));
+  S.add(pell(-1.75, 8.8, 1.9, 0.25, 47075) + pell(2.9, 8, 1.9, 0.26, 47073) + pell(-3.0, 6.2, 1.95, 0.26, 47074));
+
+  // --- grading: cool shade below, warm glow above; vignette; calm bottom ------------------------------------
+  S.add(`<rect width="${W}" height="${H}" fill="${S.lin([[0, '#ffe8c0', 0.12], [0.55, '#ffe8c0', 0], [1, '#26304a', 0.3]])}"/>`);
+  S.add(`<rect width="${W}" height="${H}" fill="${S.rad([[0.5, '#1a1e2c', 0], [1, '#1a1e2c', 0.5]], 'cx="0.53" cy="0.32" r="0.8"')}"/>`);
+  S.add(`<rect y="620" width="${W}" height="280" fill="${S.lin([[0, '#1a1e2c', 0], [1, '#1a1e2c', 0.62]])}"/>`);
+  return S.out();
+}
+
 export const townBgs = {
   'guild-hall': guildHall,
   'guard-square': guardSquare,
@@ -445,4 +608,5 @@ export const townBgs = {
   'barrel-alley': barrelAlley,
   'chime-town-gate': chimeGate,
   'market': market,
+  'training-ground-dawn': trainingGround,
 };
