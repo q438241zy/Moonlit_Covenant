@@ -85,7 +85,7 @@ function findDef(chapter, id) {
 }
 
 // 玩家看得见的提示文字（核#12 / B14）：
-//   · 输入提示、占位文字、系统字幕、战斗情报、「自由输入：」分镜标题不用「你」称呼玩家，一律写 {PLAYER_NAME}（剧本里的「亚克」）——
+//   · 输入提示、占位文字、系统字幕、战斗情报、「自由输入：」分镜标题、章末「正史记录」（end.summary）不用「你」称呼玩家，一律写 {PLAYER_NAME}（剧本里的「亚克」）——
 //     引号里的台词照常（角色对亚克说「你」没问题）；
 //   · 剧本里的镜头指示（「镜头掠过……」）要转写成世界内的叙述，不能原样出现在叙述里。
 const QUOTED = /“[^”]*”|「[^」]*」|‘[^’]*’|『[^』]*』/g;
@@ -96,6 +96,7 @@ function wordingErrors(chapter) {
   for (const shot of chapter.shots || []) {
     if (/^自由输入[：:]/.test(shot.title || '') && addressesPlayer(shot.title)) say(`${shot.id} 分镜标题`, shot.title, '用了「你」，改用 {PLAYER_NAME}');
   }
+  for (const s of chapter.end?.summary || []) if (addressesPlayer(s?.text)) say('章末正史记录', s.text, '用了「你」，改用 {PLAYER_NAME}');
   eachBeat(chapter, (beat) => {
     if (beat.t === 'input') {
       if (addressesPlayer(beat.prompt)) say(`${beat.id} prompt`, beat.prompt, '用了「你」，改用 {PLAYER_NAME}');

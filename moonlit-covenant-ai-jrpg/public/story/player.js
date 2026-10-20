@@ -1618,7 +1618,9 @@ async function onEnd(end) {
   flushRead();
 
   const e = entryFor(ch.id, ch);
-  const lines = (end?.summary || []).filter((s) => s?.text && evalCond(run, s.when)).map((s) => interpolate(s.text, run));
+  // 正史记录用主角名、不用「你」（核#12）；没有任何一条成立时用同样写法的兜底句
+  const summary = (end?.summary || []).filter((s) => s?.text && evalCond(run, s.when)).map((s) => s.text);
+  const lines = (summary.length ? summary : ['{PLAYER_NAME}的每一次回应都已记录在案。']).map((t) => interpolate(t, run));
   const inputs = Object.keys(run.inputs || {}).filter((id) => findNode(ch, id)).length; // 只算本章（run.inputs 会跨章继承）
   const scr = P.endScreen;
   scr.innerHTML = `<div class="end-card" role="dialog" aria-modal="true" aria-labelledby="endTitle">
@@ -1627,7 +1629,7 @@ async function onEnd(end) {
       <h2 id="endTitle"><span>${esc(e.label)}</span>${esc(e.name)}</h2>
       <div class="end-rule"></div>
       <h3 class="end-sub">${icon('book', { size: 15 })}正史记录</h3>
-      <ul class="end-summary">${(lines.length ? lines : ['你的每一次回应都已记录在案。']).map((t) => `<li>${esc(t)}</li>`).join('')}</ul>
+      <ul class="end-summary">${lines.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>
       <p class="end-save">${icon('save', { size: 14 })}已存档 · ${esc(run.playerName)} · 本章 ${inputs} 次自由回应</p>
       <div class="end-reward" hidden></div>
       <div class="end-actions">

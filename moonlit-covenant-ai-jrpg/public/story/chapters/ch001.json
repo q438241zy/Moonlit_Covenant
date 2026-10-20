@@ -3314,28 +3314,28 @@
         "text": "白·可恩一发光明弹打穿黑龙腹部。他没有追击，先回头救人；黑龙负伤向南逃去。"
       },
       {
-        "text": "霍恩确认：艾琳没有走出那片火。她烧黑的麦穗发夹，如今收在你贴身的口袋里。"
+        "text": "霍恩确认：艾琳没有走出那片火。她烧黑的麦穗发夹，如今收在{PLAYER_NAME}贴身的口袋里。"
       },
       {
         "when": {
           "intent": "FI_CH001_SC09_MOTHER_DEATH_001",
           "is": "blame"
         },
-        "text": "噩耗传来时，你把责任推给了霍恩。他没有反驳。"
+        "text": "噩耗传来时，{PLAYER_NAME}把责任推给了霍恩。霍恩没有反驳。"
       },
       {
         "when": {
           "intent": "FI_CH001_SC09_MOTHER_DEATH_001",
           "is": "absolve"
         },
-        "text": "噩耗传来时，你对霍恩说：这不怪他。"
+        "text": "噩耗传来时，{PLAYER_NAME}对霍恩说：这不怪他。"
       },
       {
         "when": {
           "intent": "FI_CH001_SC09_MOTHER_DEATH_001",
           "is": "rush"
         },
-        "text": "你想冲回火场，被可恩用身体挡了下来。"
+        "text": "{PLAYER_NAME}想冲回火场，被可恩用身体挡了下来。"
       },
       {
         "when": {
@@ -3345,104 +3345,104 @@
             "silent"
           ]
         },
-        "text": "得知噩耗的那一刻，你僵在原地。是可恩接住了倒下的托比。"
+        "text": "得知噩耗的那一刻，{PLAYER_NAME}僵在原地。是可恩接住了倒下的托比。"
       },
       {
         "when": {
           "intent": "FI_CH001_SC09_MOTHER_DEATH_001",
           "is": "comfort"
         },
-        "text": "你一边掉眼泪，一边抱紧了托比。"
+        "text": "{PLAYER_NAME}一边掉眼泪，一边抱紧了托比。"
       },
       {
-        "text": "托比将由可恩监护，住进晨钟镇的白塔。你把牧羊铜哨交给他保管，答应一定回来拿。"
+        "text": "托比将由可恩监护，住进晨钟镇的白塔。{PLAYER_NAME}把牧羊铜哨交给他保管，答应一定回来拿。"
       },
       {
         "when": {
           "intent": "FI_CH001_SC10_TOBY_GUARDIAN_001",
           "is": "burden"
         },
-        "text": "你对托比说出了“累赘”。他抓着你衣角的手松开了。"
+        "text": "{PLAYER_NAME}对托比说出了“累赘”。托比抓着他衣角的手松开了。"
       },
       {
         "when": {
           "intent": "FI_CH001_SC10_TOBY_GUARDIAN_001",
           "is": "take_along"
         },
-        "text": "你想带托比一起走。可恩问起战斗、食宿与那条龙，托比自己松开了手。"
+        "text": "{PLAYER_NAME}想带托比一起走。可恩问起战斗、食宿与那条龙，托比自己松开了手。"
       },
       {
         "when": {
           "intent": "FI_CH001_SC10_TOBY_GUARDIAN_001",
           "is": "letters"
         },
-        "text": "你还答应托比：会定期写信给他。"
+        "text": "{PLAYER_NAME}还答应托比：会定期写信给他。"
       },
       {
         "when": {
           "intent": "FI_CH001_SC10_TOBY_GUARDIAN_001",
           "is": "visit"
         },
-        "text": "你还答应托比：会常回白塔看他。"
+        "text": "{PLAYER_NAME}还答应托比：会常回白塔看他。"
       },
       {
         "when": {
           "intent": "FI_CH001_SC10_TOBY_GUARDIAN_001",
           "is": "stories"
         },
-        "text": "你还答应托比：会把各国的故事带回来讲给他听。"
+        "text": "{PLAYER_NAME}还答应托比：会把各国的故事带回来讲给他听。"
       },
       {
-        "text": "你带着可恩的引荐信前往晨钟镇冒险者公会。可恩说：等你拿到铜牌，再来问他一次。"
+        "text": "{PLAYER_NAME}带着可恩的引荐信前往晨钟镇冒险者公会。可恩说：等拿到铜牌，再来问他一次。"
       },
       {
         "when": {
           "intent": "FI_CH001_SC12_FIRST_CLASS_VOW_001",
           "is": "revenge"
         },
-        "text": "可恩问你是不是为了杀那条龙。你没有否认；他只问：杀了它之后呢？"
+        "text": "可恩问{PLAYER_NAME}是不是为了杀那条龙。{PLAYER_NAME}没有否认；可恩只问：杀了它之后呢？"
       },
       {
         "when": {
           "intent": "FI_CH001_SC12_FIRST_CLASS_VOW_001",
           "is": "protect"
         },
-        "text": "你告诉可恩，你想成为能保护别人的人。他说：保护比杀难。"
+        "text": "{PLAYER_NAME}告诉可恩，他想成为能保护别人的人。可恩说：保护比杀难。"
       },
       {
         "when": {
           "intent": "FI_CH001_SC12_FIRST_CLASS_VOW_001",
           "is": "provide"
         },
-        "text": "你告诉可恩，你想亲手把弟弟扛起来。他没有笑你。"
+        "text": "{PLAYER_NAME}告诉可恩，他想亲手把弟弟扛起来。可恩没有笑他。"
       },
       {
         "when": {
           "intent": "FI_CH001_SC12_FIRST_CLASS_VOW_001",
           "is": "power"
         },
-        "text": "你告诉可恩，你想要力量。他提醒你：力量只会放大原本的选择。"
+        "text": "{PLAYER_NAME}告诉可恩，他想要力量。可恩提醒他：力量只会放大原本的选择。"
       },
       {
         "when": {
           "intent": "FI_CH001_SC12_FIRST_CLASS_VOW_001",
           "is": "truth"
         },
-        "text": "你告诉可恩，你想查明那条黑龙为什么而来。"
+        "text": "{PLAYER_NAME}告诉可恩，他想查明那条黑龙为什么而来。"
       },
       {
         "when": {
           "intent": "FI_CH001_SC12_FIRST_CLASS_VOW_001",
           "is": "mixed"
         },
-        "text": "你的理由不止一个，彼此拉扯。可恩说：别让最大声的那个替其他几个做决定。"
+        "text": "{PLAYER_NAME}的理由不止一个，彼此拉扯。可恩说：别让最大声的那个替其他几个做决定。"
       },
       {
         "when": {
           "intent": "FI_CH001_SC12_FIRST_CLASS_VOW_001",
           "is": "unsure"
         },
-        "text": "你坦白自己还不知道为什么。可恩说：不知道比假装知道安全。"
+        "text": "{PLAYER_NAME}坦白自己还不知道为什么。可恩说：不知道比假装知道安全。"
       }
     ]
   }

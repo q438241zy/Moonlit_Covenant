@@ -7977,27 +7977,27 @@
     },
     "summary": [
       {
-        "text": "莉亚在“高阶陪同／监督”栏签了名。你们凭一张临时契约组成两人队伍，从西门出了城。"
+        "text": "莉亚在“高阶陪同／监督”栏签了名。{PLAYER_NAME}和她凭一张临时契约组成两人队伍，从西门出了城。"
       },
       {
         "when": {
           "flag": "FLAG_CH003_PLAYER_SPOTTED_DIRECTION"
         },
-        "text": "那辆说要往北山、却出了西门的救济车，是你先看出不对的。"
+        "text": "那辆说要往北山、却出了西门的救济车，是{PLAYER_NAME}先看出不对的。"
       },
       {
         "when": {
           "var": "promise_leah_signal_001",
           "eq": "fulfilled"
         },
-        "text": "盾响两声时，你退到了她的盾后。"
+        "text": "盾响两声时，{PLAYER_NAME}退到了她的盾后。"
       },
       {
         "when": {
           "var": "promise_leah_signal_001",
           "eq": "broken"
         },
-        "text": "盾响两声时，你没有退——你亲口答应过的第一条，没能守住。"
+        "text": "盾响两声时，{PLAYER_NAME}没有退——他亲口答应过的第一条，没能守住。"
       },
       {
         "when": {
@@ -8005,13 +8005,13 @@
             "flag": "promise_leah_signal_001"
           }
         },
-        "text": "她要你亲口答应三条，你没有给出明确的答应。"
+        "text": "她要{PLAYER_NAME}亲口答应三条，他没有给出明确的答应。"
       },
       {
         "when": {
           "flag": "FLAG_CH003_GOBLIN_KILLED"
         },
-        "text": "斩链不斩命，你没有做到：一只被晶链控制的哥布林死在了你的剑下。"
+        "text": "斩链不斩命，{PLAYER_NAME}没有做到：一只被晶链控制的哥布林死在了他的剑下。"
       },
       {
         "when": {
@@ -8019,13 +8019,13 @@
             "flag": "FLAG_CH003_GOBLIN_KILLED"
           }
         },
-        "text": "你们斩链不斩命。哥布林醒过来钻进了芦苇，最小的那只回头说了一声“……谢。”"
+        "text": "{PLAYER_NAME}和莉亚斩链不斩命。哥布林醒过来钻进了芦苇，最小的那只回头说了一声“……谢。”"
       },
       {
         "when": {
           "flag": "FLAG_CH003_HARMED_CAPTIVE"
         },
-        "text": "你对受伤的芬恩动了手。他的供词只剩下最低限度。"
+        "text": "{PLAYER_NAME}对受伤的芬恩动了手。芬恩的供词只剩下最低限度。"
       },
       {
         "text": "被带走的一大一小在旧磨坊，大车后天夜里来。第二阶段委托已经上板——明天日出，训练场集合。"

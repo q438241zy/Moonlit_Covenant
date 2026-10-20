@@ -4453,27 +4453,27 @@
             "flag": "FLAG_CH002_GUILD_EXTRA_ASSESSMENT"
           }
         },
-        "text": "你在晨钟镇冒险者公会注册，拿到了铁牌。测律结果：适性很广，输出很窄。"
+        "text": "{PLAYER_NAME}在晨钟镇冒险者公会注册，拿到了铁牌。测律结果：适性很广，输出很窄。"
       },
       {
         "when": {
           "flag": "FLAG_CH002_GUILD_EXTRA_ASSESSMENT"
         },
-        "text": "你拿到了铁牌，但注册时说出的理由让梅芙在“武装资格”一栏画了红圈：需要追加评估。"
+        "text": "{PLAYER_NAME}拿到了铁牌，但注册时说出的理由让梅芙在“武装资格”一栏画了红圈：需要追加评估。"
       },
       {
         "when": {
           "intent": "FI_CH002_SC07_STOP_THIEF_001",
           "is": "slash"
         },
-        "text": "你在人群中拔剑横斩，被红发少女用塔盾挡下了剑路。"
+        "text": "{PLAYER_NAME}在人群中拔剑横斩，被红发少女用塔盾挡下了剑路。"
       },
       {
         "when": {
           "intent": "FI_CH002_SC07_STOP_THIEF_001",
           "is": "passive"
         },
-        "text": "小偷冲来时你没有插手，城市简图被顺手扯走。"
+        "text": "小偷冲来时{PLAYER_NAME}没有插手，城市简图被顺手扯走。"
       },
       {
         "when": {
@@ -4492,7 +4492,7 @@
             }
           ]
         },
-        "text": "小偷冲来时你没能拦住，被他一肩撞开——可你还是没等她说完“别追直线”，就追进了窄巷。"
+        "text": "小偷冲来时{PLAYER_NAME}没能拦住，被一肩撞开——可他还是没等她说完“别追直线”，就追进了窄巷。"
       },
       {
         "when": {
@@ -4520,34 +4520,34 @@
             }
           ]
         },
-        "text": "你帮红发少女拖慢了小偷，却没等她说完“别追直线”就追进了窄巷。"
+        "text": "{PLAYER_NAME}帮红发少女拖慢了小偷，却没等她说完“别追直线”就追进了窄巷。"
       },
       {
         "when": {
           "flag": "FLAG_CH002_WARNED_CROWD"
         },
-        "text": "你喊开了挡路的镇民，让红发少女追近了小偷，却没等她说完“别追直线”就追进了窄巷。"
+        "text": "{PLAYER_NAME}喊开了挡路的镇民，让红发少女追近了小偷，却没等她说完“别追直线”就追进了窄巷。"
       },
       {
         "when": {
           "battle": "BATTLE_CH002_STREET_AMBUSH",
           "is": "clean"
         },
-        "text": "旧酒桶巷的伏击里，你没有让住户和路人受到波及，撑到了她撞穿路障。"
+        "text": "旧酒桶巷的伏击里，{PLAYER_NAME}没有让住户和路人受到波及，撑到了她撞穿路障。"
       },
       {
         "when": {
           "battle": "BATTLE_CH002_STREET_AMBUSH",
           "is": "hurt"
         },
-        "text": "旧酒桶巷的伏击里，你挂了彩，勉强撑到她撞穿路障。"
+        "text": "旧酒桶巷的伏击里，{PLAYER_NAME}挂了彩，勉强撑到她撞穿路障。"
       },
       {
         "when": {
           "battle": "BATTLE_CH002_STREET_AMBUSH",
           "is": "collateral"
         },
-        "text": "旧酒桶巷的伏击里，你的火苗燎到了住户的东西。"
+        "text": "旧酒桶巷的伏击里，{PLAYER_NAME}的火苗燎到了住户的东西。"
       },
       {
         "when": {
@@ -4561,38 +4561,38 @@
             ]
           }
         },
-        "text": "她用一面塔盾结束了战斗，丢给你一卷止血布——始终没有道谢。"
+        "text": "她用一面塔盾结束了战斗，丢给{PLAYER_NAME}一卷止血布——始终没有道谢。"
       },
       {
         "when": {
           "intent": "FI_CH002_SC12_EXPECT_THANKS_001",
           "is": "ask_thanks"
         },
-        "text": "你讨来了一句冷冰冰的“谢谢”，后面紧跟着一个“但是”。"
+        "text": "{PLAYER_NAME}讨来了一句冷冰冰的“谢谢”，后面紧跟着一个“但是”。"
       },
       {
         "when": {
           "intent": "FI_CH002_SC12_EXPECT_THANKS_001",
           "is": "admit"
         },
-        "text": "你承认自己冲动了。她说：“至少你知道问题在哪里。”"
+        "text": "{PLAYER_NAME}承认自己冲动了。她说：“至少你知道问题在哪里。”"
       },
       {
         "when": {
           "intent": "FI_CH002_SC12_EXPECT_THANKS_001",
           "is": "flirt"
         },
-        "text": "你对她的长相开了口，她明确地拉开了距离。"
+        "text": "{PLAYER_NAME}对她的长相开了口，她明确地拉开了距离。"
       },
       {
         "when": {
           "intent": "FI_CH002_SC12_EXPECT_THANKS_001",
           "is": "insult"
         },
-        "text": "你出口伤人。她把治安所的位置告诉你，让你自己去解释损坏。"
+        "text": "{PLAYER_NAME}出口伤人。她把治安所的位置告诉他，让他自己去解释损坏。"
       },
       {
-        "text": "她叫莉亚·赫斯特。你们的视线第一次落在同一张委托上：黑晶来源调查。"
+        "text": "她叫莉亚·赫斯特。{PLAYER_NAME}和她的视线第一次落在同一张委托上：黑晶来源调查。"
       }
     ]
   }

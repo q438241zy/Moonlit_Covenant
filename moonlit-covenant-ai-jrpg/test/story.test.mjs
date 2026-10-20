@@ -6,7 +6,7 @@ import path from 'node:path';
 import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import {
-  createRun, continueRun, next, resolveInput, demoJudge, validateChapter, findNode, evalCond, eachBeat
+  createRun, continueRun, next, resolveInput, demoJudge, validateChapter, findNode, evalCond, eachBeat, interpolate
 } from '../public/story/engine.js';
 import { normalizeModelJudgement, judgeStoryInput } from '../game/story-judge.mjs';
 
@@ -290,6 +290,29 @@ test('B14: prompts, placeholders, captions and battle intel name the hero instea
   while (item.kind !== 'input') item = next(run, ch000);
   assert.equal(item.node.prompt, '艾琳正等着小克的回答。他可以说话、行动，或者保持沉默。');
   assert.equal(item.node.placeholder, '说点什么，或写下小克的动作……');
+});
+
+test('核#12-7: chapter-end 「正史记录」 lines name the hero instead of addressing the player as 你', () => {
+  let named = 0;
+  for (const entry of index) {
+    const chapter = readJson(`public/story/chapters/${entry.id}.json`);
+    for (const s of chapter.end?.summary || []) {
+      assert.ok(!addressesPlayer(s.text), `${entry.id} end.summary「${s.text}」`);
+      if (s.text.includes('{PLAYER_NAME}')) named++;
+    }
+  }
+  assert.ok(named > 0, 'summaries use {PLAYER_NAME}');
+  // 引号里的台词照常保留「你」（02 章：她说：“至少你知道问题在哪里。”）
+  const ch002 = readJson('public/story/chapters/ch002.json');
+  assert.ok(ch002.end.summary.some((s) => s.text.includes('“至少你知道问题在哪里。”')));
+  // 章节完成页对每条摘要和兜底句做玩家名替换，兜底句也不用「你」
+  const run = createRun({ chapter: readJson('public/story/chapters/ch005.json'), playerName: '小克' });
+  assert.equal(interpolate(readJson('public/story/chapters/ch005.json').end.summary.find((s) => s.when?.eq === 'UNANSWERED').text, run),
+    '登记单的队员栏上写着小克的名字，旁注“未答复”。');
+  const player = fs.readFileSync(path.join(projectDir, 'public/story/player.js'), 'utf8');
+  assert.ok(player.includes("'{PLAYER_NAME}的每一次回应都已记录在案。'"), 'player.js fallback names the hero');
+  assert.ok(!player.includes('你的每一次回应'), 'player.js fallback no longer says 你');
+  assert.match(player, /const lines = \(summary\.length \? summary : \[[^\]]*\]\)\.map\(\(t\) => interpolate\(t, run\)\)/);
 });
 
 test('B14: ch000 opening reads as in-world narration (the camera lines were rewritten)', () => {

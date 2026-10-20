@@ -4916,7 +4916,7 @@
     },
     "summary": [
       {
-        "text": "赫麦村在黑焰中化为废墟。你背着托比逃进守羊洞，点了三次灯。"
+        "text": "赫麦村在黑焰中化为废墟。{PLAYER_NAME}背着托比逃进守羊洞，点了三次灯。"
       },
       {
         "when": {
@@ -4932,31 +4932,31 @@
             }
           ]
         },
-        "text": "黑龙第二次俯冲之前，你在村道上救下了能救的人。"
+        "text": "黑龙第二次俯冲之前，{PLAYER_NAME}在村道上救下了能救的人。"
       },
       {
         "when": {
           "flag": "FLAG_CH000_CHOSE_VALUABLES"
         },
-        "text": "村道陷入混乱时，你先伸手去拿的是箱子。"
+        "text": "村道陷入混乱时，{PLAYER_NAME}先伸手去拿的是箱子。"
       },
       {
         "when": {
           "flag": "FLAG_CH000_ORDERED_TOBY_DANGER"
         },
-        "text": "危急关头，你差点把八岁的弟弟推进黑烟——艾琳拦住了他。"
+        "text": "危急关头，{PLAYER_NAME}差点把八岁的弟弟推进黑烟——艾琳拦住了托比。"
       },
       {
         "when": {
           "flag": "FLAG_CH000_CHARGED_DRAGON"
         },
-        "text": "你想拔剑迎战黑龙，被伯伦的锤杆拦了回来。"
+        "text": "{PLAYER_NAME}想拔剑迎战黑龙，被伯伦的锤杆拦了回来。"
       },
       {
         "when": {
           "flag": "FLAG_CH000_FROZE_FIRST_CRISIS"
         },
-        "text": "黑烟中你僵在原地，是村民们扑向了板车。"
+        "text": "黑烟中{PLAYER_NAME}僵在原地，是村民们扑向了板车。"
       },
       {
         "when": {
@@ -4968,7 +4968,7 @@
         "when": {
           "flag": "FLAG_CH000_FAMILY_TRAUMA_MOTHER"
         },
-        "text": "离别前，你对母亲说出了伤人的话。她仍先把托比推给了你。"
+        "text": "离别前，{PLAYER_NAME}对母亲说出了伤人的话。她仍先把托比推给了他。"
       },
       {
         "when": {
@@ -4976,13 +4976,13 @@
             "flag": "FLAG_CH000_HORN_ESCORTED_MOTHER"
           }
         },
-        "text": "你离开时，艾琳独自留在旧牧道的窄坡上，生死未卜。"
+        "text": "{PLAYER_NAME}离开时，艾琳独自留在旧牧道的窄坡上，生死未卜。"
       },
       {
         "when": {
           "flag": "FLAG_CH000_ABSOLUTE_PROMISE_TOBY"
         },
-        "text": "你向托比保证：妈妈一定会来。"
+        "text": "{PLAYER_NAME}向托比保证：妈妈一定会来。"
       },
       {
         "text": "伯伦逆着人群走回火光，留下最后一句话：“先看清该砍谁。”"
@@ -4992,42 +4992,42 @@
           "var": "PLAYER_VOW_PRIMARY",
           "eq": "VOW_REVENGE"
         },
-        "text": "你立誓让那条黑龙偿还血债。"
+        "text": "{PLAYER_NAME}立誓让那条黑龙偿还血债。"
       },
       {
         "when": {
           "var": "PLAYER_VOW_PRIMARY",
           "eq": "VOW_PROTECTION"
         },
-        "text": "你立誓不再让重要的人被夺走。"
+        "text": "{PLAYER_NAME}立誓不再让重要的人被夺走。"
       },
       {
         "when": {
           "var": "PLAYER_VOW_PRIMARY",
           "eq": "VOW_TRUTH"
         },
-        "text": "你立誓查明黑龙为何袭击赫麦村。"
+        "text": "{PLAYER_NAME}立誓查明黑龙为何袭击赫麦村。"
       },
       {
         "when": {
           "var": "PLAYER_VOW_PRIMARY",
           "eq": "VOW_GUILT"
         },
-        "text": "你背着没能救下所有人的愧疚，立誓追上那条黑龙。"
+        "text": "{PLAYER_NAME}背着没能救下所有人的愧疚，立誓追上那条黑龙。"
       },
       {
         "when": {
           "var": "PLAYER_VOW_PRIMARY",
           "eq": "VOW_POWER"
         },
-        "text": "你立誓追求足以压倒一切的力量。"
+        "text": "{PLAYER_NAME}立誓追求足以压倒一切的力量。"
       },
       {
         "when": {
           "var": "PLAYER_VOW_PRIMARY",
           "eq": "VOW_MERCY_CONFLICT"
         },
-        "text": "你立誓追上那条黑龙——但先看清该砍的是谁。"
+        "text": "{PLAYER_NAME}立誓追上那条黑龙——但先看清该砍的是谁。"
       }
     ]
   }
