@@ -77,11 +77,16 @@ function renameWithRetrySync(from, to) {
   }
 }
 
-async function renameWithRetry(from, to) {
+// 后台写盘的最后一步：每次尝试前先问 stillWanted()，再用同步 rename（一次系统调用，微秒级）。
+// 不能用 fs.promises.rename：它排进 libuv 线程池后，主线程可能先处理退出信号、flushSync 写好更新的存档，
+// 线程池里这次旧快照的 rename 随后才执行，就会把更新的存档盖掉。检查和 rename 都在主线程上同步完成，中间不会插进 flushSync。
+// 只在 Windows 偶发的 EPERM / EBUSY 时异步等待重试，等待期间不阻塞请求。返回 false 表示已不需要这份快照。
+async function renameWithRetry(from, to, stillWanted = () => true) {
   for (let attempt = 0; ; attempt += 1) {
+    if (!stillWanted()) return false;
     try {
-      await fs.promises.rename(from, to);
-      return;
+      fs.renameSync(from, to);
+      return true;
     } catch (error) {
       if (attempt >= 4 || !RETRY_CODES.has(error.code)) throw error;
       await new Promise((resolve) => setTimeout(resolve, 40 * (attempt + 1)));
@@ -186,12 +191,11 @@ export function createSaveStore({ enabled, file, snapshot, debounceMs = 1000, lo
       await handle.sync();
       await handle.close();
       handle = null;
-      if (closed) {
+      if (!(await renameWithRetry(tmp, file, () => !closed))) {
         // flushSync 已经写过更新的版本，这份旧快照作废
         await fs.promises.unlink(tmp).catch(() => {});
         return;
       }
-      await renameWithRetry(tmp, file);
       lastErrorKey = '';
     } catch (error) {
       if (handle) await handle.close().catch(() => {});

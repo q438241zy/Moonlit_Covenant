@@ -32,13 +32,13 @@
       "background": "黎明卿——艾琳娜的记忆体——站在黎明种下方，金色的光芒将她的轮廓勾勒得如同圣像。她的表情不是邪恶，而是一种深沉的、近乎偏执的悲悯。",
       "events": [
         { "type": "dialogue", "speaker": "narrator", "text": "「我知道你们恨我。恨这个计划。但请听我说完。」", "emotion": "pleading" },
-        { "type": "dialogue", "speaker": "narrator", "text": "「我——真正的艾琳娜·诺克斯——在二十年前失去了丈夫。塞蕾娜的父亲。他死于一场本可以避免的事故。从那以后，她一直在想一个问题：如果记忆可以被改写，痛苦是否可以被消除？」", "emotion": "sorrowful" },
+        { "type": "dialogue", "speaker": "narrator", "text": "「我——真正的艾琳娜·诺克斯——在二十年前失去了丈夫。塞雷娜的父亲。他死于一场本可以避免的事故。从那以后，她一直在想一个问题：如果记忆可以被改写，痛苦是否可以被消除？」", "emotion": "sorrowful" },
         { "type": "dialogue", "speaker": "serena", "text": "……父亲。我甚至不记得他的脸了。不是预言夺走的——是我太小了。", "emotion": "pained" },
         { "type": "dialogue", "speaker": "narrator", "text": "「黎明种不是武器。它是……一剂药。它能改写创伤记忆，让失去亲人的人不再痛苦，让经历战争的人不再恐惧。莉亚·赫斯特——你的七道刻痕，可以被改写为七段平静的回忆。」", "emotion": "compassionate" },
         { "type": "dialogue", "speaker": "lia", "text": "……", "emotion": "silent" },
-        { "type": "dialogue", "speaker": "narrator", "text": "「米娅·铃——被退学的屈辱，被孤立的孤独，可以被改写为一段普通的求学经历。你不再需要证明自己。」", "emotion": "gentle" },
+        { "type": "dialogue", "speaker": "narrator", "text": "「米娅·玲——被退学的屈辱，被孤立的孤独，可以被改写为一段普通的求学经历。你不再需要证明自己。」", "emotion": "gentle" },
         { "type": "dialogue", "speaker": "mia", "text": "我……", "emotion": "conflicted" },
-        { "type": "dialogue", "speaker": "narrator", "text": "「塞蕾娜·诺克斯——预言的诅咒，失去记忆的恐惧，可以被彻底抹除。你将不再看见未来。不再失去过去。」", "emotion": "tender" },
+        { "type": "dialogue", "speaker": "narrator", "text": "「塞雷娜·诺克斯——预言的诅咒，失去记忆的恐惧，可以被彻底抹除。你将不再看见未来。不再失去过去。」", "emotion": "tender" },
         { "type": "dialogue", "speaker": "serena", "text": "……", "emotion": "trembling" },
         { "type": "choice", "id": "ch10_choice1", "prompt": "黎明卿的话像毒药一样甜美。你感到一瞬间的动摇——然后你看向身边的人。你——", "options": [
           { "id": "a", "text": "\"你说的'平静'，是虚假的。真正的平静不是遗忘，是接受。\"", "effect": { "bond_lia": 1, "bond_mia": 1, "bond_serena": 1 } },
@@ -48,7 +48,7 @@
         { "type": "dialogue", "speaker": "narrator", "text": "「唯一的阻止方法，是在月蚀完成前完成'封印仪式'。但封印需要代价——四个S级样本中，必须有一人将自己的全部记忆注入黎明种，作为封印的燃料。」", "emotion": "grave" },
         { "type": "dialogue", "speaker": "narrator", "text": "「那个人，将失去所有记忆。包括自己是谁。」", "emotion": "final" },
         { "type": "narration", "text": "球形空间陷入死寂。黎明种的光芒依旧温暖，但此刻，那温暖中带着一种残忍的温柔。" },
-        { "type": "cg", "unlockCg": "cg_ch10_dawn_seed", "description": "CG：黎明种悬浮在球形空间中央，金色光芒如日出般扩散。黎明卿（艾琳娜的记忆体）站在光中，面容悲悯。四个基座在地面发出微光。莉亚、米娅、塞蕾娜和玩家站在光的边缘， faces 上映着金色的黎明与身后的黑暗。" },
+        { "type": "cg", "unlockCg": "cg_ch10_dawn_seed", "description": "CG：黎明种悬浮在球形空间中央，金色光芒如日出般扩散。黎明卿（艾琳娜的记忆体）站在光中，面容悲悯。四个基座在地面发出微光。莉亚、米娅、塞雷娜和玩家站在光的边缘， faces 上映着金色的黎明与身后的黑暗。" },
         { "type": "transition", "target": "ch10_end" }
       ],
       "choices": ["ch10_choice1"]

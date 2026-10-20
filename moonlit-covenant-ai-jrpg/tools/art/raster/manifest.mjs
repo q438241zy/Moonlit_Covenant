@@ -39,9 +39,9 @@ export const STYLE = [
 
 export const NEGATIVE = 'text, watermark, signature, logo, chibi, child, loli, nsfw, cleavage, revealing clothes, swimsuit, lingerie, lowres, blurry, extra fingers, deformed hands, bad anatomy';
 
-// 旧的四张厚涂 PNG（带 AIGC 标识）：集成步骤 I1 会把它们从 public/assets/ 移到 tools/art/raster/ref/，
-// 这里按实际位置取路径，移动后清单无需再改
-export const legacyRef = (file) => (fs.existsSync(path.join(root, 'tools/art/raster/ref', file)) ? `tools/art/raster/ref/${file}` : `public/assets/${file}`);
+// 旧的四张厚涂 PNG（带 AIGC 标识）：集成步骤 I1 已把它们从 public/assets/ 移到 tools/art/raster/ref/（只作出图参考，
+// 不随站点发布；站点用 compress-legacy.mjs 压出的 public/assets/*.jpg）
+export const legacyRef = (file) => `tools/art/raster/ref/${file}`;
 const STYLE_REF = legacyRef('lia.png');
 
 // 外观与 设定集/03 及 game/gacha.mjs 一致；全部为成年女性（18–19 岁）

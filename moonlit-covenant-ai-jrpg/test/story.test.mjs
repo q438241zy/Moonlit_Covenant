@@ -231,6 +231,22 @@ test('demo judge S1: plain affirmatives count as an explicit promise / signature
       assert.notEqual(demoJudge(node, text).intent, want, `${nodeId}「${text}」is not a promise`);
     }
   }
+  // 「嗯好」只按整句算（=嗯好）：「嗯好像哪里不对」这种犹豫不能算作在登记簿上签名
+  // （第三、四章的承诺意图里「好」本来就是子串关键词，不在这条回归的范围内）
+  const ch005 = readJson('public/story/chapters/ch005.json');
+  for (const nodeId of ['FI_CH005_SC12_TEAM_REGISTER_001', 'FI_CH005_SC12_TEAM_REGISTER_002']) {
+    const node = findNode(ch005, nodeId);
+    for (const text of ['嗯好像哪里不对', '嗯好像不太对劲']) assert.notEqual(demoJudge(node, text).intent, 'sign', `${nodeId}「${text}」is not a signature`);
+  }
+});
+
+test('demo judge S1 (integration): 「不放心」 on the cord-signal nodes is go_together, not a promise', () => {
+  const chapter = readJson('public/story/chapters/ch004.json');
+  for (const nodeId of ['FI_CH004_SC02_CORD_SIGNAL_001', 'FI_CH004_SC02_CORD_SIGNAL_002']) {
+    const node = findNode(chapter, nodeId);
+    for (const text of ['我不放心', '不放心', '你在外面我不放心。']) assert.equal(demoJudge(node, text).intent, 'go_together', `${nodeId}「${text}」`);
+    for (const text of ['放心', '放心吧', '你放心，我照做。']) assert.equal(demoJudge(node, text).intent, 'promise', `${nodeId}「${text}」`);
+  }
 });
 
 test('demo judge S2: hostile words in the first crisis are never "rallying the villagers"', () => {
@@ -302,7 +318,7 @@ async function freePort() {
 
 test('API: POST /api/story/judge returns a judgement and serves chapter files', async () => {
   const port = await freePort();
-  const child = spawn(process.execPath, ['server.mjs'], { cwd: projectDir, env: { ...process.env, PORT: String(port), HOST: '127.0.0.1', AI_MODE: 'demo' }, stdio: 'ignore' });
+  const child = spawn(process.execPath, ['server.mjs'], { cwd: projectDir, env: { ...process.env, PORT: String(port), HOST: '127.0.0.1', AI_MODE: 'demo', PERSIST: '0' }, stdio: 'ignore' });
   const base = `http://127.0.0.1:${port}`;
   try {
     const deadline = Date.now() + 6000;
@@ -344,7 +360,7 @@ test('API: openai mode uses the model judgement and falls back when the model ou
   const port = await freePort();
   const child = spawn(process.execPath, ['server.mjs'], {
     cwd: projectDir,
-    env: { ...process.env, PORT: String(port), HOST: '127.0.0.1', AI_MODE: 'openai', AI_BASE_URL: `http://127.0.0.1:${mock.address().port}/v1`, AI_API_KEY: 'test', AI_TIMEOUT_MS: '4000' },
+    env: { ...process.env, PORT: String(port), HOST: '127.0.0.1', AI_MODE: 'openai', AI_BASE_URL: `http://127.0.0.1:${mock.address().port}/v1`, AI_API_KEY: 'test', AI_TIMEOUT_MS: '4000', PERSIST: '0' },
     stdio: 'ignore',
   });
   const base = `http://127.0.0.1:${port}`;

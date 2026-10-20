@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // 把四张旧的厚涂 PNG（标题页 / 外传立绘，每张约 1.5–1.7MB）压成渐进式 JPEG，并保留 AIGC 隐式标识。
 //   node tools/art/raster/compress-legacy.mjs [--quality 86]      （需要 ImageMagick 的 convert 命令）
-// 输入：{lia,mia,serena,key-visual}.png，在 tools/art/raster/ref/（集成步骤 I1 移过去之后）或 public/assets/（之前）
+// 输入：tools/art/raster/ref/{lia,mia,serena,key-visual}.png（只作参考，不随站点发布；集成步骤 I1 从 public/assets/ 移过去）
 // 输出：public/assets/{lia,mia,serena,key-visual}.jpg
 //   - 不缩放、不裁切：画面右下角依法标注的「图片由AI生成」原样保留；
 //   - -strip 去掉 ImageMagick 自带的元数据（输出逐字节稳定），再把 PNG 的 eXIf（腾讯云 AIGC 标识：
@@ -27,8 +27,8 @@ try { execFileSync('convert', ['-version'], { stdio: 'ignore' }); } catch {
 
 let total = 0;
 for (const name of NAMES) {
-  const src = [path.join(root, 'tools/art/raster/ref', `${name}.png`), path.join(root, 'public/assets', `${name}.png`)].find((f) => fs.existsSync(f));
-  if (!src) throw new Error(`${name}.png: 在 tools/art/raster/ref/ 与 public/assets/ 都找不到`);
+  const src = path.join(root, 'tools/art/raster/ref', `${name}.png`);
+  if (!fs.existsSync(src)) throw new Error(`${name}.png: tools/art/raster/ref/ 下找不到`);
   const dest = path.join(root, 'public/assets', `${name}.jpg`);
   const png = fs.readFileSync(src);
   const meta = readAigc(png);

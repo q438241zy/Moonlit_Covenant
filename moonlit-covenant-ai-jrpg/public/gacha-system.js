@@ -18,8 +18,8 @@ const ART = {
 // ============ 完整 RPG 物品池（icon = /icons.js 中的图标名） ============
 const CHARACTERS = [
   {id:'lia',name:'莉亚·赫斯特',type:'character',rarity:'legendary',icon:'sword',title:'赤誓骑士'},
-  {id:'mia',name:'米娅·铃',type:'character',rarity:'legendary',icon:'wrench',title:'猫耳机关师'},
-  {id:'serena',name:'塞蕾娜·诺克斯',type:'character',rarity:'legendary',icon:'moon',title:'月蚀观测者'},
+  {id:'mia',name:'米娅·玲',type:'character',rarity:'legendary',icon:'wrench',title:'猫耳机关师'},
+  {id:'serena',name:'塞雷娜·诺克斯',type:'character',rarity:'legendary',icon:'moon',title:'月蚀观测者'},
   {id:'freya',name:'芙蕾娅·霜华',type:'character',rarity:'legendary',icon:'snowflake',title:'冰系魔法师'},
   {id:'lilith',name:'莉莉丝·瓦尔哈拉',type:'character',rarity:'legendary',icon:'dagger',title:'暗影刺客'},
   {id:'evelyn',name:'伊芙琳·星歌',type:'character',rarity:'legendary',icon:'star',title:'圣教圣女'},
@@ -29,15 +29,15 @@ const CHARACTERS = [
 
 // ===== 武器池 =====
 const WEAPONS = [
-  // 传说（8件角色专武）
-  {id:'w_lia',name:'月蚀圣剑',type:'weapon',rarity:'legendary',icon:'sword',owner:'lia',stats:'攻击力+45 暴击+12%'},
-  {id:'w_mia',name:'九命回路核心',type:'weapon',rarity:'legendary',icon:'orb',owner:'mia',stats:'攻击力+38 技能冷却-20%'},
-  {id:'w_serena',name:'静月封界仪',type:'weapon',rarity:'legendary',icon:'eclipse',owner:'serena',stats:'攻击力+42 封印强度+30%'},
-  {id:'w_freya',name:'霜华星杖',type:'weapon',rarity:'legendary',icon:'wand',owner:'freya',stats:'攻击力+40 冻结时间+2s'},
-  {id:'w_lilith',name:'瓦尔哈拉双刃',type:'weapon',rarity:'legendary',icon:'battle',owner:'lilith',stats:'攻击力+48 背击伤害+25%'},
+  // 传说（8件角色专武，名称取自 设定集/03 各女主的「武器」条目）
+  {id:'w_lia',name:'塔盾·赤誓',type:'weapon',rarity:'legendary',icon:'shield',owner:'lia',stats:'防御力+45 护援范围+1'},
+  {id:'w_mia',name:'魔导棍·叮当三号',type:'weapon',rarity:'legendary',icon:'wrench',owner:'mia',stats:'攻击力+38 技能冷却-20%'},
+  {id:'w_serena',name:'黑曜法杖·无眠镜',type:'weapon',rarity:'legendary',icon:'eclipse',owner:'serena',stats:'攻击力+42 封印强度+30%'},
+  {id:'w_freya',name:'长法杖·春眠',type:'weapon',rarity:'legendary',icon:'wand',owner:'freya',stats:'攻击力+40 冻结时间+2s'},
+  {id:'w_lilith',name:'双匕首·昼盲与夜醒',type:'weapon',rarity:'legendary',icon:'dagger',owner:'lilith',stats:'攻击力+48 背击伤害+25%'},
   {id:'w_evelyn',name:'圣歌弓·微光',type:'weapon',rarity:'legendary',icon:'bow',owner:'evelyn',stats:'攻击力+35 治疗量+20%'},
   {id:'w_ophelia',name:'龙纹法杖·祖语',type:'weapon',rarity:'legendary',icon:'wand',owner:'ophelia',stats:'攻击力+44 龙语增益+15%'},
-  {id:'w_ayla',name:'圣光羽盾',type:'weapon',rarity:'legendary',icon:'guard',owner:'ayla',stats:'防御力+35 治疗量+40%'},
+  {id:'w_ayla',name:'光剑·晨罚',type:'weapon',rarity:'legendary',icon:'sword',owner:'ayla',stats:'攻击力+43 反击伤害+30%'},
   // 史诗
   {id:'w_e1',name:'赤焰之刃',type:'weapon',rarity:'epic',icon:'flame',stats:'攻击力+32 灼烧附加'},
   {id:'w_e2',name:'霜月弯刀',type:'weapon',rarity:'epic',icon:'moon',stats:'攻击力+30 攻速+15%'},
@@ -161,24 +161,41 @@ const CONSUMABLES = [
 ];
 
 // ===== 服装池（16件）=====
-// art：对应 /assets/costumes/<角色>_<art>.svg 中最接近的服装立绘主题
+// art：对应 /assets/costumes/<角色>_<art>.svg；名称与图标都由 art 决定，
+// 命名与正式游戏 game/gacha.mjs 的 COSTUME_POOL 一致（「莉亚·新年服」这类写法），保证名称与画面一一对应。
+// id 保持旧值，已有的本地存档（ownedCostumes）继续有效。
+const COSTUME_ART = {
+  newyear: { label: '新年服', icon: 'newyear' },
+  maid: { label: '女仆服', icon: 'maid' },
+  christmas: { label: '圣诞服', icon: 'christmas' },
+  duanwu: { label: '端午服', icon: 'duanwu' },
+  anniversary: { label: '周年庆服', icon: 'anniversary' },
+  swimsuit: { label: '夏日度假服', icon: 'summer' },
+};
+const SHORT_NAME = Object.fromEntries(CHARACTERS.map((c) => [c.id, c.name.split('·')[0]]));
+const costume = (id, owner, art, rarity) => ({
+  id, type: 'costume', rarity, owner, art,
+  name: `${SHORT_NAME[owner]}·${COSTUME_ART[art].label}`,
+  icon: COSTUME_ART[art].icon,
+  desc: `${SHORT_NAME[owner]}专属`,
+});
 const COSTUMES = [
-  {id:'c_lia_1',name:'血色骑士服',type:'costume',rarity:'legendary',icon:'kimono',owner:'lia',art:'newyear',desc:'莉亚专属'},
-  {id:'c_lia_2',name:'夏日清凉装',type:'costume',rarity:'epic',icon:'summer',owner:'lia',art:'swimsuit',desc:'莉亚专属'},
-  {id:'c_mia_1',name:'机械猫娘装',type:'costume',rarity:'legendary',icon:'mech',owner:'mia',art:'maid',desc:'米娅专属'},
-  {id:'c_mia_2',name:'睡衣派对',type:'costume',rarity:'epic',icon:'sleep',owner:'mia',art:'swimsuit',desc:'米娅专属'},
-  {id:'c_serena_1',name:'月蚀礼服',type:'costume',rarity:'legendary',icon:'galaxy',owner:'serena',art:'anniversary',desc:'塞蕾娜专属'},
-  {id:'c_serena_2',name:'观测者制服',type:'costume',rarity:'epic',icon:'telescope',owner:'serena',art:'maid',desc:'塞蕾娜专属'},
-  {id:'c_freya_1',name:'冰雪女王裙',type:'costume',rarity:'legendary',icon:'snowflake',owner:'freya',art:'anniversary',desc:'芙蕾娅专属'},
-  {id:'c_freya_2',name:'暖冬便服',type:'costume',rarity:'epic',icon:'scarf',owner:'freya',art:'christmas',desc:'芙蕾娅专属'},
-  {id:'c_lilith_1',name:'瓦尔哈拉战袍',type:'costume',rarity:'legendary',icon:'battle',owner:'lilith',art:'newyear',desc:'莉莉丝专属'},
-  {id:'c_lilith_2',name:'暗夜便装',type:'costume',rarity:'epic',icon:'heart',owner:'lilith',art:'maid',desc:'莉莉丝专属'},
-  {id:'c_evelyn_1',name:'星尘舞台装',type:'costume',rarity:'legendary',icon:'sparkle',owner:'evelyn',art:'anniversary',desc:'伊芙琳专属'},
-  {id:'c_evelyn_2',name:'睡衣星图',type:'costume',rarity:'epic',icon:'sleep',owner:'evelyn',art:'swimsuit',desc:'伊芙琳专属'},
-  {id:'c_ophelia_1',name:'使徒礼装',type:'costume',rarity:'legendary',icon:'eclipse',owner:'ophelia',art:'anniversary',desc:'奥菲利亚专属'},
-  {id:'c_ophelia_2',name:'日常咬人服',type:'costume',rarity:'epic',icon:'fang',owner:'ophelia',art:'duanwu',desc:'奥菲利亚专属'},
-  {id:'c_ayla_1',name:'圣光礼裙',type:'costume',rarity:'legendary',icon:'angel',owner:'ayla',art:'anniversary',desc:'艾拉专属'},
-  {id:'c_ayla_2',name:'野餐便服',type:'costume',rarity:'epic',icon:'basket',owner:'ayla',art:'swimsuit',desc:'艾拉专属'},
+  costume('c_lia_1', 'lia', 'newyear', 'legendary'),
+  costume('c_lia_2', 'lia', 'swimsuit', 'epic'),
+  costume('c_mia_1', 'mia', 'maid', 'legendary'),
+  costume('c_mia_2', 'mia', 'swimsuit', 'epic'),
+  costume('c_serena_1', 'serena', 'anniversary', 'legendary'),
+  costume('c_serena_2', 'serena', 'maid', 'epic'),
+  costume('c_freya_1', 'freya', 'anniversary', 'legendary'),
+  costume('c_freya_2', 'freya', 'christmas', 'epic'),
+  costume('c_lilith_1', 'lilith', 'newyear', 'legendary'),
+  costume('c_lilith_2', 'lilith', 'maid', 'epic'),
+  costume('c_evelyn_1', 'evelyn', 'anniversary', 'legendary'),
+  costume('c_evelyn_2', 'evelyn', 'swimsuit', 'epic'),
+  costume('c_ophelia_1', 'ophelia', 'anniversary', 'legendary'),
+  costume('c_ophelia_2', 'ophelia', 'duanwu', 'epic'),
+  costume('c_ayla_1', 'ayla', 'anniversary', 'legendary'),
+  costume('c_ayla_2', 'ayla', 'swimsuit', 'epic'),
 ];
 
 const ALL_ITEMS = [...WEAPONS, ...EQUIPMENTS, ...CONSUMABLES];
@@ -212,6 +229,10 @@ let animTimers = [];        // 召唤动画的所有定时器；跳过 / 关闭�
 let singleFlipReady = false; // 单抽卡片已落下、可点击翻转
 
 const $ = (id) => document.getElementById(id);
+
+// 后台调试（概率滑条、加资源、解锁、重置、改会员）只在 URL 带 ?dev=1 时出现并生效
+const DEV = (() => { try { return new URLSearchParams(location.search).get('dev') === '1'; } catch { return false; } })();
+const devOnly = (fn) => (...args) => (DEV ? fn(...args) : undefined);
 
 function loadPlayer() {
   let saved = null;
@@ -353,6 +374,20 @@ const configOf = (r) => RARITY_CONFIG[rarityKey(r)] || RARITY_CONFIG.common;
 function later(fn, ms) { animTimers.push(setTimeout(fn, ms)); }
 function clearAnimTimers() { animTimers.forEach(clearTimeout); animTimers = []; }
 
+// 结果已出现：确认区吸附在底部、显示右上角关闭按钮，点背景也能关闭（见 anim-backdrop）
+function markResultShown() {
+  const overlay = $('animOverlay');
+  overlay.classList.add('has-result');
+  const confirmBtn = $('animResultV2').querySelector('[data-action="end-anim"]');
+  if (confirmBtn) confirmBtn.focus({ preventScroll: true });
+}
+const resultShown = () => $('animOverlay').classList.contains('has-result');
+// 只有点在遮罩本身 / 卡片网格空白 / 确认区空白处才算「点背景」；点卡片、按钮不关闭
+function onOverlayBackdrop(el, e) {
+  if (!isAnimating || !resultShown()) return;
+  if (e.target === el || e.target === $('multiCardsGrid') || e.target === $('animResultV2')) endAnimationV2();
+}
+
 function showPullAnimation(result) {
   isAnimating = true;
   singleFlipReady = false;
@@ -366,6 +401,8 @@ function showPullAnimation(result) {
 
   // Reset
   $('animOverlay').classList.add('active');
+  $('animOverlay').classList.remove('has-result');
+  $('animOverlay').scrollTop = 0;
   circle.style.display = 'block';
   circle.style.color = cfg.color;
   meteor.style.display = 'none';
@@ -446,6 +483,7 @@ function revealSingleCard() {
     resultEl.classList.add('show');
     resultEl.innerHTML = buildResultDetailHTML(result, configOf(result));
     $('animSkipV2').style.display = 'none';
+    markResultShown();
   }, 400);
 }
 
@@ -457,6 +495,8 @@ function showMultiResult(results) {
   const resultEl = $('animResultV2');
 
   $('animOverlay').classList.add('active');
+  $('animOverlay').classList.remove('has-result');
+  $('animOverlay').scrollTop = 0;
   $('summonCircle').style.display = 'none';
   $('flipCard').style.display = 'none';
   resultEl.classList.remove('show');
@@ -520,6 +560,7 @@ function showMultiConfirm(results) {
     <div class="best-line" style="font-size:1.1rem;color:${cfg.color};margin-top:12px;font-weight:700">最佳: ${thumbHTML(best, 26)} ${best.name}</div>
     <div><button class="pull-btn primary" type="button" style="margin-top:14px" data-action="end-anim">确认</button></div>
   `;
+  markResultShown();
 }
 
 function skipAnimationV2() {
@@ -550,11 +591,12 @@ function skipAnimationV2() {
   resultEl.classList.add('show');
   resultEl.innerHTML = buildResultDetailHTML(result, cfg);
   $('animSkipV2').style.display = 'none';
+  markResultShown();
 }
 
 function endAnimationV2() {
   clearAnimTimers();
-  $('animOverlay').classList.remove('active');
+  $('animOverlay').classList.remove('active', 'has-result');
   $('summonCircle').style.display = 'block';
   $('animMeteor').style.display = 'none';
   $('flipCard').style.display = 'none';
@@ -567,11 +609,6 @@ function endAnimationV2() {
   singleFlipReady = false;
   pendingResults = [];
   refreshAll();
-}
-
-function closeResultModal() {
-  $('resultModal').classList.remove('active');
-  $('resultList').innerHTML = '';
 }
 
 // ============ UI ============
@@ -794,7 +831,7 @@ const TABS = ['charBanner', 'costumeBanner', 'shop', 'inventory', 'membership', 
 const TAB_RENDER = { charBanner: renderCharPool, costumeBanner: renderCostumePool, shop: renderShop, inventory: renderInventory, membership: renderMembership };
 
 function switchTab(tab) {
-  if (!TABS.includes(tab)) tab = TABS[0];
+  if (!TABS.includes(tab) || (tab === 'admin' && !DEV)) tab = TABS[0];
   document.querySelectorAll('#mainTabs > .tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
   document.querySelectorAll('.tab-content').forEach(c => c.classList.toggle('active', c.id === 'tab-' + tab));
   TAB_RENDER[tab]?.();
@@ -821,23 +858,23 @@ const ACTIONS = {
     'buy-legend-weapon': buyRandomLegendWeapon,
     'buy-legend-equip': buyRandomLegendEquip,
     'switch-membership': (el) => switchMembership(el.dataset.tier),
-    'add-currency': (el) => addCurrency(el.dataset.currency, Number(el.dataset.amount)),
-    'unlock-all': addAllCharacters,
-    'reset-all': confirmResetAll,
+    'add-currency': devOnly((el) => addCurrency(el.dataset.currency, Number(el.dataset.amount))),
+    'unlock-all': devOnly(addAllCharacters),
+    'reset-all': devOnly(confirmResetAll),
     'flip-single': revealSingleCard,
     'flip-mini': (el) => flipMiniCard(el),
     'reveal-all': revealAllCards,
     'skip-anim': skipAnimationV2,
     'end-anim': endAnimationV2,
-    'close-result-modal': closeResultModal,
+    'anim-backdrop': onOverlayBackdrop,
   },
   change: {
     'filter-inventory': renderInventory,
-    'set-membership': (el) => switchMembership(el.value),
+    'set-membership': devOnly((el) => switchMembership(el.value)),
   },
   input: {
     'search-inventory': renderInventory,
-    'rate-slider': onRateSlider,
+    'rate-slider': devOnly(onRateSlider),
   },
 };
 
@@ -852,13 +889,13 @@ for (const type of Object.keys(ACTIONS)) {
 
 document.addEventListener('keydown', (e) => {
   if (e.key !== 'Escape') return;
-  closeResultModal();
   if (!isAnimating) return;
-  if ($('animResultV2').classList.contains('show')) endAnimationV2();
+  if (resultShown()) endAnimationV2();
   else skipAnimationV2();
 });
 
 // ============ INIT ============
+if (DEV) document.querySelectorAll('.dev-only').forEach((el) => { el.hidden = false; });
 hydrateIcons();
 loadPlayer();
 updateRates();

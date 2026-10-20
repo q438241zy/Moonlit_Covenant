@@ -569,7 +569,7 @@ function drawCollection() {
     <div class="filters" role="group" aria-label="职业">${clsChips.map(([v, l]) => chip('data-cls', v, l, colFilter.cls === v)).join('')}</div>
     <div class="filters" role="group" aria-label="稀有度">${rarChips.map(([v, l]) => chip('data-rar', v, l, colFilter.rarity === v)).join('')}</div>
     <div class="scroll"><div class="pad"><div class="grid">
-      ${cards.map((c) => cardHTML(c, { locked: !c.owned, count: c.count, interactive: true, ariaExtra: c.owned ? `，已收录${Math.min(c.count, MAX_KEEP())}张` : '，未收录' })).join('')}
+      ${cards.map((c) => cardHTML({ ...S.cardById[c.id], ...c }, { locked: !c.owned, count: c.count, interactive: true, ariaExtra: c.owned ? `，已收录${Math.min(c.count, MAX_KEEP())}张` : '，未收录' })).join('')}
     </div></div></div>
   </div>`;
   bindNav();
@@ -612,7 +612,7 @@ function showCardDetail(c, { mode = 'collection', inst = null, side = '', note =
       <button type="button" class="btn primary" id="craftBtn" ${full || short ? 'disabled' : ''} ${full ? 'title="已拥有 3 张，不能再合成"' : ''}>${full ? `${icon('check', { size: 14 })} 已满` : `合成 ${cur('shard', c.craftCost)}`}</button>
     </div>`;
   } else if (mode === 'deck') {
-    own = `<p class="detail-own">${icon('deck', { size: 13 })} 牌组中 ${deckCount}/${RULE('MAX_COPIES', 3)} 张</p>`;
+    own = `<p class="detail-own">${icon('deck', { size: 13 })} 牌组中 ${deckCount}/${S.meta.maxCopies || 3} 张</p>`;
   }
   modal(`
     <div class="detail-cards">
@@ -693,7 +693,7 @@ function confirmDeckLeave(proceed) {
 function drawDeck() {
   const cls = S.deckClass;
   const available = S.allCards.filter((c) => c.class === cls || c.class === 'neutral');
-  const maxCopies = RULE('MAX_COPIES', S.meta.maxCopies || 3);
+  const maxCopies = S.meta.maxCopies || 3;
   const deckSize = S.meta.deckSize || 40;
   const counts = {};
   for (const id of S.deckEdit) counts[id] = (counts[id] || 0) + 1;

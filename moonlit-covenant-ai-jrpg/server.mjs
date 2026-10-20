@@ -580,18 +580,8 @@ async function handleApi(req, res, url) {
     const account = getAccount(body.playerId);
     if (!account) return sendError(res, 404, '账户不存在。', 'NO_ACCOUNT');
     if (!account._meter) account._meter = createCreditMeter(account);
+    // pullGacha 自己把抽到的条目记入 ownedCharacters / ownedCostumes（isNew 以这一抽之前为准）
     const result = pullGacha(account, account._meter, body.pool || 'character', body.count || 1);
-    if (result.ok && result.results) {
-      if (!account.ownedCostumes) account.ownedCostumes = [];
-      if (!account.ownedCharacters) account.ownedCharacters = [];
-      for (const item of result.results) {
-        if (body.pool === 'costume') {
-          if (!account.ownedCostumes.includes(item.id)) account.ownedCostumes.push(item.id);
-        } else {
-          if (!account.ownedCharacters.includes(item.id)) account.ownedCharacters.push(item.id);
-        }
-      }
-    }
     trackSession(analyticsStore, account.id, 'gacha_pull');
     return sendJson(res, result.ok ? 200 : 400, withPublicAccount(result));
   }
@@ -615,14 +605,9 @@ async function handleApi(req, res, url) {
     const body = await readJson(req);
     const account = getAccount(body.playerId);
     if (!account) return sendError(res, 404, '账户不存在。', 'NO_ACCOUNT');
-    // 脱下（恢复默认服装）
-    if (body.costumeId === 'default' || body.costumeId === null || body.costumeId === '') {
-      if (!account.equippedCostumes) account.equippedCostumes = {};
-      delete account.equippedCostumes[body.characterId];
-      return sendJson(res, 200, { ok: true, equipped: { characterId: body.characterId, costumeId: null }, message: '已恢复默认服装。' });
-    }
+    // equipCostume 自己处理 'default'/空值（恢复默认服装），并校验角色与服装归属
     const result = equipCostume(account, body.characterId, String(body.costumeId ?? ''));
-    if (result.ok) {
+    if (result.ok && result.equipped?.costumeId) {
       const parts = String(body.costumeId).split('_');
       const costumeType = parts[parts.length - 1];
       const branch = BRANCH_SCENES[costumeType] || null;

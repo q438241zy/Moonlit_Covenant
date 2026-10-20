@@ -10,6 +10,7 @@ import {
   resetBattle,
   sanitizeState
 } from '../game/engine.mjs';
+import { CAMP_CHAT_TURNS, cnNumber } from '../game/content.mjs';
 
 test('new game starts in intro with three party members', () => {
   const state = createInitialState('<队长>');
@@ -89,4 +90,25 @@ test('time rewind keeps the boss phase in sync with its restored HP', () => {
   resetBattle(state);
   assert.equal(state.enemy.hp, state.enemy.maxHp);
   assert.equal(state.battlePhase, 1);
+});
+
+test('D3: camp dialogue states the same chat limit the engine enforces', () => {
+  const state = createInitialState('测试队长');
+  assert.equal(state.maxChatTurns, CAMP_CHAT_TURNS);
+  assert.equal(state.maxChatTurns, 10);
+  advanceScene(state, 'begin_camp');
+  const line = state.events.find((ev) => ev.speakerId === 'serena' && ev.text.includes('次对话的机会'));
+  assert.ok(line, 'camp line about chat turns is missing');
+  assert.ok(line.text.includes(`你有${cnNumber(state.maxChatTurns)}次对话的机会`), line.text);
+  assert.ok(line.text.includes('十次'));
+  assert.ok(!line.text.includes('六次'));
+
+  const outcome = { utterance: '嗯。', emotion: '平静', intent: 'other', bondDelta: 0, trustDelta: 0, memory: '', tacticalHint: '' };
+  for (let i = 0; i < state.maxChatTurns; i += 1) applyChatOutcome(state, 'serena', `第${i + 1}句`, outcome);
+  assert.equal(state.chatTurns, 10);
+  assert.throws(() => applyChatOutcome(state, 'serena', '再说一句', outcome), /战前交流次数已用完/);
+});
+
+test('D3: Chinese numerals used in rule text', () => {
+  assert.deepEqual([0, 4, 10, 12, 20, 35].map(cnNumber), ['零', '四', '十', '十二', '二十', '三十五']);
 });

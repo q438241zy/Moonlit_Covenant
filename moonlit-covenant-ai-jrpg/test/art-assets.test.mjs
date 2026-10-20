@@ -12,8 +12,8 @@ const projectDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '.
 const pub = (rel) => path.join(projectDir, 'public', rel.replace(/^\//, ''));
 const readJson = (rel) => JSON.parse(fs.readFileSync(path.join(projectDir, rel), 'utf8'));
 const walk = (dir) => (fs.existsSync(dir) ? fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? walk(path.join(dir, e.name)) : [path.join(dir, e.name)])) : []);
-// the four legacy AIGC PNGs live in public/assets/ until integration step I1 moves them to tools/art/raster/ref/
-const legacyPng = (name) => [path.join(projectDir, 'tools/art/raster/ref', `${name}.png`), pub(`assets/${name}.png`)].find((f) => fs.existsSync(f));
+// the four legacy AIGC PNGs are reference-only: integration step I1 moved them from public/assets/ to tools/art/raster/ref/
+const legacyPng = (name) => path.join(projectDir, 'tools/art/raster/ref', `${name}.png`);
 const hasMagick = (() => { try { execFileSync('convert', ['-version'], { stdio: 'ignore' }); return true; } catch { return false; } })();
 
 test('every paint-over JPEG under public/assets/paint carries AIGC metadata', () => {
@@ -41,6 +41,24 @@ test('the compressed legacy JPEGs keep the AIGC label and stay within 0.8MB', ()
     assert.ok(src.exif && buf.includes(src.exif), `${name}.jpg does not carry the PNG's EXIF block verbatim`);
   }
   assert.ok(total <= 0.8 * 1024 * 1024, `legacy JPEGs total ${(total / 1048576).toFixed(2)}MB > 0.8MB`);
+});
+
+test('I1: the site ships the JPEGs only; the big PNGs are reference-only and nothing points at them', () => {
+  const names = ['lia', 'mia', 'serena', 'key-visual', 'dream-eater'];
+  for (const name of names) {
+    assert.ok(!fs.existsSync(pub(`assets/${name}.png`)), `public/assets/${name}.png is back in public/ (keep it in tools/art/raster/ref/)`);
+    assert.ok(fs.existsSync(legacyPng(name)), `tools/art/raster/ref/${name}.png missing`);
+  }
+  const sources = [
+    ...walk(path.join(projectDir, 'public')).filter((f) => /\.(js|mjs|css|html|json)$/.test(f)),
+    ...walk(path.join(projectDir, 'game')).filter((f) => /\.mjs$/.test(f)),
+    path.join(projectDir, 'server.mjs'),
+  ];
+  const ref = new RegExp(`/assets/(${names.join('|')})\\.png`);
+  for (const f of sources) {
+    const m = fs.readFileSync(f, 'utf8').match(ref);
+    assert.equal(m, null, `${path.relative(projectDir, f)} still references ${m && m[0]}`);
+  }
 });
 
 test('aigc helpers: EXIF round-trips through a JPEG APP1 segment', () => {

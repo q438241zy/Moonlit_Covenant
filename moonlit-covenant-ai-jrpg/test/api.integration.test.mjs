@@ -124,3 +124,46 @@ test('HTTP API supports a complete playable prologue', { timeout: 12000 }, async
   assert.ok(['A', 'B', 'S'].includes(state.ending.rank));
   assert.match(state.ending.title, /结局|契约/);
 });
+
+// 集成：/api/gacha/pull 只靠 pullGacha 记录拥有（服务端那段重复的循环已删）；/api/costume/equip 的「恢复默认」走 equipCostume 的校验
+async function startServer(t, extraEnv = {}) {
+  const port = await freePort();
+  const baseUrl = `http://127.0.0.1:${port}`;
+  const child = spawn(process.execPath, ['server.mjs'], {
+    cwd: projectDir,
+    env: { ...process.env, AI_MODE: 'demo', HOST: '127.0.0.1', PORT: String(port), NODE_ENV: 'test', PERSIST: '0', ...extraEnv },
+    stdio: ['ignore', 'pipe', 'pipe']
+  });
+  let diagnostics = '';
+  child.stdout.on('data', (chunk) => { diagnostics += chunk.toString(); });
+  child.stderr.on('data', (chunk) => { diagnostics += chunk.toString(); });
+  t.after(async () => {
+    if (child.exitCode !== null) return;
+    child.kill('SIGTERM');
+    await new Promise((resolve) => { const timer = setTimeout(resolve, 1500); child.once('exit', () => { clearTimeout(timer); resolve(); }); });
+  });
+  await waitForHealth(baseUrl, child).catch((error) => { throw new Error(`${error.message}\n${diagnostics}`); });
+  return baseUrl;
+}
+
+test('HTTP gacha + wardrobe: pulls are recorded once, isNew is honest, equip validates the default outfit too', { timeout: 12000 }, async (t) => {
+  const baseUrl = await startServer(t);
+  const playerId = (await post(baseUrl, '/api/account/create', { playerName: '测试' })).body.account.id;
+  const first = (await post(baseUrl, '/api/gacha/pull', { playerId, pool: 'costume', count: 10 })).body;
+  const owned = await (await fetch(`${baseUrl}/api/costume?playerId=${playerId}`)).json();
+  const ids = first.results.map((r) => r.id);
+  assert.deepEqual([...new Set(owned.ownedCostumes)].sort(), [...new Set(ids)].sort(), 'every pulled costume is owned, nothing else');
+  assert.equal(owned.ownedCostumes.length, new Set(owned.ownedCostumes).size, 'no duplicates in ownedCostumes');
+  // a copy already owned before this pull is never NEW
+  const second = (await post(baseUrl, '/api/gacha/pull', { playerId, pool: 'costume', count: 10 })).body;
+  for (const r of second.results) if (ids.includes(r.id)) assert.equal(r.isNew, false, `${r.id} was owned already`);
+
+  const equip = (payload) => fetch(`${baseUrl}/api/costume/equip`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ playerId, ...payload }) });
+  let r = await equip({ characterId: 'lia', costumeId: 'default' });
+  assert.equal(r.status, 200);
+  assert.equal((await r.json()).equipped.costumeId, null);
+  r = await equip({ characterId: 'nobody', costumeId: 'default' });
+  assert.equal(r.status, 400, 'restoring the default outfit of an unknown character is rejected');
+  r = await equip({ characterId: 'lia', costumeId: 'lia_newyear' });
+  assert.equal(r.status, ids.includes('lia_newyear') && owned.ownedCharacters?.includes('lia') ? 200 : 400);
+});

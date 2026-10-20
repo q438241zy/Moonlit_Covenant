@@ -20,7 +20,7 @@
         { "type": "dialogue", "speaker": "serena", "text": "不。应该是我。预言本来就在吞噬我的记忆。我只是……提前完成这个过程。", "emotion": "sacrificial" },
         { "type": "dialogue", "speaker": "mia", "text": "不行喵！你们两个都不行！如果一定要有人……那、那就让我来。反正我……我本来就不太被需要——", "emotion": "self_deprecating" },
         { "type": "dialogue", "speaker": "lia", "text": "闭嘴。", "emotion": "sharp" },
-        { "type": "dialogue", "speaker": "lia", "text": "谁都不许说'不被需要'这种话。你听到了吗，米娅·铃。", "emotion": "fierce" },
+        { "type": "dialogue", "speaker": "lia", "text": "谁都不许说'不被需要'这种话。你听到了吗，米娅·玲。", "emotion": "fierce" },
         { "type": "narration", "text": "争吵在继续。每个人都在试图把牺牲揽到自己身上。你看着她们——看着这三个在银轨号上相遇的、本不该有交集的人，此刻却争着为彼此赴死。" },
         { "type": "choice", "id": "ch11_choice1", "prompt": "你打断了她们的争吵——", "options": [
           { "id": "a", "text": "\"够了。谁都不许一个人做决定。我们四个人一起想。\"", "effect": { "bond_lia": 1, "bond_mia": 1, "bond_serena": 1 } },
@@ -41,7 +41,7 @@
         { "type": "dialogue", "speaker": "narrator", "text": "「他是计划的执行者。银轨号从一开始就不是普通的列车——它是黎明种的'培养皿'。而列车长，是负责确保四颗S级种子按时抵达的人。」", "emotion": "revealing" },
         { "type": "dialogue", "speaker": "mia", "text": "培养皿……我们……从一开始就是被饲养的样本喵？", "emotion": "horrified" },
         { "type": "dialogue", "speaker": "narrator", "text": "「列车长，启动强制协议。」", "emotion": "commanding" },
-        { "type": "narration", "text": "列车长举起钥匙。整个房间开始震动，墙壁上浮现出隐藏的铭文——束缚阵。四道光束从地面射出，将莉亚、米娅和塞蕾娜固定在原地。" },
+        { "type": "narration", "text": "列车长举起钥匙。整个房间开始震动，墙壁上浮现出隐藏的铭文——束缚阵。四道光束从地面射出，将莉亚、米娅和塞雷娜固定在原地。" },
         { "type": "dialogue", "speaker": "lia", "text": "什——！动不了！这该死的——", "emotion": "struggling" },
         { "type": "dialogue", "speaker": "mia", "text": "零号！零号帮我——喵！零号也被固定住了！", "emotion": "panicked" },
         { "type": "dialogue", "speaker": "serena", "text": "……我看见了。在所有时间线里，这一刻都会发生。但我没有告诉你们。", "emotion": "guilty" },
@@ -49,9 +49,9 @@
         { "type": "dialogue", "speaker": "serena", "text": "我看见了背叛。但我没有说。因为……在所有我试图阻止它的未来里，结果都更糟。我以为……接受它，然后从内部找到出路，是最好的选择。", "emotion": "conflicted" },
         { "type": "dialogue", "speaker": "lia", "text": "你——从一开始就知道？！", "emotion": "furious" },
         { "type": "dialogue", "speaker": "serena", "text": "对不起。对不起。我不知道怎么说。每一次我试图改变预言，都会有人死。我不想你们死。", "emotion": "tearful" },
-        { "type": "choice", "id": "ch11_choice2", "prompt": "莉亚的愤怒和塞蕾娜的泪水之间，你——", "options": [
+        { "type": "choice", "id": "ch11_choice2", "prompt": "莉亚的愤怒和塞雷娜的泪水之间，你——", "options": [
           { "id": "a", "text": "对莉亚说：\"她不是背叛。她是在用她能用的方式保护我们。\"", "effect": { "bond_serena": 1, "bond_lia": 1 } },
-          { "id": "b", "text": "对塞蕾娜说：\"下次，告诉我们。就算结果更糟，我们也一起面对。\"", "effect": { "bond_serena": 2 } }
+          { "id": "b", "text": "对塞雷娜说：\"下次，告诉我们。就算结果更糟，我们也一起面对。\"", "effect": { "bond_serena": 2 } }
         ]},
         { "type": "transition", "target": "ch11_scene3" }
       ],

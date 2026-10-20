@@ -1,5 +1,14 @@
 .git
 .env
+.env.*
+!.env.example
 node_modules
 npm-debug.log
+*.log
 *.zip
+coverage
+# 运行时存档（含玩家数据），绝不打进镜像
+data
+# 出图管线的原始大图与缓存
+tools/art/raster/out
+tools/art/raster/.cache

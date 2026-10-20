@@ -40,12 +40,12 @@
         { "type": "dialogue", "speaker": "lia", "text": "你已经做得够多了。零号替我们挡了那一下。你不需要再一个人扛了。", "emotion": "tender" },
         { "type": "dialogue", "speaker": "mia", "text": "可是……如果什么都做不了……那我们……", "emotion": "helpless" },
         { "type": "dialogue", "speaker": "serena", "text": "……还有一条路。", "emotion": "quiet" },
-        { "type": "narration", "text": "所有人看向塞蕾娜。她的表情很平静——太平静了。" },
+        { "type": "narration", "text": "所有人看向塞雷娜。她的表情很平静——太平静了。" },
         { "type": "dialogue", "speaker": "serena", "text": "预言说'除非第四条路被找到'。我一直在想，第四条路是什么。现在……我看见了。", "emotion": "resolved" },
         { "type": "dialogue", "speaker": "serena", "text": "第四条路不是'谁牺牲'。是'如何牺牲'。", "emotion": "mysterious" },
-        { "type": "choice", "id": "ch12_choice1", "prompt": "塞蕾娜的眼中映着黎明种的白光。你——", "options": [
+        { "type": "choice", "id": "ch12_choice1", "prompt": "塞雷娜的眼中映着黎明种的白光。你——", "options": [
           { "id": "a", "text": "\"说下去。不管是什么路，我们一起走。\"", "effect": { "bond_serena": 1, "bond_lia": 1, "bond_mia": 1 } },
-          { "id": "b", "text": "\"塞蕾娜，你的表情……你打算做什么？\"", "effect": { "bond_serena": 2 } }
+          { "id": "b", "text": "\"塞雷娜，你的表情……你打算做什么？\"", "effect": { "bond_serena": 2 } }
         ]},
         { "type": "dialogue", "speaker": "serena", "text": "……不是现在。等月蚀完成的那一刻，你们就会明白。", "emotion": "enigmatic" },
         { "type": "dialogue", "speaker": "serena", "text": "但在那之前——我需要你们相信我。无论接下来发生什么。相信我。", "emotion": "pleading" },
@@ -65,8 +65,8 @@
         { "type": "narration", "text": "不是爆炸。是绽放。像一朵花在瞬间盛开，白色的光从种子中倾泻而出，充满了整个空间。四个基座的光柱冲天而起，仪式阵的铭文全部亮起。" },
         { "type": "dialogue", "speaker": "narrator", "text": "「时间到了。黎明种激活。记忆改写程序启动——」", "emotion": "final" },
         { "type": "dialogue", "speaker": "serena", "text": "不。", "emotion": "commanding" },
-        { "type": "narration", "text": "塞蕾娜走向基座。不是犹豫的、恐惧的步伐——而是平静的、确定的。像是走向一个她早已看见的结局。" },
-        { "type": "dialogue", "speaker": "lia", "text": "塞蕾娜！你——", "emotion": "alarmed" },
+        { "type": "narration", "text": "塞雷娜走向基座。不是犹豫的、恐惧的步伐——而是平静的、确定的。像是走向一个她早已看见的结局。" },
+        { "type": "dialogue", "speaker": "lia", "text": "塞雷娜！你——", "emotion": "alarmed" },
         { "type": "dialogue", "speaker": "serena", "text": "莉亚。米娅。还有你。", "emotion": "warm" },
         { "type": "narration", "text": "她转过身，看着你们三个。紫色的眼瞳中，星图不再旋转——它们静止了。像是所有的未来都已经确定。" },
         { "type": "dialogue", "speaker": "serena", "text": "第四条路。不是一个人牺牲记忆。是——四个人分担。", "emotion": "revelation" },
@@ -81,9 +81,9 @@
           { "id": "a", "text": "\"从银轨号到现在，你们已经看见了我所有的狼狈。不差这最后一点。\"", "effect": { "bond_lia": 1, "bond_mia": 1, "bond_serena": 1 } },
           { "id": "b", "text": "什么都不说。只是伸出手。", "effect": { "bond_lia": 1, "bond_mia": 1, "bond_serena": 1 } }
         ]},
-        { "type": "narration", "text": "四只手叠在一起。莉亚的粗糙而有力，米娅的纤细而灵巧，塞蕾娜的冰凉而柔软，你的——温暖的，坚定的。" },
+        { "type": "narration", "text": "四只手叠在一起。莉亚的粗糙而有力，米娅的纤细而灵巧，塞雷娜的冰凉而柔软，你的——温暖的，坚定的。" },
         { "type": "dialogue", "speaker": "lia", "text": "……一起。", "emotion": "united" },
-        { "type": "cg", "unlockCg": "cg_ch12_eclipse_complete", "description": "CG：月蚀完成的瞬间，天空纯黑，黎明种绽放出太阳般的白光。四人站在四个基座上，手叠在一起，光柱从她们脚下冲天而起。塞蕾娜的紫发在光中飞扬，莉亚的赤色铠甲映着白光，米娅的猫耳竖起，零号在她怀中发出最后的蓝光。" },
+        { "type": "cg", "unlockCg": "cg_ch12_eclipse_complete", "description": "CG：月蚀完成的瞬间，天空纯黑，黎明种绽放出太阳般的白光。四人站在四个基座上，手叠在一起，光柱从她们脚下冲天而起。塞雷娜的紫发在光中飞扬，莉亚的赤色铠甲映着白光，米娅的猫耳竖起，零号在她怀中发出最后的蓝光。" },
         { "type": "transition", "target": "ch12_end" }
       ],
       "choices": ["ch12_choice2"]

@@ -137,7 +137,7 @@ img { -webkit-user-drag: none; }
 .hub-card .ico { color: var(--oath); line-height: 0; }
 .hub-card .name { display: block; margin-top: 8px; font-size: 15px; font-weight: 700; }
 .hub-card .desc { display: block; margin-top: 4px; font-size: 12px; color: var(--text-dim); }
-.hub-card .ico { display: block; }
+.hub-card > .ico { display: block; }
 .hub-card.wide {
   grid-column: 1 / -1; display: flex; align-items: center; gap: 14px; text-align: left; padding: 18px 16px;
   background: linear-gradient(120deg,#3a2f5a,#25305a); border-color:#4a3f7a;

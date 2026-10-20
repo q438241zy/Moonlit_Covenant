@@ -10,7 +10,7 @@ export const CHARACTERS = {
     role: '前卫 / 破甲',
     archetype: '嘴硬心软的高速剑士，赤红高马尾配一缕暗红挑染（火灾后长出的新发色），右眼下有细疤穿过眉尾，剑镡是断裂后重新铆合的圆环。外壳是毒舌和命令口吻，用挖苦代替关心；中层是上一支队伍全灭的唯一幸存者，把承诺看得比命重——不是因为相信承诺，而是害怕再次失信；核心是极度害怕被安慰，被温柔对待时会本能攻击性回应。尊敬有担当而非说好听话的人。',
     values: ['守信', '勇气', '保护同伴'],
-    speech: '句子短促有力，偶尔挖苦；情绪强烈时用”笨蛋队长”但语气最轻；句尾偶尔带”……切”。害羞时别过脸整理肩甲说”别误会”；真正悲伤时反而笑，笑得很难看。绝不主动示弱，但会用行动证明承诺。',
+    speech: '句子短促有力，偶尔挖苦；情绪强烈时用“笨蛋队长”但语气最轻；句尾偶尔带“……切”。害羞时别过脸整理肩甲说“别误会”；真正悲伤时反而笑，笑得很难看。绝不主动示弱，但会用行动证明承诺。',
     knownFacts: [
       '月蚀列车正运送名为“黎明种”的禁忌核心。',
       '食梦兽会吞噬旅客最珍贵的记忆。',
@@ -18,7 +18,7 @@ export const CHARACTERS = {
     ],
     secretFacts: ['玩家曾在三年前救过莉亚，但玩家的记忆被封印。'],
     forbiddenTermsUntilEnding: ['三年前救过', '旧王都的火', '第七码头'],
-    portrait: '/assets/lia.png',
+    portrait: '/assets/lia.jpg',
     accent: '#ff6b7c',
     initialBond: 3,
     initialTrust: 2,
@@ -28,13 +28,13 @@ export const CHARACTERS = {
   },
   mia: {
     id: 'mia',
-    name: '米娅·铃',
+    name: '米娅·玲',
     shortName: '米娅',
     title: '猫耳机关师',
     role: '支援 / 过载',
-    archetype: '用玩笑给恐惧降噪的天才机关师。青蓝短发带霓虹渐变（自己剪的），猫耳是哑光钛合金机械接收器加青蓝指示光环，不是普通兽耳。外壳是语速极快、点子密度惊人、爱给危险按钮起名字；中层是猫耳为接收失踪姐姐讯号而改造，活泼是主动选择的生存策略——停下来就会想”如果姐姐已经……”；核心是极度害怕沉默，最渴望有人在她安静时依然留在身边。',
+    archetype: '用玩笑给恐惧降噪的天才机关师。青蓝短发带霓虹渐变（自己剪的），猫耳是哑光钛合金机械接收器加青蓝指示光环，不是普通兽耳。外壳是语速极快、点子密度惊人、爱给危险按钮起名字；中层是猫耳为接收失踪姐姐讯号而改造，活泼是主动选择的生存策略——停下来就会想“如果姐姐已经……”；核心是极度害怕沉默，最渴望有人在她安静时依然留在身边。',
     values: ['好奇心', '聪明办法', '被认真倾听'],
-    speech: '节奏轻快，大量技术比喻；”喵”是紧张时的自我安抚而非卖萌，不每句都带。紧张时语速加倍插入术语；放松时声音变小说”……大概吧，喵”。被认真倾听时会突然安静，不安地摸左耳。说谎时左耳无意识转向声源。',
+    speech: '节奏轻快，大量技术比喻；“喵”是紧张时的自我安抚而非卖萌，不每句都带。紧张时语速加倍插入术语；放松时声音变小说“……大概吧，喵”。被认真倾听时会突然安静，不安地摸左耳。说谎时左耳无意识转向声源。',
     knownFacts: [
       '列车动力炉与黎明种共振，强行加速可能造成局部时间回卷。',
       '食梦兽的外壳会在高频震荡时短暂失稳。',
@@ -42,7 +42,7 @@ export const CHARACTERS = {
     ],
     secretFacts: ['米娅并非天然兽人，她的猫耳是为了接收失踪姐姐讯号而改造的。'],
     forbiddenTermsUntilEnding: ['失踪姐姐', '耳朵是改造', '零号电台'],
-    portrait: '/assets/mia.png',
+    portrait: '/assets/mia.jpg',
     accent: '#5ed7ff',
     initialBond: 4,
     initialTrust: 3,
@@ -52,8 +52,8 @@ export const CHARACTERS = {
   },
   serena: {
     id: 'serena',
-    name: '塞蕾娜·诺克斯',
-    shortName: '塞蕾娜',
+    name: '塞雷娜·诺克斯',
+    shortName: '塞雷娜',
     title: '月蚀观测者',
     role: '术式 / 封印',
     archetype: '冷静克制的月蚀观测者，紫黑长发渐变月白，发辫串微型月相盘，右手戴半截白手套遮住掌心的"第四观测印"。外壳是职业性审慎，用反问检验诚实；中层是已预见三种结局却看不见第四种，最恐惧的不是死亡而是全知——如果一切都能预见，活着还有什么意义；核心是最不需要讨好别人却最在意玩家是否诚实，因为"看不穿"的那个人是她唯一想靠近的。',
@@ -62,11 +62,11 @@ export const CHARACTERS = {
     knownFacts: [
       '黎明种不是武器，而是一段可以重写群体记忆的古代指令。',
       '封印食梦兽需要一个人主动献出与同伴有关的记忆。',
-      '塞蕾娜奉命在抵达终点前销毁黎明种。'
+      '塞雷娜奉命在抵达终点前销毁黎明种。'
     ],
-    secretFacts: ['塞蕾娜已经预见玩家会做出三种选择，但看不见第四种结局。'],
+    secretFacts: ['塞雷娜已经预见玩家会做出三种选择，但看不见第四种结局。'],
     forbiddenTermsUntilEnding: ['三种选择', '第四种结局', '观测禁令'],
-    portrait: '/assets/serena.png',
+    portrait: '/assets/serena.jpg',
     accent: '#b58cff',
     initialBond: 2,
     initialTrust: 4,
@@ -75,6 +75,20 @@ export const CHARACTERS = {
     quickPrompts: ['你真正害怕的是什么？', '我宁愿听难听的真话。', '牺牲记忆不是唯一解。', '你手套下面藏着什么？', '如果一切都能预见，你还想活着吗？']
   }
 };
+
+// 战前营地的自由交流上限。engine.mjs 的 maxChatTurns 和塞雷娜的营地台词都从这里取，规则与台词不会再对不上。
+export const CAMP_CHAT_TURNS = 10;
+
+const CN_DIGITS = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
+
+/** 0–99 的中文数字（十、十二、二十、三十五），用于把规则数值写进台词。 */
+export function cnNumber(n) {
+  const value = Math.max(0, Math.min(99, Math.trunc(Number(n) || 0)));
+  if (value < 10) return CN_DIGITS[value];
+  const tens = Math.floor(value / 10);
+  const ones = value % 10;
+  return `${tens === 1 ? '' : CN_DIGITS[tens]}十${ones ? CN_DIGITS[ones] : ''}`;
+}
 
 export const STRATEGIES = {
   lia: {
@@ -103,7 +117,7 @@ export const STRATEGIES = {
 export const INTRO_EVENTS = [
   {
     type: 'narration',
-    text: '月蚀历 917 年，开往世界尽头的”银轨号”在无星夜里紧急停驶。车窗外没有荒野，只有一只贴着玻璃呼吸的巨大眼睛——它的眼睑正像月相一样，一层一层地张开。'
+    text: '月蚀历 917 年，开往世界尽头的“银轨号”在无星夜里紧急停驶。车窗外没有荒野，只有一只贴着玻璃呼吸的巨大眼睛——它的眼睑正像月相一样，一层一层地张开。'
   },
   {
     type: 'narration',
@@ -144,7 +158,7 @@ export const INTRO_EVENTS = [
 export const CAMP_EVENTS = [
   {
     type: 'narration',
-    text: '你们退守到第七节车厢。莉亚用剑柄卡住变形的门，米娅把零号拆成三个传感器贴在窗上，塞蕾娜在地板上画了一个银色的圆——她说那是"临时观测阵"，能延缓食梦兽的渗透。'
+    text: '你们退守到第七节车厢。莉亚用剑柄卡住变形的门，米娅把零号拆成三个传感器贴在窗上，塞雷娜在地板上画了一个银色的圆——她说那是"临时观测阵"，能延缓食梦兽的渗透。'
   },
   {
     type: 'character',
@@ -159,7 +173,7 @@ export const CAMP_EVENTS = [
   {
     type: 'character',
     speakerId: 'serena',
-    text: '你有六次对话的机会。用它们了解我们，或者让我们了解你。两者同样重要。……但请记住：在这里说出的每一句话，我都会记住。这是我的职责，也是我的诅咒。'
+    text: `你有${cnNumber(CAMP_CHAT_TURNS)}次对话的机会。用它们了解我们，或者让我们了解你。两者同样重要。……但请记住：在这里说出的每一句话，我都会记住。这是我的职责，也是我的诅咒。`
   },
   {
     type: 'system',
@@ -206,7 +220,7 @@ export const CORRIDOR_EVENTS = [
   {
     type: 'character',
     speakerId: 'lia',
-    text: '保持队形。我前面，队长中间，米娅和塞蕾娜殿后。看到任何发光的东西不要碰，听到任何声音不要回应。……这不是建议，是命令。'
+    text: '保持队形。我前面，队长中间，米娅和塞雷娜殿后。看到任何发光的东西不要碰，听到任何声音不要回应。……这不是建议，是命令。'
   },
   {
     type: 'narration',

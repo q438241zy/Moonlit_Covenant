@@ -4,6 +4,9 @@ node_modules/
 *.log
 coverage/
 
+# 运行时存档（data/saves.json 及损坏时留下的 .corrupt-* 备份），含玩家数据，不进仓库
+data/
+
 # 厚涂出图的原始大图与参考图缓存（只提交 finalize 后的 public/assets/paint/）
 tools/art/raster/out/
 tools/art/raster/.cache/

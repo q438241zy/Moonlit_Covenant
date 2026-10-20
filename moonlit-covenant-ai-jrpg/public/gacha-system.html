@@ -7,12 +7,13 @@
 <style>
 :root {
   --bg: #080617; --surf: #100e24; --card: #181535; --line: #2a2650;
-  --text: #e8e4f0; --muted: #8b87a8; --faint: #5c5880;
+  --text: #e8e4f0; --muted: #8b87a8; --faint: #8783a7;
   --legendary: #c084fc; --epic: #f87171; --rare: #fbbf24; --uncommon: #60a5fa; --common: #9ca3af;
   --diamond: #5ee4ff; --pink: #f472b6; --gold: #fbbf24;
   --radius: 14px; --shadow: 0 8px 32px rgba(0,0,0,.55);
 }
 * { box-sizing:border-box; margin:0; padding:0; }
+[hidden] { display:none !important; }
 body { background:var(--bg); color:var(--text); font-family:'Segoe UI',system-ui,sans-serif; min-height:100vh; overflow-x:hidden; }
 ::-webkit-scrollbar{width:5px} ::-webkit-scrollbar-thumb{background:var(--line);border-radius:3px}
 .app { max-width:1200px; margin:0 auto; padding:14px 20px; }
@@ -95,8 +96,6 @@ body { background:var(--bg); color:var(--text); font-family:'Segoe UI',system-ui
 .member-card .tier-price { font-size:1.05rem; font-weight:700; margin-bottom:12px; }
 
 /* ===== 召唤动画 ===== */
-.anim-overlay { display:none; position:fixed; inset:0; z-index:200; background:rgba(0,0,0,.93); justify-content:center; align-items:center; flex-direction:column; }
-.anim-overlay.active { display:flex; }
 .anim-stage { position:relative; width:320px; height:320px; }
 .anim-orb { position:absolute; inset:18%; border-radius:50%; animation:orbPulse .55s ease-in-out infinite alternate; }
 @keyframes orbPulse { from { transform:scale(.88); filter:brightness(.9); } to { transform:scale(1.12); filter:brightness(1.5); } }
@@ -108,10 +107,7 @@ body { background:var(--bg); color:var(--text); font-family:'Segoe UI',system-ui
 .anim-skip { position:fixed; bottom:30px; right:30px; z-index:210; }
 .particles { position:absolute; inset:0; pointer-events:none; }
 
-/* ===== 十连弹窗 ===== */
-.result-modal { display:none; position:fixed; inset:0; z-index:180; background:rgba(0,0,0,.88); justify-content:center; align-items:center; flex-direction:column; }
-.result-modal.active { display:flex; }
-.result-list { display:flex; gap:14px; flex-wrap:wrap; justify-content:center; max-width:900px; padding:20px; }
+/* ===== 结果条目（旧版样式，保留给 .result-item） ===== */
 .result-item { width:130px; padding:14px; border-radius:var(--radius); text-align:center; animation:popIn .35s cubic-bezier(.175,.885,.32,1.275) backwards; }
 .result-item:nth-child(1) { animation-delay:.08s; } .result-item:nth-child(2) { animation-delay:.12s; }
 .result-item:nth-child(3) { animation-delay:.16s; } .result-item:nth-child(4) { animation-delay:.2s; }
@@ -132,7 +128,11 @@ body { background:var(--bg); color:var(--text); font-family:'Segoe UI',system-ui
 .result-item.r-pink { background:linear-gradient(135deg,#f472b6,#ec4899); color:#fff; }
 
 /* ===== 召唤动画 v2 — 流星坠落+召唤阵+翻转揭示 ===== */
-.anim-overlay { display:none; position:fixed; inset:0; z-index:200; background:rgba(2,2,12,.95); justify-content:center; align-items:center; flex-direction:column; overflow:hidden; }
+.anim-overlay {
+  display:none; position:fixed; inset:0; z-index:200; background:rgba(2,2,12,.95);
+  flex-direction:column; align-items:center; justify-content:center; justify-content:safe center;
+  overflow-x:hidden; overflow-y:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch;
+}
 .anim-overlay.active { display:flex; }
 
 /* 召唤阵 */
@@ -231,8 +231,18 @@ body { background:var(--bg); color:var(--text); font-family:'Segoe UI',system-ui
 @media(max-width:768px) {
   .header { flex-direction:column; }
   .tabs { overflow-x:auto; flex-wrap:nowrap; }
-  .result-list { flex-direction:column; align-items:center; }
 }
+@media(max-width:600px) {
+  .gacha-cards-grid { gap:10px; padding:56px 12px 12px; }
+  .mini-flip-card { width:96px; height:140px; }
+  .mini-caption { padding:18px 4px 5px; }
+}
+
+/* 原型声明横幅 */
+.proto-banner { display:flex; align-items:flex-start; justify-content:center; gap:8px; margin:0 0 4px; padding:8px 14px; border-radius:10px; border:1px dashed rgba(251,191,36,.55); background:rgba(251,191,36,.08); color:#fcd34d; font-size:.82rem; line-height:1.5; }
+.proto-banner > span:first-child { flex:none; padding-top:1px; }
+.proto-banner > span:last-child { min-width:0; }
+.proto-banner b { color:#fde68a; }
 
 /* ===== 图标（/icons.js 内联 SVG，继承 currentColor） ===== */
 .ico { display:inline-block; flex:none; vertical-align:-.2em; overflow:visible; }
@@ -299,6 +309,20 @@ body { background:var(--bg); color:var(--text); font-family:'Segoe UI',system-ui
 .flip-inner { cursor:pointer; }
 .flip-back { background:radial-gradient(circle at 50% 32%, #2a2458, #120f2c 70%); border:1.5px solid rgba(255,255,255,.14); }
 .anim-result-v2 { order:2; position:relative; z-index:1; }
+/* 结果出来后：确认区吸附在视口底部（带底色），内容再多也点得到「确认」 */
+.anim-overlay.has-result .anim-result-v2 {
+  position:sticky; bottom:0; z-index:5; align-self:stretch; flex:none;
+  padding:10px 16px calc(14px + env(safe-area-inset-bottom, 0px));
+  background:linear-gradient(to top, rgba(2,2,12,.98) 72%, rgba(2,2,12,0));
+}
+.anim-close {
+  position:fixed; top:12px; right:12px; z-index:220; display:none; align-items:center; justify-content:center;
+  width:40px; height:40px; border-radius:50%; border:1px solid rgba(255,255,255,.28);
+  background:rgba(16,14,36,.9); color:var(--text); cursor:pointer;
+}
+.anim-close:hover, .anim-close:focus-visible { border-color:var(--diamond); }
+.anim-overlay.has-result .anim-close { display:flex; }
+.gacha-cards-grid, .flip-card { flex:none; }
 .flip-back.has-art { padding:0; justify-content:flex-end; }
 .flip-art { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:50% 0; }
 .flip-caption { position:relative; width:100%; padding:52px 12px 16px; text-align:center; background:linear-gradient(to top, rgba(6,5,18,.95) 45%, transparent); }
@@ -314,10 +338,19 @@ body { background:var(--bg); color:var(--text); font-family:'Segoe UI',system-ui
 .mini-caption { position:relative; width:100%; padding:22px 4px 6px; text-align:center; background:linear-gradient(to top, rgba(6,5,18,.92) 50%, transparent); }
 .mini-flip-back .mini-icon { display:flex; color:#fff; }
 .mini-new { color:#4ade80; font-size:.55rem; margin-top:2px; font-weight:700; }
+
+/* 减少动态效果：关闭循环动画、翻牌/弹出过渡与悬停位移 */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; animation-delay:0s !important; transition-duration:.01ms !important; transition-delay:0s !important; scroll-behavior:auto !important; }
+  .pull-btn:hover, .item-card:hover, .member-card:hover { transform:none; }
+  .item-card:hover .item-portrait img { transform:scale(1.32); }
+  .item-card:hover .item-portrait.is-costume img { transform:scale(1.06); }
+}
 </style>
 </head>
 <body>
 <div class="app">
+  <div class="proto-banner" role="note"><span data-icon="info" data-size="16"></span><span><b>原型</b> · 数据与正式游戏不互通</span></div>
   <div class="header">
     <h1>月蚀契约 · <span style="color:var(--diamond)">星轨召唤</span></h1>
     <div class="resource-bar">
@@ -326,7 +359,7 @@ body { background:var(--bg); color:var(--text); font-family:'Segoe UI',system-ui
       <div class="res-badge" title="粉晶"><span data-icon="pink-crystal" data-size="20"></span><span id="pinkDisplay">0</span></div>
       <div class="res-badge" title="精魄"><span data-icon="essence" data-size="20"></span><span id="essenceDisplay">0</span> <span class="res-unit">精魄</span></div>
       <span class="membership-badge" id="memberBadge" style="background:rgba(156,163,175,.2);color:#9ca3af">青铜</span>
-      <button class="tab-btn icon-only" type="button" data-action="switch-tab" data-tab="admin" title="后台调试" aria-label="后台调试"><span data-icon="settings" data-size="16"></span></button>
+      <button class="tab-btn icon-only dev-only" type="button" data-action="switch-tab" data-tab="admin" title="后台调试" aria-label="后台调试" hidden><span data-icon="settings" data-size="16"></span></button>
     </div>
   </div>
 
@@ -336,7 +369,7 @@ body { background:var(--bg); color:var(--text); font-family:'Segoe UI',system-ui
     <button class="tab-btn" type="button" data-action="switch-tab" data-tab="shop"><span data-icon="cart" data-size="16"></span>商城</button>
     <button class="tab-btn" type="button" data-action="switch-tab" data-tab="inventory"><span data-icon="box" data-size="16"></span>仓库</button>
     <button class="tab-btn" type="button" data-action="switch-tab" data-tab="membership"><span data-icon="crown" data-size="16"></span>会员</button>
-    <button class="tab-btn" type="button" data-action="switch-tab" data-tab="admin"><span data-icon="wrench" data-size="16"></span>后台</button>
+    <button class="tab-btn dev-only" type="button" data-action="switch-tab" data-tab="admin" hidden><span data-icon="wrench" data-size="16"></span>后台</button>
   </div>
 
   <!-- ===== 角色召唤 ===== -->
@@ -398,8 +431,8 @@ body { background:var(--bg); color:var(--text); font-family:'Segoe UI',system-ui
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;" id="memberGrid"></div>
   </div>
 
-  <!-- ===== 后台 ===== -->
-  <div id="tab-admin" class="tab-content">
+  <!-- ===== 后台（只在 ?dev=1 时显示） ===== -->
+  <div id="tab-admin" class="tab-content dev-only" hidden>
     <div class="admin-panel">
       <h3><span data-icon="settings" data-size="18"></span>后台调试面板</h3>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:14px;">
@@ -433,7 +466,7 @@ body { background:var(--bg); color:var(--text); font-family:'Segoe UI',system-ui
 </div>
 
 <!-- 召唤动画 v2 -->
-<div class="anim-overlay" id="animOverlay">
+<div class="anim-overlay" id="animOverlay" data-action="anim-backdrop" role="dialog" aria-modal="true" aria-label="召唤结果">
   <!-- 召唤阵 -->
   <div class="summon-circle" id="summonCircle">
     <svg viewBox="0 0 200 200" fill="none">
@@ -467,12 +500,7 @@ body { background:var(--bg); color:var(--text); font-family:'Segoe UI',system-ui
   <!-- 按钮 -->
   <button class="pull-btn primary reveal-all-btn" type="button" id="revealAllBtn" data-action="reveal-all"><span data-icon="sparkle" data-size="16"></span>全部揭示</button>
   <button class="pull-btn primary anim-skip-v2" type="button" id="animSkipV2" data-action="skip-anim">跳过<span data-icon="chevron-right" data-size="16"></span></button>
-</div>
-
-<!-- 十连结果弹窗（确认用） -->
-<div class="result-modal" id="resultModal">
-  <div class="result-list" id="resultList"></div>
-  <button class="pull-btn primary" type="button" style="margin-top:16px" data-action="close-result-modal">确认</button>
+  <button class="anim-close" type="button" id="animClose" data-action="end-anim" aria-label="关闭召唤结果" title="关闭"><span data-icon="close" data-size="18"></span></button>
 </div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>

@@ -345,9 +345,9 @@ function titleScreen() {
         </section>
         <section class="title-art" aria-label="三名主要角色">
           <div class="hero-moon"></div>
-          <div class="hero-card">${heroImg('/assets/lia.png', '赤誓骑士莉亚')}</div>
-          <div class="hero-card">${heroImg('/assets/mia.png', '猫耳机关师米娅')}</div>
-          <div class="hero-card">${heroImg('/assets/serena.png', '月蚀观测者塞雷娜')}</div>
+          <div class="hero-card">${heroImg('/assets/lia.jpg', '赤誓骑士莉亚')}</div>
+          <div class="hero-card">${heroImg('/assets/mia.jpg', '猫耳机关师米娅')}</div>
+          <div class="hero-card">${heroImg('/assets/serena.jpg', '月蚀观测者塞雷娜')}</div>
         </section>
       </div>
     </main>`;
@@ -523,9 +523,9 @@ function introLayout() {
           <div class="intro-panel">
             <div class="eyebrow">PROLOGUE · THE EYE OUTSIDE THE WINDOW</div>
             <div class="intro-orbit">
-              <img class="intro-avatar" src="/assets/lia.png" alt="莉亚" width="832" height="1216" decoding="async">
-              <img class="intro-avatar" src="/assets/mia.png" alt="米娅" width="832" height="1216" decoding="async">
-              <img class="intro-avatar" src="/assets/serena.png" alt="塞雷娜" width="832" height="1216" decoding="async">
+              <img class="intro-avatar" src="/assets/lia.jpg" alt="莉亚" width="832" height="1216" decoding="async">
+              <img class="intro-avatar" src="/assets/mia.jpg" alt="米娅" width="832" height="1216" decoding="async">
+              <img class="intro-avatar" src="/assets/serena.jpg" alt="塞雷娜" width="832" height="1216" decoding="async">
             </div>
             <h1>醒来时，她们都记得你。</h1>
             <p>只有你不记得她们。</p>
@@ -842,6 +842,8 @@ async function unlockAdmin(event) {
     beep('error');
   };
   if (!key) { showError('请输入管理口令。'); input?.focus(); return; }
+  // 口令放在请求头里发送：请求头只能装 Latin-1 字符，中文等字符会让 fetch 直接抛出浏览器的英文报错
+  if (/[^\x20-\xff]/.test(key)) { showError('口令只能包含英文字母、数字和常见符号。'); input?.focus(); return; }
   if (button) button.disabled = true;
   try {
     dashboardData = await fetchDashboard(key);

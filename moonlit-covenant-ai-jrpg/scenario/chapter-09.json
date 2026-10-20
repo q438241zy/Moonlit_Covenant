@@ -13,12 +13,12 @@
         { "type": "narration", "text": "门后的景象让所有人屏住了呼吸。这不是什么天文台——这是一间记忆提取实验室。数十个休眠舱排列在白色墙壁中，每个舱内都躺着一个人，面容安详，仿佛只是在沉睡。" },
         { "type": "dialogue", "speaker": "mia", "text": "这些导线……是神经接口喵。它们在持续提取休眠者的记忆，传输到中央装置。而中央装置的核心……", "emotion": "analytical" },
         { "type": "dialogue", "speaker": "serena", "text": "是黎明种。", "emotion": "hollow" },
-        { "type": "narration", "text": "塞蕾娜走向最近的一个休眠舱。舱内躺着一位中年女性，银灰色的头发，面容与塞蕾娜有七分相似。" },
+        { "type": "narration", "text": "塞雷娜走向最近的一个休眠舱。舱内躺着一位中年女性，银灰色的头发，面容与塞雷娜有七分相似。" },
         { "type": "dialogue", "speaker": "serena", "text": "……母亲。", "emotion": "devastated" },
-        { "type": "dialogue", "speaker": "lia", "text": "塞蕾娜——", "emotion": "concerned" },
+        { "type": "dialogue", "speaker": "lia", "text": "塞雷娜——", "emotion": "concerned" },
         { "type": "dialogue", "speaker": "serena", "text": "她在这里。她一直在这里。我以为她在观测所工作……原来她也是实验体。", "emotion": "grieving" },
-        { "type": "narration", "text": "塞蕾娜的手按在休眠舱的玻璃上。舱内的女性没有任何反应，只是安静地沉睡着，嘴角带着淡淡的微笑。" },
-        { "type": "choice", "id": "ch9_choice1", "prompt": "塞蕾娜的肩膀在颤抖。你——", "options": [
+        { "type": "narration", "text": "塞雷娜的手按在休眠舱的玻璃上。舱内的女性没有任何反应，只是安静地沉睡着，嘴角带着淡淡的微笑。" },
+        { "type": "choice", "id": "ch9_choice1", "prompt": "塞雷娜的肩膀在颤抖。你——", "options": [
           { "id": "a", "text": "走到她身边，轻轻握住她按在玻璃上的手", "effect": { "bond_serena": 2 } },
           { "id": "b", "text": "\"我们会把她救出来的。所有人。我保证。\"", "effect": { "bond_serena": 1, "bond_lia": 1 } }
         ]},
@@ -46,7 +46,7 @@
         { "type": "dialogue", "speaker": "narrator", "text": "「这不是毁灭。这是救赎。我将赐予所有人一个没有伤痛的过去。」", "emotion": "mechanical" },
         { "type": "dialogue", "speaker": "lia", "text": "……改写记忆？把痛苦变成平静？", "emotion": "disgusted" },
         { "type": "dialogue", "speaker": "lia", "text": "那我的七道刻痕呢？艾琳、卡尔、莉莉安——他们的牺牲，他们的痛苦，他们真实存在过的证据——全部要被'改写'成没有意义的东西？", "emotion": "enraged" },
-        { "type": "cg", "unlockCg": "cg_ch9_truth_revealed", "description": "CG：终端屏幕的冷光映在四人脸上。莉亚握剑的手在颤抖，米娅的猫耳完全贴平，塞蕾娜闭着眼，泪痕未干。玩家站在中央，面对着屏幕上'黎明种计划'的完整架构图——一颗金色种子连接着无数银色导线，导线的另一端是无数沉睡的人。" },
+        { "type": "cg", "unlockCg": "cg_ch9_truth_revealed", "description": "CG：终端屏幕的冷光映在四人脸上。莉亚握剑的手在颤抖，米娅的猫耳完全贴平，塞雷娜闭着眼，泪痕未干。玩家站在中央，面对着屏幕上'黎明种计划'的完整架构图——一颗金色种子连接着无数银色导线，导线的另一端是无数沉睡的人。" },
         { "type": "transition", "target": "ch9_scene3" }
       ],
       "choices": []
@@ -54,25 +54,25 @@
     {
       "id": "ch9_scene3",
       "name": "诺克斯观测所·抉择",
-      "background": "实验室中，黎明种在中央装置内缓缓旋转，金色的光芒脉动着，像一颗心脏在跳动。四份休眠舱中的S级样本——包括塞蕾娜的母亲——依然在沉睡。",
+      "background": "实验室中，黎明种在中央装置内缓缓旋转，金色的光芒脉动着，像一颗心脏在跳动。四份休眠舱中的S级样本——包括塞雷娜的母亲——依然在沉睡。",
       "events": [
         { "type": "dialogue", "speaker": "serena", "text": "……'没有伤痛的过去'。听起来很美好。不是吗？", "emotion": "conflicted" },
         { "type": "dialogue", "speaker": "lia", "text": "你在说什么？", "emotion": "sharp" },
         { "type": "dialogue", "speaker": "serena", "text": "我在想……如果我的记忆可以被改写。如果我不再记得每一次预言带来的痛苦，不再记得失去的记忆……如果我不再是'月蚀观测者'……", "emotion": "tempted" },
         { "type": "dialogue", "speaker": "serena", "text": "……我会不会轻松一些？", "emotion": "vulnerable" },
         { "type": "narration", "text": "沉默。这个问题像一根针，刺入了每个人心中最柔软的地方。" },
-        { "type": "dialogue", "speaker": "mia", "text": "……塞蕾娜。如果改写记忆的话，你还会记得零号吗？还会记得我们吗？还会记得这个篝火旁的夜晚吗喵？", "emotion": "sad" },
+        { "type": "dialogue", "speaker": "mia", "text": "……塞雷娜。如果改写记忆的话，你还会记得零号吗？还会记得我们吗？还会记得这个篝火旁的夜晚吗喵？", "emotion": "sad" },
         { "type": "dialogue", "speaker": "serena", "text": "……", "emotion": "silent" },
         { "type": "dialogue", "speaker": "lia", "text": "痛苦是真实的。它证明我们活过、爱过、失去过。把痛苦抹掉，就等于把那些人也抹掉了。", "emotion": "fierce" },
         { "type": "dialogue", "speaker": "lia", "text": "我拒绝。就算带着七道刻痕活一辈子，我也拒绝。", "emotion": "absolute" },
         { "type": "choice", "id": "ch9_choice2", "prompt": "黎明种的光芒在等待。你做出了自己的回答——", "options": [
           { "id": "a", "text": "\"痛苦不是需要被治愈的病。它是我们活着的证明。我拒绝改写。\"", "effect": { "bond_lia": 1, "bond_mia": 1, "bond_serena": 1 } },
-          { "id": "b", "text": "\"塞蕾娜，你不需要一个人承受所有痛苦。但解决方式不是遗忘——是分担。\"", "effect": { "bond_serena": 2 } }
+          { "id": "b", "text": "\"塞雷娜，你不需要一个人承受所有痛苦。但解决方式不是遗忘——是分担。\"", "effect": { "bond_serena": 2 } }
         ]},
         { "type": "dialogue", "speaker": "serena", "text": "……是的。你说得对。如果我不记得痛苦，那我也不记得你们在我身边的那些夜晚了。", "emotion": "resolved" },
         { "type": "dialogue", "speaker": "serena", "text": "我选择记住。所有的。", "emotion": "strong" },
         { "type": "dialogue", "speaker": "mia", "text": "那……我们现在怎么办喵？黎明种还在这里，月蚀还在继续。如果'黎明卿'的计划还在推进——", "emotion": "anxious" },
-        { "type": "dialogue", "speaker": "lia", "text": "我们找到黎明卿。阻止这个计划。然后——把所有人的记忆还给他们。包括你的母亲，塞蕾娜。", "emotion": "commanding" },
+        { "type": "dialogue", "speaker": "lia", "text": "我们找到黎明卿。阻止这个计划。然后——把所有人的记忆还给他们。包括你的母亲，塞雷娜。", "emotion": "commanding" },
         { "type": "narration", "text": "黎明种在装置中脉动着，金色的光芒照亮了四人坚定的面孔。月蚀还在继续。时间不多了。" },
         { "type": "transition", "target": "ch9_end" }
       ],

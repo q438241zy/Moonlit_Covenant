@@ -11,6 +11,7 @@ import {
   DECISIONS,
   ENEMY,
   CG_GALLERY,
+  CAMP_CHAT_TURNS,
   publicCharacter
 } from './content.mjs';
 
@@ -98,7 +99,7 @@ export function createInitialState(playerName = '队长') {
     selectedCharacterId: 'lia',
     chosenStrategyId: null,
     chatTurns: 0,
-    maxChatTurns: 10,
+    maxChatTurns: CAMP_CHAT_TURNS,
     partyHp: 100,
     partyMaxHp: 100,
     focus: 55,
@@ -297,7 +298,7 @@ function finishBattleIfNeeded(state) {
   if (state.enemy.hp <= 0) {
     state.enemy.hp = 0;
     state.scene = 'aftermath';
-    state.objective = '决定如何处置”黎明种”。';
+    state.objective = '决定如何处置“黎明种”。';
     state.flags.battleWon = true;
     state.chatTurns = 0;
     AFTERMATH_EVENTS.forEach((raw) => pushEvent(state, hydrateEvent(raw)));
@@ -373,7 +374,7 @@ export function battleAction(state, actionId) {
       state.enemy.sealed = clamp(state.enemy.sealed + 10, 0, 20);
       state.partyHp = clamp(state.partyHp + 8, 0, state.partyMaxHp);
       damage -= 5;
-      pushEvent(state, event('battle', `塞蕾娜展开「静月封界」，造成 ${damage} 点伤害并形成护盾。`, { speakerId: 'serena' }));
+      pushEvent(state, event('battle', `塞雷娜展开「静月封界」，造成 ${damage} 点伤害并形成护盾。`, { speakerId: 'serena' }));
     }
     state.enemy.hp = clamp(state.enemy.hp - damage, 0, state.enemy.maxHp);
   }

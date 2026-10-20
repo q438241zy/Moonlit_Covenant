@@ -2,36 +2,90 @@
 
 **Moonlit Covenant — AI JRPG Web Vertical Slice**
 
-一个可以直接运行的网页 JRPG 序章：玩家能和三名队友自由交谈，AI 会记住承诺、道歉、夸奖与冒犯；这些关系会影响战术协同和最终评价。战斗、道具、剧情节点与结局由确定性游戏规则控制，不由语言模型擅自改写。
+一个可以直接运行的网页 JRPG：主线《亚克篇》按剧本逐字实现，所有关键抉择都是自由输入；外传《银轨号》里，玩家能和三名队友自由交谈，AI 会记住承诺、道歉、夸奖与冒犯，这些关系会影响战术协同和最终评价。战斗、道具、剧情节点与结局由确定性游戏规则控制，不由语言模型擅自改写。
 
-> 当前版本是用于验证玩法和商业方向的可玩垂直切片。游戏内的矢量美术（立绘、服装、CG、卡面、地图、Boss、场景与 UI 图标）均为本项目代码生成的**原创**资产；三张主角厚涂立绘与主视觉 PNG 为 AI 生成并带有「图片由AI生成」标识（见下方「资产说明」）。正式销售前应替换为商业级立绘、CG、音乐与授权语音。
+> 当前版本是用于验证玩法和商业方向的可玩垂直切片。游戏内的矢量美术（立绘、服装、CG、卡面、地图、Boss、场景、主线背景与胸像、UI 图标）均为本项目代码生成的**原创**资产；三张主角厚涂立绘与标题页主视觉为 AI 生成，并带有「图片由AI生成」标识（见下方「资产说明」）。正式销售前应替换为商业级立绘、CG、音乐与授权语音。
 
 ## 已实现内容
 
-- **主线 · 亚克篇（`/story.html`）**：按 `剧本/` 逐字实现序章《黑翼焚麦之夜》、第一章《导师》、第二章《红发女孩》。视觉小说式演出，所有选择都是**自由输入**（无固定选项），第二章街巷伏击为自由战术战斗；进度存于浏览器，可章末继承到下一章。格式与引擎见 [`docs/STORY-ENGINE.md`](docs/STORY-ENGINE.md)，校验与自动试玩：`npm run story:check`。
-- **银轨号外传**：以下为原有的 AI 对话垂直切片。
+### 主线 · 亚克篇（`/story.html`）
+
+按 `剧本/` 逐字实现的视觉小说式主线，所有选择都是**自由输入**（无固定选项），进度逐拍保存在浏览器里，章末可把结果继承到下一章。
+
+| 章节 | 标题 |
+|---|---|
+| ch000 | 序章｜黑翼焚麦之夜 |
+| ch001 | 第一章｜导师 |
+| ch002 | 第二章｜红发女孩（含街巷伏击自由战术战斗） |
+| ch003 | 第三章｜临时契约 |
+| ch004 | 第四章｜旧磨坊 |
+| ch005 | 第五章｜大车之夜 |
+
+第五章已由审阅稿升为**正式稿**（核#11）。每章约 11–24 分钟，预计时长见章节选择页（`public/story/chapters/index.json` 的 `estimatedMinutes`）。章节数据在 `public/story/chapters/`，格式与引擎见 [`docs/STORY-ENGINE.md`](docs/STORY-ENGINE.md)；校验与自动试玩：`npm run story:check`。
+
+### 银轨号外传（`/`，标题页进入）
+
 - 完整序章：开场 → 战前自由对话 → 战术选择 → 回合制 Boss 战 → 战后对话 → 三种抉择 → 多档结局。
-- 三名宅向队友：赤誓骑士莉亚、猫耳机关师米娅、月蚀观测者塞蕾娜。
+- 三名宅向队友：赤誓骑士莉亚、猫耳机关师米娅、月蚀观测者塞雷娜。
 - 每名角色拥有独立人设、知识边界、禁说秘密、说话风格、羁绊、信任、情绪与短期记忆。
-- 战前最多六轮自由输入；不是固定选项，也不要求猜关键词。
-- 三套主导战术与不同战斗收益。
-- 普攻、防御、治疗、羁绊技能、敌方回合、失败回卷。
+- 战前最多 10 次自由交流；不是固定选项，也不要求猜关键词。
+- 三套主导战术与不同战斗收益；普攻、防御、治疗、羁绊技能、敌方回合、失败回卷。
 - 隐藏 S 级路线：需要关系、承诺、战斗行为与最终选择共同满足条件。
-- `demo` 零成本保底对话引擎：无 API、无模型也能完整通关。
-- `openai` 模式：接入任何 OpenAI 兼容端点，默认适配本地 Ollama + Qwen3。
-- JSON Schema 优先、JSON Object 次选、普通响应最后兜底；模型故障时自动退回剧情保底台词。
+- 世界地图、CG 图库，以及银轨号 15 章剧本草稿的只读阅读器（「章节」）。
+
+### 召唤、换衣、商店与设置（同在 `/`）
+
+- 召唤：角色池 / 服饰池，游戏内公示概率与保底。
+- 换衣：8 位女主 × 6 套服装；抽到的服装都会出现在换衣间（还没拥有对应女主的，列在「待解锁角色」里）。
+- 商店：会员、钻石均为**演示功能，没有真实支付**；由「演示工具」开关控制（见下文），`NODE_ENV=production` 时默认关闭。
+- 设置：AI 模式说明、音效开关、后台管理入口。
+
+### 卡牌对战《暗影对决》（`/cards.html`，实验模式）
+
+暗影诗章式卡牌对战：职业牌组、组牌、开包与合成、进化、对手 AI 回合逐步回放与对战日志。
+
+### 原型页
+
+- `/gacha-system.html`：独立抽卡原型，自成一套经济，数据只存在浏览器里，**与正式游戏数据不互通**。
+- `/character-manager.html`：角色设定管理原型。
+
+### 工程
+
+- `demo` 零成本保底对话引擎：无 API、无模型也能完整通关；`openai` 模式接入任何 OpenAI 兼容端点，默认适配本地 Ollama + Qwen3。
+- JSON Schema 优先，端点不支持时降级为 JSON Object、普通响应；模型故障或越界时自动退回剧情保底台词。
 - API Key 只保存在 Node 服务端，不暴露给浏览器。
-- 请求体限制、安全响应头、剧情状态校验、单存档串行锁、24 小时过期清理。
-- 自动化测试与完整 API 流程已通过。
+- 存档持久化（`data/saves.json`），服务器重启不丢档。
+- 请求体限制、严格 CSP 等安全响应头、剧情状态校验、单存档串行锁、总量上限与过期清理、AI 端点限流。
+- 静态资源支持 ETag / 304 缓存校验。
+- 自动化测试覆盖规则、AI 边界、HTTP 层、存档、部署内容与启动脚本。
 
 ## 本机启动
 
-需要 Node.js 20 或更高版本。项目没有第三方 npm 运行依赖。
+需要 Node.js 20 或更高版本。项目没有任何第三方 npm 依赖，不需要 `npm install`。
+
+### Windows 快速开始
+
+- **最简单：** 双击项目目录里的 `start-demo.cmd`。它会切到脚本所在目录、检查是否装了 Node.js、以 demo 模式启动服务器，并在约 2 秒后自动打开浏览器；出错时窗口会停下来显示原因。
+- **用 `.env` 配置（例如接模型）：** 在项目目录打开 PowerShell：
+
+  ```powershell
+  Copy-Item .env.example .env; npm start
+  ```
+
+  如果 PowerShell 提示「无法加载 npm.ps1，因为在此系统上禁止运行脚本」，把 `npm start` 换成 `npm.cmd start` 或 `node server.mjs` 即可（效果相同）。
+
+### Linux / macOS
 
 ```bash
 cd moonlit-covenant-ai-jrpg
 cp .env.example .env
 npm start
+```
+
+或者一键演示（可以从任何目录执行）：
+
+```bash
+sh moonlit-covenant-ai-jrpg/start-demo.sh
 ```
 
 浏览器打开：
@@ -40,7 +94,12 @@ npm start
 http://127.0.0.1:4173
 ```
 
-默认 `AI_MODE=demo`，立即可玩。
+注意：
+
+- `start-demo.cmd` / `start-demo.sh` **强制使用 demo 模式**（`AI_MODE=demo`），会忽略 `.env` 里的 `AI_MODE`；要接模型请用 `npm start`。
+- `.env` 从项目根读取，从哪个目录启动都一样；命令行里已经设置的环境变量优先于 `.env`。
+- 开发时可用 `npm run dev`（`node --watch`，改代码后自动重启）。
+- 端口被占用时服务器会提示换端口：bash 用 `PORT=4174 npm start`，PowerShell 用 `$env:PORT=4174; npm start`，cmd 用 `set PORT=4174` 后再运行 `start-demo.cmd`。
 
 公开试玩时可在 `.env` 中设置转化链接，标题页与结局页会自动显示 CTA：
 
@@ -48,6 +107,48 @@ http://127.0.0.1:4173
 WISHLIST_URL=https://store.steampowered.com/app/你的AppID
 COMMUNITY_URL=https://你的社群链接
 ```
+
+## 配置项
+
+全部写在 `.env`（模板见 `.env.example`）或环境变量里：
+
+| 变量 | 默认值 | 说明 |
+|---|---|---|
+| `AI_MODE` | `demo` | `demo`：确定性保底对话；`openai`：OpenAI 兼容端点 |
+| `AI_BASE_URL` / `AI_API_KEY` / `AI_MODEL` | `http://127.0.0.1:11434/v1` / `ollama` / `qwen3:8b` | 模型端点（只在服务端使用） |
+| `AI_TIMEOUT_MS` | `15000` | 单次模型调用超时 |
+| `HOST` / `PORT` | `127.0.0.1` / `4173` | 监听地址与端口 |
+| `WISHLIST_URL` / `COMMUNITY_URL` | 空 | 标题页、结局页的转化链接 |
+| `ADMIN_KEY` | 不设置 = 默认口令 `123456` | 后台管理口令；设为空字符串（`ADMIN_KEY=`）则关闭后台 |
+| `DEMO_TOOLS` | 空 = 开启（production 下关闭） | `1` 强制开启、`0` 强制关闭演示工具 |
+| `NODE_ENV` | 空 | `production` 时演示工具默认关闭（Docker 镜像已设置） |
+| `PERSIST` | 空 = 开启（`node --test` 下关闭） | `0` 关闭存档持久化 |
+| `SAVE_FILE` | `data/saves.json` | 存档文件位置（相对路径以项目根为基准） |
+| `MAX_SESSIONS` / `MAX_ACCOUNTS` | `2000` / `2000` | 外传会话、账户总量上限，满了先清理过期数据，仍满返回 503 |
+
+### 存档与过期
+
+- 外传进度、召唤 / 换衣 / 会员、卡牌收藏与对局、AI 设置都由服务器保存在 `data/saves.json`：状态变化后约 1 秒落盘（先写临时文件再改名），关闭服务器（Ctrl+C）时立即落盘，重启后自动恢复。
+- 存档文件损坏时会被改名为 `saves.json.corrupt-<时间戳>` 留作排查，服务器以空存档启动。
+- 过期规则：外传会话与卡牌对局 **24 小时无操作**后清理；账户（召唤、换衣、会员、卡牌收藏）**闲置 90 天**后清理。
+- 主线（亚克篇）的进度保存在浏览器的 localStorage 里，不在服务器上。
+- `data/` 已在 `.gitignore` 和 `.dockerignore` 里，不会进仓库或镜像。备份时复制 `data/saves.json` 即可。
+- 临时试玩或测试时用 `PERSIST=0` 关闭持久化；`npm test` 会自动关闭，不会写脏 `data/`。
+
+### 后台管理
+
+- 入口：标题页 →「设置」→「后台管理」，输入管理口令。
+- 口令由服务器校验，**只认请求头 `x-admin-key`**（URL 里的 `?key=` 不生效），前端不保存任何口令。
+- 不设置 `ADMIN_KEY` 时使用默认口令 `123456`，开箱即用；**对外开放前务必在 `.env` 里设置自己的 `ADMIN_KEY`**。写成 `ADMIN_KEY=`（空值）表示关闭后台，接口返回 404。
+- 命令行查看：
+
+  ```bash
+  curl -H "x-admin-key: 123456" http://127.0.0.1:4173/api/admin/dashboard
+  ```
+
+### 演示工具
+
+商店里的免费开通会员、免费领取钻石，以及换衣间的「一键发放全部服装」都属于演示工具，没有真实支付。默认开启，`NODE_ENV=production` 时默认关闭；`DEMO_TOOLS=1` / `0` 可强制开关。关闭时这三个接口返回 403 `DEMO_TOOLS_DISABLED`，前端也会隐藏对应入口。
 
 ## 接入本地 Qwen3 + Ollama
 
@@ -75,7 +176,7 @@ HOST=127.0.0.1
 npm start
 ```
 
-页面右上角会显示当前 AI 模式和模型名。模型超时、返回格式错误或说出禁区内容时，系统会自动使用角色保底台词，主线不会卡死。
+页面上的 AI 标识和「设置」页会显示当前 AI 模式和模型名。模型超时、返回格式错误或说出禁区内容时，系统会自动使用角色保底台词，主线不会卡死。`openai` 模式下每个 IP 每分钟最多 20 次模型调用、全局最多 3 个并发，超出时直接使用保底台词。
 
 ### 模型档位建议
 
@@ -86,26 +187,32 @@ npm start
 
 ## Docker
 
-运行零成本演示模式：
+运行零成本演示模式（`moonlit-data` 卷用来保存存档，删掉 `-v ...` 则容器删除后存档随之消失）：
 
 ```bash
 docker build -t moonlit-covenant .
-docker run --rm -p 4173:4173 -e AI_MODE=demo moonlit-covenant
+docker run --rm -p 4173:4173 -e AI_MODE=demo -v moonlit-data:/app/data moonlit-covenant
 ```
 
-也可使用：
+也可使用（已配置好 `moonlit-data` 命名卷）：
 
 ```bash
 docker compose up --build
 ```
 
-容器调用宿主机 Ollama 时，macOS/Windows 通常使用 `http://host.docker.internal:11434/v1`；Linux 可配置 host gateway，或把 Ollama 与游戏服务部署在同一 Docker 网络。
+- 镜像里 `NODE_ENV=production`，所以**演示工具默认关闭**（需要时加 `-e DEMO_TOOLS=1`）。
+- 后台口令：`-e ADMIN_KEY=你的口令`；用 compose 时在项目目录的 `.env` 里写 `ADMIN_KEY=...` 即可传进容器，不写则使用默认口令。
+- 容器以非 root 的 `node` 用户运行，自带健康检查（`/api/health`）。
+- 容器调用宿主机 Ollama 时，macOS/Windows 通常使用 `http://host.docker.internal:11434/v1`（compose 的默认值；如果 `.env` 里写的是 `127.0.0.1`，用 compose 前要改掉）；Linux 已在 compose 里配置 host gateway，也可以把 Ollama 与游戏服务部署在同一 Docker 网络。
 
-## 测试
+## 测试与检查
 
 ```bash
-npm run check
-npm test
+npm test               # 全部自动化测试（node --test），含部署内容与启动脚本测试
+npm run check          # 全量语法检查：public、game、cards、scenario、tools、test 下所有 .js/.mjs 逐个 node --check，并校验 JSON
+npm run story:check    # 主线章节校验 + 自动试玩（意图覆盖）
+npm run test:cards     # 只跑卡牌相关测试
+npm run test:deploy    # 只跑部署内容测试（按 Dockerfile 的 COPY 拼出镜像内容并实际启动）
 ```
 
 健康检查：
@@ -117,18 +224,39 @@ curl http://127.0.0.1:4173/api/health
 ## 目录
 
 ```text
-public/                 网页 UI、CSS、前端状态渲染
-public/icons.js         原创线性 UI 图标库（ES module，内联 SVG，继承 currentColor）
-public/assets/          美术资产（矢量 SVG 由 tools/art/ 生成，详见「资产说明」）
-game/content.mjs        世界观、角色、战术、敌人、CG 图库与结局内容
-game/engine.mjs         确定性剧情状态机、关系、战斗与结局判定
-game/gacha.mjs          召唤卡池（角色池 / 服饰池、概率与保底）
-game/costume.mjs        换衣系统与服装分支剧情
-game/ai.mjs             本地/云端模型适配、结构化输出、验证与保底
-server.mjs              零依赖 HTTP 服务、API、会话锁与静态文件服务（严格 CSP）
-tools/art/              矢量美术生成器（立绘、服装、CG、卡面、地图、Boss、场景）
-test/                   游戏规则与 AI 边界测试
-docs/                   市场、架构、美术规范与发行清单
+server.mjs              零依赖 HTTP 服务：API、会话锁、存档、静态文件（严格 CSP、ETag/304）
+game/
+  content.mjs           银轨号外传的世界观、角色、战术、敌人、CG 图库与结局内容
+  engine.mjs            外传确定性状态机：关系、战斗与结局判定
+  ai.mjs                本地/云端模型适配、结构化输出、验证与保底台词
+  story-judge.mjs       主线自由输入的服务端判定
+  gacha.mjs             召唤卡池（角色池 / 服饰池、概率与保底）
+  costume.mjs           换衣系统
+  membership.mjs        会员与钻石（演示，无真实支付）
+  credit.mjs            Credit 计量
+  settings.mjs          AI 模型设置（预览）
+  analytics.mjs         运营统计（后台仪表板）
+  persist.mjs           存档持久化（data/saves.json）
+cards/                  卡牌对战引擎：卡牌数据、对局规则、对手 AI、组牌、开包与合成
+scenario/               银轨号外传 15 章剧本草稿（chapter-01…15.json）与读取器
+public/
+  index.html, app.js    主游戏：标题页、外传、地图、章节阅读器、召唤、换衣、商店、设置
+  styles.css, icons.js, paint.js   主游戏样式、原创线性图标库、厚涂图替换清单读取
+  story.html            主线 · 亚克篇
+  story/                主线播放器（player.js）、纯函数引擎（engine.js）、章节数据（chapters/）、角色与场景表
+  cards.html, cards.js, cards.css   卡牌对战
+  gacha-system.html     独立抽卡原型
+  character-manager.html 角色设定管理原型
+  assets/               美术资产（矢量 SVG 由 tools/art/ 生成，详见「资产说明」）
+tools/
+  art/                  矢量美术生成器（立绘、服装、CG、卡面、地图、Boss、场景、主线背景与胸像）与厚涂出图管线（raster/）
+  story/check.mjs       主线章节校验与自动试玩
+  check-syntax.mjs      全量语法检查（npm run check）
+test/                   规则、AI 边界、HTTP 层、存档、经济、卡牌、主线、美术与部署测试
+docs/                   市场、架构、美术规范、剧情引擎与发行清单
+data/                   运行时存档（自动生成，不进仓库）
+start-demo.cmd / .sh    一键演示启动脚本（Windows / Linux、macOS）
+Dockerfile, docker-compose.yml
 ```
 
 ## 资产说明
@@ -141,36 +269,67 @@ docs/                   市场、架构、美术规范与发行清单
 |---|---|---|
 | 8 位女主胸像立绘 | `public/assets/portraits/<id>.svg` | `tools/art/portrait/` · `npm run art:portraits` |
 | 48 套服装立绘（8 人 × 6 套） | `public/assets/costumes/<id>_<type>.svg` | 同上（`npm run art:portraits` 一并产出） |
-| 卡牌卡面（38 张基础 + 进化版 `_e`） | `public/assets/cards/<cardId>.svg` | `tools/art/cards/`、`tools/art/build-cards.mjs` · `npm run art:cards` |
-| 10 张剧情 CG | `public/assets/cg/<name>.svg` | `tools/art/cg/` |
+| 卡牌卡面（基础 + 进化版 `_e`） | `public/assets/cards/<cardId>.svg` | `tools/art/cards/`、`tools/art/build-cards.mjs` · `npm run art:cards` |
+| 剧情 CG | `public/assets/cg/<name>.svg` | `tools/art/cg/` |
 | 世界地图 | `public/assets/map/world-map.svg` | `tools/art/map/build-map.mjs` |
 | 食梦兽三阶段（完整 / 破甲 / 封印） | `public/assets/boss/dream-eater-{1,2,3}.svg` | `tools/art/boss/` |
 | 舞台背景与 UI 元素 | `public/assets/scenes/*.svg`、`public/assets/ui/*.svg` | `tools/art/stage/` |
+| 主线场景背景与角色胸像 | `public/assets/story/bg/*.svg`、`public/assets/story/npc/*.svg` | `tools/art/story/` |
 | UI 图标 | `public/icons.js` | 手写，`import { icon } from './icons.js'` |
 
 一键重建全部矢量资产：`npm run art`（按依赖顺序调用上述生成器，输出确定、可复现）。
 
-厚涂位图预留位：`public/assets/paint/`（文件名清单见该目录 README）。登记在 `manifest.json` 里的厚涂图会自动替换对应矢量图，未登记的继续用矢量；出图管线见 `tools/art/raster/`（`npm run art:paint` / `art:paint:finalize`）。
+厚涂位图预留位：`public/assets/paint/`（文件名清单见该目录 README）。登记在 `manifest.json` 里的厚涂图会自动替换对应矢量图，未登记的继续用矢量；出图管线见 [`tools/art/raster/README.md`](tools/art/raster/README.md)（`npm run art:paint` / `art:paint:finalize`）。
 
 游戏内的使用方式：召唤与换衣统一使用矢量立绘（换衣间会显示当前穿着的服装立绘）；大地图以 `world-map.svg` 为底图，城镇徽章使用 `icons.js` 图标；剧情舞台使用 CG / 场景作为背景；Boss 战按 HP 阶段切换三张食梦兽立绘；结局页叠加结局背景、对应抉择的 CG，隐藏路线显示月蚀纹章；解锁 CG 时会弹出一次非阻塞提示，并收录进 CG 图库。
 
-### AI 生成的厚涂 PNG
+### AI 生成的厚涂图
 
-`public/assets/{lia,mia,serena,key-visual,dream-eater}.png` 为 AI 生成图像，画面右下角带有依法标注的「图片由AI生成」。三张主角 PNG 用于标题页与剧情场景（保留更高的绘制精度），`key-visual.png` 为标题页主视觉；`dream-eater.png` 已由矢量三阶段 Boss 取代，仅作备用素材。任何显示位置都**不得裁切或遮挡该标识**——UI 按原图比例显示这些图片，小尺寸头像改用矢量立绘。
+莉亚、米娅、塞雷娜三张主角厚涂立绘与标题页主视觉 `key-visual` 为 AI 生成图像，画面右下角带有依法标注的「图片由AI生成」。站点使用压缩后的 `public/assets/{lia,mia,serena,key-visual}.jpg`（由 `npm run art:legacy-jpg`，即 `tools/art/raster/compress-legacy.mjs`，从 `tools/art/raster/ref/` 下的原图 PNG 生成，不缩放不裁切，保留 AIGC 元数据；原图 PNG 只作出图参考，不随站点发布）；旧的 Boss 厚涂图 `dream-eater.png` 已由矢量三阶段 Boss 取代，移到 `tools/art/raster/ref/` 只作出图参考。任何显示位置都**不得裁切或遮挡该标识**——UI 按原图比例显示这些图片，小尺寸头像改用矢量立绘。
 
 ## API 摘要
 
-- `GET /api/health`：服务和 AI 模式状态。
-- `GET /api/meta`：公开角色、战术和结局选项。
-- `POST /api/session`：创建新游戏。
-- `GET /api/session/:id`：恢复当前服务器内存中的游戏。
-- `POST /api/advance`：推进到营地或战斗。
-- `POST /api/chat`：与指定角色交谈。
-- `POST /api/strategy`：选择主导战术。
-- `POST /api/battle`：提交战斗动作。
-- `POST /api/reset-battle`：战败回卷。
-- `POST /api/ending`：提交黎明种最终抉择。
-- `POST /api/restart`：以同一玩家名重开。
+所有接口返回 JSON：成功为 `{ ok: true, ... }`，失败为 `{ ok: false, error: { code, message } }`。玩家相关接口以 `playerId`（账户）或 `sessionId`（外传存档）标识，格式不对返回 400；未知的 `/api/*` 返回 404。
+
+**基础**
+
+- `GET /api/health`：服务状态与 AI 模式。
+- `GET /api/meta`：标题、AI 模式、`admin.enabled`、`demoTools`、转化链接、公开角色、战术和结局选项。
+- `GET /api/gallery?sessionId=`：CG 图库与解锁情况。
+
+**银轨号外传**
+
+- `POST /api/session`：创建新游戏（`{ playerName }`）。
+- `GET /api/session/:id`：恢复存档。
+- `POST /api/advance`、`/api/strategy`、`/api/mode`、`/api/chat`、`/api/battle`、`/api/reset-battle`、`/api/ending`、`/api/restart`：推进场景、选择战术、切换对话模式、与角色交谈、战斗动作、战败回卷、最终抉择、重开；请求体都带 `sessionId`。
+- `GET /api/scenario/index`、`GET /api/scenario/chapter/:id`：外传剧本草稿目录与章节（只读）。
+
+**主线 · 亚克篇**
+
+- `POST /api/story/judge`：自由输入判定（节点定义由服务器从章节文件读取）。
+
+**账户、召唤、换衣与商店**
+
+- `POST /api/account/create`、`GET /api/account?playerId=`：创建 / 读取账户。
+- `GET /api/credit?playerId=`：Credit 余额。
+- `GET /api/gacha/pools`、`POST /api/gacha/pull`：卡池（含概率与保底）、召唤。
+- `GET /api/costume?playerId=`、`POST /api/costume/equip`：服装列表、穿戴。
+- `GET /api/membership/tiers`：会员档位与钻石包。
+- 演示工具（`DEMO_TOOLS`，关闭时 403）：`POST /api/membership/purchase`、`POST /api/diamonds/purchase`、`POST /api/costume/grant-all`。
+- `GET /api/settings/ai?playerId=`、`POST /api/settings/ai`：AI 模型设置（预览）。
+
+**卡牌对战**
+
+- `GET /api/cards/meta`、`GET /api/cards/all`：职业、稀有度、关键词与全部卡牌。
+- `GET /api/cards/collection`、`GET /api/cards/summary`、`POST /api/cards/pack`、`POST /api/cards/craft`：收藏、碎片 / 开包保底 / 钻石概况、开包、合成。
+- `GET /api/cards/decks`、`GET /api/cards/deck/starter`、`POST /api/cards/deck/save`：牌组。
+- `POST /api/battle/start`、`GET /api/battle/state`、`POST /api/battle/action`、`POST /api/battle/end-turn`、`POST /api/battle/concede`：对局（对手手牌只下发 `{ uid, hidden }`）。
+
+**后台**
+
+- `GET /api/admin/dashboard`：运营仪表板，请求头 `x-admin-key` 携带口令；口令错误 403，后台关闭时 404。
+
+**静态文件**：`/` 返回 `index.html`；`/story`、`/cards` 这类路径 301 到同名 `.html`；不存在的文件返回 404；所有资源带 `ETag`，未修改时返回 304。
 
 ## 从垂直切片到正式销售版
 
@@ -178,18 +337,18 @@ docs/                   市场、架构、美术规范与发行清单
 
 1. 商业级角色立绘、表情差分、战斗特效、音乐、音效与合法授权语音。
 2. 2–3 小时的第一章、更多敌人与成长系统；当前序章主要验证“自由对话真的影响 JRPG”。
-3. PostgreSQL/Redis 持久化、账号体系、限流、观测、备份和水平扩展。
+3. 数据库持久化（当前为单机 JSON 文件）、账号体系、全面限流、观测、备份和水平扩展。
 4. 内容安全分类、玩家举报、模型/提示词版本记录、输出审计与隐私政策。
 5. 简中、繁中、日文、英文的人工本地化与角色语气校对。
 6. Steam 商店页、试玩版漏斗、愿望单 CTA、崩溃报告、成就与云存档。
 7. 对实时生成 AI 内容进行准确披露，并说明防护措施。
 
-更完整的商业规划见 [`docs/PRODUCT-MARKET-PLAN.md`](docs/PRODUCT-MARKET-PLAN.md)，技术方案见 [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)，商店文案与素材外包规范分别见 [`docs/STORE-PAGE-COPY.md`](docs/STORE-PAGE-COPY.md) 和 [`docs/ART-AUDIO-BRIEF.md`](docs/ART-AUDIO-BRIEF.md)。
+上线前的逐项检查见 [`docs/RELEASE-CHECKLIST.md`](docs/RELEASE-CHECKLIST.md)。更完整的商业规划见 [`docs/PRODUCT-MARKET-PLAN.md`](docs/PRODUCT-MARKET-PLAN.md)，技术方案见 [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)，商店文案与素材外包规范分别见 [`docs/STORE-PAGE-COPY.md`](docs/STORE-PAGE-COPY.md) 和 [`docs/ART-AUDIO-BRIEF.md`](docs/ART-AUDIO-BRIEF.md)。
 
 ## 权利与注意事项
 
 - 仓库代码为本项目定制，`package.json` 标记为 `UNLICENSED`，不会自动授予第三方再分发权。
 - `public/assets/` 下的矢量 SVG 与 `public/icons.js` 为本项目代码生成的原创美术，不含抓取的动漫角色或品牌素材。
-- AI 生成的 PNG 必须保留「图片由AI生成」标识，不得裁切、遮挡或去除。
+- AI 生成的厚涂图必须保留「图片由AI生成」标识，不得裁切、遮挡或去除。
 - 正式版不要使用未经授权的角色、配音演员声音、训练素材、音乐或商标。
-- 本仓库没有支付、用户账号或公开托管配置；上线收款仍需绑定域名、托管、支付/Steamworks 账号，并完成相应审核。
+- 本仓库没有真实支付和正式用户账号体系（商店为演示功能）；上线收款仍需绑定域名、托管、支付/Steamworks 账号，并完成相应审核。

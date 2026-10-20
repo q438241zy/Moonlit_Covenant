@@ -238,7 +238,7 @@ button:focus-visible, input:focus-visible, textarea:focus-visible {
   border-radius: 28px;
   overflow: hidden;
   /* 右下角对齐：保证主视觉的「图片由AI生成」标识始终在画框内 */
-  background: #09071b url("/assets/key-visual.png") right bottom / cover no-repeat;
+  background: #09071b url("/assets/key-visual.jpg") right bottom / cover no-repeat;
   box-shadow: 0 0 60px rgba(130,90,200,.15), inset 0 0 80px rgba(0,0,0,.3);
 }
 .title-art::before {
@@ -607,6 +607,9 @@ button:focus-visible, input:focus-visible, textarea:focus-visible {
 .modal-card h2 { margin:7px 0 20px; }
 .modal-close { position:absolute; right:16px; top:16px; font-size:1.25rem; }
 .modal-actions { display:flex; justify-content:flex-end; gap:9px; margin-top:22px; }
+/* 设置对话框的「标签 / 数值」行：窄屏放不下时整段换到下一行，不把「当前运行方式」拆成两行 */
+.modal-card .stat-card .spread { flex-wrap:wrap; row-gap:4px; }
+.modal-card .stat-card .spread > span { white-space:nowrap; }
 .help-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
 .help-grid section { padding:15px; border:1px solid var(--line); border-radius:15px; background:rgba(255,255,255,.035); }
 .help-grid p { margin:7px 0 0; color:var(--muted); line-height:1.6; font-size:.84rem; }
@@ -1237,6 +1240,8 @@ body:has(.game-frame) .cg-unlock-stack { top:10px; }
 /* 商店：卡片内容高度不同，按钮统一贴底对齐 */
 .membership-card, .diamond-card { display:flex; flex-direction:column; }
 .membership-card > .button, .diamond-card > .button { margin-top:auto; }
+/* 钻石卡很窄（约 160px）：收紧内边距与字号，「演示：免费领取」不折成两行 */
+.diamond-card > .button { padding-inline:10px; font-size:.9rem; white-space:nowrap; }
 
 /* 召唤结果滚动定位时不被吸顶导航遮住 */
 #gachaResult { scroll-margin-top:96px; }
