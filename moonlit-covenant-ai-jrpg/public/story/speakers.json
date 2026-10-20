@@ -47,12 +47,12 @@
   "lia_unknown": {
     "name": "红发少女",
     "color": "#ff6b7c",
-    "art": "/assets/portraits/lia.svg"
+    "art": "/assets/story/npc/lia.svg"
   },
   "lia": {
     "name": "莉亚",
     "color": "#ff6b7c",
-    "art": "/assets/portraits/lia.svg"
+    "art": "/assets/story/npc/lia.svg"
   },
   "rocky": {
     "name": "罗奇",

@@ -228,6 +228,79 @@ function northTrail() {
   return S.out();
 }
 
+// Rock lobes around a cave opening. `open` is the opening polygon ([x, y, 1] = sharp corner); each lobe
+// grows it outward by `grow` px, swells into broad lobes (low-frequency fbm, amplitude `lobe`, so the bands
+// pinch shut in places and bulge in others) and is roughened by fine fbm jitter (amplitude `amp`). Per lobe returns the hole
+// outline, the lit faces (a ribbon on the rock side of the edge, where the edge faces the upper-left key
+// light, i.e. on the lower-right of the opening), the shadowed inner lip (upper-left run of the edge) and a
+// few cracks running outward. Lobes are listed far (smallest hole) to near.
+function caveLobes(open, lobes) {
+  const cx = open.reduce((a, p) => a + p[0], 0) / open.length, cy = open.reduce((a, p) => a + p[1], 0) / open.length;
+  return lobes.map((lobe) => {
+    const { grow, amp, lobe: swell = 0, seed, litW } = lobe;
+    const n = fbm(seed, 46, 3), big = fbm(seed + 50, 260, 2), nw = noise1(seed + 7, 60);
+    const base = [];
+    for (let i = 0; i < open.length; i++) {
+      const a = open[i], b = open[(i + 1) % open.length];
+      const len = Math.hypot(b[0] - a[0], b[1] - a[1]), k = Math.max(1, Math.round(len / (grow ? 28 : 20)));
+      for (let j = 0; j < k; j++) base.push([a[0] + (b[0] - a[0]) * j / k, a[1] + (b[1] - a[1]) * j / k]);
+    }
+    let arc = 0;
+    const hole = [], norm = [];
+    for (let i = 0; i < base.length; i++) {
+      const p = base[i], q0 = base[(i - 1 + base.length) % base.length], q1 = base[(i + 1) % base.length];
+      let nx = q1[1] - q0[1], ny = -(q1[0] - q0[0]);
+      const m = Math.hypot(nx, ny) || 1;
+      nx /= m; ny /= m;
+      if ((p[0] - cx) * nx + (p[1] - cy) * ny < 0) { nx = -nx; ny = -ny; }
+      if (i) arc += Math.hypot(p[0] - base[i - 1][0], p[1] - base[i - 1][1]);
+      const off = Math.max(grow ? 4 : -8, grow + swell * big(arc) + amp * (0.5 - Math.abs(n(arc)) * 2.2));
+      hole.push([p[0] + nx * off, p[1] + ny * off]);
+      norm.push([nx, ny, arc]);
+    }
+    // lit = the edge point lies to the lower right of the opening centre (its face turns toward the upper left)
+    const litAt = (i) => (hole[i][0] - cx) * 0.55 + (hole[i][1] - cy) * 0.85 > 60;
+    const shadeAt = (i) => (hole[i][0] - cx) * 0.6 + (hole[i][1] - cy) * 0.8 < -40;
+    const runs = (test) => {
+      const out = [];
+      let cur = [];
+      for (let i = 0; i < hole.length; i++) {
+        if (test(i) && hole[i][1] < 790) cur.push(i);
+        else { if (cur.length > 2) out.push(cur); cur = []; }
+      }
+      if (cur.length > 2) out.push(cur);
+      return out;
+    };
+    let litFaces = '';
+    for (const run of runs(litAt)) {
+      const edge = run.map((i) => hole[i]);
+      const back = run.map((i) => {
+        const [nx, ny, s] = norm[i];
+        const w = litW * (0.55 + 0.45 * nw(s));
+        return [hole[i][0] + nx * w, hole[i][1] + ny * w];
+      }).reverse();
+      litFaces += pz([...edge, ...back]);
+    }
+    const lip = runs(shadeAt).map((run) => pl(run.map((i) => hole[i]))).join('');
+    let creases = '';
+    for (let i = 2; i < hole.length; i += 6 + (i % 3)) {
+      const [nx, ny, s] = norm[i];
+      if (hole[i][1] > 760) continue;
+      const L = litW * (1.2 + nw(s * 2));
+      creases += pl([hole[i], [hole[i][0] + nx * L - ny * 6, hole[i][1] + ny * L + nx * 6]]);
+    }
+    let cracks = '';
+    for (let i = 3; i < hole.length; i += 17) {
+      const [nx, ny, s] = norm[i];
+      if (hole[i][1] > 760) continue;
+      const L = 60 + 90 * (0.5 + 0.5 * nw(s * 3));
+      const kx = -ny * 14 * nw(s * 5);
+      cracks += pl([hole[i], [hole[i][0] + nx * L * 0.5 + kx, hole[i][1] + ny * L * 0.5 - nx * 4], [hole[i][0] + nx * L, hole[i][1] + ny * L]]);
+    }
+    return { hole, litFaces, lip, creases, cracks, base: lobe.base, lit: lobe.lit };
+  });
+}
+
 // The shepherds' cave mouth on the north mountain, looking out over Hemai far below.
 // time: 'night' (burning, lamp lit) | 'dawn' (grey pre-dawn, smouldering, lamp guttering)
 export function caveView(S, R, time = 'night') {
@@ -250,18 +323,22 @@ export function caveView(S, R, time = 'night') {
   // Hemai below
   out.push(farVillage(S, R, 790, 566, 0.66, { state: dawn ? 'smoulder' : 'burning', smokeH: dawn ? 340 : 280, glow: dawn ? 0.5 : 1 }));
   if (dawn) out.push(`<path d="${band(-40, 1640, 610, 34, R, 20)}" fill="#a49aae" opacity=".35" filter="${S.blur(2)}"/>`);
-  // the cave: rock frame around a jagged, asymmetric opening; the floor lip across the bottom
+  // the cave: an asymmetric opening framed by three receding rock lobes (far lip -> near wall), each edge
+  // jittered with fbm; key light from the upper left lights the faces that turn up-left (the lower-right
+  // edges of each lobe), the inner lip on the upper left stays in shadow
   const open = [[220, 780], [244, 620, 1], [226, 540], [286, 446, 1], [292, 350], [362, 276, 1], [468, 222], [556, 160, 1], [690, 136], [776, 156, 1], [884, 120], [1012, 146, 1], [1116, 196], [1196, 236, 1], [1252, 318], [1322, 384, 1], [1334, 480], [1376, 566, 1], [1390, 780]];
-  const frame = `M-20,-20H1620V920H-20Z` + shape(open, true, 0);
-  const rockC = dawn ? '#1e1c26' : '#0d0b13';
-  out.push(`<path d="${frame}" fill="${rockC}" fill-rule="evenodd"/>`);
-  // rock facets on the frame (lighter planes catching the sky), cracks
-  const fc = dawn ? '#2c2a36' : '#16141e';
-  out.push(`<path d="M-20,-20L362,276L292,350L120,300L-20,330ZM556,160L690,136L620,40L480,60ZM1012,146L1116,196L1240,80L1100,40ZM1252,318L1322,384L1500,300L1400,200ZM226,540L286,446L80,420L-20,480Z" fill="${fc}" opacity=".6"/>`);
-  out.push(`<path d="M362,276L120,300M556,160L480,60M1116,196L1240,80M1322,384L1500,300M286,446L80,420M244,620L40,640M1376,566L1560,560" stroke="${dawn ? '#3a3846' : '#1e1c28'}" stroke-width="3" fill="none"/>`);
-  // inner rim: sky light on the upper-left edges, cooler on the right
-  out.push(`<path d="${shape(open.slice(1, 10), false, 0)}" fill="none" stroke="${dawn ? '#d0c4d8' : '#8e8cbc'}" stroke-width="4" opacity=".6"/>`);
-  out.push(`<path d="${shape(open.slice(9), false, 0)}" fill="none" stroke="${dawn ? '#a8a0b8' : '#5a5a84'}" stroke-width="3" opacity=".5"/>`);
+  const lobes = dawn
+    ? [{ grow: 0, amp: 16, lobe: 10, seed: 611, base: '#3a3846', lit: '#8a8298', litW: 16 }, { grow: 40, amp: 10, lobe: 90, seed: 612, base: '#2a2834', lit: '#625c74', litW: 24 }, { grow: 110, amp: 12, lobe: 130, seed: 613, base: '#1e1c26', lit: '#403c4e', litW: 30 }]
+    : [{ grow: 0, amp: 16, lobe: 10, seed: 611, base: '#1e1c2c', lit: '#46446a', litW: 16 }, { grow: 40, amp: 10, lobe: 90, seed: 612, base: '#14121e', lit: '#302e4a', litW: 24 }, { grow: 110, amp: 12, lobe: 130, seed: 613, base: '#0d0b13', lit: '#1e1c30', litW: 30 }];
+  const mouth = caveLobes(open, lobes);
+  for (const L of mouth) {
+    out.push(`<path d="M-20,-20H1620V920H-20Z${pz(L.hole)}" fill="${S.lin([[0, L.lit], [0.45, L.base], [1, L.base]], 'x1="0" y1="0" x2="1" y2="1"')}" fill-rule="evenodd"/>`);
+    out.push(`<path d="${L.litFaces}" fill="${L.lit}" opacity=".85"/>`);
+    out.push(`<path d="${L.creases}" fill="none" stroke="#040308" stroke-width="2" stroke-linecap="round" opacity=".38"/>`);
+    out.push(`<path d="${L.lip}" fill="none" stroke="#040308" stroke-width="3" stroke-linejoin="round" opacity=".55"/>`);
+  }
+  // a few cracks running out across the near wall
+  out.push(`<path d="${mouth[2].cracks}" fill="none" stroke="${dawn ? '#14121a' : '#06050a'}" stroke-width="3" stroke-linecap="round" opacity=".8"/>`);
   // the floor lip of the cave mouth
   out.push(`<path d="M180,790C380,722,560,700,800,700C1040,700,1240,716,1420,790L1440,920H160Z" fill="${dawn ? '#24222c' : '#100e16'}"/>`);
   out.push(`<path d="M180,790C380,722,560,700,800,700C1040,700,1240,716,1420,790" fill="none" stroke="${dawn ? '#b0a6bc' : '#6a6890'}" stroke-width="2.5" opacity=".55"/>`);
@@ -271,8 +348,8 @@ export function caveView(S, R, time = 'night') {
   out.push(`<circle cx="${L[0]}" cy="${L[1] - 8}" r="${dawn ? 90 : 220}" fill="${S.rad([[0, '#ffc070', dawn ? 0.35 : 0.55], [0.35, '#ff9a4a', dawn ? 0.1 : 0.18], [1, '#ff9a4a', 0]])}"/>`);
   out.push(`<path d="M${L[0] - 18},${L[1]}h36l-7,11h-22z" fill="#3a2a22"/><path d="M${L[0] - 11},${L[1]}q11,-9 22,0" fill="#5a4030"/><path d="M${L[0] + 16},${L[1] + 2}q11,-2 9,-11" fill="none" stroke="#3a2a22" stroke-width="3"/>`);
   out.push(`<path d="M${L[0]},${L[1] - 4}q-5,-${dawn ? 6 : 11} 0,-${dawn ? 10 : 22}q5,${dawn ? 4 : 11} 0,${dawn ? 10 : 22}z" fill="#ffe2a0"/>`);
-  // warm lamplight catching the right side of the frame
-  out.push(`<path d="${shape(open.slice(12), false, 0)}" fill="none" stroke="#ffb070" stroke-width="3" opacity="${dawn ? 0.15 : 0.35}"/>`);
+  // warm lamplight catching the far lip and the lobe faces nearest the lamp
+  out.push(`<path d="${pl(mouth[0].hole.filter(([x, y]) => x > 1150 && y > 280 && y < 760))}" fill="none" stroke="#ffb070" stroke-width="3" stroke-linejoin="round" opacity="${dawn ? 0.15 : 0.35}"/>`);
   // cave interior props in the dark: firewood stack (left), old blanket (right)
   let wood = '';
   for (let i = 0; i < 6; i++) wood += `M${90 + i * 8},${860 - i * 24}l170,-12`;

@@ -1,7 +1,17 @@
 /**
  * 后台数据分析
  * 纯内存实现，追踪DAU/WAU/MAU、留存、事件统计等
+ * 内存有上限：事件日志最多 10000 条，单个会话只留最近 50 个事件名，会话表最多 MAX_TRACKED_SESSIONS 条；
+ * pruneAnalytics() 由服务器的清理定时器调用，丢掉 KEEP_DAYS 天以前的数据。
  */
+
+const DAY_MS = 24 * 60 * 60 * 1000;
+const ONLINE_TIMEOUT_MS = 30 * 60 * 1000;
+const MAX_EVENTS = 10000;
+const MAX_EVENTS_PER_SESSION = 50;
+export const MAX_TRACKED_SESSIONS = 20000;
+// 30 日留存需要 30 天前的首次出现记录，多留几天余量
+export const KEEP_DAYS = 35;
 
 /**
  * 创建分析数据存储
@@ -37,8 +47,8 @@ export function trackSession(store, sessionId, event, userId) {
   store.events.push({ sessionId, event, userId: userId || null, at: now });
 
   // 限制事件日志大小（保留最近10000条）
-  if (store.events.length > 10000) {
-    store.events.splice(0, store.events.length - 10000);
+  if (store.events.length > MAX_EVENTS) {
+    store.events.splice(0, store.events.length - MAX_EVENTS);
   }
 
   // 更新会话信息
@@ -49,23 +59,60 @@ export function trackSession(store, sessionId, event, userId) {
       lastAt: now,
       events: [event]
     });
+    // 会话表超出上限时淘汰最早登记的（Map 按插入顺序迭代）
+    while (store.sessions.size > MAX_TRACKED_SESSIONS) {
+      store.sessions.delete(store.sessions.keys().next().value);
+    }
   } else {
     const session = store.sessions.get(sessionId);
     session.lastAt = now;
     session.events.push(event);
+    if (session.events.length > MAX_EVENTS_PER_SESSION) {
+      session.events.splice(0, session.events.length - MAX_EVENTS_PER_SESSION);
+    }
     if (userId) session.userId = userId;
   }
 
-  // 更新在线状态
+  // 更新在线状态（重新插入，让 Map 的顺序保持「最近活跃在后」）
+  store.onlineSessions.delete(sessionId);
   store.onlineSessions.set(sessionId, now);
 
   // 清理超时在线会话（30分钟无活动视为离线）
-  const timeout = 30 * 60 * 1000;
+  pruneOnline(store, now);
+}
+
+function pruneOnline(store, now) {
   for (const [sid, lastAt] of store.onlineSessions) {
-    if (now - lastAt > timeout) {
+    if (now - lastAt > ONLINE_TIMEOUT_MS) {
       store.onlineSessions.delete(sid);
+    } else {
+      break; // 其余条目更新，不必再看
     }
   }
+}
+
+/**
+ * 清理过期统计（服务器清理定时器调用）。
+ * 注意：首次出现记录超过 keepDays 天会被丢弃，之后再回来的玩家会重新算作新用户，这对演示仪表板可以接受。
+ * @returns {number} 删除的条目数
+ */
+export function pruneAnalytics(store, now = Date.now(), { keepDays = KEEP_DAYS } = {}) {
+  let removed = 0;
+  const cutoffKey = toDateKey(now - keepDays * DAY_MS);
+  for (const key of [...store.dailyActive.keys()]) {
+    if (key < cutoffKey) { store.dailyActive.delete(key); removed += 1; }
+  }
+  for (const [uid, firstDate] of store.firstSeen) {
+    if (firstDate < cutoffKey) { store.firstSeen.delete(uid); removed += 1; }
+  }
+  const cutoff = now - keepDays * DAY_MS;
+  for (const [sid, session] of store.sessions) {
+    if (session.lastAt < cutoff) { store.sessions.delete(sid); removed += 1; }
+  }
+  const before = store.onlineSessions.size;
+  pruneOnline(store, now);
+  removed += before - store.onlineSessions.size;
+  return removed;
 }
 
 /**
@@ -176,12 +223,7 @@ export function getRealtimeStats(store) {
   const todayKey = toDateKey(now);
 
   // 清理超时在线
-  const timeout = 30 * 60 * 1000;
-  for (const [sid, lastAt] of store.onlineSessions) {
-    if (now - lastAt > timeout) {
-      store.onlineSessions.delete(sid);
-    }
-  }
+  pruneOnline(store, now);
 
   const todayActiveSet = store.dailyActive.get(todayKey);
   const todayActive = todayActiveSet ? todayActiveSet.size : 0;

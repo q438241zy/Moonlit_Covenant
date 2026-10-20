@@ -24,7 +24,7 @@
 
 export const CLASSES = {
   lia: { id: 'lia', name: '莉亚·赫斯特', title: '盾战士', element: '火', style: '守护 / 中速', accent: '#ff6b5e', portrait: '/assets/portraits/lia.svg' },
-  lilith: { id: 'lilith', name: '莉莉丝·瓦尔哈拉', title: '暗影刺客', element: '暗', style: '快攻', accent: '#b58cff', portrait: '/assets/portraits/lilith.svg' },
+  lilith: { id: 'lilith', name: '莉莉丝·瓦尔哈拉', title: '暗影刺客', element: '木', style: '快攻', accent: '#b58cff', portrait: '/assets/portraits/lilith.svg' },
   serena: { id: 'serena', name: '塞雷娜·诺克斯', title: '暗系魔法师', element: '暗', style: '控制', accent: '#7c6bff', portrait: '/assets/portraits/serena.svg' },
   neutral: { id: 'neutral', name: '中立', title: '中立随从', element: '无', style: '通用', accent: '#9aa7b5', portrait: '' }
 };

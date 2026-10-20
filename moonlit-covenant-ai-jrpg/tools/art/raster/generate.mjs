@@ -6,7 +6,7 @@
 //
 // 参数：
 //   --only a,b,group:cards   只跑指定任务 id 或分组        --force             已有输出也重出
-//   --include-existing       连同已有 PNG 的莉亚/米娅/塞蕾娜立绘一起重出
+//   --include-existing       连同已有 PNG 的莉亚/米娅/塞雷娜立绘一起重出
 //   --dry-run                只打印提示词，不调用 API     --concurrency N     并发数（默认 2）
 //   --limit N                最多跑 N 张（试跑用）         --model ID          覆盖模型 id
 // 环境变量：ARK_IMAGE_MODEL / SILICONFLOW_IMAGE_MODEL 覆盖默认模型；ARK_BASE_URL / SILICONFLOW_BASE_URL 覆盖接口地址。
@@ -95,7 +95,7 @@ function refDataUri(rel) {
     fs.mkdirSync(cacheDir, { recursive: true });
     file = path.join(cacheDir, rel.replace(/[\\/]/g, '_').replace(/\.\w+$/, '.jpg'));
     if (!fs.existsSync(file) || fs.statSync(file).mtimeMs < fs.statSync(src).mtimeMs) {
-      const watermarked = rel.startsWith('public/assets/');
+      const watermarked = rel.startsWith('public/assets/') || rel.startsWith('tools/art/raster/ref/'); // 旧厚涂图（含移出 public 的参考图）都带可见标识
       execFileSync('convert', [src, ...(watermarked ? ['-gravity', 'north', '-crop', '100%x91%+0+0', '+repage'] : []), '-resize', '1024x1024>', '-quality', '88', file]);
     }
   }

@@ -285,6 +285,35 @@ export function resolveInput(run, chapter, judgement = {}, text = '') {
 }
 
 // ── 离线 / 演示模式判定：关键词计分 ──
+// 关键词三种写法（docs/STORY-ENGINE.md §4）：
+//   「答应」  普通关键词：输入里含有这几个字就计 1 分；
+//   「=对」   整句关键词：玩家整句回答（去掉标点空白、句首「嗯/哦」、句末「了/吧/的」等语气词、叠字）就是这个词时才计 1 分——
+//             接住「对」「是的」「明白」「OK」这类一两个字的答复，又不会误中「不对」「当然不」「我不太明白」；
+//   「!去死」 排除词：输入里含有这几个字时，这个意图本次不得分（「你们都去死吧」不能算作号召村民）。
+const REPLY_HEAD = /^(?:嗯|恩|哦|噢|喔|唔|啊)+/u;
+const REPLY_TAIL = /(?:了|啦|吧|啊|呀|哦|噢|喔|的|嘛|呢|哈|嘞|咧|呗)+$/u;
+const REPEATED = /^(.+?)\1+$/u;
+export function replyCore(text) {
+  let s = String(text ?? '').toLowerCase().replace(/[\s\p{P}\p{S}]+/gu, '');
+  s = s.replace(REPLY_HEAD, '').replace(REPEATED, '$1').replace(REPLY_TAIL, '').replace(REPEATED, '$1');
+  return s;
+}
+function keywordScore(keywords, t, core) {
+  let hits = 0;
+  for (const k of keywords || []) {
+    const s = String(k || '');
+    if (!s) continue;
+    if (s[0] === '!') {
+      const veto = s.slice(1).toLowerCase();
+      if (veto && t.includes(veto)) return 0;
+    } else if (s[0] === '=') {
+      const whole = replyCore(s.slice(1));
+      if (whole && whole === core) hits += 1;
+    } else if (t.includes(s.toLowerCase())) hits += 1;
+  }
+  return hits;
+}
+
 export function demoJudge(node, text) {
   const raw = String(text ?? '').trim();
   const intents = node.intents || [];
@@ -294,9 +323,10 @@ export function demoJudge(node, text) {
     return { intent: silent.id, secondary: null, quality: 1, morality: silent.morality || 0, feasible: true, source: 'demo' };
   }
   const t = raw.toLowerCase();
+  const core = replyCore(raw);
   const scored = intents
     .filter((x) => x.id !== node.silent)
-    .map((x, order) => ({ x, order, hits: (x.keywords || []).reduce((n, k) => n + (k && t.includes(String(k).toLowerCase()) ? 1 : 0), 0) }))
+    .map((x, order) => ({ x, order, hits: keywordScore(x.keywords, t, core) }))
     .sort((a, b) => b.hits - a.hits || a.order - b.order);
   if (!scored[0]?.hits && SILENT_HINT.test(raw) && find(node.silent)) {
     const silent = find(node.silent);
@@ -387,7 +417,14 @@ export function validateChapter(chapter, { speakers = {}, locations = {} } = {})
       for (const who of beat.focus || []) if (!allSpeakers[who]) err(where, `${beat.id} focus 未知说话人 ${who}`);
       for (const x of beat.intents || []) {
         if (!x.label) err(where, `${beat.id}.${x.id} 缺少 label`);
-        if (x.id !== beat.silent && !(x.keywords || []).length) err(where, `${beat.id}.${x.id} 缺少 keywords`);
+        const kws = (x.keywords || []).map((k) => String(k ?? ''));
+        if (x.id !== beat.silent && !kws.some((k) => k && k[0] !== '!')) err(where, `${beat.id}.${x.id} 缺少 keywords`);
+        else if (kws[0]?.[0] === '!') err(where, `${beat.id}.${x.id} 第一个关键词不能是排除词（自动试玩拿它当示例输入）`);
+        for (const k of kws) {
+          if (!k.trim()) err(where, `${beat.id}.${x.id} 有空关键词`);
+          else if (k[0] === '=' && !replyCore(k.slice(1))) err(where, `${beat.id}.${x.id} 整句关键词「${k}」去掉语气词后为空`);
+          else if (k[0] === '!' && !k.slice(1).trim()) err(where, `${beat.id}.${x.id} 排除词「${k}」为空`);
+        }
         if (x.morality !== undefined && (x.morality < -2 || x.morality > 2)) err(where, `${beat.id}.${x.id} morality 超出 -2..2`);
       }
     }

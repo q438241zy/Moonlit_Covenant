@@ -3,6 +3,7 @@
     "id": "ch000",
     "number": 0,
     "title": "序章｜黑翼焚麦之夜",
+    "estimatedMinutes": 24,
     "file": "/story/chapters/ch000.json",
     "requires": null,
     "source": "剧本/00起源.md"
@@ -11,6 +12,7 @@
     "id": "ch001",
     "number": 1,
     "title": "第一章｜导师",
+    "estimatedMinutes": 12,
     "file": "/story/chapters/ch001.json",
     "requires": "ch000",
     "source": "剧本/01導師.md"
@@ -19,6 +21,7 @@
     "id": "ch002",
     "number": 2,
     "title": "第二章｜红发女孩",
+    "estimatedMinutes": 13,
     "file": "/story/chapters/ch002.json",
     "requires": "ch001",
     "source": "剧本/02紅髮女孩.md"
@@ -27,6 +30,7 @@
     "id": "ch003",
     "number": 3,
     "title": "第三章｜临时契约",
+    "estimatedMinutes": 11,
     "file": "/story/chapters/ch003.json",
     "requires": "ch002",
     "source": "剧本/03臨時契約.md"
@@ -35,6 +39,7 @@
     "id": "ch004",
     "number": 4,
     "title": "第四章｜旧磨坊",
+    "estimatedMinutes": 11,
     "file": "/story/chapters/ch004.json",
     "requires": "ch003",
     "source": "剧本/04舊磨坊.md"
@@ -43,6 +48,7 @@
     "id": "ch005",
     "number": 5,
     "title": "第五章｜大车之夜",
+    "estimatedMinutes": 11,
     "file": "/story/chapters/ch005.json",
     "requires": "ch004",
     "source": "剧本/05大車之夜.md"

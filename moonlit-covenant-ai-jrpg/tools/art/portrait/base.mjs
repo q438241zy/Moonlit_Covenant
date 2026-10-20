@@ -840,12 +840,17 @@ function safeLayer(fn, p, label) {
  * @param opts.prefix id prefix override (default heroine.id or `${heroine.id}-${outfit.type}`)
  * @param opts.lenient when true a throwing layer is skipped with a console warning; by default
  *        compose() throws so the build never writes a half-drawn portrait (e.g. a costume without clothes)
+ * @param opts.background false = transparent figure only: no background (gradient, glow, stars, bgMotif,
+ *        bottom fade) and no full-frame lighting (moon wash, ambient, fade, vignette); the figure and its
+ *        rim light are kept. Used for the story-mode busts that sit on day/night scene backgrounds.
+ * @param opts.extras names of optional heroine layers (heroine.extras[name]) to draw behind the figure,
+ *        e.g. ['shield']. Off by default, so the regular portraits / costumes never change.
  */
-export function compose(heroine, { outfit, prefix, lenient = false } = {}) {
+export function compose(heroine, { outfit, prefix, lenient = false, background = true, extras = [] } = {}) {
   if (!heroine || !heroine.id) throw new Error('compose: heroine.id required');
   layerErrors = [];
   try {
-    const svg = composeInner(heroine, outfit, prefix);
+    const svg = composeInner(heroine, outfit, prefix, { background: background !== false, extras });
     if (layerErrors.length) {
       if (!lenient) throw new Error(`layer error(s): ${layerErrors.join('; ')}`);
       for (const e of layerErrors) console.warn(`[portrait] layer ${e}`);
@@ -856,7 +861,7 @@ export function compose(heroine, { outfit, prefix, lenient = false } = {}) {
   }
 }
 
-function composeInner(heroine, outfit, prefix) {
+function composeInner(heroine, outfit, prefix, { background = true, extras = [] } = {}) {
   const pre = prefix || (outfit ? `${heroine.id}-${outfit.type}` : heroine.id);
   const ctx = makeContext(pre);
   const palette = { ...DEFAULT_PALETTE, ...(heroine.palette || {}) };
@@ -911,7 +916,14 @@ function composeInner(heroine, outfit, prefix) {
   const browsGhost = ex.browsOverHair > 0
     ? `<path d="${browPath('L', ex, G)}${browPath('R', ex, G)}" fill="${palette.brow}" opacity="${n(ex.browsOverHair)}"/>` : '';
 
-  const figure = L('hairBack')
+  // optional layers (heroine.extras) sit behind everything else in the figure, e.g. a shield on the back
+  const back = extras.map((name) => {
+    const fn = heroine.extras?.[name];
+    if (typeof fn !== 'function') throw new Error(`compose: ${heroine.id} has no extra layer "${name}"`);
+    return safeLayer(fn, p, `${heroine.id}.extras.${name}`);
+  }).join('');
+  const figure = back
+    + L('hairBack')
     + L('bodyBack')
     + drawBody(p, G)
     + L('outfit')
@@ -927,8 +939,8 @@ function composeInner(heroine, outfit, prefix) {
     + (outfit ? safeLayer(outfit.hairOrnament, po, `${outfit.type}.hairOrnament`) : '')
     + L('foreground');
 
-  const bgMarkup = drawBackground(p, L('bgMotif'));
-  const lighting = drawLighting(p);
+  const bgMarkup = background ? drawBackground(p, L('bgMotif')) : '';
+  const lighting = background ? drawLighting(p) : '';
   const title = outfit ? `${heroine.name || heroine.id} - ${outfit.label || outfit.type}` : heroine.name || heroine.id;
   const defs = [...ctx.defs.values()].join('');
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="${attr(title)}">`

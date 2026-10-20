@@ -187,5 +187,5 @@ export function campFire() {
   body = `<g transform="matrix(1.1 0 0 1.1 -82 -48)">${body}</g>`;
   body += `<rect width="1600" height="900" fill="url(#${p}-vig)"/>`;
   body += `<rect y="760" width="1600" height="140" fill="url(#${p}-bot)"/>`;
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="战前餐车：莉亚用剑柄敲桌子，塞蕾娜捧茶，米娅修理零号">\n<defs>${defs}${c.defs}</defs>\n${body}\n</svg>\n`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="战前餐车：莉亚用剑柄敲桌子，塞雷娜捧茶，米娅修理零号">\n<defs>${defs}${c.defs}</defs>\n${body}\n</svg>\n`;
 }

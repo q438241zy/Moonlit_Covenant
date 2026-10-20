@@ -82,6 +82,23 @@ export function getMeterStatus(meter) {
 }
 
 /**
+ * 只有一本账：Credit 余额以计量器为准，account.credits 只是它的镜像（供账户接口、管理后台显示）。
+ * 计量器存在时把 account.credits 对齐到计量器余额；没有计量器时保持原值（只清理非法数值）。
+ * @param {object} account - 玩家账户
+ * @param {object} [meter] - Credit计量器，默认取 account._meter
+ * @returns {number} 对齐后的 account.credits
+ */
+export function syncAccountCredits(account, meter = account?._meter) {
+  if (!account || typeof account !== 'object') return 0;
+  if (meter && typeof meter === 'object' && Number.isFinite(meter.balance)) {
+    account.credits = meter.balance;
+  } else if (!Number.isFinite(account.credits)) {
+    account.credits = 0;
+  }
+  return account.credits;
+}
+
+/**
  * 检查是否负担得起某行为
  * @param {object} meter - Credit计量器
  * @param {string} action - 行为类型

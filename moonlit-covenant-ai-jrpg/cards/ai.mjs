@@ -2,34 +2,80 @@
 // AI 对手决策 —— 启发式（贪心 + 局面评估）
 // runAITurn(state) 直接在真实状态上行动，并把动作序列写入
 // state.aiActions，供前端逐步回放动画。
+// 契约 K-7：每条动作带 logFrom/logTo —— 该步在（runAITurn 结束时的）state.log 中
+// 对应的行号区间，左闭右开 [logFrom, logTo)。各区间首尾相接、互不重叠：
+//   · 第一条动作的 logFrom 从本回合开头算起（含回合标题、抽牌/疲劳/爆牌行）；
+//   · 最后一条动作的 logTo 等于 state.log.length（endTurn 一步含下一回合的标题与抽牌行）。
 // 决策风格：按费铺场、优先解掉高威胁随从、有利交换、伺机抢脸斩杀、合理使用进化。
 // ═══════════════════════════════════════════════════════════════
 
 import { getCard } from './database.mjs';
 import {
-  playCard, attack, evolve, endTurn,
+  playCard, attack, evolve, endTurn, RULES,
   getLegalPlays, getLegalAttackTargets, getEvolvableFollowers, getTargetOptions
 } from './battle.mjs';
 
 const enemyOf = (key) => (key === 'player' ? 'opponent' : 'player');
 const findFollower = (state, key, uid) => state.players[key].field.find((f) => f.uid === uid) || null;
 
+// ─── 日志区间记录（契约 K-7）───
+// state.log 最多保留 200 行，超出时从头部丢弃，所以过程中不能直接记下标：
+// 先记每个边界处「最后一行」的对象引用，回合结束后再换算成最终日志里的下标。
+const lastLogEntry = (state) => (state.log.length ? state.log[state.log.length - 1] : null);
+
+// 本回合开头之前的最后一行：本回合写入的日志都带当前 turn 号，且连续位于日志末尾
+function turnStartMark(state) {
+  let i = state.log.length;
+  while (i > 0 && state.log[i - 1]?.turn === state.turn) i -= 1;
+  return i > 0 ? state.log[i - 1] : null;
+}
+
+// 边界行之后的第一个下标；边界行已被挤出日志（或为空）时从 0 开始
+function indexAfter(state, mark) {
+  if (mark == null) return 0;
+  const i = state.log.indexOf(mark);
+  return i < 0 ? 0 : i + 1;
+}
+
+function createActionRecorder(state) {
+  const steps = [];
+  let mark = turnStartMark(state);
+  return {
+    // 动作执行成功后调用：本动作的区间 = 上一个边界 → 当前最后一行
+    push(action) {
+      const end = lastLogEntry(state);
+      steps.push({ action, from: mark, to: end });
+      mark = end;
+      state.aiActions.push(action);
+    },
+    finalize() {
+      for (const { action, from, to } of steps) {
+        action.logFrom = indexAfter(state, from);
+        action.logTo = Math.max(action.logFrom, indexAfter(state, to));
+      }
+    }
+  };
+}
+
 // 主入口：执行 AI 的整个回合并结束回合
 export function runAITurn(state, key = state.activePlayer) {
   state.aiActions = [];
   if (state.phase === 'gameover') return state;
+  if (!Array.isArray(state.log)) state.log = [];
+  const rec = createActionRecorder(state);
 
-  aiPlayPhase(state, key);
-  if (state.phase !== 'gameover') aiCombatPhase(state, key);
+  aiPlayPhase(state, key, rec);
+  if (state.phase !== 'gameover') aiCombatPhase(state, key, rec);
   if (state.phase !== 'gameover') {
     endTurn(state);
-    state.aiActions.push({ type: 'endTurn' });
+    rec.push({ type: 'endTurn' });
   }
+  rec.finalize();
   return state;
 }
 
 // ─── 出牌阶段 ───
-function aiPlayPhase(state, key) {
+function aiPlayPhase(state, key, rec) {
   let guard = 0;
   while (guard++ < 40 && state.phase !== 'gameover') {
     const play = chooseBestPlay(state, key);
@@ -37,7 +83,7 @@ function aiPlayPhase(state, key) {
     try {
       // getLegalPlays 返回的手牌实例 id 字段是 uid（此前误读 play.handUid 恒为 undefined，AI 一张牌都打不出）
       playCard(state, key, play.uid, play.target ?? null);
-      state.aiActions.push({ type: 'play', handUid: play.uid, cardId: play.cardId, target: play.target ?? null });
+      rec.push({ type: 'play', handUid: play.uid, cardId: play.cardId, target: play.target ?? null });
     } catch {
       break; // 安全阀：任何非法即停止
     }
@@ -155,7 +201,7 @@ function pickBestTarget(state, key, card, opts) {
 }
 
 // ─── 战斗阶段（含进化）───
-function aiCombatPhase(state, key) {
+function aiCombatPhase(state, key, rec) {
   let guard = 0;
   while (guard++ < 60 && state.phase !== 'gameover') {
     const action = chooseBestCombatAction(state, key);
@@ -166,7 +212,7 @@ function aiCombatPhase(state, key) {
       } else {
         attack(state, key, action.attackerUid, action.targetUid);
       }
-      state.aiActions.push(action);
+      rec.push(action);
     } catch {
       break;
     }
@@ -195,7 +241,10 @@ function chooseBestCombatAction(state, key) {
   const evolvable = getEvolvableFollowers(state, key);
   for (const uid of evolvable) {
     const f = findFollower(state, key, uid);
-    const evolved = { ...f, attack: f.attack + 2, health: f.health + 2, canAttack: true, canAttackLeader: true };
+    // 与引擎一致：本回合已攻击过的随从进化后不能再攻击，进化也就换不来这次攻击收益
+    if (f.attackedThisTurn) continue;
+    const bonus = RULES.EVOLVE_BONUS;
+    const evolved = { ...f, attack: f.attack + bonus, health: f.health + bonus, canAttack: true, canAttackLeader: true };
     // 进化后能打的目标（简化：所有敌方随从 + 主战者）
     const enemyField = state.players[enemyKey].field;
     const guards = enemyField.filter((x) => x.keywords.includes('guard'));

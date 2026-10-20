@@ -55,7 +55,8 @@ test('HTTP API supports a complete playable prologue', { timeout: 12000 }, async
       AI_MODE: 'demo',
       HOST: '127.0.0.1',
       PORT: String(port),
-      NODE_ENV: 'test'
+      NODE_ENV: 'test',
+      PERSIST: '0'
     },
     stdio: ['ignore', 'pipe', 'pipe']
   });

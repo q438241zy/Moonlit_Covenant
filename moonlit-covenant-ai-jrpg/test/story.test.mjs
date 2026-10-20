@@ -127,6 +127,31 @@ test('engine: 15+ text variant, continueRun carries state and runs stay serialis
   assert.ok(playThrough(FIXTURE, ['好'], cont).done);
 });
 
+test('engine: whole-reply (=) keywords only match the whole answer; veto (!) keywords knock an intent out', () => {
+  const node = {
+    id: 'FI_KW', kind: 'dialogue', prompt: '答不答应？', silent: 'silent', fallback: 'vague',
+    intents: [
+      { id: 'ask', label: '提问', keywords: ['不明白', '吗'] },
+      { id: 'yes', label: '答应', keywords: ['答应', '=对', '=是的', '=明白', '=ok', '=好的', '!去死'] },
+      { id: 'vague', label: '含糊', keywords: ['看情况'] },
+      { id: 'silent', label: '沉默' },
+    ],
+  };
+  const j = (text) => demoJudge(node, text).intent;
+  for (const text of ['对', '对。', '嗯，对！', '对对对', '对的', '是', '是的', '是啊', '明白', '明白了', 'OK', 'ok!', '好', '好的', '好吧', '好好好', '嗯好']) assert.equal(j(text), 'yes', text);
+  for (const text of ['不对', '对不起', '我对你没信心', '我不太明白', '我不是很明白', '好不了', 'look']) assert.notEqual(j(text), 'yes', text);
+  assert.equal(j('不明白'), 'ask');
+  assert.equal(j('我答应'), 'yes');
+  assert.equal(j('我答应，你去死吧'), 'vague', 'a veto word zeroes the intent even when other keywords hit');
+  // 校验器：排除词不能排第一个（自动试玩拿第一个关键词当示例输入），整句关键词不能只剩语气词
+  const bad = JSON.parse(JSON.stringify(FIXTURE));
+  bad.shots[0].beats[1].intents[0].keywords = ['!烦'];
+  bad.shots[0].beats[1].intents[1].keywords = ['烦', '=啊吧'];
+  const errors = validateChapter(bad, { speakers, locations }).join('\n');
+  assert.match(errors, /FI_T_1\.warm 缺少 keywords/);
+  assert.match(errors, /整句关键词「=啊吧」/);
+});
+
 test('engine: validator catches broken references', () => {
   const broken = JSON.parse(JSON.stringify(FIXTURE));
   broken.shots[0].beats[0].who = 'nobody';
@@ -174,6 +199,63 @@ test('chapters chain: ch000 → ch001 → ch002 with inherited state', () => {
   assert.deepEqual(run.completed.sort(), index.map((e) => e.id).sort());
 });
 
+test('chapters index: estimatedMinutes matches each chapter file (the title page reads only the index)', () => {
+  for (const entry of index) {
+    const chapter = readJson(`public/story/chapters/${entry.id}.json`);
+    assert.ok(Number.isFinite(entry.estimatedMinutes) && entry.estimatedMinutes > 0, `${entry.id} index estimatedMinutes`);
+    assert.equal(entry.estimatedMinutes, chapter.estimatedMinutes, `${entry.id} estimatedMinutes in index.json and chapter file`);
+    assert.equal(entry.title, chapter.title, `${entry.id} title in index.json and chapter file`);
+  }
+});
+
+// ── 演示判定回归：审计 S1 / S2 ──
+const AFFIRMATIVES = ['好', '好的', '明白', '明白了', '懂了', '了解', '收到', '是的', '对', '当然', '我会的', 'ok', 'OK', 'yes', '嗯好', '听你的', '放心', '嗯，对。', '是的，我会的。'];
+const COMMITMENT_NODES = [
+  // [章节, 节点, 肯定答复应判的意图, { 否定 / 含糊答复: 保持原来的判定 }]
+  ['ch003', 'FI_CH003_SC05_TEMP_CONTRACT_001', 'promise', { 不明白: 'ask', 不懂: 'ask', 我不知道: 'vague', 看情况: 'vague' }],
+  ['ch003', 'FI_CH003_SC05_TEMP_CONTRACT_002', 'promise', { 不明白: 'evade', 不懂: 'evade', 我不知道: 'unanswered', 看情况: 'evade' }],
+  ['ch004', 'FI_CH004_SC02_CORD_SIGNAL_001', 'promise', { 不明白: 'ask', 不懂: 'ask', 我不知道: 'vague', 看情况: 'vague' }],
+  ['ch004', 'FI_CH004_SC02_CORD_SIGNAL_002', 'promise', { 不明白: 'ask', 不懂: 'ask', 我不知道: 'vague', 看情况: 'vague' }],
+  ['ch005', 'FI_CH005_SC12_TEAM_REGISTER_001', 'sign', { 不明白: 'fallback', 不懂: 'fallback', 我不知道: 'fallback', 看情况: 'vague' }],
+  ['ch005', 'FI_CH005_SC12_TEAM_REGISTER_002', 'sign', { 不明白: 'fallback', 不懂: 'fallback', 我不知道: 'fallback', 看情况: 'vague' }],
+];
+
+test('demo judge S1: plain affirmatives count as an explicit promise / signature on the commitment nodes', () => {
+  for (const [chapterId, nodeId, want, negatives] of COMMITMENT_NODES) {
+    const node = findNode(readJson(`public/story/chapters/${chapterId}.json`), nodeId);
+    assert.ok(node, `${nodeId} exists`);
+    for (const text of AFFIRMATIVES) assert.equal(demoJudge(node, text).intent, want, `${nodeId}「${text}」`);
+    for (const [text, kept] of Object.entries(negatives)) assert.equal(demoJudge(node, text).intent, kept, `${nodeId}「${text}」keeps its judgement`);
+    // 一两个字的肯定词只按整句算：否定说法不能被当成答应
+    for (const text of ['不对', '当然不', '当然不答应', '我不太明白', '对不起', '我绝对不答应']) {
+      assert.notEqual(demoJudge(node, text).intent, want, `${nodeId}「${text}」is not a promise`);
+    }
+  }
+});
+
+test('demo judge S2: hostile words in the first crisis are never "rallying the villagers"', () => {
+  const node = findNode(readJson('public/story/chapters/ch000.json'), 'FI_CH000_SC14_FIRST_CRISIS_001');
+  for (const text of ['你们都去死吧', '你们活该', '你们去死吧', '大家都去死吧', '我不在乎', '关我什么事']) {
+    const j = demoJudge(node, text);
+    assert.notEqual(j.intent, 'rally', text);
+    assert.ok(j.morality <= 0, `${text} gives no morality bonus`);
+  }
+  for (const text of ['大家听我的，分头救人', '你们几个去抬车，我去救玛拉的女儿', '快来帮忙！跟我来！', '你们快帮忙']) {
+    assert.ok(['rally', 'cart', 'mara'].includes(demoJudge(node, text).intent), text);
+  }
+  assert.equal(demoJudge(node, '大家听我的，分头救人').intent, 'rally');
+  assert.equal(demoJudge(node, '你们快帮忙').intent, 'rally');
+});
+
+test('ch000 00-14: the three emergencies are marked as intel for the input panel', () => {
+  const chapter = readJson('public/story/chapters/ch000.json');
+  const shot = chapter.shots.find((s) => s.id === '00-14');
+  const inputAt = shot.beats.findIndex((b) => b.t === 'input');
+  const intel = shot.beats.slice(0, inputAt).filter((b) => b.intel);
+  assert.equal(intel.length, 3);
+  assert.ok(intel.some((b) => b.text.includes('板车')) && intel.some((b) => b.text.includes('羊群')) && intel.some((b) => b.text.includes('玛拉')));
+});
+
 // ── 判定服务 ──
 test('story judge: demo judgement uses node intents; unknown chapter/node are 404', async () => {
   const chapter = readJson('public/story/chapters/ch000.json');
@@ -184,6 +266,10 @@ test('story judge: demo judgement uses node intents; unknown chapter/node are 40
   assert.equal(judged.source, 'demo');
   await assert.rejects(judgeStoryInput({ chapterId: 'ch999x', nodeId: 'x', text: 'hi' }), /章节不存在/);
   await assert.rejects(judgeStoryInput({ chapterId: 'ch000', nodeId: 'FI_NOPE', text: 'hi' }), /输入节点不存在/);
+  // 服务端演示判定与浏览器离线判定是同一套关键词（S1 / S2 回归）
+  assert.equal((await judgeStoryInput({ chapterId: 'ch004', nodeId: 'FI_CH004_SC02_CORD_SIGNAL_001', text: '明白', context: {} })).intent, 'promise');
+  assert.equal((await judgeStoryInput({ chapterId: 'ch005', nodeId: 'FI_CH005_SC12_TEAM_REGISTER_001', text: 'OK', context: {} })).intent, 'sign');
+  assert.notEqual((await judgeStoryInput({ chapterId: 'ch000', nodeId: 'FI_CH000_SC14_FIRST_CRISIS_001', text: '你们都去死吧', context: {} })).intent, 'rally');
 });
 
 test('story judge: model output is validated strictly', () => {

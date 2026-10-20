@@ -8,7 +8,7 @@
 | 路径 | 作用 |
 |---|---|
 | `public/story/engine.js` | 纯函数剧情引擎（浏览器与 Node 通用）：游标推进、条件、变量、判定落地、离线演示判定、章节校验 |
-| `public/story/chapters/index.json` | 章节目录（id、序号、标题、解锁前置） |
+| `public/story/chapters/index.json` | 章节目录（id、序号、标题、`estimatedMinutes`、`file`、解锁前置）。标题页只读这个文件，不预载任何章节；`estimatedMinutes`、`title`、`number` 必须与章节文件一致，`file` 写了就必须存在（还没转写的章节不写 `file`，标题页显示「尚未开放」），由 `tools/story/check.mjs` 校验 |
 | `public/story/chapters/ch000.json` … | 每章一个文件，从 `剧本/` 转写，**简体中文** |
 | `public/story/speakers.json` | 全局说话人表（名字、颜色、立绘） |
 | `public/story/locations.json` | 场景背景表（id → 名称、SVG 路径、兜底渐变） |
@@ -26,7 +26,7 @@
   "scriptId": "CH000_ORIGIN_BLACK_WING_NIGHT",
   "title": "序章｜黑翼焚麦之夜",
   "shortTitle": "黑翼焚麦之夜",
-  "estimatedMinutes": 16,
+  "estimatedMinutes": 16,             // 同步写进 index.json（标题页「约 N 分钟」只读目录）
   "source": "剧本/00起源.md",
   "canon": { "flags": {}, "items": {}, "vars": {}, "memories": {} },   // 直接从本章开始时补齐的前情正史（ch000 为空）
   "speakers": { },                     // 可选：本章临时说话人，格式同 speakers.json
@@ -56,7 +56,7 @@
 
 | t | 字段 | 说明 |
 |---|---|---|
-| `narr` | `text`, `text15?`, `style?` | 叙述。`style`：`picture`（画面描写，默认）/ `voice`（旁白引用）/ `caption`（系统字幕，如「遭遇战开始」）。`text15` 为 15+ 模式替换文本 |
+| `narr` | `text`, `text15?`, `style?`, `intel?` | 叙述。`style`：`picture`（画面描写，默认）/ `voice`（旁白引用）/ `caption`（系统字幕，如「遭遇战开始」）。`text15` 为 15+ 模式替换文本。`intel: true`：照常演出，但轮到玩家输入时一并列进输入框上方的「情报」栏（如 00-14 的三件紧急情况） |
 | `say` | `who`, `text`, `note?`, `text15?` | 对白。`who` 为说话人 id；`note` 如「画外」「更大声」 |
 | `think` | `text` | 主角内心独白 |
 | `bg` | `bg`, `fx?` | 切换背景（`fx`: `fade` / `cut`） |
@@ -115,6 +115,11 @@
 - 剧本的硬事件（必定发生的结果）写在节点后的公共节拍里，不放进某个意图的反应。
 - 每个节点至少 3 个意图，必须包含 `silent` 与一个能接住任意输入的 `fallback`；剧本列出的每条「AI演出原则」都应有对应意图。
 - 关键词用简体中文短词，覆盖口语、动作描写（「拍拍他」「点头」）。
+- 离线判定（`demoJudge`）按命中的关键词数计分，平分时排在前面的意图胜出。关键词有三种写法：
+  - `"答应"`：普通关键词，输入里含有这几个字就计 1 分（不分大小写）。
+  - `"=对"`：**整句关键词**。玩家整句回答就是这个词时才计 1 分——比较前去掉标点空白、句首「嗯/哦/噢/喔/唔/啊」、句末「了/啦/吧/啊/呀/哦/的/嘛/呢/哈/嘞/咧/呗」，并把叠字归一（「嗯，对对对！」「是啊」「好的好的」「OK!」都算）。用来接住「对」「是的」「明白」「当然」「OK」这类一两个字的答复，又不会误中「不对」「当然不」「我不太明白」「我不知道」。
+  - `"!去死"`：**排除词**。输入里含有这几个字时，这个意图本次得 0 分（00-14「你们都去死吧」不能算作号召村民）。排除词不能排在第一个（`check.mjs` 自动试玩拿第一个关键词当示例输入）。
+- 承诺类节点（第三章临时契约、第四章绳讯、第五章入队登记的「明确答应」「签」系列意图）都带上同一组常用肯定答复：普通关键词「我会的」「嗯好」，加上整句关键词「明白」「是的」「对」「当然」「OK」「yes」「听你的」「放心」等。`test/story.test.mjs` 有正反两组回归用例（「不明白」「我不知道」「看情况」「不对」「当然不」保持原判定）。
 - 「说得漂亮不等于正面」：恶意意图的 `morality` 为负，与表达质量无关。
 
 ## 5. 条件
@@ -161,7 +166,8 @@ createRun({ playerName, chapter, mode })      // 新存档（应用 chapter.cano
 continueRun(prevRun, nextChapter)             // 继承变量进入下一章
 next(run, chapter)                            // -> { kind: 'shot'|'beat'|'input'|'battle-start'|'battle-end'|'end', … }
 resolveInput(run, chapter, judgement, text)   // 落地判定，返回 { intent, label }
-demoJudge(node, text)                         // 离线关键词判定（服务端演示模式同用）
+demoJudge(node, text)                         // 离线关键词判定（服务端演示模式同用；关键词写法见第 4 节）
+replyCore(text)                               // 整句关键词的比较形式（去标点、首尾语气词、叠字）
 findNode(chapter, nodeId)                     // 查找输入节点（含战斗回合）
 validateChapter(chapter, { speakers, locations })  // -> 错误列表（[] 为通过）
 evalCond(run, cond)  interpolate(text, run)  publicSummary(run)
@@ -179,9 +185,11 @@ evalCond(run, cond)  interpolate(text, run)  publicSummary(run)
 
 ## 9. 播放界面
 
-- 背景层（`locations.json`，厚涂预留位优先）+ 演出特效 + 底部对话框（说话人名牌、打字机效果）。
-- 点击 / 空格 / 回车推进；「自动」「快进（已读）」「回看」；分镜标题以小字淡入。
+- 标题页只读 `index.json`：章节卡片、「约 N 分钟」、解锁状态都不需要下载章节文件，点「开始」时才读那一章。主按钮：有进行中的自动存档时是「继续」；自动存档停在章末（已读完）时是「开始<下一章>」（与章节完成页的「下一章」同一条路：`continueRun(这一章的结局存档, 下一章)`），最后一章读完时是「重温本章」。
+- 背景层（`locations.json`，厚涂预留位优先）+ 演出特效 + 底部对话框（说话人名牌、打字机效果）。换分镜时等新背景淡入结束（`transitionend`，最多 1 秒；减少动态、快进时不等）再开始打第一句字。
+- 点击 / 空格 / 回车推进；「自动」「快进（已读）」「回看」；分镜标题以小字淡入（显示时去掉剧本分类前缀「自由输入：」，源数据不动）。
 - 输入节点：显示提示语与多行输入框，回车提交，`Shift+Enter` 换行；「保持沉默」按钮提交空输入；`optional` 节点有「跳过」。不显示判定分数，只在记忆写入时给轻提示。
+- 「情报」折叠栏：收集上一次回应之后出现过的系统字幕（`style: caption`）和标了 `intel` 的叙述。只有一句、又夹在别的叙述中间的零散字幕不算情报；紧挨着输入框的那一句字幕照样列出（05-08「笼锁要钥匙……」）。
 - 战斗：情报面板 + HP 条 + 战术输入框。
 - 章末：章节完成页（正史记录摘要、下一章、重玩），自动存档。
 - 设置：内容模式 12+ / 15+、文字速度。

@@ -2,7 +2,7 @@
  * 主线自由输入判定（docs/STORY-ENGINE.md §8）
  * 节点定义一律从 public/story/chapters/ 读取，不信任客户端；模型只负责归类与角色台词，硬事件由章节数据决定。
  */
-import { readFileSync } from 'node:fs';
+import { readFileSync, statSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { AI_CONFIG } from './ai.mjs';
@@ -11,33 +11,49 @@ import { demoJudge, findNode, sanitizeLines, cleanName } from '../public/story/e
 const withName = (text, playerName) => String(text ?? '').replaceAll('{PLAYER_NAME}', playerName);
 
 const storyDir = join(dirname(fileURLToPath(import.meta.url)), '..', 'public', 'story');
-const chapterCache = new Map();
-let speakerCache = null;
+// 文件路径 → { mtimeMs, size, data }：每次读取前先 stat，文件改过（mtime 或大小变化）就重新读，改章节不用重启服务器
+const fileCache = new Map();
 
 function readJsonFile(file) {
   return JSON.parse(readFileSync(file, 'utf-8'));
 }
 
+export function readJsonCached(file) {
+  let stat;
+  try {
+    stat = statSync(file);
+  } catch (error) {
+    fileCache.delete(file);
+    throw error;
+  }
+  const hit = fileCache.get(file);
+  if (hit && hit.mtimeMs === stat.mtimeMs && hit.size === stat.size) return hit.data;
+  const data = readJsonFile(file);
+  fileCache.set(file, { mtimeMs: stat.mtimeMs, size: stat.size, data });
+  return data;
+}
+
 export function loadStoryChapter(chapterId) {
   if (!/^ch\d{3}$/.test(String(chapterId))) return null;
-  if (chapterCache.has(chapterId)) return chapterCache.get(chapterId);
   try {
-    const chapter = readJsonFile(join(storyDir, 'chapters', `${chapterId}.json`));
-    chapterCache.set(chapterId, chapter);
-    return chapter;
+    return readJsonCached(join(storyDir, 'chapters', `${chapterId}.json`));
   } catch {
     return null;
   }
 }
 
 function speakers(chapter) {
-  speakerCache ||= readJsonFile(join(storyDir, 'speakers.json'));
-  return { ...speakerCache, ...(chapter.speakers || {}) };
+  let shared = {};
+  try {
+    shared = readJsonCached(join(storyDir, 'speakers.json'));
+  } catch (error) {
+    console.warn('[story judge] 读取 speakers.json 失败：', error.message);
+  }
+  return { ...shared, ...(chapter.speakers || {}) };
 }
 
 export function clearStoryCache() {
-  chapterCache.clear();
-  speakerCache = null;
+  fileCache.clear();
 }
 
 const JUDGE_SCHEMA = (node) => ({
@@ -111,25 +127,25 @@ async function callModel(chapter, node, text, playerName, recent) {
     { ...base, response_format: { type: 'json_object' } },
     base,
   ];
+  // 只有上游明确拒绝 response_format（HTTP 400 / 422）时才降一级重试；
+  // 网络错误、超时、5xx、429 或内容不是 JSON 都直接抛出，由调用方回退演示判定，每个请求最多 1 次「无效」上游调用。
   try {
-    let lastError;
-    for (const body of attempts) {
-      try {
-        const res = await fetch(`${AI_CONFIG.baseUrl}/chat/completions`, {
-          method: 'POST',
-          headers: { 'content-type': 'application/json', authorization: `Bearer ${AI_CONFIG.apiKey}` },
-          body: JSON.stringify(body),
-          signal: controller.signal,
-        });
-        if (!res.ok) throw new Error(`AI endpoint ${res.status}: ${(await res.text()).slice(0, 200)}`);
-        const payload = await res.json();
-        return extractJson(payload?.choices?.[0]?.message?.content);
-      } catch (error) {
-        lastError = error;
-        if (error.name === 'AbortError') break;
+    for (let i = 0; i < attempts.length; i += 1) {
+      const res = await fetch(`${AI_CONFIG.baseUrl}/chat/completions`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', authorization: `Bearer ${AI_CONFIG.apiKey}` },
+        body: JSON.stringify(attempts[i]),
+        signal: controller.signal,
+      });
+      if (!res.ok) {
+        const detail = (await res.text().catch(() => '')).slice(0, 200);
+        if ((res.status === 400 || res.status === 422) && i < attempts.length - 1) continue;
+        throw new Error(`AI endpoint ${res.status}: ${detail}`);
       }
+      const payload = await res.json();
+      return extractJson(payload?.choices?.[0]?.message?.content);
     }
-    throw lastError || new Error('AI 调用失败。');
+    throw new Error('AI 调用失败。');
   } finally {
     clearTimeout(timeout);
   }
@@ -158,7 +174,14 @@ export function normalizeModelJudgement(raw, node) {
   };
 }
 
-export async function judgeStoryInput({ chapterId, nodeId, text, context } = {}) {
+/**
+ * @param {object} input 客户端请求体：{ chapterId, nodeId, text, context }
+ * @param {object} [options]
+ * @param {() => (Function|null|false)} [options.acquire] 调用模型前申请名额（服务器的限流与并发上限）；
+ *   返回释放函数表示可以调用，返回假值表示名额已满，直接使用演示判定（source:'demo'）。
+ */
+export async function judgeStoryInput(input = {}, { acquire } = {}) {
+  const { chapterId, nodeId, text, context } = input && typeof input === 'object' ? input : {};
   const chapter = loadStoryChapter(chapterId);
   if (!chapter) throw Object.assign(new Error('章节不存在。'), { status: 404, code: 'NO_CHAPTER' });
   const node = findNode(chapter, String(nodeId || ''));
@@ -166,7 +189,16 @@ export async function judgeStoryInput({ chapterId, nodeId, text, context } = {})
   const clean = String(text ?? '').replace(/[\u0000-\u001f]/g, ' ').trim().slice(0, 500);
   const demo = demoJudge(node, clean);
   if (AI_CONFIG.mode !== 'openai') return demo;
+  const release = acquire ? acquire() : () => {};
+  if (!release) return { ...demo, source: 'demo' };
+  try {
+    return await judgeWithModel(chapter, node, clean, context, demo);
+  } finally {
+    release();
+  }
+}
 
+async function judgeWithModel(chapter, node, clean, context, demo) {
   const playerName = cleanName(context?.playerName);
   const recent = (Array.isArray(context?.recent) ? context.recent : []).slice(-3).map((r) => ({
     id: String(r?.id || '').slice(0, 60),

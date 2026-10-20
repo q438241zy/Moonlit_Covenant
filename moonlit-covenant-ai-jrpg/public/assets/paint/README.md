@@ -1,14 +1,16 @@
 # 厚涂位图预留位
 
+<!-- 本文件由 tools/art/raster/readme.mjs 根据 tools/art/raster/manifest.mjs 生成（npm run art 的最后一步），请勿手改。 -->
+
 把厚涂图（JPEG）按下列文件名放进对应子目录，并在 `manifest.json` 里登记文件名（不含扩展名），游戏就会优先显示它；没登记的继续显示矢量 SVG。
 
-用 `tools/art/raster/` 出图时，`npm run art:paint:finalize` 会自动完成压缩、放置和登记。手动放图时尺寸见各组标题，清单示例：
+用 `tools/art/raster/` 出图时，`npm run art:paint:finalize` 会自动完成压缩、放置和登记，并把原图里的 AIGC 隐式标识写进 JPEG（原图没有时补一段最小标识）；`test/art-assets.test.mjs` 会检查这里的每张 JPEG 都带 AIGC 信息。手动放图时也必须保留这些元数据。尺寸见各组标题，清单示例：
 
 ```json
-{ "portraits": ["freya"], "costumes": ["freya_maid"], "cards": ["n_goblin"] }
+{ "portraits": ["freya"], "costumes": ["freya_maid"], "cards": ["n_goblin"], "story-bg": ["hemai-day"] }
 ```
 
-莉亚、米娅、塞蕾娜的剧情立绘已有 `public/assets/{lia,mia,serena}.png`，召唤/换衣页的立绘预留位同样适用于她们。
+莉亚、米娅、塞雷娜已有旧的厚涂立绘（`public/assets/{lia,mia,serena}.jpg`，由 `tools/art/raster/compress-legacy.mjs` 从带 AIGC 标识的 PNG 压缩而来），召唤/换衣页的立绘预留位同样适用于她们。
 
 ## portraits/ · 女主立绘（832×1216） · 8 张
 
@@ -22,7 +24,9 @@
 
 `intro-eye.jpg` · `camp-fire.jpg` · `corridor-frost.jpg` · `battle-descend.jpg` · `battle-phase2.jpg` · `battle-phase3.jpg` · `aftermath-snow.jpg` · `ending-seal.jpg` · `ending-share.jpg` · `ending-destroy.jpg`
 
-## boss/ · 食梦兽三阶段（1000×1000，深色底即可，游戏内自动羽化边缘） · 3 张
+## boss/ · 食梦兽三阶段（1000×1000） · 3 张
+
+深色底即可，游戏内自动羽化边缘。
 
 `dream-eater-1.jpg` · `dream-eater-2.jpg` · `dream-eater-3.jpg`
 
@@ -30,14 +34,20 @@
 
 `battle-bg.jpg` · `camp-bg.jpg` · `ending-bg.jpg`
 
-## cards/ · 卡面（512×512，进化版沿用同一张） · 38 张
+## cards/ · 卡面（512×512） · 38 张
+
+进化版沿用同一张。
 
 `n_wisp.jpg` · `n_goblin.jpg` · `n_merchant.jpg` · `n_knight.jpg` · `n_golem.jpg` · `n_troll.jpg` · `n_angel.jpg` · `n_dragon.jpg` · `lia_recruit.jpg` · `lia_shieldbash.jpg` · `lia_flameguard.jpg` · `lia_rally.jpg` · `lia_charger.jpg` · `lia_bulwark.jpg` · `lia_captain.jpg` · `lia_flamestrike.jpg` · `lia_fortress.jpg` · `lia_hero.jpg` · `lilith_dagger.jpg` · `lilith_strike.jpg` · `lilith_apprentice.jpg` · `lilith_poison.jpg` · `lilith_shadowdance.jpg` · `lilith_assassin.jpg` · `lilith_shadowarrow.jpg` · `lilith_nightblade.jpg` · `lilith_shadowlord.jpg` · `lilith_hero.jpg` · `serena_acolyte.jpg` · `serena_darkbolt.jpg` · `serena_observer.jpg` · `serena_drain.jpg` · `serena_oracle.jpg` · `serena_void.jpg` · `serena_nova.jpg` · `serena_devourer.jpg` · `serena_seal.jpg` · `serena_hero.jpg`
 
-## story-bg/ · 主线场景背景（1600×900） · 19 张
+## story-bg/ · 主线场景背景（1600×900） · 29 张
 
-`hemai-day.jpg`（赫麦村·午后） · `pasture.jpg`（牧场羊圈） · `village-road.jpg`（赫麦村村道·傍晚） · `kitchen-night.jpg`（亚克家厨房·油灯） · `dragon-sky.jpg`（黑翼遮月） · `village-burning.jpg`（黑焰中的赫麦村） · `north-trail-night.jpg`（北山旧牧道·夜） · `shepherd-cave-night.jpg`（守羊洞·俯瞰故乡） · `south-ridge.jpg`（南侧山脊） · `cave-dawn.jpg`（守羊洞·黎明前） · `hemai-sky-dawn.jpg`（赫麦村上空·破晓） · `hemai-ruins-dawn.jpg`（赫麦村废墟·黎明） · `north-slope-camp.jpg`（北山缓坡·灾民营地） · `chime-town-gate.jpg`（晨钟镇东门·清晨） · `guild-hall.jpg`（晨钟镇冒险者公会） · `market.jpg`（晨钟镇中央市集） · `dye-alley.jpg`（染布巷） · `barrel-alley.jpg`（旧酒桶巷） · `guard-square.jpg`（治安所前·公会广场）
+清单来自 public/story/locations.json。
 
-## story-npc/ · 主线 NPC 胸像（600×800，透明 PNG 请转成带深色底的 JPG 或保持 SVG） · 10 张
+`hemai-day.jpg`（赫麦村·午后） · `pasture.jpg`（牧场羊圈） · `village-road.jpg`（赫麦村村道·傍晚） · `kitchen-night.jpg`（亚克家厨房·油灯） · `dragon-sky.jpg`（黑翼遮月） · `village-burning.jpg`（黑焰中的赫麦村） · `north-trail-night.jpg`（北山旧牧道·夜） · `shepherd-cave-night.jpg`（守羊洞·俯瞰故乡） · `south-ridge.jpg`（南侧山脊） · `cave-dawn.jpg`（守羊洞·黎明前） · `hemai-sky-dawn.jpg`（赫麦村上空·破晓） · `hemai-ruins-dawn.jpg`（赫麦村废墟·黎明） · `north-slope-camp.jpg`（北山缓坡·灾民营地） · `chime-town-gate.jpg`（晨钟镇东门·清晨） · `guild-hall.jpg`（晨钟镇冒险者公会） · `market.jpg`（晨钟镇中央市集） · `dye-alley.jpg`（染布巷） · `barrel-alley.jpg`（旧酒桶巷） · `guard-square.jpg`（治安所前·公会广场） · `mill-road-milestone.jpg`（旧磨坊路·第二座里程石） · `mill-road-dusk.jpg`（旧磨坊路·黄昏） · `training-ground-dawn.jpg`（晨钟镇训练场·日出） · `old-mill-dusk.jpg`（旧磨坊·黄昏芦苇） · `old-mill-floor.jpg`（旧磨坊·磨盘间） · `old-mill-floor-cart.jpg`（旧磨坊·磨盘间·大车之夜） · `west-gate-day.jpg`（晨钟镇西门·上午） · `west-gate-dusk.jpg`（晨钟镇西门·黄昏） · `west-gate-night.jpg`（晨钟镇西门·入夜） · `mill-road-night.jpg`（旧磨坊路·夜）
 
-`aku.jpg` · `erin.jpg` · `toby.jpg` · `mara.jpg` · `borin.jpg` · `horn.jpg` · `kern.jpg` · `maeve.jpg` · `rocky.jpg` · `blackrobe.jpg`
+## story-npc/ · 主线胸像（600×800） · 16 张
+
+清单来自 public/story/speakers.json（同一文件只列一次）。矢量版是透明底；JPEG 没有透明通道，换上前先确认在白天场景上不会出现底色方框。
+
+`aku.jpg`（亚克） · `erin.jpg`（艾琳） · `toby.jpg`（托比） · `mara.jpg`（玛拉） · `borin.jpg`（伯伦） · `horn.jpg`（霍恩） · `kern.jpg`（白·可恩） · `maeve.jpg`（梅芙） · `lia.jpg`（莉亚） · `rocky.jpg`（罗奇） · `blackrobe.jpg`（黑袍人） · `finn.jpg`（芬恩） · `goblin.jpg`（哥布林） · `polly.jpg`（波莉） · `acolyte.jpg`（念祷文的人） · `goblin_chief.jpg`（哥布林咒徒长）

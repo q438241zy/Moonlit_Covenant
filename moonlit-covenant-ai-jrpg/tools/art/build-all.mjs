@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-// 一键重建全部矢量美术资产（顺序有依赖：polish-set 覆盖旧 CG 生成器，build-cards 依赖基础卡面）。
+// 一键重建全部矢量美术资产（顺序有依赖：polish-set 覆盖旧 CG 生成器，build-cards 依赖基础卡面），
+// 最后按厚涂出图清单重写 public/assets/paint/README.md。输出逐字节可复现（同一输入两次运行结果相同）。
 //   node tools/art/build-all.mjs        （npm run art）
 import { execFileSync } from 'node:child_process';
 import path from 'node:path';
@@ -16,8 +17,9 @@ const steps = [
   ['世界地图', 'tools/art/map/build-map.mjs'],
   ['主线场景与 NPC', 'tools/art/story/build.mjs'],
   ['卡面 中立/莉亚', 'tools/art/cards/neutral-lia.mjs'],
-  ['卡面 莉莉丝/塞蕾娜', 'tools/art/cards/lilith-serena.mjs'],
+  ['卡面 莉莉丝/塞雷娜', 'tools/art/cards/lilith-serena.mjs'],
   ['进化卡面', 'tools/art/build-cards.mjs'],
+  ['厚涂预留位清单', 'tools/art/raster/readme.mjs'],
 ];
 for (const [label, script] of steps) {
   console.log(`\n== ${label} (${script})`);

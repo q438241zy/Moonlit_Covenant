@@ -129,14 +129,15 @@ const M = {
 };
 
 // ------------------------------------------------------------------ class themes
+// outline: the subject's contour colour - the class colour deepened (not near-black), docs/ART-DIRECTION.md §3
 const THEME = {
   lilith: {
     bg: ['#43206a', '#1d0d36', '#07040f'], halo: '#c084fc', ring: '#d9a441', rim: '#c084fc', mote: '#ead2ff',
-    line: '#1a0a2a', smoke: '#7c4fc0', smokeDk: '#100620',
+    line: '#1a0a2a', smoke: '#7c4fc0', smokeDk: '#100620', outline: '#3c2160',
   },
   serena: {
     bg: ['#2f2c84', '#141145', '#06051a'], halo: '#b58cff', ring: '#efe9ff', rim: '#b58cff', mote: '#efe9ff',
-    line: '#0e0b2a', smoke: '#5a4ec8', smokeDk: '#07061c',
+    line: '#0e0b2a', smoke: '#5a4ec8', smokeDk: '#07061c', outline: '#2c2766',
   },
 };
 const RANK = { bronze: 0, silver: 1, gold: 2, legendary: 3 };
@@ -183,7 +184,7 @@ function makeCtx(card) {
       // single clip: shade fill -> lit base offset by ss -> rim band (right) -> moonlight band
       // (upper-left). Bands are strokes of the outline shifted so only one side stays inside
       // the clip: shift (-a,a) with width 2a leaves a 2a band on right edges, none on left/bottom.
-      const [base, shade, light, line] = m;
+      const [base, shade, light] = m;
       const ss = o.ss ?? [-10, -8];
       const hl = o.hl ?? (o.lite ? 0 : 2.2);
       const rw = o.rw ?? (o.lite ? 0 : 2.4);
@@ -192,7 +193,8 @@ function makeCtx(card) {
       const pid = `${id}-${(k++).toString(36)}`;
       defs.push(`<path id="${pid}" d="${d}"${o.eo ? ' fill-rule="evenodd" clip-rule="evenodd"' : ''}/>`);
       const use = (a = '') => `<use href="#${pid}"${a}/>`;
-      let s = o.under && sw ? use(` fill="none" stroke="${o.line ?? line}" stroke-width="${r(sw * 2)}"`) : '';
+      const ln = o.line ?? ctx.T.outline;
+      let s = o.under && sw ? use(` fill="none" stroke="${ln}" stroke-width="${r(sw * 2)}"`) : '';
       if (ss || rw || hl || o.inner) {
         defs.push(`<clipPath id="${pid}c">${use()}</clipPath>`);
         s += `<g clip-path="url(#${pid}c)"><rect width="300" height="300" fill="${ss ? shade : base}"/>`;
@@ -202,7 +204,7 @@ function makeCtx(card) {
         if (hl) s += use(` fill="none" stroke="${light}" stroke-width="${r(hl)}" transform="translate(${r(hl / 2)} ${r(hl / 2)})"`);
         s += '</g>';
       } else s += use(` fill="${base}"`);
-      if (sw && !o.under) s += use(` fill="none" stroke="${o.line ?? line}" stroke-width="${sw}"`);
+      if (sw && !o.under) s += use(` fill="none" stroke="${ln}" stroke-width="${sw}"`);
       return s;
     },
     flat(d, fill, o = {}) {

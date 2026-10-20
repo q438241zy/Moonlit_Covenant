@@ -3,7 +3,7 @@
 //   node tools/art/story/build.mjs               -> everything
 //   node tools/art/story/build.mjs bg            -> all backgrounds (every locations.json entry, plus generators
 //                                                  not wired into locations.json yet, e.g. new variants)
-//   node tools/art/story/build.mjs npc           -> all 15 NPC busts
+//   node tools/art/story/build.mjs npc           -> all 16 busts (15 NPC silhouettes + Lia's transparent portrait bust)
 //   node tools/art/story/build.mjs hemai-day aku -> just those ids
 // Output: public/assets/story/bg/<id>.svg (1600×900) and public/assets/story/npc/<id>.svg (600×800, transparent).
 // Every file is validated against docs/ART-DIRECTION.md §4 (self-contained, no text/script/external refs,
@@ -17,13 +17,16 @@ import { dawnBgs } from './bg-dawn.mjs';
 import { townBgs } from './bg-town.mjs';
 import { millBgs } from './bg-mill.mjs';
 import { oldMillBgs } from './bg-oldmill.mjs';
-import { npcBusts } from './npc.mjs';
+import { npcBusts as silhouetteBusts } from './npc.mjs';
+import { liaBust } from './lia-bust.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const locations = JSON.parse(fs.readFileSync(path.join(root, 'public/story/locations.json'), 'utf8'));
 const speakers = JSON.parse(fs.readFileSync(path.join(root, 'public/story/speakers.json'), 'utf8'));
 
 const bgs = { ...villageBgs, ...nightBgs, ...dawnBgs, ...townBgs, ...millBgs, ...oldMillBgs };
+// bust id -> generator; the file is public/assets/story/npc/<id>.svg (several speakers may share one file)
+const npcBusts = { ...silhouetteBusts, lia: () => liaBust() };
 const BG_BUDGET = 90 * 1024, NPC_BUDGET = 70 * 1024;
 
 function validate(rel, svg, { w, h, budget }) {
@@ -68,7 +71,9 @@ for (const [id, make] of Object.entries(npcBusts)) {
   if (pick('npc', id)) jobs.push({ id, rel: `public/assets/story/npc/${id}.svg`, make: () => make(speakers[id]?.color), w: 600, h: 800, budget: NPC_BUDGET });
 }
 for (const [id, sp] of Object.entries(speakers)) {
-  if (sp.art && sp.art.startsWith('/assets/story/npc/') && !npcBusts[id]) { console.error(`missing bust generator for speaker "${id}"`); process.exitCode = 1; }
+  if (!sp.art || !sp.art.startsWith('/assets/story/npc/')) continue;
+  const file = sp.art.slice('/assets/story/npc/'.length).replace(/\.svg$/, '');
+  if (!npcBusts[file]) { console.error(`missing bust generator for speaker "${id}" (${sp.art})`); process.exitCode = 1; }
 }
 
 let total = 0;

@@ -31,6 +31,9 @@ export default {
     hairFront,
     foreground: swordHilt,
   },
+  // optional layers, drawn only when compose() is asked for them (opts.extras): the story-mode bust
+  // (tools/art/story/lia-bust.mjs) adds the tower shield; the gacha / side-story portrait stays as is
+  extras: { shield },
 };
 
 // ------------------------------------------------------------------ background: gothic window + blood moon
@@ -347,5 +350,43 @@ function swordHilt(p) {
     + `<path d="M${n(gx - 30)},${n(gy - 16)}A34,34 0 0 1 ${n(gx + 14)},${n(gy - 31)}" fill="none" stroke="${C.silverLit}" stroke-width="3" stroke-linecap="round"/>`
     + `<path d="M${n(gx + 22)},${n(gy + 22)}A34,34 0 0 1 ${n(gx - 8)},${n(gy + 33)}" fill="none" stroke="${C.silverDeep}" stroke-width="3" stroke-linecap="round"/>`
     + [[-32, -10], [30, 14]].map(([dx, dy]) => `<rect x="${gx + dx - 7}" y="${gy + dy - 9}" width="14" height="18" rx="2" fill="${C.silverShade}" stroke="${C.metalLine}" stroke-width="2" transform="rotate(-20 ${gx + dx} ${gy + dy})"/><circle cx="${gx + dx}" cy="${gy + dy - 4}" r="2.6" fill="${C.goldMid}"/><circle cx="${gx + dx}" cy="${gy + dy + 4}" r="2.6" fill="${C.goldMid}"/>`).join('')
+    + `</g>`;
+}
+
+// ------------------------------------------------------------------ tower shield "Chishi" (optional extra, slung on the back)
+// Canon: a tower shield almost half her height, strapped to her back (剧本/02). Only its top corner shows,
+// rising behind her left shoulder (viewer's right): oxblood face, iron rim, a riveted repair plate and a
+// stapled crack. Drawn in shield-local coordinates (x along the top edge, y down the shield) and tilted
+// 18 degrees, top leaning outward, so the corner clears the shoulder and the pauldron hides the rest.
+function shield(p) {
+  const { smooth } = p.helpers;
+  const rimOut = 'M-190,40Q-190,6 -156,2Q0,-16 156,2Q190,6 190,40V900H-190Z';
+  const face = 'M-176,44Q-176,19 -150,16Q0,-1 150,16Q176,19 176,44V900H-176Z';
+  const faceFill = p.lin('shieldFace', [[0, '#9b2636'], [0.35, '#7a1d2c'], [1, '#3e0f1a']], [-60, -10, 150, 260]);
+  const rimFill = p.lin('shieldRim', [[0, C.silverLit], [0.3, C.silver], [1, C.silverDeep]], [-190, -20, 190, 200]);
+  // body shadow: the side nearest her neck sits in her shade
+  const occl = p.lin('shieldOccl', [[0, '#12060c', 0.75], [0.55, '#12060c', 0.15], [1, '#12060c', 0]], [-40, 0, 120, 0]);
+  const patch = smooth([[78, 50, 1], [146, 43, 1], [152, 104, 1], [84, 112, 1]], { closed: true });
+  const crack = 'M50,-4L41,24L55,46L43,72L52,96';
+  const staples = 'M34,16L51,24M46,38L64,38M35,64L52,72';
+  const rivets = [[-120, -2], [-40, -9], [40, -9], [120, -2], [182, 70], [182, 150], [182, 230]];
+  return `<g transform="translate(590 560) rotate(18)" stroke-linejoin="round">`
+    + `<path d="${rimOut}" fill="${rimFill}" stroke="${C.metalLine}" stroke-width="3.2"/>`
+    + `<path d="${face}" fill="${faceFill}" stroke="${C.crimsonLine}" stroke-width="2.4"/>`
+    // moonlit top edge of the rim and the face's bevel just under it
+    + `<path d="M-180,30Q-178,10 -152,8Q0,-9 152,8Q176,11 182,30" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" opacity=".55"/>`
+    + `<path d="M-166,46Q-164,30 -146,28Q0,12 146,28Q164,30 166,46" fill="none" stroke="${C.crimsonLit}" stroke-width="3" opacity=".8"/>`
+    // repair plate: a mismatched steel patch with its own rivets
+    + `<path d="${patch}" fill="${C.silverShade}" stroke="${C.metalLine}" stroke-width="2.4"/>`
+    + `<path d="M82,54L142,48" stroke="${C.silverLit}" stroke-width="2" stroke-linecap="round" opacity=".7"/>`
+    + [[88, 58], [138, 52], [143, 98], [93, 104]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="3.6" fill="${C.silverDeep}" stroke="${C.metalLine}" stroke-width="1.2"/>`).join('')
+    // old crack running from the rim into the face, stapled shut
+    + `<path d="${crack}" fill="none" stroke="${C.crimsonLine}" stroke-width="3.2"/>`
+    + `<path d="${staples}" stroke="${C.silverLit}" stroke-width="3" stroke-linecap="round"/>`
+    // scratches and chipped paint
+    + `<path d="M20,70l34,-12M-10,120l26,-8M150,150l16,22" stroke="#c46a6e" stroke-width="1.6" stroke-linecap="round" opacity=".55"/>`
+    + `<path d="M168,60l6,10l-4,12M60,0l14,1" stroke="${C.silverLit}" stroke-width="2.2" stroke-linecap="round" opacity=".6"/>`
+    + rivets.map(([x, y]) => `<circle cx="${x}" cy="${y}" r="4.2" fill="${C.goldMid}" stroke="${C.goldLine}" stroke-width="1.3"/>`).join('')
+    + `<path d="${face}" fill="${occl}"/>`
     + `</g>`;
 }

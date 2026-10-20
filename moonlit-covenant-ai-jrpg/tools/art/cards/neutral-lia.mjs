@@ -113,13 +113,14 @@ const M = {
 
 // ------------------------------------------------------------------ class themes
 const THEME = {
+  // outline: the subject's contour colour - the class colour deepened (not near-black), docs/ART-DIRECTION.md §3
   neutral: {
     bg: ['#34405c', '#18203a', '#080a16'], halo: '#c9d6f0', ring: '#aebbd6', rim: '#b9cdf2', mote: '#e6eeff',
-    line: '#121829', ground: '#0d1222',
+    line: '#121829', ground: '#0d1222', outline: '#2e3b5c',
   },
   lia: {
     bg: ['#5a1526', '#250914', '#090410'], halo: '#ffb36b', ring: '#ffd091', rim: '#ff6b7c', mote: '#ffc27a',
-    line: '#2a0812', ground: '#14060c',
+    line: '#2a0812', ground: '#14060c', outline: '#5c1a2a',
   },
 };
 const RANK = { bronze: 0, silver: 1, gold: 2, legendary: 3 };
@@ -166,16 +167,17 @@ function makeCtx(card) {
      * o.hl   = width of the moonlight edge on upper-left (0 = none)
      * o.rim  = rim light colour on right edge (default class rim), o.rw = rim width (0 = none)
      * o.inner= extra markup drawn inside the clip (after the shadow)
-     * o.sw   = outline width (0 = none)
+     * o.sw   = outline stroke width (0 = none; drawn under the fills, so about half of it shows)
+     * o.line = outline colour (default: the class outline colour, THEME[cls].outline)
      */
     cel(d, m, o = {}) {
-      const [base, shade, light, line] = Array.isArray(m) ? m : [m.base, m.shade, m.light, m.line];
+      const [base, shade, light] = Array.isArray(m) ? m : [m.base, m.shade, m.light];
       const ss = o.ss ?? [-10, -8];
       const hl = o.hl ?? (o.lite ? 0 : 2.2);
       const rw = o.rw ?? (o.lite ? 0 : 2.4);
       const rim = o.rim ?? ctx.T.rim;
       const sw = o.sw ?? 2.4;
-      const ln = o.line ?? line;
+      const ln = o.line ?? ctx.T.outline;
       if (!rw && !hl && !ss && !o.inner) return `<path d="${d}" fill="${base}"${sw ? ` stroke="${ln}" stroke-width="${sw}"` : ''}/>`;
       const pid = ctx.def(d);
       ctx.lastClip = `url(#${pid}a)`;
@@ -186,7 +188,7 @@ function makeCtx(card) {
       };
       // bottom layer carries the outline (doubled: only the outer half stays visible)
       const fills = [rw && rim, hl && light, ss ? shade : base].filter(Boolean);
-      let s = use(` fill="${fills[0]}"${sw ? ` stroke="${ln}" stroke-width="${2 * sw}"` : ''}`), close = '', f = 1;
+      let s = use(` fill="${fills[0]}"${sw ? ` stroke="${ln}" stroke-width="${sw}"` : ''}`), close = '', f = 1;
       if (rw) { s += clip('b', `${-rw} ${r(rw * 0.3)}`) + (fills[f] ? use(` fill="${fills[f++]}"`) : ''); close += '</g>'; }
       if (hl) { s += clip('c', `${hl} ${hl}`) + (fills[f] ? use(` fill="${fills[f++]}"`) : ''); close += '</g>'; }
       if (ss || o.inner) { s += clip('a'); close += '</g>'; }

@@ -1,10 +1,32 @@
-// 厚涂位图出图清单：画风统一参照 public/assets/lia.png（赤红高马尾那张）。
-// 每个任务 = { id, group, out, size, seed, prompt, refs }
+// 厚涂位图出图清单：画风统一参照旧的莉亚厚涂 PNG（lia.png，赤红高马尾那张，见 legacyRef）。
+// 每个任务 = { id, group, out, size, seed, prompt, refs, label? }
 //   refs：参考图（相对项目根目录）。第一张通常是画风参考，其余用于保持角色长相一致。
 //   out：原始输出路径（tools/art/raster/out/ 下，finalize.mjs 再压缩进 public/assets/paint/）。
+//   label：可选的中文说明（只用于 public/assets/paint/README.md 的清单）。
 // 只要改这里的描述再重跑 generate.mjs 就能重出某一张（--only <id> --force）。
+// 主线剧情的两组（story-bg / story-npc）直接由 public/story/locations.json 与 speakers.json 生成，
+// public/assets/paint/README.md 的清单由 readme.mjs 从本文件生成（npm run art 的最后一步）。
 
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { CARDS } from '../../../cards/database.mjs';
+
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
+const readJson = (rel) => JSON.parse(fs.readFileSync(path.join(root, rel), 'utf8'));
+
+// 游戏内尺寸（finalize.mjs 按此裁切压缩，与对应矢量资产同尺寸，CSS 无需改动比例）与分组说明
+export const SIZE = { portraits: '832x1216', costumes: '832x1216', cg: '1600x900', scenes: '1600x900', cards: '512x512', boss: '1000x1000', 'story-bg': '1600x900', 'story-npc': '600x800' };
+export const GROUPS = {
+  portraits: { title: '女主立绘' },
+  costumes: { title: '服装立绘' },
+  cg: { title: '剧情 CG' },
+  boss: { title: '食梦兽三阶段', note: '深色底即可，游戏内自动羽化边缘。' },
+  scenes: { title: '舞台背景' },
+  cards: { title: '卡面', note: '进化版沿用同一张。' },
+  'story-bg': { title: '主线场景背景', note: '清单来自 public/story/locations.json。' },
+  'story-npc': { title: '主线胸像', note: '清单来自 public/story/speakers.json（同一文件只列一次）。矢量版是透明底；JPEG 没有透明通道，换上前先确认在白天场景上不会出现底色方框。' },
+};
 
 export const STYLE = [
   'semi-realistic anime illustration, painterly thick-paint (impasto) digital painting with visible brush strokes',
@@ -17,13 +39,16 @@ export const STYLE = [
 
 export const NEGATIVE = 'text, watermark, signature, logo, chibi, child, loli, nsfw, cleavage, revealing clothes, swimsuit, lingerie, lowres, blurry, extra fingers, deformed hands, bad anatomy';
 
-const STYLE_REF = 'public/assets/lia.png';
+// 旧的四张厚涂 PNG（带 AIGC 标识）：集成步骤 I1 会把它们从 public/assets/ 移到 tools/art/raster/ref/，
+// 这里按实际位置取路径，移动后清单无需再改
+export const legacyRef = (file) => (fs.existsSync(path.join(root, 'tools/art/raster/ref', file)) ? `tools/art/raster/ref/${file}` : `public/assets/${file}`);
+const STYLE_REF = legacyRef('lia.png');
 
 // 外观与 设定集/03 及 game/gacha.mjs 一致；全部为成年女性（18–19 岁）
 export const HEROINES = {
-  lia: { ref: 'public/assets/lia.png', look: '19-year-old young adult woman knight, high tight crimson ponytail with a near-black dark red streak on the left, amber-gold eyes, thin scar under the right eye through the brow tail, restrained determined expression, matte silver and dark crimson light armor with worn edges, battle notch on the left pauldron, cracked glowing gold oath crystal on the chest, scorched cape lining, slender longsword with a ring guard', bg: 'gothic arched window with a blood-red moon, drifting embers', rim: 'warm crimson rim light' },
-  mia: { ref: 'public/assets/mia.png', look: '18-year-old young adult woman engineer, petite, short choppy self-cut cyan-blue hair with neon gradient tips, wrench-shaped hair clip on the right, mechanical cat-ear receivers made of matte titanium with circuit traces, a glowing cyan indicator ring and tiny antennae, bright cyan eyes with a faint circuit glint, tiny mole on the nose tip, bright curious grin, oversized dark grey ripstop work jacket with glowing cyan circuit seams, sleeves past the hands, tool belt pouches, small spherical drone with label stickers hovering by her shoulder', bg: 'workshop with blueprint grid glow and circuit traces', rim: 'cool cyan rim light' },
-  serena: { ref: 'public/assets/serena.png', look: '19-year-old young adult woman astronomer mage, very long silky straight purple-black hair fading to moon-white at the tips, thin braid on the left threaded with a tiny silver moon-phase disc ornament, pale violet eyes with fine star-track lines in the iris, calm half-lidded scrutinizing look, matte velvet purple-black robe with silver geometric seal embroidery on shoulders and cuffs, pendant shaped like a closed silver eyelid, white half-glove on the right hand', bg: 'eclipse moon and faint star-chart rings', rim: 'violet rim light' },
+  lia: { ref: legacyRef('lia.png'), look: '19-year-old young adult woman knight, high tight crimson ponytail with a near-black dark red streak on the left, amber-gold eyes, thin scar under the right eye through the brow tail, restrained determined expression, matte silver and dark crimson light armor with worn edges, battle notch on the left pauldron, cracked glowing gold oath crystal on the chest, scorched cape lining, slender longsword with a ring guard', bg: 'gothic arched window with a blood-red moon, drifting embers', rim: 'warm crimson rim light' },
+  mia: { ref: legacyRef('mia.png'), look: '18-year-old young adult woman engineer, petite, short choppy self-cut cyan-blue hair with neon gradient tips, wrench-shaped hair clip on the right, mechanical cat-ear receivers made of matte titanium with circuit traces, a glowing cyan indicator ring and tiny antennae, bright cyan eyes with a faint circuit glint, tiny mole on the nose tip, bright curious grin, oversized dark grey ripstop work jacket with glowing cyan circuit seams, sleeves past the hands, tool belt pouches, small spherical drone with label stickers hovering by her shoulder', bg: 'workshop with blueprint grid glow and circuit traces', rim: 'cool cyan rim light' },
+  serena: { ref: legacyRef('serena.png'), look: '19-year-old young adult woman astronomer mage, very long silky straight purple-black hair fading to moon-white at the tips, thin braid on the left threaded with a tiny silver moon-phase disc ornament, pale violet eyes with fine star-track lines in the iris, calm half-lidded scrutinizing look, matte velvet purple-black robe with silver geometric seal embroidery on shoulders and cuffs, pendant shaped like a closed silver eyelid, white half-glove on the right hand', bg: 'eclipse moon and faint star-chart rings', rim: 'violet rim light' },
   freya: { ref: null, look: '19-year-old young adult woman ice mage, tall and graceful, long flowing wavy cyan-blue hair with an ice-crystal hair comb, warm amber eyes, gentle warm smile with calm eyes, layered northern robes with a white fur-collar shawl, ice-crystal accessories, crystalline staff topped with a snowflake orb', bg: 'aurora over a snowfield, light snowfall', rim: 'pale ice-blue rim light' },
   lilith: { ref: null, look: '19-year-old young adult woman assassin, long golden hair tied in a high ponytail, sharp golden eyes, competitive confident smirk, small bandage across the nose bridge, sleek black and gold light armor with a one-sided short cape, hood down behind the neck, twin dagger hilts visible behind the shoulders, feline agile posture', bg: 'moonlit rooftops of a gothic city with purple shadow wisps', rim: 'violet rim light' },
   evelyn: { ref: null, look: '18-year-old young adult woman priestess, pale gold almost white long hair in a loose side braid with a small prayer bell, star-blue eyes, gentle shy expression with a tentative small smile, winged silver circlet, white and gold priestess dress adapted into light travel dress-armor, star-shaped pendant', bg: 'cathedral interior with stained-glass light rays', rim: 'soft golden rim light' },
@@ -44,7 +69,7 @@ const portraitRef = (id) => HEROINES[id].ref || `tools/art/raster/out/portraits/
 
 const jobs = [];
 
-// 1) 五位缺少厚涂立绘的女主（莉亚/米娅/塞蕾娜已有 PNG，可用 --include-existing 一并重出）
+// 1) 五位缺少厚涂立绘的女主（莉亚/米娅/塞雷娜已有 PNG，可用 --include-existing 一并重出）
 for (const [id, h] of Object.entries(HEROINES)) {
   jobs.push({
     id: `portrait-${id}`, group: 'portraits', existing: Boolean(h.ref),
@@ -67,8 +92,8 @@ for (const id of Object.keys(HEROINES)) {
 }
 
 // 3) 10 张剧情 CG（与 game/content.mjs CG_GALLERY 对应）
-const PARTY = ['public/assets/lia.png', 'public/assets/mia.png', 'public/assets/serena.png'];
-const BOSS = 'public/assets/dream-eater.png';
+const PARTY = [legacyRef('lia.png'), legacyRef('mia.png'), legacyRef('serena.png')];
+const BOSS = 'tools/art/raster/ref/dream-eater.png'; // 旧的厚涂 Boss 图，只作参考图，不再随站点发布
 const TRAIN = 'aboard the armoured sleeper train "Silver Rail" during a lunar eclipse: dark teal-grey riveted metal walls, brass fixtures, arched windows, warm amber wall lamps, red emergency lights';
 const CG = [
   // [文件名, 画面描述, 参考图, 是否在列车内]
@@ -78,7 +103,7 @@ const CG = [
   ['battle-descend', 'The carriage roof torn open; a colossal whale-like creature with moth-like feathery antennae, deep-sea lure lights, one giant eye and translucent memory-shard scales descends from a black rift in the eclipse sky; the three heroines brace below', [...PARTY, BOSS], true],
   ['battle-phase2', 'The whale-like memory devourer wails as its translucent scales shatter into thousands of firefly-like warm memory fragments swirling over the train', [BOSS], false],
   ['battle-phase3', 'Close-up of the creature\'s fully opened giant eye with a frozen nebula iris; at the tip of one feathery antenna a tiny warm glowing vignette of a child reaching out for its mother', [BOSS], false],
-  ['aftermath-snow', 'Quiet aftermath in the ruined carriage, glowing memory fragments falling like snow; the crimson-haired knight catches one fragment in her gauntlet, melancholic', ['public/assets/lia.png'], true],
+  ['aftermath-snow', 'Quiet aftermath in the ruined carriage, glowing memory fragments falling like snow; the crimson-haired knight catches one fragment in her gauntlet, melancholic', [legacyRef('lia.png')], true],
   ['ending-seal', 'Four threads of light (crimson, cyan, violet and silver) weave into a key that closes a seal around the Dawn Seed, a glowing pearl-gold seed crystal inside tilted orbit rings; four silhouettes raise their hands', PARTY, false],
   ['ending-share', 'The Dawn Seed bursts with dawn light over a vast valley with silver rails and the stopped train; countless memory lights rise from distant towns; four small silhouettes on a hill', [], false],
   ['ending-destroy', 'A gloved hand lets the Dawn Seed crumble into ash and embers under an endless eclipse night, melancholic', [], false],
@@ -157,7 +182,7 @@ const CARD_SUBJECT = {
   serena_hero: 'the purple-black-haired mage Serena with her moon-phase hair ornament, raising a gloved hand as a void moon forms behind her',
 };
 const CLASS_TONE = { neutral: 'moonlit silver and steel-blue night palette', lia: 'crimson and gold palette, flames and embers', lilith: 'violet and black-gold palette, smoke and shadows', serena: 'indigo and purple palette, void, moons and stars' };
-const HERO_REF = { lia_hero: 'public/assets/lia.png', serena_hero: 'public/assets/serena.png', lilith_hero: 'tools/art/raster/out/portraits/lilith.png' };
+const HERO_REF = { lia_hero: legacyRef('lia.png'), serena_hero: legacyRef('serena.png'), lilith_hero: 'tools/art/raster/out/portraits/lilith.png' };
 for (const card of CARDS) {
   const subject = CARD_SUBJECT[card.id];
   if (!subject) throw new Error(`manifest: missing card subject for ${card.id}`);
@@ -166,6 +191,34 @@ for (const card of CARDS) {
     out: `tools/art/raster/out/cards/${card.id}.png`, size: '1024x1024', seed: 6000 + jobs.length,
     prompt: `${STYLE}. Square trading-card illustration, centered dramatic composition with a soft dark vignette, no card frame, ${CLASS_TONE[card.class]}: ${subject}.`,
     refs: [STYLE_REF, ...(HERO_REF[card.id] ? [HERO_REF[card.id]] : [])],
+  });
+}
+
+// 7) 主线剧情：每个 locations.json 场景一张背景，speakers.json 里每个 /assets/story/npc/ 胸像一张（按文件去重，
+//    lia 与 lia_unknown 共用 lia）。画面描述取矢量版的 aria-label，保持构图与内容一致。
+const svgLabel = (rel) => {
+  const file = path.join(root, 'public', rel);
+  const m = fs.existsSync(file) ? fs.readFileSync(file, 'utf8').match(/aria-label="([^"]*)"/) : null;
+  return m ? m[1] : '';
+};
+const STORY_WORLD = 'low-fantasy medieval world, painterly, no text';
+for (const [id, loc] of Object.entries(readJson('public/story/locations.json'))) {
+  jobs.push({
+    id: `story-bg-${id}`, group: 'story-bg', label: loc.name, out: `tools/art/raster/out/story-bg/${id}.png`, size: '1920x1080', seed: 7000 + jobs.length,
+    prompt: `${STYLE}. Wide 16:9 story background painting, ${STORY_WORLD}, no characters in focus. Scene: ${svgLabel(loc.svg) || loc.name}.`,
+    refs: [STYLE_REF],
+  });
+}
+const busts = new Map();
+for (const [sid, sp] of Object.entries(readJson('public/story/speakers.json'))) {
+  const m = typeof sp.art === 'string' && sp.art.match(/^\/assets\/story\/npc\/([\w-]+)\.svg$/);
+  if (m && (!busts.has(m[1]) || sid === m[1])) busts.set(m[1], { sid, sp }); // the speaker named like the file wins (lia over lia_unknown)
+}
+for (const [name, { sp }] of busts) {
+  jobs.push({
+    id: `story-npc-${name}`, group: 'story-npc', label: sp.name.replace('{PLAYER_NAME}', '亚克'), out: `tools/art/raster/out/story-npc/${name}.png`, size: '1024x1365', seed: 8000 + jobs.length,
+    prompt: `${STYLE}. Bust portrait (head and shoulders, facing the viewer at 3/4) on a plain very dark background, ${STORY_WORLD}: ${svgLabel(sp.art) || sp.name}.`,
+    refs: [STYLE_REF, ...(name === 'lia' ? [legacyRef('lia.png')] : [])].filter((r, i, a) => a.indexOf(r) === i),
   });
 }
 

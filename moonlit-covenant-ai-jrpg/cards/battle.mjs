@@ -6,7 +6,8 @@
 //   · 双方主战者 20 生命，护甲先于生命承伤
 //   · PP：每回合上限+1（最高10），回合开始补满
 //   · 进化点(EP)：先手2点/后手3点；先手第5回合、后手第4回合起可进化
-//   · 进化：消耗1EP，随从 +2/+2，并可在当回合立即攻击（含打脸）
+//   · 进化：消耗1EP，随从 +2/+2；本回合尚未攻击过的随从进化后可立即攻击（含打脸），
+//     已经攻击过的随从进化后本回合不能再攻击（每个随从每回合最多攻击一次）
 //   · 召唤失调：随从入场当回合不可攻击（突进可打随从、疾驰可打脸）
 //   · 守护：敌方有守护随从时，必须先攻击守护随从
 //   · 剧毒：造成伤害即消灭目标随从；吸血：造成伤害等额回血
@@ -64,7 +65,8 @@ function instantiate(cardId) {
     keywords: [...(card.keywords || [])],
     evolved: false,
     canAttack: false,
-    canAttackLeader: true
+    canAttackLeader: true,
+    attackedThisTurn: false   // 本回合是否已攻击过（进化不会刷新攻击次数）
   };
   if (card.type === 'follower') {
     inst.attack = card.attack;
@@ -157,11 +159,13 @@ function startTurn(state, key) {
   for (const f of p.field) {
     f.canAttack = true;
     f.canAttackLeader = true;
+    f.attackedThisTurn = false;
   }
+  // 回合标题先于抽牌/疲劳行写入，回放日志时读起来顺序自然
+  log(state, `—— 第${state.turn}回合：${sideName(key)}（PP ${p.pp.current}/${p.pp.max}）——`);
   // 先手第一回合不抽牌
   const isFirstTurnOfGame = (key === state.firstPlayer && p.turnCount === 1);
   if (!isFirstTurnOfGame) drawCards(state, key, 1);
-  log(state, `—— 第${state.turn}回合：${sideName(key)}（PP ${p.pp.current}/${p.pp.max}）——`);
 }
 
 // ─── 结束回合 ───
@@ -176,6 +180,7 @@ export function endTurn(state) {
 
 // ─── 出牌 ───
 // target: 目标 uid（随从）或 'leader'（打脸），仅当卡牌需要目标时提供
+// 先做完全部校验再修改状态：任何一项不合法都直接抛错，手牌、PP、场面保持原样。
 export function playCard(state, key, handUid, target = null) {
   if (state.phase === 'gameover') throw new Error('对局已结束。');
   if (key !== state.activePlayer) throw new Error('还没到你的回合。');
@@ -185,6 +190,7 @@ export function playCard(state, key, handUid, target = null) {
   const inst = p.hand[idx];
   const card = getCard(inst.cardId);
   if (card.cost > p.pp.current) throw new Error('PP不足。');
+  if (card.type === 'follower' && p.field.length >= MAX_FIELD) throw new Error(`场上随从已满（最多${MAX_FIELD}个）。`);
 
   const { needsTarget, playable } = targetRequirement(state, key, card);
   if (!playable) throw new Error('没有可选的目标。');
@@ -194,6 +200,15 @@ export function playCard(state, key, handUid, target = null) {
     state.pending = { handUid, cardId: inst.cardId };
     return state;
   }
+  if (needsTarget) {
+    // 目标必须是 getTargetOptions 给出的合法目标之一（例如「只能打随从」的法术不能指向主战者）
+    const options = getTargetOptions(state, key, card.id);
+    if (!options.some((o) => o.uid === target)) {
+      throw new Error(target === 'leader' ? '这张卡只能以随从为目标。' : '目标无效。');
+    }
+  } else {
+    target = null; // 不需要目标（或指向效果没有合法目标而落空）时忽略客户端传来的目标
+  }
 
   // 扣费并移出手牌
   p.pp.current -= card.cost;
@@ -202,7 +217,6 @@ export function playCard(state, key, handUid, target = null) {
   state.pending = null;
 
   if (card.type === 'follower') {
-    if (p.field.length >= MAX_FIELD) throw new Error('场上随从已满（最多5个）。');
     // 召唤失调处理
     if (inst.keywords.includes('storm')) { inst.canAttack = true; inst.canAttackLeader = true; }
     else if (inst.keywords.includes('rush')) { inst.canAttack = true; inst.canAttackLeader = false; }
@@ -281,7 +295,12 @@ function applyDamageEffect(state, ownerKey, enemyKey, eff, target) {
       if (field.length) damageFollower(state, field[Math.floor(state._rng() * field.length)], amount);
       break;
     }
-    case 'enemyFollower':
+    case 'enemyFollower': {
+      // 只能打随从：即使目标写成 'leader' 也不会伤到主战者
+      const f = findFollower(state, enemyKey, target);
+      if (f) damageFollower(state, f, amount);
+      break;
+    }
     case 'enemyAny': {
       if (target === 'leader') { damageLeader(state, enemyKey, amount); break; }
       const f = findFollower(state, enemyKey, target);
@@ -379,8 +398,9 @@ export function evolve(state, key, followerUid) {
   f.attack += EVOLVE_BONUS;
   f.maxHealth += EVOLVE_BONUS;
   f.health += EVOLVE_BONUS;
-  f.canAttack = true;        // 进化后可立即攻击
-  f.canAttackLeader = true;  // 含打脸
+  // 进化后可立即攻击（含打脸），但不刷新攻击次数：本回合已攻击过的随从进化后仍不能再攻击
+  f.canAttack = !f.attackedThisTurn;
+  f.canAttackLeader = true;
   log(state, `${sideName(key)}的 ${f.name} 进化为 ${f.attack}/${f.health}！`);
   return state;
 }
@@ -403,20 +423,23 @@ export function attack(state, key, attackerUid, targetUid) {
     if (hasGuard) throw new Error('必须先攻击守护随从。');
     if (!attacker.canAttackLeader) throw new Error('该随从本回合只能攻击随从。');
     const dealt = attacker.attack;
+    attacker.canAttack = false;
+    attacker.attackedThisTurn = true;
+    // 先写「谁攻击了谁」，再写伤害、吸血与胜负，日志按发生顺序读
+    log(state, `${attacker.name} 攻击了${sideName(enemyKey)}主战者（${dealt}点伤害）。`);
     damageLeader(state, enemyKey, dealt);
     if (attacker.keywords.includes('drain')) healLeaderBy(state, key, dealt);
-    attacker.canAttack = false;
-    log(state, `${attacker.name} 攻击了${sideName(enemyKey)}主战者（${dealt}点伤害）。`);
   } else {
     const target = findFollower(state, enemyKey, targetUid);
     if (!target) throw new Error('找不到目标随从。');
     if (hasGuard && !target.keywords.includes('guard')) throw new Error('必须先攻击守护随从。');
+    attacker.canAttack = false;
+    attacker.attackedThisTurn = true;
+    log(state, `${attacker.name} 攻击了 ${target.name}。`);
     // 互伤
     damageFollower(state, target, attacker.attack, { bane: attacker.keywords.includes('bane') });
     damageFollower(state, attacker, target.attack, { bane: target.keywords.includes('bane') });
     if (attacker.keywords.includes('drain') && attacker.attack > 0) healLeaderBy(state, key, attacker.attack);
-    attacker.canAttack = false;
-    log(state, `${attacker.name} 攻击了 ${target.name}。`);
   }
 
   cleanupDead(state);

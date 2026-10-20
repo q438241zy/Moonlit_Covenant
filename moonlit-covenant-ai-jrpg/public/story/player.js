@@ -177,7 +177,19 @@ function entryFor(id, chapter = S.chapters.get(id)) {
   const e = S.index.find((x) => x.id === id);
   const number = e?.number ?? chapter?.number ?? Number(String(id).slice(2));
   const title = chapter?.title || e?.title || id;
-  return { id, number, title, ...splitTitle(title, number), requires: e?.requires ?? null, minutes: chapter?.estimatedMinutes, inIndex: Boolean(e) };
+  return { id, number, title, ...splitTitle(title, number), requires: e?.requires ?? null, minutes: chapter?.estimatedMinutes ?? e?.estimatedMinutes, inIndex: Boolean(e) };
+}
+// 标题页只读目录（index.json 自带章节名与「约 N 分钟」，见 tools/story/check.mjs）：目录里写了 file 的章节就算已开放，点开时才下载。
+// 只有直达链接指向目录之外的章节时，才先读那一章确认它存在。
+function isAvailable(id) {
+  const e = S.index.find((x) => x.id === id);
+  return e ? Boolean(e.file) : Boolean(S.chapters.get(id));
+}
+// 目录里紧接着这一章的下一章（与章节文件的 end.next 一致，check.mjs 校验）；还没开放就当没有
+function nextChapterId(id) {
+  const i = S.index.findIndex((e) => e.id === id);
+  const e = S.index.find((x) => x.requires === id) || (i >= 0 ? S.index[i + 1] : null);
+  return e && e.file ? e.id : null;
 }
 
 function progress() { const p = load(KEYS.progress, {}); return p && typeof p === 'object' ? p : {}; }
@@ -207,8 +219,23 @@ async function renderStart() {
   const renderId = (S.renderId = (S.renderId || 0) + 1);
   const save = load(KEYS.auto, null);
   const hasSave = Boolean(save?.run && save.chapterId);
+  // 自动存档停在章末（已经读完）：「继续」只会重开那一页完成页。主按钮改成直接开下一章——和完成页的「下一章」走同一条路
+  // （continueRun 接上这一章的结局）；最后一章读完时改成「重温本章」。
+  const saveDone = hasSave && Boolean(save.run.done);
+  const nextId = saveDone ? nextChapterId(save.chapterId) : null;
   const ids = S.index.map((e) => e.id);
-  if (S.focus && !ids.includes(S.focus)) ids.push(S.focus);
+  const extra = S.focus && !ids.includes(S.focus) ? S.focus : null;
+  if (extra) {
+    ids.push(extra);
+    await loadChapter(extra); // 目录外的直达链接：读这一章确认它存在（目录里的章节一律不预载）
+    if (S.view !== 'start' || renderId !== S.renderId) return; // 期间又重绘过（连点返回标题等）
+  }
+  const saveEntry = hasSave ? entryFor(save.chapterId) : null;
+  const nextEntry = nextId ? entryFor(nextId) : null;
+  let primary = '';
+  if (hasSave && !saveDone) primary = `<button class="btn primary large" type="button" data-act="continue">${icon('play', { size: 18 })}<span>继续</span><small>${esc(`${saveEntry.label} · ${timeAgo(save.savedAt)}`)}</small></button>`;
+  else if (nextEntry) primary = `<button class="btn primary large" type="button" data-act="next-chapter">${icon('arrow-right', { size: 18 })}<span>开始${esc(nextEntry.label)}</span><small>${esc(nextEntry.name)}</small></button>`;
+  else if (saveDone) primary = `<button class="btn primary large" type="button" data-act="revisit">${icon('refresh', { size: 18 })}<span>重温本章</span><small>${esc(saveEntry.label)}</small></button>`;
 
   root.innerHTML = `
     <main class="start" id="start">
@@ -231,8 +258,8 @@ async function renderStart() {
             <input id="nameField" type="text" maxlength="12" autocomplete="nickname" spellcheck="false" value="${esc(loadStoredName())}" placeholder="${esc(DEFAULT_PLAYER_NAME)}" />
           </label>
           <div class="start-actions" id="startActions">
-            ${hasSave ? `<button class="btn primary large" type="button" data-act="continue">${icon('play', { size: 18 })}<span>继续</span><small id="continueMeta">${esc(timeAgo(save.savedAt))}</small></button>` : ''}
-            <button class="btn ${hasSave ? 'secondary' : 'primary'} large" type="button" data-act="begin" id="beginBtn" disabled>${icon('moon', { size: 18 })}<span>载入中…</span></button>
+            ${primary}
+            <button class="btn ${primary ? 'secondary' : 'primary'} large" type="button" data-act="begin" id="beginBtn" disabled>${icon('moon', { size: 18 })}<span>载入中…</span></button>
           </div>
           <p class="start-hint">${icon('feather', { size: 15 })}点击 / 空格推进 · 在输入框里用你自己的话回应</p>
         </section>
@@ -242,7 +269,7 @@ async function renderStart() {
             <span class="muted">完成上一章即可解锁下一章</span>
           </div>
           <ol class="ch-list" id="chList">
-            ${ids.map((id) => `<li class="ch-card loading" data-id="${esc(id)}"><div class="ch-num">${esc(entryFor(id).label)}</div><div class="ch-body"><h3>${esc(entryFor(id).name)}</h3><p class="ch-meta">读取中…</p></div></li>`).join('') || '<li class="ch-empty">章节目录读取失败，请刷新重试。</li>'}
+            ${ids.map((id) => chapterCardHtml(id)).join('') || '<li class="ch-empty">章节目录读取失败，请刷新重试。</li>'}
           </ol>
         </section>
       </div>
@@ -250,28 +277,19 @@ async function renderStart() {
 
   $('#nameField').addEventListener('change', (e) => { const n = cleanName(e.target.value); e.target.value = n; storeName(n); });
   $('[data-act="continue"]')?.addEventListener('click', continueSave);
+  $('[data-act="next-chapter"]')?.addEventListener('click', () => startNextFromSave(save, nextId));
+  $('[data-act="revisit"]')?.addEventListener('click', () => startChapter(save.chapterId, { canon: false }));
   bindSettings($('#start'));
+  $('#chList').querySelectorAll('[data-start]').forEach((btn) => btn.addEventListener('click', () => startChapter(btn.dataset.start, { canon: btn.dataset.canon === '1' })));
 
-  const [chapters] = await Promise.all([Promise.all(ids.map((id) => loadChapter(id))), hasSave ? loadChapter(save.chapterId) : null]);
-  if (S.view !== 'start' || renderId !== S.renderId) return; // 期间又重绘过（连点返回标题等）
-  if (hasSave) {
-    const saveEntry = entryFor(save.chapterId);
-    const meta = $('#continueMeta');
-    if (meta) meta.textContent = `${saveEntry.label} · ${timeAgo(save.savedAt)}`;
-  }
-  const list = $('#chList');
-  ids.forEach((id, i) => {
-    const li = list.querySelector(`[data-id="${CSS.escape(id)}"]`);
-    if (li) li.outerHTML = chapterCardHtml(id, chapters[i]);
-  });
-  list.querySelectorAll('[data-start]').forEach((btn) => btn.addEventListener('click', () => startChapter(btn.dataset.start, { canon: btn.dataset.canon === '1' })));
-
-  // 主按钮：直达链接 > 第一个未完成且已解锁的章节 > 从序章重玩
+  // 次按钮：直达链接 > 第一个未完成且已解锁的章节 > 从序章重玩；和主按钮重复（读完一章后的「开始下一章」）时不再显示第二遍
   const begin = $('#beginBtn');
-  const available = ids.filter((id, i) => chapters[i]);
-  let target = S.focus && S.chapters.get(S.focus) ? S.focus : null;
+  const available = ids.filter(isAvailable);
+  let target = S.focus && isAvailable(S.focus) ? S.focus : null;
   target ||= available.find((id) => isUnlocked(entryFor(id)) && !isCompleted(id)) || available[0] || null;
-  if (target) {
+  if (target && target === nextId) {
+    begin.remove();
+  } else if (target) {
     const e = entryFor(target);
     const replay = isCompleted(target);
     begin.innerHTML = `${icon(replay ? 'refresh' : 'moon', { size: 18 })}<span>${replay ? '重玩' : '开始'}${esc(e.label)}</span>${S.focus ? `<small>${esc(e.name)}</small>` : ''}`;
@@ -280,11 +298,12 @@ async function renderStart() {
   } else {
     begin.innerHTML = `${icon('lock', { size: 18 })}<span>主线制作中</span>`;
   }
-  if (S.focus && !S.chapters.get(S.focus)) toast(`「${entryFor(S.focus).label}」尚未开放`, 'warn');
+  if (S.focus && !isAvailable(S.focus)) toast(`「${entryFor(S.focus).label}」尚未开放`, 'warn');
 }
 
-function chapterCardHtml(id, chapter) {
-  const e = entryFor(id, chapter);
+function chapterCardHtml(id) {
+  const e = entryFor(id);
+  const chapter = isAvailable(id); // 只看目录，不下载章节文件
   const done = isCompleted(id);
   const direct = S.focus === id;
   const unlocked = isUnlocked(e) || direct || done; // 用默认正史打通过的章节，前一章没完成也能直接重玩
@@ -314,9 +333,13 @@ function chapterCardHtml(id, chapter) {
   </li>`;
 }
 
+function chapterMissingToast(id) {
+  toast(S.index.some((e) => e.id === id && e.file) ? '章节读取失败，请检查网络后重试' : '该章节尚未开放', 'warn');
+}
+
 async function startChapter(id, { canon = false } = {}) {
   const chapter = await loadChapter(id);
-  if (!chapter) { toast('该章节尚未开放', 'warn'); return; }
+  if (!chapter) { chapterMissingToast(id); return; }
   const save = load(KEYS.auto, null);
   if (save?.run && !save.run.done) {
     const ok = await confirmDialog('开始新的进度会覆盖当前的自动存档（章末存档不受影响）。', '开始新进度');
@@ -338,11 +361,24 @@ async function startChapter(id, { canon = false } = {}) {
   enterPlay(chapter, run, { fresh: true });
 }
 
+// 读完一章后从标题页开下一章：与章节完成页的「下一章」一样，用这一章的结局存档接进下一章
+async function startNextFromSave(save, nextId) {
+  if (save?.run?.v !== ENGINE_VERSION || !save.run.done) { startChapter(nextId, { canon: false }); return; } // 旧版存档：退回章末存档那条路
+  const chapter = await loadChapter(nextId);
+  if (!chapter) { chapterMissingToast(nextId); return; }
+  const name = currentName();
+  storeName(name);
+  const run = continueRun(save.run, chapter);
+  run.playerName = name;
+  run.mode = S.settings.mode;
+  enterPlay(chapter, run, { fresh: true });
+}
+
 async function continueSave() {
   const save = load(KEYS.auto, null);
   if (!save?.run || !save.chapterId) { toast('没有可继续的存档', 'warn'); return; }
   const chapter = await loadChapter(save.chapterId);
-  if (!chapter) { toast('存档所在的章节尚未开放', 'warn'); return; }
+  if (!chapter) { toast(isAvailable(save.chapterId) ? '章节读取失败，请检查网络后重试' : '存档所在的章节尚未开放', 'warn'); return; }
   const run = save.run;
   if (run.v !== ENGINE_VERSION || !Array.isArray(run.stack)) { toast('存档版本不兼容，请重新开始本章', 'warn'); return; }
   const name = currentName();
@@ -721,7 +757,8 @@ async function onShot(shot) {
   P.dock.classList.add('idle');
   liftVeilIfNeeded();
   showShotCaption(shot);
-  if (shot.bg !== S.bg) await setBackground(shot.bg, 'fade');
+  // 换镜头时等新背景淡入走完（story.css .bg 的 opacity 过渡 .95s）再开始打第一句字，免得字压在半透明的交叉淡化上
+  if (shot.bg !== S.bg) await bgSettled(await setBackground(shot.bg, 'fade'));
 }
 
 // 黑幕（fade-black / blackout）只在接下来几拍自己会处理它时才留着，否则换分镜 / 换地点时掀开
@@ -740,8 +777,9 @@ function upcomingBeats(n = 4) {
 
 function showShotCaption(shot) {
   const loc = S.locations[shot.bg];
-  // 读档时传进来的是章节里的原始分镜（标题可能带 {PLAYER_NAME}），这里统一替换
-  const title = interpolate(shot.title || '', S.run);
+  // 读档时传进来的是章节里的原始分镜（标题可能带 {PLAYER_NAME}），这里统一替换。
+  // 剧本规格把自由输入分镜标成「自由输入：钉笼子的人」，那是给写作者看的分类前缀，玩家只看标题本身（源数据不动）
+  const title = interpolate(shot.title || '', S.run).replace(/^自由输入[：:]\s*/, '');
   P.shotCap.innerHTML = `<span class="shot-id">${esc(shot.id)}</span><span class="shot-title">${esc(title)}</span>${loc ? `<span class="shot-loc">${icon('compass', { size: 12 })}${esc(loc.name)}</span>` : ''}`;
   P.shotCap.classList.remove('show');
   void P.shotCap.offsetWidth;
@@ -810,6 +848,7 @@ function announce(text) {
 
 async function showLine(beat, my) {
   const line = describeLine(beat);
+  if (beat.intel) line.intel = true; // 章节里标了 intel 的叙述（如 00-14 的三件紧急情况）：输入时收进「情报」栏
   const seen = markRead(readKey(beat));
   S.lineSeen = seen;
   if (S.skip && !seen) { setSkip(false, true); toast('遇到未读内容，快进已停止'); }
@@ -971,6 +1010,7 @@ function artForInput(node) {
 function gradientOf(loc) {
   return `linear-gradient(180deg, ${loc.top || '#2a2440'} 0%, ${loc.bottom || '#06050c'} 100%)`;
 }
+// 返回正在淡入的那一层（硬切、减少动态时返回 null），供 bgSettled 等它淡完
 async function setBackground(id, mode = 'fade') {
   S.bg = id;
   const loc = id && id !== 'black' ? S.locations[id] : null;
@@ -980,7 +1020,7 @@ async function setBackground(id, mode = 'fade') {
     const ok = await Promise.race([preload(url), sleep(1600).then(() => false)]);
     if (ok) image = `url("${String(url).replace(/["\\]/g, '')}")`;
   }
-  if (S.bg !== id || !P.bgLayers) return;
+  if (S.bg !== id || !P.bgLayers) return null;
   const nextIdx = S.bgFront ^ 1;
   const incoming = P.bgLayers[nextIdx];
   const outgoing = P.bgLayers[S.bgFront];
@@ -989,17 +1029,43 @@ async function setBackground(id, mode = 'fade') {
   incoming.classList.toggle('fallback', Boolean(loc) && !image);
   P.scene.dataset.bg = id || 'black';
   P.scene.setAttribute('aria-label', loc ? `场景：${loc.name}` : '黑画面');
+  S.bgFront = nextIdx;
   if (mode === 'cut' || reducedMotion) {
     P.bgLayers.forEach((l) => l.classList.add('cut'));
     incoming.classList.add('show');
     outgoing.classList.remove('show');
     void incoming.offsetWidth;
     P.bgLayers.forEach((l) => l.classList.remove('cut'));
-  } else {
-    incoming.classList.add('show');
-    outgoing.classList.remove('show');
+    return null;
   }
-  S.bgFront = nextIdx;
+  incoming.classList.add('show');
+  outgoing.classList.remove('show');
+  return incoming;
+}
+// 等背景层的淡入过渡结束（transitionend），从过渡真正开始（transitionrun）算最多等 maxMs；
+// 新背景图很大时，过渡要等解码完的下一帧才开始，所以计时从 transitionrun 重新起算，总共不超过 maxMs + 500。
+// 减少动态、快进、没有在淡入时立即返回
+function bgSettled(layer, maxMs = 1000) {
+  if (!layer || reducedMotion || S.skip) return Promise.resolve();
+  return new Promise((resolve) => {
+    let timer = 0;
+    const hardStop = setTimeout(() => finish(), maxMs + 500);
+    const finish = () => {
+      clearTimeout(timer);
+      clearTimeout(hardStop);
+      layer.removeEventListener('transitionrun', onRun);
+      layer.removeEventListener('transitionend', onEnd);
+      layer.removeEventListener('transitioncancel', onEnd);
+      resolve();
+    };
+    const mine = (e) => e.target === layer && e.propertyName === 'opacity';
+    const onRun = (e) => { if (mine(e)) { clearTimeout(timer); timer = setTimeout(finish, maxMs); } };
+    const onEnd = (e) => { if (mine(e)) finish(); };
+    timer = setTimeout(finish, maxMs);
+    layer.addEventListener('transitionrun', onRun);
+    layer.addEventListener('transitionend', onEnd);
+    layer.addEventListener('transitioncancel', onEnd);
+  });
 }
 
 // ─── 特效 ───
@@ -1166,14 +1232,15 @@ function askPlayer(node) {
   P.askInput.disabled = false;
   P.ask.querySelectorAll('button').forEach((b) => { b.disabled = false; });
   P.askSkip.hidden = !node.optional;
+  const intel = S.run.battle ? [] : recentIntel(); // 战斗中情报在战斗面板里
+  renderIntel(intel);
   const last = [...S.backlog].reverse().find((l) => ['say', 'think', 'picture', 'voice'].includes(l.kind));
-  P.askContext.hidden = !last;
-  if (last) {
+  P.askContext.hidden = !last || (last.intel && intel.includes(last.text)); // 最后一句已经列在「情报」里，就不再重复一遍
+  if (!P.askContext.hidden) {
     $('.ask-context-name', P.askContext).textContent = last.name || '';
     $('.ask-context-name', P.askContext).style.setProperty('--who', last.color || 'var(--muted)');
     $('.ask-context-text', P.askContext).textContent = last.text;
   }
-  renderIntel(S.run.battle ? [] : recentIntel()); // 战斗中情报在战斗面板里
   P.ask.classList.remove('enter');
   void P.ask.offsetWidth;
   P.ask.classList.add('enter');
@@ -1187,15 +1254,22 @@ function askPlayer(node) {
 }
 
 // 潜入情报这类系统字幕只以横幅一闪而过：轮到玩家写行动时，把上一次回应之后出现过的字幕收进输入框上方的「情报」折叠栏
-// （从回看记录里取，刷新后「继续」也还在）。只有一两句的零散字幕不算情报。
+// （从回看记录里取，刷新后「继续」也还在）。章节里标了 intel 的叙述（00-14 的三件紧急情况）一并收进来。
+// 只有一句、又夹在别的叙述中间的零散字幕不算情报；但紧挨着输入框的那一句字幕本身就是这一问的情报（05-08「笼锁要钥匙……」），照样列出。
+function isIntelCaption(l) {
+  return l.kind === 'caption' && !l.sys && !/^战斗(开始|结束) · /.test(l.text);
+}
 function recentIntel() {
   const out = [];
+  let marked = false;
+  let lastIsCaption = null;
   for (let i = S.backlog.length - 1; i >= 0 && out.length < 16; i -= 1) {
     const l = S.backlog[i];
     if (!l || l.kind === 'input') break;
-    if (l.kind === 'caption' && !l.sys && !/^战斗(开始|结束) · /.test(l.text)) out.unshift(l.text);
+    if (lastIsCaption === null && !l.sys) lastIsCaption = isIntelCaption(l);
+    if (l.intel || isIntelCaption(l)) { out.unshift(l.text); if (l.intel) marked = true; }
   }
-  return out.length >= 2 ? out : [];
+  return out.length >= 2 || marked || lastIsCaption ? out : [];
 }
 function renderIntel(lines) {
   const box = P.askIntel;

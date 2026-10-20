@@ -34,12 +34,12 @@ adult woman knight, 19 years old, high tight crimson ponytail with a near-black 
 ```
 表情差分：别过脸整理肩甲（害羞）、咬牙但眼神坚定（愤怒）、难看的笑（真正悲伤）。
 
-### 米娅·铃 · 猫耳机关师（`#5ed7ff`）
+### 米娅·玲 · 猫耳机关师（`#5ed7ff`）
 ```
 adult woman engineer, 18 years old, petite, short choppy self-cut cyan-blue hair with neon gradient tips, wrench-shaped hair clip on the right, mechanical cat-ear receivers made of matte titanium with circuit traces and a glowing cyan indicator ring and tiny antenna, big bright cyan eyes with faint circuit glint, tiny mole on the nose tip, bright curious grin, oversized ripstop work jacket with glowing cyan circuit seams, sleeves past the hands, tool belt, small spherical drone covered in label stickers hovering by her shoulder, blueprint grid glow background
 ```
 
-### 塞蕾娜·诺克斯 · 月蚀观测者（`#b58cff`）
+### 塞雷娜·诺克斯 · 月蚀观测者（`#b58cff`）
 ```
 adult woman astronomer mage, 19 years old, very long silky straight purple-black hair fading to moon-white at the tips, thin braid on the left with a tiny silver moon-phase disc ornament, pale violet eyes with fine star-track lines in the iris, calm half-lidded scrutinizing look, matte velvet purple-black robe with silver geometric seal embroidery, pendant shaped like a closed silver eyelid, white half-glove on the right hand, star-chart rings in the background, cold moonlit lighting
 ```

@@ -82,6 +82,15 @@ Modules may also `import { ANCHORS, SHAPES, taper, lock, mix, ... } from '../bas
 outside layer functions (read-only – never modify `base.mjs`). `compose(heroine, { outfit, lenient })`
 throws if any layer throws, unless `lenient: true` (then the layer is skipped with a warning).
 
+Two more `compose()` options exist for derived assets (both off by default, so the portraits and
+costumes above never change):
+
+- `background: false` – a transparent figure: no background (step 1, incl. `bgMotif`) and no full-frame
+  lighting (step 4); the figure and its rim light (steps 2–3) are kept. Used by the story-mode bust
+  `tools/art/story/lia-bust.mjs`, which scales the 832×1216 result into the 600×800 bust frame.
+- `extras: ['shield']` – optional heroine layers from `heroine.extras` (below), drawn first inside the
+  figure group, i.e. behind `hairBack` (things carried on the back).
+
 ---
 
 ## 3. Anchors (`p.anchors`, also `import { ANCHORS }`)
@@ -151,12 +160,13 @@ The body silhouette runs 378,560 → 375,616 → 371,662 → 364,694 → 336,713
 ```js
 export default {
   id: 'mia',                 // required; file prefix, output name, id prefix
-  name: '米娅·铃',           // used for aria-label
+  name: '米娅·玲',           // used for aria-label
   palette: { ... },          // §4.1 – merged over DEFAULT_PALETTE
   expression: { ... },       // §4.2 – merged over DEFAULT_EXPRESSION + eye-shape preset
   face: { jaw: -0.5, chin: 4 }, // optional face shape + ears / bangs cast shadow, §4.0
   costumeLayers: ['bodyBack', 'neckAccessory'], // optional: heroine layers that belong to her DEFAULT costume (dropped when an outfit is worn)
   layers: { bgMotif, hairBack, bodyBack, outfit, neckAccessory, faceMarks, headBack, hairFront, headFront, foreground, irisDetail },
+  extras: { shield },        // optional: layers drawn only when compose() is called with { extras: ['shield'] }
 };
 ```
 

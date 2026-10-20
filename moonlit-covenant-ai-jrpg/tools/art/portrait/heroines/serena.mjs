@@ -11,7 +11,7 @@ const C = {
 
 export default {
   id: 'serena',
-  name: '塞蕾娜·诺克斯',
+  name: '塞雷娜·诺克斯',
   palette: {
     accent: '#b58cff', accent2: '#efe9ff',
     hair: '#2d2342', hairShadow: '#1d1630', hairDeep: '#110c1e', hairHighlight: '#7d6aae', hairLine: '#0a0714',

@@ -15,7 +15,7 @@ const C = {
 
 export default {
   id: 'mia',
-  name: '米娅·铃',
+  name: '米娅·玲',
   palette: {
     accent: '#5ed7ff', accent2: '#ff9a3c',
     hair: '#3a93cc', hairShadow: '#24639a', hairDeep: '#163f6c', hairHighlight: '#93e4ff', hairLine: '#0d2645',

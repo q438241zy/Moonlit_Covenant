@@ -8,6 +8,23 @@ const helpDialog = document.querySelector('#helpDialog');
 const settingsContent = document.querySelector('#settingsContent');
 const soundToggle = document.querySelector('#soundToggle');
 
+/* localStorage 只存本机便利数据（声音、称呼、已看过的提示等）；隐私模式或禁用站点数据时读写会抛错，
+   所有访问都经过这里，失败时按「没有存过」处理，页面照常运行。 */
+const store = {
+  get(key, fallback = null) {
+    try { const value = localStorage.getItem(key); return value === null ? fallback : value; } catch { return fallback; }
+  },
+  set(key, value) {
+    try { localStorage.setItem(key, value); } catch { /* storage optional */ }
+  },
+  remove(key) {
+    try { localStorage.removeItem(key); } catch { /* storage optional */ }
+  },
+  json(key, fallback) {
+    try { const value = JSON.parse(localStorage.getItem(key) ?? 'null'); return value ?? fallback; } catch { return fallback; }
+  }
+};
+
 let meta = null;
 let state = null;
 let screen = 'title';
@@ -16,18 +33,33 @@ let busy = false;
 let lastAiSource = null;
 let toastTimer = null;
 let audioContext = null;
-let soundEnabled = localStorage.getItem('moonlit:sound') !== 'off';
-let playerId = localStorage.getItem('moonlit:playerId') || null;
+let soundEnabled = store.get('moonlit:sound') !== 'off';
+let playerId = store.get('moonlit:playerId') || null;
 let playerAccount = null;
 let creditMeter = null;
 let lastBossPhase = null;
-let completedChapters = JSON.parse(localStorage.getItem('moonlit:chapters') || '[0]');
+let completedChapters = (() => {
+  const saved = store.json('moonlit:chapters', [0]);
+  return Array.isArray(saved) ? saved.filter(Number.isInteger) : [0];
+})();
+// 后台口令只留在本页内存里（不写 localStorage、不进 URL），随请求头 x-admin-key 发送
+let adminKey = null;
+let dashboardData = null;
+// 对话输入框草稿：整页重绘会重建 #chatInput，这里保存内容，重绘后写回（发送成功才清空）
+let chatDraft = '';
+let chatFocusPending = false;
+
+// 演示工具（商店、测试发放）是否开放：/api/meta 的 demoTools，缺省视为开放（契约 K-1 / K-3）
+function demoToolsEnabled() {
+  return meta?.demoTools !== false;
+}
 
 /* ═══ 大地图城镇数据（坐标为百分比，与 /assets/map/world-map.svg 的铁路站点一致） ═══ */
+// 银轨站与标题页「银轨号外传」进入同一个外传会话，所以从一开始就开放（unlockChapter:0）
 const MAP_TOWNS = [
   { id:'start',    name:'起点村',       icon:'village',    x:12, y:72, unlockChapter:0,  desc:'旅程的起点，宁静的边境小村', color:'#8cf0c9' },
-  { id:'station',  name:'银轨站',       icon:'station',    x:25, y:58, unlockChapter:1,  desc:'月蚀列车停靠站，通往各地的枢纽', color:'#6edcff' },
-  { id:'mooncity', name:'月蚀城',       icon:'moon-city',  x:40, y:42, unlockChapter:3,  desc:'观测者的圣城，塞蕾娜的故乡', color:'#b996ff' },
+  { id:'station',  name:'银轨站',       icon:'station',    x:25, y:58, unlockChapter:0,  desc:'月蚀列车停靠站，通往各地的枢纽', color:'#6edcff' },
+  { id:'mooncity', name:'月蚀城',       icon:'moon-city',  x:40, y:42, unlockChapter:3,  desc:'观测者的圣城，塞雷娜的故乡', color:'#b996ff' },
   { id:'frosttown',name:'霜华镇',       icon:'frost',      x:55, y:25, unlockChapter:5,  desc:'永冬之地，芙蕾娅守护的边镇', color:'#8fd4f5' },
   { id:'valhalla', name:'瓦尔哈拉要塞', icon:'fortress',   x:70, y:38, unlockChapter:7,  desc:'瓦尔哈拉家族的钢铁旧要塞，莉莉丝与艾拉的家', color:'#c084fc' },
   { id:'startower',name:'星咏塔',       icon:'star-tower', x:62, y:58, unlockChapter:9,  desc:'圣教的观星高塔，伊芙琳在此祈祷守望', color:'#ffd98c' },
@@ -146,22 +178,25 @@ function apiHeaders() {
   return { 'content-type': 'application/json' };
 }
 
-async function apiGet(path) {
-  const response = await fetch(path, { headers: { accept: 'application/json' } });
+// 失败时抛出的 Error 带上 HTTP 状态与服务端错误码（NO_SESSION / NO_ACCOUNT / FORBIDDEN …），调用方据此区分处理
+async function apiRequest(path, init = {}) {
+  const response = await fetch(path, init);
   const payload = await response.json().catch(() => ({}));
-  if (!response.ok || !payload.ok) throw new Error(apiErrorMessage(payload, response.status));
+  if (!response.ok || !payload.ok) {
+    const error = new Error(apiErrorMessage(payload, response.status));
+    error.status = response.status;
+    error.code = payload?.error?.code || payload?.code || '';
+    throw error;
+  }
   return payload;
 }
 
-async function apiPost(path, body) {
-  const response = await fetch(path, {
-    method: 'POST',
-    headers: apiHeaders(),
-    body: JSON.stringify(body)
-  });
-  const payload = await response.json().catch(() => ({}));
-  if (!response.ok || !payload.ok) throw new Error(apiErrorMessage(payload, response.status));
-  return payload;
+function apiGet(path, headers = {}) {
+  return apiRequest(path, { headers: { accept: 'application/json', ...headers } });
+}
+
+function apiPost(path, body) {
+  return apiRequest(path, { method: 'POST', headers: apiHeaders(), body: JSON.stringify(body) });
 }
 
 function showToast(message, type = 'info') {
@@ -231,7 +266,7 @@ function starsHtml(count, max = count) {
 
 // 头像徽章：832×1216 胸像立绘裁出脸部（立绘/服装立绘同构图，眼线约 y≈440）
 function faceThumb(src, { cls = '', alt = '', fallback = ART.fallbackPortrait, lazy = false } = {}) {
-  return `<span class="face-crop ${cls}"><img ${imgSrcAttrs(paint(src), lazy)} alt=""${escapeHtml(alt)}" data-fallback="${escapeHtml(fallback)}"></span>`;
+  return `<span class="face-crop ${cls}"><img ${imgSrcAttrs(paint(src), lazy)} alt="${escapeHtml(alt)}" data-fallback="${escapeHtml(fallback)}"></span>`;
 }
 
 // 场景背景：铺满舞台、压暗，不参与交互
@@ -249,6 +284,11 @@ function externalCta(url, label, className = 'secondary') {
   return `<a class="button ${className}" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)}</a>`;
 }
 
+// 「AI对话 ↔ 故事模式」只在真的接了模型时才有区别；离线保底引擎下两种模式用的是同一套台词，不显示切换
+function modeToggleAvailable() {
+  return meta?.ai?.mode === 'openai' && Boolean(state);
+}
+
 function aiBadge() {
   const isDemo = meta?.ai?.mode !== 'openai';
   const sourceLabel = lastAiSource === 'fallback'
@@ -259,9 +299,31 @@ function aiBadge() {
   return `<span class="pill ${isDemo ? 'demo' : ''}" title="角色台词运行方式"><span class="pill-dot"></span>${escapeHtml(sourceLabel)}</span>`;
 }
 
+// 网格列数：尽量不让最后一行只剩一个按钮（余数为 1 时换一个列数）
+function gridColumnsFor(count, candidates = [4, 3, 5]) {
+  return candidates.find((cols) => count <= cols || count % cols !== 1) || candidates[0];
+}
+
 function titleScreen() {
   const hasSave = Boolean(state);
   const currentScene = state ? sceneName(state.scene) : '';
+  // 标题页英雄卡：桌面在首屏，≤1120px 时排到文案下方，那时才懒加载
+  const heroBelowFold = window.matchMedia?.('(max-width: 1120px)').matches;
+  const heroImg = (src, alt) => `<img src="${src}" alt="${alt}" width="832" height="1216" decoding="async"${heroBelowFold ? ' loading="lazy"' : ''}>`;
+  // 主按钮两列：主线 + 外传（有存档时外传位置换成「继续外传」，新开外传移到下面的网格）
+  const primaryActions = [
+    `<a class="button primary large story-main-cta" href="/story.html">${icon('moon', { size: 18 })}主线 · 亚克篇</a>`,
+    hasSave
+      ? `<button id="continueGame" class="button secondary large">${icon('station', { size: 18 })}继续外传 · ${escapeHtml(currentScene)}</button>`
+      : `<button id="newGame" class="button secondary large">${icon('station', { size: 18 })}银轨号外传</button>`
+  ];
+  const secondaryActions = [
+    hasSave ? `<button id="newGame" class="button ghost">${icon('refresh', { size: 16 })}新开外传</button>` : '',
+    externalCta(meta?.marketing?.wishlistUrl, '加入 Steam 愿望单', 'ghost'),
+    `<button id="titleHelp" class="button ghost">${icon('help', { size: 16 })}玩法说明</button>`,
+    `<button id="galleryButton" class="button ghost">${icon('collection', { size: 16 })}CG图库</button>`,
+    ...visibleNavItems().filter((item) => item.id !== 'title').map((item) => `<button class="button ghost" data-nav="${item.id}">${icon(item.icon, { size: 16 })}${item.label}</button>`)
+  ].filter(Boolean);
   return `
     <main class="title-screen">
       <div class="title-layout">
@@ -269,18 +331,9 @@ function titleScreen() {
           <div class="eyebrow">AI-NATIVE JRPG · WEB VERTICAL SLICE</div>
           <img class="title-logo" src="/assets/logo.svg" alt="月蚀契约：她们会记得你">
           <p class="title-tagline">你可以对队友说任何话，但<strong>每一句承诺都会被记住</strong>。三名各怀秘密的少女、一次月蚀列车危机，以及一个不在选项里的结局。</p>
-          <input id="playerName" class="name-field" maxlength="16" autocomplete="nickname" value="${escapeHtml(state?.playerName || localStorage.getItem('moonlit:name') || '队长')}" aria-label="玩家称呼" placeholder="输入队长称呼">
-          <div class="title-actions">
-            <a class="button primary large story-main-cta" href="/story.html">${icon('moon', { size: 18 })}主线 · 亚克篇</a>
-            <button id="newGame" class="button secondary large">${icon('station', { size: 18 })}银轨号外传</button>
-            ${hasSave ? `<button id="continueGame" class="button secondary large">继续外传 · ${escapeHtml(currentScene)}</button>` : ''}
-            ${externalCta(meta?.marketing?.wishlistUrl, '加入 Steam 愿望单', 'secondary large')}
-            <button id="titleHelp" class="button ghost large">${icon('help', { size: 18 })}玩法说明</button>
-            <button id="galleryButton" class="button ghost large">${icon('collection', { size: 18 })}CG图库</button>
-          </div>
-          <div class="title-nav-row">
-            ${NAV_ITEMS.filter((item) => item.id !== 'title').map((item) => `<button class="button ghost" data-nav="${item.id}">${icon(item.icon, { size: 16 })}${item.label}</button>`).join('')}
-          </div>
+          <input id="playerName" class="name-field" maxlength="16" autocomplete="nickname" value="${escapeHtml(state?.playerName || store.get('moonlit:name') || '队长')}" aria-label="玩家称呼" placeholder="输入队长称呼">
+          <div class="title-actions">${primaryActions.join('')}</div>
+          <nav class="title-grid" aria-label="更多入口" style="--cols:${gridColumnsFor(secondaryActions.length)}">${secondaryActions.join('')}</nav>
           <div class="title-notes">
             ${aiBadge()}
             <span class="pill">约 15–25 分钟</span>
@@ -292,9 +345,9 @@ function titleScreen() {
         </section>
         <section class="title-art" aria-label="三名主要角色">
           <div class="hero-moon"></div>
-          <div class="hero-card"><img src="/assets/lia.png" alt="赤誓骑士莉亚"></div>
-          <div class="hero-card"><img src="/assets/mia.png" alt="猫耳机关师米娅"></div>
-          <div class="hero-card"><img src="/assets/serena.png" alt="月蚀观测者塞蕾娜"></div>
+          <div class="hero-card">${heroImg('/assets/lia.png', '赤誓骑士莉亚')}</div>
+          <div class="hero-card">${heroImg('/assets/mia.png', '猫耳机关师米娅')}</div>
+          <div class="hero-card">${heroImg('/assets/serena.png', '月蚀观测者塞雷娜')}</div>
         </section>
       </div>
     </main>`;
@@ -304,6 +357,7 @@ function sceneName(scene) {
   return {
     intro: '月蚀列车',
     camp: '战前餐车',
+    corridor: '霜之回廊',
     battle: '记忆侵袭战',
     aftermath: '黎明种苏醒',
     ending: '序章结局'
@@ -319,7 +373,7 @@ function renderHeader() {
       </div>
       <div class="objective"><strong>当前目标</strong>${escapeHtml(state.objective)}</div>
       <div class="header-actions">
-        <button id="modeToggle" class="pill mode-pill ${state.dialogueMode === 'ai' ? 'ai' : 'story'}" title="切换对话模式">${state.dialogueMode === 'ai' ? 'AI对话' : '故事模式'}</button>
+        ${modeToggleAvailable() ? `<button id="modeToggle" class="pill mode-pill ${state.dialogueMode === 'ai' ? 'ai' : 'story'}" title="切换对话模式">${state.dialogueMode === 'ai' ? 'AI对话' : '故事模式'}</button>` : ''}
         ${aiBadge()}
         <button id="helpButton" class="icon-button" title="玩法说明" aria-label="玩法说明">${icon('help')}</button>
         <button id="settingsButton" class="icon-button" title="设置" aria-label="设置">${icon('settings')}</button>
@@ -344,7 +398,8 @@ function rosterHtml({ selectable = true, showBars = true } = {}) {
               ${showBars ? `<div class="mini-bars">
                 <div class="mini-bar"><span>羁绊</span><div class="bar-track"><div class="bar-fill" style="--value:${relationship.bond * 10}%;--char-accent:${character.accent}"></div></div><b>${relationship.bond}</b></div>
                 <div class="mini-bar"><span>信任</span><div class="bar-track"><div class="bar-fill" style="--value:${relationship.trust * 10}%;--char-accent:${character.accent}"></div></div><b>${relationship.trust}</b></div>
-              </div>` : ''}
+              </div>
+              <div class="roster-stats" aria-label="羁绊 ${relationship.bond} · 信任 ${relationship.trust}"><span aria-hidden="true">♥${relationship.bond} · ✦${relationship.trust}</span></div>` : ''}
             </div>
           </button>`;
       }).join('')}
@@ -409,7 +464,7 @@ function chatPanelHtml({ actionButton = '' } = {}) {
             ${character.quickPrompts.map((prompt) => `<button class="chip" data-quick="${escapeHtml(prompt)}" ${canChat ? '' : 'disabled'}>${escapeHtml(prompt)}</button>`).join('')}
           </div>
           <form id="chatForm" class="chat-form">
-            <input id="chatInput" class="chat-input" maxlength="500" autocomplete="off" placeholder="对${escapeHtml(character.shortName)}说点什么……" ${canChat ? '' : 'disabled'}>
+            <input id="chatInput" class="chat-input" maxlength="500" autocomplete="off" aria-label="对${escapeHtml(character.shortName)}说的话" placeholder="对${escapeHtml(character.shortName)}说点什么……" value="${escapeHtml(chatDraft)}" ${canChat ? '' : 'disabled'}>
             <button class="button primary" type="submit" ${canChat ? '' : 'disabled'}>${busy ? '思考中…' : '发送'}</button>
           </form>
           <div class="chat-meta"><span>${(isCamp || isCorridor) ? `${sceneLabel} ${remaining} 次` : '战后交流不消耗次数'}</span><span>AI 只能提议，规则引擎才可改状态</span></div>`}
@@ -468,9 +523,9 @@ function introLayout() {
           <div class="intro-panel">
             <div class="eyebrow">PROLOGUE · THE EYE OUTSIDE THE WINDOW</div>
             <div class="intro-orbit">
-              <img class="intro-avatar" src="/assets/lia.png" alt="莉亚">
-              <img class="intro-avatar" src="/assets/mia.png" alt="米娅">
-              <img class="intro-avatar" src="/assets/serena.png" alt="塞蕾娜">
+              <img class="intro-avatar" src="/assets/lia.png" alt="莉亚" width="832" height="1216" decoding="async">
+              <img class="intro-avatar" src="/assets/mia.png" alt="米娅" width="832" height="1216" decoding="async">
+              <img class="intro-avatar" src="/assets/serena.png" alt="塞雷娜" width="832" height="1216" decoding="async">
             </div>
             <h1>醒来时，她们都记得你。</h1>
             <p>只有你不记得她们。</p>
@@ -632,17 +687,39 @@ function endingScreen() {
 // 切换页面或剧情场景时回到顶部（同一场景内的重绘保留滚动位置，例如手机战斗连续点指令）
 let lastViewKey = '';
 function render() {
+  // 整页重绘会重建对话输入框：记下它是否有焦点，重绘后还回去（发送后也要回到输入框，见 sendChat）
+  const chatInput = document.querySelector('#chatInput');
+  const wantChatFocus = Boolean(chatInput && document.activeElement === chatInput) || chatFocusPending;
+  if (!busy) chatFocusPending = false;
   renderView();
+  restoreChatFocus(wantChatFocus);
   // 顶部导航的 Credit 计量：creditMeter 只在召唤页拉取过，其余页面首次进入会显示 0；已有账户时顺手刷新
-  if (playerId && !creditMeter && document.querySelector('.nav-credit')) refreshCredit();
+  // 先确认账户仍在（服务器重启且未持久化时会重建并提示），再读余额，避免拿失效的 id 去查
+  if (playerId && !creditMeter && document.querySelector('.nav-credit')) ensureAccount().then(refreshCredit).catch(() => {});
   const viewKey = `${screen}:${screen === 'title' || !state ? '' : state.scene}`;
   if (viewKey !== lastViewKey) {
     lastViewKey = viewKey;
     window.scrollTo(0, 0);
   }
+  // 在标题页 / 地图等页面解锁的 CG 先排队，进入外传画面后再弹出提示
+  if (isGameScreen()) flushCgQueue();
+}
+
+function isGameScreen() {
+  return screen === 'game' && Boolean(state);
+}
+
+function restoreChatFocus(wantFocus) {
+  const input = document.querySelector('#chatInput');
+  if (!wantFocus || !input || input.disabled) return;
+  input.focus({ preventScroll: true });
+  const end = input.value.length;
+  try { input.setSelectionRange(end, end); } catch { /* 某些输入类型不支持 */ }
 }
 
 function renderView() {
+  // 演示工具关闭（如 NODE_ENV=production）时没有商店页
+  if (screen === 'shop' && !demoToolsEnabled()) screen = 'title';
   if (screen === 'map') {
     app.innerHTML = mapPage();
     bindNavEvents();
@@ -653,6 +730,7 @@ function renderView() {
     app.innerHTML = shopPage();
     bindNavEvents();
     loadShop();
+    ensureAccount().then(refreshCredit).catch(() => {});
     return;
   }
   if (screen === 'gacha') {
@@ -667,6 +745,7 @@ function renderView() {
     app.innerHTML = costumePage();
     bindNavEvents();
     loadCostumes();
+    ensureAccount().then(refreshCredit).catch(() => {});
     return;
   }
   if (screen === 'settings') {
@@ -732,35 +811,56 @@ function bindGachaEvents() {
   });
   document.querySelector('#gachaSingle')?.addEventListener('click', () => doGachaPull(1));
   document.querySelector('#gachaTen')?.addEventListener('click', () => doGachaPull(10));
+  document.querySelector('#gachaRatesJump')?.addEventListener('click', () => {
+    document.querySelector('#gachaRates')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
 }
 
 function bindSettingsPageEvents() {
   document.querySelector('#settingsSoundToggle')?.addEventListener('click', () => {
     soundEnabled = !soundEnabled;
-    localStorage.setItem('moonlit:sound', soundEnabled ? 'on' : 'off');
+    store.set('moonlit:sound', soundEnabled ? 'on' : 'off');
     if (soundEnabled) beep('click');
     render();
   });
-  document.querySelector('#adminUnlock')?.addEventListener('click', () => {
-    const pwd = document.querySelector('#adminPassword')?.value || '';
-    if (pwd === '123456') {
-      screen = 'dashboard';
-      beep('skill');
-      render();
-    } else {
-      const err = document.querySelector('#adminError');
-      if (err) err.style.display = 'block';
-      beep('error');
-    }
-  });
-  document.querySelector('#adminPassword')?.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') document.querySelector('#adminUnlock')?.click();
-  });
+  document.querySelector('#adminForm')?.addEventListener('submit', unlockAdmin);
+}
+
+// 后台口令由服务器校验（请求头 x-admin-key）；前端不保存、不比对任何口令
+async function fetchDashboard(key) {
+  return apiGet('/api/admin/dashboard', { 'x-admin-key': key });
+}
+
+async function unlockAdmin(event) {
+  event.preventDefault();
+  const input = document.querySelector('#adminPassword');
+  const button = document.querySelector('#adminUnlock');
+  const errorBox = document.querySelector('#adminError');
+  const key = input?.value || '';
+  const showError = (message) => {
+    if (errorBox) { errorBox.textContent = message; errorBox.hidden = false; }
+    beep('error');
+  };
+  if (!key) { showError('请输入管理口令。'); input?.focus(); return; }
+  if (button) button.disabled = true;
+  try {
+    dashboardData = await fetchDashboard(key);
+    adminKey = key;
+    screen = 'dashboard';
+    beep('skill');
+    render();
+  } catch (error) {
+    showError(error.status === 403 ? '口令错误。' : error.status === 404 ? '后台未启用。' : error.message);
+    if (input) { input.value = ''; input.focus(); }
+  } finally {
+    if (button?.isConnected) button.disabled = false;
+  }
 }
 
 function bindEvents() {
   bindNavEvents();
-  document.querySelector('#newGame')?.addEventListener('click', () => startNewGame());
+  // 「银轨号外传」一次点击直接进入外传开场（不再先落到大地图）
+  document.querySelector('#newGame')?.addEventListener('click', () => startNewGame('game'));
   document.querySelector('#continueGame')?.addEventListener('click', () => {
     screen = 'game';
     selectedCharacterId = state.selectedCharacterId || 'lia';
@@ -770,24 +870,17 @@ function bindEvents() {
   document.querySelector('#titleHelp')?.addEventListener('click', () => helpDialog.showModal());
   document.querySelector('#galleryButton')?.addEventListener('click', async () => {
     try {
-      const r = await apiGet(`/api/gallery?sessionId=${encodeURIComponent(state?.id || '')}`);
-      showGallery(r.gallery, r.unlocked, r.total);
+      const r = await apiGet(`/api/gallery${state?.id ? `?sessionId=${encodeURIComponent(state.id)}` : ''}`);
+      // 本机记录过的解锁与当前存档的解锁取并集：存档失效后图库也不会清空
+      if (state) rememberCgUnlocks(state);
+      const gallery = (r.gallery || []).map((cg) => ({ ...cg, unlocked: Boolean(cg.unlocked || cgUnlockedLocal.has(cg.id)) }));
+      showGallery(gallery, gallery.filter((cg) => cg.unlocked).length, r.total ?? gallery.length);
     } catch (error) {
       showToast(error.message, 'error');
     }
   });
   document.querySelector('#helpButton')?.addEventListener('click', () => helpDialog.showModal());
-  document.querySelector('#modeToggle')?.addEventListener('click', async () => {
-    const next = state.dialogueMode === 'ai' ? 'story' : 'ai';
-    try {
-      const r = await apiPost('/api/mode', { sessionId: state.id, mode: next });
-      state = r.state;
-      render();
-      showToast(next === 'ai' ? '已切换：AI自由对话' : '已切换：固定故事模式');
-    } catch (error) {
-      showToast(error.message, 'error');
-    }
-  });
+  document.querySelector('#modeToggle')?.addEventListener('click', toggleDialogueMode);
   document.querySelector('#settingsButton')?.addEventListener('click', openSettings);
   document.querySelector('#backToTitle')?.addEventListener('click', () => { screen = 'title'; render(); });
   document.querySelector('#endingTitle')?.addEventListener('click', () => { screen = 'title'; render(); });
@@ -805,10 +898,12 @@ function bindEvents() {
       const input = document.querySelector('#chatInput');
       if (!input) return;
       input.value = button.dataset.quick;
+      chatDraft = input.value;
       input.focus();
       beep('click');
     });
   });
+  document.querySelector('#chatInput')?.addEventListener('input', (event) => { chatDraft = event.target.value; });
 
   document.querySelector('#chatForm')?.addEventListener('submit', sendChat);
   document.querySelector('#beginCamp')?.addEventListener('click', () => runMutation('/api/advance', { action: 'begin_camp' }, 'click'));
@@ -841,11 +936,11 @@ function bindEvents() {
   document.querySelector('#restartGame')?.addEventListener('click', restartGame);
 }
 
-// nextScreen：标题页「开始序章」进入大地图；地图城镇面板里没有存档时直接进入剧情
-async function startNewGame(nextScreen = 'map') {
+// 新建外传存档并进入外传开场（标题页「银轨号外传」/「新开外传」、地图银轨站在没有存档时都走这里）
+async function startNewGame(nextScreen = 'game') {
   if (busy) return;
   const nameInput = document.querySelector('#playerName');
-  const playerName = nameInput?.value.trim() || localStorage.getItem('moonlit:name') || '队长';
+  const playerName = nameInput?.value.trim() || store.get('moonlit:name') || '队长';
   busy = true;
   render();
   try {
@@ -854,8 +949,9 @@ async function startNewGame(nextScreen = 'map') {
     meta = payload.meta || meta;
     selectedCharacterId = state.selectedCharacterId || 'lia';
     screen = nextScreen;
-    localStorage.setItem('moonlit:session', state.id);
-    localStorage.setItem('moonlit:name', state.playerName);
+    chatDraft = '';
+    store.set('moonlit:session', state.id);
+    store.set('moonlit:name', state.playerName);
     beep('skill');
   } catch (error) {
     showToast(error.message, 'error');
@@ -876,8 +972,11 @@ async function sendChat(event) {
     showToast('先说点什么。', 'error');
     return;
   }
+  // 无论按回车还是点「发送」，回复回来后焦点都回到输入框，可以直接接着打第二句
+  chatFocusPending = true;
   await runMutation('/api/chat', { characterId: selectedCharacterId, message }, 'chat', (payload) => {
     lastAiSource = payload.ai?.source || null;
+    chatDraft = '';
   });
 }
 
@@ -889,16 +988,18 @@ async function runMutation(path, body, sound = 'click', after) {
     const payload = await apiPost(path, { sessionId: state.id, ...body });
     state = payload.state;
     selectedCharacterId = state.selectedCharacterId || selectedCharacterId;
-    localStorage.setItem('moonlit:session', state.id);
+    store.set('moonlit:session', state.id);
     after?.(payload);
     beep(sound);
   } catch (error) {
-    showToast(error.message, 'error');
     beep('error');
-    if (/存档不存在|服务器已重启/.test(error.message)) {
-      localStorage.removeItem('moonlit:session');
+    if (error.code === 'NO_SESSION' || /存档不存在|服务器已重启/.test(error.message)) {
+      store.remove('moonlit:session');
       state = null;
       screen = 'title';
+      showToast('服务器重启后旧存档已失效，请重新开始外传。', 'error');
+    } else {
+      showToast(error.message, 'error');
     }
   } finally {
     busy = false;
@@ -916,7 +1017,8 @@ async function restartGame() {
     meta = payload.meta || meta;
     selectedCharacterId = 'lia';
     screen = 'game';
-    localStorage.setItem('moonlit:session', state.id);
+    chatDraft = '';
+    store.set('moonlit:session', state.id);
     beep('skill');
   } catch (error) {
     showToast(error.message, 'error');
@@ -945,9 +1047,18 @@ async function copyEnding() {
    每个存档的每张 CG 只提示一次（记在 localStorage，刷新页面也不会重复）。 */
 const CG_SEEN_KEY = 'moonlit:cgSeen';
 const cgSeen = new Set((() => {
-  try { return JSON.parse(localStorage.getItem(CG_SEEN_KEY) || '[]'); } catch { return []; }
+  const saved = store.json(CG_SEEN_KEY, []);
+  return Array.isArray(saved) ? saved : [];
+})());
+// 本机解锁过的 CG（跨存档取并集）：服务器重启、存档失效后 CG 图库也不会被清空
+const CG_UNLOCKED_KEY = 'moonlit:cgUnlocked';
+const cgUnlockedLocal = new Set((() => {
+  const saved = store.json(CG_UNLOCKED_KEY, []);
+  return Array.isArray(saved) ? saved.filter((id) => typeof id === 'string') : [];
 })());
 let cgCatalog = null;
+// 不在外传画面（标题页 / 地图等）时解锁的 CG：先排队，进入外传画面后再弹提示
+const cgQueue = [];
 
 function cgSeenKey(snapshot, cgId) {
   return `${snapshot.id}:${cgId}`;
@@ -955,8 +1066,13 @@ function cgSeenKey(snapshot, cgId) {
 
 function rememberCgUnlocks(snapshot) {
   if (!snapshot?.unlockedCgs) return;
-  snapshot.unlockedCgs.forEach((cgId) => cgSeen.add(cgSeenKey(snapshot, cgId)));
-  try { localStorage.setItem(CG_SEEN_KEY, JSON.stringify([...cgSeen].slice(-300))); } catch { /* storage optional */ }
+  const before = cgUnlockedLocal.size;
+  snapshot.unlockedCgs.forEach((cgId) => {
+    cgSeen.add(cgSeenKey(snapshot, cgId));
+    cgUnlockedLocal.add(cgId);
+  });
+  store.set(CG_SEEN_KEY, JSON.stringify([...cgSeen].slice(-300)));
+  if (cgUnlockedLocal.size !== before) store.set(CG_UNLOCKED_KEY, JSON.stringify([...cgUnlockedLocal]));
 }
 
 async function loadCgCatalog() {
@@ -976,10 +1092,12 @@ async function announceCgUnlocks() {
   if (!fresh.length) return;
   rememberCgUnlocks(snapshot);
   const catalog = await loadCgCatalog();
-  fresh.forEach((cgId, index) => {
-    const cg = catalog.find((item) => item.id === cgId) || { id: cgId, title: '新的事件回忆', file: '' };
-    setTimeout(() => showCgUnlock(cg), index * 450);
-  });
+  fresh.forEach((cgId) => cgQueue.push(catalog.find((item) => item.id === cgId) || { id: cgId, title: '新的事件回忆', file: '' }));
+  if (isGameScreen()) flushCgQueue();
+}
+
+function flushCgQueue() {
+  cgQueue.splice(0).forEach((cg, index) => setTimeout(() => showCgUnlock(cg), index * 450));
 }
 
 function showCgUnlock(cg) {
@@ -991,6 +1109,7 @@ function showCgUnlock(cg) {
     stack.setAttribute('aria-live', 'polite');
     document.body.appendChild(stack);
   }
+  positionCgStack(stack);
   const card = document.createElement('button');
   card.type = 'button';
   card.className = 'cg-unlock';
@@ -1011,22 +1130,61 @@ function showCgUnlock(cg) {
   timer = setTimeout(dismiss, 3200);
 }
 
+// 手机：提示贴在导航栏 / 外传页头的下沿，不盖住导航；结局页没有页头，由 CSS 放到屏幕底部，不挡结局评级。
+// 战斗中例外：页头下方就是 Boss 名牌、血条和阶段标签，提示留在页头上（与桌面一致）
+function positionCgStack(stack) {
+  stack.style.top = '';
+  if (!window.matchMedia?.('(max-width: 880px)').matches || document.querySelector('.is-battle')) return;
+  const header = document.querySelector('.top-nav, .game-header');
+  const bottom = header ? header.getBoundingClientRect().bottom : 0;
+  if (bottom > 0) stack.style.top = `${Math.round(bottom + 8)}px`;
+}
+
+// 当前 AI 的如实描述：只有 AI_MODE=openai 时才有真实模型名，否则是离线保底引擎
+function aiRuntimeLabel() {
+  return meta?.ai?.mode === 'openai' ? (meta.ai.model || 'OpenAI 兼容模型') : '剧情保底引擎（离线）';
+}
+
+function dialogueModeRowHtml() {
+  if (!modeToggleAvailable()) return '';
+  const isAi = state.dialogueMode === 'ai';
+  return `<div class="stat-card"><div class="spread"><span class="muted">对话模式</span>
+      <button id="dialogModeToggle" type="button" class="pill mode-pill ${isAi ? 'ai' : 'story'}" aria-label="切换对话模式（当前：${isAi ? 'AI对话' : '故事模式'}）">${isAi ? 'AI对话' : '故事模式'}</button></div>
+      <p class="faint" style="margin:8px 0 0;font-size:.76rem">AI对话：由模型即兴回应；故事模式：使用固定的角色台词。</p></div>`;
+}
+
+async function toggleDialogueMode() {
+  if (!state) return;
+  const next = state.dialogueMode === 'ai' ? 'story' : 'ai';
+  try {
+    const r = await apiPost('/api/mode', { sessionId: state.id, mode: next });
+    state = r.state;
+    render();
+    if (settingsDialog.open) openSettings();
+    showToast(next === 'ai' ? '已切换：AI自由对话' : '已切换：固定故事模式');
+  } catch (error) {
+    showToast(error.message, 'error');
+  }
+}
+
 function openSettings() {
   const isOpenAi = meta?.ai?.mode === 'openai';
   settingsContent.innerHTML = `
     <div class="stack">
-      <div class="stat-card"><div class="spread"><span class="muted">当前运行方式</span><strong>${isOpenAi ? 'OpenAI 兼容模型' : '剧情保底引擎'}</strong></div><div class="spread" style="margin-top:8px"><span class="muted">模型</span><strong>${escapeHtml(meta?.ai?.model || 'unknown')}</strong></div></div>
-      <p class="muted">本地模型由服务器代理，API Key 永远不会发到浏览器。使用 Ollama 时，把项目根目录的 <code>.env.example</code> 复制为 <code>.env</code>，并设置：</p>
+      <div class="stat-card"><div class="spread"><span class="muted">当前运行方式</span><strong>${isOpenAi ? 'OpenAI 兼容模型' : '剧情保底引擎（离线）'}</strong></div>${isOpenAi ? `<div class="spread" style="margin-top:8px"><span class="muted">模型</span><strong>${escapeHtml(aiRuntimeLabel())}</strong></div>` : ''}</div>
+      ${dialogueModeRowHtml()}
+      <p class="muted">${isOpenAi ? '' : '当前没有接入大模型，角色台词来自离线保底引擎。'}本地模型由服务器代理，API Key 永远不会发到浏览器。使用 Ollama 时，把项目根目录的 <code>.env.example</code> 复制为 <code>.env</code>，并设置：</p>
       <div class="code-block">AI_MODE=openai\nAI_BASE_URL=http://127.0.0.1:11434/v1\nAI_API_KEY=ollama\nAI_MODEL=qwen3:8b</div>
       <p class="faint">模型不可用、超时或输出越权时，游戏会自动切回角色专属保底台词，主线不会卡死。</p>
     </div>`;
+  settingsContent.querySelector('#dialogModeToggle')?.addEventListener('click', toggleDialogueMode);
   soundToggle.textContent = `声音：${soundEnabled ? '开' : '关'}`;
-  settingsDialog.showModal();
+  if (!settingsDialog.open) settingsDialog.showModal();
 }
 
 soundToggle.addEventListener('click', () => {
   soundEnabled = !soundEnabled;
-  localStorage.setItem('moonlit:sound', soundEnabled ? 'on' : 'off');
+  store.set('moonlit:sound', soundEnabled ? 'on' : 'off');
   soundToggle.textContent = `声音：${soundEnabled ? '开' : '关'}`;
   if (soundEnabled) beep('click');
 });
@@ -1042,19 +1200,26 @@ const NAV_ITEMS = [
   { id: 'settings', label: '设置', icon: 'settings' }
 ];
 
+// 演示工具关闭时不显示商店入口（契约 K-1 / K-3）
+function visibleNavItems() {
+  return NAV_ITEMS.filter((item) => item.id !== 'shop' || demoToolsEnabled());
+}
+
 function navBar() {
+  const items = visibleNavItems();
   return `
     <nav class="top-nav">
       <div class="nav-brand"><span class="brand-mark"></span><strong>月蚀契约</strong><span class="nav-studio">阳之亮面出品</span></div>
-      <div class="nav-links">
-        ${NAV_ITEMS.map((item) => `<button class="nav-btn ${screen === item.id ? 'active' : ''}" data-nav="${item.id}">${icon(item.icon, { size: 16 })}<span>${item.label}</span></button>`).join('')}
+      <div class="nav-links" style="--nav-count:${items.length}">
+        ${items.map((item) => `<button class="nav-btn ${screen === item.id ? 'active' : ''}" data-nav="${item.id}" ${screen === item.id ? 'aria-current="page"' : ''}>${icon(item.icon, { size: 16 })}<span>${item.label}</span></button>`).join('')}
       </div>
       <div class="nav-credit">${creditMeterHtml()}</div>
     </nav>`;
 }
 
 function creditMeterHtml() {
-  const balance = creditMeter?.balance ?? playerAccount?.credits ?? 0;
+  // 还没有账户（只在召唤 / 换衣 / 商店里创建）时显示「—」，不显示一个假的 0
+  const balance = creditMeter?.balance ?? playerAccount?.credits ?? '—';
   const todayUsed = creditMeter?.todayUsed ?? 0;
   return `<div class="credit-meter" title="Credit余额 / 今日消耗">
     <span class="credit-icon">${icon('credit', { size: 18, title: 'Credit' })}</span>
@@ -1197,7 +1362,7 @@ function showTownInfo(town) {
     else { screen = 'game'; render(); }
   };
   const sceneLabels = {
-    start: '开始剧情', station: '进入营地', mooncity: '探索城市', frosttown: '挑战Boss',
+    start: '开始剧情', station: state ? `继续外传 · ${sceneName(state.scene)}` : '开始银轨号外传', mooncity: '探索城市', frosttown: '挑战Boss',
     valhalla: '进入要塞', startower: '登塔观星', nodgate: '穿越之门', terminal: '最终决战'
   };
   // 起点村是亚克的故乡线：进入主线 · 亚克篇播放页
@@ -1222,7 +1387,7 @@ function debugUnlockNext() {
   const nextChapter = allChapters.find(c => !completedChapters.includes(c));
   if (nextChapter !== undefined) {
     completedChapters.push(nextChapter);
-    localStorage.setItem('moonlit:chapters', JSON.stringify(completedChapters));
+    store.set('moonlit:chapters', JSON.stringify(completedChapters));
     showToast(`已解锁第 ${nextChapter} 章！新城镇已开放`);
     render();
   } else {
@@ -1231,10 +1396,12 @@ function debugUnlockNext() {
 }
 
 /* ═══ 商店页面 ═══ */
+// 商店只在演示工具开启时出现：支付没有接入，按钮直接免费发放，页面必须如实写明
 function shopPage() {
   return `${navBar()}
     <main class="page-content">
       <div class="page-header"><div class="eyebrow">KNIGHT'S ALLIANCE · 骑士联盟</div><h1>会员与充值</h1></div>
+      <div class="demo-banner" role="note">${icon('info', { size: 18 })}<div><strong>演示版 · 支付未接入，不会真实扣款</strong><span>以下标价仅作展示；点击按钮会直接免费发放，用于体验召唤与换衣。</span></div></div>
       <section class="shop-section">
         <h2 class="section-title">会员等级</h2>
         <div class="membership-grid" id="membershipGrid">
@@ -1260,10 +1427,10 @@ async function loadShop() {
         <div class="membership-card tier-${t.id}">
           <div class="tier-badge">${icon(TIER_ICON[t.id] || 'shield', { size: 40 })}</div>
           <h3>${escapeHtml(t.name)}</h3>
-          <div class="tier-price">¥${t.price}<span>/月</span></div>
+          <div class="tier-price">¥${t.price}<span>/月 · 标价</span></div>
           <div class="tier-credit">每日 ${t.dailyCredit} Credit</div>
           <ul class="tier-perks">${t.perks.map((p) => `<li>${escapeHtml(p)}</li>`).join('')}</ul>
-          <button class="button primary full" data-tier="${t.id}">立即开通</button>
+          <button class="button primary full" data-tier="${t.id}">演示：免费开通</button>
         </div>`).join('');
       grid.querySelectorAll('[data-tier]').forEach((btn) => {
         btn.addEventListener('click', () => purchaseMembershipTier(btn.dataset.tier));
@@ -1274,8 +1441,8 @@ async function loadShop() {
         <div class="diamond-card">
           <div class="diamond-amount">${icon('diamond', { size: 22, title: '钻石' })} ${p.diamonds}</div>
           ${p.bonus ? `<div class="diamond-bonus">+${p.bonus} 赠送</div>` : ''}
-          <div class="diamond-price">¥${p.price}</div>
-          <button class="button secondary full" data-pack="${p.id}">购买</button>
+          <div class="diamond-price">标价 ¥${p.price}</div>
+          <button class="button secondary full" data-pack="${p.id}">演示：免费领取</button>
         </div>`).join('');
       dGrid.querySelectorAll('[data-pack]').forEach((btn) => {
         btn.addEventListener('click', () => purchaseDiamondPack(btn.dataset.pack));
@@ -1285,22 +1452,22 @@ async function loadShop() {
 }
 
 async function purchaseMembershipTier(tierId) {
-  await ensureAccount();
   try {
+    await ensureAccount();
     const r = await apiPost('/api/membership/purchase', { playerId, tierId });
-    playerAccount = r.account;
-    showToast(r.message || '开通成功！');
+    playerAccount = r.account || playerAccount;
+    showToast(`演示发放（未扣款）：${r.message || '会员已开通。'}`);
     beep('win');
     refreshCredit();
   } catch (e) { showToast(e.message, 'error'); }
 }
 
 async function purchaseDiamondPack(packId) {
-  await ensureAccount();
   try {
+    await ensureAccount();
     const r = await apiPost('/api/diamonds/purchase', { playerId, packId });
-    playerAccount = r.account;
-    showToast(r.message || '购买成功！');
+    playerAccount = r.account || playerAccount;
+    showToast(`演示发放（未扣款）：${r.message || '钻石已到账。'}`);
     beep('win');
     render();
   } catch (e) { showToast(e.message, 'error'); }
@@ -1311,19 +1478,71 @@ function gachaPage() {
   return `${navBar()}
     <main class="page-content">
       <div class="page-header"><div class="eyebrow">SUMMON · 星轨召唤</div><h1>召唤系统</h1>
-        <p class="muted">角色池：8位角色（全部初始可用） · 服饰池：6套主题服饰 × 8角色 · 90抽保底5星</p>
+        <p class="muted">角色池：8 位角色（需抽取获得） · 服饰池：6 套主题服饰 × 8 角色 · 第 90 抽必出 5★</p>
       </div>
       <div class="gacha-tabs">
-        <button class="gacha-tab active" data-pool="character">角色池</button>
-        <button class="gacha-tab" data-pool="costume">服饰池</button>
+        <button class="gacha-tab ${currentGachaPool === 'character' ? 'active' : ''}" data-pool="character">角色池</button>
+        <button class="gacha-tab ${currentGachaPool === 'costume' ? 'active' : ''}" data-pool="costume">服饰池</button>
       </div>
       <section class="gacha-pool" id="gachaPool"><div class="loader">加载中…</div></section>
       <section class="gacha-actions">
         <button class="button primary large" id="gachaSingle">单抽 · 10 Credit</button>
         <button class="button secondary large" id="gachaTen">十连 · 90 Credit</button>
       </section>
+      <p class="gacha-rates-link"><button class="button ghost small" id="gachaRatesJump" type="button">${icon('chart', { size: 15 })}查看概率公示</button></p>
       <section class="gacha-result" id="gachaResult" style="display:none"></section>
+      <section class="gacha-rates" id="gachaRates" aria-labelledby="gachaRatesTitle"><div class="loader">加载中…</div></section>
     </main>`;
+}
+
+/* 概率公示（契约 K-11）：rates[池][稀有度] 是该稀有度的总概率，同稀有度的条目等概率，
+   所以单个条目的概率 = rates[池][稀有度] ÷ 该稀有度条目数。
+   池里没有某个稀有度时，服务端会落到池内最低稀有度，这里同样把那部分概率并进最低稀有度，保证公示与实际一致。 */
+function gachaRateRows(items, rates = {}) {
+  const byRarity = new Map();
+  items.forEach((item) => {
+    const rarity = Number(item.rarity) || 3;
+    if (!byRarity.has(rarity)) byRarity.set(rarity, []);
+    byRarity.get(rarity).push(item);
+  });
+  const present = [...byRarity.keys()].sort((a, b) => b - a);
+  if (!present.length) return [];
+  const lowest = present[present.length - 1];
+  const totals = new Map(present.map((rarity) => [rarity, 0]));
+  Object.entries(rates).forEach(([rarity, rate]) => {
+    const key = totals.has(Number(rarity)) ? Number(rarity) : lowest;
+    totals.set(key, totals.get(key) + (Number(rate) || 0));
+  });
+  return present.map((rarity) => {
+    const list = byRarity.get(rarity);
+    const total = totals.get(rarity) || 0;
+    return { rarity, items: list, total, each: list.length ? total / list.length : 0 };
+  });
+}
+
+function formatRate(value) {
+  const percent = value * 100;
+  const digits = percent >= 10 ? 1 : percent >= 1 ? 2 : 3;
+  return `${Number(percent.toFixed(digits))}%`;
+}
+
+function gachaRatesHtml(poolId, data) {
+  const isCostume = poolId === 'costume';
+  const items = isCostume ? data.costumes || [] : data.characters || [];
+  const rows = gachaRateRows(items, data.rates?.[poolId] || {});
+  const pity = Number(data.pity) || 90;
+  return `
+    <h2 class="section-title" id="gachaRatesTitle">概率公示 · ${isCostume ? '服饰池' : '角色池'}</h2>
+    <p class="muted gacha-rates-note">以下为每次召唤的基础概率，同一稀有度内各条目概率相同。保底：本池连续 ${pity - 1} 次未出 5★ 时，第 ${pity} 次必出 5★（出 5★ 后计数重置）。概率按四舍五入显示。</p>
+    <div class="rates-table" role="table" aria-label="${isCostume ? '服饰池' : '角色池'}概率">
+      <div class="rates-row rates-head" role="row"><span role="columnheader">稀有度</span><span role="columnheader">合计</span><span role="columnheader">单个条目</span><span role="columnheader">条目</span></div>
+      ${rows.map((row) => `<div class="rates-row rarity-${row.rarity}" role="row">
+        <span role="cell" class="rates-rarity">${starsHtml(row.rarity, 5)}<b>${row.rarity}★</b></span>
+        <span role="cell" class="rates-total">${formatRate(row.total)}</span>
+        <span role="cell" class="rates-each">${formatRate(row.each)} <small>× ${row.items.length}</small></span>
+        <span role="cell" class="rates-items">${row.items.map((item) => `<span>${escapeHtml(item.name || item.id)}</span>`).join('')}</span>
+      </div>`).join('')}
+    </div>`;
 }
 
 let currentGachaPool = 'character';
@@ -1334,11 +1553,16 @@ function costumeTypeOf(item) {
   return item.type || String(item.id || '').split('_').pop();
 }
 
+let gachaPoolsCache = null;
+
 async function loadGachaPool() {
   try {
     const data = await apiGet('/api/gacha/pools');
+    gachaPoolsCache = data;
     const pool = document.querySelector('#gachaPool');
     if (!pool) return;
+    const ratesBox = document.querySelector('#gachaRates');
+    if (ratesBox) ratesBox.innerHTML = gachaRatesHtml(currentGachaPool, data);
     if (currentGachaPool === 'character') {
       pool.innerHTML = `<div class="gacha-grid">${data.characters.map((c) => `
         <div class="gacha-char-card rarity-${c.rarity}">
@@ -1346,7 +1570,7 @@ async function loadGachaPool() {
           <div class="gacha-char-name">${escapeHtml(c.name)}</div>
           <div class="gacha-char-title">${escapeHtml(c.title)} · ${escapeHtml(c.element || '')}</div>
           <div class="gacha-stars">${starsHtml(c.rarity, 5)}</div>
-          ${c.unlockChapter ? `<div class="gacha-lock">${icon('lock', { size: 12 })}Ch.${c.unlockChapter}解锁</div>` : '<div class="gacha-free">初始可用</div>'}
+          ${c.unlockChapter ? `<div class="gacha-lock">${icon('lock', { size: 12 })}Ch.${c.unlockChapter}解锁</div>` : `<div class="gacha-free">${icon('sparkle', { size: 12 })}需抽取获得</div>`}
         </div>`).join('')}</div>`;
     } else {
       const shortNames = Object.fromEntries(data.characters.map((c) => [c.id, c.name.split('·')[0]]));
@@ -1366,10 +1590,25 @@ async function loadGachaPool() {
   } catch (e) { showToast(e.message, 'error'); }
 }
 
-async function doGachaPull(count) {
-  await ensureAccount();
+// 抽卡后重新读取账户（拥有的角色），用来标注「需先拥有角色」的服装
+async function reloadAccount() {
+  if (!playerId) return;
   try {
+    const r = await apiGet(`/api/account?playerId=${encodeURIComponent(playerId)}`);
+    playerAccount = r.account;
+  } catch { /* 标注是辅助信息，读取失败就不标 */ }
+}
+
+let gachaPulling = false;
+
+async function doGachaPull(count) {
+  if (gachaPulling) return;
+  gachaPulling = true;
+  try {
+    await ensureAccount();
     const r = await apiPost('/api/gacha/pull', { playerId, pool: currentGachaPool, count });
+    await reloadAccount();
+    const ownedCharacters = new Set(playerAccount?.ownedCharacters || []);
     const resultEl = document.querySelector('#gachaResult');
     if (resultEl && r.results) {
       resultEl.style.display = 'block';
@@ -1377,21 +1616,29 @@ async function doGachaPull(count) {
         const rarity = item.rarity || 3;
         const isCostume = Boolean(item.characterId);
         const src = isCostume ? (item.file || ART.costume(item.characterId, costumeTypeOf(item))) : (item.portrait || ART.portrait(item.id));
+        const needsCharacter = isCostume && !ownedCharacters.has(item.characterId);
         return `
         <div class="gacha-result-card rarity-${rarity}" style="--delay:${index * 70}ms">
           <span class="result-rarity">${GACHA_RARITY_LABEL[rarity] || 'R'}</span>
+          ${item.isNew === true ? '<span class="result-new">NEW</span>' : ''}
           ${faceThumb(src, { cls: 'result-thumb', alt: item.name || item.id, fallback: ART.portrait(isCostume ? item.characterId : item.id) })}
           <div class="result-name">${escapeHtml(item.name || item.id)}</div>
           <div class="gacha-stars">${starsHtml(rarity)}</div>
+          ${needsCharacter ? `<div class="result-note">${icon('lock', { size: 11 })}需先拥有角色</div>` : ''}
         </div>`;
       }).join('')}</div>
-        <p class="muted">消耗 ${r.cost} Credit · 保底计数 ${r.pity || 0}/90</p>`;
+        <p class="muted">消耗 ${r.cost} Credit · 保底计数 ${r.pity || 0}/${Number(gachaPoolsCache?.pity) || 90}${r.results.some((item) => item.characterId && !ownedCharacters.has(item.characterId)) ? ' · 未拥有角色的服装已收入换衣间「待解锁角色」' : ''}</p>`;
       // 结果区在卡池和按钮下方，桌面/手机都在首屏以外：滚到结果，避免「点了没反应」
       resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
       beep(r.results.some((i) => (i.rarity || 3) >= 5) ? 'win' : 'skill');
     }
     refreshCredit();
-  } catch (e) { showToast(e.message, 'error'); beep('error'); }
+  } catch (e) {
+    showToast(e.message, 'error');
+    beep('error');
+  } finally {
+    gachaPulling = false;
+  }
 }
 
 /* ═══ 换衣页面 ═══ */
@@ -1399,60 +1646,104 @@ function costumePage() {
   return `${navBar()}
     <main class="page-content">
       <div class="page-header"><div class="eyebrow">WARDROBE · 换衣间</div><h1>服饰更换</h1>
-        <p class="muted">为已抽到的角色更换皮肤。服装通过「召唤 · 服饰池」获取，不同服饰将触发对应分支剧情。</p>
+        <p class="muted">为已抽到的角色更换皮肤。服装通过「召唤 · 服饰池」获取；抽到了服装但还没有该角色时，服装会先收进「待解锁角色」。服饰分支剧情 · 敬请期待。</p>
       </div>
       <section class="costume-section" id="costumeSection"><div class="loader">加载中…</div></section>
     </main>`;
 }
 
+// 服装 id 形如 lia_maid：前段是角色，末段是服装类型
+function costumeCharacterOf(costumeId) {
+  return String(costumeId).split('_')[0];
+}
+
+function costumeTypeOfId(costumeId) {
+  return String(costumeId).split('_').pop();
+}
+
+// 「待解锁角色」：已经抽到服装、但还没有这名角色（不能穿戴，只展示）
+function pendingCostumesHtml(pendingByChar, charInfoMap, types) {
+  if (!pendingByChar.size) return '';
+  return `<section class="costume-pending" aria-labelledby="pendingCostumesTitle">
+    <h2 class="section-title" id="pendingCostumesTitle">待解锁角色</h2>
+    <p class="muted">这些服装已经收进衣柜，获得该角色后可穿戴。</p>
+    <div class="pending-grid">${[...pendingByChar].map(([charId, costumeIds]) => {
+      const ch = charInfoMap[charId];
+      const name = ch?.name || charId;
+      return `<div class="pending-char">
+        <div class="pending-head">
+          ${faceThumb(ch?.portrait || ART.portrait(charId), { cls: 'pending-avatar', alt: `${name}（未拥有）`, lazy: true })}
+          <div class="pending-name"><strong>${escapeHtml(name)}</strong><span>${icon('lock', { size: 12 })}获得该角色后可穿戴</span></div>
+        </div>
+        <div class="pending-costumes">${costumeIds.map((costumeId) => {
+          const type = costumeTypeOfId(costumeId);
+          const label = types[type] || type;
+          return `<div class="pending-costume" title="${escapeHtml(`${name} · ${label}（获得该角色后可穿戴）`)}">
+            ${faceThumb(ART.costume(charId, type), { cls: 'slot-thumb', alt: `${name} · ${label}`, fallback: ART.portrait(charId), lazy: true })}
+            <span class="slot-label">${icon(COSTUME_TYPE_META[type]?.icon || 'dress', { size: 14 })}${escapeHtml(label)}</span>
+          </div>`;
+        }).join('')}</div>
+      </div>`;
+    }).join('')}</div>
+  </section>`;
+}
+
 async function loadCostumes() {
-  await ensureAccount();
   try {
-    const data = await apiGet(`/api/costume?playerId=${playerId}`);
+    await ensureAccount();
+    const [data, pools] = await Promise.all([
+      apiGet(`/api/costume?playerId=${encodeURIComponent(playerId)}`),
+      gachaPoolsCache ? Promise.resolve(gachaPoolsCache) : apiGet('/api/gacha/pools')
+    ]);
+    gachaPoolsCache = pools;
     const section = document.querySelector('#costumeSection');
     if (!section) return;
 
-    const ownedChars = data.ownedCharacters || [];
-    const ownedCostumes = data.ownedCostumes || [];
+    const ownedCostumes = [...new Set(data.ownedCostumes || [])];
     const equipped = data.equipped || {};
     const types = data.types || {};
     const branches = data.branches || {};
-    const poolChars = (data.costumePool ? [...new Set(data.costumePool.map((c) => c.characterId))] : []);
-    const charInfoMap = {};
-    (await apiGet('/api/gacha/pools')).characters.forEach((c) => { charInfoMap[c.id] = c; });
+    const charInfoMap = Object.fromEntries((pools.characters || []).map((c) => [c.id, c]));
+    // 能在这里换装的角色：已拥有且有角色资料
+    const ownedChars = (data.ownedCharacters || []).filter((charId) => charInfoMap[charId]);
+    const ownedCharSet = new Set(ownedChars);
+    // 每一套已拥有的服装要么出现在角色的插槽里，要么出现在「待解锁角色」里，总数与顶部「服装 N 套」一致
+    const pendingByChar = new Map();
+    ownedCostumes.forEach((costumeId) => {
+      const charId = costumeCharacterOf(costumeId);
+      if (ownedCharSet.has(charId) && types[costumeTypeOfId(costumeId)]) return;
+      if (!pendingByChar.has(charId)) pendingByChar.set(charId, []);
+      pendingByChar.get(charId).push(costumeId);
+    });
+    const pendingCount = [...pendingByChar.values()].reduce((sum, list) => sum + list.length, 0);
 
-    // 顶部工具栏
+    // 顶部工具栏（「一键解锁」是演示工具，关闭时不显示）
     let html = `<div class="wardrobe-toolbar">
-      <span class="muted">已拥有角色 ${ownedChars.length} 名 · 服装 ${ownedCostumes.length} 套</span>
-      <button class="button small" id="grantAllCostumes">测试：一键解锁全部服装</button>
+      <span class="muted" id="wardrobeSummary">已拥有角色 ${ownedChars.length} 名 · 服装 ${ownedCostumes.length} 套${pendingCount ? `（其中 ${pendingCount} 套待解锁角色）` : ''}</span>
+      ${demoToolsEnabled() ? '<button class="button small" id="grantAllCostumes" type="button">演示：一键解锁全部服装</button>' : ''}
     </div>`;
 
     if (ownedChars.length === 0) {
       html += `<div class="wardrobe-empty">
         <div class="wardrobe-empty-icon">${icon('dress', { size: 44 })}</div>
         <h3>还没有抽到的角色</h3>
-        <p class="muted">前往「召唤」抽取角色后，即可在这里为她们更换皮肤。</p>
-        <button class="button primary" data-nav="gacha">去召唤</button>
+        <p class="muted">前往「召唤 · 角色池」抽取角色后，即可在这里为她们更换皮肤。</p>
+        <button class="button primary" type="button" data-wardrobe-nav="gacha">去召唤</button>
       </div>`;
-      section.innerHTML = html;
-      section.querySelector('[data-nav]')?.addEventListener('click', (e) => { screen = e.currentTarget.dataset.nav; render(); });
-      document.querySelector('#grantAllCostumes')?.addEventListener('click', grantAllCostumesAction);
-      return;
     }
 
     // 每个已拥有角色的换装区块
     html += ownedChars.map((charId) => {
       const ch = charInfoMap[charId];
-      if (!ch) return '';
       const equippedId = equipped[charId] || null;
-      const equippedType = equippedId ? equippedId.split('_').pop() : null;
+      const equippedType = equippedId ? costumeTypeOfId(equippedId) : null;
       const equippedLabel = equippedType ? (types[equippedType] || equippedType) : null;
       const frameClass = equippedType ? (COSTUME_TYPE_META[equippedType]?.frame || '') : '';
 
       const slots = ['default', ...Object.keys(types)].map((type) => {
         if (type === 'default') {
           const isActive = !equippedId;
-          return `<button class="costume-slot ${isActive ? 'active' : ''}" data-char="${charId}" data-costume="default" title="默认服装">
+          return `<button class="costume-slot ${isActive ? 'active' : ''}" type="button" data-char="${charId}" data-costume="default" title="默认服装">
             ${faceThumb(ART.portrait(charId), { cls: 'slot-thumb', lazy: true })}
             <span class="slot-label">${icon('outfit-default', { size: 14 })}默认服装</span>${isActive ? '<span class="slot-wearing">穿着中</span>' : ''}
           </button>`;
@@ -1461,7 +1752,7 @@ async function loadCostumes() {
         const owned = ownedCostumes.includes(costumeId);
         const isActive = equippedId === costumeId;
         const typeIcon = COSTUME_TYPE_META[type]?.icon || 'dress';
-        return `<button class="costume-slot ${isActive ? 'active' : ''} ${owned ? '' : 'locked'}" data-char="${charId}" data-costume="${costumeId}" ${owned ? '' : 'disabled'}
+        return `<button class="costume-slot ${isActive ? 'active' : ''} ${owned ? '' : 'locked'}" type="button" data-char="${charId}" data-costume="${costumeId}" ${owned ? '' : 'disabled'}
           title="${owned ? '点击装备' : '未拥有 · 通过服饰召唤获取'}">
           ${owned
             ? faceThumb(ART.costume(charId, type), { cls: 'slot-thumb', fallback: ART.portrait(charId), lazy: true })
@@ -1482,43 +1773,39 @@ async function loadCostumes() {
             <h3>${escapeHtml(ch.name)}</h3>
             <p class="muted">${escapeHtml(ch.title || '')}</p>
             <p class="wardrobe-current">${equippedLabel ? `当前皮肤：<strong>${icon(COSTUME_TYPE_META[equippedType]?.icon || 'dress', { size: 16 })} ${escapeHtml(equippedLabel)}</strong>` : `当前皮肤：<strong class="is-default">${icon('outfit-default', { size: 16 })} 默认服装</strong>`}</p>
-            ${equippedType && branches[equippedType] ? `<p class="wardrobe-branch muted">${icon('scroll', { size: 14 })}分支剧情「${escapeHtml(branches[equippedType].title)}」：${escapeHtml(branches[equippedType].description)}</p>` : ''}
+            ${equippedType && branches[equippedType] ? `<p class="wardrobe-branch muted">${icon('scroll', { size: 14 })}<span>分支剧情「${escapeHtml(branches[equippedType].title)}」· 敬请期待</span></p>` : ''}
           </div>
         </div>
         <div class="costume-grid">${slots}</div>
       </div>`;
     }).join('');
 
+    html += pendingCostumesHtml(pendingByChar, charInfoMap, types);
     section.innerHTML = html;
 
     section.querySelectorAll('.costume-slot:not(.locked)').forEach((btn) => {
       btn.addEventListener('click', () => equipCostumeAction(btn.dataset.char, btn.dataset.costume));
     });
-    document.querySelector('#grantAllCostumes')?.addEventListener('click', grantAllCostumesAction);
+    section.querySelector('[data-wardrobe-nav]')?.addEventListener('click', (e) => { screen = e.currentTarget.dataset.wardrobeNav; render(); });
+    section.querySelector('#grantAllCostumes')?.addEventListener('click', grantAllCostumesAction);
   } catch (e) { showToast(e.message, 'error'); }
 }
 
 async function grantAllCostumesAction() {
-  await ensureAccount();
   try {
+    await ensureAccount();
     const r = await apiPost('/api/costume/grant-all', { playerId });
-    showToast(`已解锁 ${r.characters} 名角色与 ${r.costumes} 套服装（测试）`);
+    showToast(`已解锁 ${r.characters} 名角色与 ${r.costumes} 套服装（演示工具）`);
     beep('win');
     loadCostumes();
   } catch (e) { showToast(e.message, 'error'); }
 }
 
 async function equipCostumeAction(characterId, costumeId) {
-  await ensureAccount();
   try {
-    const r = await apiPost('/api/costume/equip', { playerId, characterId, costumeId });
-    if (costumeId === 'default') {
-      showToast('已恢复默认服装');
-    } else if (r.branchScene) {
-      showToast(`已换装！触发分支剧情：${r.branchScene.title || costumeId}`);
-    } else {
-      showToast('换装成功！');
-    }
+    await ensureAccount();
+    await apiPost('/api/costume/equip', { playerId, characterId, costumeId });
+    showToast(costumeId === 'default' ? '已恢复默认服装' : '已换装');
     beep('skill');
     loadCostumes();
   } catch (e) { showToast(e.message, 'error'); }
@@ -1526,59 +1813,57 @@ async function equipCostumeAction(characterId, costumeId) {
 
 /* ═══ 设置页面 ═══ */
 function settingsPage() {
+  const isOpenAi = meta?.ai?.mode === 'openai';
+  const adminEnabled = Boolean(meta?.admin?.enabled);
   return `${navBar()}
     <main class="page-content">
-      <div class="page-header"><div class="eyebrow">SETTINGS · 系统设置</div><h1>AI模型与偏好</h1></div>
+      <div class="page-header"><div class="eyebrow">SETTINGS · 系统设置</div><h1>AI 与偏好</h1></div>
+      <section class="settings-section" aria-labelledby="aiRuntimeTitle">
+        <h2 class="section-title" id="aiRuntimeTitle">当前 AI</h2>
+        <div class="ai-runtime-card ${isOpenAi ? 'is-model' : 'is-offline'}">
+          <div class="spread"><span class="muted">角色台词运行方式</span><strong id="aiRuntimeLabel">${escapeHtml(aiRuntimeLabel())}</strong></div>
+          <p class="muted">${isOpenAi
+            ? '由服务器代理的 OpenAI 兼容模型生成角色台词；模型超时、不可用或输出越权时，自动切回角色专属保底台词。'
+            : '当前没有接入大模型：角色台词来自离线剧情保底引擎，零成本、可完整通关。接入本地模型的方法见游戏内「设置」对话框或 README。'}</p>
+        </div>
+      </section>
       <section class="settings-section" id="aiSettingsSection"><div class="loader">加载中…</div></section>
       <section class="settings-section">
         <h2 class="section-title">声音</h2>
-        <div class="settings-row"><span>音效反馈</span><button class="button ${soundEnabled ? 'primary' : 'secondary'}" id="settingsSoundToggle">${soundEnabled ? '开启' : '关闭'}</button></div>
+        <div class="settings-row"><span>音效反馈</span><button class="button ${soundEnabled ? 'primary' : 'secondary'}" id="settingsSoundToggle" type="button">${soundEnabled ? '开启' : '关闭'}</button></div>
       </section>
-      <section class="settings-section">
+      ${adminEnabled ? `<section class="settings-section">
         <h2 class="section-title">后台管理</h2>
-        <div class="admin-gate" id="adminGate">
-          <p class="muted">运营仪表板需要管理员密码。</p>
+        <form class="admin-gate" id="adminForm" autocomplete="off">
+          <p class="muted">运营仪表板需要管理口令（由服务器校验）。</p>
           <div class="admin-password-row">
-            <input type="password" id="adminPassword" class="chat-input" placeholder="输入管理密码" maxlength="20" style="max-width:200px">
-            <button class="button secondary" id="adminUnlock">进入后台</button>
+            <input type="password" id="adminPassword" class="chat-input" placeholder="输入管理口令" maxlength="128" aria-label="管理口令" autocomplete="off">
+            <button class="button secondary" id="adminUnlock" type="submit">进入后台</button>
           </div>
-          <p class="admin-error" id="adminError" style="display:none;color:#ff6b7c;font-size:.75rem;margin-top:8px">密码错误。</p>
-        </div>
-      </section>
+          <p class="admin-error" id="adminError" role="alert" hidden></p>
+        </form>
+      </section>` : ''}
     </main>`;
 }
 
+// 模型预设还没有接到按玩家路由（见 B19），只作预览展示，不能点选
 async function loadSettings() {
   try {
-    const data = await apiGet(`/api/settings/ai?playerId=${playerId || ''}`);
+    const data = await apiGet('/api/settings/ai');
     const section = document.querySelector('#aiSettingsSection');
     if (!section) return;
     section.innerHTML = `
-      <h2 class="section-title">AI模型预设</h2>
+      <h2 class="section-title">模型预设 <span class="preview-tag">预览 · 尚未接入</span></h2>
+      <p class="muted settings-note">以下预设仅供预览，目前不能切换；实际使用的 AI 以上方「当前 AI」为准。</p>
       <div class="model-grid">
-        ${data.models.map((m) => `
-          <div class="model-card ${m.available ? '' : 'locked'} ${data.active?.id === m.id ? 'active' : ''}">
+        ${(data.models || []).map((m) => `
+          <div class="model-card preview" aria-disabled="true">
             <div class="model-name">${escapeHtml(m.name)}</div>
             <div class="model-provider">${escapeHtml(m.provider)}</div>
             <p class="model-desc">${escapeHtml(m.description)}</p>
-            ${m.available
-              ? `<button class="button ${data.active?.id === m.id ? 'primary' : 'secondary'} full" data-model="${m.id}">${data.active?.id === m.id ? '当前使用' : '切换'}</button>`
-              : '<div class="model-locked">即将开放</div>'}
+            <div class="model-locked">预览 · 尚未接入</div>
           </div>`).join('')}
-      </div>
-      <div class="settings-row" style="margin-top:16px"><span class="muted">当前模型</span><strong>${escapeHtml(data.active?.name || 'DeepSeek Flash')}</strong></div>`;
-    section.querySelectorAll('[data-model]').forEach((btn) => {
-      btn.addEventListener('click', () => switchAiModel(btn.dataset.model));
-    });
-  } catch (e) { showToast(e.message, 'error'); }
-}
-
-async function switchAiModel(modelId) {
-  try {
-    const r = await apiPost('/api/settings/ai', { playerId: playerId || '', modelId });
-    showToast(`已切换至：${r.model?.name || modelId}`);
-    beep('click');
-    loadSettings();
+      </div>`;
   } catch (e) { showToast(e.message, 'error'); }
 }
 
@@ -1592,8 +1877,15 @@ function dashboardPage() {
 }
 
 async function loadDashboard() {
+  // 没有在设置页输入过口令（或口令已失效）就回到设置页
+  if (!adminKey) {
+    screen = 'settings';
+    render();
+    return;
+  }
   try {
-    const data = await apiGet('/api/admin/dashboard?key=123456');
+    const data = dashboardData || await fetchDashboard(adminKey);
+    dashboardData = null; // 解锁时预取的数据只用一次，之后每次进入都重新拉取
     const section = document.querySelector('#dashboardSection');
     if (!section) return;
     const d = data.dashboard;
@@ -1617,13 +1909,20 @@ async function loadDashboard() {
       <div class="dash-chart">${(d.last7days || []).map((day) => `
         <div class="chart-bar-wrap">
           <div class="chart-bar" style="height:${Math.max(4, (day.active / Math.max(1, d.dau)) * 100)}%"></div>
-          <div class="chart-label">${day.date?.slice(5) || ''}</div>
+          <div class="chart-label">${escapeHtml(day.date?.slice(5) || '')}</div>
           <div class="chart-num">${day.active}</div>
         </div>`).join('')}
       </div>
       <h2 class="section-title" style="margin-top:24px">事件分布</h2>
-      <div class="dash-events">${Object.entries(d.eventsByType || {}).map(([k, v]) => `<span class="pill">${escapeHtml(k)}: ${v}</span>`).join('')}</div>`;
-  } catch (e) { showToast(e.message, 'error'); }
+      <div class="dash-events">${Object.entries(d.eventsByType || {}).map(([k, v]) => `<span class="pill">${escapeHtml(k)}: ${escapeHtml(v)}</span>`).join('')}</div>`;
+  } catch (e) {
+    if (e.status === 403 || e.status === 404) {
+      adminKey = null;
+      screen = 'settings';
+      render();
+    }
+    showToast(e.status === 403 ? '管理口令已失效，请重新输入。' : e.message, 'error');
+  }
 }
 
 /* ═══ 章节选择页面 ═══ */
@@ -1649,7 +1948,7 @@ async function loadMainlineChapters() {
   try {
     const res = await fetch('/story/chapters/index.json', { headers: { accept: 'application/json' } });
     const list = res.ok ? await res.json() : [];
-    const done = (() => { try { return JSON.parse(localStorage.getItem('moonlit:story:progress') || '{}') || {}; } catch { return {}; } })();
+    const done = store.json('moonlit:story:progress', {});
     const items = (Array.isArray(list) ? list : []).filter((ch) => /^ch\d{3}$/.test(ch?.id || ''));
     box.innerHTML = items.length ? items.map((ch) => {
       const [label, name] = String(ch.title || ch.id).split('｜');
@@ -1716,8 +2015,13 @@ async function openChapter(id) {
               <div class="scene-events">${(scene.events || []).map((ev) => {
                 if (ev.type === 'narration') return `<p class="ev-narration">${escapeHtml(ev.text)}</p>`;
                 if (ev.type === 'dialogue') return `<p class="ev-dialogue"><strong>${escapeHtml(speakerName(ev.speaker))}：</strong>${escapeHtml(ev.text)}</p>`;
-                if (ev.type === 'choice') return `<div class="ev-choice">${icon('chevron-right', { size: 14 })}${escapeHtml(ev.prompt || '选择')}</div>`;
-                if (ev.type === 'cg') return `<p class="ev-cg">${icon('film', { size: 14 })}CG: ${escapeHtml(ev.description || ev.unlockCg)}</p>`;
+                // 阅读器只读：列出提示和全部选项，不能选择
+                if (ev.type === 'choice') return `<div class="ev-choice-block">
+                  <div class="ev-choice">${icon('chevron-right', { size: 14 })}${escapeHtml(ev.prompt || '选择')}</div>
+                  ${(ev.options || []).length ? `<ol class="ev-options" aria-label="选项（只读）">${ev.options.map((option) => `<li>${escapeHtml(option.text || option.id)}</li>`).join('')}</ol>` : ''}
+                </div>`;
+                // 剧本里的描述本身常以「CG：」开头，显示时去掉重复前缀
+                if (ev.type === 'cg') return `<p class="ev-cg">${icon('film', { size: 14 })}CG：${escapeHtml(String(ev.description || ev.unlockCg || '').replace(/^CG\s*[:：]\s*/, ''))}</p>`;
                 return '';
               }).join('')}</div>
             </div>`).join('')}
@@ -1745,26 +2049,40 @@ function mountOverlay(overlay, closeSelector) {
 }
 
 /* ═══ 账户工具 ═══ */
-async function ensureAccount() {
-  if (playerId && playerAccount) return;
-  if (playerId) {
+// 召唤 / 换衣 / 商店共用的玩家账户。同一时刻只建一次号（页面里常有两处同时调用）
+let accountPromise = null;
+
+function ensureAccount() {
+  if (playerId && playerAccount) return Promise.resolve();
+  accountPromise ||= loadOrCreateAccount().finally(() => { accountPromise = null; });
+  return accountPromise;
+}
+
+async function loadOrCreateAccount() {
+  const previousId = playerId;
+  if (previousId) {
     try {
-      const r = await apiGet(`/api/account?playerId=${playerId}`);
+      const r = await apiGet(`/api/account?playerId=${encodeURIComponent(previousId)}`);
       playerAccount = r.account;
       return;
-    } catch { /* fall through to create */ }
+    } catch (error) {
+      // 只有「账户不存在 / id 无效」才重建；网络或服务器错误照常抛出，避免误建新号
+      if (error.status !== 404 && error.status !== 400) throw error;
+    }
   }
-  const name = state?.playerName || localStorage.getItem('moonlit:name') || '旅行者';
+  const name = state?.playerName || store.get('moonlit:name') || '旅行者';
   const r = await apiPost('/api/account/create', { playerName: name });
   playerAccount = r.account;
   playerId = r.account.id;
-  localStorage.setItem('moonlit:playerId', playerId);
+  creditMeter = null;
+  store.set('moonlit:playerId', playerId);
+  if (previousId) showToast('账户已重置：服务器重启后旧账户已失效，已为你新建账户。', 'error');
 }
 
 async function refreshCredit() {
   if (!playerId) return;
   try {
-    const r = await apiGet(`/api/credit?playerId=${playerId}`);
+    const r = await apiGet(`/api/credit?playerId=${encodeURIComponent(playerId)}`);
     creditMeter = r.meter;
     const navCredit = document.querySelector('.nav-credit');
     if (navCredit) navCredit.innerHTML = creditMeterHtml();
@@ -1773,10 +2091,11 @@ async function refreshCredit() {
 
 async function boot() {
   app.innerHTML = '<main class="title-screen"><div class="loader" aria-label="加载中"></div></main>';
+  let sessionLost = false;
   try {
     const [metaPayload] = await Promise.all([apiGet('/api/meta'), loadPaint()]);
     meta = metaPayload.meta;
-    const sessionId = localStorage.getItem('moonlit:session');
+    const sessionId = store.get('moonlit:session');
     if (sessionId) {
       try {
         const sessionPayload = await apiGet(`/api/session/${encodeURIComponent(sessionId)}`);
@@ -1784,8 +2103,12 @@ async function boot() {
         meta = sessionPayload.meta || meta;
         selectedCharacterId = state.selectedCharacterId || 'lia';
         rememberCgUnlocks(state); // 读档时已有的解锁不再弹提示
-      } catch {
-        localStorage.removeItem('moonlit:session');
+      } catch (error) {
+        // 404：服务器上已没有这个存档（服务器重启且未持久化）；400：本地记录的 id 已损坏。其他错误保留本地记录，下次再试
+        if (error.status === 404 || error.status === 400) {
+          store.remove('moonlit:session');
+          sessionLost = true;
+        }
       }
     }
   } catch (error) {
@@ -1793,6 +2116,7 @@ async function boot() {
     return;
   }
   render();
+  if (sessionLost) showToast('服务器重启后旧存档已失效，请重新开始外传。', 'error');
 }
 
 function showGallery(gallery, unlockedCount, total) {

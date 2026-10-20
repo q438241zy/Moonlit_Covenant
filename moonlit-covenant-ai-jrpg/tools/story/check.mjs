@@ -28,17 +28,19 @@ function loadChapter(id) {
 }
 
 // 按策略给出输入文本：使用目标意图的第一个关键词，保证 demoJudge 能命中
+// （整句关键词「=对」原样输入也能命中——判定时会去掉标点；排除词「!…」不能当示例，校验器要求它不排第一）
+const sample = (intent) => (intent?.keywords || []).find((k) => k && k[0] !== '!') || '';
 function inputFor(node, strategy, counter) {
   const choices = (node.intents || []).filter((x) => x.id !== node.silent);
   if (strategy && typeof strategy === 'object') {
     // 定点策略：目标节点选目标意图，其余节点选第 j 个意图（用于触达只在特定前置选择后出现的追问节点）
     const target = strategy.fixed[node.id] ? choices.find((x) => x.id === strategy.fixed[node.id]) : choices[strategy.j % choices.length];
-    return target?.keywords?.[0] || '';
+    return sample(target);
   }
   if (strategy === 'silent') return '';
   if (strategy === 'fallback') return '我挠了挠头，想了一下这件事到底意味着什么';
   const pick = choices[(strategy === 'rotate' ? counter : Number(strategy)) % choices.length];
-  return pick?.keywords?.[0] || '';
+  return sample(pick);
 }
 
 function play(chapter, strategy, run = createRun({ chapter, playerName: '亚克' }), log = null) {
@@ -87,7 +89,23 @@ let prevRuns = [];
 for (const entry of index) {
   if (only.length && !only.includes(entry.id)) continue;
   const chapter = loadChapter(entry.id);
-  if (!chapter) { console.log(`- ${entry.id}: （尚未转写）`); continue; }
+  if (!chapter) {
+    // 标题页只读目录、不预载章节：目录里写了 file 就必须真有这个文件（还没转写的章节不要写 file，标题页会显示「制作中」）
+    if (entry.file) { failed = true; console.log(`✗ ${entry.id} 目录写了 file ${entry.file}，但章节文件不存在`); } else console.log(`- ${entry.id}: （尚未转写）`);
+    continue;
+  }
+  // 契约 K-9：标题页的「约 N 分钟」和章节名直接读 index.json，必须和章节文件一致
+  const indexErrors = [];
+  if (entry.file !== `/story/chapters/${entry.id}.json`) indexErrors.push(`file 应为 /story/chapters/${entry.id}.json（实际 ${entry.file}）`);
+  if (entry.estimatedMinutes !== chapter.estimatedMinutes) indexErrors.push(`estimatedMinutes ${entry.estimatedMinutes} ≠ 章节文件 ${chapter.estimatedMinutes}`);
+  if (entry.title !== chapter.title) indexErrors.push(`title「${entry.title}」≠ 章节文件「${chapter.title}」`);
+  if (entry.number !== chapter.number) indexErrors.push(`number ${entry.number} ≠ 章节文件 ${chapter.number}`);
+  if ((chapter.end?.next ?? null) !== (index[index.indexOf(entry) + 1]?.id ?? null)) indexErrors.push(`end.next ${chapter.end?.next} 与目录里的下一章 ${index[index.indexOf(entry) + 1]?.id ?? null} 不一致`);
+  if (indexErrors.length) {
+    failed = true;
+    console.log(`✗ ${entry.id} 与 index.json 不一致：`);
+    indexErrors.forEach((e) => console.log('   ' + e));
+  }
   const errors = validateChapter(chapter, { speakers, locations });
   if (errors.length) {
     failed = true;
