@@ -1,4 +1,5 @@
-// 月蚀契约 · 星轨召唤（独立原型页 gacha-system.html 的脚本）
+// 月蚀契约 · 星轨召唤（独立原型页 gacha-system.html 的脚本；B13：已移到 tools/prototypes/，不随游戏站点提供，
+// 用 node tools/prototypes/preview.mjs 在本机预览）
 //
 // 页面受 CSP 保护（script-src 'self'）：不能有内联 <script> 与 on*= 事件属性。
 // 所有可交互元素（包括模板字符串里动态生成的）只写 data-action（+ data-* 参数），
@@ -15,16 +16,16 @@ const ART = {
   costume: (owner, type) => `/assets/costumes/${artId(owner)}_${type}.svg`
 };
 
-// ============ 完整 RPG 物品池（icon = /icons.js 中的图标名） ============
+// ============ 完整 RPG 物品池（icon = /icons.js 中的图标名；称号取 设定集/03 的正典职业，B1） ============
 const CHARACTERS = [
-  {id:'lia',name:'莉亚·赫斯特',type:'character',rarity:'legendary',icon:'sword',title:'赤誓骑士'},
-  {id:'mia',name:'米娅·玲',type:'character',rarity:'legendary',icon:'wrench',title:'猫耳机关师'},
-  {id:'serena',name:'塞雷娜·诺克斯',type:'character',rarity:'legendary',icon:'moon',title:'月蚀观测者'},
+  {id:'lia',name:'莉亚·赫斯特',type:'character',rarity:'legendary',icon:'shield',title:'盾战士'},
+  {id:'mia',name:'米娅·玲',type:'character',rarity:'legendary',icon:'wrench',title:'魔具发明师'},
+  {id:'serena',name:'塞雷娜·诺克斯',type:'character',rarity:'legendary',icon:'moon',title:'暗系魔法师'},
   {id:'freya',name:'芙蕾娅·霜华',type:'character',rarity:'legendary',icon:'snowflake',title:'冰系魔法师'},
   {id:'lilith',name:'莉莉丝·瓦尔哈拉',type:'character',rarity:'legendary',icon:'dagger',title:'暗影刺客'},
   {id:'evelyn',name:'伊芙琳·星歌',type:'character',rarity:'legendary',icon:'star',title:'圣教圣女'},
   {id:'ophelia',name:'奥菲利亚·使诺德',type:'character',rarity:'legendary',icon:'dragon',title:'龙族圣女'},
-  {id:'ayla',name:'艾拉·瓦尔哈拉',type:'character',rarity:'legendary',icon:'shield',title:'光明骑士'}
+  {id:'ayla',name:'艾拉·瓦尔哈拉',type:'character',rarity:'legendary',icon:'sword',title:'光明骑士'}
 ];
 
 // ===== 武器池 =====

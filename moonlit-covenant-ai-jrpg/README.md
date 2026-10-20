@@ -2,13 +2,15 @@
 
 **Moonlit Covenant — AI JRPG Web Vertical Slice**
 
-一个可以直接运行的网页 JRPG：主线《亚克篇》按剧本逐字实现，所有关键抉择都是自由输入；外传《银轨号》里，玩家能和三名队友自由交谈，AI 会记住承诺、道歉、夸奖与冒犯，这些关系会影响战术协同和最终评价。战斗、道具、剧情节点与结局由确定性游戏规则控制，不由语言模型擅自改写。
+一个可以直接运行的网页 JRPG：主线「亚克的旅程」（正史）按剧本逐字实现，所有关键抉择都是自由输入；IF 外传《银轨号》里，玩家能和三名队友自由交谈，AI 会记住承诺、道歉、夸奖与冒犯，这些关系会影响战术协同和最终评价。战斗、道具、剧情节点与结局由确定性游戏规则控制，不由语言模型擅自改写。
 
-> 当前版本是用于验证玩法和商业方向的可玩垂直切片。游戏内的矢量美术（立绘、服装、CG、卡面、地图、Boss、场景、主线背景与胸像、UI 图标）均为本项目代码生成的**原创**资产；三张主角厚涂立绘与标题页主视觉为 AI 生成，并带有「图片由AI生成」标识（见下方「资产说明」）。正式销售前应替换为商业级立绘、CG、音乐与授权语音。
+> 当前版本是用于验证玩法的可玩垂直切片，**不对外公开**（作者核#12）。游戏画面内的美术（立绘、服装、CG、卡面、地图、Boss、场景、主线背景与胸像、标题背景、UI 图标）统一使用本项目代码生成的**原创**矢量资产；AI 生成的厚涂图只能经由厚涂预留位替换，并显示统一的「AI 生成」角标（见下方「资产说明」）。正式销售前应替换为商业级立绘、CG、音乐与授权语音。
+
+> **正典以 `设定集/` 与 `剧本/` 为准。** 银轨号是与正典平行的 IF 外传：外传里的人物身份（例如「赤誓骑士」莉亚）只在外传内成立，[`docs/CHARACTER-DESIGN.md`](docs/CHARACTER-DESIGN.md) 是外传专用设定，不是全作的事实来源；召唤卡池、角色管理器等外传以外的地方一律使用正典身份。
 
 ## 已实现内容
 
-### 主线 · 亚克篇（`/story.html`）
+### 主线：亚克的旅程（正史，`/story.html`）
 
 按 `剧本/` 逐字实现的视觉小说式主线，所有选择都是**自由输入**（无固定选项），进度逐拍保存在浏览器里，章末可把结果继承到下一章。
 
@@ -23,31 +25,57 @@
 
 第五章已由审阅稿升为**正式稿**（核#11）。每章约 11–24 分钟，预计时长见章节选择页（`public/story/chapters/index.json` 的 `estimatedMinutes`）。章节数据在 `public/story/chapters/`，格式与引擎见 [`docs/STORY-ENGINE.md`](docs/STORY-ENGINE.md)；校验与自动试玩：`npm run story:check`。
 
-### 银轨号外传（`/`，标题页进入）
+### 标题页（`/`）
+
+三个入口各有一张说明卡片：「主线：亚克的旅程」（进入 `/story.html`）、「外传：银轨号」（IF 外传，名字输入框在这张卡片里）、「实验模式：卡牌对战」（进入 `/cards.html`）。
+
+### 银轨号 · IF 外传（`/`，标题页「外传：银轨号」）
 
 - 完整序章：开场 → 战前自由对话 → 战术选择 → 回合制 Boss 战 → 战后对话 → 三种抉择 → 多档结局。
-- 三名宅向队友：赤誓骑士莉亚、猫耳机关师米娅、月蚀观测者塞雷娜。
+- 三名队友使用外传设定（赤誓骑士莉亚、猫耳机关师米娅、月蚀观测者塞雷娜），与正典身份不同，见 `docs/CHARACTER-DESIGN.md`（外传专用）。
 - 每名角色拥有独立人设、知识边界、禁说秘密、说话风格、羁绊、信任、情绪与短期记忆。
-- 战前最多 10 次自由交流；不是固定选项，也不要求猜关键词。
+- 战前最多 10 次自由交流；不是固定选项，也不要求猜关键词。战后对话最多 3 次；同一句话对同一角色只计一次分，承诺对每位角色只计一次。
 - 三套主导战术与不同战斗收益；普攻、防御、治疗、羁绊技能、敌方回合、失败回卷。
 - 隐藏 S 级路线：需要关系、承诺、战斗行为与最终选择共同满足条件。
-- 世界地图、CG 图库，以及银轨号 15 章剧本草稿的只读阅读器（「章节」）。
+- 世界地图（外传专用：城镇进度由外传进度推导，还没有内容的城镇显示「敬请期待」；主线入口是「赫麦村 · 亚克的故乡（主线）」）、CG 图库，以及银轨号 15 章「剧本草稿（只读）」阅读器（「章节」）。
 
 ### 召唤、换衣、商店与设置（同在 `/`）
 
-- 召唤：角色池 / 服饰池，游戏内公示概率与保底。
-- 换衣：8 位女主 × 6 套服装；抽到的服装都会出现在换衣间（还没拥有对应女主的，列在「待解锁角色」里）。
-- 商店：会员、钻石均为**演示功能，没有真实支付**；由「演示工具」开关控制（见下文），`NODE_ENV=production` 时默认关闭。
-- 设置：AI 模式说明、音效开关、后台管理入口。
+- 召唤：角色池 / 服饰池，游戏内公示概率与保底；可以用 Credit 或钻石支付，抽到已拥有的条目会按稀有度折成钻石（见「钻石与奖励」）。卡池里的女主介绍使用正典身份（`设定集/03` 的基本资料、正典武器名与第一印象），不写正式章节尚未揭示的身世秘密。
+- 女主在主线**正式入队时自动获得**：通关第五章获得莉亚、第十章获得米娅（其余女主按 `设定集/03` §10 的入队章节登记在卡池数据里，章节上线后自动生效）；之前已经抽到的按重复补偿折成钻石。角色池照常保留。
+- 换衣：8 位女主 × 6 套服装；抽到的服装都会出现在换衣间（还没拥有对应女主的，列在「待解锁角色」里）。换装「分支剧情」尚未制作，界面显示「敬请期待」。
+- 商店：会员、钻石充值保留为**演示用的免费补充**（没有真实支付，标价仅作展示）；由「演示工具」开关控制（见下文），本地运行默认开启。
+- 设置：AI 模式说明、音效开关、后台管理入口。按玩家切换模型尚未实现，设置页不再展示模型预设（所有玩家共用服务器配置的 AI）。
 
 ### 卡牌对战《暗影对决》（`/cards.html`，实验模式）
 
-暗影诗章式卡牌对战：职业牌组、组牌、开包与合成、进化、对手 AI 回合逐步回放与对战日志。
+暗影诗章式卡牌对战，标题页「实验模式：卡牌对战」进入：职业牌组、组牌、开包与合成、进化、对手 AI 回合逐步回放与对战日志。进化规则按 Shadowverse：每回合最多进化一次，当回合登场就进化的随从只获得「突进」（可以攻击随从，不能攻击主战者）；先后手由抛硬币决定。与主游戏共用同一个账户：获胜有钻石奖励（每天前 5 胜，见下文）。
+
+### 钻石与奖励（`game/rewards.mjs`）
+
+游戏不公开，但保留钻石、商店与召唤；钻石可以**靠玩获得**，商店的演示充值只是免费补充。
+
+| 来源 | 钻石 | 说明 |
+|---|---:|---|
+| 每日签到 | 50 起，连签每天 +10，最多 +40（第 5 天起每天 90） | 按服务器本地日期每天一次，断签从第 1 天重新算 |
+| 主线章节首次通关 | 每章 160 | 每章只发一次；同时发放在该章正式入队的女主 |
+| 卡牌对战获胜 | 每胜 40 | 每天前 5 胜（每天最多 200），之后照常可以打 |
+| 第一次进入卡牌对战 | 800 + 500 碎片 | 正好一次十连开包 |
+| 新建账户（demo 模式） | 300 钻石 + 600 Credit | 原有的起始资源 |
+
+| 花费 | 价格 |
+|---|---|
+| 召唤（角色池 / 服饰池） | 单抽 10 Credit 或 80 钻石；十连 90 Credit 或 720 钻石 |
+| 卡牌开包 | 单包 80 钻石；十连 800 钻石 |
+
+重复补偿（召唤抽到已拥有的条目，含同一次十连里的第二份；主线入队时已经抽到的女主同样适用）：3★ 8 钻石（单抽的 10%）、4★ 16（20%）、5★ 160（两次单抽）。全部拥有后每抽的期望返还约为角色池 19、服饰池 14 钻石，远低于单抽价格，不会形成刷钻循环。
+
+签到、首通与胜场记录存在服务器账户里（`account.rewards`），随存档一起保存。主线（`/story.html`）和卡牌页与主游戏共用浏览器里的同一个账户（`localStorage` 的 `moonlit:playerId`）。
 
 ### 原型页
 
-- `/gacha-system.html`：独立抽卡原型，自成一套经济，数据只存在浏览器里，**与正式游戏数据不互通**。
-- `/character-manager.html`：角色设定管理原型。
+- `/character-manager.html`：角色设定管理原型（使用正典身份）。
+- 独立抽卡原型 `gacha-system` 已移到 `tools/prototypes/`，不再由服务器提供：它自成一套经济，数据只存在浏览器里，与正式游戏数据不互通。
 
 ### 工程
 
@@ -120,18 +148,18 @@ COMMUNITY_URL=https://你的社群链接
 | `HOST` / `PORT` | `127.0.0.1` / `4173` | 监听地址与端口 |
 | `WISHLIST_URL` / `COMMUNITY_URL` | 空 | 标题页、结局页的转化链接 |
 | `ADMIN_KEY` | 不设置 = 默认口令 `123456` | 后台管理口令；设为空字符串（`ADMIN_KEY=`）则关闭后台 |
-| `DEMO_TOOLS` | 空 = 开启（production 下关闭） | `1` 强制开启、`0` 强制关闭演示工具 |
-| `NODE_ENV` | 空 | `production` 时演示工具默认关闭（Docker 镜像已设置） |
+| `DEMO_TOOLS` | 空 = 开启（production 下关闭；Docker 镜像与 compose 已设为 `1`） | `1` 强制开启、`0` 强制关闭演示工具 |
+| `NODE_ENV` | 空 | `production` 时演示工具默认关闭（Docker 镜像设置了 `NODE_ENV=production`，同时用 `DEMO_TOOLS=1` 保持开启） |
 | `PERSIST` | 空 = 开启（`node --test` 下关闭） | `0` 关闭存档持久化 |
 | `SAVE_FILE` | `data/saves.json` | 存档文件位置（相对路径以项目根为基准） |
 | `MAX_SESSIONS` / `MAX_ACCOUNTS` | `2000` / `2000` | 外传会话、账户总量上限，满了先清理过期数据，仍满返回 503 |
 
 ### 存档与过期
 
-- 外传进度、召唤 / 换衣 / 会员、卡牌收藏与对局、AI 设置都由服务器保存在 `data/saves.json`：状态变化后约 1 秒落盘（先写临时文件再改名），关闭服务器（Ctrl+C）时立即落盘，重启后自动恢复。
+- 外传进度、召唤 / 换衣 / 会员、钻石奖励记录（签到、主线首通、对战胜场）、卡牌收藏与对局都由服务器保存在 `data/saves.json`：状态变化后约 1 秒落盘（先写临时文件再改名），关闭服务器（Ctrl+C）时立即落盘，重启后自动恢复。
 - 存档文件损坏时会被改名为 `saves.json.corrupt-<时间戳>` 留作排查，服务器以空存档启动。
 - 过期规则：外传会话与卡牌对局 **24 小时无操作**后清理；账户（召唤、换衣、会员、卡牌收藏）**闲置 90 天**后清理。
-- 主线（亚克篇）的进度保存在浏览器的 localStorage 里，不在服务器上。
+- 主线「亚克的旅程」的阅读进度保存在浏览器的 localStorage 里，不在服务器上；只有「哪些章节已经首次通关」（用来发首通奖励和入队女主）记在服务器账户里。
 - `data/` 已在 `.gitignore` 和 `.dockerignore` 里，不会进仓库或镜像。备份时复制 `data/saves.json` 即可。
 - 临时试玩或测试时用 `PERSIST=0` 关闭持久化；`npm test` 会自动关闭，不会写脏 `data/`。
 
@@ -148,7 +176,7 @@ COMMUNITY_URL=https://你的社群链接
 
 ### 演示工具
 
-商店里的免费开通会员、免费领取钻石，以及换衣间的「一键发放全部服装」都属于演示工具，没有真实支付。默认开启，`NODE_ENV=production` 时默认关闭；`DEMO_TOOLS=1` / `0` 可强制开关。关闭时这三个接口返回 403 `DEMO_TOOLS_DISABLED`，前端也会隐藏对应入口。
+商店里的免费开通会员、免费领取钻石，以及换衣间的「一键发放全部服装」都属于演示工具，没有真实支付。这个版本不公开，商店作为免费补充保留：本地运行默认开启；Docker 镜像与 compose 也设了 `DEMO_TOOLS=1`，保持开启（作者核#12：这个版本不公开）；其他 `NODE_ENV=production` 环境默认关闭，要保留商店请加 `DEMO_TOOLS=1`；`DEMO_TOOLS=0` 强制关闭。关闭时这三个接口返回 403 `DEMO_TOOLS_DISABLED`，前端也会隐藏对应入口。签到、首通、对战胜利这些「玩出来的钻石」不受这个开关影响。
 
 ## 接入本地 Qwen3 + Ollama
 
@@ -200,7 +228,7 @@ docker run --rm -p 4173:4173 -e AI_MODE=demo -v moonlit-data:/app/data moonlit-c
 docker compose up --build
 ```
 
-- 镜像里 `NODE_ENV=production`，所以**演示工具默认关闭**（需要时加 `-e DEMO_TOOLS=1`）。
+- 镜像里 `NODE_ENV=production`，但同时设了 `DEMO_TOOLS=1`：这个版本不公开，商店的免费补充保持开启（作者核#12）；要关掉就 `-e DEMO_TOOLS=0`（compose 在 `.env` 里写 `DEMO_TOOLS=0`）。
 - 后台口令：`-e ADMIN_KEY=你的口令`；用 compose 时在项目目录的 `.env` 里写 `ADMIN_KEY=...` 即可传进容器，不写则使用默认口令。
 - 容器以非 root 的 `node` 用户运行，自带健康检查（`/api/health`）。
 - 容器调用宿主机 Ollama 时，macOS/Windows 通常使用 `http://host.docker.internal:11434/v1`（compose 的默认值；如果 `.env` 里写的是 `127.0.0.1`，用 compose 前要改掉）；Linux 已在 compose 里配置 host gateway，也可以把 Ollama 与游戏服务部署在同一 Docker 网络。
@@ -230,28 +258,29 @@ game/
   engine.mjs            外传确定性状态机：关系、战斗与结局判定
   ai.mjs                本地/云端模型适配、结构化输出、验证与保底台词
   story-judge.mjs       主线自由输入的服务端判定
-  gacha.mjs             召唤卡池（角色池 / 服饰池、概率与保底）
+  gacha.mjs             召唤卡池（角色池 / 服饰池、概率与保底、Credit / 钻石价格、重复补偿、女主入队章节）
+  rewards.mjs           玩出来的钻石：每日签到、主线首通、卡牌胜利、女主自动入队
   costume.mjs           换衣系统
-  membership.mjs        会员与钻石（演示，无真实支付）
+  membership.mjs        会员与钻石充值（演示，无真实支付）
   credit.mjs            Credit 计量
-  settings.mjs          AI 模型设置（预览）
+  settings.mjs          AI 模型预设目录（按玩家路由实现前不对玩家开放）
   analytics.mjs         运营统计（后台仪表板）
   persist.mjs           存档持久化（data/saves.json）
 cards/                  卡牌对战引擎：卡牌数据、对局规则、对手 AI、组牌、开包与合成
 scenario/               银轨号外传 15 章剧本草稿（chapter-01…15.json）与读取器
 public/
-  index.html, app.js    主游戏：标题页、外传、地图、章节阅读器、召唤、换衣、商店、设置
+  index.html, app.js    主游戏：标题页、IF 外传、地图、剧本草稿阅读器、召唤、换衣、商店、设置
   styles.css, icons.js, paint.js   主游戏样式、原创线性图标库、厚涂图替换清单读取
-  story.html            主线 · 亚克篇
+  story.html            主线「亚克的旅程」
   story/                主线播放器（player.js）、纯函数引擎（engine.js）、章节数据（chapters/）、角色与场景表
-  cards.html, cards.js, cards.css   卡牌对战
-  gacha-system.html     独立抽卡原型
+  cards.html, cards.js, cards.css   卡牌对战（实验模式）
   character-manager.html 角色设定管理原型
   assets/               美术资产（矢量 SVG 由 tools/art/ 生成，详见「资产说明」）
 tools/
   art/                  矢量美术生成器（立绘、服装、CG、卡面、地图、Boss、场景、主线背景与胸像）与厚涂出图管线（raster/）
   story/check.mjs       主线章节校验与自动试玩
   check-syntax.mjs      全量语法检查（npm run check）
+  prototypes/           不随站点提供的原型（独立抽卡页 gacha-system）
 test/                   规则、AI 边界、HTTP 层、存档、经济、卡牌、主线、美术与部署测试
 docs/                   市场、架构、美术规范、剧情引擎与发行清单
 data/                   运行时存档（自动生成，不进仓库）
@@ -281,11 +310,13 @@ Dockerfile, docker-compose.yml
 
 厚涂位图预留位：`public/assets/paint/`（文件名清单见该目录 README）。登记在 `manifest.json` 里的厚涂图会自动替换对应矢量图，未登记的继续用矢量；出图管线见 [`tools/art/raster/README.md`](tools/art/raster/README.md)（`npm run art:paint` / `art:paint:finalize`）。
 
-游戏内的使用方式：召唤与换衣统一使用矢量立绘（换衣间会显示当前穿着的服装立绘）；大地图以 `world-map.svg` 为底图，城镇徽章使用 `icons.js` 图标；剧情舞台使用 CG / 场景作为背景；Boss 战按 HP 阶段切换三张食梦兽立绘；结局页叠加结局背景、对应抉择的 CG，隐藏路线显示月蚀纹章；解锁 CG 时会弹出一次非阻塞提示，并收录进 CG 图库。
+游戏内的使用方式：游戏画面统一使用矢量美术，同一位女主在同一屏只有一种画风；标题背景是由现有矢量组件拼成的 `public/assets/title-bg.svg`；召唤与换衣统一使用矢量立绘（换衣间会显示当前穿着的服装立绘；莉亚的立绘与服装都带正典的塔盾）；大地图以 `world-map.svg` 为底图，城镇徽章使用 `icons.js` 图标；剧情舞台使用 CG / 场景作为背景；Boss 战按 HP 阶段切换三张食梦兽立绘；结局页叠加结局背景、对应抉择的 CG，隐藏路线显示月蚀纹章；解锁 CG 时会弹出一次非阻塞提示，并收录进 CG 图库。
 
 ### AI 生成的厚涂图
 
-莉亚、米娅、塞雷娜三张主角厚涂立绘与标题页主视觉 `key-visual` 为 AI 生成图像，画面右下角带有依法标注的「图片由AI生成」。站点使用压缩后的 `public/assets/{lia,mia,serena,key-visual}.jpg`（由 `npm run art:legacy-jpg`，即 `tools/art/raster/compress-legacy.mjs`，从 `tools/art/raster/ref/` 下的原图 PNG 生成，不缩放不裁切，保留 AIGC 元数据；原图 PNG 只作出图参考，不随站点发布）；旧的 Boss 厚涂图 `dream-eater.png` 已由矢量三阶段 Boss 取代，移到 `tools/art/raster/ref/` 只作出图参考。任何显示位置都**不得裁切或遮挡该标识**——UI 按原图比例显示这些图片，小尺寸头像改用矢量立绘。
+游戏画面里不直接放位图女主：厚涂图只能通过 `public/assets/paint/` 的预留位整体替换矢量图，`paint()` 返回厚涂图时界面角落会显示统一的「AI 生成」角标。
+
+莉亚、米娅、塞雷娜三张旧的主角厚涂立绘与旧主视觉 `key-visual` 为 AI 生成图像，画面右下角带有依法标注的「图片由AI生成」。这些 JPG 仍在 `public/assets/{lia,mia,serena,key-visual}.jpg`（压缩版，由 `npm run art:legacy-jpg`，即 `tools/art/raster/compress-legacy.mjs`，从 `tools/art/raster/ref/` 下的原图 PNG 生成，不缩放不裁切，保留 AIGC 元数据；原图 PNG 只作出图参考，不随站点发布）；旧的 Boss 厚涂图 `dream-eater.png` 已由矢量三阶段 Boss 取代，移到 `tools/art/raster/ref/` 只作出图参考。任何显示位置都**不得裁切或遮挡该标识**——如果用到这些图片，按原图比例显示，小尺寸头像改用矢量立绘。
 
 ## API 摘要
 
@@ -304,26 +335,34 @@ Dockerfile, docker-compose.yml
 - `POST /api/advance`、`/api/strategy`、`/api/mode`、`/api/chat`、`/api/battle`、`/api/reset-battle`、`/api/ending`、`/api/restart`：推进场景、选择战术、切换对话模式、与角色交谈、战斗动作、战败回卷、最终抉择、重开；请求体都带 `sessionId`。
 - `GET /api/scenario/index`、`GET /api/scenario/chapter/:id`：外传剧本草稿目录与章节（只读）。
 
-**主线 · 亚克篇**
+**主线「亚克的旅程」**
 
 - `POST /api/story/judge`：自由输入判定（节点定义由服务器从章节文件读取）。
+- `POST /api/story/progress`：`{ playerId, chapterId }` 报告章节通关（契约 R-2）。章节必须在 `public/story/chapters/index.json` 里，否则 400 `UNKNOWN_CHAPTER`；幂等，首次通关才发奖励。返回 `{ granted, diamonds, chapterReward, heroinesGranted, heroinesCompensated, alreadyCleared, chaptersCleared, balance, account }`：`granted` 表示这次是否发了任何东西，`diamonds` 是这次发的钻石总数（首通奖励 + 已拥有女主的补偿），`heroinesGranted` 是这次加入 `ownedCharacters` 的女主 id，`balance` 是发放后的钻石余额。
+
+**钻石奖励**
+
+- `GET /api/rewards/status?playerId=`（契约 R-1）：`{ dailyAvailable, streak, nextAt, dailyAmount, chaptersCleared, chapterReward, cardWinsToday, cardWinCap, cardWinReward, heroineJoins, heroinesJoined, diamonds, recent, rules }`。`streak` 是仍然有效的连签天数（今天或昨天签过，否则 0），`dailyAmount` 是下一次签到的数量，`nextAt` 是下一个本地零点（毫秒时间戳），`cardWinsToday` 是今天已经拿到奖励的胜场数。
+- `POST /api/rewards/daily`：`{ playerId }` 每日签到（契约 R-1），返回 `{ granted, diamonds, streak, nextAt, balance, message, account }`；当天重复签到 `granted: false`、`diamonds: 0`。
 
 **账户、召唤、换衣与商店**
 
 - `POST /api/account/create`、`GET /api/account?playerId=`：创建 / 读取账户。
 - `GET /api/credit?playerId=`：Credit 余额。
-- `GET /api/gacha/pools`、`POST /api/gacha/pull`：卡池（含概率与保底）、召唤。
+- `GET /api/gacha/pools`：卡池、概率与保底，以及 `costs`（`{ credit: { single, ten }, diamonds: { single, ten } }`）、`duplicateCompensation`（`{ 3: 8, 4: 16, 5: 160 }`）、`heroineJoins`（女主 id → 入队章节）。
+- `POST /api/gacha/pull`：`{ playerId, pool, count, currency? }` 召唤；`currency: 'diamonds'` 用钻石支付，缺省用 Credit。返回 `{ pool, currency, results, cost, pity, compensation: { diamonds }, balance: { credits, diamonds }, account }`，`results[i]` 带 `isNew`、`duplicate`、`compensation`；余额不足返回 400，`code` 为 `INSUFFICIENT_DIAMONDS` / `INSUFFICIENT_CREDIT`。
 - `GET /api/costume?playerId=`、`POST /api/costume/equip`：服装列表、穿戴。
 - `GET /api/membership/tiers`：会员档位与钻石包。
 - 演示工具（`DEMO_TOOLS`，关闭时 403）：`POST /api/membership/purchase`、`POST /api/diamonds/purchase`、`POST /api/costume/grant-all`。
-- `GET /api/settings/ai?playerId=`、`POST /api/settings/ai`：AI 模型设置（预览）。
+- `GET /api/settings/ai?playerId=`：`{ perPlayerRouting: false, current, models: [], settings }`，`current` 是所有玩家共用的 AI（同 `/api/meta` 的 `ai`）；按玩家路由实现前不下发模型预设。`POST /api/settings/ai` 对存在的账户返回 409 `PER_PLAYER_ROUTING_UNAVAILABLE`。
 
 **卡牌对战**
 
 - `GET /api/cards/meta`、`GET /api/cards/all`：职业、稀有度、关键词与全部卡牌。
 - `GET /api/cards/collection`、`GET /api/cards/summary`、`POST /api/cards/pack`、`POST /api/cards/craft`：收藏、碎片 / 开包保底 / 钻石概况、开包、合成。
 - `GET /api/cards/decks`、`GET /api/cards/deck/starter`、`POST /api/cards/deck/save`：牌组。
-- `POST /api/battle/start`、`GET /api/battle/state`、`POST /api/battle/action`、`POST /api/battle/end-turn`、`POST /api/battle/concede`：对局（对手手牌只下发 `{ uid, hidden }`）。
+- `POST /api/battle/start`、`GET /api/battle/state`、`POST /api/battle/action`、`POST /api/battle/end-turn`、`POST /api/battle/concede`：对局（对手手牌只下发 `{ uid, hidden }`）。抛硬币由对手先手时，`/api/battle/start` 会先跑完对手的第一回合，并在 `aiActions` 里返回这些动作，玩家拿到的总是自己的回合。
+- 胜利奖励（契约 R-3）：对局以玩家获胜结束时服务器发放一次（每天前 5 胜各 40 钻石），这几个对局接口在对局结束后都带 `reward: { diamonds, capped, winsToday, cap, balance }`（`capped: true` 表示今天的奖励胜场已满、这局 0 钻石）；进行中、输了、平局或投降时 `reward` 为 `null`。
 
 **后台**
 

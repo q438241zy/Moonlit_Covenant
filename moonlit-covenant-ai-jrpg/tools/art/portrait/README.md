@@ -19,7 +19,8 @@ node tools/art/portrait/build.mjs --lenient --verbose   # keep going past a thro
 | costume portrait | `public/assets/costumes/<heroineId>_<outfitType>.svg` | ≤ 80 KB |
 
 Rules for everything drawn here: `docs/ART-DIRECTION.md` (mandatory) and the character canon
-(`docs/CHARACTER-DESIGN.md`, `设定集/03_主角与八位女主角.md`). All heroines are drawn as clearly
+`设定集/03_主角与八位女主角.md` (all eight heroines; `docs/CHARACTER-DESIGN.md` only covers the
+Silver Rail IF side story and never overrides the canon). All heroines are drawn as clearly
 **adult women (aged 18–19), non-sexualised and modestly dressed** – this overrides any
 younger ages or suggestive wording in game data. "Summer" outfits are resort clothes, not swimwear.
 
@@ -82,14 +83,33 @@ Modules may also `import { ANCHORS, SHAPES, taper, lock, mix, ... } from '../bas
 outside layer functions (read-only – never modify `base.mjs`). `compose(heroine, { outfit, lenient })`
 throws if any layer throws, unless `lenient: true` (then the layer is skipped with a warning).
 
-Two more `compose()` options exist for derived assets (both off by default, so the portraits and
-costumes above never change):
+Three more `compose()` options (all off by default; `build.mjs` turns on the last two):
 
 - `background: false` – a transparent figure: no background (step 1, incl. `bgMotif`) and no full-frame
   lighting (step 4); the figure and its rim light (steps 2–3) are kept. Used by the story-mode bust
   `tools/art/story/lia-bust.mjs`, which scales the 832×1216 result into the 600×800 bust frame.
 - `extras: ['shield']` – optional heroine layers from `heroine.extras` (below), drawn first inside the
-  figure group, i.e. behind `hairBack` (things carried on the back).
+  figure group, i.e. behind `hairBack` (things carried on the back). `build.mjs` passes
+  `heroine.portraitExtras` for the portrait and every costume, so Lia's tower shield 「赤誓」 is on all
+  her images (audit B10), always behind her left shoulder (viewer's right).
+- `accent: ACCENTS[heroine.id]` – her costume-accent kit from `accents.mjs`, handed to the outfit's
+  layers as `p.accent` (null without a kit). Each outfit places her **emblem** (`p.accent.emblem(x, y, s)`,
+  full-colour, s = 1 ≈ 48 px tall) and her **motif** (`p.accent.glyph(x, y, r, rot)`, one-colour path data)
+  in its own spots, so the 48 costumes are not 6 recoloured templates (audit B11):
+
+  | Outfit | Emblem | Motif |
+  |---|---|---|
+  | maid | embroidered on the bib | stitched along the waistband |
+  | newyear | – | gold-thread 团花 roundel on the right chest (replaces one cloud) |
+  | christmas | pendant under the clasp chain | the dress buttons |
+  | duanwu | on the white sash, right of the knot | white-thread embroidery on the under collar band |
+  | anniversary | set in the centre of the star medal | the sash charges |
+  | swimsuit (summer) | the necklace pendant | the dress print (Lia: strawberries) |
+
+  Kits (canon look, 设定集/03): Lia tower-shield crest + flame · Mia copper gear + gear · Serena
+  closed-eyelid pendant + crescent · Freya ice crystal + snowflake · Lilith crescent-and-dagger sigil +
+  leaf · Evelyn winged star + prayer bell · Ophelia dragon claw + horn · Aila sun rosette + sun.
+  A new outfit should give both a spot (and keep a plain fallback when `p.accent` is null).
 
 ---
 
@@ -167,6 +187,7 @@ export default {
   costumeLayers: ['bodyBack', 'neckAccessory'], // optional: heroine layers that belong to her DEFAULT costume (dropped when an outfit is worn)
   layers: { bgMotif, hairBack, bodyBack, outfit, neckAccessory, faceMarks, headBack, hairFront, headFront, foreground, irisDetail },
   extras: { shield },        // optional: layers drawn only when compose() is called with { extras: ['shield'] }
+  portraitExtras: ['shield'], // optional: extras build.mjs always draws on her portrait + costumes (Lia: B10)
 };
 ```
 
@@ -253,6 +274,7 @@ Use the standard colours from `docs/ART-DIRECTION.md` §2 for `accent`/`accent2`
 |---|---|
 | `p.heroine` | `{ id, name }` |
 | `p.costume` | outfit `type` when a costume portrait is being composed, else `null` (lets a heroine layer adapt) |
+| `p.accent` | outfit layers only: the heroine's costume-accent kit (`accents.mjs`: `emblem(x, y, s)`, `glyph(x, y, r, rot)`, colours `main` / `deep` / `lit` / `thread`, optional two-colour `print`), or `null` (§2) |
 | `p.palette`, `p.expression` | merged values (§4.1, §4.2) |
 | `p.anchors`, `p.shapes` | §3 – with this heroine's face anchors and face outline (`import { ANCHORS, SHAPES }` = default face) |
 | `p.id(name)` | unique id for this file. Heroine layers: `lia-name` (portrait) / `lia-maid-name` (costume file). Outfit layers: `lia-maid-o-name`. **Never start your own names with `t-`** (reserved for the template). |
@@ -326,6 +348,8 @@ Resolution rules when composing `heroine × outfit`:
 - the heroine's palette is passed to the outfit: use `p.palette.accent` / `accent2` (and `mix`)
   for trims and accents so the outfit **recolours per heroine**; `p.heroine.id` allows small
   per-heroine tweaks.
+- recolouring is not enough on its own (audit B11): give the heroine's `p.accent` kit a spot for her
+  emblem and one for her motif (table in §2), with the plain template as the fallback when it is `null`.
 
 Drawing an outfit:
 

@@ -1,5 +1,5 @@
 import { icon } from './icons.js';
-import { loadPaint, paint } from './paint.js';
+import { loadPaint, paint, aiBadge as paintBadge, aiPaintedClass } from './paint.js';
 
 const app = document.querySelector('#app');
 const toast = document.querySelector('#toast');
@@ -38,10 +38,12 @@ let playerId = store.get('moonlit:playerId') || null;
 let playerAccount = null;
 let creditMeter = null;
 let lastBossPhase = null;
-let completedChapters = (() => {
-  const saved = store.json('moonlit:chapters', [0]);
-  return Array.isArray(saved) ? saved.filter(Number.isInteger) : [0];
+// 调试入口只在 ?dev=1 时出现（B6：地图「解锁下一章（测试）」）
+const devMode = (() => {
+  try { return new URLSearchParams(window.location.search).get('dev') === '1'; } catch { return false; }
 })();
+// 玩出来的钻石（契约 R-1）：/api/rewards/status 的最近一次结果；没有账户时为 null
+let rewardStatus = null;
 // 后台口令只留在本页内存里（不写 localStorage、不进 URL），随请求头 x-admin-key 发送
 let adminKey = null;
 let dashboardData = null;
@@ -54,21 +56,30 @@ function demoToolsEnabled() {
   return meta?.demoTools !== false;
 }
 
-/* ═══ 大地图城镇数据（坐标为百分比，与 /assets/map/world-map.svg 的铁路站点一致） ═══ */
-// 银轨站与标题页「银轨号外传」进入同一个外传会话，所以从一开始就开放（unlockChapter:0）
+/* ═══ 大地图城镇数据（坐标为百分比，与 /assets/map/world-map.svg 的铁路站点一致） ═══
+   B6：这张地图属于 IF 外传「银轨号」。
+   - 银轨站（entry:'gaiden'）进入外传，与标题页的外传卡片是同一个外传会话，所以从一开始就开放（unlockChapter:0）；
+   - 赫麦村（entry:'mainline'）是通往主线「亚克的旅程」（正史）的入口，不属于外传进度；
+   - 其余城镇是外传后续章节的舞台，还没有内容：一律显示「敬请期待」。unlockChapter 是外传章节号，
+     「是否已抵达」由外传进度推导（gaidenChaptersCleared），不再由调试按钮写入。描述是外传（IF）的设定，不是正史。 */
 const MAP_TOWNS = [
-  { id:'start',    name:'起点村',       icon:'village',    x:12, y:72, unlockChapter:0,  desc:'旅程的起点，宁静的边境小村', color:'#8cf0c9' },
-  { id:'station',  name:'银轨站',       icon:'station',    x:25, y:58, unlockChapter:0,  desc:'月蚀列车停靠站，通往各地的枢纽', color:'#6edcff' },
-  { id:'mooncity', name:'月蚀城',       icon:'moon-city',  x:40, y:42, unlockChapter:3,  desc:'观测者的圣城，塞雷娜的故乡', color:'#b996ff' },
-  { id:'frosttown',name:'霜华镇',       icon:'frost',      x:55, y:25, unlockChapter:5,  desc:'永冬之地，芙蕾娅守护的边镇', color:'#8fd4f5' },
-  { id:'valhalla', name:'瓦尔哈拉要塞', icon:'fortress',   x:70, y:38, unlockChapter:7,  desc:'瓦尔哈拉家族的钢铁旧要塞，莉莉丝与艾拉的家', color:'#c084fc' },
-  { id:'startower',name:'星咏塔',       icon:'star-tower', x:62, y:58, unlockChapter:9,  desc:'圣教的观星高塔，伊芙琳在此祈祷守望', color:'#ffd98c' },
-  { id:'nodgate',  name:'诺德之门',     icon:'gate',       x:80, y:50, unlockChapter:11, desc:'通往龙脊古国的古老石门，奥菲利亚的故乡', color:'#f472b6' },
-  { id:'terminal', name:'终点站',       icon:'terminal',   x:90, y:68, unlockChapter:13, desc:'一切结束与开始的地方', color:'#ff8fb8' },
+  { id:'hemai',    name:'赫麦村 · 亚克的故乡（主线）', label:'赫麦村 · 亚克的故乡', sub:'主线', icon:'village', x:12, y:72, unlockChapter:0, entry:'mainline', desc:'晨祷平原上的麦田小村，亚克长大的地方。主线「亚克的旅程」（正史）从这里开始；它不属于银轨号外传，两边的进度互不影响。', color:'#ffd27d' },
+  { id:'station',  name:'银轨站',       icon:'station',    x:25, y:58, unlockChapter:0, entry:'gaiden', desc:'IF 外传「银轨号」的起点：月蚀列车在此停靠。外传序章从这里开始。', color:'#6edcff' },
+  { id:'mooncity', name:'月蚀城',       icon:'moon-city',  x:40, y:42, unlockChapter:3,  desc:'外传设定：观测者的圣城，外传中塞雷娜的故乡。', color:'#b996ff' },
+  { id:'frosttown',name:'霜华镇',       icon:'frost',      x:55, y:25, unlockChapter:5,  desc:'外传设定：永冬之地，芙蕾娅守护的边镇。', color:'#8fd4f5' },
+  { id:'valhalla', name:'瓦尔哈拉要塞', icon:'fortress',   x:70, y:38, unlockChapter:7,  desc:'外传设定：瓦尔哈拉家族的钢铁旧要塞。', color:'#c084fc' },
+  { id:'startower',name:'星咏塔',       icon:'star-tower', x:62, y:58, unlockChapter:9,  desc:'外传设定：圣教的观星高塔。', color:'#ffd98c' },
+  { id:'nodgate',  name:'诺德之门',     icon:'gate',       x:80, y:50, unlockChapter:11, desc:'外传设定：通往龙脊古国的古老石门。', color:'#f472b6' },
+  { id:'terminal', name:'终点站',       icon:'terminal',   x:90, y:68, unlockChapter:13, desc:'外传设定：银轨的尽头，一切结束与开始的地方。', color:'#ff8fb8' },
 ];
-// 玩家标记停在城镇徽章的右上方，避免盖住徽章
+// 目前能玩的外传章节数（银轨号 · 序章）；通关后记在本机，存档失效也不会让地图倒退
+const GAIDEN_PLAYABLE_CHAPTERS = 1;
+const GAIDEN_CLEARED_KEY = 'moonlit:gaiden:cleared';
+const DEV_GAIDEN_KEY = 'moonlit:dev:gaidenChapters';
+// 玩家标记停在城镇徽章的右上方，避免盖住徽章；默认停在银轨站（外传起点）
 const MARKER_OFFSET = { x: 2.4, y: -4.5 };
-let playerPos = { x: MAP_TOWNS[0].x + MARKER_OFFSET.x, y: MAP_TOWNS[0].y + MARKER_OFFSET.y };
+const START_TOWN = MAP_TOWNS.find((town) => town.id === 'station');
+let playerPos = { x: START_TOWN.x + MARKER_OFFSET.x, y: START_TOWN.y + MARKER_OFFSET.y };
 
 /* ═══ 美术资源路径（原创矢量美术，见 docs/ART-DIRECTION.md） ═══ */
 const ART = {
@@ -81,6 +92,24 @@ const ART = {
   map: '/assets/map/world-map.svg',
   fallbackPortrait: '/assets/portraits/lia.svg'
 };
+
+// 主线章节目录（public/story/chapters/index.json）：章节页、召唤页（女主入队章节）、钻石页共用，只取一次
+let mainlineIndexPromise = null;
+function loadMainlineIndex() {
+  mainlineIndexPromise ||= fetch('/story/chapters/index.json', { headers: { accept: 'application/json' } })
+    .then((res) => (res.ok ? res.json() : []))
+    .then((list) => (Array.isArray(list) ? list.filter((ch) => /^ch\d{3}$/.test(ch?.id || '')) : []))
+    .catch(() => { mainlineIndexPromise = null; return []; });
+  return mainlineIndexPromise;
+}
+
+// ch005 -> 「第五章」（取章节标题「第五章｜大车之夜」的前半；目录里还没有的章节写成「第 5 章」）
+function mainlineChapterLabel(chapterId, index = []) {
+  const entry = index.find((ch) => ch.id === chapterId);
+  if (entry) return String(entry.title || chapterId).split('｜')[0];
+  const number = Number(String(chapterId).replace(/^ch/, ''));
+  return Number.isFinite(number) ? (number === 0 ? '序章' : `第 ${number} 章`) : chapterId;
+}
 
 // 与 game/engine.mjs finishBattleIfNeeded 相同的阈值：HP ≤ 100 进入第二阶段（battle_p2），HP ≤ 50 进入第三阶段（battle_p3）
 const BOSS_PHASES = [
@@ -128,6 +157,18 @@ document.addEventListener('error', (event) => {
 /* 图片懒加载：原生 loading="lazy" 在 Chromium 里会提前 1250–2500px 开始加载，服饰池 / 换衣间首屏就会拉满
    48 张服装立绘（约 3MB SVG）。这里改用 IntersectionObserver：<img data-lazy-src> 先放 1×1 透明占位，
    进入视口 300px 范围内才换成真实地址。新插入的节点由 MutationObserver 自动登记，渲染函数无需手动调用。 */
+/* 签到按钮与导航栏钻石徽章会被局部重绘（refreshRewardWidgets），所以用事件委托，不逐个绑定 */
+document.addEventListener('click', (event) => {
+  const target = event.target instanceof Element ? event.target : null;
+  if (target?.closest('[data-daily-claim]')) {
+    claimDailyReward();
+  } else if (target?.closest('[data-goto="shop"]')) {
+    screen = 'shop';
+    beep('click');
+    render();
+  }
+});
+
 const LAZY_PLACEHOLDER = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 const lazyObserver = 'IntersectionObserver' in window
   ? new IntersectionObserver((entries) => {
@@ -265,13 +306,14 @@ function starsHtml(count, max = count) {
 }
 
 // 头像徽章：832×1216 胸像立绘裁出脸部（立绘/服装立绘同构图，眼线约 y≈440）
+// B17：paint() 换成厚涂位图（AI 生成）时，容器带 .ai-painted，里面放统一的「AI 生成」角标（见 paint.js）
 function faceThumb(src, { cls = '', alt = '', fallback = ART.fallbackPortrait, lazy = false } = {}) {
-  return `<span class="face-crop ${cls}"><img ${imgSrcAttrs(paint(src), lazy)} alt="${escapeHtml(alt)}" data-fallback="${escapeHtml(fallback)}"></span>`;
+  return `<span class="face-crop ${cls} ${aiPaintedClass(src)}"><img ${imgSrcAttrs(paint(src), lazy)} alt="${escapeHtml(alt)}" data-fallback="${escapeHtml(fallback)}">${paintBadge(src)}</span>`;
 }
 
 // 场景背景：铺满舞台、压暗，不参与交互
 function stageBackdrop(src, cls = '') {
-  return `<div class="stage-backdrop ${cls}" aria-hidden="true"><img src="${escapeHtml(paint(src))}" alt="" data-fallback-hide></div>`;
+  return `<div class="stage-backdrop ${cls}" aria-hidden="true"><img src="${escapeHtml(paint(src))}" alt="" data-fallback-hide></div>${paintBadge(src)}`;
 }
 
 function bossPhase(enemy = state?.enemy) {
@@ -304,23 +346,23 @@ function gridColumnsFor(count, candidates = [4, 3, 5]) {
   return candidates.find((cols) => count <= cols || count % cols !== 1) || candidates[0];
 }
 
+/* 标题页（B7 / B20 / B12）：两张带说明的入口卡片——「主线：亚克的旅程」（正史，独立播放页 story.html）与
+   「外传：银轨号」（IF 外传，名字输入框只属于外传）；下面是「实验模式：卡牌对战」入口与每日签到。
+   背景是矢量拼成的 /assets/title-bg.svg（不再用 AI 主视觉照片）；右侧三张厚涂立绘是标题页唯一的 AI 位图（B9）。 */
 function titleScreen() {
   const hasSave = Boolean(state);
   const currentScene = state ? sceneName(state.scene) : '';
   // 标题页英雄卡：桌面在首屏，≤1120px 时排到文案下方，那时才懒加载
   const heroBelowFold = window.matchMedia?.('(max-width: 1120px)').matches;
   const heroImg = (src, alt) => `<img src="${src}" alt="${alt}" width="832" height="1216" decoding="async"${heroBelowFold ? ' loading="lazy"' : ''}>`;
-  // 主按钮两列：主线 + 外传（有存档时外传位置换成「继续外传」，新开外传移到下面的网格）
-  const primaryActions = [
-    `<a class="button primary large story-main-cta" href="/story.html">${icon('moon', { size: 18 })}主线 · 亚克篇</a>`,
-    hasSave
-      ? `<button id="continueGame" class="button secondary large">${icon('station', { size: 18 })}继续外传 · ${escapeHtml(currentScene)}</button>`
-      : `<button id="newGame" class="button secondary large">${icon('station', { size: 18 })}银轨号外传</button>`
-  ];
+  // 外传卡片的按钮：有存档时「继续外传」为主、「新开外传」为次
+  const sideActions = hasSave
+    ? `<button id="continueGame" class="button primary">${icon('station', { size: 17 })}继续外传 · ${escapeHtml(currentScene)}</button>
+       <button id="newGame" class="button ghost">${icon('refresh', { size: 16 })}新开外传</button>`
+    : `<button id="newGame" class="button primary">${icon('station', { size: 17 })}进入银轨号外传</button>`;
   const secondaryActions = [
-    hasSave ? `<button id="newGame" class="button ghost">${icon('refresh', { size: 16 })}新开外传</button>` : '',
     externalCta(meta?.marketing?.wishlistUrl, '加入 Steam 愿望单', 'ghost'),
-    `<button id="titleHelp" class="button ghost">${icon('help', { size: 16 })}玩法说明</button>`,
+    `<button id="titleHelp" class="button ghost">${icon('help', { size: 16 })}外传玩法</button>`,
     `<button id="galleryButton" class="button ghost">${icon('collection', { size: 16 })}CG图库</button>`,
     ...visibleNavItems().filter((item) => item.id !== 'title').map((item) => `<button class="button ghost" data-nav="${item.id}">${icon(item.icon, { size: 16 })}${item.label}</button>`)
   ].filter(Boolean);
@@ -328,29 +370,77 @@ function titleScreen() {
     <main class="title-screen">
       <div class="title-layout">
         <section class="title-copy">
-          <div class="eyebrow">AI-NATIVE JRPG · WEB VERTICAL SLICE</div>
+          <div class="eyebrow">AI-NATIVE JRPG · 月蚀契约</div>
           <img class="title-logo" src="/assets/logo.svg" alt="月蚀契约：她们会记得你">
-          <p class="title-tagline">你可以对队友说任何话，但<strong>每一句承诺都会被记住</strong>。三名各怀秘密的少女、一次月蚀列车危机，以及一个不在选项里的结局。</p>
-          <input id="playerName" class="name-field" maxlength="16" autocomplete="nickname" value="${escapeHtml(state?.playerName || store.get('moonlit:name') || '队长')}" aria-label="玩家称呼" placeholder="输入队长称呼">
-          <div class="title-actions">${primaryActions.join('')}</div>
-          <nav class="title-grid" aria-label="更多入口" style="--cols:${gridColumnsFor(secondaryActions.length)}">${secondaryActions.join('')}</nav>
-          <div class="title-notes">
-            ${aiBadge()}
-            <span class="pill">约 15–25 分钟</span>
-            <span class="pill">3 名可交流队友</span>
-            <span class="pill">确定性回合战斗</span>
+          <p class="title-tagline">用自己的话回应世界，<strong>每一句承诺都会被记住</strong>。</p>
+          <div class="mode-cards">
+            <article class="mode-card mode-main" aria-labelledby="modeMainTitle">
+              <div class="mode-kicker">${icon('moon', { size: 14 })}正史 · 主线</div>
+              <h2 id="modeMainTitle">主线：亚克的旅程</h2>
+              <p>黑翼焚麦之夜之后，牧羊青年亚克立下屠龙之誓。没有固定选项，用自己的话替他回应世界。</p>
+              <div class="mode-mainline" id="titleMainline" aria-live="polite"></div>
+              <div class="mode-meta"><span class="pill">自由输入 · 视觉小说</span><span class="pill">每章首通得钻石</span></div>
+              <a class="button primary story-main-cta mode-cta" href="/story.html">${icon('play', { size: 15 })}开始 / 继续主线</a>
+            </article>
+            <article class="mode-card mode-side" aria-labelledby="modeSideTitle">
+              <div class="mode-kicker is-if">${icon('station', { size: 14 })}IF 外传</div>
+              <h2 id="modeSideTitle">外传：银轨号</h2>
+              <p>平行世界的一夜：月蚀列车上，三名队友与吞噬记忆的怪物。人物身份与主线不同，不影响正史。</p>
+              <label class="name-label" for="playerName">你在外传里的名字（队友称你「队长」）</label>
+              <input id="playerName" class="name-field" maxlength="16" autocomplete="nickname" value="${escapeHtml(state?.playerName || store.get('moonlit:name') || '队长')}" placeholder="例如：队长">
+              <div class="mode-actions">${sideActions}</div>
+              <div class="mode-meta">${aiBadge()}<span class="pill">约 15–25 分钟</span><span class="pill">3 名可交流队友</span><span class="pill">确定性回合战斗</span></div>
+            </article>
           </div>
+          <a class="mode-lab" href="/cards.html">
+            <span class="mode-lab-icon">${icon('deck', { size: 22 })}</span>
+            <span class="mode-lab-text"><span class="mode-kicker is-lab">实验模式</span><strong>卡牌对战</strong><small>规则仍在调整的试验玩法；胜利可得钻石（每天有上限）。</small></span>
+            ${icon('chevron-right', { size: 18, cls: 'mode-lab-go' })}
+          </a>
+          <div class="title-daily" id="titleDaily">${dailyStripHtml()}</div>
+          <nav class="title-grid" aria-label="更多入口" style="--cols:${gridColumnsFor(secondaryActions.length)}">${secondaryActions.join('')}</nav>
           <p class="title-studio">阳之亮面出品</p>
-          <p class="title-footnote">本切片三位主角的厚涂立绘与主视觉由 AI 生成（画面含「图片由AI生成」标识）；其余立绘、服装、CG、地图、怪物与图标为原创矢量美术。世界观、人设与游戏规则为原创内容。AI 只生成受约束的角色台词，不直接修改数值、战斗结果或世界事实。</p>
+          <p class="title-footnote">「银轨号」是 IF 外传，人物身份与主线正史不同；正史以主线为准。标题页的三张厚涂角色卡由 AI 生成（画面含「图片由AI生成」标识）；标题背景与游戏内的立绘、服装、CG、地图、怪物和图标都是原创矢量美术，游戏内若出现 AI 生成的厚涂图，会在角落标注「AI 生成」。AI 只生成受约束的角色台词，不直接修改数值、战斗结果或世界事实。</p>
         </section>
         <section class="title-art" aria-label="三名主要角色">
           <div class="hero-moon"></div>
-          <div class="hero-card">${heroImg('/assets/lia.jpg', '赤誓骑士莉亚')}</div>
-          <div class="hero-card">${heroImg('/assets/mia.jpg', '猫耳机关师米娅')}</div>
-          <div class="hero-card">${heroImg('/assets/serena.jpg', '月蚀观测者塞雷娜')}</div>
+          <div class="hero-card">${heroImg('/assets/lia.jpg', '莉亚·赫斯特')}</div>
+          <div class="hero-card">${heroImg('/assets/mia.jpg', '米娅·玲')}</div>
+          <div class="hero-card">${heroImg('/assets/serena.jpg', '塞雷娜·诺克斯')}</div>
         </section>
       </div>
     </main>`;
+}
+
+// 主线卡片里的进度：每章一格，写出下一章（章节目录 + 主线播放器记在本机的通关记录）
+async function loadTitleMainline() {
+  const index = await loadMainlineIndex();
+  const box = document.querySelector('#titleMainline');
+  if (!box || !index.length) return;
+  const done = store.json('moonlit:story:progress', {}) || {};
+  const doneCount = index.filter((ch) => done[ch.id]).length;
+  const next = index.find((ch) => !done[ch.id]);
+  box.innerHTML = `
+    <div class="mode-progress" role="img" aria-label="主线进度：已完成 ${doneCount} / ${index.length} 章">${index.map((ch) => `<span class="${done[ch.id] ? 'done' : ''}"></span>`).join('')}</div>
+    <p class="mode-next">${next ? `${doneCount ? '下一章' : '从这里开始'}：${escapeHtml(next.title)}` : '已上线的章节全部完成，新章节制作中'}<span> · 已上线 ${index.length} 章</span></p>`;
+}
+
+/* ═══ 每日签到（契约 R-1）═══
+   标题页一条、钻石页一张卡。没有账户时不主动建号：点「签到」时才建（与召唤/换衣同一个本机账户）。 */
+function dailyStripHtml() {
+  const s = rewardStatus;
+  const ready = s ? s.dailyAvailable : true;
+  const amount = s?.dailyAmount;
+  const streak = s?.streak || 0;
+  const text = !s
+    ? '每日签到领钻石，连续签到每天多一点。'
+    : ready
+      ? `今日可领 <b>+${amount}</b> 钻石${streak ? ` · 已连续 ${streak} 天` : ''}`
+      : `今日已签到 · 连续 ${streak} 天 · 明天 <b>+${amount}</b>`;
+  return `
+    <span class="daily-icon">${icon('gift', { size: 20 })}</span>
+    <span class="daily-text"><strong>每日签到</strong><span>${text}</span></span>
+    <button class="button ${ready ? 'primary' : 'ghost'} small daily-claim" type="button" data-daily-claim ${ready ? '' : 'disabled'}>${ready ? '签到' : '已签到'}</button>`;
 }
 
 function sceneName(scene) {
@@ -369,7 +459,7 @@ function renderHeader() {
     <header class="game-header">
       <div class="brand-mini">
         <span class="brand-mark" aria-hidden="true"></span>
-        <div><strong>月蚀契约</strong><span>CHAPTER 01 · SILVER RAIL</span></div>
+        <div><strong>月蚀契约</strong><span>IF 外传 · 银轨号</span></div>
       </div>
       <div class="objective"><strong>当前目标</strong>${escapeHtml(state.objective)}</div>
       <div class="header-actions">
@@ -439,22 +529,49 @@ function eventLogHtml(limit = 12) {
       const deltas = deltaBond || deltaTrust
         ? `<span class="delta ${(deltaBond + deltaTrust) >= 0 ? 'positive' : 'negative'}">${deltaBond ? `羁绊${deltaBond > 0 ? '+' : ''}${deltaBond}` : ''}${deltaBond && deltaTrust ? ' · ' : ''}${deltaTrust ? `信任${deltaTrust > 0 ? '+' : ''}${deltaTrust}` : ''}</span>`
         : '';
+      // B4：引擎去掉了重复的正分时（meta.unscored），提示玩家原因
+      const unscored = item.meta?.unscored === 'repeat' ? '说过的话不再加分'
+        : item.meta?.unscored === 'promise' ? '承诺每人只计一次' : '';
+      const unscoredTag = unscored ? `<span class="delta muted unscored">${unscored}</span>` : '';
       return `<div class="event ${escapeHtml(item.type)}" style="--event-accent:${char?.accent || '#b996ff'}">
         <div class="event-speaker">${escapeHtml(speaker)}</div>
-        <div class="event-text">${escapeHtml(item.text)}${deltas}</div>
+        <div class="event-text">${escapeHtml(item.text)}${deltas}${unscoredTag}</div>
       </div>`;
     }).join('')}
   </div>`;
+}
+
+// 各场景的交流上限以引擎的 state.chatLimits 为准（旧存档没有这个字段时用下面的默认值）。
+// B4：战后交流最多 3 次，按整局累计（state.aftermathChatTurns，重置战斗再赢也不清零）；
+// 同一句话对同一角色只计一次分，承诺每人只计一次（引擎计分，前端只显示规则）。
+const DEFAULT_CHAT_LIMITS = { corridor: 4, aftermath: 3 };
+
+function chatLimitFor(scene) {
+  const limit = Number(state.chatLimits?.[scene]);
+  if (Number.isInteger(limit) && limit >= 0) return limit;
+  return scene === 'camp' ? state.maxChatTurns : DEFAULT_CHAT_LIMITS[scene] ?? state.maxChatTurns;
+}
+
+function chatTurnsUsed(scene) {
+  if (scene === 'aftermath' && Number.isInteger(state.aftermathChatTurns)) return state.aftermathChatTurns;
+  return state.chatTurns;
 }
 
 function chatPanelHtml({ actionButton = '' } = {}) {
   const character = characterMeta(selectedCharacterId);
   const isCamp = state.scene === 'camp';
   const isCorridor = state.scene === 'corridor';
-  const maxTurns = isCorridor ? 4 : state.maxChatTurns;
-  const canChat = (!isCamp && !isCorridor) || state.chatTurns < maxTurns;
-  const remaining = Math.max(0, maxTurns - state.chatTurns);
-  const sceneLabel = isCorridor ? '回廊交流剩余' : isCamp ? '战前交流剩余' : '战后交流';
+  const isAftermath = state.scene === 'aftermath';
+  const limited = isCamp || isCorridor || isAftermath;
+  const maxTurns = chatLimitFor(state.scene);
+  const used = chatTurnsUsed(state.scene);
+  const canChat = !limited || used < maxTurns;
+  const remaining = Math.max(0, maxTurns - used);
+  const sceneLabel = isCorridor ? '回廊交流剩余' : isCamp ? '战前交流剩余' : '战后交流剩余';
+  const placeholder = canChat
+    ? `对${character.shortName}说点什么……`
+    : isAftermath ? '战后交流已用完，请做出最终抉择。' : '交流次数已用完。';
+  const ruleNote = isAftermath ? '同一句话只计一次 · 承诺每人只计一次' : 'AI 只能提议，规则引擎才可改状态';
   return `
     <div class="dialogue-inner">
       ${eventLogHtml(14)}
@@ -464,23 +581,26 @@ function chatPanelHtml({ actionButton = '' } = {}) {
             ${character.quickPrompts.map((prompt) => `<button class="chip" data-quick="${escapeHtml(prompt)}" ${canChat ? '' : 'disabled'}>${escapeHtml(prompt)}</button>`).join('')}
           </div>
           <form id="chatForm" class="chat-form">
-            <input id="chatInput" class="chat-input" maxlength="500" autocomplete="off" aria-label="对${escapeHtml(character.shortName)}说的话" placeholder="对${escapeHtml(character.shortName)}说点什么……" value="${escapeHtml(chatDraft)}" ${canChat ? '' : 'disabled'}>
+            <input id="chatInput" class="chat-input" maxlength="500" autocomplete="off" aria-label="对${escapeHtml(character.shortName)}说的话" placeholder="${escapeHtml(placeholder)}" value="${escapeHtml(chatDraft)}" ${canChat ? '' : 'disabled'}>
             <button class="button primary" type="submit" ${canChat ? '' : 'disabled'}>${busy ? '思考中…' : '发送'}</button>
           </form>
-          <div class="chat-meta"><span>${(isCamp || isCorridor) ? `${sceneLabel} ${remaining} 次` : '战后交流不消耗次数'}</span><span>AI 只能提议，规则引擎才可改状态</span></div>`}
+          <div class="chat-meta"><span>${limited ? `${sceneLabel} ${remaining} 次` : ''}</span><span>${ruleNote}</span></div>`}
       </div>
     </div>`;
 }
 
+// B9：外传画面里的女主一律用矢量立绘（/assets/portraits/*.svg），厚涂位图只经 paint 清单替换，并带「AI 生成」角标
 function characterStageHtml() {
   const character = characterMeta(selectedCharacterId);
   const relationship = characterState(selectedCharacterId);
   const isCorridor = state.scene === 'corridor';
+  const portrait = ART.portrait(character.id);
   return `
     <div class="character-stage ${isCorridor ? 'is-corridor' : 'is-camp'}" style="--char-accent:${character.accent}">
       ${stageBackdrop(isCorridor ? ART.cg('corridor-frost') : ART.scene('camp-bg'), isCorridor ? 'backdrop-corridor' : 'backdrop-camp')}
       <div class="character-backdrop"></div>
-      <img class="character-portrait" src="${character.portrait}" alt="${escapeHtml(character.name)}">
+      <img class="character-portrait" src="${escapeHtml(paint(portrait))}" alt="${escapeHtml(character.name)}" data-fallback="${escapeHtml(portrait)}">
+      ${paintBadge(portrait)}
       <div class="character-label">
         <h2>${escapeHtml(character.name)}</h2>
         <p>${escapeHtml(character.title)} · ${escapeHtml(character.role)} · 羁绊技能「${escapeHtml(battleSkillOf(character.id))}」</p>
@@ -507,11 +627,14 @@ function strategyPanelHtml({ locked = false, actionButton = null } = {}) {
       }).join('')}
     </div>
     <div class="stat-card">
-      <div class="spread"><span class="muted">${locked ? '回廊交流' : '交流次数'}</span><strong>${state.chatTurns}/${locked ? 4 : state.maxChatTurns}</strong></div>
+      <div class="spread"><span class="muted">${locked ? '回廊交流' : '交流次数'}</span><strong>${state.chatTurns}/${chatLimitFor(locked ? 'corridor' : 'camp')}</strong></div>
       <div class="spread" style="margin-top:8px"><span class="muted">承诺记录</span><strong>${state.flags.madePromise ? '已建立' : '未建立'}</strong></div>
     </div>
     ${actionButton ?? `<button id="beginCorridor" class="button primary full" style="margin-top:12px" ${state.chosenStrategyId && !busy ? '' : 'disabled'}>部署战术，穿过回廊</button>`}`;
 }
+
+// 序章画面的三名队友（矢量立绘，B9）
+const INTRO_TRIO = [['lia', '莉亚'], ['mia', '米娅'], ['serena', '塞雷娜']];
 
 function introLayout() {
   return `
@@ -522,10 +645,9 @@ function introLayout() {
           ${stageBackdrop(ART.cg('intro-eye'), 'backdrop-intro')}
           <div class="intro-panel">
             <div class="eyebrow">PROLOGUE · THE EYE OUTSIDE THE WINDOW</div>
-            <div class="intro-orbit">
-              <img class="intro-avatar" src="/assets/lia.jpg" alt="莉亚" width="832" height="1216" decoding="async">
-              <img class="intro-avatar" src="/assets/mia.jpg" alt="米娅" width="832" height="1216" decoding="async">
-              <img class="intro-avatar" src="/assets/serena.jpg" alt="塞雷娜" width="832" height="1216" decoding="async">
+            <div class="intro-orbit ${aiPaintedClass(...INTRO_TRIO.map(([id]) => ART.portrait(id)))}">
+              ${INTRO_TRIO.map(([id, name]) => `<img class="intro-avatar" src="${escapeHtml(paint(ART.portrait(id)))}" alt="${name}" width="832" height="1216" decoding="async" data-fallback="${ART.portrait(id)}">`).join('')}
+              ${paintBadge(...INTRO_TRIO.map(([id]) => ART.portrait(id)))}
             </div>
             <h1>醒来时，她们都记得你。</h1>
             <p>只有你不记得她们。</p>
@@ -555,7 +677,7 @@ function campLayout() {
 }
 
 function corridorLayout() {
-  const remaining = Math.max(0, 4 - state.chatTurns);
+  const remaining = Math.max(0, chatLimitFor('corridor') - state.chatTurns);
   return `
     <div class="game-content">
       <aside class="left-panel">${rosterHtml()}<div style="height:18px"></div>
@@ -591,7 +713,7 @@ function battleLayout() {
         <div class="battle-stage boss-phase-${phase.phase}">
           ${stageBackdrop(ART.scene('battle-bg'), 'backdrop-battle')}
           <div class="battle-top"><div class="enemy-nameplate"><div class="eyebrow">MEMORY DEVOURER · TURN ${state.turn}</div><h2>${escapeHtml(state.enemy.name)} <span class="phase-pill">PHASE ${phase.phase} · ${escapeHtml(phase.label)}</span></h2><div class="hp-bar"><div class="hp-fill" style="--value:${enemyHp}%"></div></div><div class="muted" style="margin-top:7px">${state.enemy.hp}/${state.enemy.maxHp} · 压制 ${state.enemy.sealed}</div></div></div>
-          <div class="enemy-zone ${phaseChanged ? 'phase-enter' : ''}"><img class="enemy-art" src="${paint(ART.boss(phase.phase))}" alt="${escapeHtml(state.enemy.name)} · ${escapeHtml(phase.label)}" data-fallback="${ART.boss(phase.phase)}"></div>
+          <div class="enemy-zone ${phaseChanged ? 'phase-enter' : ''}"><img class="enemy-art" src="${paint(ART.boss(phase.phase))}" alt="${escapeHtml(state.enemy.name)} · ${escapeHtml(phase.label)}" data-fallback="${ART.boss(phase.phase)}">${paintBadge(ART.boss(phase.phase))}</div>
           <div class="battle-bottom"><span>主导战术：${escapeHtml(selectedStrategy.name)}</span><span>·</span><span>羁绊角色：${escapeHtml(leader.shortName)}</span></div>
         </div>
         ${busy ? '<div class="loading-overlay"><div class="loader"></div></div>' : ''}
@@ -654,14 +776,15 @@ function endingScreen() {
           <div class="ending-visual">
             <img class="ending-bg" src="${paint(ART.scene('ending-bg'))}" alt="" aria-hidden="true" data-fallback-hide>
             <img class="ending-cg" src="${paint(ART.cg(endingCg))}" alt="${escapeHtml(ending.title)}" data-fallback-hide>
+            ${paintBadge(ART.scene('ending-bg'), ART.cg(endingCg))}
             <div class="ending-rank-wrap">
               <div class="ending-rank">${escapeHtml(ending.rank)}</div>
               ${hiddenRoute ? `<img class="ending-crest" src="${ART.ui('eclipse-crest')}" alt="隐藏路线徽记" title="隐藏路线达成">` : ''}
             </div>
-            <figure class="ending-partner"><img src="${partner.portrait}" alt="${escapeHtml(partner.name)}" data-fallback="${ART.portrait(partner.id)}"></figure>
+            <figure class="ending-partner"><img src="${escapeHtml(paint(ART.portrait(partner.id)))}" alt="${escapeHtml(partner.name)}" data-fallback="${ART.portrait(partner.id)}">${paintBadge(ART.portrait(partner.id))}</figure>
           </div>
           <div class="ending-body">
-            <div class="eyebrow">PROLOGUE COMPLETE · ${escapeHtml(partner.title)}</div>
+            <div class="eyebrow">IF 外传 · 银轨号 · 序章完 · ${escapeHtml(partner.title)}</div>
             <h1>${escapeHtml(ending.title)}</h1>
             <p>${escapeHtml(ending.text)}</p>
             <p><strong>${escapeHtml(ending.epilogue)}</strong></p>
@@ -696,6 +819,8 @@ function render() {
   // 顶部导航的 Credit 计量：creditMeter 只在召唤页拉取过，其余页面首次进入会显示 0；已有账户时顺手刷新
   // 先确认账户仍在（服务器重启且未持久化时会重建并提示），再读余额，避免拿失效的 id 去查
   if (playerId && !creditMeter && document.querySelector('.nav-credit')) ensureAccount().then(refreshCredit).catch(() => {});
+  // 钻石余额与签到状态（导航栏、标题页、钻石页共用）：已有账户时读一次，之后由签到/召唤等操作刷新
+  if (playerId && !rewardStatus && document.querySelector('.nav-credit, #titleDaily, #rewardsPanel')) loadRewardStatus().catch(() => {});
   const viewKey = `${screen}:${screen === 'title' || !state ? '' : state.scene}`;
   if (viewKey !== lastViewKey) {
     lastViewKey = viewKey;
@@ -718,8 +843,6 @@ function restoreChatFocus(wantFocus) {
 }
 
 function renderView() {
-  // 演示工具关闭（如 NODE_ENV=production）时没有商店页
-  if (screen === 'shop' && !demoToolsEnabled()) screen = 'title';
   if (screen === 'map') {
     app.innerHTML = mapPage();
     bindNavEvents();
@@ -730,7 +853,8 @@ function renderView() {
     app.innerHTML = shopPage();
     bindNavEvents();
     loadShop();
-    ensureAccount().then(refreshCredit).catch(() => {});
+    // 钻石页一进来就要显示签到与奖励进度：没有账户时在这里建号（与召唤/换衣相同）
+    ensureAccount().then(() => Promise.all([refreshCredit(), loadRewardStatus()])).catch(() => {});
     return;
   }
   if (screen === 'gacha') {
@@ -752,7 +876,6 @@ function renderView() {
     app.innerHTML = settingsPage();
     bindNavEvents();
     bindSettingsPageEvents();
-    loadSettings();
     return;
   }
   if (screen === 'dashboard') {
@@ -770,6 +893,7 @@ function renderView() {
   if (screen === 'title' || !state || state.scene !== 'battle') lastBossPhase = null;
   if (screen === 'title' || !state) {
     app.innerHTML = titleScreen();
+    loadTitleMainline();
   } else if (state.scene === 'ending') {
     app.innerHTML = endingScreen();
   } else {
@@ -807,6 +931,19 @@ function bindGachaEvents() {
       const result = document.querySelector('#gachaResult');
       if (result) { result.style.display = 'none'; result.innerHTML = ''; }
       loadGachaPool();
+    });
+  });
+  document.querySelectorAll('[data-currency]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      gachaCurrency = btn.dataset.currency === 'diamonds' ? 'diamonds' : 'credit';
+      store.set(GACHA_CURRENCY_KEY, gachaCurrency);
+      document.querySelectorAll('[data-currency]').forEach((b) => {
+        const on = b.dataset.currency === gachaCurrency;
+        b.classList.toggle('active', on);
+        b.setAttribute('aria-checked', String(on));
+      });
+      updateGachaButtons();
+      beep('click');
     });
   });
   document.querySelector('#gachaSingle')?.addEventListener('click', () => doGachaPull(1));
@@ -989,6 +1126,7 @@ async function runMutation(path, body, sound = 'click', after) {
   try {
     const payload = await apiPost(path, { sessionId: state.id, ...body });
     state = payload.state;
+    rememberGaidenProgress(state); // 地图的外传进度：到达结局就记下序章已通关（B6）
     selectedCharacterId = state.selectedCharacterId || selectedCharacterId;
     store.set('moonlit:session', state.id);
     after?.(payload);
@@ -1117,7 +1255,7 @@ function showCgUnlock(cg) {
   card.className = 'cg-unlock';
   card.title = '点击关闭';
   card.innerHTML = `
-    <span class="cg-unlock-thumb">${cg.file ? `<img src="${escapeHtml(paint(cg.file))}" alt="" data-fallback-icon="film">` : `<span class="img-placeholder">${icon('film', { size: 28 })}</span>`}</span>
+    <span class="cg-unlock-thumb ${cg.file ? aiPaintedClass(cg.file) : ''}">${cg.file ? `<img src="${escapeHtml(paint(cg.file))}" alt="" data-fallback-icon="film">${paintBadge(cg.file)}` : `<span class="img-placeholder">${icon('film', { size: 28 })}</span>`}</span>
     <span class="cg-unlock-text"><span class="eyebrow">${icon('sparkle', { size: 12 })} CG 解锁</span><strong>${escapeHtml(cg.title)}</strong><small>已收录至 CG 图库</small></span>`;
   let timer = null;
   const dismiss = () => {
@@ -1192,6 +1330,8 @@ soundToggle.addEventListener('click', () => {
 });
 
 /* ═══ 导航栏 ═══ */
+// 商店（钻石页）一直显示：作者核#12 对 B2/B3 的修改——保留钻石、商店与召唤的互动感；
+// 钻石页的「玩出来的钻石」在任何模式下都可用，演示充值区只在 demoTools 开启时出现（契约 K-1 / K-3）。
 const NAV_ITEMS = [
   { id: 'title', label: '首页', icon: 'home' },
   { id: 'map', label: '地图', icon: 'map' },
@@ -1202,9 +1342,8 @@ const NAV_ITEMS = [
   { id: 'settings', label: '设置', icon: 'settings' }
 ];
 
-// 演示工具关闭时不显示商店入口（契约 K-1 / K-3）
 function visibleNavItems() {
-  return NAV_ITEMS.filter((item) => item.id !== 'shop' || demoToolsEnabled());
+  return NAV_ITEMS;
 }
 
 function navBar() {
@@ -1215,7 +1354,7 @@ function navBar() {
       <div class="nav-links" style="--nav-count:${items.length}">
         ${items.map((item) => `<button class="nav-btn ${screen === item.id ? 'active' : ''}" data-nav="${item.id}" ${screen === item.id ? 'aria-current="page"' : ''}>${icon(item.icon, { size: 16 })}<span>${item.label}</span></button>`).join('')}
       </div>
-      <div class="nav-credit">${creditMeterHtml()}</div>
+      <div class="nav-credit"><span class="nav-credit-meter">${creditMeterHtml()}</span><span class="nav-diamond">${diamondChipHtml()}</span></div>
     </nav>`;
 }
 
@@ -1230,25 +1369,65 @@ function creditMeterHtml() {
   </div>`;
 }
 
-/* ═══ 大地图页面 ═══ */
+// 钻石徽章：余额 + 今日可签到的小红点；点开是钻石页（签到与奖励）
+function diamondBalance() {
+  const value = rewardStatus?.diamonds ?? playerAccount?.diamonds;
+  return Number.isFinite(value) ? value : null;
+}
+
+function diamondChipHtml() {
+  const balance = diamondBalance();
+  const dailyReady = rewardStatus ? rewardStatus.dailyAvailable : !playerId;
+  const label = `钻石 ${balance ?? '—'}${dailyReady ? '，今日可签到' : ''}`;
+  return `<button class="diamond-chip ${dailyReady ? 'has-daily' : ''}" type="button" data-goto="shop" title="钻石 · 每日签到与奖励" aria-label="${label}">
+    <span class="diamond-icon">${icon('diamond', { size: 16 })}</span><span class="diamond-value">${balance ?? '—'}</span>${dailyReady ? '<span class="daily-dot" aria-hidden="true"></span>' : ''}
+  </button>`;
+}
+
+/* ═══ 大地图页面（B6：IF 外传「银轨号」专用）═══ */
 const MAP_W = 1000;
 const MAP_H = 560;
+const GAIDEN_SCENES = ['intro', 'camp', 'corridor', 'battle', 'aftermath', 'ending'];
 
-function isTownUnlocked(town) {
-  return completedChapters.includes(town.unlockChapter);
+function gaidenClearedLocally() {
+  return store.get(GAIDEN_CLEARED_KEY) === '1';
+}
+
+function rememberGaidenProgress(snapshot = state) {
+  if (snapshot?.ending && !gaidenClearedLocally()) store.set(GAIDEN_CLEARED_KEY, '1');
+}
+
+// 只有 ?dev=1 才读调试进度；正常游玩时地图完全由外传进度推导
+function devGaidenChapters() {
+  if (!devMode) return 0;
+  const value = Number(store.get(DEV_GAIDEN_KEY, '0'));
+  return Number.isInteger(value) && value > 0 ? value : 0;
+}
+
+// 已通关的外传章节数：目前只有序章可玩（通关 = 本机记录过结局，或当前存档已到结局）
+function gaidenChaptersCleared() {
+  const real = gaidenClearedLocally() || Boolean(state?.ending) ? GAIDEN_PLAYABLE_CHAPTERS : 0;
+  return real + devGaidenChapters();
+}
+
+// 'mainline'：通往主线；'gaiden'：外传入口；'reached'：外传已推进到这里但还没有内容；'locked'：还没推进到
+function townStatus(town) {
+  if (town.entry) return town.entry;
+  return town.unlockChapter <= gaidenChaptersCleared() ? 'reached' : 'locked';
 }
 
 function townNodeSvg(town) {
-  const unlocked = isTownUnlocked(town);
-  const tx = town.x * MAP_W / 100;
-  const ty = town.y * MAP_H / 100;
-  return `<g class="town-node ${unlocked ? 'unlocked' : 'locked'}" data-town="${town.id}" transform="translate(${tx},${ty})" style="--town:${town.color}" role="button" tabindex="0" aria-label="${escapeHtml(town.name)}${unlocked ? '' : `（第${town.unlockChapter}章解锁）`}">
+  const status = townStatus(town);
+  const open = status === 'mainline' || status === 'gaiden';
+  const glyph = status === 'locked' ? 'lock' : town.icon;
+  const sub = town.sub || (open ? '' : '敬请期待');
+  return `<g class="town-node ${open ? 'unlocked' : 'locked'} town-${status}" data-town="${town.id}" transform="translate(${town.x * MAP_W / 100},${town.y * MAP_H / 100})" style="--town:${town.color}" role="button" tabindex="0" aria-label="${escapeHtml(town.name)}${open ? '' : '（敬请期待）'}">
     <circle class="town-halo" r="30"/>
     <circle class="town-ring" r="21"/>
     <circle class="town-core" r="16.5"/>
-    <g class="town-glyph" transform="translate(-11,-11)">${icon(unlocked ? town.icon : 'lock', { size: 22 })}</g>
-    <text class="town-label" text-anchor="middle" y="40">${escapeHtml(town.name)}</text>
-    ${unlocked ? '' : `<text class="town-sub" text-anchor="middle" y="54">第${town.unlockChapter}章解锁</text>`}
+    <g class="town-glyph" transform="translate(-11,-11)">${icon(glyph, { size: 22 })}</g>
+    <text class="town-label" text-anchor="middle" y="40">${escapeHtml(town.label || town.name)}</text>
+    ${sub ? `<text class="town-sub" text-anchor="middle" y="54">${escapeHtml(sub)}</text>` : ''}
   </g>`;
 }
 
@@ -1256,17 +1435,28 @@ function playerMarkerTransform() {
   return `transform:translate(${(playerPos.x * MAP_W / 100).toFixed(1)}px,${(playerPos.y * MAP_H / 100).toFixed(1)}px)`;
 }
 
+// 外传进度条：序章内按场景推进；通关后显示「后续章节敬请期待」
+function gaidenProgressInfo() {
+  const cleared = gaidenClearedLocally() || Boolean(state?.ending);
+  if (cleared && (!state || state.ending)) return { percent: 100, text: '银轨号 · 序章：已通关 · 后续章节敬请期待' };
+  if (state) {
+    const step = Math.max(0, GAIDEN_SCENES.indexOf(state.scene));
+    return { percent: Math.round(step / (GAIDEN_SCENES.length - 1) * 100), text: `银轨号 · 序章：进行中（${sceneName(state.scene)}）${cleared ? ' · 曾通关' : ''}` };
+  }
+  return { percent: 0, text: '银轨号 · 序章：未开始' };
+}
+
 function mapPage() {
-  const lastChapter = Math.max(...MAP_TOWNS.map((t) => t.unlockChapter)) + 1;
+  const progress = gaidenProgressInfo();
   return `${navBar()}
     <main class="page-content map-page">
       <div class="page-header">
-        <div class="eyebrow">WORLD MAP · 月蚀大陆</div>
-        <h1>自由探索</h1>
-        <p class="muted">点击城镇进入对应场景 · 完成章节解锁新城镇</p>
+        <div class="eyebrow">IF 外传 · 银轨号 · 路线图</div>
+        <h1>银轨号路线图</h1>
+        <p class="muted">这张地图属于 IF 外传「银轨号」：银轨站进入外传序章；赫麦村通往主线「亚克的旅程」（正史）；其余城镇是外传后续章节，敬请期待。</p>
       </div>
       <div class="map-container" id="mapContainer">
-        <svg id="worldMap" viewBox="0 0 ${MAP_W} ${MAP_H}" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="月蚀大陆地图">
+        <svg id="worldMap" viewBox="0 0 ${MAP_W} ${MAP_H}" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="银轨号外传路线图">
           <defs>
             <radialGradient id="markerGlow">
               <stop offset="0%" stop-color="#5ee4ff" stop-opacity=".55"/><stop offset="100%" stop-color="#5ee4ff" stop-opacity="0"/>
@@ -1291,13 +1481,13 @@ function mapPage() {
         <p id="infoDesc" class="muted"></p>
         <div class="map-info-actions" id="infoActions"></div>
       </div>
-      <!-- 章节进度 -->
+      <!-- 外传进度 -->
       <div class="map-progress">
-        <span class="muted">已完成章节: ${completedChapters.length}/${lastChapter}</span>
+        <span class="muted">外传进度 · ${escapeHtml(progress.text)}</span>
         <div class="progress-track" style="flex:1;margin:0 12px;height:6px">
-          <div class="progress-fill" style="width:${Math.round(completedChapters.length / lastChapter * 100)}%"></div>
+          <div class="progress-fill" style="width:${progress.percent}%"></div>
         </div>
-        <button class="button small" id="debugUnlockNext" type="button">${icon('unlock', { size: 16 })}解锁下一章（测试）</button>
+        ${devMode ? `<button class="button small" id="debugUnlockNext" type="button">${icon('unlock', { size: 16 })}解锁下一章（测试）</button>` : ''}
       </div>
     </main>`;
 }
@@ -1312,19 +1502,15 @@ function bindMapEvents() {
     movePlayer(x, y);
   });
 
-  // 点击城镇（已解锁：移动并打开信息面板；未解锁：提示）
+  // 点击城镇：移动过去并打开信息面板（没有内容的城镇面板里写「敬请期待」）
   document.querySelectorAll('.town-node').forEach((node) => {
     const activate = (e) => {
       e.stopPropagation();
       const town = MAP_TOWNS.find((t) => t.id === node.dataset.town);
       if (!town) return;
-      if (isTownUnlocked(town)) {
-        movePlayer(town.x + MARKER_OFFSET.x, town.y + MARKER_OFFSET.y);
-        showTownInfo(town);
-      } else {
-        showToast(`${town.name} 需要完成第 ${town.unlockChapter} 章解锁`, 'error');
-        beep('error');
-      }
+      if (townStatus(town) !== 'locked') movePlayer(town.x + MARKER_OFFSET.x, town.y + MARKER_OFFSET.y);
+      else beep('click');
+      showTownInfo(town);
     };
     node.addEventListener('click', activate);
     node.addEventListener('keydown', (e) => {
@@ -1351,31 +1537,31 @@ function movePlayer(x, y) {
 function showTownInfo(town) {
   const panel = document.getElementById('mapInfoPanel');
   if (!panel) return;
+  const status = townStatus(town);
   const iconEl = document.getElementById('infoIcon');
-  iconEl.innerHTML = icon(town.icon, { size: 28 });
+  iconEl.innerHTML = icon(status === 'locked' ? 'lock' : town.icon, { size: 28 });
   iconEl.style.setProperty('--town', town.color);
   document.getElementById('infoName').textContent = town.name;
   document.getElementById('infoDesc').textContent = town.desc;
 
   const actions = document.getElementById('infoActions');
-  // 目前所有城镇都进入同一段序章剧情；没有存档时先建档（否则 screen='game' 会因 state 为空落回标题页）
-  const enterStory = () => {
+  // 银轨站：没有存档时先建档（否则 screen='game' 会因 state 为空落回标题页）
+  const enterGaiden = () => {
     if (!state) startNewGame('game');
     else { screen = 'game'; render(); }
   };
-  const sceneLabels = {
-    start: '开始剧情', station: state ? `继续外传 · ${sceneName(state.scene)}` : '开始银轨号外传', mooncity: '探索城市', frosttown: '挑战Boss',
-    valhalla: '进入要塞', startower: '登塔观星', nodgate: '穿越之门', terminal: '最终决战'
-  };
-  // 起点村是亚克的故乡线：进入主线 · 亚克篇播放页
-  const scene = town.id === 'start'
-    ? { label: '主线 · 亚克篇', action: () => { window.location.href = '/story.html'; } }
-    : { label: sceneLabels[town.id] || '进入', action: enterStory };
+  const scene = status === 'mainline'
+    ? { label: '进入主线 · 亚克的旅程', action: () => { window.location.href = '/story.html'; } }
+    : status === 'gaiden'
+      ? { label: state ? `继续外传 · ${sceneName(state.scene)}` : '开始银轨号外传', action: enterGaiden }
+      : null;
 
-  actions.innerHTML = `
-    <button class="button primary" id="enterTownBtn" type="button">${scene.label}</button>
-    <button class="button secondary" id="leaveTownBtn" type="button">离开</button>
-  `;
+  actions.innerHTML = scene
+    ? `<button class="button primary" id="enterTownBtn" type="button">${escapeHtml(scene.label)}</button>
+       <button class="button secondary" id="leaveTownBtn" type="button">离开</button>`
+    : `<button class="button secondary" type="button" disabled>${icon('lock', { size: 15 })}敬请期待</button>
+       <button class="button ghost" id="leaveTownBtn" type="button">离开</button>
+       <p class="faint map-info-note">外传后续章节还在制作中${status === 'reached' ? '' : '，推进外传后会在地图上点亮'}。</p>`;
   document.getElementById('enterTownBtn')?.addEventListener('click', () => {
     hideTownInfo();
     scene.action();
@@ -1384,42 +1570,204 @@ function showTownInfo(town) {
   panel.hidden = false;
 }
 
+// 仅 ?dev=1：模拟外传进度，预览后续城镇在地图上点亮的样子（城镇本身仍是「敬请期待」）
 function debugUnlockNext() {
-  const allChapters = [...new Set(MAP_TOWNS.map(t => t.unlockChapter))].sort((a,b) => a-b);
-  const nextChapter = allChapters.find(c => !completedChapters.includes(c));
-  if (nextChapter !== undefined) {
-    completedChapters.push(nextChapter);
-    store.set('moonlit:chapters', JSON.stringify(completedChapters));
-    showToast(`已解锁第 ${nextChapter} 章！新城镇已开放`);
-    render();
-  } else {
-    showToast('全部章节已解锁！');
+  const cleared = gaidenChaptersCleared();
+  const nextChapter = [...new Set(MAP_TOWNS.map((t) => t.unlockChapter))].sort((a, b) => a - b).find((c) => c > cleared);
+  if (nextChapter === undefined) {
+    showToast('全部章节已点亮（测试）');
+    return;
   }
+  store.set(DEV_GAIDEN_KEY, String(devGaidenChapters() + (nextChapter - cleared)));
+  showToast(`已模拟外传进度到第 ${nextChapter} 章（测试，仅 ?dev=1）`);
+  render();
 }
 
-/* ═══ 商店页面 ═══ */
-// 商店只在演示工具开启时出现：支付没有接入，按钮直接免费发放，页面必须如实写明
+/* ═══ 钻石与商店页面 ═══
+   作者核#12 对 B2/B3 的修改：游戏不公开，但保留钻石、商店与召唤；钻石靠游玩获得（契约 R-1 / R-2 / R-3）：
+   每日签到、主线章节首通、卡牌对战胜利（每天有上限）。演示充值仍在，明确标成「免费补充」——支付没有接入。 */
 function shopPage() {
   return `${navBar()}
     <main class="page-content">
-      <div class="page-header"><div class="eyebrow">KNIGHT'S ALLIANCE · 骑士联盟</div><h1>会员与充值</h1></div>
-      <div class="demo-banner" role="note">${icon('info', { size: 18 })}<div><strong>演示版 · 支付未接入，不会真实扣款</strong><span>以下标价仅作展示；点击按钮会直接免费发放，用于体验召唤与换衣。</span></div></div>
+      <div class="page-header"><div class="eyebrow">DIAMONDS · 钻石与商店</div><h1>钻石与商店</h1>
+        <p class="muted">钻石靠游玩获得：每日签到、主线首通、卡牌对战胜利。召唤和卡牌开包都可以用钻石。</p>
+      </div>
+      <section class="shop-section" aria-labelledby="earnTitle">
+        <h2 class="section-title" id="earnTitle">玩出来的钻石</h2>
+        <div class="rewards-grid" id="rewardsPanel">${rewardsPanelHtml()}</div>
+      </section>
+      ${demoToolsEnabled() ? `
+      <div class="demo-banner" role="note">${icon('info', { size: 18 })}<div><strong>演示版 · 支付未接入，不会真实扣款</strong><span>下面是免费补充：标价仅作展示，点击按钮直接免费发放，用于体验召唤与换衣。</span></div></div>
       <section class="shop-section">
-        <h2 class="section-title">会员等级</h2>
+        <h2 class="section-title">会员等级 · 演示免费开通</h2>
         <div class="membership-grid" id="membershipGrid">
           <div class="loader">加载中…</div>
         </div>
       </section>
       <section class="shop-section">
-        <h2 class="section-title">钻石充值</h2>
+        <h2 class="section-title">钻石免费补充 · 演示</h2>
         <div class="diamond-grid" id="diamondGrid">
           <div class="loader">加载中…</div>
         </div>
-      </section>
+      </section>` : `
+      <p class="muted shop-closed">${icon('info', { size: 16 })}演示充值已关闭（本服务器未开启演示工具），钻石只能靠游玩获得。</p>`}
     </main>`;
 }
 
+// 钻石页用到的公开规则：召唤价格与重复补偿（/api/gacha/pools）、卡牌开包价格（/api/cards/meta）、主线章节目录
+let shopContext = { pools: null, cardsMeta: null, index: [] };
+
+async function loadShopContext() {
+  const [pools, cardsMeta, index] = await Promise.all([
+    gachaPoolsCache ? Promise.resolve(gachaPoolsCache) : apiGet('/api/gacha/pools').catch(() => null),
+    shopContext.cardsMeta ? Promise.resolve(shopContext.cardsMeta) : apiGet('/api/cards/meta').catch(() => null),
+    loadMainlineIndex()
+  ]);
+  if (pools) gachaPoolsCache = pools;
+  shopContext = { pools, cardsMeta, index };
+  refreshRewardWidgets();
+}
+
+const num = (value) => (Number.isFinite(Number(value)) ? Number(value) : null);
+
+function rewardsPanelHtml() {
+  const s = rewardStatus;
+  const rules = s?.rules || {};
+  const daily = rules.daily || {};
+  const { pools, cardsMeta, index } = shopContext;
+  const base = num(daily.base);
+  const step = num(daily.streakStep);
+  const cap = num(daily.streakBonusCap);
+  const ladderDays = base !== null && step && cap !== null ? Math.floor(cap / step) + 1 : 5;
+  const amountOn = (day) => (base === null ? '—' : base + Math.min(cap ?? 0, (day - 1) * (step ?? 0)));
+  const streak = s?.streak || 0;
+  const ready = s ? s.dailyAvailable : true;
+  // 今天这一格：还没签就是 streak+1，已经签过就是 streak
+  const todayDay = ready ? streak + 1 : streak;
+  const ladder = Array.from({ length: ladderDays }, (_, i) => {
+    const day = i + 1;
+    const last = day === ladderDays;
+    const isToday = last ? todayDay >= day : todayDay === day;
+    const done = last ? !ready && todayDay >= day : day <= streak && !(isToday && ready);
+    return `<li class="${done ? 'done' : ''} ${isToday ? 'today' : ''}"><span>第${day}天${last ? '起' : ''}</span><b>+${amountOn(day)}</b></li>`;
+  }).join('');
+  const dailyRule = base === null ? '每天签到一次；连续签到每天多一点。'
+    : `第 1 天 +${base}，连续签到每天多 ${step}，第 ${ladderDays} 天起每天 +${base + cap}；断签从第 1 天重新算。`;
+
+  const chapterReward = num(s?.chapterReward ?? rules.chapterFirstClear);
+  const cleared = new Set(s?.chaptersCleared || []);
+  const chapterItems = index.length
+    ? index.map((ch) => `<li class="${cleared.has(ch.id) ? 'done' : ''}">${cleared.has(ch.id) ? icon('check', { size: 12 }) : icon('book', { size: 12 })}${escapeHtml(mainlineChapterLabel(ch.id, index))}</li>`).join('')
+    : '';
+  const characters = pools?.characters || [];
+  const joins = s?.heroineJoins || pools?.heroineJoins || {};
+  const joined = new Set(s?.heroinesJoined || []);
+  const released = new Set(index.map((ch) => ch.id));
+  const joinRows = characters.filter((c) => joins[c.id] && (released.has(joins[c.id]) || joined.has(c.id)))
+    .map((c) => `<li class="${joined.has(c.id) ? 'done' : ''}">${joined.has(c.id) ? icon('check', { size: 12 }) : icon('lock', { size: 12 })}${escapeHtml(c.name.split('·')[0])} · 通关${escapeHtml(mainlineChapterLabel(joins[c.id], index))}入队${joined.has(c.id) ? ' · 已加入' : ''}</li>`).join('');
+  const futureJoins = characters.filter((c) => joins[c.id] && !released.has(joins[c.id]) && !joined.has(c.id)).length;
+
+  const winCap = num(s?.cardWinCap ?? rules.cardWin?.dailyCap);
+  const winReward = num(s?.cardWinReward ?? rules.cardWin?.diamonds);
+  const winsToday = s?.cardWinsToday || 0;
+  const pips = winCap ? Array.from({ length: winCap }, (_, i) => `<span class="win-pip ${i < winsToday ? 'done' : ''}"></span>`).join('') : '';
+
+  const costs = pools?.costs?.diamonds;
+  const dup = pools?.duplicateCompensation || {};
+  const pack = cardsMeta?.pack;
+  const dupText = Object.keys(dup).length ? Object.entries(dup).sort(([a], [b]) => a - b).map(([rarity, value]) => `${rarity}★ +${value}`).join(' · ') : '—';
+
+  return `
+    <article class="reward-card reward-daily">
+      <header><span class="reward-icon">${icon('gift', { size: 20 })}</span><h3>每日签到</h3><span class="reward-amount">${s ? `+${s.dailyAmount}` : ''}</span></header>
+      <p class="reward-rule">${dailyRule}</p>
+      <ol class="streak-ladder" aria-label="连续签到奖励">${ladder}</ol>
+      <div class="reward-foot"><span class="muted">${s ? `已连续 ${streak} 天` : '签到后开始计算连续天数'}</span>
+        <button class="button ${ready ? 'primary' : 'ghost'} small" type="button" data-daily-claim ${ready ? '' : 'disabled'}>${ready ? `签到${s ? ` +${s.dailyAmount}` : ''}` : '今日已签到'}</button></div>
+    </article>
+    <article class="reward-card">
+      <header><span class="reward-icon">${icon('book', { size: 20 })}</span><h3>主线首通</h3><span class="reward-amount">${chapterReward !== null ? `+${chapterReward}/章` : ''}</span></header>
+      <p class="reward-rule">主线每章第一次通关得钻石，每章只发一次。女主在主线正式入队时自动加入你的角色；如果已经抽到，就折成钻石。</p>
+      ${chapterItems ? `<ul class="reward-list">${chapterItems}</ul>` : ''}
+      ${joinRows || futureJoins ? `<ul class="reward-list joins">${joinRows}${futureJoins ? `<li class="faint">${icon('sparkle', { size: 12 })}其余 ${futureJoins} 位女主：入队章节上线后自动生效</li>` : ''}</ul>` : ''}
+      <div class="reward-foot"><span class="muted">已首通 ${cleared.size} 章</span><a class="button secondary small" href="/story.html">${icon('moon', { size: 14 })}前往主线</a></div>
+    </article>
+    <article class="reward-card">
+      <header><span class="reward-icon">${icon('deck', { size: 20 })}</span><h3>卡牌对战</h3><span class="reward-amount">${winReward !== null ? `+${winReward}/胜` : ''}</span></header>
+      <p class="reward-rule">实验模式。${winCap ? `每天前 ${winCap} 场胜利各得 ${winReward} 钻石；之后照常可以对战，只是不再发钻石。` : '卡牌对战胜利可得钻石，每天有上限。'}</p>
+      ${pips ? `<div class="win-meter" aria-label="今日奖励胜场 ${winsToday}/${winCap}">${pips}<span class="muted">今日 ${winsToday}/${winCap}</span></div>` : ''}
+      <div class="reward-foot"><span class="muted">规则仍在调整</span><a class="button secondary small" href="/cards.html">${icon('battle', { size: 14 })}进入卡牌对战</a></div>
+    </article>
+    <article class="reward-card reward-uses">
+      <header><span class="reward-icon">${icon('diamond', { size: 20 })}</span><h3>钻石用途</h3><span class="reward-amount">${diamondBalance() ?? '—'}</span></header>
+      <ul class="reward-list plain">
+        <li>${icon('sparkle', { size: 12 })}召唤：单抽 ${costs?.single ?? '—'} · 十连 ${costs?.ten ?? '—'}（也可以用 Credit）</li>
+        <li>${icon('pack', { size: 12 })}卡牌开包：单包 ${pack?.costSingle ?? '—'} · 十连 ${pack?.costTen ?? '—'}</li>
+        <li>${icon('refresh', { size: 12 })}召唤重复补偿：${dupText}</li>
+      </ul>
+      <div class="reward-foot"><span class="muted">当前余额</span><button class="button secondary small" type="button" data-nav="gacha">${icon('sparkle', { size: 14 })}去召唤</button></div>
+    </article>`;
+}
+
+// 签到状态 / 余额变化后，局部刷新导航栏钻石、标题页签到条和钻石页奖励卡（按钮靠事件委托，不用重新绑定）
+function refreshRewardWidgets() {
+  const chip = document.querySelector('.nav-diamond');
+  if (chip) chip.innerHTML = diamondChipHtml();
+  const strip = document.querySelector('#titleDaily');
+  if (strip) strip.innerHTML = dailyStripHtml();
+  const wallet = document.querySelector('#gachaWallet');
+  if (wallet) wallet.innerHTML = gachaWalletHtml();
+  const panel = document.querySelector('#rewardsPanel');
+  if (panel) {
+    panel.innerHTML = rewardsPanelHtml();
+    panel.querySelectorAll('[data-nav]').forEach((btn) => btn.addEventListener('click', () => { screen = btn.dataset.nav; beep('click'); render(); }));
+  }
+}
+
+// 账户在服务器上已不存在（重启且未持久化）时，丢掉本地缓存的账户再走一次 ensureAccount（会重建并提示）
+async function withAccountRetry(fn) {
+  await ensureAccount();
+  try {
+    return await fn();
+  } catch (error) {
+    if (error.status !== 404 || error.code !== 'NO_ACCOUNT') throw error;
+    playerAccount = null;
+    await ensureAccount();
+    return fn();
+  }
+}
+
+async function loadRewardStatus() {
+  if (!playerId) return null;
+  const r = await withAccountRetry(() => apiGet(`/api/rewards/status?playerId=${encodeURIComponent(playerId)}`));
+  rewardStatus = r;
+  if (playerAccount && Number.isFinite(r.diamonds)) playerAccount.diamonds = r.diamonds;
+  refreshRewardWidgets();
+  return r;
+}
+
+let dailyClaiming = false;
+
+async function claimDailyReward() {
+  if (dailyClaiming) return;
+  dailyClaiming = true;
+  try {
+    const r = await withAccountRetry(() => apiPost('/api/rewards/daily', { playerId }));
+    playerAccount = r.account || playerAccount;
+    showToast(r.message || (r.granted ? `签到成功：+${r.diamonds} 钻石` : '今天已经签到过了。'));
+    beep(r.granted ? 'win' : 'click');
+    await loadRewardStatus();
+  } catch (e) {
+    showToast(e.message, 'error');
+    beep('error');
+  } finally {
+    dailyClaiming = false;
+  }
+}
+
 async function loadShop() {
+  loadShopContext();
+  if (!demoToolsEnabled()) return;
   try {
     const data = await apiGet('/api/membership/tiers');
     const grid = document.querySelector('#membershipGrid');
@@ -1471,25 +1819,49 @@ async function purchaseDiamondPack(packId) {
     playerAccount = r.account || playerAccount;
     showToast(`演示发放（未扣款）：${r.message || '钻石已到账。'}`);
     beep('win');
-    render();
+    loadRewardStatus().catch(() => refreshRewardWidgets());
   } catch (e) { showToast(e.message, 'error'); }
 }
 
 /* ═══ 抽卡页面 ═══ */
+// 召唤可以用 Credit 或钻石支付（/api/gacha/pull 的 currency）；选择记在本机
+const GACHA_CURRENCY_KEY = 'moonlit:gachaCurrency';
+const CURRENCY_LABEL = { credit: 'Credit', diamonds: '钻石' };
+let gachaCurrency = store.get(GACHA_CURRENCY_KEY) === 'diamonds' ? 'diamonds' : 'credit';
+
+function gachaCostText(count) {
+  const costs = gachaPoolsCache?.costs?.[gachaCurrency];
+  const fallback = gachaCurrency === 'diamonds' ? { single: 80, ten: 720 } : { single: 10, ten: 90 };
+  const value = (costs || fallback)[count === 10 ? 'ten' : 'single'];
+  return `${count === 10 ? '十连' : '单抽'} · ${value} ${CURRENCY_LABEL[gachaCurrency]}`;
+}
+
+function gachaWalletHtml() {
+  const credits = creditMeter?.balance ?? playerAccount?.credits;
+  const diamonds = diamondBalance();
+  return `<span>${icon('credit', { size: 15 })}Credit ${credits ?? '—'}</span><span>${icon('diamond', { size: 15 })}钻石 ${diamonds ?? '—'}</span>`;
+}
+
 function gachaPage() {
   return `${navBar()}
     <main class="page-content">
       <div class="page-header"><div class="eyebrow">SUMMON · 星轨召唤</div><h1>召唤系统</h1>
-        <p class="muted">角色池：8 位角色（需抽取获得） · 服饰池：6 套主题服饰 × 8 角色 · 第 90 抽必出 5★</p>
+        <p class="muted">角色池：8 位女主 · 服饰池：6 套主题服饰 × 8 位女主 · 第 90 抽必出 5★。女主在主线正式入队时会自动加入；重复抽到的会折成钻石。</p>
       </div>
       <div class="gacha-tabs">
         <button class="gacha-tab ${currentGachaPool === 'character' ? 'active' : ''}" data-pool="character">角色池</button>
         <button class="gacha-tab ${currentGachaPool === 'costume' ? 'active' : ''}" data-pool="costume">服饰池</button>
       </div>
       <section class="gacha-pool" id="gachaPool"><div class="loader">加载中…</div></section>
+      <div class="gacha-pay">
+        <div class="pay-toggle" role="radiogroup" aria-label="支付方式">
+          ${Object.entries(CURRENCY_LABEL).map(([id, label]) => `<button type="button" role="radio" class="pay-option ${gachaCurrency === id ? 'active' : ''}" data-currency="${id}" aria-checked="${gachaCurrency === id}">${icon(id === 'diamonds' ? 'diamond' : 'credit', { size: 15 })}${label}</button>`).join('')}
+        </div>
+        <div class="gacha-wallet" id="gachaWallet">${gachaWalletHtml()}</div>
+      </div>
       <section class="gacha-actions">
-        <button class="button primary large" id="gachaSingle">单抽 · 10 Credit</button>
-        <button class="button secondary large" id="gachaTen">十连 · 90 Credit</button>
+        <button class="button primary large" id="gachaSingle">${gachaCostText(1)}</button>
+        <button class="button secondary large" id="gachaTen">${gachaCostText(10)}</button>
       </section>
       <p class="gacha-rates-link"><button class="button ghost small" id="gachaRatesJump" type="button">${icon('chart', { size: 15 })}查看概率公示</button></p>
       <section class="gacha-result" id="gachaResult" style="display:none"></section>
@@ -1544,7 +1916,16 @@ function gachaRatesHtml(poolId, data) {
         <span role="cell" class="rates-each">${formatRate(row.each)} <small>× ${row.items.length}</small></span>
         <span role="cell" class="rates-items">${row.items.map((item) => `<span>${escapeHtml(item.name || item.id)}</span>`).join('')}</span>
       </div>`).join('')}
-    </div>`;
+    </div>
+    ${duplicateNoteHtml(data)}`;
+}
+
+// 重复补偿公示：抽到已拥有的条目按稀有度折成钻石（/api/gacha/pools 的 duplicateCompensation）
+function duplicateNoteHtml(data) {
+  const dup = data.duplicateCompensation || {};
+  const entries = Object.entries(dup).sort(([a], [b]) => b - a);
+  if (!entries.length) return '';
+  return `<p class="muted gacha-rates-note gacha-dup-note">${icon('diamond', { size: 14 })}重复补偿：抽到已经拥有的角色或服装（包括同一次十连里的第二份），按稀有度折成钻石：${entries.map(([rarity, value]) => `${rarity}★ +${value}`).join(' · ')}。主线入队时已经拥有的女主也按这张表补偿。</p>`;
 }
 
 let currentGachaPool = 'character';
@@ -1557,10 +1938,32 @@ function costumeTypeOf(item) {
 
 let gachaPoolsCache = null;
 
+// 召唤按钮上的价格随支付方式变化；钱包显示两种余额
+function updateGachaButtons() {
+  const single = document.querySelector('#gachaSingle');
+  const ten = document.querySelector('#gachaTen');
+  if (single) single.textContent = gachaCostText(1);
+  if (ten) ten.textContent = gachaCostText(10);
+  const wallet = document.querySelector('#gachaWallet');
+  if (wallet) wallet.innerHTML = gachaWalletHtml();
+}
+
+// 角色卡片下方的获得方式：已拥有 / 主线某章入队自动获得（章节已上线时写出章节）/ 召唤获得
+function heroineSourceHtml(c, data, index) {
+  const owned = (playerAccount?.ownedCharacters || []).includes(c.id);
+  if (owned) return `<div class="gacha-free is-owned">${icon('check', { size: 12 })}已拥有 · 重复折钻石</div>`;
+  const joinChapter = data.heroineJoins?.[c.id] || c.joinChapter;
+  if (joinChapter && index.some((ch) => ch.id === joinChapter)) {
+    return `<div class="gacha-free">${icon('book', { size: 12 })}主线${escapeHtml(mainlineChapterLabel(joinChapter, index))}入队自动获得</div>`;
+  }
+  return `<div class="gacha-free">${icon('sparkle', { size: 12 })}召唤或主线入队获得</div>`;
+}
+
 async function loadGachaPool() {
   try {
-    const data = await apiGet('/api/gacha/pools');
+    const [data, index] = await Promise.all([apiGet('/api/gacha/pools'), loadMainlineIndex()]);
     gachaPoolsCache = data;
+    updateGachaButtons();
     const pool = document.querySelector('#gachaPool');
     if (!pool) return;
     const ratesBox = document.querySelector('#gachaRates');
@@ -1572,7 +1975,7 @@ async function loadGachaPool() {
           <div class="gacha-char-name">${escapeHtml(c.name)}</div>
           <div class="gacha-char-title">${escapeHtml(c.title)} · ${escapeHtml(c.element || '')}</div>
           <div class="gacha-stars">${starsHtml(c.rarity, 5)}</div>
-          ${c.unlockChapter ? `<div class="gacha-lock">${icon('lock', { size: 12 })}Ch.${c.unlockChapter}解锁</div>` : `<div class="gacha-free">${icon('sparkle', { size: 12 })}需抽取获得</div>`}
+          ${heroineSourceHtml(c, data, index)}
         </div>`).join('')}</div>`;
     } else {
       const shortNames = Object.fromEntries(data.characters.map((c) => [c.id, c.name.split('·')[0]]));
@@ -1608,8 +2011,9 @@ async function doGachaPull(count) {
   gachaPulling = true;
   try {
     await ensureAccount();
-    const r = await apiPost('/api/gacha/pull', { playerId, pool: currentGachaPool, count });
+    const r = await apiPost('/api/gacha/pull', { playerId, pool: currentGachaPool, count, currency: gachaCurrency });
     await reloadAccount();
+    if (rewardStatus && Number.isFinite(r.balance?.diamonds)) rewardStatus.diamonds = r.balance.diamonds;
     const ownedCharacters = new Set(playerAccount?.ownedCharacters || []);
     const resultEl = document.querySelector('#gachaResult');
     if (resultEl && r.results) {
@@ -1626,15 +2030,20 @@ async function doGachaPull(count) {
           ${faceThumb(src, { cls: 'result-thumb', alt: item.name || item.id, fallback: ART.portrait(isCostume ? item.characterId : item.id) })}
           <div class="result-name">${escapeHtml(item.name || item.id)}</div>
           <div class="gacha-stars">${starsHtml(rarity)}</div>
+          ${item.duplicate ? `<div class="result-dup">${icon('diamond', { size: 11 })}重复 · +${Number(item.compensation) || 0} 钻石</div>` : ''}
           ${needsCharacter ? `<div class="result-note">${icon('lock', { size: 11 })}需先拥有角色</div>` : ''}
         </div>`;
       }).join('')}</div>
-        <p class="muted">消耗 ${r.cost} Credit · 保底计数 ${r.pity || 0}/${Number(gachaPoolsCache?.pity) || 90}${r.results.some((item) => item.characterId && !ownedCharacters.has(item.characterId)) ? ' · 未拥有角色的服装已收入换衣间「待解锁角色」' : ''}</p>`;
+        <p class="muted">消耗 ${r.cost} ${CURRENCY_LABEL[r.currency] || 'Credit'}${r.compensation?.diamonds ? ` · 重复补偿 +${r.compensation.diamonds} 钻石` : ''} · 保底计数 ${r.pity || 0}/${Number(gachaPoolsCache?.pity) || 90}${r.results.some((item) => item.characterId && !ownedCharacters.has(item.characterId)) ? ' · 未拥有角色的服装已收入换衣间「待解锁角色」' : ''}</p>`;
       // 结果区在卡池和按钮下方，桌面/手机都在首屏以外：滚到结果，避免「点了没反应」
       resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
       beep(r.results.some((i) => (i.rarity || 3) >= 5) ? 'win' : 'skill');
     }
-    refreshCredit();
+    await refreshCredit();
+    refreshRewardWidgets();
+    updateGachaButtons();
+    // 角色卡片上的「已拥有」随这次召唤更新（只重绘卡池，不动结果区）
+    if (currentGachaPool === 'character') loadGachaPool();
   } catch (e) {
     showToast(e.message, 'error');
     beep('error');
@@ -1648,7 +2057,7 @@ function costumePage() {
   return `${navBar()}
     <main class="page-content">
       <div class="page-header"><div class="eyebrow">WARDROBE · 换衣间</div><h1>服饰更换</h1>
-        <p class="muted">为已抽到的角色更换皮肤。服装通过「召唤 · 服饰池」获取；抽到了服装但还没有该角色时，服装会先收进「待解锁角色」。服饰分支剧情 · 敬请期待。</p>
+        <p class="muted">为已拥有的女主更换皮肤（主线入队或召唤获得）。服装通过「召唤 · 服饰池」获取；抽到了服装但还没有该角色时，服装会先收进「待解锁角色」。服饰分支剧情 · 敬请期待。</p>
       </div>
       <section class="costume-section" id="costumeSection"><div class="loader">加载中…</div></section>
     </main>`;
@@ -1728,9 +2137,12 @@ async function loadCostumes() {
     if (ownedChars.length === 0) {
       html += `<div class="wardrobe-empty">
         <div class="wardrobe-empty-icon">${icon('dress', { size: 44 })}</div>
-        <h3>还没有抽到的角色</h3>
-        <p class="muted">前往「召唤 · 角色池」抽取角色后，即可在这里为她们更换皮肤。</p>
-        <button class="button primary" type="button" data-wardrobe-nav="gacha">去召唤</button>
+        <h3>还没有可以换装的角色</h3>
+        <p class="muted">女主在主线正式入队时会自动加入（例如通关主线第五章，莉亚入队）；也可以在「召唤 · 角色池」抽取。</p>
+        <div class="wardrobe-empty-actions">
+          <button class="button primary" type="button" data-wardrobe-nav="gacha">去召唤</button>
+          <a class="button secondary" href="/story.html">${icon('moon', { size: 15 })}前往主线</a>
+        </div>
       </div>`;
     }
 
@@ -1767,8 +2179,9 @@ async function loadCostumes() {
       const portraitSrc = equippedType ? ART.costume(charId, equippedType) : (ch.portrait || ART.portrait(charId));
       return `<div class="costume-char-block">
         <div class="wardrobe-main">
-          <div class="wardrobe-portrait ${frameClass}">
+          <div class="wardrobe-portrait ${frameClass} ${aiPaintedClass(portraitSrc)}">
             <img ${imgSrcAttrs(paint(portraitSrc), true)} alt="${escapeHtml(ch.name)}${equippedLabel ? ` · ${escapeHtml(equippedLabel)}` : ''}" data-fallback="${ART.portrait(charId)}">
+            ${paintBadge(portraitSrc)}
             ${equippedType ? `<span class="skin-badge" title="${escapeHtml(equippedLabel)}">${icon(COSTUME_TYPE_META[equippedType]?.icon || 'dress', { size: 18 })}</span>` : ''}
           </div>
           <div class="wardrobe-info">
@@ -1827,9 +2240,9 @@ function settingsPage() {
           <p class="muted">${isOpenAi
             ? '由服务器代理的 OpenAI 兼容模型生成角色台词；模型超时、不可用或输出越权时，自动切回角色专属保底台词。'
             : '当前没有接入大模型：角色台词来自离线剧情保底引擎，零成本、可完整通关。接入本地模型的方法见游戏内「设置」对话框或 README。'}</p>
+          <p class="muted">所有玩家共用服务器配置的 AI；按玩家切换模型尚未开放，所以这里不提供模型预设。</p>
         </div>
       </section>
-      <section class="settings-section" id="aiSettingsSection"><div class="loader">加载中…</div></section>
       <section class="settings-section">
         <h2 class="section-title">声音</h2>
         <div class="settings-row"><span>音效反馈</span><button class="button ${soundEnabled ? 'primary' : 'secondary'}" id="settingsSoundToggle" type="button">${soundEnabled ? '开启' : '关闭'}</button></div>
@@ -1848,26 +2261,7 @@ function settingsPage() {
     </main>`;
 }
 
-// 模型预设还没有接到按玩家路由（见 B19），只作预览展示，不能点选
-async function loadSettings() {
-  try {
-    const data = await apiGet('/api/settings/ai');
-    const section = document.querySelector('#aiSettingsSection');
-    if (!section) return;
-    section.innerHTML = `
-      <h2 class="section-title">模型预设 <span class="preview-tag">预览 · 尚未接入</span></h2>
-      <p class="muted settings-note">以下预设仅供预览，目前不能切换；实际使用的 AI 以上方「当前 AI」为准。</p>
-      <div class="model-grid">
-        ${(data.models || []).map((m) => `
-          <div class="model-card preview" aria-disabled="true">
-            <div class="model-name">${escapeHtml(m.name)}</div>
-            <div class="model-provider">${escapeHtml(m.provider)}</div>
-            <p class="model-desc">${escapeHtml(m.description)}</p>
-            <div class="model-locked">预览 · 尚未接入</div>
-          </div>`).join('')}
-      </div>`;
-  } catch (e) { showToast(e.message, 'error'); }
-}
+// B19：模型预设在按玩家路由实现之前不出现在设置页（/api/settings/ai 也不再下发预设）
 
 /* ═══ 后台仪表板 ═══ */
 function dashboardPage() {
@@ -1932,14 +2326,15 @@ function chaptersPage() {
   return `${navBar()}
     <main class="page-content">
       <div class="page-header"><div class="eyebrow">STORY · 剧本系统</div><h1>章节选择</h1>
-        <p class="muted">主线 · 亚克篇为自由输入的视觉小说；银轨号外传为原有 15 章剧本</p>
+        <p class="muted">主线「亚克的旅程」是正史，自由输入的视觉小说；「银轨号」是 IF 外传，人物身份与主线不同，不影响正史。</p>
       </div>
       <section class="chapters-section story-mainline" aria-labelledby="mainlineTitle">
-        <h2 class="section-title" id="mainlineTitle">主线 · 亚克篇</h2>
+        <h2 class="section-title" id="mainlineTitle">主线：亚克的旅程（正史）</h2>
         <div class="chapter-grid" id="mainlineChapters"><div class="loader">加载中…</div></div>
       </section>
-      <h2 class="section-title chapters-side-title">银轨号外传</h2>
-      <section class="chapters-section" id="chaptersSection"><div class="loader">加载中…</div></section>
+      <h2 class="section-title chapters-side-title" id="sideTitle">外传：银轨号（IF 外传 · 剧本草稿）</h2>
+      <div class="if-note" role="note">${icon('info', { size: 16 })}<p>以下是 IF 外传「银轨号」的剧本草稿，只能阅读，不能游玩；其中的人物身份、称号与经历只属于这个平行世界，正史以主线为准。可游玩的外传序章在标题页的「外传：银轨号」。</p></div>
+      <section class="chapters-section" id="chaptersSection" aria-labelledby="sideTitle"><div class="loader">加载中…</div></section>
     </main>`;
 }
 
@@ -1948,10 +2343,8 @@ async function loadMainlineChapters() {
   const box = document.querySelector('#mainlineChapters');
   if (!box) return;
   try {
-    const res = await fetch('/story/chapters/index.json', { headers: { accept: 'application/json' } });
-    const list = res.ok ? await res.json() : [];
+    const items = await loadMainlineIndex();
     const done = store.json('moonlit:story:progress', {});
-    const items = (Array.isArray(list) ? list : []).filter((ch) => /^ch\d{3}$/.test(ch?.id || ''));
     box.innerHTML = items.length ? items.map((ch) => {
       const [label, name] = String(ch.title || ch.id).split('｜');
       return `
@@ -1981,7 +2374,7 @@ async function loadChapters() {
         <div class="chapter-info">
           <h3>${escapeHtml(ch.title)}</h3>
           <p class="muted">${escapeHtml(ch.subtitle)}</p>
-          <span class="pill">${ch.sceneCount} 场景 · 约${ch.estimatedMinutes}分钟</span>
+          <span class="pill">${icon('scroll', { size: 13 })}剧本草稿（只读） · ${ch.sceneCount} 场景</span>
         </div>
       </button>`).join('')}</div>`;
     section.querySelectorAll('[data-chapter]').forEach((btn) => {
@@ -2005,10 +2398,12 @@ async function openChapter(id) {
     overlay.innerHTML = `
       <div class="gallery-card chapter-reader" role="dialog" aria-modal="true" aria-label="${escapeHtml(ch.title)}">
         <div class="gallery-header">
-          <div class="eyebrow">CHAPTER ${String(id).padStart(2, '0')}</div>
+          <div class="eyebrow">IF 外传 · 银轨号 · CHAPTER ${String(id).padStart(2, '0')}</div>
           <h2>${escapeHtml(ch.title)}</h2>
+          <span class="draft-tag">${icon('scroll', { size: 13 })}剧本草稿（只读）</span>
           <button class="icon-button modal-close" id="chapterClose" type="button" aria-label="关闭">${icon('close', { size: 18 })}</button>
         </div>
+        <p class="reader-note">这是 IF 外传「银轨号」的剧本草稿，只能阅读；人物身份与主线正史不同。</p>
         <div class="chapter-scenes">
           ${(ch.scenes || []).map((scene) => `
             <div class="scene-block">
@@ -2066,6 +2461,7 @@ async function loadOrCreateAccount() {
     try {
       const r = await apiGet(`/api/account?playerId=${encodeURIComponent(previousId)}`);
       playerAccount = r.account;
+      afterAccountReady();
       return;
     } catch (error) {
       // 只有「账户不存在 / id 无效」才重建；网络或服务器错误照常抛出，避免误建新号
@@ -2077,8 +2473,16 @@ async function loadOrCreateAccount() {
   playerAccount = r.account;
   playerId = r.account.id;
   creditMeter = null;
+  rewardStatus = null;
   store.set('moonlit:playerId', playerId);
   if (previousId) showToast('账户已重置：服务器重启后旧账户已失效，已为你新建账户。', 'error');
+  afterAccountReady();
+}
+
+// 账户就绪（读到或新建）后：导航栏钻石先显示账户余额，再异步读签到状态
+function afterAccountReady() {
+  refreshRewardWidgets();
+  if (!rewardStatus) setTimeout(() => loadRewardStatus().catch(() => {}), 0);
 }
 
 async function refreshCredit() {
@@ -2086,8 +2490,10 @@ async function refreshCredit() {
   try {
     const r = await apiGet(`/api/credit?playerId=${encodeURIComponent(playerId)}`);
     creditMeter = r.meter;
-    const navCredit = document.querySelector('.nav-credit');
+    const navCredit = document.querySelector('.nav-credit-meter');
     if (navCredit) navCredit.innerHTML = creditMeterHtml();
+    const wallet = document.querySelector('#gachaWallet');
+    if (wallet) wallet.innerHTML = gachaWalletHtml();
   } catch { /* ignore */ }
 }
 
@@ -2105,6 +2511,7 @@ async function boot() {
         meta = sessionPayload.meta || meta;
         selectedCharacterId = state.selectedCharacterId || 'lia';
         rememberCgUnlocks(state); // 读档时已有的解锁不再弹提示
+        rememberGaidenProgress(state);
       } catch (error) {
         // 404：服务器上已没有这个存档（服务器重启且未持久化）；400：本地记录的 id 已损坏。其他错误保留本地记录，下次再试
         if (error.status === 404 || error.status === 400) {
@@ -2127,14 +2534,14 @@ function showGallery(gallery, unlockedCount, total) {
   overlay.innerHTML = `
     <div class="gallery-card" role="dialog" aria-modal="true" aria-label="CG 图库">
       <div class="gallery-header">
-        <div class="eyebrow">CG GALLERY</div>
+        <div class="eyebrow">CG GALLERY · IF 外传 · 银轨号</div>
         <h2>事件回忆 · ${unlockedCount}/${total}</h2>
         <button class="icon-button modal-close" id="galleryClose" type="button" aria-label="关闭">${icon('close', { size: 18 })}</button>
       </div>
       <div class="gallery-grid">
         ${gallery.map((cg) => `
           <div class="cg-item ${cg.unlocked ? 'unlocked' : 'locked'}">
-            <div class="cg-thumb">${cg.unlocked ? `<img src="${escapeHtml(paint(cg.file))}" alt="${escapeHtml(cg.title)}" loading="lazy" data-fallback-icon="film">` : `<span class="cg-placeholder">${icon('lock', { size: 28 })}</span>`}</div>
+            <div class="cg-thumb ${cg.unlocked ? aiPaintedClass(cg.file) : ''}">${cg.unlocked ? `<img src="${escapeHtml(paint(cg.file))}" alt="${escapeHtml(cg.title)}" loading="lazy" data-fallback-icon="film">${paintBadge(cg.file)}` : `<span class="cg-placeholder">${icon('lock', { size: 28 })}</span>`}</div>
             <div class="cg-info"><strong>${cg.unlocked ? escapeHtml(cg.title) : '???'}</strong><p>${cg.unlocked ? escapeHtml(cg.description) : '尚未解锁'}</p></div>
           </div>`).join('')}
       </div>

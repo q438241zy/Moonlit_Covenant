@@ -60,10 +60,19 @@ function render(p) {
     }
     return d;
   };
-  p.def(`<pattern id="${p.id('print')}" width="52" height="52" patternUnits="userSpaceOnUse" patternTransform="rotate(-10)">`
-    + `<path d="M22,17q6,-8 12,-6q-4,7 -12,6zM42,44q-7,-5 -6,-12q7,3 6,12z" fill="#8cc79a"/>`
-    + `<path d="${fl(14, 14, 4.2)}${fl(36, 36, 3.4)}" fill="${K.sky}"/>`
-    + `<path d="M14,14h0M36,36h0" stroke="${K.plumCore}" stroke-width="3.4" stroke-linecap="round"/></pattern>`);
+  // ditsy print: sky-blue flowers, or her own motif when a heroine accent kit is given (B11) -
+  // Lia's two-colour strawberries, everyone else's motif glyph in her colour
+  const A = p.accent;
+  const printBody = !A
+    ? `<path d="M22,17q6,-8 12,-6q-4,7 -12,6zM42,44q-7,-5 -6,-12q7,3 6,12z" fill="#8cc79a"/>`
+      + `<path d="${fl(14, 14, 4.2)}${fl(36, 36, 3.4)}" fill="${K.sky}"/>`
+      + `<path d="M14,14h0M36,36h0" stroke="${K.plumCore}" stroke-width="3.4" stroke-linecap="round"/>`
+    : A.print
+      ? `<path d="${A.print.a(14, 14, 6.4)}${A.print.a(38, 38, 5.2)}" fill="${A.print.ca}"/><path d="${A.print.b(14, 14, 6.4)}${A.print.b(38, 38, 5.2)}" fill="${A.print.cb}"/>`
+        + `<path d="M12,13h0M16,16h0M37,37h0" stroke="#fff3c0" stroke-width="1.4" stroke-linecap="round"/>`
+      : `<path d="${A.glyph(14, 14, 6.4, -12)}${A.glyph(38, 38, 5.2, 18)}" fill="${mix(A.main, '#ffffff', 0.12)}" fill-rule="evenodd"/>`
+        + `<path d="M30,10h0M8,40h0" stroke="${A.main}" stroke-width="3" stroke-linecap="round" opacity=".55"/>`;
+  p.def(`<pattern id="${p.id('print')}" width="52" height="52" patternUnits="userSpaceOnUse" patternTransform="rotate(-10)">${printBody}</pattern>`);
   const dress = sm([[200, 760, 1], [300, 704, 1], [352, 710], [384, 724], [416, 728], [448, 724], [480, 710], [532, 704, 1], [632, 760, 1], [632, 1216, 1], [200, 1216, 1]], { closed: true });
   const cotton = p.lin('cotton', [[0, '#ffffff'], [0.45, K.cotton], [1, K.cottonShade]], [0, 700, 0, 1150]);
   s += `<g clip-path="${p.refs.torsoClip}"><path d="${dress}" fill="${cotton}"/><path d="${dress}" fill="url(#${p.id('print')})" opacity=".9"/>`
@@ -123,11 +132,12 @@ function render(p) {
     // shadow the cardigan front edges cast on the dress
     + `<path d="${taper(frontPts.slice(1), { w: 9, start: 0.6, end: 0.3, peak: 0.5 })}" transform="translate(14 4)" fill="${K.cottonDeep}" opacity=".4"/>`;
 
-  // ---- fine gold chain with a small scallop-shell pendant
+  // ---- fine gold chain with a small scallop-shell pendant (or her own emblem as the pendant, B11)
   const chain = 'M372,690Q384,742 416,756Q448,742 460,690';
   s += `<path d="${chain}" fill="none" stroke="${K.goldLine}" stroke-width="2.6" opacity=".7"/><path d="${chain}" fill="none" stroke="${K.gold}" stroke-width="1.4" stroke-dasharray="2.6 1.6"/>`
-    + `<path d="M416,754C404,756 400,770 406,776Q416,782 426,776C432,770 428,756 416,754Z" fill="#fff4ea" stroke="${K.goldLine}" stroke-width="1.6"/>`
-    + `<path d="M416,758V778M410,760L407,774M422,760L425,774" stroke="${K.goldMid}" stroke-width="1.2"/>`
+    + (A ? A.emblem(416, 776, 0.62)
+      : `<path d="M416,754C404,756 400,770 406,776Q416,782 426,776C432,770 428,756 416,754Z" fill="#fff4ea" stroke="${K.goldLine}" stroke-width="1.6"/>`
+      + `<path d="M416,758V778M410,760L407,774M422,760L425,774" stroke="${K.goldMid}" stroke-width="1.2"/>`)
     + `<circle cx="416" cy="753" r="2.6" fill="${K.goldMid}" stroke="${K.goldLine}" stroke-width="1"/>`;
   return s;
 }

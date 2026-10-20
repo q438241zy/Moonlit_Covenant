@@ -30,7 +30,9 @@ const lines = [
   '{ "portraits": ["freya"], "costumes": ["freya_maid"], "cards": ["n_goblin"], "story-bg": ["hemai-day"] }',
   '```',
   '',
-  '莉亚、米娅、塞雷娜已有旧的厚涂立绘（`public/assets/{lia,mia,serena}.jpg`，由 `tools/art/raster/compress-legacy.mjs` 从带 AIGC 标识的 PNG 压缩而来），召唤/换衣页的立绘预留位同样适用于她们。',
+  '游戏画面里的女主一律用矢量立绘，位图只能经这里的预留位替换（audit B9）。换上之后，可见标识由页面统一显示的「AI 生成」角标负责（`public/paint.js` 的 `aiBadge()`，audit B17）；隐式标识（元数据）仍然必须保留。',
+  '',
+  '旧的莉亚、米娅、塞雷娜厚涂图（`public/assets/{lia,mia,serena}.jpg`，由 `tools/art/raster/compress-legacy.mjs` 压缩）是外传时期的造型，莉亚没有正典的塔盾「赤誓」，**不要**放进立绘预留位；请按 `tools/art/raster/manifest.mjs` 的正典描述重出。',
 ];
 for (const [group, jobs] of byGroup) {
   if (!jobs.length) continue;

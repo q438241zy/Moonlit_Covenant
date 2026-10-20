@@ -844,13 +844,16 @@ function safeLayer(fn, p, label) {
  *        bottom fade) and no full-frame lighting (moon wash, ambient, fade, vignette); the figure and its
  *        rim light are kept. Used for the story-mode busts that sit on day/night scene backgrounds.
  * @param opts.extras names of optional heroine layers (heroine.extras[name]) to draw behind the figure,
- *        e.g. ['shield']. Off by default, so the regular portraits / costumes never change.
+ *        e.g. ['shield']. Off unless asked for (portrait/build.mjs asks for heroine.portraitExtras).
+ * @param opts.accent the heroine's costume-accent kit (tools/art/portrait/accents.mjs), handed to the
+ *        outfit's layers as p.accent so every costume carries her own emblem and motif (B11). Null =
+ *        the plain template.
  */
-export function compose(heroine, { outfit, prefix, lenient = false, background = true, extras = [] } = {}) {
+export function compose(heroine, { outfit, prefix, lenient = false, background = true, extras = [], accent = null } = {}) {
   if (!heroine || !heroine.id) throw new Error('compose: heroine.id required');
   layerErrors = [];
   try {
-    const svg = composeInner(heroine, outfit, prefix, { background: background !== false, extras });
+    const svg = composeInner(heroine, outfit, prefix, { background: background !== false, extras, accent });
     if (layerErrors.length) {
       if (!lenient) throw new Error(`layer error(s): ${layerErrors.join('; ')}`);
       for (const e of layerErrors) console.warn(`[portrait] layer ${e}`);
@@ -861,7 +864,7 @@ export function compose(heroine, { outfit, prefix, lenient = false, background =
   }
 }
 
-function composeInner(heroine, outfit, prefix, { background = true, extras = [] } = {}) {
+function composeInner(heroine, outfit, prefix, { background = true, extras = [], accent = null } = {}) {
   const pre = prefix || (outfit ? `${heroine.id}-${outfit.type}` : heroine.id);
   const ctx = makeContext(pre);
   const palette = { ...DEFAULT_PALETTE, ...(heroine.palette || {}) };
@@ -876,6 +879,7 @@ function composeInner(heroine, outfit, prefix, { background = true, extras = [] 
   G.shapes = Object.freeze({ ...SHAPES, face: smooth(G.outline, { closed: true }) });
   const p = makeP(ctx, heroine, palette, ex, '', outfit, G);
   const po = outfit ? makeP(ctx, heroine, palette, ex, 'o', outfit, G) : null;
+  if (po) po.accent = accent || null; // heroine emblem + motif kit for the outfit layers (null = plain template)
   const costumeLayers = new Set(heroine.costumeLayers || ['bodyBack', 'neckAccessory']);
   const hidden = new Set(outfit?.hide || []);
   // Layer resolution (see README "Outfits"):

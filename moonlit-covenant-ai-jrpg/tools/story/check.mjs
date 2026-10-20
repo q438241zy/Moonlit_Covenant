@@ -84,6 +84,34 @@ function findDef(chapter, id) {
   return def;
 }
 
+// 玩家看得见的提示文字（核#12 / B14）：
+//   · 输入提示、占位文字、系统字幕、战斗情报、「自由输入：」分镜标题不用「你」称呼玩家，一律写 {PLAYER_NAME}（剧本里的「亚克」）——
+//     引号里的台词照常（角色对亚克说「你」没问题）；
+//   · 剧本里的镜头指示（「镜头掠过……」）要转写成世界内的叙述，不能原样出现在叙述里。
+const QUOTED = /“[^”]*”|「[^」]*」|‘[^’]*’|『[^』]*』/g;
+const addressesPlayer = (s) => typeof s === 'string' && /你/.test(s.replace(QUOTED, ''));
+function wordingErrors(chapter) {
+  const errs = [];
+  const say = (where, text, why) => errs.push(`${where}「${String(text).slice(0, 40)}」${why}`);
+  for (const shot of chapter.shots || []) {
+    if (/^自由输入[：:]/.test(shot.title || '') && addressesPlayer(shot.title)) say(`${shot.id} 分镜标题`, shot.title, '用了「你」，改用 {PLAYER_NAME}');
+  }
+  eachBeat(chapter, (beat) => {
+    if (beat.t === 'input') {
+      if (addressesPlayer(beat.prompt)) say(`${beat.id} prompt`, beat.prompt, '用了「你」，改用 {PLAYER_NAME}');
+      if (addressesPlayer(beat.placeholder)) say(`${beat.id} placeholder`, beat.placeholder, '用了「你」，改用 {PLAYER_NAME}');
+    } else if (beat.t === 'battle') {
+      (beat.intel || []).forEach((s) => { if (addressesPlayer(s)) say(`${beat.id} 战斗情报`, s, '用了「你」，改用 {PLAYER_NAME}'); });
+    } else if (beat.t === 'narr') {
+      for (const s of [beat.text, beat.text15]) {
+        if (beat.style === 'caption' && addressesPlayer(s)) say('系统字幕', s, '用了「你」，改用 {PLAYER_NAME}');
+        if (typeof s === 'string' && s.includes('镜头')) say('叙述', s, '是镜头指示，改写成世界内的叙述');
+      }
+    }
+  });
+  return errs;
+}
+
 let failed = false;
 let prevRuns = [];
 for (const entry of index) {
@@ -106,7 +134,7 @@ for (const entry of index) {
     console.log(`✗ ${entry.id} 与 index.json 不一致：`);
     indexErrors.forEach((e) => console.log('   ' + e));
   }
-  const errors = validateChapter(chapter, { speakers, locations });
+  const errors = [...validateChapter(chapter, { speakers, locations }), ...wordingErrors(chapter)];
   if (errors.length) {
     failed = true;
     console.log(`✗ ${entry.id} 校验失败 ${errors.length} 处：`);

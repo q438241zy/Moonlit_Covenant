@@ -10,53 +10,61 @@ import { icon } from '/icons.js';
 const STORAGE_KEY = 'moonlit_char_manager';
 // 默认人设变更时递增：旧存档中的默认角色会被替换为新版本，自建角色保留
 // v3：去掉结局前剧透、改正正典事实、统一「塞雷娜」「米娅·玲」写法、清理过时里程碑
-const PROFILE_VERSION = 3;
+// v4（核#12 · B1/B15）：莉亚、米娅、塞雷娜换成正典人设（设定集/03：盾战士 / 魔具发明师 / 夜鸦公国的暗系魔法师），
+//     不再用银轨号 IF 外传的称号与背景；新增「国家」「武器」两栏（正典武器名）；只写到正式章节已揭示的程度
+const PROFILE_VERSION = 4;
 
 const DEFAULT_CHARACTERS = [
   {
     id: 'lia', name: '莉亚·赫斯特', nameEn: 'Lia Hest', age: 19, height: '172cm',
-    hair: '赤红高马尾，左侧一缕暗红挑染', eyes: '琥珀金',
-    profession: '赤誓骑士 / 前卫破甲', element: '火·契约',
-    personality: '嘴硬心软、重视承诺、毒舌急性子。表面用命令口吻和挖苦遮掩温柔，最怕被别人安慰（因为安慰让她想起没能救下的人）。自称\"不会再让任何人死在我面前\"。',
-    quirks: ['害羞时别过脸整理肩甲绝不承认', '被夸奖会说\"闭嘴\"但耳朵红', '独自巡逻时低声念已故同伴的名字'],
-    playerInteraction: '尊重有担当的人，厌恶空洞承诺；被调戏会先瞪眼再别过头去（耳朵通红）；认真对她说\"我不会丢下你\"会获得她一分沉默，和以后的十倍卖命。',
-    likes: ['守信用的人', '好剑', '月光下的火车车厢顶', '草莓蛋糕（坚称是『高效率糖分补给』）'],
-    dislikes: ['被安慰', '不战而退', '临战失约'],
+    nation: '赤焰王国', weapon: '塔盾“赤誓”＋细身长剑“断章”',
+    hair: '赤红高马尾，左侧一缕近黑的暗红挑染', eyes: '琥珀金（右眼下一道细疤）',
+    profession: '盾战士 / 前锋 · 护援反击', element: '火·土辅律',
+    personality: '严肃、守时、讲规则，说话像下命令，对准备不足的人毫不客气。她不是天生冷淡，而是相信严格能减少死亡：看到有人冲出阵型，会直接用盾把人拍回去。对弱者却格外耐心，会默默修补队友的装备。晨钟镇冒险者公会的高阶成员。',
+    quirks: ['战前必查药剂、护具与撤退路线', '塔盾边缘满是她自己敲上的修补铆钉', '谁笑她爱吃甜点，她就把谁的训练量加倍'],
+    playerInteraction: '起初把亚克看成热血有余、纪律不足的麻烦新手；亚克肯执行战术、不抢指挥，她才会把后背交给他。私下拿草莓蛋糕或她的过度认真开玩笑可以——她会反击，或直接让人闭嘴。公开否定她的能力、拿同伴的性命开玩笑、临战失约，都是雷区。',
+    likes: ['草莓蛋糕（坚称是『高效率糖分补给』）', '准时与周全的准备', '肯执行战术的队友'],
+    dislikes: ['拿同伴的性命开玩笑', '临战失约', '把鲁莽冒充勇敢'],
     relations: [
-      { target: 'mia', type: 'bond', desc: '总嫌她吵，但会默默帮她修工具' },
-      { target: 'serena', type: 'rival', desc: '互不主动示弱的竞技场，其实互相欣赏' }
+      { target: 'mia', type: 'bond', desc: '安全规范遇上爆炸天才：一个先确认撤退路线，一个先按下开关' },
+      { target: 'serena', type: 'rival', desc: '边界冲突最强的一对，真到守阵时却是最可靠的防守组合' },
+      { target: 'freya', type: 'bond', desc: '两位照顾者，一眼就能识破对方在逞强' }
     ]
   },
   {
     id: 'mia', name: '米娅·玲', nameEn: 'Mia Lin', age: 18, height: '158cm',
-    hair: '青蓝短发，发尾霓虹渐变，右边别扳手形发卡', eyes: '亮青色（瞳孔有淡淡电路反光）',
-    profession: '猫耳机关师 / 支援过载', element: '雷·回路',
-    personality: '聪明活泼、语速快、用玩笑给恐惧降噪的天才技师。头上那对哑光钛合金机械猫耳是她的招牌。越紧张越修东西，被认真倾听反而会突然安静。',
-    quirks: ['紧张时左耳（机械耳）无意识转向声源', '给每颗危险螺丝都取了名字', '用\"喵\"收句但绝对不滥用'],
-    playerInteraction: '喜欢被问具体的技术问题；对她说\"我相信你的计算\"会让她呆住2秒然后飞速敲键盘；调戏她会用三倍语速的技术术语反杀。',
-    likes: ['拆开又装回去的东西', '咖啡因', '被认真倾听'],
-    dislikes: ['别人动她的螺丝刀', '被当成小孩子', '狗（\"它们总想咬我的耳朵！\"）'],
+    nation: '铸金联邦', weapon: '多功能魔导棍“叮当三号”',
+    hair: '青蓝短发（自剪碎发，发尾霓虹渐变），右侧别扳手形发卡，戴哑光钛合金的机械猫耳接收器', eyes: '亮青色（鼻尖一颗小痣）',
+    profession: '魔具发明师 / 范围攻击 · 弱点扫描', element: '金·雷术',
+    personality: '语速快、注意力跳跃，看到新素材会忘记危险，把爆炸称作“非计划拆解”。但她并非无能：她能用废料造出奇迹，只是安全意识长期追不上想象力。乐于分享知识，讨厌权威垄断技术，想做出普通人也负担得起的魔具。出身工匠家庭——母亲柯拉经营修理铺，父亲林铎曾在联邦魔具院工作。',
+    quirks: ['给装置编号却总记错', '严肃会议上会偷偷画零件图', '身边漂浮着球形小无人机“零号”'],
+    playerInteraction: '喜欢别人认真听她解释——“你不懂公式没关系，你有认真听完”；肯让人看未完成的设计，是很高的信任。给失败原型起古怪名字、吐槽“非计划拆解”都可以，前提是不否定她的专业。擅自拆她的装置、把失败归咎于她的年龄、要她制造伤害平民的工具，都是雷区。',
+    likes: ['被认真听完解释', '新素材和拆开又装回去的东西', '普通人也用得起的魔具'],
+    dislikes: ['别人擅自拆她的装置', '把失败归咎于她的年龄', '被要求制造伤害平民的工具'],
     relations: [
-      { target: 'lia', type: 'bond', desc: '嘴上嫌弃骑士太死板，但改装炉心时第一个喊莉亚来看' },
-      { target: 'serena', type: 'bond', desc: '唯一敢分析塞雷娜观测仪数据的人' }
+      { target: 'lia', type: 'bond', desc: '爆炸天才遇上安全规范：试作机通电前，总得先过莉亚那一关' },
+      { target: 'serena', type: 'bond', desc: '把塞雷娜的诡异社交当成可改进的流程，塞雷娜反而接受这种直接反馈' }
     ]
   },
   {
-    id: 'serena', name: '塞雷娜·诺克斯', nameEn: 'Serena Nox', age: 19, height: '169cm',
-    hair: '紫黑长直发渐变为月白，左侧编细辫串微型月相盘发饰', eyes: '淡紫（虹膜有极细星轨刻线）',
-    profession: '月蚀观测者 / 术式封印', element: '月·观测',
-    personality: '冷静克制、观察敏锐的月术师。她用反问检验诚实，不需要讨好任何人。奉命在抵达终点前销毁黎明种；对少数她\"看不穿\"的人，怀有近乎虔诚的好奇。',
-    quirks: ['情绪波动时发饰月相盘倒退一格（她自己不知道）', '从不眨眼超过必要的时间', '每句预言最后一个词总是轻声'],
-    playerInteraction: '在意玩家是否诚实，胜过在意玩家对她好不好。突然说\"你在撒谎\"时不用害怕——她只是在测试。调戏她会被反问\"你确定你准备好了吗\"（然后她轻轻笑了）。',
-    likes: ['真相（无论多残酷）', '新月之夜', '安静的人'],
-    dislikes: ['谎言', '喧哗', '被问\"你在想什么\"'],
+    id: 'serena', name: '塞雷娜·诺克斯', nameEn: 'Serena Nox', age: 19, height: '168cm',
+    nation: '夜鸦公国', weapon: '黑曜法杖“无眠镜”',
+    hair: '紫黑长直发，发尾渐变为月白；左侧细辫串着银色月相盘发饰', eyes: '淡紫（虹膜有极细星轨纹）',
+    profession: '暗系魔法师 / 诅咒 · 控制干扰', element: '暗·镜术',
+    personality: '神秘、冷静、机敏，嘴上不饶人，习惯先从镜面与影子里掌握情报再开口。出身夜鸦公国的诺克斯家族。她会处理队伍难以面对的脏活，也会护着被歧视的暗术者；表情通常平静，真正生气时反而笑得温柔。',
+    quirks: ['会把普通社交写成流程表', '说危险的话时表情格外认真', '右手戴半截白手套，胸前挂闭合眼睑形银吊坠'],
+    playerInteraction: '习惯观察细节、只说半句真话，测试亚克会不会主动诚实。等她自己承认了观察欲，再用冷幽默提醒“镜子也该休息”可以——她会用更阴冷的玩笑回敬。突然失联、用虚假的承诺安抚她、当众揭她的伤疤，都是雷区。',
+    likes: ['主动说真话的人', '镜面与影子', '直截了当的反馈'],
+    dislikes: ['突然失联', '用虚假的承诺安抚', '被当众揭开伤疤'],
     relations: [
-      { target: 'lia', type: 'rival', desc: '互相不先低头，但战时会为对方展开最强结界' },
-      { target: 'mia', type: 'bond', desc: '米娅是唯一敢乱动她观测仪还活着的人' }
+      { target: 'lia', type: 'rival', desc: '谁也不肯先让步的边界之争，却能组成最可靠的防守组合' },
+      { target: 'mia', type: 'bond', desc: '米娅的直接反馈让她意外地放松' },
+      { target: 'evelyn', type: 'bond', desc: '暗与圣，一起证明属性不决定道德' }
     ]
   },
   {
     id: 'freya', name: '芙蕾娅·霜华', nameEn: 'Freya Frostbloom', age: 19, height: '170cm',
+    nation: '霜潮王国', weapon: '长法杖“春眠”',
     hair: '青蓝色波浪长发，发间别冰晶发梳', eyes: '暖琥珀色',
     profession: '冰系魔法师 / 守墓人 · 冻结控制', element: '水·冰',
     personality: '像可靠的大姐姐，说话轻柔，善于照顾伤员和调停争执。擅长察觉别人的需要，却从不表达自己的需要。数年前为阻止魔力瘟疫冻结了整座地下祭堂，把生死未卜的同伴也封在冰里——她害怕解冻之后，必须承认自己没能救下所有人。',
@@ -71,6 +79,7 @@ const DEFAULT_CHARACTERS = [
   },
   {
     id: 'lilith', name: '莉莉丝·瓦尔哈拉', nameEn: 'Lilith Valhalla', age: 19, height: '168cm',
+    nation: '翠影公国', weapon: '双匕首“昼盲”与“夜醒”',
     hair: '金色长发高束成马尾，鼻梁贴一块小创可贴', eyes: '金色',
     profession: '暗影刺客 / 高速单体输出', element: '木·暗',
     personality: '警惕、尖锐、行动先于思考。七年前瓦尔哈拉家族被一个至今无人敢点名的组织屠杀，罪名却被安在家族头上，她逃入翠影影市成为刺客。对街头孩子和流浪动物异常温柔；害怕亲近的人再次被夺走，所以习惯先离开或先攻击。',
@@ -85,6 +94,7 @@ const DEFAULT_CHARACTERS = [
   },
   {
     id: 'evelyn', name: '伊芙琳·星歌', nameEn: 'Evelyn Starsong', age: 18, height: '160cm',
+    nation: '圣辉教国', weapon: '圣歌弓“微光”与祈祷铃',
     hair: '浅金偏白长发，编成松散侧辫，额前戴羽翼形圣冠', eyes: '星蓝色',
     profession: '圣教圣女 / 纯结持有者 · 治疗净化', element: '光·纯结',
     personality: '胆小、爱哭、说话很轻，常从柱子、窗边或人群后远远看着亚克。但她并不无能——有人受伤时会一边流泪一边坚持施法。从小在白塔圣都的圣堂长大，发言、服装、朋友甚至喜欢的花都被规定；她害怕自己真实的愿望会让所有信徒失望。',
@@ -99,6 +109,7 @@ const DEFAULT_CHARACTERS = [
   },
   {
     id: 'ophelia', name: '奥菲利亚·使诺德', nameEn: 'Ophelia Shinod', age: 19, height: '172cm',
+    nation: '龙脊古国', weapon: '龙纹法杖“祖语”（半龙形用爪与尾）',
     hair: '铜红色狂野长发，额侧一对小龙角', eyes: '金紫异色瞳（左金右紫）',
     profession: '龙族圣女 / 变形者 · 爆发压制', element: '土·龙术',
     personality: '外表端庄自信，带着古老的礼仪感，实际非常好奇，对人类日常缺乏常识，爱收集人类的小物件。她能读取历代龙王的记忆，也因此被要求放弃个人偏好，成为“所有祖先共同的声音”——她害怕拒绝祖先之后，自己就不再算龙族。',
@@ -113,11 +124,12 @@ const DEFAULT_CHARACTERS = [
   },
   {
     id: 'ayla', name: '艾拉·瓦尔哈拉', nameEn: 'Ayla Valhalla', age: 18, height: '165cm',
+    nation: '圣辉教国', weapon: '光剑“晨罚”＋圆盾',
     hair: '金色齐肩短发', eyes: '明亮的蓝色',
     profession: '光明骑士 / 快速坦克 · 反击', element: '光·圣雷',
     personality: '开朗、好胜、行动大胆，擅长用轻佻的挑衅逼对手认真。家族灭门时被圣教骑士救走，被教导姐姐背叛了家族，于是把服从当成偿还救命之恩，把“光明骑士”的身份当成自己仍有价值的证明。观察细致，能察觉别人不敢说出口的犹豫。',
     quirks: ['挑衅成功后若被认真反击，会短暂慌乱，再装作一切都在计划内', '蓝金轻甲的披风内侧，偷偷保留着瓦尔哈拉黑金家纹', '光剑“晨罚”总斜挎在肩后'],
-    playerInteraction: '喜欢公平决斗和明确的规则，爱用“这点力气也想保护别人？”挑战玩家；被坚定地说“不”反而会认真对待你。把她当成莉莉丝的附属、或用“服从命令”替她开脱，是雷区。',
+    playerInteraction: '喜欢公平决斗和明确的规则，爱用“这点力气也想保护别人？”挑战玩家；被坚定地说“不”，她反而会认真起来。把她当成莉莉丝的附属、或用“服从命令”替她开脱，是雷区。',
     likes: ['公平决斗', '明确的规则', '被认真对待'],
     dislikes: ['被当成姐姐的附属', '无条件的赞美', '没有命令时的空白'],
     relations: [
@@ -136,13 +148,15 @@ const DEFAULT_ART_STATUS = Object.fromEntries(DEFAULT_CHARACTERS.map(c => [c.id,
 
 // Default milestones
 const DEFAULT_MILESTONES = [
-  { id: 'm1', phase: 'design', phaseLabel: '角色设定确认', date: '2026-07-20', chars: ['lia','mia','serena'], note: '月蚀契约三人组设定已从CHARACTER-DESIGN.md确认' },
+  { id: 'm1', phase: 'design', phaseLabel: '角色设定确认', date: '2026-07-20', chars: ['lia','mia','serena'], note: '莉亚、米娅、塞雷娜的设定按正典 设定集/03 确认（银轨号 IF 外传的设定另见 CHARACTER-DESIGN.md，不收录于此）' },
   { id: 'm2', phase: 'design', phaseLabel: '角色设定确认', date: '2026-07-22', chars: ['freya','lilith','evelyn','ophelia','ayla'], note: '新增五人组设定完成' },
   { id: 'm6', phase: 'final', phaseLabel: '最终定稿', date: '2026-10-09', chars: ['lia','mia','serena','freya','lilith','evelyn','ophelia','ayla'], note: '原创矢量半身立绘 ×8 + 服装立绘 ×48 交付（docs/ART-DIRECTION.md）' },
 ];
 
 // 已过时的默认里程碑（立绘早已换成原创矢量）：升级到 v3 时从旧存档里移除
 const OBSOLETE_MILESTONE_IDS = new Set(['m3', 'm4', 'm5']);
+// 旧版默认里程碑的原文：升级时只替换玩家没改过的那条（note 与旧默认值一字不差），改过的保留
+const LEGACY_MILESTONE_NOTES = { m1: '月蚀契约三人组设定已从CHARACTER-DESIGN.md确认' };
 
 const PHASE_LABELS = { design:'角色设定确认', lineart:'线稿', coloring:'上色', final:'最终定稿', vfx:'动作/特效', integration:'整合测试' };
 const STATUS_LABELS = { 'complete': '已完成', 'in-progress': '进行中', 'not-started': '未开始' };
@@ -228,7 +242,9 @@ function loadData() {
   if ((Number(data.profileVersion) || 1) < PROFILE_VERSION) {
     const defaults = new Map(DEFAULT_CHARACTERS.map((c) => [c.id, c]));
     characters = characters.map((c) => (defaults.has(c.id) ? clone(defaults.get(c.id)) : c));
-    milestones = milestones.filter((m) => !OBSOLETE_MILESTONE_IDS.has(m.id));
+    const defaultMilestones = new Map(DEFAULT_MILESTONES.map((m) => [m.id, m]));
+    milestones = milestones.filter((m) => !OBSOLETE_MILESTONE_IDS.has(m.id))
+      .map((m) => (Object.hasOwn(LEGACY_MILESTONE_NOTES, m.id) && m.note === LEGACY_MILESTONE_NOTES[m.id] && defaultMilestones.has(m.id) ? clone(defaultMilestones.get(m.id)) : m));
     dirty = true;
   }
   ensureArtStatus();
@@ -369,7 +385,7 @@ function renderCharacters() {
   const filter = $('charFilter').value;
   let filtered = characters;
   if (search) {
-    filtered = filtered.filter(c => [c.name, c.nameEn, c.profession, c.element, c.personality, ...list(c.quirks)]
+    filtered = filtered.filter(c => [c.name, c.nameEn, c.profession, c.element, c.nation, c.weapon, c.personality, ...list(c.quirks)]
       .some(v => text(v).toLowerCase().includes(search)));
   }
   if (filter) filtered = filtered.filter(c => c.id === filter);
@@ -422,6 +438,8 @@ function showCharDetail(id) {
           <div class="detail-item"><div class="label">年龄 · 身高</div><div class="value">${esc(c.age)}岁 · ${esc(c.height)}</div></div>
           <div class="detail-item"><div class="label">发色发型</div><div class="value">${esc(c.hair)}</div></div>
           <div class="detail-item"><div class="label">瞳色</div><div class="value">${esc(c.eyes)}</div></div>
+          ${c.nation || c.weapon ? `<div class="detail-item"><div class="label">国家</div><div class="value">${esc(c.nation) || '—'}</div></div>
+          <div class="detail-item"><div class="label">武器</div><div class="value">${esc(c.weapon) || '—'}</div></div>` : ''}
         </div>
         <div class="detail-grid" style="margin-top:14px;">
           <div class="detail-item"><div class="label">性格</div><div class="value">${esc(c.personality)}</div></div>
@@ -476,15 +494,19 @@ function openCharModal(id) {
     </div>
     <div class="modal-row">
       <div><label for="f_nameEn">英文名</label><input id="f_nameEn" value="${val('nameEn')}" placeholder="Freya Frostbloom"></div>
-      <div><label for="f_age">年龄</label><input id="f_age" value="${val('age')}" placeholder="23"></div>
+      <div><label for="f_age">年龄</label><input id="f_age" value="${val('age')}" placeholder="19"></div>
     </div>
     <div class="modal-row">
       <div><label for="f_height">身高</label><input id="f_height" value="${val('height')}" placeholder="166cm"></div>
-      <div><label for="f_element">元素</label><input id="f_element" value="${val('element')}" placeholder="冰·记忆"></div>
+      <div><label for="f_element">元素</label><input id="f_element" value="${val('element')}" placeholder="水·冰"></div>
     </div>
-    <label for="f_profession">职业</label><input id="f_profession" value="${val('profession')}" placeholder="霜华术师 / 冻结控制">
-    <label for="f_hair">发色发型</label><input id="f_hair" value="${val('hair')}" placeholder="冰蓝长发...">
-    <label for="f_eyes">瞳色</label><input id="f_eyes" value="${val('eyes')}" placeholder="浅冰蓝">
+    <label for="f_profession">职业</label><input id="f_profession" value="${val('profession')}" placeholder="冰系魔法师 / 冻结控制">
+    <div class="modal-row">
+      <div><label for="f_nation">国家</label><input id="f_nation" value="${val('nation')}" placeholder="霜潮王国"></div>
+      <div><label for="f_weapon">武器</label><input id="f_weapon" value="${val('weapon')}" placeholder="长法杖“春眠”"></div>
+    </div>
+    <label for="f_hair">发色发型</label><input id="f_hair" value="${val('hair')}" placeholder="青蓝色波浪长发…">
+    <label for="f_eyes">瞳色</label><input id="f_eyes" value="${val('eyes')}" placeholder="暖琥珀色">
     <label for="f_personality">性格</label><textarea id="f_personality">${val('personality')}</textarea>
     <label for="f_quirks">癖好（每行一个）</label><textarea id="f_quirks">${esc(list(c?.quirks).join('\n'))}</textarea>
     <label for="f_playerInteraction">玩家互动模式</label><textarea id="f_playerInteraction">${val('playerInteraction')}</textarea>
@@ -517,6 +539,8 @@ function saveCharacter() {
     height: field('height'),
     element: field('element'),
     profession: field('profession'),
+    nation: field('nation'),
+    weapon: field('weapon'),
     hair: field('hair'),
     eyes: field('eyes'),
     personality: field('personality'),

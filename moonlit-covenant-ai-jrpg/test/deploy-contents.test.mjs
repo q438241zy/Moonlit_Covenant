@@ -239,7 +239,8 @@ test('O1 镜像内容：只用 Dockerfile 的 COPY 行拼出来的 /app 能启�
 
     const meta = await (await fetch(`${server.base}/api/meta`)).json();
     assert.equal(meta.ok, true);
-    assert.equal(meta.meta.demoTools, false, '镜像里 NODE_ENV=production，演示工具应默认关闭');
+    // 作者核#12（B2/B3）：这个版本不公开，商店与免费补充保留——镜像设了 DEMO_TOOLS=1，NODE_ENV=production 也不关
+    assert.equal(meta.meta.demoTools, true, '镜像里设了 DEMO_TOOLS=1，演示工具应保持开启');
 
     for (const page of ['/', '/story.html', '/cards.html']) {
       const response = await fetch(`${server.base}${page}`);

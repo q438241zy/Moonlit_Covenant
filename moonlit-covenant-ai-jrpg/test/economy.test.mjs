@@ -6,7 +6,7 @@ import { CHARACTERS } from '../game/content.mjs';
 import { CREDIT_COSTS, addCredit, createCreditMeter, getMeterStatus } from '../game/credit.mjs';
 import { CHARACTER_POOL, COSTUME_POOL, GACHA_RATES, PITY_THRESHOLD, pullGacha } from '../game/gacha.mjs';
 import { MEMBERSHIP_TIERS, createPlayerAccount, getMembershipInfo, grantDailyCredits, purchaseMembership } from '../game/membership.mjs';
-import { equipCostume } from '../game/costume.mjs';
+import { equipCostume, BRANCH_SCENES } from '../game/costume.mjs';
 
 const DAY = 24 * 60 * 60 * 1000;
 // 固定在本地时间正午，跨天推算不受时区 / 夏令时影响
@@ -314,4 +314,48 @@ test('G5: pool facts match canon (设定集/03)', () => {
   assert.equal(byId.serena.name, '塞雷娜·诺克斯');
   assert.equal(byId.ophelia.element, '土');
   assert.equal(byId.lilith.element, '木');
+});
+
+// B1 / B15（作者核#12）：银轨号是 IF 外传，卡池写正典身份——职业、国家、正典武器名、源律主律；外传身份不进卡池
+test('B1/B15: the pool uses canon identities and weapon names, never the side-story ones', () => {
+  const byId = Object.fromEntries(CHARACTER_POOL.map((c) => [c.id, c]));
+  const canon = {
+    lia: { name: '莉亚·赫斯特', title: '盾战士', element: '火', nation: '赤焰王国', weapon: ['赤誓', '断章'] },
+    mia: { name: '米娅·玲', title: '魔具发明师', element: '金', nation: '铸金联邦', weapon: ['叮当三号'] },
+    serena: { name: '塞雷娜·诺克斯', title: '暗系魔法师', element: '暗', nation: '夜鸦公国', weapon: ['无眠镜'] },
+    freya: { name: '芙蕾娅·霜华', title: '冰系魔法师', element: '水', nation: '霜潮王国', weapon: ['春眠'] },
+    lilith: { name: '莉莉丝·瓦尔哈拉', title: '暗影刺客', element: '木', nation: '翠影公国', weapon: ['昼盲', '夜醒'] },
+    evelyn: { name: '伊芙琳·星歌', title: '圣教圣女', element: '光', nation: '圣辉教国', weapon: ['微光'] },
+    ophelia: { name: '奥菲利亚·使诺德', title: '龙族圣女', element: '土', nation: '龙脊古国', weapon: ['祖语'] },
+    aila: { name: '艾拉·瓦尔哈拉', title: '光明骑士', element: '光', nation: '圣辉教国', weapon: ['晨罚'] }
+  };
+  assert.deepEqual(Object.keys(byId).sort(), Object.keys(canon).sort());
+  for (const [id, facts] of Object.entries(canon)) {
+    const c = byId[id];
+    assert.equal(c.name, facts.name, id);
+    assert.equal(c.title, facts.title, id);
+    assert.equal(c.element, facts.element, id);
+    assert.equal(c.nation, facts.nation, id);
+    for (const w of facts.weapon) {
+      assert.ok(c.weapon.includes(w), `${id} weapon ${w}`);
+      assert.ok(c.desc.includes(w), `${id} desc names the canon weapon ${w}`);
+    }
+    assert.ok(c.age === 18 || c.age === 19, `${id} is an adult heroine (18–19)`);
+    assert.ok(c.desc.includes(facts.nation) || c.desc.includes(facts.nation.slice(0, 2)), `${id} desc names the nation`);
+  }
+  assert.ok(byId.lia.desc.includes('赤誓') && byId.lia.desc.includes('断章'), 'Lia carries the tower shield 赤誓 and the sword 断章');
+  assert.ok(byId.mia.desc.includes('叮当三号'));
+  assert.ok(byId.serena.desc.includes('诺克斯'));
+  // 外传（银轨号）的身份与造型不出现在卡池里
+  const sideStory = ['赤誓骑士', '月蚀观测者', '猫耳机关师', '赤色短发', '观测结果显示', '失踪', '银轨号', '列车'];
+  for (const c of CHARACTER_POOL) {
+    for (const term of sideStory) assert.ok(!JSON.stringify(c).includes(term), `${c.id}: 「${term}」`);
+  }
+});
+
+// B11（作者核#12）：换装「分支剧情」还没有制作，数据上也明确标为不可用（界面显示「敬请期待」）
+test('B11: costume branch scenes are all marked unavailable', () => {
+  const scenes = Object.values(BRANCH_SCENES);
+  assert.equal(scenes.length, 6);
+  for (const scene of scenes) assert.equal(scene.available, false, scene.sceneId);
 });

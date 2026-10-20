@@ -1,13 +1,15 @@
 /* ═══════════════════════════════════════════════════════════
-   月蚀契约·暗影对决 —— 前端 SPA（原生 JS，无依赖）
+   月蚀契约·暗影对决（实验模式，B12）—— 前端 SPA（原生 JS，无依赖）
    界面：主菜单 / 抽卡 / 图鉴 / 组牌 / 战斗
+   规则：Shadowverse 式进化（每回合一次、刚入场即进化只获得突进），先后手开局抛硬币（state.coinToss）
+   账户：与主游戏、主线播放器共用 localStorage「moonlit:playerId」（契约 R-4）；获胜奖励来自服务器（契约 R-3）
    美术：原创矢量卡面 /assets/cards/*.svg（进化版 *_e.svg）、女主立绘、
-         UI 图标统一来自 ./icons.js（不再用 emoji 充当美术）
+         UI 图标统一来自 ./icons.js（不再用 emoji 充当美术）；paint() 换成厚涂位图时加「AI 生成」角标（B17）
    交互：长按（350ms）或右键任意卡牌查看详情；AI 回合按 aiActions 逐步回放
    ═══════════════════════════════════════════════════════════ */
 
 import { icon } from './icons.js';
-import { loadPaint, paint } from './paint.js';
+import { loadPaint, paint, aiPaintedClass, aiBadge } from './paint.js';
 
 // ─── 全局状态 ───
 const S = {
@@ -21,6 +23,8 @@ const S = {
   booting: true,
   recovering: false,
   resetNotice: false,   // 服务器上找不到本地记住的账户（存档已重置）
+  rewardStatus: null,   // GET /api/rewards/status：今日对战胜利奖励进度（契约 R-1）
+  battleReward: null,   // 本局的胜利奖励 { diamonds, capped, winsToday, cap, balance }（契约 R-3）
   // 战斗
   battle: null,
   resumable: null,      // 刷新页面后可继续的对局
@@ -54,8 +58,13 @@ const MAX_KEEP = () => S.meta?.maxCopies ?? 3;
 // localStorage 可能不可用（隐私模式、禁用站点数据）：读写一律兜底
 const store = {
   get(k) { try { return localStorage.getItem(k); } catch { return null; } },
-  set(k, v) { try { localStorage.setItem(k, v); } catch { /* 忽略 */ } }
+  set(k, v) { try { localStorage.setItem(k, v); } catch { /* 忽略 */ } },
+  remove(k) { try { localStorage.removeItem(k); } catch { /* 忽略 */ } }
 };
+// 契约 R-4：和主游戏（public/app.js）、主线播放器（public/story/player.js）共用同一个本机账户，存的是原样字符串
+const ACCOUNT_KEY = 'moonlit:playerId';
+const LEGACY_CARD_ACCOUNT_KEY = 'moonlit:cardPlayerId'; // 旧版卡牌页单独记的账户：主账户不可用时迁移过来
+const NAME_KEY = 'moonlit:name';
 
 // ─── API 客户端 ───
 // 任何接口返回 NO_ACCOUNT（服务器重启或存档过期）都提示「存档已重置」并重新建号
@@ -91,9 +100,12 @@ function toast(msg, isErr = false) {
 }
 
 let lastFocus = null;
-function modal(html, { label = '详情' } = {}) {
+let modalOnClose = null; // 弹层关闭（按钮、点遮罩、Esc）后要继续做的事，例如抛硬币之后开始对局
+function modal(html, { label = '详情', onClose = null } = {}) {
   const root = $('#modal-root');
   if (!modalOpen()) lastFocus = document.activeElement;
+  if (modalOnClose) { const pending = modalOnClose; modalOnClose = null; setTimeout(pending, 0); } // 被新弹层顶掉也要接着做
+  modalOnClose = onClose;
   root.innerHTML = `<div class="mask"><div class="sheet" role="dialog" aria-modal="true" aria-label="${esc(label)}" tabindex="-1">${html}</div></div>`;
   $('.mask', root).addEventListener('click', (e) => { if (e.target.classList.contains('mask')) closeModal(); });
   const sheet = $('.sheet', root);
@@ -105,6 +117,9 @@ function closeModal() {
   // 关闭后把焦点还给打开弹层前的元素（键盘操作不会「丢位置」）
   if (lastFocus?.isConnected) lastFocus.focus({ preventScroll: true });
   lastFocus = null;
+  const after = modalOnClose;
+  modalOnClose = null;
+  after?.();
 }
 const modalOpen = () => !!$('#modal-root')?.firstElementChild;
 
@@ -126,7 +141,10 @@ const cur = (name, n) => `<span class="cur cur-${name}">${icon(name, { size: '1.
 function avatarHTML(cls, extra = '') {
   const info = S.meta?.classes?.[cls];
   const img = info?.portrait ? `<img class="avatar-img" src="${paint(info.portrait)}" alt="" draggable="false">` : '';
-  return `<span class="avatar ${extra}" style="--accent:${info?.accent || '#666'}"><span class="avatar-fallback">${icon(CLASS_ICON[cls] || 'sword', { size: '55%' })}</span>${img}</span>`;
+  // 厚涂位图（AI 生成）时加统一角标（B17）；20px 的小头像放不下，由 CSS 隐藏
+  const ai = info?.portrait ? aiPaintedClass(info.portrait) : '';
+  const badge = info?.portrait ? aiBadge(info.portrait) : '';
+  return `<span class="avatar ${extra} ${ai}" style="--accent:${info?.accent || '#666'}"><span class="avatar-fallback">${icon(CLASS_ICON[cls] || 'sword', { size: '55%' })}</span>${img}${badge}</span>`;
 }
 
 // ─── 程序化卡牌美术（SVG，零依赖、可离线，真实立绘就绪后自动让位给 <img>）───
@@ -264,7 +282,7 @@ function instToCard(inst) {
     attack: inst.attack, health: inst.health, maxHealth: inst.maxHealth,
     baseAttack: inst.baseAttack, baseHealth: inst.baseHealth,
     evolved: inst.evolved, canAttack: inst.canAttack, canAttackLeader: inst.canAttackLeader,
-    attackedThisTurn: inst.attackedThisTurn, keywords: inst.keywords || def.keywords || []
+    attackedThisTurn: inst.attackedThisTurn, enteredThisTurn: inst.enteredThisTurn, keywords: inst.keywords || def.keywords || []
   };
 }
 
@@ -303,16 +321,20 @@ function cardHTML(card, opts = {}) {
   const shard = opts.shards ? `<div class="shard-badge">${icon('shard', { size: 11 })}+${opts.shards}</div>` : '';
   // 「可进化」用紫色闪光徽记，和金色的「进化」（已进化）标记区分开；真正的进化按钮在下方操作栏
   const evoBadge = opts.canEvolve ? `<div class="evo-badge" title="可以进化">${icon('sparkle', { size: '100%' })}</div>` : '';
-  const artUrl = paint((opts.evolved && card.artEvolve) ? card.artEvolve : card.art);
+  const artSrc = (opts.evolved && card.artEvolve) ? card.artEvolve : card.art;
+  const artUrl = paint(artSrc);
   // 矢量卡面叠在程序化 SVG 之上；加载失败由 init() 里的捕获监听隐藏，露出底层程序化美术
   const artImg = artUrl ? `<img class="art-img" src="${artUrl}" alt="" loading="lazy" decoding="async" draggable="false">` : '';
+  // 卡面换成厚涂位图（AI 生成）时，卡面容器加统一的「AI 生成」角标（B17）
+  const artAi = artSrc ? aiPaintedClass(artSrc) : '';
+  const artBadge = artSrc ? aiBadge(artSrc) : '';
   const a11y = opts.interactive
     ? ` role="button" tabindex="0" aria-label="${esc(`${card.name}，${card.cost}费${isSpell ? '法术' : `，攻击${st.atk} 生命${st.hp}`}${opts.ariaExtra || ''}`)}"`
     : '';
   return `<div class="${cls}" style="--cc:${cc};--rc:${rc}" ${opts.attrs || ''}${a11y}>
     <div class="cost">${card.cost}</div>
     ${kwIcons ? `<div class="kw">${kwIcons}</div>` : ''}
-    <div class="art">${cardArtSVG(card, opts.evolved)}${artImg}</div>
+    <div class="art ${artAi}">${cardArtSVG(card, opts.evolved)}${artImg}${artBadge}</div>
     <div class="cname">${card.name}</div>
     ${stats}${countBadge}${shard}${evoBadge}
   </div>`;
@@ -392,13 +414,29 @@ async function checkResumable() {
   if (!S.resumable) markBattle(false);
 }
 
+// 今日对战胜利奖励（契约 R-1 的 cardWinsToday / cardWinCap）；读不到就不显示，不打扰玩家
+async function refreshRewardStatus() {
+  if (!S.playerId) return;
+  const r = await get(`/api/rewards/status?playerId=${pid()}`);
+  if (r.ok && Number.isFinite(r.cardWinCap)) S.rewardStatus = r;
+}
+const winReward = () => S.rewardStatus?.cardWinReward ?? S.rewardStatus?.rules?.cardWin?.diamonds ?? 40;
+function winRewardLine() {
+  const st = S.rewardStatus;
+  if (!st) return '';
+  const left = Math.max(0, st.cardWinCap - st.cardWinsToday);
+  return left > 0
+    ? `获胜 ${cur('diamond', `+${winReward()}`)} · 今日 ${st.cardWinsToday}/${st.cardWinCap}`
+    : `今日 ${st.cardWinCap} 场胜利奖励已领完，明天再来`;
+}
+
 // ─── 主菜单 ───
 async function renderHub() {
-  await Promise.all([refreshSummary(), checkResumable()]);
+  await Promise.all([refreshSummary(), checkResumable(), refreshRewardStatus()]);
   if (S.screen !== 'hub') return;
   const rb = S.resumable;
   const notice = S.resetNotice
-    ? `<div class="notice" role="status">${icon('info', { size: 18 })}<span><b>存档已重置</b>：服务器上找不到你之前的卡牌存档（服务器重启或存档过期），已为你新建存档。</span><button type="button" class="btn ghost small" id="noticeOk">知道了</button></div>`
+    ? `<div class="notice" role="status">${icon('info', { size: 18 })}<span><b>存档已重置</b>：服务器上找不到你之前的存档（服务器重启或存档过期），已为你新建账户；主游戏和主线也会用这个新账户。</span><button type="button" class="btn ghost small" id="noticeOk">知道了</button></div>`
     : '';
   const resume = rb
     ? `<button type="button" class="hub-card wide resume" id="resumeBtn">
@@ -407,19 +445,21 @@ async function renderHub() {
         <span class="go">${icon('chevron-right', { size: 22 })}</span>
       </button>`
     : '';
+  const rewardLine = winRewardLine();
   app().innerHTML = `<div class="screen-wrap hub-screen">
     <div class="topbar">
       <a class="home-link" href="/">${icon('home', { size: 16 })}<span>返回主菜单</span></a>
-      <div class="title hub-title">月蚀契约</div>${resChips()}
+      <div class="title hub-title"><span class="hub-title-txt">月蚀契约</span><span class="lab-tag" title="实验模式：规则与平衡仍在调整">实验模式</span></div>${resChips()}
     </div>
     <div class="scroll">
       <div class="hub-hero">
         <div class="hub-avatars">${['lilith', 'lia', 'serena'].map((c) => avatarHTML(c)).join('')}</div>
-        <h1>暗影对决</h1><p>SHADOWVERSE-LIKE · 卡牌对战</p>
+        <h1>暗影对决</h1><p>实验模式 · 卡牌对战</p>
+        <p class="lab-note">${icon('info', { size: 13 })}<span>规则与平衡还在调整，和主线、外传剧情无关。进化规则参照 Shadowverse，先后手开局抛硬币决定。和主游戏共用同一个账户与钻石：每天前 ${S.rewardStatus?.cardWinCap ?? 5} 场胜利各得 ${winReward()} 钻石。</span></p>
       </div>
       <div class="hub-menu">
         ${notice}${resume}
-        <button type="button" class="hub-card wide" data-nav="battle"><span class="ico">${icon('battle', { size: 34 })}</span><span class="txt"><span class="name">${rb ? '开始新对战' : '开始对战'}</span><span class="desc">选择职业，与 AI 决斗</span></span><span class="go">${icon('chevron-right', { size: 22 })}</span></button>
+        <button type="button" class="hub-card wide" data-nav="battle"><span class="ico">${icon('battle', { size: 34 })}</span><span class="txt"><span class="name">${rb ? '开始新对战' : '开始对战'}</span><span class="desc">选择职业，与 AI 决斗</span>${rewardLine ? `<span class="desc reward-line">${rewardLine}</span>` : ''}</span><span class="go">${icon('chevron-right', { size: 22 })}</span></button>
         <button type="button" class="hub-card" data-nav="pack"><span class="ico">${icon('pack', { size: 30 })}</span><span class="name">召唤卡包</span><span class="desc">抽取新卡牌</span></button>
         <button type="button" class="hub-card" data-nav="deck"><span class="ico">${icon('deck', { size: 30 })}</span><span class="name">组牌</span><span class="desc">编辑你的牌组</span></button>
         <button type="button" class="hub-card" data-nav="collection"><span class="ico">${icon('collection', { size: 30 })}</span><span class="name">图鉴</span><span class="desc">收录 ${S.summary?.ownedCards ?? 0}/${S.summary?.totalCards ?? 38}</span></button>
@@ -446,21 +486,24 @@ function resumeBattle() {
   S.pendingPlayUid = st.phase === 'awaitingTarget' ? (st.pending?.handUid || null) : null;
   S.notes = [];
   S.conceded = false;
+  S.battleReward = null;
   drawBattle();
 }
 
 // ─── 规则面板（主菜单与对战中共用）───
 function showRules() {
   const b = S.battle;
-  const youFirst = !b || b.firstPlayer !== 'opponent';
+  const order = !b ? '' : b.firstPlayer === 'opponent' ? '本局抛硬币是反面：对手先手，你后手。' : '本局抛硬币是正面：你先手。';
+  const bonus = RULE('EVOLVE_BONUS', 2);
   modal(`
-    <h3 class="rules-title">${icon('help', { size: 18 })} 对战规则</h3>
+    <h3 class="rules-title">${icon('help', { size: 18 })} 对战规则 <span class="lab-tag">实验模式</span></h3>
     <dl class="rules">
-      <dt>胜负</dt><dd>双方主战者各 ${RULE('LEADER_HP', 20)} 点生命，先把对方打到 0 即获胜。护甲先于生命承受伤害。</dd>
+      <dt>胜负</dt><dd>双方主战者各 ${RULE('LEADER_HP', 20)} 点生命，先把对方打到 0 即获胜。护甲先于生命承受伤害。${S.rewardStatus ? `每天前 ${S.rewardStatus.cardWinCap} 场胜利各得 ${winReward()} 钻石（和主游戏共用）。` : ''}</dd>
+      <dt>先后手</dt><dd>开局抛硬币：正面你先手，反面对手先手。${order}</dd>
       <dt>PP</dt><dd>每个自己的回合开始时，PP 上限 +1（最多 ${RULE('MAX_PP', 10)}）并回满。出牌消耗与卡牌左上角费用相同的 PP。</dd>
-      <dt>抽牌</dt><dd>起手 3 张，每回合开始抽 1 张（先手第一回合不抽）。手牌最多 ${RULE('MAX_HAND', 9)} 张，满了再抽到的牌会被烧毁。场上最多 ${RULE('MAX_FIELD', 5)} 个随从。${youFirst ? '目前由你先手。' : ''}</dd>
+      <dt>抽牌</dt><dd>起手 3 张，每回合开始抽 1 张（先手第一回合不抽）。手牌最多 ${RULE('MAX_HAND', 9)} 张，满了再抽到的牌会被烧毁。场上最多 ${RULE('MAX_FIELD', 5)} 个随从。</dd>
       <dt>攻击</dt><dd>随从入场当回合不能攻击，从下个回合起每回合攻击一次。攻击随从时双方互相造成等于攻击力的伤害；攻击主战者时只有对方受伤。</dd>
-      <dt>EP / 进化</dt><dd>先手 2 EP，从自己的第 5 回合起可以进化；后手 3 EP，从第 4 回合起可以进化。每次进化消耗 1 EP，使一个随从 +${RULE('EVOLVE_BONUS', 2)}/+${RULE('EVOLVE_BONUS', 2)} 并换上进化卡面，每个随从只能进化一次。进化后本回合可以立即攻击（包括主战者），但本回合已经攻击过的随从不会因此多攻击一次。</dd>
+      <dt>EP / 进化</dt><dd>先手 2 EP，从自己的第 5 回合起可以进化；后手 3 EP，从第 4 回合起可以进化。<b>每回合最多进化一次</b>：消耗 1 EP，使一个随从 +${bonus}/+${bonus} 并换上进化卡面，每个随从只能进化一次。<br>上回合就在场的随从进化后照常攻击（随从或主战者）；<b>本回合刚入场的随从进化后获得突进</b>，当回合就能攻击随从，但不能攻击主战者（疾驰随从照常可以）。本回合已经攻击过的随从不会因为进化多攻击一次。</dd>
       <dt>${icon('guard', { size: 14 })}守护</dt><dd>${KEYWORD_DESC.guard}</dd>
       <dt>${icon('rush', { size: 14 })}突进</dt><dd>${KEYWORD_DESC.rush}</dd>
       <dt>${icon('storm', { size: 14 })}疾驰</dt><dd>${KEYWORD_DESC.storm}</dd>
@@ -596,7 +639,11 @@ function showCardDetail(c, { mode = 'collection', inst = null, side = '', note =
   let stats = '';
   if (live && def.type === 'follower') {
     const status = side === 'mine' && S.battle?.activePlayer === 'player'
-      ? (!live.canAttack ? (live.attackedThisTurn ? '本回合已攻击' : '刚入场，下个回合起可以攻击') : (live.canAttackLeader === false ? '突进：本回合只能攻击随从' : '本回合可以攻击'))
+      ? (!live.canAttack
+        ? (live.attackedThisTurn ? '本回合已攻击' : '刚入场：下个回合起可以攻击；现在进化可获得突进')
+        : (live.canAttackLeader === false
+          ? (live.evolved && live.enteredThisTurn && !(live.keywords || []).includes('rush') ? '刚入场即进化，获得突进：本回合只能攻击随从' : '突进：本回合只能攻击随从')
+          : '本回合可以攻击'))
       : '';
     stats = `<p class="detail-stats">攻击 <b>${live.attack}</b> · 生命 <b>${Math.max(0, live.health)}</b>/${live.maxHealth ?? live.health}${status ? ` · ${status}` : ''}</p>`;
   }
@@ -790,6 +837,8 @@ function renderBattleSetup() {
     ${topbar('选择职业')}
     <div class="scroll"><div class="pad">
       ${rb ? `<p class="setup-note">${icon('info', { size: 14 })} 开始新对局会放弃进行中的对局（你的第 ${rb.players.player.turnCount} 回合）。</p>` : ''}
+      ${winRewardLine() ? `<p class="setup-note reward-note">${icon('gift', { size: 14 })}<span>${winRewardLine()}</span></p>` : ''}
+      <p class="setup-note dim-note">${icon('coin', { size: 14 })}<span>先后手开局抛硬币决定：先手 2 EP，后手 3 EP 且早一回合可以进化。</span></p>
       <div class="section-title" style="padding-left:0">选择你的职业</div>
       <div class="class-pick">
         ${CLASS_PICK.map(([id, n, st, d]) => `
@@ -818,17 +867,95 @@ function renderBattleSetup() {
     let r;
     try { r = await post('/api/battle/start', { playerId: S.playerId, playerClass, opponentClass: opp === 'random' ? undefined : opp }); } finally { S.busy = false; }
     if (!r.ok) { failToast(r, '开局失败'); return; }
-    toast('对局开始！');
     markBattle(true);
-    S.battle = r.state;
     S.resumable = null;
     S.notes = [];
     S.conceded = false;
     S.selAttacker = null;
     S.pendingPlayUid = null;
+    S.battleReward = r.reward || null;
     S.screen = 'battlePlay';
-    drawBattle();
+    startBattle(r.state, Array.isArray(r.aiActions) ? r.aiActions : []);
   });
+}
+
+// ─── 开局：抛硬币（B12）。对手先手时服务器已经替它跑完第一回合，这里先摆出开局盘面，硬币落定后回放 ───
+function startBattle(after, actions) {
+  const before = after.firstPlayer === 'opponent' && actions.length ? openingBoard(after, actions) : null;
+  S.battle = after;
+  if (before) drawBattle({ board: before, replay: { caption: '抛硬币决定先后手…', log: before.log } });
+  else drawBattle();
+  showCoinToss(after, () => {
+    if (S.screen !== 'battlePlay' || S.battle !== after) return;
+    if (before) replayAiTurn(before, after, actions);
+  });
+}
+
+function showCoinToss(b, done) {
+  const firstPlayer = b.coinToss?.firstPlayer || b.firstPlayer || 'player';
+  const result = b.coinToss?.result || (firstPlayer === 'opponent' ? 'tails' : 'heads');
+  const youFirst = firstPlayer !== 'opponent';
+  const me = b.players.player;
+  const face = result === 'tails' ? '反面' : '正面';
+  modal(`
+    <h3 class="coin-title">${icon('coin', { size: 18 })} 抛硬币决定先后手</h3>
+    <p class="coin-rule">正面（月）你先手 · 反面（蚀）对手先手</p>
+    <div class="coin-stage" aria-hidden="true">
+      <div class="coin ${result === 'tails' ? 'tails' : 'heads'}">
+        <span class="coin-face front">${icon('moon', { size: 34 })}<b>正</b></span>
+        <span class="coin-face back"><svg class="coin-eclipse" viewBox="0 0 40 40" width="36" height="36" aria-hidden="true"><circle cx="20" cy="20" r="13.5" fill="none" stroke="currentColor" stroke-width="2.5"/><circle cx="20" cy="20" r="10.5" fill="#1d1238"/><path d="M20 3.5v3M20 33.5v3M3.5 20h3M33.5 20h3M8.3 8.3l2.1 2.1M29.6 29.6l2.1 2.1M8.3 31.7l2.1-2.1M29.6 10.4l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".8"/></svg><b>反</b></span>
+      </div>
+    </div>
+    <div class="coin-result" role="status">
+      <p class="coin-verdict ${youFirst ? 'first' : 'second'}">${face} · ${youFirst ? '你先手' : '对手先手，你后手'}</p>
+      <p class="coin-detail">${youFirst
+        ? `先手：${me.ep} EP，从自己的第 5 回合起可以进化；第一回合不抽牌。`
+        : `后手：${me.ep} EP，从自己的第 4 回合起就能进化；第一回合照常抽牌。`}</p>
+    </div>
+    <div class="coin-foot"><button type="button" class="btn primary block" id="coinGo">${icon('play', { size: 15 })} ${youFirst ? '开始对局' : '看对手的第一回合'}</button></div>
+  `, { label: '抛硬币决定先后手', onClose: done });
+  $('#coinGo').onclick = () => closeModal();
+}
+
+// 对手先手时的开局盘面：服务器只返回对手第一回合之后的状态，这里倒推回开局（双方满血、空场、各 3 张起手牌），
+// 供 replayAiTurn 逐步重演。回放只是演出，结束后一律以服务器状态为准。
+function openingBoard(after, actions) {
+  const m = clone(after);
+  for (const k of ['legalPlays', 'evolvable', 'attackTargets', 'targetOptions', 'pendingCardId']) delete m[k];
+  const hand = RULE('INITIAL_HAND', 3);
+  m.turn = 0;
+  m.activePlayer = 'opponent';
+  m.phase = 'main';
+  m.pending = null;
+  m.winner = null;
+  m.log = (after.log || []).filter((l) => !(l.turn > 0));
+  for (const key of ['player', 'opponent']) {
+    const P = m.players[key];
+    const maxHp = P.leader?.maxHp ?? RULE('LEADER_HP', 20);
+    P.leader = { hp: maxHp, maxHp, armor: 0 };
+    P.pp = { current: 0, max: 0 };
+    P.turnCount = 0;
+    P.field = [];
+    P.graveyard = [];
+    P.fatigue = 0;
+    P.canEvolve = false;
+    P.evolvedThisTurn = false;
+  }
+  // 玩家：后手第一回合开头抽的那张在手牌末尾
+  const me = m.players.player;
+  const drawnByMe = Math.max(0, me.hand.length - hand);
+  me.hand = me.hand.slice(0, hand);
+  if (Number.isFinite(me.deckCount)) me.deckCount += drawnByMe;
+  // 对手：打出去的牌放回起手，回合中途抽到的牌还在牌库里
+  const o = m.players.opponent;
+  const played = actions.filter((a) => a.type === 'play' && a.handUid);
+  const playedUids = new Set(played.map((a) => a.handUid));
+  const kept = o.hand.filter((h) => !playedUids.has(h.uid));
+  const keepFromOpening = Math.max(0, hand - played.length);
+  const drawnByOpp = Math.max(0, kept.length - keepFromOpening);
+  o.hand = [...kept.slice(0, keepFromOpening), ...played.map((a) => ({ uid: a.handUid, hidden: true }))];
+  if (Number.isFinite(o.deckCount)) o.deckCount += drawnByOpp;
+  return m;
 }
 
 // ═══ 战斗界面 ═══
@@ -839,14 +966,18 @@ function leaderBlock(side, p, b, active, extra = '') {
   const pct = Math.max(0, Math.min(100, hp / p.leader.maxHp * 100));
   const ppPips = Array.from({ length: p.pp.max }, (_, i) => `<i class="${i < p.pp.current ? 'on' : ''}"></i>`).join('');
   const deckLeft = p.deckCount ?? '?';
+  // 先后手（开局抛硬币）；EP：可进化且本回合还没进化过才亮
+  const order = b.firstPlayer ? `<span class="order-tag ${b.firstPlayer === side ? 'first' : 'second'}" title="开局抛硬币决定">${b.firstPlayer === side ? '先手' : '后手'}</span>` : '';
+  const epReady = p.canEvolve && p.ep > 0 && !p.evolvedThisTurn;
+  const epTitle = p.evolvedThisTurn ? '进化点 · 本回合已进化（每回合一次）' : p.canEvolve ? '进化点 · 本回合可以进化一次' : '进化点';
   return `<div class="b-leader ${side} ${extra}">
     <div class="portrait ${active ? 'active' : ''}" style="--accent:${info?.accent || '#666'}">${avatarHTML(cls)}</div>
     <div class="info">
-      <div class="lname"><span>${info?.name || ''}</span>${p.leader.armor > 0 ? `<span class="armor" title="护甲">${icon('shield', { size: 12 })}${p.leader.armor}</span>` : ''}</div>
+      <div class="lname"><span>${info?.name || ''}</span>${order}${p.leader.armor > 0 ? `<span class="armor" title="护甲">${icon('shield', { size: 12 })}${p.leader.armor}</span>` : ''}</div>
       <div class="hpbar ${pct <= 30 ? 'low' : ''}"><div class="fill" style="width:${pct}%"></div><div class="txt">${icon('heart', { size: 11 })}${hp}/${p.leader.maxHp}</div></div>
       <div class="pips">
         <span class="pp" title="PP">${icon('crystal', { size: 12 })}${p.pp.current}/${p.pp.max}<span class="pp-pips">${ppPips}</span></span>
-        <span class="ep ${p.canEvolve && p.ep > 0 ? 'ready' : ''}" title="进化点">${icon('sparkle', { size: 12 })}EP ${p.ep}</span>
+        <span class="ep ${epReady ? 'ready' : ''} ${p.evolvedThisTurn ? 'used' : ''}" title="${epTitle}">${icon('sparkle', { size: 12 })}EP ${p.ep}</span>
         <span class="deckleft" title="牌库剩余 ${deckLeft} 张">${icon('deck', { size: 12 })}<span class="deckleft-n">${deckLeft}</span></span>
       </div>
     </div>
@@ -903,10 +1034,14 @@ function drawBattle(opts = {}) {
   for (const o of selTargets) { if (o.uid === 'leader') targetLeader = true; else targetUids.add(o.uid); }
   // 选中了攻击者且可打脸 → 显示醒目的「攻击主战者」按钮
   const showAttackFace = !!sel && selTargets.some((o) => o.uid === 'leader');
+  // 选中的是本回合刚入场的随从：进化后只获得突进（Shadowverse 规则，与 cards/battle.mjs 的 evolvedAttackRights 一致）
+  const selInst = sel ? b.players.player.field.find((f) => f.uid === sel) : null;
+  const selFresh = !!(selInst && !selInst.attackedThisTurn && (selInst.enteredThisTurn ?? (!selInst.canAttack || selInst.canAttackLeader === false)));
+  const freshNote = selCanEvo && selFresh && !(selInst.keywords || []).includes('storm') ? '；它刚入场，进化后获得突进，只能攻击随从' : '';
   let hint = '';
   if (targeting) hint = `${icon('target', { size: 13 })} 选择法术目标（点击高亮的目标，或点「取消」）`;
-  else if (sel && selTargets.length) hint = `${icon('sword', { size: 13 })} 选择攻击目标：点击敌方随从${showAttackFace ? '，或点「攻击主战者」' : ''}${selCanEvo ? '；也可以先进化' : ''}`;
-  else if (sel && selCanEvo) hint = `${icon('sparkle', { size: 13 })} 点「进化」消耗 1 EP，+${RULE('EVOLVE_BONUS', 2)}/+${RULE('EVOLVE_BONUS', 2)}（剩余 EP ${b.players.player.ep}）`;
+  else if (sel && selTargets.length) hint = `${icon('sword', { size: 13 })} 选择攻击目标：点击敌方随从${showAttackFace ? '，或点「攻击主战者」' : ''}${selCanEvo ? '；也可以先进化（每回合一次）' : ''}`;
+  else if (sel && selCanEvo) hint = `${icon('sparkle', { size: 13 })} 点「进化」消耗 1 EP，+${RULE('EVOLVE_BONUS', 2)}/+${RULE('EVOLVE_BONUS', 2)}（每回合一次，剩余 EP ${b.players.player.ep}）${freshNote}`;
   else if (myTurn && b.players.player.turnCount <= 2) hint = `${icon('info', { size: 13 })} 点手牌出牌 · 点己方随从攻击 · 长按卡牌看详情`;
 
   const hl = (uid) => (rp ? (rp.actor === uid ? ' acting' : rp.target === uid ? ' hit' : '') : '');
@@ -1018,12 +1153,36 @@ function resultBanner(b) {
     <div class="result-crest">${avatarHTML(win ? b.playerClass : b.opponentClass, 'xl')}<span class="result-glyph">${icon(win ? 'trophy' : draw ? 'shield' : conceded ? 'flag' : 'moon', { size: 22 })}</span></div>
     <div class="big ${win ? 'win' : 'lose'}">${win ? '胜利' : draw ? '平局' : '败北'}</div>
     <div class="result-sub">${sub}</div>
-    <div class="result-turn">${icon('clock', { size: 13 })} 你的第 ${b.players.player.turnCount} 回合 · 双方共 ${b.turn} 回合</div>
+    <div class="result-turn">${icon('clock', { size: 13 })} 你的第 ${b.players.player.turnCount} 回合 · 双方共 ${b.turn} 回合 · ${b.firstPlayer === 'opponent' ? '你后手' : '你先手'}</div>
+    ${win ? rewardBlock() : ''}
     <div class="row" style="max-width:280px;width:100%">
       <button type="button" class="btn ghost" id="backHub">${icon('home', { size: 15 })} 返回</button>
       <button type="button" class="btn primary" id="again">${icon('refresh', { size: 15 })} 再来一局</button>
     </div>
   </div>`;
+}
+
+// 胜利奖励（契约 R-3：服务器在玩家获胜的那一次响应里发放，GET /api/battle/state 在对局结束后也带着）
+function rewardBlock() {
+  const rw = S.battleReward;
+  if (!rw) return '';
+  if (rw.diamonds > 0) {
+    return `<div class="result-reward" role="status">${icon('gift', { size: 16 })}<span>胜利奖励 ${cur('diamond', `+${rw.diamonds}`)}</span><span class="dim">今日 ${rw.winsToday}/${rw.cap}${Number.isFinite(rw.balance) ? ` · 现有 ${rw.balance}` : ''}</span></div>`;
+  }
+  if (rw.capped) {
+    return `<div class="result-reward capped" role="status">${icon('check', { size: 15 })}<span>今日 ${rw.cap} 场胜利奖励已领完，明天再来</span></div>`;
+  }
+  return '';
+}
+
+// 记下响应里的胜利奖励，并同步顶栏钻石与今日进度
+function noteReward(r) {
+  if (!r || !('reward' in r)) return;
+  S.battleReward = r.reward || null;
+  const rw = S.battleReward;
+  if (!rw) return;
+  if (S.summary && Number.isFinite(rw.balance)) S.summary.diamonds = rw.balance;
+  if (S.rewardStatus && Number.isFinite(rw.winsToday)) S.rewardStatus.cardWinsToday = rw.winsToday;
 }
 
 function unplayableReason(b, inst) {
@@ -1151,6 +1310,7 @@ async function act(action, { fallback = '非法动作', onOk } = {}) {
   if (S.screen !== 'battlePlay' || S.battle !== prev) return r; // 等待期间已离开对局
   if (r.ok) {
     S.battle = r.state;
+    noteReward(r);
     onOk?.(r.state);
     drawBattle({ fx: diffFx(prev, r.state) });
   } else {
@@ -1200,7 +1360,7 @@ async function doConcede(btn) {
   S.busy = true;
   let r;
   try { r = await post('/api/battle/concede', { playerId: S.playerId }); } finally { S.busy = false; }
-  if (r.ok) { S.conceded = true; S.battle = r.state; drawBattle(); } else handleBattleError(r, '投降失败');
+  if (r.ok) { S.conceded = true; S.battle = r.state; noteReward(r); drawBattle(); } else handleBattleError(r, '投降失败');
 }
 
 async function doEndTurn() {
@@ -1214,6 +1374,7 @@ async function doEndTurn() {
   try { r = await post('/api/battle/end-turn', { playerId: S.playerId }); } finally { S.busy = false; }
   if (S.screen !== 'battlePlay' || S.battle !== before) return;
   if (!r.ok) { handleBattleError(r, '回合失败'); if (S.battle) drawBattle(); return; }
+  noteReward(r);
   await replayAiTurn(before, r.state, r.aiActions || []);
 }
 
@@ -1293,7 +1454,8 @@ function simTurnStart(m, after) {
   o.pp.max = Math.min(RULE('MAX_PP', 10), o.turnCount);
   o.pp.current = o.pp.max;
   o.canEvolve = after.players.opponent.canEvolve;
-  for (const f of o.field) { f.canAttack = true; f.canAttackLeader = true; f.attackedThisTurn = false; }
+  o.evolvedThisTurn = false;
+  for (const f of o.field) { f.canAttack = true; f.canAttackLeader = true; f.attackedThisTurn = false; f.enteredThisTurn = false; }
   if (!(m.firstPlayer === 'opponent' && o.turnCount === 1)) simDraw(m, 'opponent');
 }
 
@@ -1316,7 +1478,7 @@ function simApply(m, a) {
       const kws = [...(def.keywords || [])];
       inst = {
         uid: a.handUid, cardId: def.id, name: def.name, type: def.type, cost: def.cost, keywords: kws, evolved: false,
-        canAttack: kws.includes('storm') || kws.includes('rush'), canAttackLeader: !kws.includes('rush') || kws.includes('storm'), attackedThisTurn: false,
+        canAttack: kws.includes('storm') || kws.includes('rush'), canAttackLeader: !kws.includes('rush') || kws.includes('storm'), attackedThisTurn: false, enteredThisTurn: true,
         attack: def.attack, health: def.health, maxHealth: def.health, baseAttack: def.attack, baseHealth: def.health
       };
       P.field.push(inst);
@@ -1351,9 +1513,13 @@ function simApply(m, a) {
     if (!f) return { caption: '对手进化' };
     if (!f.evolved) {
       const bonus = RULE('EVOLVE_BONUS', 2);
+      // 与 cards/battle.mjs 的 evolvedAttackRights 一致：刚入场即进化只获得突进
+      const fresh = f.enteredThisTurn ?? (!f.canAttack || f.canAttackLeader === false);
       f.evolved = true; f.attack += bonus; f.health += bonus; f.maxHealth += bonus;
-      f.canAttack = !f.attackedThisTurn; f.canAttackLeader = true;
+      f.canAttack = !f.attackedThisTurn;
+      f.canAttackLeader = f.attackedThisTurn ? f.canAttackLeader !== false : (!fresh || (f.keywords || []).includes('storm'));
       P.ep = Math.max(0, (P.ep || 0) - 1);
+      P.evolvedThisTurn = true;
     }
     return { actor: f.uid, caption: `${f.name} 进化！` };
   }
@@ -1469,13 +1635,39 @@ function bindNav() {
   });
 }
 
-// ─── 账户 ───
+// ─── 账户（契约 R-4：和主游戏共用 localStorage「moonlit:playerId」）───
+// 没有可用账户时像主游戏那样新建（POST /api/account/create，名字取主游戏记住的称呼，没有就叫「旅行者」），
+// 并写回同一个键：之后主游戏、主线播放器读到的也是这个账户。
 async function createAccount() {
-  const r = await post('/api/account/create', { playerName: '牌手' });
+  const r = await post('/api/account/create', { playerName: (store.get(NAME_KEY) || '').trim() || '旅行者' });
   if (!r.ok || !r.account?.id) throw new Error(r.error?.message || '无法创建账户');
   S.playerId = r.account.id;
-  store.set('moonlit:cardPlayerId', S.playerId);
+  store.set(ACCOUNT_KEY, S.playerId);
   await refreshSummary();
+}
+
+// 依次尝试主游戏的账户、旧版卡牌页单独记的账户；找到就用（旧账户迁移成共用账户），都不可用返回 false。
+// 网络错误直接抛出（不误建新号，同 app.js 的 loadOrCreateAccount）。
+async function adoptStoredAccount() {
+  const candidates = [store.get(ACCOUNT_KEY), store.get(LEGACY_CARD_ACCOUNT_KEY)]
+    .map((id) => (id || '').trim()).filter((id, i, list) => id && list.indexOf(id) === i);
+  let lost = false;
+  for (const id of candidates) {
+    S.playerId = id;
+    S.summary = null;
+    const r = await refreshSummary();
+    if (r.ok && S.summary) {
+      if (store.get(ACCOUNT_KEY) !== id) store.set(ACCOUNT_KEY, id);
+      if (store.get(LEGACY_CARD_ACCOUNT_KEY)) store.remove(LEGACY_CARD_ACCOUNT_KEY);
+      return true;
+    }
+    if (r.error?.code === 'NETWORK') throw new Error(r.error.message);
+    lost = true;
+  }
+  S.playerId = null;
+  S.summary = null;
+  S.resetNotice = lost; // 记住过账户，但服务器上已经没有了
+  return false;
 }
 
 // 会话中途发现账户不存在（服务器重启且没有存档、或存档过期）：提示「存档已重置」并重新建号
@@ -1541,16 +1733,7 @@ async function init() {
     for (const c of cardsR.cards) S.cardById[c.id] = c;
     S.logOpen = store.get('moonlit:cardLogOpen') === '1';
     // 玩家账户：服务器端有存档；若本地记住的 id 在服务器上已不存在（存档被重置），提示后重新建号
-    S.playerId = store.get('moonlit:cardPlayerId');
-    if (S.playerId) {
-      const r = await refreshSummary();
-      if (!r.ok) {
-        if (r.error?.code === 'NETWORK') throw new Error(r.error.message);
-        S.resetNotice = true;
-        S.summary = null;
-      }
-    }
-    if (!S.playerId || !S.summary) await createAccount();
+    if (!(await adoptStoredAccount())) await createAccount();
     S.booting = false;
     go('hub');
   } catch (err) {

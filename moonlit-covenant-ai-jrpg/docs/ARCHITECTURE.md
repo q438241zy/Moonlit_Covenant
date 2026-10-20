@@ -53,13 +53,17 @@
 
 ### `game/story-judge.mjs`
 
-主线（亚克篇）自由输入的服务端判定：节点定义一律从 `public/story/chapters/` 读取，不信任客户端；`openai` 模式下由模型归类意图，失败时回退到与浏览器相同的 `demoJudge`。章节文件按 mtime 缓存，改了章节不用重启。
+主线「亚克的旅程」自由输入的服务端判定：节点定义一律从 `public/story/chapters/` 读取，不信任客户端；`openai` 模式下由模型归类意图，失败时回退到与浏览器相同的 `demoJudge`。章节文件按 mtime 缓存，改了章节不用重启。
 
-### 经济与外围系统（`game/gacha.mjs`、`membership.mjs`、`credit.mjs`、`costume.mjs`、`settings.mjs`、`analytics.mjs`）
+### 经济与外围系统（`game/gacha.mjs`、`rewards.mjs`、`membership.mjs`、`credit.mjs`、`costume.mjs`、`settings.mjs`、`analytics.mjs`）
 
-- 召唤卡池（角色池 / 服饰池、概率、保底）、会员与钻石（演示用，无真实支付）、Credit 计量、换衣、AI 设置预览、运营统计；
+- 召唤卡池（角色池 / 服饰池、概率、保底）、会员与钻石（无真实支付）、Credit 计量、换衣、运营统计；
+- 召唤可以用 Credit（默认）或钻石支付；重复获得（含十连内重复、主线入队时已拥有的女主）按稀有度折算成钻石，数值见 README「钻石与奖励」；
+- `rewards.mjs`（纯函数，无 I/O）：「玩出来的钻石」——每日签到（连续签到加成）、主线每章首通（`POST /api/story/progress`，章节号按 `public/story/chapters/index.json` 校验）、卡牌对战胜利（每天有上限）；女主在主线正式入队的章节（`CHARACTER_POOL[].joinChapter`）首通时自动加入角色收藏；
+- 主游戏、主线播放器、卡牌页共用浏览器里同一个账户（localStorage `moonlit:playerId`）；
 - 只有一本 Credit 账：会员每日 Credit 同时记入计量器；
-- 演示工具（免费会员、钻石、一键发放服装）受 `DEMO_TOOLS` 开关控制，`NODE_ENV=production` 时默认关闭。
+- AI 设置：按玩家切换模型尚未开放（`PER_PLAYER_ROUTING=false`），所有玩家共用服务器配置的模型，设置页不提供模型预设；
+- 演示工具（免费会员、钻石补充、一键发放服装）受 `DEMO_TOOLS` 开关控制，`NODE_ENV=production` 时默认关闭；这个版本不公开，Docker 镜像设了 `DEMO_TOOLS=1` 保持开启。
 
 ### `game/persist.mjs`
 
@@ -92,12 +96,15 @@
 ### `public/`
 
 - 多个页面，均无远程 CDN、无内联脚本：
-  - `index.html` + `app.js`：银轨号外传、地图、章节阅读器、召唤、换衣、商店（演示）、设置；
-  - `story.html` + `story/`：主线 · 亚克篇播放器（`story/engine.js` 为浏览器与 Node 通用的纯函数引擎，章节数据在 `story/chapters/`）；
+  - `index.html` + `app.js`：标题页（「主线：亚克的旅程」「外传：银轨号」两张模式卡与「实验模式：卡牌对战」入口、每日签到）、IF 外传银轨号、外传地图、章节阅读器（外传剧本草稿，只读）、召唤、换衣、钻石与商店、设置；
+  - `story.html` + `story/`：主线「亚克的旅程」播放器（`story/engine.js` 为浏览器与 Node 通用的纯函数引擎，章节数据在 `story/chapters/`）；
   - `cards.html` + `cards.js`：卡牌对战（实验模式）；
-  - `gacha-system.html`、`character-manager.html`：独立原型页，自带 localStorage 数据，与正式游戏数据不互通；
+  - `character-manager.html`：独立原型页（角色管理器，人设按正典 `设定集/03`），自带 localStorage 数据，与正式游戏数据不互通；
+  - 独立抽卡原型 `gacha-system` 已移到 `tools/prototypes/`，不随站点提供（本机预览：`node tools/prototypes/preview.mjs`）；
+  - 游戏画面里的女主一律是矢量立绘；厚涂位图只经 `paint.js` 的清单替换，并带统一的「AI 生成」角标；
 - 外传、召唤、换衣、卡牌等进度以服务端返回为准，`localStorage` 只保存 session id / player id 与本机便利设置（声音、称呼、已看过的提示）；
-- 主线进度（逐拍自动存档、草稿）保存在浏览器 `localStorage`，服务端只做判定，不保存主线存档。
+- 主线进度（逐拍自动存档、草稿）保存在浏览器 `localStorage`，服务端只做判定，不保存主线存档；服务端账户只记「哪些章节已首次通关」（发首通钻石与女主入队用）；
+- 外传地图的「已抵达」由外传进度推导（序章通关记在本机 `moonlit:gaiden:cleared`），调试按钮「解锁下一章（测试）」只在 `?dev=1` 出现。
 
 ## 3. 角色模型输出协议
 

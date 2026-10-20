@@ -87,6 +87,15 @@ function render(p) {
   cloudDef('cloud2', CLOUD2_OUT, CLOUD2_IN);
   const cloud = (x, y, sc, flip = 1, rot = 0, v = '') => `<use href="#${p.id('cloud' + v)}" transform="translate(${x} ${y}) rotate(${rot}) scale(${sc * flip} ${sc})"/>`;
 
+  // gold-thread roundel: double ring, her motif in the middle and four small ones around it
+  const roundel = (A, x, y) => {
+    const ring = (r) => `M${x - r},${y}a${r},${r} 0 1 0 ${2 * r},0a${r},${r} 0 1 0 ${-2 * r},0`;
+    const sat = [0, 90, 180, 270].map((a) => A.glyph(x + Math.cos((a - 45) * Math.PI / 180) * 41, y + Math.sin((a - 45) * Math.PI / 180) * 41, 7, a - 45)).join('');
+    return `<g stroke-linejoin="round"><path d="${ring(31)}" fill="${K.goldDeep}" fill-opacity=".3" stroke="${K.goldLine}" stroke-width="6"/>`
+      + `<path d="${ring(31)}${ring(24)}" fill="none" stroke="${K.goldMid}" stroke-width="2.6"/>`
+      + `<path d="${A.glyph(x, y, 17)}" fill="${A.thread}" fill-rule="evenodd" stroke="${K.goldLine}" stroke-width="2"/>`
+      + `<path d="${sat}" fill="${K.goldMid}" fill-rule="evenodd" stroke="${K.goldLine}" stroke-width="1.4"/></g>`;
+  };
   const silk = p.lin('silk', [[0, K.redLit], [0.28, K.red], [1, K.redShade]], [0, 680, 0, 1180]);
   const shadeR = sm([[472, 786], [530, 768], [600, 788], [650, 830], [700, 920], [702, 1216, 1], [524, 1216, 1], [512, 1060], [500, 930], [488, 840]], { closed: true });
   const coreR = sm([[600, 900], [640, 880], [690, 960], [702, 1216, 1], [640, 1216, 1], [626, 1040]], { closed: true });
@@ -96,7 +105,9 @@ function render(p) {
   s += `<g clip-path="${p.refs.bodyClip}"><rect y="660" width="832" height="560" fill="${silk}"/>`
     + `<rect y="660" width="832" height="560" fill="url(#${p.id('damask')})"/>`
     // embroidery (under the cel shadow so the shadow side dims it too): a cloud drift over the right chest
-    + cloud(470, 846, 0.95, 1, -8) + cloud(536, 924, 0.9, -1, 4, '2') + cloud(196, 862, 0.78, -1, 10) + cloud(318, 1012, 0.9, 1, -6, '2') + cloud(660, 1000, 0.7)
+    // (with a heroine accent kit the right-chest cloud becomes a 团花 roundel of her own motif, B11)
+    + (p.accent ? roundel(p.accent, 480, 870) : cloud(470, 846, 0.95, 1, -8))
+    + cloud(536, 924, 0.9, -1, 4, '2') + cloud(196, 862, 0.78, -1, 10) + cloud(318, 1012, 0.9, 1, -6, '2') + cloud(660, 1000, 0.7)
     // the under-flap left of the front edge sits a little deeper
     + `<path d="${lapel}L130,1216L140,900L180,800L300,770Z" fill="${K.redDeep}" opacity=".16"/>`
     + `<path d="${shadeR}" fill="${K.redDeep}" opacity=".58"/><path d="${coreR}" fill="${K.redDeep}" opacity=".4"/><path d="${shadeArm}" fill="${K.redDeep}" opacity=".35"/>`

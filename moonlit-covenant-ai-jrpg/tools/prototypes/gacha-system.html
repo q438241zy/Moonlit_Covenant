@@ -250,8 +250,6 @@ body { background:var(--bg); color:var(--text); font-family:'Segoe UI',system-ui
 .tab-btn, .pull-btn { display:inline-flex; align-items:center; justify-content:center; gap:6px; }
 .tab-btn { white-space:nowrap; flex:none; }
 .tab-btn.icon-only { padding:5px 9px; }
-.back-link { display:inline-flex; align-items:center; gap:4px; color:var(--muted); text-decoration:none; font-size:.82rem; padding:5px 12px; border:1px solid var(--line); border-radius:99px; }
-.back-link:hover { color:var(--text); border-color:var(--diamond); }
 .res-badge .ico-diamond { filter:drop-shadow(0 0 6px rgba(94,228,255,.7)); }
 .res-badge .ico-pink-crystal { filter:drop-shadow(0 0 4px rgba(244,114,182,.6)); }
 .res-badge .ico-essence { filter:drop-shadow(0 0 4px rgba(192,132,252,.6)); }
@@ -350,11 +348,10 @@ body { background:var(--bg); color:var(--text); font-family:'Segoe UI',system-ui
 </head>
 <body>
 <div class="app">
-  <div class="proto-banner" role="note"><span data-icon="info" data-size="16"></span><span><b>原型</b> · 数据与正式游戏不互通</span></div>
+  <div class="proto-banner" role="note"><span data-icon="info" data-size="16"></span><span><b>原型存档</b> · 已移出游戏站点（tools/prototypes/，只能用 preview.mjs 本机预览），自成一套经济，数据与正式游戏不互通</span></div>
   <div class="header">
     <h1>月蚀契约 · <span style="color:var(--diamond)">星轨召唤</span></h1>
     <div class="resource-bar">
-      <a href="/" class="back-link"><span data-icon="arrow-left" data-size="14"></span>返回游戏</a>
       <div class="res-badge" title="钻石"><span data-icon="diamond" data-size="22"></span><span id="diamondDisplay">0</span></div>
       <div class="res-badge" title="粉晶"><span data-icon="pink-crystal" data-size="20"></span><span id="pinkDisplay">0</span></div>
       <div class="res-badge" title="精魄"><span data-icon="essence" data-size="20"></span><span id="essenceDisplay">0</span> <span class="res-unit">精魄</span></div>

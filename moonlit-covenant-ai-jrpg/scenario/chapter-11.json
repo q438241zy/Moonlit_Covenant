@@ -16,7 +16,7 @@
         { "type": "dialogue", "speaker": "serena", "text": "没有时间了。月蚀已经完成了四分之三。最多还有六个小时。", "emotion": "grim" },
         { "type": "dialogue", "speaker": "lia", "text": "那就我来。", "emotion": "decisive" },
         { "type": "dialogue", "speaker": "mia", "text": "莉亚姐？！", "emotion": "shocked" },
-        { "type": "dialogue", "speaker": "lia", "text": "我的记忆里有太多痛苦。七道刻痕，北境的雪，艾琳的血。如果必须有人失去记忆……不如让我失去那些。", "emotion": "resigned" },
+        { "type": "dialogue", "speaker": "lia", "text": "我的记忆里有太多痛苦。七道刻痕，北境的雪，希尔达的血。如果必须有人失去记忆……不如让我失去那些。", "emotion": "resigned" },
         { "type": "dialogue", "speaker": "serena", "text": "不。应该是我。预言本来就在吞噬我的记忆。我只是……提前完成这个过程。", "emotion": "sacrificial" },
         { "type": "dialogue", "speaker": "mia", "text": "不行喵！你们两个都不行！如果一定要有人……那、那就让我来。反正我……我本来就不太被需要——", "emotion": "self_deprecating" },
         { "type": "dialogue", "speaker": "lia", "text": "闭嘴。", "emotion": "sharp" },

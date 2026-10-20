@@ -263,6 +263,99 @@ test('demo judge S2: hostile words in the first crisis are never "rallying the v
   assert.equal(demoJudge(node, '你们快帮忙').intent, 'rally');
 });
 
+// ── B14（核#12）：提示文字不用「你」、序章没有镜头指示、S1 的兜底回应不引用玩家没说过的话 ──
+const QUOTED = /“[^”]*”|「[^」]*」|‘[^’]*’|『[^』]*』/g;
+const addressesPlayer = (s) => typeof s === 'string' && /你/.test(s.replace(QUOTED, ''));
+
+test('B14: prompts, placeholders, captions and battle intel name the hero instead of addressing the player as 你', () => {
+  for (const entry of index) {
+    const chapter = readJson(`public/story/chapters/${entry.id}.json`);
+    for (const shot of chapter.shots) {
+      if (/^自由输入[：:]/.test(shot.title)) assert.ok(!addressesPlayer(shot.title), `${shot.id} title「${shot.title}」`);
+    }
+    eachBeat(chapter, (beat) => {
+      if (beat.t === 'input') {
+        assert.ok(!addressesPlayer(beat.prompt), `${beat.id} prompt「${beat.prompt}」`);
+        assert.ok(!addressesPlayer(beat.placeholder), `${beat.id} placeholder「${beat.placeholder}」`);
+      }
+      if (beat.t === 'battle') for (const s of beat.intel || []) assert.ok(!addressesPlayer(s), `${beat.id} intel「${s}」`);
+      if (beat.t === 'narr' && beat.style === 'caption') assert.ok(!addressesPlayer(beat.text), `caption「${beat.text}」`);
+      if (beat.t === 'narr') assert.ok(!/镜头/.test(`${beat.text}${beat.text15 || ''}`), `camera direction on screen「${beat.text}」`);
+    });
+  }
+  // 玩家名照常替换进提示与占位文字
+  const ch000 = readJson('public/story/chapters/ch000.json');
+  const run = createRun({ chapter: ch000, playerName: '小克' });
+  let item = next(run, ch000);
+  while (item.kind !== 'input') item = next(run, ch000);
+  assert.equal(item.node.prompt, '艾琳正等着小克的回答。他可以说话、行动，或者保持沉默。');
+  assert.equal(item.node.placeholder, '说点什么，或写下小克的动作……');
+});
+
+test('B14: ch000 opening reads as in-world narration (the camera lines were rewritten)', () => {
+  const texts = [];
+  eachBeat(readJson('public/story/chapters/ch000.json'), (beat) => { if (beat.t === 'narr') texts.push(beat.text); });
+  for (const line of ['最先听见的，是一声清脆的羊铃。', '风掠过麦穗，吹向一个金发青年的背影。', '{PLAYER_NAME}顺着他的手指往下看。']) assert.ok(texts.includes(line), line);
+  assert.ok(!texts.some((t) => /^(?:黑)?画面/.test(t)), 'no line starts with a camera cue (画面…)');
+});
+
+test('B14 / S1: vague and unclassifiable answers on the commitment nodes no longer quote 「看情况」', () => {
+  for (const [chapterId, nodeId] of COMMITMENT_NODES) {
+    const node = findNode(readJson(`public/story/chapters/${chapterId}.json`), nodeId);
+    const lines = [];
+    const walk = (beats) => (beats || []).forEach((b) => { if (b.text) lines.push(b.text); walk(b.then); walk(b.else); });
+    node.intents.forEach((x) => walk(x.reaction));
+    assert.ok(!lines.some((t) => t.includes('看情况')), `${nodeId}: no reaction quotes 看情况`);
+    const fallback = node.intents.find((x) => x.id === node.fallback);
+    const fbLines = [];
+    const walkFb = (beats) => (beats || []).forEach((b) => { if (b.text) fbLines.push(b.text); walkFb(b.then); walkFb(b.else); });
+    walkFb(fallback.reaction);
+    if (!/_002$/.test(nodeId)) assert.ok(fbLines.includes('她等着一个明确的答复。'), `${nodeId}: fallback says 她等着一个明确的答复。`);
+  }
+});
+
+test('demo judge: sarcasm 「我会的才怪」 is never an explicit promise or signature', () => {
+  const REFUSAL = { FI_CH003_SC05_TEMP_CONTRACT_001: 'refuse_terms', FI_CH003_SC05_TEMP_CONTRACT_002: 'decline', FI_CH004_SC02_CORD_SIGNAL_001: 'refuse_rule', FI_CH004_SC02_CORD_SIGNAL_002: 'refuse_rule', FI_CH005_SC12_TEAM_REGISTER_001: 'refuse', FI_CH005_SC12_TEAM_REGISTER_002: 'refuse' };
+  for (const [chapterId, nodeId, want] of COMMITMENT_NODES) {
+    const node = findNode(readJson(`public/story/chapters/${chapterId}.json`), nodeId);
+    for (const text of ['我会的才怪', '我会的，才怪！', '鬼才答应你', '我答应才怪', '听你的才怪']) {
+      const j = demoJudge(node, text);
+      assert.notEqual(j.intent, want, `${nodeId}「${text}」is not a promise`);
+      assert.equal(j.intent, REFUSAL[nodeId], `${nodeId}「${text}」counts as refusing`);
+    }
+    assert.equal(demoJudge(node, '我会的').intent, want, `${nodeId}「我会的」is still a promise`);
+  }
+});
+
+test('demo judge: sarcasm is not a promise on the other promise nodes either (Toby, Erin, Mara)', () => {
+  // [章节, 节点, 承诺类意图, 一句正常的承诺 → 应判的意图]
+  const PROMISE_NODES = [
+    ['ch000', 'FI_CH000_SC20_LEAVE_MOTHER_001', ['promise'], ['我答应你。', 'promise']],
+    ['ch000', 'FI_CH000_SC26_TOBY_AFTER_001', ['promise'], ['我保证。', 'promise']],
+    ['ch001', 'FI_CH001_SC02_TOBY_WAITING_001', ['promise'], ['我保证。', 'promise']],
+    ['ch001', 'FI_CH001_SC10_TOBY_GUARDIAN_001', ['visit', 'letters', 'stories'], ['我会给你写信的。', 'letters']],
+    ['ch004', 'FI_CH004_SC10_TWO_PULLS_001', ['promise_return', 'promise_absolute', 'promise_tonight', 'promise_tonight_absolute'], ['我会回来的。', 'promise_return']],
+  ];
+  const sarcasm = ['我会的才怪', '我答应才怪', '鬼才答应你', '我会回来的才怪', '我保证……才怪', '我会给你写信的……才怪', '我会常回来看你的才怪', '我一定今晚回来接你们，才怪'];
+  for (const [chapterId, nodeId, promiseIntents, [plain, want]] of PROMISE_NODES) {
+    const node = findNode(readJson(`public/story/chapters/${chapterId}.json`), nodeId);
+    for (const id of promiseIntents) {
+      const kws = node.intents.find((x) => x.id === id).keywords;
+      assert.ok(kws.includes('!才怪') && kws.includes('!鬼才'), `${nodeId}.${id} vetoes 才怪 / 鬼才`);
+    }
+    for (const text of sarcasm) assert.ok(!promiseIntents.includes(demoJudge(node, text).intent), `${nodeId}「${text}」is not a promise`);
+    assert.equal(demoJudge(node, plain).intent, want, `${nodeId}「${plain}」is still a promise`);
+  }
+});
+
+test('demo judge ch005 05-04: 「身后」 alone is not the dark-law overreach (only 「绕到他身后」)', () => {
+  const node = findNode(readJson('public/story/chapters/ch005.json'), 'FI_CH005_SC04_WAIT_OR_NOT_001');
+  const dark = node.intents.find((x) => x.id === 'law_dark_first');
+  assert.ok(!dark.keywords.includes('身后') && dark.keywords.includes('绕到他身后'));
+  for (const text of ['我躲在莉亚身后', '我站在她身后等']) assert.notEqual(demoJudge(node, text).intent, 'law_dark_first', text);
+  assert.equal(demoJudge(node, '我绕到他身后').intent, 'law_dark_first');
+});
+
 test('ch000 00-14: the three emergencies are marked as intel for the input panel', () => {
   const chapter = readJson('public/story/chapters/ch000.json');
   const shot = chapter.shots.find((s) => s.id === '00-14');
@@ -335,6 +428,25 @@ test('API: POST /api/story/judge returns a judgement and serves chapter files', 
     assert.ok(node.intents.some((x) => x.id === body.judgement.intent));
     const missing = await fetch(`${base}/api/story/judge`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ chapterId: 'ch000', nodeId: 'FI_NOPE', text: 'x' }) });
     assert.equal(missing.status, 404);
+
+    // 契约 R-2（播放器章节完成页消费的字段）：首通发钻石，ch005 莉亚入队；再报一次幂等
+    const post = async (url, body) => { const r = await fetch(`${base}${url}`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) }); return { status: r.status, body: await r.json() }; };
+    const { body: created } = await post('/api/account/create', { playerName: '亚克' });
+    const playerId = created.account.id;
+    const first = await post('/api/story/progress', { playerId, chapterId: 'ch005' });
+    assert.equal(first.status, 200);
+    assert.equal(first.body.granted, true);
+    assert.equal(first.body.alreadyCleared, false);
+    assert.ok(first.body.chapterReward > 0 && first.body.diamonds >= first.body.chapterReward);
+    assert.deepEqual(first.body.heroinesGranted, ['lia']);
+    assert.ok(Number.isFinite(first.body.balance));
+    const again = await post('/api/story/progress', { playerId, chapterId: 'ch005' });
+    assert.equal(again.body.alreadyCleared, true);
+    assert.equal(again.body.granted, false);
+    assert.equal(again.body.diamonds, 0);
+    assert.deepEqual(again.body.heroinesGranted, []);
+    assert.equal((await post('/api/story/progress', { playerId, chapterId: 'ch999' })).status, 400);
+    assert.ok([400, 404].includes((await post('/api/story/progress', { playerId: 'nobody', chapterId: 'ch000' })).status));
   } finally {
     child.kill();
   }

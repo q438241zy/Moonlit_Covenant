@@ -6,7 +6,7 @@
 //
 // 参数：
 //   --only a,b,group:cards   只跑指定任务 id 或分组        --force             已有输出也重出
-//   --include-existing       连同已有 PNG 的莉亚/米娅/塞雷娜立绘一起重出
+//   --include-existing       （保留兼容）现在八张立绘都按正典重出，旧 PNG 只作参考
 //   --dry-run                只打印提示词，不调用 API     --concurrency N     并发数（默认 2）
 //   --limit N                最多跑 N 张（试跑用）         --model ID          覆盖模型 id
 // 环境变量：ARK_IMAGE_MODEL / SILICONFLOW_IMAGE_MODEL 覆盖默认模型；ARK_BASE_URL / SILICONFLOW_BASE_URL 覆盖接口地址。

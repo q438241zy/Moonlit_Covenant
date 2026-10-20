@@ -53,7 +53,12 @@ export const VILLAGE_PAL = {
   },
 };
 
-// Paint the village. state: day | dusk | burning | ruins. s = scale, (ox, oy) = plaza on screen.
+// nightfall: the dusk village a step later (title background) - walls and roofs sunk toward the
+// violet night, windows still lit
+VILLAGE_PAL.nightfall = Object.fromEntries(Object.entries(VILLAGE_PAL.dusk).map(([k, v]) => [k, typeof v !== 'object' ? v
+  : Object.fromEntries(Object.entries(v).map(([c, hex]) => [c, /^(winLit|star)$/.test(c) ? hex : mix(hex, '#1c1632', 0.5)]))]));
+
+// Paint the village. state: day | dusk | nightfall | burning | ruins. s = scale, (ox, oy) = plaza on screen.
 // Returns { back, front, smokes, flames, towerTop } so callers can interleave their own layers.
 export function village(S, ox, oy, s, state = 'day', opt = {}) {
   const R = rng(opt.seed || 77);
@@ -78,7 +83,7 @@ export function village(S, ox, oy, s, state = 'day', opt = {}) {
         + skeleton(HR, x + w * 0.05, y - h * 0.2, w * 0.9, h * 1.3, hp.trim, Math.max(1, 2.2 * s));
       if (state === 'burning') fires.push([x + w / 2, y, w * 1.1, h * 2.2]);
     } else {
-      const lit = (state === 'dusk' && HR() < 0.6) || (state === 'burning' && HR() < 0.15);
+      const lit = ((state === 'dusk' || state === 'nightfall') && HR() < 0.6) || (state === 'burning' && HR() < 0.15);
       const o = house(x, y, w, h, { side: hh.side, pal: hp, planks: s > 1.2, chimney: hh.chim && !ruined, lit, windows: s > 0.35 ? 1 : 0, door: s > 0.35, rim: opt.rim });
       svg = o.svg;
       if (o.chimneyTop && !ruined) chimneys.push(o.chimneyTop);
@@ -98,7 +103,7 @@ export function village(S, ox, oy, s, state = 'day', opt = {}) {
     } else {
       const o = house(x, y, w, h, { side: 'l', d: w * 0.55, roofH: w * 0.5, pal: { ...st, lit: st.lit, mid: st.mid }, windows: 0, door: false });
       svg = o.svg
-        + `<circle cx="${r0(x + w / 2)}" cy="${r0(y - h - w * 0.2)}" r="${f(w * 0.1)}" fill="${state === 'dusk' ? '#ffc98a' : st.win}"/>`
+        + `<circle cx="${r0(x + w / 2)}" cy="${r0(y - h - w * 0.2)}" r="${f(w * 0.1)}" fill="${state === 'dusk' || state === 'nightfall' ? '#ffc98a' : st.win}"/>`
         + `<path d="M${r0(x + w * 0.4)},${r0(y)}V${r0(y - h * 0.5)}A${f(w * 0.1)},${f(w * 0.1)} 0 0 1 ${r0(x + w * 0.6)},${r0(y - h * 0.5)}V${r0(y)}Z" fill="${st.door}"/>`;
     }
     items.push({ y: hl.y, svg });

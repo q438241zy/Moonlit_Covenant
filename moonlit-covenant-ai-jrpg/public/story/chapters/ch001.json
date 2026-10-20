@@ -328,7 +328,9 @@
                 "会没事的",
                 "不会丢下我们",
                 "会回来的",
-                "会找到我们"
+                "会找到我们",
+                "!才怪",
+                "!鬼才"
               ],
               "voice": "reassuring",
               "morality": 0,
@@ -845,7 +847,7 @@
           "id": "FI_CH001_SC06_CAVE_CONFRONT_001",
           "kind": "free",
           "prompt": "陌生的白袍魔术师正在剑尖前等待。{PLAYER_NAME}可以质问、警告、道谢、要求证明身份，或保持戒备。",
-          "placeholder": "说点什么，或写下你的动作……",
+          "placeholder": "说点什么，或写下{PLAYER_NAME}的动作……",
           "focus": [
             "kern_unknown",
             "toby"
@@ -1561,7 +1563,7 @@
           "id": "FI_CH001_SC09_MOTHER_DEATH_001",
           "kind": "free",
           "prompt": "艾琳的死亡被正式确认。{PLAYER_NAME}可以质问、否认、愤怒、安慰托比、责怪霍恩、拔剑冲向废墟，或沉默。",
-          "placeholder": "说点什么，或写下你的动作……",
+          "placeholder": "说点什么，或写下{PLAYER_NAME}的动作……",
           "focus": [
             "horn",
             "toby",
@@ -2164,7 +2166,9 @@
                 "回来接你",
                 "不会丢下",
                 "不丢下你",
-                "等我"
+                "等我",
+                "!才怪",
+                "!鬼才"
               ],
               "voice": "warm",
               "morality": 1,
@@ -2307,7 +2311,9 @@
                 "定期",
                 "捎信",
                 "的信",
-                "封信"
+                "封信",
+                "!才怪",
+                "!鬼才"
               ],
               "voice": "warm",
               "morality": 1,
@@ -2347,7 +2353,9 @@
                 "冒险的事",
                 "带礼物",
                 "好玩的",
-                "给你讲"
+                "给你讲",
+                "!才怪",
+                "!鬼才"
               ],
               "voice": "warm",
               "morality": 1,
@@ -2780,8 +2788,8 @@
           "t": "input",
           "id": "FI_CH001_SC12_FIRST_CLASS_VOW_001",
           "kind": "vow",
-          "prompt": "可恩正在问{PLAYER_NAME}：他为什么要成为一流冒险者？你可以自由说明复仇、保护、力量、真相、养活弟弟，或彼此矛盾的多重动机。",
-          "placeholder": "回答可恩：你为什么要成为一流冒险者？",
+          "prompt": "可恩正在问{PLAYER_NAME}：他为什么要成为一流冒险者？{PLAYER_NAME}可以自由说明复仇、保护、力量、真相、养活弟弟，或彼此矛盾的多重动机。",
+          "placeholder": "回答可恩：{PLAYER_NAME}为什么要成为一流冒险者？",
           "focus": [
             "kern"
           ],

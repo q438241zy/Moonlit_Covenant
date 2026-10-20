@@ -63,8 +63,11 @@ function render(p) {
     + `<path d="M442,674L466,664L480,730H446Z" fill="${K.pineShade}"/>`
     + `<path d="M368,668Q416,690 464,668" fill="none" stroke="${K.goldMid}" stroke-width="2.6"/>`
     + `<path d="M372,680Q370,700 364,716" fill="none" stroke="${K.pineLit}" stroke-width="3" stroke-linecap="round"/>`
-    + `<g>` + [830, 880, 930, 980].map((y) => `<circle cx="426" cy="${y}" r="5.4" fill="${K.goldMid}" stroke="${K.goldLine}" stroke-width="1.8"/><circle cx="424.4" cy="${y - 1.6}" r="1.7" fill="${K.gold}"/>`).join('')
-    + `</g>`;
+    // gold buttons; with a heroine accent kit they are cast in her motif (B11)
+    + (p.accent
+      ? `<path d="${[880, 930, 980].map((y) => p.accent.glyph(426, y, 8.5)).join('')}" fill="${K.goldMid}" fill-rule="evenodd" stroke="${K.goldLine}" stroke-width="1.6" stroke-linejoin="round"/>`
+      : `<g>` + [830, 880, 930, 980].map((y) => `<circle cx="426" cy="${y}" r="5.4" fill="${K.goldMid}" stroke="${K.goldLine}" stroke-width="1.8"/><circle cx="424.4" cy="${y - 1.6}" r="1.7" fill="${K.gold}"/>`).join('')
+      + `</g>`);
 
   // ---- velvet capelet: flares over the shoulders, open at the front below the clasp
   // hem: lower at each fold ridge, tucked up at each valley
@@ -130,6 +133,11 @@ function render(p) {
     + `<path d="M400,786Q416,798 432,786" fill="none" stroke="${K.goldLine}" stroke-width="4" stroke-linecap="round"/>`
     + `<path d="M400,786Q416,798 432,786" fill="none" stroke="${K.goldMid}" stroke-width="2" stroke-linecap="round"/>`
     + disc(394, 784) + disc(438, 784);
+  // her emblem hangs from the middle of the clasp chain as a pendant (B11)
+  if (p.accent) {
+    s += `<path d="M416,803V818" stroke="${K.goldLine}" stroke-width="4" stroke-linecap="round"/><path d="M416,803V818" stroke="${K.gold}" stroke-width="2" stroke-linecap="round"/>`
+      + p.accent.emblem(416, 846, 1.15);
+  }
   return s;
 }
 

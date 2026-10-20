@@ -125,7 +125,7 @@ export function publicNode(node, run) {
     id: node.id,
     kind: node.kind || 'free',
     prompt: interpolate(node.prompt, run),
-    placeholder: interpolate(node.placeholder || '说点什么，或写下你的动作……', run),
+    placeholder: interpolate(node.placeholder || '说点什么，或写下{PLAYER_NAME}的动作……', run),
     optional: Boolean(node.optional),
     focus: node.focus || [],
   };

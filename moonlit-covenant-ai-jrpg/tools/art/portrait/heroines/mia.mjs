@@ -1,4 +1,4 @@
-// Mia Ling - the cat-eared machinist. Canon: docs/CHARACTER-DESIGN.md section 2.
+// Mia Ling - magic-tool inventor with mechanical cat-ear receivers. Canon: 设定集/03_主角与八位女主角.md §3.
 // Adult (age 18), petite, drawn modest. Signature silhouette: short choppy self-cut
 // hair with fibre-optic neon tips + MECHANICAL cat-ear receivers (titanium shells, circuit
 // panels, glowing cyan rim ring, antenna with a signal ball). Wrench clip on her right

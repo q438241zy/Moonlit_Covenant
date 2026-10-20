@@ -129,6 +129,13 @@ function render(p) {
     + `<path d="M240,988Q262,993 280,995L278,1024Q258,1021 238,1016Z" fill="${K.whiteShade}" opacity=".8"/>`
     + `<path d="M250,1001Q416,1024 582,1001" fill="none" stroke="${K.whiteDeep}" stroke-width="1.4" stroke-dasharray="5 4"/>`
     + `<path d="M262,994Q340,1006 400,1008" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>`;
+  // heroine accents (B11): her emblem embroidered on the bib, her motif stitched along the waistband
+  const A = p.accent;
+  if (A) {
+    const yBand = (x) => 1020 - 18 * ((x - 416) / 176) ** 2; // centre line of the waistband
+    s += `<path d="${[300, 358, 474, 532].map((x) => A.glyph(x, yBand(x), 9)).join('')}" fill="${A.main}" fill-rule="evenodd" opacity=".9"/>`
+      + A.emblem(416, 902, 1.4);
+  }
 
   // ---- puff sleeves (gathered at the shoulder seam and into a band above the elbow)
   const puff = sm([[254, 754], [220, 742], [180, 746], [148, 768], [126, 804], [118, 850], [124, 892], [138, 924, 1], [190, 936], [244, 924, 1], [250, 880], [256, 820]], { closed: true });

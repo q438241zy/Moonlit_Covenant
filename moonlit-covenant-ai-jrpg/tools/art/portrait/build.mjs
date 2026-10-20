@@ -10,6 +10,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { compose } from './base.mjs';
+import { ACCENTS } from './accents.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, '../../..');
@@ -79,8 +80,9 @@ if (outfits.length) fs.mkdirSync(outCostumes, { recursive: true });
 
 let written = 0, failed = 0;
 for (const { file, mod: h } of heroines) {
+  const extras = Array.isArray(h.portraitExtras) ? h.portraitExtras : []; // e.g. Lia's tower shield (B10)
   try {
-    const svg = compose(h, { lenient });
+    const svg = compose(h, { lenient, extras });
     const label = `portraits/${h.id}.svg`;
     const { bytes } = check(svg, label, BUDGET.portrait);
     prefixCheck(svg, h.id, label);
@@ -93,7 +95,8 @@ for (const { file, mod: h } of heroines) {
   }
   for (const { file: of, mod: o } of outfits) {
     try {
-      const svg = compose(h, { outfit: o, lenient });
+      // every costume carries the heroine's own emblem and motif (accents.mjs, audit B11)
+      const svg = compose(h, { outfit: o, lenient, extras, accent: ACCENTS[h.id] || null });
       const label = `costumes/${h.id}_${o.type}.svg`;
       const { bytes } = check(svg, label, BUDGET.costume);
       prefixCheck(svg, h.id, label);

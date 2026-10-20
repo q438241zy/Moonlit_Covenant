@@ -1,4 +1,4 @@
-// Serena Nox - the eclipse observer. Canon: docs/CHARACTER-DESIGN.md section 3.
+// Serena Nox - dark mage of the Night Raven duchy's Nox family. Canon: 设定集/03_主角与八位女主角.md §4.
 // Adult (age 19), drawn modest. Signature silhouette: very long silky straight
 // purple-black hair whose lengths fade to moon-white, a thin braid on her left (viewer's right)
 // threaded with a silver moon-phase disc (waning gibbous), calm half-lidded scrutiny.

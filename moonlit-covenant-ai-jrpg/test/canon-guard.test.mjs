@@ -4,7 +4,11 @@
 //   - the side-story spoilers 蚀宴会 / 第27章 must not reach any player-facing file;
 //   - the admin key is never hard-coded on the client: the server owns it (ADMIN_KEY, default 123456,
 //     header x-admin-key only), so the string 123456 must not appear anywhere under public/ (binary files included);
-//   - no character's forbiddenTermsUntilEnding may leak into the pre-ending pool / profile texts.
+//   - no character's forbiddenTermsUntilEnding may leak into the pre-ending pool / profile texts;
+//   - B8 (核#12): the side story's vice-captain 艾琳 (亚克's mother in canon), 艾琳娜 and 莉莉安 stay renamed
+//     (希尔达 / 欧若拉 / 佩特拉); 艾琳 may only appear in the main line;
+//   - B1/B15 (核#12): the side-story-only identities (赤誓骑士 / 猫耳机关师 / 月蚀观测者) never reach a canon surface
+//     (summon pool, character manager, card texts, the main-line player and its chapters, the store copy).
 // test/ is skipped on purpose: the tests themselves list the banned strings.
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -79,6 +83,33 @@ test("no character's forbiddenTermsUntilEnding appears in the pre-ending pool an
   const list = Array.isArray(CHARACTERS) ? CHARACTERS : Object.values(CHARACTERS);
   const terms = [...new Set(list.flatMap((c) => c.forbiddenTermsUntilEnding || []))];
   assert.ok(terms.length >= 6, 'expected forbidden terms from game/content.mjs');
-  const files = ['public/character-manager.js', 'game/gacha.mjs', 'public/gacha-system.js', 'cards/database.mjs'].map((f) => path.join(root, f));
+  const files = ['public/character-manager.js', 'game/gacha.mjs', 'tools/prototypes/gacha-system.js', 'cards/database.mjs'].map((f) => path.join(root, f));
   assert.deepEqual(hits(files, terms), []);
+});
+
+test('B8: the renamed side-story characters stay renamed; 艾琳 only appears in the main line', () => {
+  // the side story (scenario/, game/, the main game page, cards, prototypes) must not use 艾琳 / 莉莉安 at all
+  const sideStory = [
+    ...textFiles('scenario', 'game', 'cards', 'tools/prototypes'),
+    ...['public/app.js', 'public/index.html', 'public/character-manager.js', 'public/cards.js'].map((f) => path.join(root, f)),
+  ];
+  assert.ok(sideStory.some((f) => rel(f) === 'scenario/chapter-01.json'));
+  assert.deepEqual(hits(sideStory, ['艾琳', '莉莉安']), []);
+  // 艾琳娜 / 莉莉安 are gone everywhere except the rename table of docs/CHARACTER-DESIGN.md
+  const everywhere = textFiles('public', 'game', 'cards', 'scenario', 'tools', 'docs').filter((f) => rel(f) !== 'docs/CHARACTER-DESIGN.md');
+  assert.deepEqual(hits(everywhere, ['艾琳娜', '莉莉安']), []);
+  // the new names are really in use (the guard is not vacuous)
+  const scenario = textFiles('scenario').map((f) => fs.readFileSync(f, 'utf8')).join('\n');
+  for (const name of ['希尔达', '佩特拉', '欧若拉']) assert.ok(scenario.includes(name), `scenario/ should use ${name}`);
+  // and 艾琳 is still 亚克's mother in the main line
+  assert.ok(fs.readFileSync(path.join(root, 'public/story/speakers.json'), 'utf8').includes('艾琳'));
+});
+
+test('B1/B15: side-story-only identities never reach a canon surface', () => {
+  const files = [
+    ...['game/gacha.mjs', 'public/character-manager.js', 'cards/database.mjs', 'public/story.html', 'docs/STORE-PAGE-COPY.md'].map((f) => path.join(root, f)),
+    ...textFiles('public/story'),
+  ];
+  assert.ok(files.some((f) => rel(f) === 'public/story/chapters/ch005.json'));
+  assert.deepEqual(hits(files, ['赤誓骑士', '猫耳机关师', '月蚀观测者']), []);
 });

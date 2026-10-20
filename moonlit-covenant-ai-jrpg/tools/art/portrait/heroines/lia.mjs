@@ -1,5 +1,5 @@
-// Lia Hest - the crimson-oath knight (reference heroine for the portrait template).
-// Canon: docs/CHARACTER-DESIGN.md section 1. Adult (age 19), drawn modest.
+// Lia Hest - shield fighter of the Crimson Flame kingdom (reference heroine for the portrait template).
+// Canon: 设定集/03_主角与八位女主角.md §2 (tower shield 「赤誓」 + longsword 「断章」). Adult (age 19), drawn modest.
 const C = {
   silver: '#a3a7bb', silverLit: '#d9dcea', silverShade: '#6b6f88', silverDeep: '#43455e', metalLine: '#221e34',
   crimson: '#6c1a2b', crimsonLit: '#94283c', crimsonShade: '#45101d', crimsonLine: '#250910',
@@ -31,9 +31,12 @@ export default {
     hairFront,
     foreground: swordHilt,
   },
-  // optional layers, drawn only when compose() is asked for them (opts.extras): the story-mode bust
-  // (tools/art/story/lia-bust.mjs) adds the tower shield; the gacha / side-story portrait stays as is
+  // optional layers, drawn only when compose() is asked for them (opts.extras). The tower shield is her
+  // canon silhouette (设定集/03: 塔盾“赤誓”), so every Lia image wears it: the story-mode bust
+  // (tools/art/story/lia-bust.mjs) and, through portraitExtras, the gacha / side-story portrait and all
+  // costume portraits (tools/art/portrait/build.mjs) - always behind her left shoulder (viewer's right).
   extras: { shield },
+  portraitExtras: ['shield'],
 };
 
 // ------------------------------------------------------------------ background: gothic window + blood moon
@@ -54,13 +57,22 @@ function bgMotif(p) {
     [[584, 176], [604, 172], [610, 196], [592, 206]],
   ].map((pts) => smooth(pts, { closed: true })).join('');
   const rand = rng('lia-embers');
-  let embers = '', cores = '';
+  let cores = '';
+  // Room for the tower shield inside the 70KB portrait budget, with the same random sequence and the
+  // same picture: embers that would sit behind the figure (cape, body, head, shield) are not written,
+  // and the rest share one path per stroke width (rounded to 0.5px).
+  const hidden = (x, y) => (y > 800 && x > 120 && x < 712) || (y > 330 && y <= 800 && x > 340 && x < 520);
+  const byWidth = new Map();
   for (let i = 0; i < 38; i++) {
     const y = 240 + rand() * 940, x = 24 + rand() * 784, r = 1.2 + rand() * (y > 800 ? 3.6 : 2.4);
     const len = 3 + rand() * 12;
-    embers += `<path d="M${n(x)},${n(y)}l${n(-len * 0.35)},${n(-len)}" stroke-width="${n(r)}"/>`;
-    if (rand() > 0.6) cores += `M${n(x)},${n(y)}h0`;
+    const core = rand() > 0.6;
+    if (hidden(x, y)) continue;
+    const w = n(Math.round(r * 2) / 2);
+    byWidth.set(w, (byWidth.get(w) || '') + `M${n(x)},${n(y)}l${n(-len * 0.35)},${n(-len)}`);
+    if (core) cores += `M${n(x)},${n(y)}h0`;
   }
+  const embers = [...byWidth].map(([w, d]) => `<path d="${d}" stroke-width="${w}"/>`).join('');
   return `<path d="${outer}" fill="${stone}"/>`
     + `<path d="${arch}" fill="${glass}"/>`
     + `<g clip-path="${clip}"><rect width="832" height="1216" fill="${halo}"/><circle cx="${mx}" cy="${my}" r="${mr}" fill="${moon}"/><path d="${maria}" fill="#9a2a3c" opacity=".3"/>`

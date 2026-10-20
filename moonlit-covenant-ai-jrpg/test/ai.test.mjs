@@ -6,7 +6,7 @@ import path from 'node:path';
 import http from 'node:http';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { createInitialState, advanceScene } from '../game/engine.mjs';
+import { createInitialState, advanceScene, applyChatOutcome } from '../game/engine.mjs';
 import { AI_CONFIG, generateCharacterReply, resolveDotEnvPath } from '../game/ai.mjs';
 
 const projectDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -128,4 +128,51 @@ test('D6: model ladder only steps down on HTTP 400/422; bad content falls back a
   reply = await ask('good');
   assert.deepEqual(formats, ['json_schema']);
   assert.equal(reply.source, 'model');
+});
+
+// ─── B4 / B5：专属回复与「说过了」的提示也传给模型 ───
+
+test('B5: demo mode answers the question quick prompts with their dedicated replies', async () => {
+  const state = createInitialState('测试队长');
+  advanceScene(state, 'begin_camp');
+  const reply = await generateCharacterReply(state, 'serena', '你手套下面藏着什么？');
+  assert.equal(reply.source, 'demo');
+  assert.equal(reply.intent, 'question');
+  assert.equal(reply.trustDelta, 1);
+  assert.match(reply.utterance, /手套下面确实有东西/);
+});
+
+test('B4: the model is told when a line was already said or a promise already made', async (t) => {
+  const systemPrompts = [];
+  const mock = http.createServer((req, res) => {
+    let raw = '';
+    req.on('data', (chunk) => { raw += chunk; });
+    req.on('end', () => {
+      systemPrompts.push(JSON.parse(raw).messages[0].content);
+      res.writeHead(200, { 'content-type': 'application/json' });
+      res.end(JSON.stringify({ choices: [{ message: { content: JSON.stringify({ utterance: '我记得。', emotion: '认真', intent: 'promise', bond_delta: 1, trust_delta: 1, memory: '', tactical_hint: '' }) } }] }));
+    });
+  });
+  await new Promise((resolve) => mock.listen(0, '127.0.0.1', resolve));
+  const saved = { ...AI_CONFIG };
+  Object.assign(AI_CONFIG, { mode: 'openai', baseUrl: `http://127.0.0.1:${mock.address().port}/v1`, apiKey: 'test', timeoutMs: 5000 });
+  t.after(() => {
+    Object.assign(AI_CONFIG, saved);
+    mock.close();
+  });
+
+  const state = createInitialState('测试队长');
+  advanceScene(state, 'begin_camp');
+  const first = await generateCharacterReply(state, 'lia', '我保证不会丢下任何队友。');
+  assert.equal(first.source, 'model');
+  assert.doesNotMatch(systemPrompts[0], /之前已经对你说过|已经对你许下过承诺/);
+  applyChatOutcome(state, 'lia', '我保证不会丢下任何队友。', first);
+
+  await generateCharacterReply(state, 'lia', '我保证不会丢下任何队友！');
+  assert.match(systemPrompts[1], /之前已经对你说过一次/);
+  assert.match(systemPrompts[1], /已经对你许下过承诺/);
+  // 规则仍由引擎执行：模型照给 +1，重复的承诺也不加分
+  const trust = state.characters.lia.trust;
+  applyChatOutcome(state, 'lia', '我保证不会丢下任何队友！', { ...first });
+  assert.equal(state.characters.lia.trust, trust);
 });

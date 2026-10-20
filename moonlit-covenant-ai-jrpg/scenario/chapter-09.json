@@ -45,7 +45,7 @@
         { "type": "dialogue", "speaker": "narrator", "text": "「黎明种计划进入最终阶段。当四颗S级记忆种子在月蚀完成时汇聚，黎明种将觉醒。届时，所有被提取的记忆将被重写——不是删除，是改写。痛苦变为平静，恐惧变为勇气，失去变为拥有。」", "emotion": "mechanical" },
         { "type": "dialogue", "speaker": "narrator", "text": "「这不是毁灭。这是救赎。我将赐予所有人一个没有伤痛的过去。」", "emotion": "mechanical" },
         { "type": "dialogue", "speaker": "lia", "text": "……改写记忆？把痛苦变成平静？", "emotion": "disgusted" },
-        { "type": "dialogue", "speaker": "lia", "text": "那我的七道刻痕呢？艾琳、卡尔、莉莉安——他们的牺牲，他们的痛苦，他们真实存在过的证据——全部要被'改写'成没有意义的东西？", "emotion": "enraged" },
+        { "type": "dialogue", "speaker": "lia", "text": "那我的七道刻痕呢？希尔达、卡尔、佩特拉——他们的牺牲，他们的痛苦，他们真实存在过的证据——全部要被'改写'成没有意义的东西？", "emotion": "enraged" },
         { "type": "cg", "unlockCg": "cg_ch9_truth_revealed", "description": "CG：终端屏幕的冷光映在四人脸上。莉亚握剑的手在颤抖，米娅的猫耳完全贴平，塞雷娜闭着眼，泪痕未干。玩家站在中央，面对着屏幕上'黎明种计划'的完整架构图——一颗金色种子连接着无数银色导线，导线的另一端是无数沉睡的人。" },
         { "type": "transition", "target": "ch9_scene3" }
       ],

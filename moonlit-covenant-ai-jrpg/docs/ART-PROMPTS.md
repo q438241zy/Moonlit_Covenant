@@ -1,7 +1,7 @@
 # 月蚀契约 — 位图立绘出图 Prompt（v2）
 
 > 用途：在矢量版资产（见 `docs/ART-DIRECTION.md`）之上，为正式版生成/外包**高完成度位图立绘**时使用。
-> 外观以 `docs/CHARACTER-DESIGN.md`（主三人）和 `设定集/03_主角与八位女主角.md`（其余五人）为准。
+> 外观以正典 `设定集/03_主角与八位女主角.md`（八人全部）为准。外传《银轨号》是 IF 外传，`docs/CHARACTER-DESIGN.md` 只用于外传，不作为出图依据（audit B1/B15）；外传专用的称号（「赤誓骑士」「猫耳机关师」「月蚀观测者」）不进提示词。实际批量出图用的提示词在 `tools/art/raster/manifest.mjs`，与本文件同步。
 > **硬性尺度**：所有女主均为成年女性（18–19 岁），非性化；服装变体中不含泳装/内衣感服装。v1 版本中低龄+挑逗向的描述已全部移除——这类内容会直接触发平台审核（Steam、国内应用商店、版号）与法律风险，也不符合本项目自己的商业美术 Brief。
 
 ## 0. 出图管线建议（比单条 Prompt 更重要）
@@ -9,7 +9,7 @@
 1. **先定角色设定图，再出立绘**：每个角色先出一张三视图 + 表情表（turnaround sheet），确认后作为后续所有图的参考（IP-Adapter / Reference / 角色一致性功能）。
 2. **一致性**：同一角色固定 seed 区间与参考图；条件允许时用**自有设定图**训练角色 LoRA（不要用来源不明的风格 LoRA）。
 3. **矢量版即构图稿**：`public/assets/portraits/<id>.svg` 已给出统一的半身构图、配色与标准色边缘光，可直接作为 img2img / ControlNet（lineart / depth）的底稿，保证八人并排时比例一致。
-4. **合规标识**：按《人工智能生成合成内容标识办法》对 AI 生成图保留显式标识（当前 PNG 右下角“图片由AI生成”即属此类，不要裁掉），并在元数据中保留隐式标识；Steam 商店页需填写 AI 生成内容披露。
+4. **合规标识**：按《人工智能生成合成内容标识办法》对 AI 生成图保留显式标识与隐式标识。游戏内的显式标识由页面统一的「AI 生成」角标负责（`public/paint.js` 的 `aiBadge()`，位图经 paint 预留位换上时自动显示，audit B17）；出图时服务商自带的可见标识（如旧 PNG 右下角“图片由AI生成”）也不要裁掉；元数据里的隐式标识由 `tools/art/raster/finalize.mjs` 写进 JPEG。Steam 商店页需填写 AI 生成内容披露。
 5. **权利链**：记录模型、版本、参考图来源；商用前确认模型许可允许商业用途。
 
 ## 1. 统一前缀 / 负面词
@@ -28,20 +28,21 @@ child, loli, teen, young-looking, chibi, nsfw, cleavage, revealing clothes, swim
 
 ## 2. 角色 Prompt
 
-### 莉亚·赫斯特 · 赤誓骑士（标准色 `#ff6b7c`）
+### 莉亚·赫斯特 · 盾战士（标准色 `#ff6b7c`）
 ```
-adult woman knight, 19 years old, high tight crimson ponytail with a near-black dark red streak on the left, amber-gold eyes, thin scar under the right eye through the brow tail, restrained determined expression, lips pressed, matte silver and dark crimson light armor with worn edges, damaged notch on the left pauldron, cracked gold oath crystal on the chest, scorched cape lining, slim longsword with a re-riveted ring guard, gothic arched window with a blood-red moon behind, embers, warm crimson rim light
+adult woman shield fighter, 19 years old, high tight crimson ponytail with a near-black dark red streak on the left, amber-gold eyes, thin scar under the right eye through the brow tail, restrained determined expression, lips pressed, matte silver and dark crimson light armor with worn edges, damaged notch on the left pauldron, cracked gold oath crystal on the chest, scorched cape lining, a large oxblood-red tower shield "Chishi" with an iron rim, a riveted repair plate and a stapled crack slung on her back, its top corner rising behind her left shoulder, slim longsword "Duanzhang" with a re-riveted ring guard, gothic arched window with a blood-red moon behind, embers, warm crimson rim light
 ```
+塔盾「赤誓」是她的正典剪影（高马尾 + 塔盾），每一张都要有，服装变体也一样（audit B10）。
 表情差分：别过脸整理肩甲（害羞）、咬牙但眼神坚定（愤怒）、难看的笑（真正悲伤）。
 
-### 米娅·玲 · 猫耳机关师（`#5ed7ff`）
+### 米娅·玲 · 魔具发明师（`#5ed7ff`）
 ```
-adult woman engineer, 18 years old, petite, short choppy self-cut cyan-blue hair with neon gradient tips, wrench-shaped hair clip on the right, mechanical cat-ear receivers made of matte titanium with circuit traces and a glowing cyan indicator ring and tiny antenna, big bright cyan eyes with faint circuit glint, tiny mole on the nose tip, bright curious grin, oversized ripstop work jacket with glowing cyan circuit seams, sleeves past the hands, tool belt, small spherical drone covered in label stickers hovering by her shoulder, blueprint grid glow background
+adult woman magic-tool inventor, 18 years old, petite, short choppy self-cut cyan-blue hair with neon gradient tips, wrench-shaped hair clip on the right, mechanical cat-ear receivers made of matte titanium with circuit traces and a glowing cyan indicator ring and tiny antenna, big bright cyan eyes with faint circuit glint, tiny mole on the nose tip, bright curious grin, oversized ripstop work jacket with glowing cyan circuit seams, sleeves past the hands, tool belt, multi-function magitech rod "Dingdang No.3", small spherical drone "Zero" covered in label stickers hovering by her shoulder, blueprint grid glow background
 ```
 
-### 塞雷娜·诺克斯 · 月蚀观测者（`#b58cff`）
+### 塞雷娜·诺克斯 · 暗系魔法师（`#b58cff`）
 ```
-adult woman astronomer mage, 19 years old, very long silky straight purple-black hair fading to moon-white at the tips, thin braid on the left with a tiny silver moon-phase disc ornament, pale violet eyes with fine star-track lines in the iris, calm half-lidded scrutinizing look, matte velvet purple-black robe with silver geometric seal embroidery, pendant shaped like a closed silver eyelid, white half-glove on the right hand, star-chart rings in the background, cold moonlit lighting
+adult woman dark mage of the Nox family of the Night Raven duchy, 19 years old, very long silky straight purple-black hair fading to moon-white at the tips, thin braid on the left with a tiny silver moon-phase disc ornament, pale violet eyes with fine star-track lines in the iris, calm half-lidded scrutinizing look, matte velvet purple-black robe with silver geometric seal embroidery, pendant shaped like a closed silver eyelid, white half-glove on the right hand, obsidian staff "Sleepless Mirror" with a dark mirror-glass head, star-chart rings in the background, cold moonlit lighting
 ```
 
 ### 芙蕾娅·霜华 · 冰系魔法师（`#8fd4f5`）
@@ -71,6 +72,8 @@ adult woman holy knight, 18 years old, golden shoulder-length hair, bright blue 
 
 ## 3. 服装变体（追加在角色 Prompt 之后）
 
+每套服装都要带上该女主的专属徽记与纹样（见 `docs/ART-DIRECTION.md` §5.2，例如莉亚的塔盾纹章 + 火焰、塞雷娜的闭合眼睑吊坠 + 新月），莉亚的塔盾在服装变体里照样背在左肩后。
+
 | 服装 | 追加描述 |
 |---|---|
 | 新年服 | `red and gold qipao-inspired jacket with mandarin collar, frog buttons, gold cloud embroidery, small fur collar, plum blossom hairpin, lanterns in background` |
@@ -83,4 +86,4 @@ adult woman holy knight, 18 years old, golden shoulder-length hair, bright blue 
 ## 4. 规格与命名
 
 - 尺寸：1024×1536（2:3 竖构图），游戏内按 `object-fit: cover` 显示，头部请落在画面上 1/3–1/2。
-- 文件：`public/assets/<id>.png`（基础立绘）、`public/assets/costumes/<id>_<type>.png`（服装）。位图到位后，把 `game/gacha.mjs` 与 `game/content.mjs` 中对应 `portrait` 指向 PNG 即可；矢量版保留作为回退与缩略图。
+- 文件：按 `public/assets/paint/README.md` 的预留位命名，用 `npm run art:paint:finalize` 压成 JPEG、写入 AIGC 元数据并登记到 `public/assets/paint/manifest.json`。**不要**改 `game/gacha.mjs`、`game/content.mjs` 或页面里的图片路径：游戏内一律引用矢量 SVG，`paint()` 发现预留位已登记时自动换成位图并显示「AI 生成」角标（audit B9/B17）；矢量版保留作为回退与缩略图。

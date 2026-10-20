@@ -368,8 +368,45 @@ export function endingBg() {
   b.push(`<path d="${ties}" stroke="#120e22" stroke-width="5"/>`);
   b.push(`<path d="${railA}${railB}" fill="none" stroke="url(#${p}-rail)" stroke-width="3.2"/>`);
   b.push(`<path d="M700,${TY}C860,${TY} 980,${TY - 40} ${SUN[0] - 20},${HZ + 20}" fill="none" stroke="#fff4e0" stroke-width="1.6" opacity=".9"/>`);
-  // the stopped train in profile, locomotive facing the dawn
+  // the stopped train in profile, locomotive facing the dawn (shared with the title background)
   const tb = TY - 2; // wheel line
+  const L0 = 666;
+  b.push(...trainProfile(p, defs, tb));
+  // soft steam drifting back from the chimney
+  b.push(`<g filter="url(#${p}-b2)" opacity=".38"><ellipse cx="${L0 + 90}" cy="${tb - 140}" rx="36" ry="16" fill="#e0d4f6"/><ellipse cx="${L0 + 10}" cy="${tb - 164}" rx="80" ry="24" fill="#c4b6e6"/><ellipse cx="${L0 - 140}" cy="${tb - 182}" rx="140" ry="30" fill="#a596cc"/></g>`);
+  // foreground grass tufts (dark) for depth
+  let tufts = '';
+  for (let i = 0; i < 40; i++) {
+    const x = i < 22 ? R.range(-20, 560) : R.range(1300, 1620), y = R.range(840, 905);
+    const hgt = R.range(18, 46);
+    tufts += `M${P(x, y, 0)}q${f(R.range(-8, 8), 0)},${f(-hgt * 0.6, 0)} ${f(R.range(-14, 14), 0)},${f(-hgt, 0)}`;
+  }
+  b.push(`<path d="${tufts}" fill="none" stroke="#0d0a1c" stroke-width="3" stroke-linecap="round"/>`);
+  // frost glints on the plain
+  let gl = '';
+  for (let i = 0; i < 34; i++) {
+    const x = R.range(0, W), y = R.range(HZ + 40, H - 40);
+    const s = R.range(0.6, 2) * (y - HZ) / 300;
+    gl += `M${P(x - s * 2, y, 0)}h${f(s * 4)}M${P(x, y - s * 2, 0)}v${f(s * 4)}`;
+  }
+  b.push(`<path d="${gl}" stroke="#fff1dc" stroke-width="1.2" opacity=".55"/>`);
+  // rising memory motes (warm), sparse
+  let motes = '';
+  for (let i = 0; i < 26; i++) {
+    const x = R.range(700, 1550), y = R.range(120, 620);
+    motes += `<circle cx="${f(x, 0)}" cy="${f(y, 0)}" r="${f(R.range(1, 3))}" opacity="${f(R.range(0.3, 0.8), 2)}"/>`;
+  }
+  b.push(`<g fill="#ffd8a8">${motes}</g>`);
+  b.push(`<rect y="${H * 0.78}" width="${W}" height="${H * 0.22}" fill="url(#${p}-fade)"/>`);
+  return svgDoc(W, H, '黎明：银色铁轨与停驻的列车', defs.join(''), b.join(''));
+}
+
+// The Silver Rail train in profile (three carriages + locomotive facing right, warm windows, roof rim
+// light, headlight beam). tb = wheel line. Pushes its gradients/defs into `defs` (needs `${p}-train`
+// and `${p}-b1` already defined) and returns the body strings. Used by endingBg() and the title
+// background (tools/art/stage/title.mjs).
+export function trainProfile(p, defs, tb) {
+  const b = [];
   const car = (x0, x1) => `M${x0},${tb - 14}V${tb - 92}Q${x0},${tb - 108} ${x0 + 18},${tb - 110}H${x1 - 18}Q${x1},${tb - 108} ${x1},${tb - 92}V${tb - 14}Z`;
   const carsX = [[60, 250], [262, 452], [464, 654]];
   let trainD = '', winD = '', roofHi = '', rim = '', wheels = '';
@@ -399,33 +436,7 @@ export function endingBg() {
   defs.push(linear(`${p}-hl`, [[0, '#fff0c8', 0.3], [1, '#fff0c8', 0]], 'x1="0" y1="0" x2="1" y2="0"'));
   b.push(`<path d="M${HL[0]},${HL[1] - 4}L${HL[0] + 300},${HL[1] - 46}L${HL[0] + 300},${HL[1] + 34}Z" fill="url(#${p}-hl)" filter="url(#${p}-b1)"/>`);
   b.push(`<circle cx="${HL[0]}" cy="${HL[1]}" r="18" fill="#fff0c8" opacity=".4" filter="url(#${p}-b1)"/><circle cx="${HL[0]}" cy="${HL[1]}" r="5" fill="#fffaf0"/>`);
-  // soft steam drifting back from the chimney
-  b.push(`<g filter="url(#${p}-b2)" opacity=".38"><ellipse cx="${L0 + 90}" cy="${tb - 140}" rx="36" ry="16" fill="#e0d4f6"/><ellipse cx="${L0 + 10}" cy="${tb - 164}" rx="80" ry="24" fill="#c4b6e6"/><ellipse cx="${L0 - 140}" cy="${tb - 182}" rx="140" ry="30" fill="#a596cc"/></g>`);
-  // foreground grass tufts (dark) for depth
-  let tufts = '';
-  for (let i = 0; i < 40; i++) {
-    const x = i < 22 ? R.range(-20, 560) : R.range(1300, 1620), y = R.range(840, 905);
-    const hgt = R.range(18, 46);
-    tufts += `M${P(x, y, 0)}q${f(R.range(-8, 8), 0)},${f(-hgt * 0.6, 0)} ${f(R.range(-14, 14), 0)},${f(-hgt, 0)}`;
-  }
-  b.push(`<path d="${tufts}" fill="none" stroke="#0d0a1c" stroke-width="3" stroke-linecap="round"/>`);
-  // frost glints on the plain
-  let gl = '';
-  for (let i = 0; i < 34; i++) {
-    const x = R.range(0, W), y = R.range(HZ + 40, H - 40);
-    const s = R.range(0.6, 2) * (y - HZ) / 300;
-    gl += `M${P(x - s * 2, y, 0)}h${f(s * 4)}M${P(x, y - s * 2, 0)}v${f(s * 4)}`;
-  }
-  b.push(`<path d="${gl}" stroke="#fff1dc" stroke-width="1.2" opacity=".55"/>`);
-  // rising memory motes (warm), sparse
-  let motes = '';
-  for (let i = 0; i < 26; i++) {
-    const x = R.range(700, 1550), y = R.range(120, 620);
-    motes += `<circle cx="${f(x, 0)}" cy="${f(y, 0)}" r="${f(R.range(1, 3))}" opacity="${f(R.range(0.3, 0.8), 2)}"/>`;
-  }
-  b.push(`<g fill="#ffd8a8">${motes}</g>`);
-  b.push(`<rect y="${H * 0.78}" width="${W}" height="${H * 0.22}" fill="url(#${p}-fade)"/>`);
-  return svgDoc(W, H, '黎明：银色铁轨与停驻的列车', defs.join(''), b.join(''));
+  return b;
 }
 
 // =================================================================================================

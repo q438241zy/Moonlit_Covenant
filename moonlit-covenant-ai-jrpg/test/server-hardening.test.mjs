@@ -229,6 +229,8 @@ test('HTTP hardening on a default server', { timeout: 30000 }, async (t) => {
       ['/api/membership/purchase', { playerId: huge, tierId: 'gold' }],
       ['/api/cards/pack', { playerId: huge }],
       ['/api/battle/end-turn', { playerId: huge }],
+      ['/api/rewards/daily', { playerId: huge }],
+      ['/api/story/progress', { playerId: huge, chapterId: 'ch000' }],
       ['/api/advance', { sessionId: huge, action: 'begin_camp' }]
     ];
     for (const [p, body] of probes) {
@@ -236,7 +238,7 @@ test('HTTP hardening on a default server', { timeout: 30000 }, async (t) => {
       assert.equal(res.status, 400, p);
       assert.equal(res.json.error.code, 'BAD_ID', p);
     }
-    for (const p of [`/api/account?playerId=${'y'.repeat(4000)}`, `/api/session/${'a'.repeat(4000)}`, '/api/gallery?sessionId=zzz']) {
+    for (const p of [`/api/account?playerId=${'y'.repeat(4000)}`, `/api/rewards/status?playerId=${'y'.repeat(4000)}`, `/api/session/${'a'.repeat(4000)}`, '/api/gallery?sessionId=zzz']) {
       assert.equal((await api(srv.base, p)).status, 400, p);
     }
     const ghost = await api(srv.base, '/api/settings/ai', { body: { playerId: '00000000-0000-4000-8000-000000000000', modelId: 'deepseek-flash' } });
@@ -255,7 +257,11 @@ test('HTTP hardening on a default server', { timeout: 30000 }, async (t) => {
       (await api(srv.base, '/api/membership/purchase', { body: { playerId, tierId: 'silver' } })).json,
       (await api(srv.base, '/api/diamonds/purchase', { body: { playerId, packId: 'pack_6' } })).json,
       (await api(srv.base, '/api/gacha/pull', { body: { playerId, pool: 'character', count: 1 } })).json,
-      (await api(srv.base, '/api/cards/pack', { body: { playerId, count: 1 } })).json
+      (await api(srv.base, '/api/gacha/pull', { body: { playerId, pool: 'costume', count: 1, currency: 'diamonds' } })).json,
+      (await api(srv.base, '/api/cards/pack', { body: { playerId, count: 1 } })).json,
+      (await api(srv.base, '/api/rewards/daily', { body: { playerId } })).json,
+      (await api(srv.base, `/api/rewards/status?playerId=${playerId}`)).json,
+      (await api(srv.base, '/api/story/progress', { body: { playerId, chapterId: 'ch000' } })).json
     ];
     for (const payload of responses) {
       assert.ok(payload);
@@ -639,6 +645,37 @@ test('V7: AI endpoints are rate limited and never fan out to more than 3 concurr
   assert.ok(calls <= 20, `calls ${calls}`);
   assert.ok(sequential.includes('demo'));
   assert.ok(peak <= 3);
+});
+
+test('B4 (integration): /api/chat checks the scene cap before calling the model, so an over-cap chat costs no AI call', { timeout: 30000 }, async (t) => {
+  let calls = 0;
+  const mock = http.createServer((req, res) => {
+    req.resume();
+    req.on('end', () => {
+      calls += 1;
+      res.writeHead(200, { 'content-type': 'application/json' });
+      res.end(JSON.stringify({ choices: [{ message: { content: 'not json' } }] }));
+    });
+  });
+  await new Promise((resolve) => mock.listen(0, '127.0.0.1', resolve));
+  t.after(() => mock.close());
+  const srv = await startServer({ AI_MODE: 'openai', AI_BASE_URL: `http://127.0.0.1:${mock.address().port}/v1`, AI_API_KEY: 'test', AI_TIMEOUT_MS: '5000' });
+  t.after(() => srv.stop());
+
+  const { json: created } = await api(srv.base, '/api/session', { body: { playerName: '上限测试' } });
+  const sessionId = created.state.id;
+  assert.equal((await api(srv.base, '/api/advance', { body: { sessionId, action: 'begin_camp' } })).status, 200);
+  const limit = created.state.chatLimits.camp;
+  assert.ok(limit > 0 && limit < 20, 'camp limit stays under the per-IP AI rate limit, so every allowed chat reaches the mock');
+  for (let i = 0; i < limit; i += 1) {
+    const res = await api(srv.base, '/api/chat', { body: { sessionId, characterId: 'lia', message: `营地第${i + 1}句` } });
+    assert.equal(res.status, 200);
+  }
+  assert.equal(calls, limit, 'one upstream call per allowed chat');
+  const over = await api(srv.base, '/api/chat', { body: { sessionId, characterId: 'lia', message: '再说一句' } });
+  assert.equal(over.status, 400);
+  assert.match(over.json.error.message, /交流次数已用完/);
+  assert.equal(calls, limit, 'the over-cap chat must not reach the model');
 });
 
 // ─── 其他模块级回归 ───

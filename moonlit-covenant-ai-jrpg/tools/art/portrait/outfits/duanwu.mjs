@@ -69,10 +69,12 @@ function render(p) {
   // dragon-boat wave: a curling crest with a trailing swell, in white thread
   p.def(`<path id="${p.id('wave')}" d="M-11,5C-9,-3 -1,-7 5,-3C9,0 7,6 2,5C-1,4 0,0 3,0M5,5C9,6 12,4 13,1" fill="none" stroke="${K.white}" stroke-width="2.2" stroke-linecap="round"/>`);
   const pipe = mix(pal.accent, K.white, 0.25);
-  const band = (pts, fill, count, flip) => `<path d="${bandD(pts)}" fill="${fill}" stroke="${K.bandLine}" stroke-width="2.6" stroke-linejoin="round"/>`
-    + `<g opacity=".9">${waves(pts, count, flip)}</g>`
+  // with a heroine accent kit the under band is embroidered with her motif instead of waves (B11)
+  const motifs = (pts, count) => `<path d="${along(pts, count).slice(1, -1).map(({ q, ang }) => p.accent.glyph(q[0], q[1], 8, Math.round(ang - 90))).join('')}" fill="${K.white}" fill-rule="evenodd"/>`;
+  const band = (pts, fill, count, flip, own) => `<path d="${bandD(pts)}" fill="${fill}" stroke="${K.bandLine}" stroke-width="2.6" stroke-linejoin="round"/>`
+    + `<g opacity=".9">${own && p.accent ? motifs(pts, count) : waves(pts, count, flip)}</g>`
     + `<path d="${taper(pts, { w: 26, start: 1, end: 1, peak: 0.5 })}" fill="none" stroke="${pipe}" stroke-width="1.6" opacity=".9"/>`;
-  s += band(underPts, K.bandShade, 6, 0)
+  s += band(underPts, K.bandShade, 6, 0, true)
     // shadow the over band casts on the under band and the robe
     + `<path d="${bandD(overPts.slice(0, 6))}" transform="translate(-5 7)" fill="${K.jadeDeep}" opacity=".55"/>`
     + band(overPts, K.band, 18, 1)
@@ -103,6 +105,8 @@ function render(p) {
     + cord('M356,1012C336,990 314,1000 320,1016C326,1032 346,1024 356,1014M368,1012C388,990 410,1000 404,1016C398,1032 378,1024 368,1014', 5, 5)
     + `<circle cx="362" cy="1013" r="10" fill="${pal.accent}" stroke="${mix(pal.accent, '#000000', 0.6)}" stroke-width="2.2"/><circle cx="358.6" cy="1009.4" r="3" fill="#fff" opacity=".85"/>`
     + [[340, 1110], [386, 1112]].map(([x, y]) => `<path d="M${x - 5},${y}h10l3,22h-16z" fill="${K.c5[1]}" stroke="#5a0612" stroke-width="1.6"/><path d="M${x - 6},${y - 2}h12v5h-12z" fill="${K.c5[4]}" stroke="${K.goldLine}" stroke-width="1.4"/>`).join('');
+  // her emblem worn on the white sash, right of the knot (B11)
+  if (p.accent) s += p.accent.emblem(472, 1012, 0.95);
   return s;
 }
 

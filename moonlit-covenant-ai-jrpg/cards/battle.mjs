@@ -4,9 +4,12 @@
 //
 // 规则要点：
 //   · 双方主战者 20 生命，护甲先于生命承伤
+//   · 先后手：开局抛硬币决定（state.coinToss）；createBattle 传 firstPlayer 时按指定（测试 / 复现用）
 //   · PP：每回合上限+1（最高10），回合开始补满
 //   · 进化点(EP)：先手2点/后手3点；先手第5回合、后手第4回合起可进化
-//   · 进化：消耗1EP，随从 +2/+2；本回合尚未攻击过的随从进化后可立即攻击（含打脸），
+//   · 进化（按 Shadowverse）：消耗1EP，随从 +2/+2；每回合最多进化一次。
+//     本回合尚未攻击过的随从进化后可以攻击：上回合就在场的随从可攻击随从或主战者；
+//     本回合刚入场的随从进化后只获得「突进」——只能攻击随从，不能攻击主战者（疾驰随从照常可以打脸）。
 //     已经攻击过的随从进化后本回合不能再攻击（每个随从每回合最多攻击一次）
 //   · 召唤失调：随从入场当回合不可攻击（突进可打随从、疾驰可打脸）
 //   · 守护：敌方有守护随从时，必须先攻击守护随从
@@ -35,6 +38,7 @@ function makePlayer(key, classId, deckIds, ep, rng) {
     pp: { current: 0, max: 0 },
     ep,
     canEvolve: false,
+    evolvedThisTurn: false,   // 本回合已进化过（每回合最多进化一次）
     turnCount: 0,
     fatigue: 0,
     deck: shuffle([...deckIds], rng),
@@ -66,7 +70,8 @@ function instantiate(cardId) {
     evolved: false,
     canAttack: false,
     canAttackLeader: true,
-    attackedThisTurn: false   // 本回合是否已攻击过（进化不会刷新攻击次数）
+    attackedThisTurn: false,  // 本回合是否已攻击过（进化不会刷新攻击次数）
+    enteredThisTurn: false    // 本回合刚入场（此时进化只获得突进）
   };
   if (card.type === 'follower') {
     inst.attack = card.attack;
@@ -78,20 +83,36 @@ function instantiate(cardId) {
   return inst;
 }
 
+// ─── 抛硬币决定先后手 ───
+// 正面（月）= 玩家先手，反面（蚀）= 对手先手。有种子时硬币用独立的随机流：
+// 不消耗对局随机数，同一种子的洗牌结果与引入抛硬币之前完全一致。
+const COIN_SALT = 0x5bd1e995;
+export function tossCoin(seed = null) {
+  const r = seed != null ? mulberry32((seed ^ COIN_SALT) | 0)() : Math.random();
+  return r < 0.5 ? 'heads' : 'tails';
+}
+
 // ─── 创建对局 ───
-export function createBattle({ playerClass, playerDeck, opponentClass, opponentDeck, seed } = {}) {
+// firstPlayer：'player' / 'opponent' 时按指定（state.coinToss.forced = true）；不传则抛硬币。
+// 对手先手时，调用方（server.mjs）要先替对手跑完第一回合（runAITurn），再把局面交给玩家。
+export function createBattle({ playerClass, playerDeck, opponentClass, opponentDeck, seed, firstPlayer } = {}) {
   const rng = seed != null ? mulberry32(seed) : Math.random;
+  const forced = firstPlayer === 'player' || firstPlayer === 'opponent';
+  const result = forced ? (firstPlayer === 'player' ? 'heads' : 'tails') : tossCoin(seed);
+  const first = result === 'heads' ? 'player' : 'opponent';
   const state = {
     id: nextUid(),
     turn: 0,                 // 总回合计数（每次有人开始回合 +1）
-    activePlayer: 'player',
-    firstPlayer: 'player',
+    activePlayer: first,
+    firstPlayer: first,
+    coinToss: { result, firstPlayer: first, forced },
     phase: 'main',           // main / awaitingTarget / gameover
     winner: null,
     pending: null,           // 等待选目标时暂存的出牌信息
     players: {
-      player: makePlayer('player', playerClass, playerDeck, 2, rng),
-      opponent: makePlayer('opponent', opponentClass, opponentDeck, 3, rng)
+      // EP：先手 2、后手 3
+      player: makePlayer('player', playerClass, playerDeck, first === 'player' ? 2 : 3, rng),
+      opponent: makePlayer('opponent', opponentClass, opponentDeck, first === 'opponent' ? 2 : 3, rng)
     },
     log: [],
     _rng: rng
@@ -99,8 +120,11 @@ export function createBattle({ playerClass, playerDeck, opponentClass, opponentD
   // 起手抽牌
   drawCards(state, 'player', INITIAL_HAND, true);
   drawCards(state, 'opponent', INITIAL_HAND, true);
+  log(state, forced
+    ? `${sideName(first)}先手。`
+    : `抛硬币：${result === 'heads' ? '正面' : '反面'}，${sideName(first)}先手。`);
   // 先手第一回合开始（不抽牌）
-  startTurn(state, 'player');
+  startTurn(state, first);
   return state;
 }
 
@@ -155,11 +179,13 @@ function startTurn(state, key) {
   p.pp.max = Math.min(MAX_PP, p.turnCount);
   p.pp.current = p.pp.max;
   p.canEvolve = (key === state.firstPlayer) ? p.turnCount >= 5 : p.turnCount >= 4;
+  p.evolvedThisTurn = false;
   // 重置场上随从攻击状态
   for (const f of p.field) {
     f.canAttack = true;
     f.canAttackLeader = true;
     f.attackedThisTurn = false;
+    f.enteredThisTurn = false;
   }
   // 回合标题先于抽牌/疲劳行写入，回放日志时读起来顺序自然
   log(state, `—— 第${state.turn}回合：${sideName(key)}（PP ${p.pp.current}/${p.pp.max}）——`);
@@ -221,6 +247,7 @@ export function playCard(state, key, handUid, target = null) {
     if (inst.keywords.includes('storm')) { inst.canAttack = true; inst.canAttackLeader = true; }
     else if (inst.keywords.includes('rush')) { inst.canAttack = true; inst.canAttackLeader = false; }
     else { inst.canAttack = false; inst.canAttackLeader = true; }
+    inst.enteredThisTurn = true;
     p.field.push(inst);
     log(state, `${sideName(key)}召唤了 ${card.name}（${inst.attack}/${inst.health}）。`);
     if (card.trigger === 'fanfare' && card.effects?.length) {
@@ -384,24 +411,43 @@ function cleanupDead(state) {
 }
 
 // ─── 进化 ───
+// 进化后的攻击权（Shadowverse 规则；evolve() 与 AI 的进化评估共用）：
+//   · 本回合已经攻击过 → 不能再攻击（进化不刷新攻击次数）；
+//   · 本回合刚入场（召唤失调中）→ 获得突进：可以攻击随从，不能攻击主战者；疾驰随从照常可以打脸；
+//   · 上回合就在场 → 本来就能攻击，照旧（随从或主战者）。
+export function evolvedAttackRights(f) {
+  if (f.attackedThisTurn) return { canAttack: false, canAttackLeader: f.canAttackLeader !== false };
+  // 旧存档里的随从没有 enteredThisTurn：还在召唤失调（不能攻击）或只能打随从（突进）且本回合没攻击过，就是本回合刚入场
+  const entered = f.enteredThisTurn ?? (!f.canAttack || f.canAttackLeader === false);
+  if (entered) {
+    const storm = (f.keywords || []).includes('storm');
+    return { canAttack: true, canAttackLeader: storm };
+  }
+  return { canAttack: true, canAttackLeader: true };
+}
+
 export function evolve(state, key, followerUid) {
   if (state.phase === 'gameover') throw new Error('对局已结束。');
   if (key !== state.activePlayer) throw new Error('还没到你的回合。');
   const p = state.players[key];
   if (!p.canEvolve) throw new Error('本回合还不能进化。');
   if (p.ep <= 0) throw new Error('进化点不足。');
+  if (p.evolvedThisTurn) throw new Error('每回合只能进化一次。');
   const f = findFollower(state, key, followerUid);
   if (!f) throw new Error('找不到该随从。');
   if (f.evolved) throw new Error('该随从已经进化过。');
+  const rights = evolvedAttackRights(f);
   p.ep -= 1;
+  p.evolvedThisTurn = true;
   f.evolved = true;
   f.attack += EVOLVE_BONUS;
   f.maxHealth += EVOLVE_BONUS;
   f.health += EVOLVE_BONUS;
-  // 进化后可立即攻击（含打脸），但不刷新攻击次数：本回合已攻击过的随从进化后仍不能再攻击
-  f.canAttack = !f.attackedThisTurn;
-  f.canAttackLeader = true;
-  log(state, `${sideName(key)}的 ${f.name} 进化为 ${f.attack}/${f.health}！`);
+  f.canAttack = rights.canAttack;
+  f.canAttackLeader = rights.canAttackLeader;
+  const gainsRush = rights.canAttack && !rights.canAttackLeader && !(f.keywords || []).includes('rush');
+  const note = gainsRush ? '（刚入场即进化，获得突进：本回合只能攻击随从）' : '';
+  log(state, `${sideName(key)}的 ${f.name} 进化为 ${f.attack}/${f.health}！${note}`);
   return state;
 }
 
@@ -496,10 +542,10 @@ export function getLegalAttackTargets(state, key, attackerUid) {
   return targets;
 }
 
-// 可进化的随从
+// 可进化的随从（每回合最多进化一次：本回合已进化过时为空）
 export function getEvolvableFollowers(state, key) {
   const p = state.players[key];
-  if (!p.canEvolve || p.ep <= 0) return [];
+  if (!p.canEvolve || p.ep <= 0 || p.evolvedThisTurn) return [];
   return p.field.filter((f) => !f.evolved).map((f) => f.uid);
 }
 
@@ -536,4 +582,4 @@ export function cloneState(state) {
   return copy;
 }
 
-export const RULES = { LEADER_HP, MAX_PP, MAX_FIELD, MAX_HAND, EVOLVE_BONUS };
+export const RULES = { LEADER_HP, MAX_PP, MAX_FIELD, MAX_HAND, INITIAL_HAND, EVOLVE_BONUS };

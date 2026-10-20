@@ -120,6 +120,72 @@ function toast(message, kind = '') {
   setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 400); }, 2200);
 }
 
+// ─── 主线首通奖励（契约 R-2 / R-4）───
+// 与主游戏共用同一个本机账户：localStorage「moonlit:playerId」里是原样字符串（public/app.js 的 store.set），不是 JSON。
+// 没有账户就像主游戏那样建一个（POST /api/account/create）；任何一步失败都静默跳过——奖励不该打断读完一章。
+const ACCOUNT_KEY = 'moonlit:playerId';
+const HEROINE_NAMES = { lia: '莉亚', mia: '米娅', serena: '塞雷娜', freya: '芙蕾娅', lilith: '莉莉丝', evelyn: '伊芙琳', ophelia: '奥菲利亚', aila: '艾拉' };
+function storedPlayerId() {
+  try { return (localStorage.getItem(ACCOUNT_KEY) || '').trim() || null; } catch { return null; }
+}
+async function apiJson(url, body) {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), 10000);
+  try {
+    const init = body === undefined
+      ? { cache: 'no-store', headers: { accept: 'application/json' }, signal: ctrl.signal }
+      : { method: 'POST', headers: { 'content-type': 'application/json', accept: 'application/json' }, body: JSON.stringify(body), signal: ctrl.signal };
+    const res = await fetch(url, init);
+    const data = (res.headers.get('content-type') || '').includes('json') ? await res.json().catch(() => null) : null;
+    return { status: res.status, ok: res.ok && Boolean(data) && data.ok !== false, data };
+  } catch { return { status: 0, ok: false, data: null }; } finally { clearTimeout(timer); }
+}
+async function ensurePlayerAccount(playerName) {
+  const known = storedPlayerId();
+  if (known) {
+    const r = await apiJson(`/api/account?playerId=${encodeURIComponent(known)}`);
+    if (r.ok) return known;
+    if (r.status !== 404 && r.status !== 400) return null; // 网络或服务器错误：不误建新号（同 app.js 的 loadOrCreateAccount）
+  }
+  const r = await apiJson('/api/account/create', { playerName });
+  const id = r.ok && typeof r.data?.account?.id === 'string' ? r.data.account.id : null;
+  if (!id) return null;
+  try { localStorage.setItem(ACCOUNT_KEY, id); } catch { /* 隐私模式：这次照样领取，下次再建 */ }
+  return id;
+}
+// 返回 POST /api/story/progress 的结果（幂等：重玩已通关的章节 alreadyCleared=true，不再发放）；失败返回 null
+async function claimChapterReward(chapterId, playerName) {
+  const playerId = await ensurePlayerAccount(playerName);
+  if (!playerId) return null;
+  const r = await apiJson('/api/story/progress', { playerId, chapterId });
+  return r.ok ? r.data : null;
+}
+function rewardHtml(r) {
+  const n = (v) => (Number.isFinite(v) && v > 0 ? Math.floor(v) : 0);
+  const name = (id) => HEROINE_NAMES[id] || String(id);
+  const rows = [];
+  if (n(r.chapterReward)) rows.push([icon('diamond', { size: 16 }), `首次通关奖励：钻石 +${n(r.chapterReward)}`]);
+  for (const id of Array.isArray(r.heroinesGranted) ? r.heroinesGranted : []) rows.push([icon('users', { size: 16 }), `${name(id)}正式成为同伴：已加入角色收藏（主菜单 · 换衣间）`]);
+  for (const c of Array.isArray(r.heroinesCompensated) ? r.heroinesCompensated : []) {
+    if (n(c?.diamonds)) rows.push([icon('diamond', { size: 16 }), `${name(c.id)}已在角色收藏里：折算钻石 +${n(c.diamonds)}`]);
+  }
+  if (!rows.length) return r.alreadyCleared ? `<p class="end-reward-note">${icon('check', { size: 14 })}本章首通奖励已领取</p>` : '';
+  const balance = Number.isFinite(r.balance) ? `现有钻石 ${Math.floor(r.balance)} · ` : '';
+  return `<ul class="end-reward-list">${rows.map(([ico, t]) => `<li>${ico}<span>${esc(t)}</span></li>`).join('')}</ul>
+    <p class="end-reward-note">${esc(balance)}钻石可在主菜单的「召唤」里使用</p>`;
+}
+async function showChapterReward(scr, ch, playerName) {
+  const box = $('.end-reward', scr);
+  if (!box) return;
+  const r = await claimChapterReward(ch.id, playerName);
+  if (!r || !box.isConnected || S.chapter !== ch) return;
+  const html = rewardHtml(r);
+  if (!html) return;
+  box.innerHTML = html;
+  box.hidden = false;
+  if (r.granted) announce($$('.end-reward-list li', box).map((li) => li.textContent.trim()).join('；'));
+}
+
 // ─── 全局状态 ───
 const S = {
   index: [], speakers: {}, locations: {},
@@ -241,7 +307,7 @@ async function renderStart() {
     <main class="start" id="start">
       <div class="start-bg" aria-hidden="true"><div class="start-moon"></div><div class="start-wings"></div></div>
       <header class="start-top">
-        <a class="ghost-link" href="/">${icon('chevron-left', { size: 16 })}<span>返回主页</span></a>
+        <a class="ghost-link" href="/">${icon('chevron-left', { size: 16 })}<span>返回主菜单</span></a>
         <div class="start-top-actions">
           <button class="icon-btn" type="button" data-act="settings" aria-haspopup="dialog" aria-expanded="false" aria-label="设置">${icon('settings', { size: 19 })}</button>
         </div>
@@ -250,8 +316,8 @@ async function renderStart() {
       <div class="start-grid">
         <section class="start-hero" aria-labelledby="startTitle">
           <img class="start-crest" src="/assets/ui/eclipse-crest.svg" alt="" />
-          <p class="eyebrow">MAIN STORY · 主线</p>
-          <h1 class="start-title" id="startTitle">月蚀契约<span>亚克篇</span></h1>
+          <p class="eyebrow">MAIN STORY · 主线（正史）</p>
+          <h1 class="start-title" id="startTitle">月蚀契约<span>亚克的旅程</span></h1>
           <p class="start-tag">黑翼焚毁故乡的那一夜，牧羊青年立下了屠龙之誓。<br>这里没有固定选项——你说出口的每一句话、做出的每一个动作，世界都会记住。</p>
           <label class="name-field">
             <span class="name-label">${icon('user', { size: 16 })}主角名字</span>
@@ -261,7 +327,8 @@ async function renderStart() {
             ${primary}
             <button class="btn ${primary ? 'secondary' : 'primary'} large" type="button" data-act="begin" id="beginBtn" disabled>${icon('moon', { size: 18 })}<span>载入中…</span></button>
           </div>
-          <p class="start-hint">${icon('feather', { size: 15 })}点击 / 空格推进 · 在输入框里用你自己的话回应</p>
+          <p class="start-hint">${icon('feather', { size: 15 })}点击 / 空格推进 · 在输入框里用自己的话替主角回应</p>
+          <p class="start-note">${icon('info', { size: 15 })}<span>这里是正史主线。主菜单里的「银轨号」是 IF 外传，人物设定与主线不同；主线首次通关每章可得钻石。</span></p>
         </section>
         <section class="start-chapters" aria-labelledby="chapterHeading">
           <div class="chapters-head">
@@ -485,7 +552,7 @@ function renderPlay() {
 
       <header class="play-bar">
         <button class="icon-btn" type="button" data-act="home" aria-label="返回标题（进度已自动保存）">${icon('home', { size: 19 })}</button>
-        <div class="bar-title"><span class="bar-label">${esc(e.label)}</span><span class="bar-name">${esc(e.name)}</span></div>
+        <div class="bar-title"><span class="bar-label">${esc(e.label)}</span><span class="bar-name">${esc(e.name)}</span><span class="ai-badge" id="aiBadge" title="当前画面里有 AI 生成的厚涂图" hidden>AI 生成</span></div>
         <div class="bar-actions">
           <button class="bar-btn" type="button" data-act="auto" aria-pressed="false" title="自动播放（A）">${icon('play', { size: 16 })}<span>自动</span></button>
           <button class="bar-btn" type="button" data-act="skip" aria-pressed="false" title="快进已读内容（S）">${icon('rush', { size: 16 })}<span>快进</span></button>
@@ -561,7 +628,7 @@ function renderPlay() {
     askSkip: $('[data-ask="skip"]'), askSilent: $('[data-ask="silent"]'), askEcho: $('.ask-echo'),
     askContext: $('.ask-context'), askIntel: $('.ask-intel'),
     titleCard: $('#titleCard'), live: $('#live'), backlog: $('#backlog'), backlogList: $('.backlog-list'),
-    endScreen: $('#endScreen'), fatal: $('#fatal'),
+    endScreen: $('#endScreen'), fatal: $('#fatal'), aiBadge: $('#aiBadge'),
     autoBtn: $('[data-act="auto"]'), skipBtn: $('[data-act="skip"]'),
   });
   S.bg = null;
@@ -983,8 +1050,18 @@ function setSlot(side, url, who = '') {
       if (slot.dataset.url !== url) return;
       img.src = url;
       slot.classList.add('on');
+      slot.classList.toggle('ai-gen', isRaster(url));
+      updateAiBadge();
     }, wasOn ? 180 : 0);
   });
+}
+// B17：paint() 换上厚涂位图（AI 生成）时，播放栏亮出统一的「AI 生成」小标——在 UI 上，不在图里，裁切也不会丢
+function isRaster(url) { return /\.(?:jpe?g|png|webp)(?:[?#].*)?$/i.test(String(url || '')); }
+function updateAiBadge() {
+  if (!P.aiBadge?.isConnected) return;
+  const bg = P.bgLayers?.[S.bgFront];
+  const on = Boolean(bg?.classList.contains('ai-gen')) || ['left', 'right'].some((s) => P.art[s].classList.contains('on') && P.art[s].classList.contains('ai-gen'));
+  P.aiBadge.hidden = !on;
 }
 function setArtActive(side) {
   for (const s of ['left', 'right']) P.art[s].classList.toggle('active', s === side);
@@ -994,11 +1071,12 @@ function clearArt(keep = null) {
   for (const s of ['left', 'right']) {
     const slot = P.art[s];
     if (keep && slot.dataset.who && keep.has(slot.dataset.who)) { slot.classList.remove('active'); continue; }
-    slot.classList.remove('on', 'active');
+    slot.classList.remove('on', 'active', 'ai-gen');
     slot.dataset.url = '';
     slot.dataset.who = '';
   }
   P.scene.classList.remove('art-focus');
+  updateAiBadge();
 }
 // 输入框打开时舞台交给玩家：只留下本节点 focus 里的角色（在场、等你回应的人），以「倾听」的暗态陪着；
 // 其余立绘（回忆里的人、已经不在场的人、主角自己）退场，背景保持不变。
@@ -1015,10 +1093,11 @@ async function setBackground(id, mode = 'fade') {
   S.bg = id;
   const loc = id && id !== 'black' ? S.locations[id] : null;
   let image = '';
+  let raster = false;
   if (loc?.svg) {
     const url = paint(loc.svg);
     const ok = await Promise.race([preload(url), sleep(1600).then(() => false)]);
-    if (ok) image = `url("${String(url).replace(/["\\]/g, '')}")`;
+    if (ok) { image = `url("${String(url).replace(/["\\]/g, '')}")`; raster = isRaster(url); }
   }
   if (S.bg !== id || !P.bgLayers) return null;
   const nextIdx = S.bgFront ^ 1;
@@ -1027,9 +1106,11 @@ async function setBackground(id, mode = 'fade') {
   incoming.style.backgroundColor = loc ? (loc.bottom || '#06050c') : '#000';
   incoming.style.backgroundImage = loc ? (image ? `${image}, ${gradientOf(loc)}` : gradientOf(loc)) : 'none';
   incoming.classList.toggle('fallback', Boolean(loc) && !image);
+  incoming.classList.toggle('ai-gen', raster);
   P.scene.dataset.bg = id || 'black';
   P.scene.setAttribute('aria-label', loc ? `场景：${loc.name}` : '黑画面');
   S.bgFront = nextIdx;
+  updateAiBadge();
   if (mode === 'cut' || reducedMotion) {
     P.bgLayers.forEach((l) => l.classList.add('cut'));
     incoming.classList.add('show');
@@ -1228,7 +1309,7 @@ function askPlayer(node) {
   P.askPrompt.textContent = node.prompt;
   const draft = load(KEYS.draft, null);
   P.askInput.value = draft?.chapterId === S.chapter.id && draft.nodeId === node.id && typeof draft.text === 'string' ? draft.text : '';
-  P.askInput.placeholder = node.placeholder || '说点什么，或写下你的动作……';
+  P.askInput.placeholder = node.placeholder || '说点什么，或写下动作……';
   P.askInput.disabled = false;
   P.ask.querySelectorAll('button').forEach((b) => { b.disabled = false; });
   P.askSkip.hidden = !node.optional;
@@ -1548,6 +1629,7 @@ async function onEnd(end) {
       <h3 class="end-sub">${icon('book', { size: 15 })}正史记录</h3>
       <ul class="end-summary">${(lines.length ? lines : ['你的每一次回应都已记录在案。']).map((t) => `<li>${esc(t)}</li>`).join('')}</ul>
       <p class="end-save">${icon('save', { size: 14 })}已存档 · ${esc(run.playerName)} · 本章 ${inputs} 次自由回应</p>
+      <div class="end-reward" hidden></div>
       <div class="end-actions">
         <button class="btn primary large" type="button" data-end="next" disabled>${icon('arrow-right', { size: 18 })}<span>下一章</span></button>
         <button class="btn secondary" type="button" data-end="replay">${icon('refresh', { size: 16 })}重玩本章</button>
@@ -1560,6 +1642,7 @@ async function onEnd(end) {
   void scr.offsetWidth;
   scr.classList.add('show');
   announce(`章节完成：${ch.title}`);
+  showChapterReward(scr, ch, run.playerName); // 不等它：奖励到了再补进完成页
   const nextBtn = $('[data-end="next"]', scr);
   const replayBtn = $('[data-end="replay"]', scr);
   // 连按空格 / 回车 / 点击推进最后几句时，多出来的那一下会落在刚弹出的按钮上：直接跳进下一章或重玩，章节完成页一闪而过。

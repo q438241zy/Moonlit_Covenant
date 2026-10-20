@@ -11,6 +11,7 @@ import {
   advanceScene,
   chooseStrategy,
   applyChatOutcome,
+  assertChatAllowed,
   battleAction,
   chooseEnding,
   resetBattle
@@ -19,12 +20,13 @@ import { generateCharacterReply, fallbackReply, AI_CONFIG } from './game/ai.mjs'
 import { CHARACTERS, STRATEGIES, DECISIONS, GAME_TITLE, GAME_SUBTITLE, CG_GALLERY } from './game/content.mjs';
 import { MEMBERSHIP_TIERS, DIAMOND_PACKS, createPlayerAccount, purchaseMembership, purchaseDiamonds, grantDailyCredits, getMembershipInfo } from './game/membership.mjs';
 import { CREDIT_COSTS, createCreditMeter, addCredit, getMeterStatus } from './game/credit.mjs';
-import { CHARACTER_POOL, COSTUME_POOL, GACHA_RATES, pullGacha, PITY_THRESHOLD } from './game/gacha.mjs';
+import { CHARACTER_POOL, COSTUME_POOL, GACHA_RATES, GACHA_COSTS, DUPLICATE_COMPENSATION, pullGacha, PITY_THRESHOLD } from './game/gacha.mjs';
 import { COSTUME_LABELS, equipCostume, getEquippedCostumes, BRANCH_SCENES } from './game/costume.mjs';
 import { createAnalyticsStore, trackSession, trackDailyActive, getDashboardData, getRealtimeStats, pruneAnalytics } from './game/analytics.mjs';
-import { AI_MODELS, getActiveModel, switchModel, createDefaultSettings } from './game/settings.mjs';
+import { AI_MODELS, PER_PLAYER_ROUTING, getActiveModel, switchModel, createDefaultSettings } from './game/settings.mjs';
+import { REWARD_RULES, HEROINE_JOIN_CHAPTERS, CHAPTER_ID_PATTERN, claimDaily, getRewardStatus, recordChapterClear, grantCardWin } from './game/rewards.mjs';
 import { loadChapterIndex, loadChapter, getTotalChapters } from './scenario/index.mjs';
-import { judgeStoryInput } from './game/story-judge.mjs';
+import { judgeStoryInput, readJsonCached } from './game/story-judge.mjs';
 import { SAVE_VERSION, createSaveStore, rekeyBattleUids, resolvePersistConfig } from './game/persist.mjs';
 // ─── 卡牌对战系统（暗影诗章式）───
 import { CARDS, CLASSES, RARITIES, KEYWORD_LABELS } from './cards/database.mjs';
@@ -394,9 +396,10 @@ function getCardAccount(playerId) {
     account.packPity = account.packPity || 0;
     account.totalPacks = account.totalPacks || 0;
     account.decks = account.decks && Object.keys(account.decks).length ? account.decks : getStarterDecks();
-    // 卡牌对战为自包含免费 demo：首次进入无条件发放起始资源
-    account.diamonds = (account.diamonds || 0) + 1500;
-    account.shards += 500;
+    // 卡牌对战（实验模式）首次进入发放起始资源：一次十连开包的钻石 + 合成碎片（REWARD_RULES.cardStarter）。
+    // 账户和主游戏共用（契约 R-4），所以不再一次发 1500：钻石主要靠签到、主线首通和对战胜利获得。
+    account.diamonds = (Number.isFinite(account.diamonds) ? account.diamonds : 0) + REWARD_RULES.cardStarter.diamonds;
+    account.shards += REWARD_RULES.cardStarter.shards;
     markDirty();
   }
   if (!account.collection) account.collection = {};
@@ -441,6 +444,29 @@ function sanitizeBattle(state) {
   return clone;
 }
 
+/**
+ * 对局以玩家获胜结束时发放一次胜利奖励（契约 R-3），结果记在对局状态的 reward 上：
+ * 同一局不会发第二次，GET /api/battle/state 也能读到。输了、平局、投降都没有奖励（reward 为 null）。
+ */
+function settleBattleReward(playerId, state) {
+  if (!state || state.phase !== 'gameover') return null;
+  if (state.winner === 'player' && !state.reward) {
+    const account = getAccount(playerId);
+    if (account) state.reward = grantCardWin(account);
+  }
+  return state.reward || null;
+}
+
+/** 响应里的 reward：只在对局结束时出现（契约 R-3）。 */
+const battleReward = (state) => (state?.phase === 'gameover' ? state.reward || null : null);
+
+// ─── 主线章节目录（public/story/chapters/index.json，文件改动后自动重读；06 章以后上线时无需重启）───
+const STORY_INDEX_FILE = path.join(PUBLIC_DIR, 'story', 'chapters', 'index.json');
+function storyChapterIds() {
+  const index = readJsonCached(STORY_INDEX_FILE);
+  return new Set((Array.isArray(index) ? index : []).map((entry) => entry?.id).filter((id) => typeof id === 'string'));
+}
+
 const INTERNAL_ERROR_TYPES = [TypeError, RangeError, SyntaxError, ReferenceError];
 
 /**
@@ -470,7 +496,7 @@ const API_ROUTES = new Set([
   '/api/scenario/index', '/api/story/judge', '/api/cards/meta', '/api/cards/all', '/api/cards/collection',
   '/api/cards/summary', '/api/cards/pack', '/api/cards/craft', '/api/cards/decks', '/api/cards/deck/starter',
   '/api/cards/deck/save', '/api/battle/start', '/api/battle/state', '/api/battle/action', '/api/battle/end-turn',
-  '/api/battle/concede', '/api/session'
+  '/api/battle/concede', '/api/session', '/api/rewards/daily', '/api/rewards/status', '/api/story/progress'
 ]);
 // 需要 sessionId 的外传动作（POST）
 const SESSION_ACTIONS = new Set([
@@ -572,7 +598,18 @@ async function handleApi(req, res, url) {
 
   // ═══ 抽卡系统 ═══
   if (req.method === 'GET' && url.pathname === '/api/gacha/pools') {
-    return sendJson(res, 200, { ok: true, characters: CHARACTER_POOL, costumes: COSTUME_POOL, rates: GACHA_RATES, pity: PITY_THRESHOLD });
+    return sendJson(res, 200, {
+      ok: true,
+      characters: CHARACTER_POOL,
+      costumes: COSTUME_POOL,
+      rates: GACHA_RATES,
+      pity: PITY_THRESHOLD,
+      // 召唤价格（Credit 或钻石）与重复补偿（按稀有度折成钻石）
+      costs: GACHA_COSTS,
+      duplicateCompensation: DUPLICATE_COMPENSATION,
+      // 主线正式入队的章节：通关该章自动获得这位女主（POST /api/story/progress）
+      heroineJoins: HEROINE_JOIN_CHAPTERS
+    });
   }
 
   if (req.method === 'POST' && url.pathname === '/api/gacha/pull') {
@@ -580,10 +617,12 @@ async function handleApi(req, res, url) {
     const account = getAccount(body.playerId);
     if (!account) return sendError(res, 404, '账户不存在。', 'NO_ACCOUNT');
     if (!account._meter) account._meter = createCreditMeter(account);
-    // pullGacha 自己把抽到的条目记入 ownedCharacters / ownedCostumes（isNew 以这一抽之前为准）
-    const result = pullGacha(account, account._meter, body.pool || 'character', body.count || 1);
+    // pullGacha 自己把抽到的条目记入 ownedCharacters / ownedCostumes（isNew 以这一抽之前为准），重复的折成钻石；
+    // currency: 'diamonds' 用钻石支付，其余（含缺省）用 Credit
+    const result = pullGacha(account, account._meter, body.pool || 'character', body.count || 1, { currency: body.currency });
+    if (!result.ok) return sendJson(res, 400, result);
     trackSession(analyticsStore, account.id, 'gacha_pull');
-    return sendJson(res, result.ok ? 200 : 400, withPublicAccount(result));
+    return sendJson(res, 200, { ...result, account: publicAccount(account) });
   }
 
   // ═══ 换衣系统 ═══
@@ -628,18 +667,63 @@ async function handleApi(req, res, url) {
     return sendJson(res, 200, { ok: true, characters: account.ownedCharacters.length, costumes: account.ownedCostumes.length });
   }
 
+  // ═══ 玩出来的钻石（game/rewards.mjs；契约 R-1、R-2）═══
+  if (req.method === 'GET' && url.pathname === '/api/rewards/status') {
+    const account = getAccount(url.searchParams.get('playerId'));
+    if (!account) return sendError(res, 404, '账户不存在。', 'NO_ACCOUNT');
+    return sendJson(res, 200, { ok: true, ...getRewardStatus(account), rules: REWARD_RULES });
+  }
+
+  if (req.method === 'POST' && url.pathname === '/api/rewards/daily') {
+    const body = await readJson(req);
+    const account = getAccount(body.playerId);
+    if (!account) return sendError(res, 404, '账户不存在。', 'NO_ACCOUNT');
+    const result = claimDaily(account);
+    if (result.granted) trackSession(analyticsStore, account.id, 'daily_reward');
+    return sendJson(res, 200, {
+      ok: true,
+      ...result,
+      message: result.granted ? `签到成功：+${result.diamonds} 钻石（连续 ${result.streak} 天）。` : '今天已经签到过了，明天再来。',
+      account: publicAccount(account)
+    });
+  }
+
+  if (req.method === 'POST' && url.pathname === '/api/story/progress') {
+    const body = await readJson(req);
+    const account = getAccount(body.playerId);
+    if (!account) return sendError(res, 404, '账户不存在。', 'NO_ACCOUNT');
+    const chapterId = typeof body.chapterId === 'string' ? body.chapterId : '';
+    if (!CHAPTER_ID_PATTERN.test(chapterId) || !storyChapterIds().has(chapterId)) {
+      return sendError(res, 400, '没有这一章。', 'UNKNOWN_CHAPTER');
+    }
+    const result = recordChapterClear(account, chapterId);
+    if (!result.alreadyCleared) trackSession(analyticsStore, account.id, 'story_chapter_clear');
+    return sendJson(res, 200, { ok: true, chapterId, ...result, account: publicAccount(account) });
+  }
+
   // ═══ AI 设置 ═══
   if (req.method === 'GET' && url.pathname === '/api/settings/ai') {
-    // 只读：没有账户（或尚未建号）时返回默认设置，不写入任何状态
+    // 只读：没有账户（或尚未建号）时返回默认设置，不写入任何状态。
+    // B19：按玩家路由实现之前不下发模型预设（models 为空）；current 是所有玩家实际共用的 AI（与 /api/meta 的 ai 相同）。
     const playerId = checkId(url.searchParams.get('playerId'));
     const settings = (playerId && playerSettings.get(playerId)) || createDefaultSettings();
-    return sendJson(res, 200, { ok: true, settings, models: AI_MODELS, active: getActiveModel(settings) });
+    return sendJson(res, 200, {
+      ok: true,
+      perPlayerRouting: PER_PLAYER_ROUTING,
+      current: publicMeta().ai,
+      settings,
+      models: PER_PLAYER_ROUTING ? AI_MODELS : [],
+      active: PER_PLAYER_ROUTING ? getActiveModel(settings) : null
+    });
   }
 
   if (req.method === 'POST' && url.pathname === '/api/settings/ai') {
     const body = await readJson(req);
     const account = getAccount(body.playerId);
     if (!account) return sendError(res, 404, '账户不存在。', 'NO_ACCOUNT');
+    if (!PER_PLAYER_ROUTING) {
+      return sendError(res, 409, '按玩家切换模型尚未开放：所有玩家共用服务器配置的 AI。', 'PER_PLAYER_ROUTING_UNAVAILABLE');
+    }
     const settings = playerSettings.get(account.id) || createDefaultSettings();
     const result = switchModel(settings, body.modelId);
     if (result.ok) playerSettings.set(account.id, settings);
@@ -770,16 +854,22 @@ async function handleApi(req, res, url) {
     const state = createBattle({ playerClass, playerDeck, opponentClass, opponentDeck });
     state.playerClass = playerClass;
     state.opponentClass = opponentClass;
+    // 先后手由引擎抛硬币决定（B12）：对手先手时先跑完它的第一回合，玩家拿到的总是自己的回合
+    let aiActions = [];
+    if (state.activePlayer === 'opponent' && state.phase !== 'gameover') {
+      runAITurn(state);
+      aiActions = state.aiActions || [];
+    }
     state.updatedAt = Date.now();
     battles.set(account.id, state);
     trackSession(analyticsStore, account.id, 'battle_start');
-    return sendJson(res, 201, { ok: true, state: sanitizeBattle(state) });
+    return sendJson(res, 201, { ok: true, state: sanitizeBattle(state), aiActions, reward: battleReward(state) });
   }
 
   if (req.method === 'GET' && url.pathname === '/api/battle/state') {
     const state = getBattle(url.searchParams.get('playerId'));
     if (!state) return sendError(res, 404, '没有进行中的对局。', 'NO_BATTLE');
-    return sendJson(res, 200, { ok: true, state: sanitizeBattle(state) });
+    return sendJson(res, 200, { ok: true, state: sanitizeBattle(state), reward: battleReward(state) });
   }
 
   if (req.method === 'POST' && url.pathname === '/api/battle/action') {
@@ -798,20 +888,23 @@ async function handleApi(req, res, url) {
       if (described.status >= 500) console.error('[POST] /api/battle/action:', err);
       return sendError(res, 400, described.status >= 500 ? '非法动作。' : (err.message || '非法动作。'), 'ILLEGAL_ACTION');
     }
-    return sendJson(res, 200, { ok: true, state: sanitizeBattle(state) });
+    const reward = settleBattleReward(body.playerId, state);
+    if (state.phase === 'gameover' && reward) trackSession(analyticsStore, String(body.playerId), 'battle_win');
+    return sendJson(res, 200, { ok: true, state: sanitizeBattle(state), reward });
   }
 
   if (req.method === 'POST' && url.pathname === '/api/battle/end-turn') {
     const body = await readJson(req);
     const state = getBattle(body.playerId);
     if (!state) return sendError(res, 404, '没有进行中的对局。', 'NO_BATTLE');
-    if (state.phase === 'gameover') return sendJson(res, 200, { ok: true, state: sanitizeBattle(state), aiActions: [] });
+    if (state.phase === 'gameover') return sendJson(res, 200, { ok: true, state: sanitizeBattle(state), aiActions: [], reward: battleReward(state) });
     if (state.phase === 'awaitingTarget') cancelTarget(state);
     endTurn(state);                 // 玩家 → 对手回合
     runAITurn(state);               // AI 行动并结束回合 → 回到玩家
     const aiActions = state.aiActions || [];
+    const reward = settleBattleReward(body.playerId, state);
     if (state.phase === 'gameover') trackSession(analyticsStore, String(body.playerId), state.winner === 'player' ? 'battle_win' : 'battle_lose');
-    return sendJson(res, 200, { ok: true, state: sanitizeBattle(state), aiActions });
+    return sendJson(res, 200, { ok: true, state: sanitizeBattle(state), aiActions, reward });
   }
 
   if (req.method === 'POST' && url.pathname === '/api/battle/concede') {
@@ -829,7 +922,7 @@ async function handleApi(req, res, url) {
       if (state.log.length > 200) state.log.splice(0, state.log.length - 200);
       trackSession(analyticsStore, String(body.playerId), 'battle_concede');
     }
-    return sendJson(res, 200, { ok: true, state: sanitizeBattle(state) });
+    return sendJson(res, 200, { ok: true, state: sanitizeBattle(state), reward: battleReward(state) });
   }
 
   if (req.method === 'POST' && url.pathname === '/api/session') {
@@ -888,6 +981,8 @@ async function handleApi(req, res, url) {
       const characterId = String(body.characterId || '');
       const message = String(body.message || '');
       if (!CHARACTERS[characterId]) throw new Error('未知角色。');
+      // 先查场景与次数上限（B4：战后 3 次），超过上限直接 400，不去请求模型
+      assertChatAllowed(state, characterId, message);
       let outcome;
       if (state.dialogueMode === 'story') {
         outcome = { ...fallbackReply(state, characterId, message), source: 'story' };

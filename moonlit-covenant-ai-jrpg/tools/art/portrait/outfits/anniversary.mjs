@@ -99,12 +99,17 @@ function render(p) {
     + `<path d="${sashD}" fill="${p.lin('sash', [[0, S.lit], [0.25, S.base], [1, S.shade]], [260, 740, 560, 1100])}" stroke="${S.line}" stroke-width="2.6" stroke-linejoin="round"/>`
     + `<path d="${taper(sashPts, { w: 40, start: 1, end: 1, peak: 0.5 })}" fill="none" stroke="${K.goldMid}" stroke-width="2.2"/>`
     + `<path d="${taper(sashPts.slice(0, 4), { w: 8, start: 0.3, end: 0.2, peak: 0.4 })}" transform="translate(-11 6)" fill="${S.lit}" opacity=".8"/>`
-    + `<path d="${C.slice(2, -1).map(([x, y]) => star(x, y, 7, 3)).join('')}" fill="${K.gold}" stroke="${K.goldLine}" stroke-width="1.2"/></g>`;
+    // the sash charges: small gold stars, or her own motif when a heroine accent kit is given (B11)
+    + (p.accent
+      ? `<path d="${C.slice(2, -1).map(([x, y]) => p.accent.glyph(x, y, 9)).join('')}" fill="${K.gold}" fill-rule="evenodd" stroke="${K.goldLine}" stroke-width="1.2" stroke-linejoin="round"/></g>`
+      : `<path d="${C.slice(2, -1).map(([x, y]) => star(x, y, 7, 3)).join('')}" fill="${K.gold}" stroke="${K.goldLine}" stroke-width="1.2"/></g>`);
   // radiant star medal pinned low on the sash
   const mx = 500, my = 1012;
   s += `<path d="${star(mx, my, 34, 14, 8, -Math.PI / 2)}" fill="${K.goldMid}" stroke="${K.goldLine}" stroke-width="2.4" stroke-linejoin="round"/>`
     + `<path d="${star(mx, my, 24, 10, 8, -Math.PI / 2 + Math.PI / 8)}" fill="${K.gold}" stroke="${K.goldDeep}" stroke-width="1.4"/>`
-    + `<circle cx="${mx}" cy="${my}" r="10" fill="${S.base}" stroke="${K.goldLine}" stroke-width="2"/><circle cx="${mx - 3}" cy="${my - 3.4}" r="3.2" fill="#fff" opacity=".9"/>`;
+    + (p.accent
+      ? p.accent.emblem(mx, my, 0.78) // her emblem set in the centre of the medal (B11)
+      : `<circle cx="${mx}" cy="${my}" r="10" fill="${S.base}" stroke="${K.goldLine}" stroke-width="2"/><circle cx="${mx - 3}" cy="${my - 3.4}" r="3.2" fill="#fff" opacity=".9"/>`);
   return s;
 }
 

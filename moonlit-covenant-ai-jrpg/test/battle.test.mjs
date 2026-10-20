@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { getCard } from '../cards/database.mjs';
 import {
-  createBattle, playCard, attack, evolve, endTurn,
+  createBattle, playCard, attack, evolve, endTurn, tossCoin,
   getLegalAttackTargets, getLegalPlays, getEvolvableFollowers, getTargetOptions,
   RULES
 } from '../cards/battle.mjs';
@@ -33,7 +33,7 @@ function inst(cardId, opts = {}) {
 const fillerDeck = () => Array(30).fill('n_goblin');
 
 test('对局初始化：20生命、起手3张、先手第1回合PP=1', () => {
-  const s = createBattle({ playerClass: 'lia', playerDeck: fillerDeck(), opponentClass: 'serena', opponentDeck: fillerDeck(), seed: 1 });
+  const s = createBattle({ playerClass: 'lia', playerDeck: fillerDeck(), opponentClass: 'serena', opponentDeck: fillerDeck(), firstPlayer: 'player', seed: 1 });
   assert.equal(s.players.player.leader.hp, RULES.LEADER_HP);
   assert.equal(s.players.opponent.leader.hp, RULES.LEADER_HP);
   assert.equal(s.players.player.hand.length, 3);
@@ -44,7 +44,7 @@ test('对局初始化：20生命、起手3张、先手第1回合PP=1', () => {
 });
 
 test('出随从：扣PP并上场，召唤失调当回合不可攻击', () => {
-  const s = createBattle({ playerClass: 'lia', playerDeck: fillerDeck(), opponentClass: 'serena', opponentDeck: fillerDeck(), seed: 2 });
+  const s = createBattle({ playerClass: 'lia', playerDeck: fillerDeck(), opponentClass: 'serena', opponentDeck: fillerDeck(), firstPlayer: 'player', seed: 2 });
   s.players.player.pp = { current: 5, max: 5 };
   s.players.player.hand = [inst('lia_recruit')]; // 1费 1/2 守护
   playCard(s, 'player', 't1');
@@ -55,7 +55,7 @@ test('出随从：扣PP并上场，召唤失调当回合不可攻击', () => {
 });
 
 test('疾驰随从入场当回合可打脸', () => {
-  const s = createBattle({ playerClass: 'lilith', playerDeck: fillerDeck(), opponentClass: 'serena', opponentDeck: fillerDeck(), seed: 3 });
+  const s = createBattle({ playerClass: 'lilith', playerDeck: fillerDeck(), opponentClass: 'serena', opponentDeck: fillerDeck(), firstPlayer: 'player', seed: 3 });
   s.players.player.pp = { current: 5, max: 5 };
   s.players.player.hand = [inst('lilith_hero')]; // 5费 疾驰
   playCard(s, 'player', 't2');
@@ -66,7 +66,7 @@ test('疾驰随从入场当回合可打脸', () => {
 });
 
 test('进化：+2/+2 且可立即攻击，消耗1EP', () => {
-  const s = createBattle({ playerClass: 'lia', playerDeck: fillerDeck(), opponentClass: 'serena', opponentDeck: fillerDeck(), seed: 4 });
+  const s = createBattle({ playerClass: 'lia', playerDeck: fillerDeck(), opponentClass: 'serena', opponentDeck: fillerDeck(), firstPlayer: 'player', seed: 4 });
   const f = inst('n_knight', { canAttack: false }); // 3/3
   s.players.player.field = [f];
   s.players.player.canEvolve = true;
@@ -81,7 +81,7 @@ test('进化：+2/+2 且可立即攻击，消耗1EP', () => {
 });
 
 test('攻击随从：双方互伤', () => {
-  const s = createBattle({ playerClass: 'lia', playerDeck: fillerDeck(), opponentClass: 'serena', opponentDeck: fillerDeck(), seed: 5 });
+  const s = createBattle({ playerClass: 'lia', playerDeck: fillerDeck(), opponentClass: 'serena', opponentDeck: fillerDeck(), firstPlayer: 'player', seed: 5 });
   const atk = inst('n_troll', { canAttack: true }); // 5/5
   const def = inst('n_knight'); // 3/3
   s.players.player.field = [atk];
@@ -93,7 +93,7 @@ test('攻击随从：双方互伤', () => {
 });
 
 test('守护：敌方有守护随从时不能打脸', () => {
-  const s = createBattle({ playerClass: 'lia', playerDeck: fillerDeck(), opponentClass: 'serena', opponentDeck: fillerDeck(), seed: 6 });
+  const s = createBattle({ playerClass: 'lia', playerDeck: fillerDeck(), opponentClass: 'serena', opponentDeck: fillerDeck(), firstPlayer: 'player', seed: 6 });
   const atk = inst('n_troll', { canAttack: true });
   const guard = inst('n_golem'); // 守护
   s.players.player.field = [atk];
@@ -104,7 +104,7 @@ test('守护：敌方有守护随从时不能打脸', () => {
 });
 
 test('法术：暗蚀术对随从造成3点伤害', () => {
-  const s = createBattle({ playerClass: 'serena', playerDeck: fillerDeck(), opponentClass: 'lia', opponentDeck: fillerDeck(), seed: 7 });
+  const s = createBattle({ playerClass: 'serena', playerDeck: fillerDeck(), opponentClass: 'lia', opponentDeck: fillerDeck(), firstPlayer: 'player', seed: 7 });
   s.players.player.pp = { current: 5, max: 5 };
   const enemy = inst('n_troll'); // 5/5
   s.players.opponent.field = [enemy];
@@ -116,7 +116,7 @@ test('法术：暗蚀术对随从造成3点伤害', () => {
 });
 
 test('指向性卡牌：对手空场时法术不可用，指向入场曲的随从照常入场', () => {
-  const s = createBattle({ playerClass: 'serena', playerDeck: fillerDeck(), opponentClass: 'lia', opponentDeck: fillerDeck(), seed: 9 });
+  const s = createBattle({ playerClass: 'serena', playerDeck: fillerDeck(), opponentClass: 'lia', opponentDeck: fillerDeck(), firstPlayer: 'player', seed: 9 });
   s.players.player.pp = { current: 10, max: 10 };
   s.players.opponent.field = [];
   s.players.player.field = [];
@@ -133,7 +133,7 @@ test('指向性卡牌：对手空场时法术不可用，指向入场曲的随�
 });
 
 test('直伤打脸致死：玩家胜利', () => {
-  const s = createBattle({ playerClass: 'lilith', playerDeck: fillerDeck(), opponentClass: 'serena', opponentDeck: fillerDeck(), seed: 8 });
+  const s = createBattle({ playerClass: 'lilith', playerDeck: fillerDeck(), opponentClass: 'serena', opponentDeck: fillerDeck(), firstPlayer: 'player', seed: 8 });
   s.players.opponent.leader.hp = 3;
   const atk = inst('n_troll', { canAttack: true }); // 5攻
   s.players.player.field = [atk];
@@ -143,7 +143,7 @@ test('直伤打脸致死：玩家胜利', () => {
 });
 
 test('结束回合：切换行动方并补满PP、抽牌', () => {
-  const s = createBattle({ playerClass: 'lia', playerDeck: fillerDeck(), opponentClass: 'serena', opponentDeck: fillerDeck(), seed: 9 });
+  const s = createBattle({ playerClass: 'lia', playerDeck: fillerDeck(), opponentClass: 'serena', opponentDeck: fillerDeck(), firstPlayer: 'player', seed: 9 });
   const opHandBefore = s.players.opponent.hand.length;
   endTurn(s);
   assert.equal(s.activePlayer, 'opponent');
@@ -153,7 +153,7 @@ test('结束回合：切换行动方并补满PP、抽牌', () => {
 });
 
 test('疲劳：牌库抽空后抽牌受伤害', () => {
-  const s = createBattle({ playerClass: 'lia', playerDeck: fillerDeck(), opponentClass: 'serena', opponentDeck: fillerDeck(), seed: 10 });
+  const s = createBattle({ playerClass: 'lia', playerDeck: fillerDeck(), opponentClass: 'serena', opponentDeck: fillerDeck(), firstPlayer: 'player', seed: 10 });
   s.players.player.deck = [];
   const hpBefore = s.players.player.leader.hp;
   endTurn(s); // → opponent
@@ -163,7 +163,7 @@ test('疲劳：牌库抽空后抽牌受伤害', () => {
 });
 
 test('getLegalPlays 受PP与场上上限约束', () => {
-  const s = createBattle({ playerClass: 'lia', playerDeck: fillerDeck(), opponentClass: 'serena', opponentDeck: fillerDeck(), seed: 11 });
+  const s = createBattle({ playerClass: 'lia', playerDeck: fillerDeck(), opponentClass: 'serena', opponentDeck: fillerDeck(), firstPlayer: 'player', seed: 11 });
   s.players.player.pp = { current: 1, max: 1 };
   s.players.player.hand = [inst('lia_recruit'), inst('n_dragon')]; // 1费 与 7费
   const plays = getLegalPlays(s, 'player');
@@ -174,7 +174,7 @@ test('getLegalPlays 受PP与场上上限约束', () => {
 // ─── C1：每个随从每回合最多攻击一次（进化不刷新攻击次数）───
 
 test('C1 先攻击、再进化、再攻击：第二次攻击会抛错', () => {
-  const s = createBattle({ playerClass: 'lia', playerDeck: fillerDeck(), opponentClass: 'serena', opponentDeck: fillerDeck(), seed: 21 });
+  const s = createBattle({ playerClass: 'lia', playerDeck: fillerDeck(), opponentClass: 'serena', opponentDeck: fillerDeck(), firstPlayer: 'player', seed: 21 });
   const f = inst('n_knight', { canAttack: true }); // 3/3
   s.players.player.field = [f];
   s.players.player.canEvolve = true;
@@ -191,9 +191,9 @@ test('C1 先攻击、再进化、再攻击：第二次攻击会抛错', () => {
 });
 
 test('C1 已攻击的随从在下个己方回合恢复攻击；未攻击的随从进化后仍可立即攻击', () => {
-  const s = createBattle({ playerClass: 'lia', playerDeck: fillerDeck(), opponentClass: 'serena', opponentDeck: fillerDeck(), seed: 22 });
-  const a = inst('n_knight', { canAttack: true });
-  const b = inst('n_goblin', { canAttack: false }); // 刚上场（召唤失调）
+  const s = createBattle({ playerClass: 'lia', playerDeck: fillerDeck(), opponentClass: 'serena', opponentDeck: fillerDeck(), firstPlayer: 'player', seed: 22 });
+  const a = inst('n_knight', { canAttack: true, enteredThisTurn: false });
+  const b = inst('n_goblin', { canAttack: true, enteredThisTurn: false }); // 上回合就在场、本回合还没攻击
   s.players.player.field = [a, b];
   s.players.player.canEvolve = true;
   s.players.player.ep = 2;
@@ -201,6 +201,7 @@ test('C1 已攻击的随从在下个己方回合恢复攻击；未攻击的随�
   assert.equal(a.attackedThisTurn, true);
   evolve(s, 'player', b.uid);
   assert.equal(b.canAttack, true, '本回合没攻击过的随从进化后可以攻击');
+  assert.equal(b.canAttackLeader, true, '上回合就在场的随从进化后照样可以打脸');
   attack(s, 'player', b.uid, 'leader');
   assert.throws(() => attack(s, 'player', b.uid, 'leader'), /无法攻击/);
   endTurn(s); // → 对手
@@ -225,7 +226,7 @@ const snapshot = (s) => JSON.stringify({
 });
 
 test('C2 场上 5 个随从时出随从会抛错，手牌与 PP 不变', () => {
-  const s = createBattle({ playerClass: 'serena', playerDeck: fillerDeck(), opponentClass: 'lia', opponentDeck: fillerDeck(), seed: 23 });
+  const s = createBattle({ playerClass: 'serena', playerDeck: fillerDeck(), opponentClass: 'lia', opponentDeck: fillerDeck(), firstPlayer: 'player', seed: 23 });
   s.players.player.pp = { current: 10, max: 10 };
   s.players.player.field = Array.from({ length: RULES.MAX_FIELD }, () => inst('n_wisp'));
   s.players.opponent.field = [inst('n_knight')];
@@ -245,7 +246,7 @@ test('C2 场上 5 个随从时出随从会抛错，手牌与 PP 不变', () => {
 });
 
 test('C2 暗蚀术（只能打随从）以主战者为目标会抛错，状态不变', () => {
-  const s = createBattle({ playerClass: 'serena', playerDeck: fillerDeck(), opponentClass: 'lia', opponentDeck: fillerDeck(), seed: 24 });
+  const s = createBattle({ playerClass: 'serena', playerDeck: fillerDeck(), opponentClass: 'lia', opponentDeck: fillerDeck(), firstPlayer: 'player', seed: 24 });
   s.players.player.pp = { current: 5, max: 5 };
   const enemy = inst('n_troll');
   s.players.opponent.field = [enemy];
@@ -268,7 +269,7 @@ test('C2 暗蚀术（只能打随从）以主战者为目标会抛错，状态�
 });
 
 test('C2 目标必须来自 getTargetOptions：己方随从、不存在的 uid 都会被拒', () => {
-  const s = createBattle({ playerClass: 'lia', playerDeck: fillerDeck(), opponentClass: 'serena', opponentDeck: fillerDeck(), seed: 25 });
+  const s = createBattle({ playerClass: 'lia', playerDeck: fillerDeck(), opponentClass: 'serena', opponentDeck: fillerDeck(), firstPlayer: 'player', seed: 25 });
   s.players.player.pp = { current: 5, max: 5 };
   const mine = inst('n_knight');
   const theirs = inst('n_knight');
@@ -289,7 +290,7 @@ test('C2 目标必须来自 getTargetOptions：己方随从、不存在的 uid �
 });
 
 test('C2 指向效果落空时忽略客户端传来的目标；能打主战者的法术照常可以打脸', () => {
-  const s = createBattle({ playerClass: 'serena', playerDeck: fillerDeck(), opponentClass: 'lilith', opponentDeck: fillerDeck(), seed: 26 });
+  const s = createBattle({ playerClass: 'serena', playerDeck: fillerDeck(), opponentClass: 'lilith', opponentDeck: fillerDeck(), firstPlayer: 'player', seed: 26 });
   s.players.player.pp = { current: 10, max: 10 };
   s.players.opponent.field = [];
   const devourer = inst('serena_devourer'); // 入场曲：对一个敌方随从造成4点伤害
@@ -298,7 +299,7 @@ test('C2 指向效果落空时忽略客户端传来的目标；能打主战者�
   assert.equal(s.players.opponent.leader.hp, RULES.LEADER_HP, '对手空场时入场曲落空，不能改打主战者');
   assert.ok(s.players.player.field.some((f) => f.uid === devourer.uid));
 
-  const s2 = createBattle({ playerClass: 'lilith', playerDeck: fillerDeck(), opponentClass: 'serena', opponentDeck: fillerDeck(), seed: 27 });
+  const s2 = createBattle({ playerClass: 'lilith', playerDeck: fillerDeck(), opponentClass: 'serena', opponentDeck: fillerDeck(), firstPlayer: 'player', seed: 27 });
   s2.players.player.pp = { current: 5, max: 5 };
   const arrow = inst('lilith_shadowarrow'); // 对一个敌方随从或主战者造成3点伤害
   s2.players.player.hand = [arrow];
@@ -307,14 +308,14 @@ test('C2 指向效果落空时忽略客户端传来的目标；能打主战者�
 });
 
 test('日志顺序：回合标题先于疲劳伤害；攻击行先于伤害与胜负行', () => {
-  const s = createBattle({ playerClass: 'lia', playerDeck: fillerDeck(), opponentClass: 'serena', opponentDeck: fillerDeck(), seed: 28 });
+  const s = createBattle({ playerClass: 'lia', playerDeck: fillerDeck(), opponentClass: 'serena', opponentDeck: fillerDeck(), firstPlayer: 'player', seed: 28 });
   s.players.opponent.deck = [];
   endTurn(s); // → 对手，牌库空，受疲劳
   const turnLines = s.log.filter((l) => l.turn === s.turn).map((l) => l.msg);
   assert.match(turnLines[0], /第2回合：对手/);
   assert.ok(turnLines.slice(1).some((m) => /疲劳/.test(m)));
 
-  const s2 = createBattle({ playerClass: 'lia', playerDeck: fillerDeck(), opponentClass: 'serena', opponentDeck: fillerDeck(), seed: 29 });
+  const s2 = createBattle({ playerClass: 'lia', playerDeck: fillerDeck(), opponentClass: 'serena', opponentDeck: fillerDeck(), firstPlayer: 'player', seed: 29 });
   s2.players.opponent.leader.hp = 2;
   const atk = inst('n_knight', { canAttack: true });
   s2.players.player.field = [atk];
@@ -323,4 +324,179 @@ test('日志顺序：回合标题先于疲劳伤害；攻击行先于伤害与�
   const lines = s2.log.slice(from).map((l) => l.msg);
   assert.match(lines[0], /攻击了对手主战者/);
   assert.match(lines.at(-1), /玩家胜利/);
+});
+
+// ─── B12：先后手抛硬币、Shadowverse 进化规则 ───
+
+const freshBattle = (opts = {}) => createBattle({ playerClass: 'lia', playerDeck: fillerDeck(), opponentClass: 'serena', opponentDeck: fillerDeck(), ...opts });
+
+test('B12 先后手抛硬币：结果记在 coinToss，按种子可复现，正反面大致各半，并写进日志', () => {
+  const tally = { heads: 0, tails: 0 };
+  for (let seed = 1; seed <= 400; seed += 1) {
+    const s = freshBattle({ seed });
+    const { result, firstPlayer, forced } = s.coinToss;
+    assert.ok(result === 'heads' || result === 'tails');
+    assert.equal(forced, false);
+    assert.equal(firstPlayer, result === 'heads' ? 'player' : 'opponent', '正面玩家先手、反面对手先手');
+    assert.equal(s.firstPlayer, firstPlayer);
+    assert.equal(s.activePlayer, firstPlayer, '先手方先开始回合');
+    assert.equal(result, tossCoin(seed), '同一种子抛出同一面');
+    assert.equal(freshBattle({ seed }).coinToss.result, result);
+    assert.match(s.log[0].msg, new RegExp(`抛硬币：${result === 'heads' ? '正面' : '反面'}，${firstPlayer === 'player' ? '玩家' : '对手'}先手`));
+    tally[result] += 1;
+  }
+  assert.ok(tally.heads > 150 && tally.tails > 150, `正反面应大致各半：${JSON.stringify(tally)}`);
+  // 不传种子时用 Math.random：多抛几次两面都会出现
+  const seen = new Set(Array.from({ length: 64 }, () => freshBattle().coinToss.result));
+  assert.deepEqual([...seen].sort(), ['heads', 'tails']);
+});
+
+test('B12 抛硬币不消耗对局随机数：同一种子不论谁先手，双方起手牌完全相同', () => {
+  const mixed = () => ['n_goblin', 'n_knight', 'n_wisp', 'n_troll', 'n_golem', 'n_merchant'].flatMap((id) => Array(5).fill(id));
+  for (const seed of [3, 17, 99]) {
+    const hands = ['player', 'opponent', undefined].map((firstPlayer) => {
+      const s = createBattle({ playerClass: 'lia', playerDeck: mixed(), opponentClass: 'serena', opponentDeck: mixed(), seed, firstPlayer });
+      return JSON.stringify([s.players.player.hand.slice(0, 3).map((c) => c.cardId), s.players.opponent.hand.slice(0, 3).map((c) => c.cardId)]);
+    });
+    assert.equal(hands[0], hands[1]);
+    assert.equal(hands[0], hands[2]);
+  }
+});
+
+test('B12 对手先手：对手先拿 1 PP、第一回合不抽牌、2 EP、第 5 回合起可进化；玩家后手 3 EP、第 4 回合起可进化', () => {
+  const s = freshBattle({ seed: 5, firstPlayer: 'opponent' });
+  assert.deepEqual(s.coinToss, { result: 'tails', firstPlayer: 'opponent', forced: true });
+  assert.match(s.log[0].msg, /^对手先手/);
+  assert.equal(s.activePlayer, 'opponent');
+  assert.deepEqual(s.players.opponent.pp, { current: 1, max: 1 });
+  assert.equal(s.players.opponent.hand.length, 3, '先手第一回合不抽牌');
+  assert.equal(s.players.player.turnCount, 0);
+  assert.equal(s.players.opponent.ep, 2);
+  assert.equal(s.players.player.ep, 3);
+  endTurn(s);
+  assert.equal(s.activePlayer, 'player');
+  assert.equal(s.players.player.hand.length, 4, '后手第一回合照常抽牌');
+  assert.throws(() => playCard(s, 'opponent', s.players.opponent.hand[0].uid), /还没到你的回合/);
+  const evolveTurns = { player: null, opponent: null };
+  for (let i = 0; i < 12; i += 1) {
+    const p = s.players[s.activePlayer];
+    if (p.canEvolve && evolveTurns[s.activePlayer] == null) evolveTurns[s.activePlayer] = p.turnCount;
+    endTurn(s);
+  }
+  assert.deepEqual(evolveTurns, { player: 4, opponent: 5 });
+  // 玩家先手时反过来
+  const t = freshBattle({ seed: 5, firstPlayer: 'player' });
+  assert.equal(t.players.player.ep, 2);
+  assert.equal(t.players.opponent.ep, 3);
+});
+
+test('B12 每回合最多进化一次：第二次进化会抛错且不扣 EP，下个己方回合可以再进化', () => {
+  const s = freshBattle({ seed: 31, firstPlayer: 'player' });
+  const a = inst('n_knight', { canAttack: true, enteredThisTurn: false });
+  const b = inst('n_troll', { canAttack: true, enteredThisTurn: false });
+  s.players.player.field = [a, b];
+  s.players.player.canEvolve = true;
+  s.players.player.ep = 2;
+  assert.deepEqual(getEvolvableFollowers(s, 'player').sort(), [a.uid, b.uid].sort());
+  evolve(s, 'player', a.uid);
+  assert.equal(s.players.player.evolvedThisTurn, true);
+  assert.deepEqual(getEvolvableFollowers(s, 'player'), [], '本回合已经进化过：没有可进化的随从');
+  assert.throws(() => evolve(s, 'player', b.uid), /每回合只能进化一次/);
+  assert.equal(s.players.player.ep, 1, '被拒绝的进化不扣 EP');
+  assert.equal(b.evolved, false);
+  endTurn(s); // → 对手
+  endTurn(s); // → 玩家
+  assert.equal(s.players.player.evolvedThisTurn, false);
+  s.players.player.canEvolve = true; // 测试里跳过前几回合的进化门槛
+  assert.deepEqual(getEvolvableFollowers(s, 'player'), [b.uid]);
+  evolve(s, 'player', b.uid);
+  assert.equal(b.evolved, true);
+  assert.equal(s.players.player.ep, 0);
+});
+
+test('B12 刚入场的随从进化后只获得突进：可以攻击随从，不能攻击主战者', () => {
+  const s = freshBattle({ seed: 32, firstPlayer: 'player' });
+  s.players.player.pp = { current: 10, max: 10 };
+  s.players.player.canEvolve = true;
+  s.players.player.ep = 2;
+  const knight = inst('n_knight'); // 3费 3/3，无关键词
+  s.players.player.hand = [knight];
+  playCard(s, 'player', knight.uid);
+  const f = s.players.player.field[0];
+  assert.equal(f.enteredThisTurn, true);
+  assert.equal(f.canAttack, false, '召唤失调');
+  // 对手空场：进化后也没有可攻击的目标（不能打脸）
+  evolve(s, 'player', f.uid);
+  assert.equal(f.attack, 5);
+  assert.equal(f.canAttack, true);
+  assert.equal(f.canAttackLeader, false);
+  assert.deepEqual(getLegalAttackTargets(s, 'player', f.uid), []);
+  assert.throws(() => attack(s, 'player', f.uid, 'leader'), /只能攻击随从/);
+  assert.equal(s.players.opponent.leader.hp, RULES.LEADER_HP);
+  assert.match(s.log.at(-1).msg, /获得突进/);
+  // 对手场上有随从时可以攻击它
+  const enemy = inst('n_goblin');
+  s.players.opponent.field = [enemy];
+  assert.deepEqual(getLegalAttackTargets(s, 'player', f.uid).map((t) => t.uid), [enemy.uid]);
+  attack(s, 'player', f.uid, enemy.uid);
+  assert.equal(s.players.opponent.field.length, 0);
+  assert.throws(() => attack(s, 'player', f.uid, 'leader'), /无法攻击/);
+  // 下个己方回合起照常可以打脸
+  endTurn(s);
+  endTurn(s);
+  assert.equal(f.enteredThisTurn, false);
+  assert.ok(getLegalAttackTargets(s, 'player', f.uid).some((t) => t.uid === 'leader'));
+});
+
+test('B12 刚入场进化：突进随从仍只能打随从，疾驰随从照常可以打脸；上回合在场的随从进化后可以打脸', () => {
+  const s = freshBattle({ seed: 33, firstPlayer: 'player' });
+  s.players.player.pp = { current: 10, max: 10 };
+  s.players.player.canEvolve = true;
+  s.players.player.ep = 3;
+  const rush = inst('lilith_dagger');  // 突进
+  s.players.player.hand = [rush];
+  playCard(s, 'player', rush.uid);
+  evolve(s, 'player', rush.uid);
+  assert.equal(rush.canAttack, true);
+  assert.equal(rush.canAttackLeader, false);
+  assert.doesNotMatch(s.log.at(-1).msg, /获得突进/, '本来就是突进，不再提示获得突进');
+
+  const s2 = freshBattle({ seed: 34, firstPlayer: 'player' });
+  s2.players.player.pp = { current: 10, max: 10 };
+  s2.players.player.canEvolve = true;
+  s2.players.player.ep = 3;
+  const storm = inst('lilith_hero'); // 疾驰
+  s2.players.player.hand = [storm];
+  playCard(s2, 'player', storm.uid);
+  evolve(s2, 'player', storm.uid);
+  assert.equal(storm.canAttackLeader, true);
+  attack(s2, 'player', storm.uid, 'leader');
+  assert.equal(s2.players.opponent.leader.hp, RULES.LEADER_HP - 2 - (4 + RULES.EVOLVE_BONUS), '入场曲 2 点 + 进化后的 6 点');
+
+  const s3 = freshBattle({ seed: 35, firstPlayer: 'player' });
+  const veteran = inst('n_knight', { canAttack: true, enteredThisTurn: false });
+  s3.players.player.field = [veteran];
+  s3.players.player.canEvolve = true;
+  s3.players.player.ep = 2;
+  evolve(s3, 'player', veteran.uid);
+  assert.equal(veteran.canAttackLeader, true);
+  attack(s3, 'player', veteran.uid, 'leader');
+  assert.equal(s3.players.opponent.leader.hp, RULES.LEADER_HP - 5);
+});
+
+test('B12 旧存档兼容：缺 enteredThisTurn 的随从按召唤失调 / 突进状态推断是否刚入场', () => {
+  const s = freshBattle({ seed: 36, firstPlayer: 'player' });
+  const sick = inst('n_knight', { canAttack: false });                          // 召唤失调中
+  const rushing = inst('lilith_dagger', { canAttack: true, canAttackLeader: false }); // 刚入场的突进
+  const veteran = inst('n_troll', { canAttack: true });                         // 上回合就在场
+  for (const f of [sick, rushing, veteran]) delete f.enteredThisTurn;
+  for (const [f, leader] of [[sick, false], [rushing, false], [veteran, true]]) {
+    s.players.player.field = [f];
+    s.players.player.canEvolve = true;
+    s.players.player.ep = 3;
+    s.players.player.evolvedThisTurn = false;
+    evolve(s, 'player', f.uid);
+    assert.equal(f.canAttack, true, f.name);
+    assert.equal(f.canAttackLeader, leader, f.name);
+  }
 });

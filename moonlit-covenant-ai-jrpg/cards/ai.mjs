@@ -11,7 +11,7 @@
 
 import { getCard } from './database.mjs';
 import {
-  playCard, attack, evolve, endTurn, RULES,
+  playCard, attack, evolve, endTurn, RULES, evolvedAttackRights,
   getLegalPlays, getLegalAttackTargets, getEvolvableFollowers, getTargetOptions
 } from './battle.mjs';
 
@@ -237,18 +237,22 @@ function chooseBestCombatAction(state, key) {
     }
   }
 
-  // 2) 评估进化：进化某随从后能达成的最佳攻击
+  // 2) 评估进化：进化某随从后能达成的最佳攻击（每回合只能进化一次：getEvolvableFollowers 在用过后为空）
   const evolvable = getEvolvableFollowers(state, key);
   for (const uid of evolvable) {
     const f = findFollower(state, key, uid);
-    // 与引擎一致：本回合已攻击过的随从进化后不能再攻击，进化也就换不来这次攻击收益
-    if (f.attackedThisTurn) continue;
+    // 与引擎一致（evolvedAttackRights）：本回合已攻击过的随从进化后不能再攻击，进化也就换不来这次攻击收益；
+    // 本回合刚入场的随从进化后只获得突进，不能打脸
+    const rights = evolvedAttackRights(f);
+    if (!rights.canAttack) continue;
     const bonus = RULES.EVOLVE_BONUS;
-    const evolved = { ...f, attack: f.attack + bonus, health: f.health + bonus, canAttack: true, canAttackLeader: true };
-    // 进化后能打的目标（简化：所有敌方随从 + 主战者）
+    const evolved = { ...f, attack: f.attack + bonus, health: f.health + bonus, ...rights };
+    // 进化后能打的目标：有守护先打守护；否则所有敌方随从，能打脸时再加上主战者
     const enemyField = state.players[enemyKey].field;
     const guards = enemyField.filter((x) => x.keywords.includes('guard'));
-    const candidateTargets = guards.length ? guards.map((g) => g.uid) : [...enemyField.map((x) => x.uid), 'leader'];
+    const candidateTargets = guards.length
+      ? guards.map((g) => g.uid)
+      : [...enemyField.map((x) => x.uid), ...(rights.canAttackLeader ? ['leader'] : [])];
     for (const tuid of candidateTargets) {
       const score = scoreAttack(state, key, evolved, tuid) + 2; // 进化略有加成
       if (score > bestScore && score > 120) { // 进化要带来明显收益才用

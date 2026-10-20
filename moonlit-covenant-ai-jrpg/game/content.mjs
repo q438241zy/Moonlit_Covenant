@@ -8,7 +8,7 @@ export const CHARACTERS = {
     shortName: '莉亚',
     title: '赤誓骑士',
     role: '前卫 / 破甲',
-    archetype: '嘴硬心软的高速剑士，赤红高马尾配一缕暗红挑染（火灾后长出的新发色），右眼下有细疤穿过眉尾，剑镡是断裂后重新铆合的圆环。外壳是毒舌和命令口吻，用挖苦代替关心；中层是上一支队伍全灭的唯一幸存者，把承诺看得比命重——不是因为相信承诺，而是害怕再次失信；核心是极度害怕被安慰，被温柔对待时会本能攻击性回应。尊敬有担当而非说好听话的人。',
+    archetype: '嘴硬心软的高速剑士，赤红高马尾配一缕暗红挑染（火灾后长出的新发色），右眼下有细疤穿过眉尾；惯用细身长剑“断章”（剑镡是断裂后重新铆合的圆环），左肩斜挎塔盾“赤誓”。外壳是毒舌和命令口吻，用挖苦代替关心；中层是上一支队伍全灭的唯一幸存者，把承诺看得比命重——不是因为相信承诺，而是害怕再次失信；核心是极度害怕被安慰，被温柔对待时会本能攻击性回应。尊敬有担当而非说好听话的人。',
     values: ['守信', '勇气', '保护同伴'],
     speech: '句子短促有力，偶尔挖苦；情绪强烈时用“笨蛋队长”但语气最轻；句尾偶尔带“……切”。害羞时别过脸整理肩甲说“别误会”；真正悲伤时反而笑，笑得很难看。绝不主动示弱，但会用行动证明承诺。',
     knownFacts: [
@@ -18,7 +18,8 @@ export const CHARACTERS = {
     ],
     secretFacts: ['玩家曾在三年前救过莉亚，但玩家的记忆被封印。'],
     forbiddenTermsUntilEnding: ['三年前救过', '旧王都的火', '第七码头'],
-    portrait: '/assets/lia.jpg',
+    // B9：游戏内统一用 tools/art 生成的 SVG 立绘（厚涂位图只经 paint 清单整体替换）
+    portrait: '/assets/portraits/lia.svg',
     accent: '#ff6b7c',
     initialBond: 3,
     initialTrust: 2,
@@ -42,7 +43,7 @@ export const CHARACTERS = {
     ],
     secretFacts: ['米娅并非天然兽人，她的猫耳是为了接收失踪姐姐讯号而改造的。'],
     forbiddenTermsUntilEnding: ['失踪姐姐', '耳朵是改造', '零号电台'],
-    portrait: '/assets/mia.jpg',
+    portrait: '/assets/portraits/mia.svg',
     accent: '#5ed7ff',
     initialBond: 4,
     initialTrust: 3,
@@ -66,7 +67,7 @@ export const CHARACTERS = {
     ],
     secretFacts: ['塞雷娜已经预见玩家会做出三种选择，但看不见第四种结局。'],
     forbiddenTermsUntilEnding: ['三种选择', '第四种结局', '观测禁令'],
-    portrait: '/assets/serena.jpg',
+    portrait: '/assets/portraits/serena.svg',
     accent: '#b58cff',
     initialBond: 2,
     initialTrust: 4,
@@ -78,6 +79,31 @@ export const CHARACTERS = {
 
 // 战前营地的自由交流上限。engine.mjs 的 maxChatTurns 和塞雷娜的营地台词都从这里取，规则与台词不会再对不上。
 export const CAMP_CHAT_TURNS = 10;
+// 回廊与战后的交流上限（B4：战后对话最多 3 次，重置战斗再赢也不会补回）。
+export const CORRIDOR_CHAT_TURNS = 4;
+export const AFTERMATH_CHAT_TURNS = 3;
+
+/**
+ * B4「同一句话不重复加分」的比较键：去掉空白与标点、统一大小写与全半角，
+ * 「谢谢你。」「谢谢你！」「 谢谢 你 」算同一句。engine.mjs（计分）和 ai.mjs（保底台词）共用。
+ */
+export function chatKey(message) {
+  return String(message || '')
+    .normalize('NFKC')
+    .toLowerCase()
+    .replace(/[\s\p{P}\p{S}]+/gu, '')
+    .slice(0, 120);
+}
+
+/** 这句话之前是否对这名角色说过、是否已经对她许下过承诺（读 engine.mjs 写入的 state.chatScoring）。 */
+export function priorChat(state, characterId, message) {
+  const scoring = state?.chatScoring;
+  const key = chatKey(message);
+  return {
+    repeated: Boolean(key && scoring?.said?.[characterId]?.includes(key)),
+    promised: Boolean(scoring?.promised?.[characterId])
+  };
+}
 
 const CN_DIGITS = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
 
@@ -177,7 +203,7 @@ export const CAMP_EVENTS = [
   },
   {
     type: 'system',
-    text: '战前交流已开放。选择一名队友自由对话，并决定由谁主导本次战术。她们会记住你的态度与承诺。'
+    text: '战前交流已开放。选择一名队友自由对话，并决定由谁主导本次战术。她们会记住你的态度与承诺——同一句话对同一名队友只会打动一次，承诺也只算一次。'
   }
 ];
 
@@ -233,7 +259,7 @@ export const CORRIDOR_EVENTS = [
   },
   {
     type: 'system',
-    text: '回廊探索阶段。你可以与队友进行最后的战前交流。她们会记住你在这里说的一切。'
+    text: `回廊探索阶段。你可以与队友进行最多${cnNumber(CORRIDOR_CHAT_TURNS)}次战前交流。她们会记住你在这里说的一切。`
   }
 ];
 
@@ -294,7 +320,7 @@ export const AFTERMATH_EVENTS = [
   },
   {
     type: 'system',
-    text: '食梦兽已被击败。在做出最终抉择之前，你可以与队友进行最后的对话。'
+    text: `食梦兽已被击败。在做出最终抉择之前，你还可以与队友进行最多${cnNumber(AFTERMATH_CHAT_TURNS)}次对话。`
   }
 ];
 

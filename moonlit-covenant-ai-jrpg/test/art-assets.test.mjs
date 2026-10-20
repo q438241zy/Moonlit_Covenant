@@ -119,3 +119,60 @@ test('raster job list covers every story background and bust', async () => {
   const readme = fs.readFileSync(pub('assets/paint/README.md'), 'utf8');
   for (const j of JOBS) assert.ok(readme.includes(`\`${path.basename(j.out, '.png')}.jpg\``), `paint README misses ${j.id}`);
 });
+
+// ---------------------------------------------------------------- audit B7 / B10 / B11 / B18
+const portraitDir = path.join(projectDir, 'tools/art/portrait');
+const loadModules = async (dir) => {
+  const files = fs.readdirSync(path.join(portraitDir, dir)).filter((f) => f.endsWith('.mjs')).sort();
+  return Promise.all(files.map(async (f) => (await import(path.join(portraitDir, dir, f))).default));
+};
+
+test('B10/B11: portraits and costumes are built with Lia\'s shield and every heroine\'s own accents', async () => {
+  const { compose } = await import('../tools/art/portrait/base.mjs');
+  const { ACCENTS } = await import('../tools/art/portrait/accents.mjs');
+  const heroines = await loadModules('heroines');
+  const outfits = await loadModules('outfits');
+  assert.equal(heroines.length, 8);
+  assert.equal(outfits.length, 6);
+  const emblems = new Set();
+  for (const h of heroines) {
+    const kit = ACCENTS[h.id];
+    assert.ok(kit, `${h.id} has no costume-accent kit in tools/art/portrait/accents.mjs`);
+    emblems.add(kit.emblem(0, 0, 1));
+    const extras = h.portraitExtras || [];
+    const portrait = fs.readFileSync(pub(`assets/portraits/${h.id}.svg`), 'utf8');
+    assert.equal(portrait, compose(h, { extras }), `portraits/${h.id}.svg is stale (npm run art)`);
+    for (const o of outfits) {
+      const file = fs.readFileSync(pub(`assets/costumes/${h.id}_${o.type}.svg`), 'utf8');
+      assert.equal(file, compose(h, { outfit: o, extras, accent: kit }), `costumes/${h.id}_${o.type}.svg is stale (npm run art)`);
+      assert.notEqual(file, compose(h, { outfit: o, extras }), `${o.type} gives ${h.id}'s accents no spot`);
+      assert.ok(Buffer.byteLength(file) <= 80 * 1024, `costumes/${h.id}_${o.type}.svg over the 80KB budget`);
+      // the tower shield is Lia's alone, and she wears it in every costume
+      assert.equal(/-shieldFace"/.test(file), h.id === 'lia', `${h.id}_${o.type}: shield layer ${h.id === 'lia' ? 'missing' : 'unexpected'}`);
+    }
+    assert.ok(Buffer.byteLength(portrait) <= 70 * 1024, `portraits/${h.id}.svg over the 70KB budget`);
+    assert.equal(/-shieldFace"/.test(portrait), h.id === 'lia');
+  }
+  assert.equal(emblems.size, 8, 'every heroine has her own emblem');
+});
+
+test('B7: the title background is an original vector composition (R-5)', () => {
+  const file = pub('assets/title-bg.svg');
+  assert.ok(fs.existsSync(file), 'public/assets/title-bg.svg missing (npm run art)');
+  const svg = fs.readFileSync(file, 'utf8');
+  assert.match(svg, /^<svg xmlns="http:\/\/www\.w3\.org\/2000\/svg" viewBox="0 0 1600 900" role="img" aria-label="[^"]+">/);
+  assert.doesNotMatch(svg, /<text[\s>]|<image[\s>]|<script|<foreignObject|\son[a-z]+\s*=|href\s*=\s*"(?!#)/i);
+  assert.ok((svg.match(/<filter\s/g) || []).length <= 4, 'at most 4 filters');
+  assert.ok(Buffer.byteLength(svg) <= 90 * 1024, 'title background over the 90KB budget');
+  const ids = [...svg.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]);
+  assert.ok(ids.length && ids.every((id) => id.startsWith('tbg-')), 'ids carry the tbg- prefix');
+  assert.equal(new Set(ids).size, ids.length, 'ids are unique');
+  for (const [, ref] of svg.matchAll(/url\(#([^)]+)\)/g)) assert.ok(ids.includes(ref), `dangling url(#${ref})`);
+});
+
+test('B18: the art direction defines an original slime', () => {
+  const doc = fs.readFileSync(path.join(projectDir, 'docs/ART-DIRECTION.md'), 'utf8');
+  const sec = doc.slice(doc.indexOf('### 3.1 史莱姆'));
+  assert.ok(doc.includes('### 3.1 史莱姆'), 'ART-DIRECTION.md has a slime section');
+  for (const rule of ['没有水滴尖', '半透明', '没消化的叶子', '不笑']) assert.ok(sec.includes(rule), `slime rule "${rule}" missing`);
+});

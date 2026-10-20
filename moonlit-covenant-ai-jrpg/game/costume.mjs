@@ -1,6 +1,6 @@
 /**
  * 换衣系统
- * 管理角色服装的装备、查询；BRANCH_SCENES 是规划中的换装分支剧情（尚未制作，界面标注「敬请期待」）
+ * 管理角色服装的装备、查询；BRANCH_SCENES 是规划中的换装分支剧情（尚未制作：每条都是 available:false，界面标注「敬请期待」，作者核#12 维持）
  */
 
 import { CHARACTER_POOL, COSTUME_POOL } from './gacha.mjs';
@@ -23,32 +23,38 @@ export const BRANCH_SCENES = {
   newyear: {
     sceneId: 'branch_newyear',
     title: '新年祈愿',
-    description: '穿上新年服，与队友一同前往月蚀神社许下新年愿望。'
+    description: '穿上新年服，与队友一同前往月蚀神社许下新年愿望。',
+    available: false
   },
   maid: {
     sceneId: 'branch_maid',
     title: '列车咖啡厅',
-    description: '女仆服日！在餐车开设限定咖啡厅，队友们轮流当服务员。'
+    description: '女仆服日！在餐车开设限定咖啡厅，队友们轮流当服务员。',
+    available: false
   },
   christmas: {
     sceneId: 'branch_christmas',
     title: '雪夜礼物',
-    description: '圣诞夜的列车上，交换礼物与秘密心事。'
+    description: '圣诞夜的列车上，交换礼物与秘密心事。',
+    available: false
   },
   duanwu: {
     sceneId: 'branch_duanwu',
     title: '粽叶飘香',
-    description: '端午节特别篇章，在列车厨房包粽子，触发隐藏对话。'
+    description: '端午节特别篇章，在列车厨房包粽子，触发隐藏对话。',
+    available: false
   },
   anniversary: {
     sceneId: 'branch_anniversary',
     title: '周年庆典',
-    description: '骑士联盟周年纪念，全员盛装出席，回顾冒险历程。'
+    description: '骑士联盟周年纪念，全员盛装出席，回顾冒险历程。',
+    available: false
   },
   swimsuit: {
     sceneId: 'branch_swimsuit',
     title: '海边列车',
-    description: '夏日特别篇，列车驶过海岸线，换上夏日便装享受短暂假期。'
+    description: '夏日特别篇，列车驶过海岸线，换上夏日便装享受短暂假期。',
+    available: false
   }
 };
 

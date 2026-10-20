@@ -36,7 +36,7 @@
         { "type": "dialogue", "speaker": "lia", "text": "第三年，北境裂隙爆发。上级命令我们坚守霜牙关七十二小时，等待增援。我们守了。", "emotion": "flat" },
         { "type": "dialogue", "speaker": "lia", "text": "第七十二小时，增援没有来。第七十三小时，第二波攻势来了。", "emotion": "cold" },
         { "type": "narration", "text": "莉亚的声音没有颤抖。但她握着咖啡杯的手指关节发白。" },
-        { "type": "dialogue", "speaker": "lia", "text": "副队长艾琳替我挡了致命的一击。枪兵卡尔断后，让我们撤退。弓手莉莉安……她到死都在射击，箭壶空了就用匕首。", "emotion": "restrained_grief" },
+        { "type": "dialogue", "speaker": "lia", "text": "副队长希尔达替我挡了致命的一击。枪兵卡尔断后，让我们撤退。弓手佩特拉……她到死都在射击，箭壶空了就用匕首。", "emotion": "restrained_grief" },
         { "type": "dialogue", "speaker": "lia", "text": "七个人进去，一个人出来。而我——是那个活着出来的人。", "emotion": "guilty" },
         { "type": "cg", "unlockCg": "cg_ch2_seven_oaths", "description": "CG：回忆中的七名赤誓骑士在篝火前举起刻有誓言的剑。画面边缘逐渐被风雪侵蚀，最终只剩下莉亚一人站在空荡荡的雪原上，手中握着七柄剑。" },
         { "type": "transition", "target": "ch2_scene3" }

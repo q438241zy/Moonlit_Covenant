@@ -2,7 +2,7 @@
 
 > 适用范围：仓库内所有**代码生成的矢量美术**（SVG 立绘、服装、CG、卡面、地图、图标、场景）。
 > 目标：在拿到商业级手绘/厚涂资产之前，让整款游戏**没有一张缺图、没有一个 emoji 充当美术**，且所有画面看起来出自同一套美术方向。
-> 角色外观以 `docs/CHARACTER-DESIGN.md`（主三人）与 `设定集/03_主角与八位女主角.md`（其余五人）为准；与本文件冲突时，**年龄观感与尺度以本文件为准**。
+> 角色外观以正典 `设定集/03_主角与八位女主角.md`（八位女主全部）为准。外传《银轨号》是 IF 外传，`docs/CHARACTER-DESIGN.md` 只是外传专用的人设与台词资料，与正典冲突时以设定集为准（audit B1/B15）。与本文件冲突时，**年龄观感与尺度以本文件为准**。
 
 ## 1. 画风
 
@@ -42,7 +42,18 @@
 
 - 所有女主均为**成年女性（18–19 岁）**：按年轻成年人的脸部比例与身形绘制，不做幼态化。
 - **非性化**：不强调胸部/臀部，不做挑逗姿势、湿身、内衣感服装；"夏日"服装为度假便装（连衣裙/亚麻衫/草帽），不是泳装。
-- 原创设计：不得临摹现有动漫/游戏角色，不使用《勇者斗恶龙》等商标性元素（如史莱姆造型、官方纹章）。
+- 原创设计：不得临摹现有动漫/游戏角色，不使用《勇者斗恶龙》等作品的商标性元素（笑脸水滴形史莱姆、官方纹章）。正典里的史莱姆用 §3.1 的原创造型。
+
+### 3.1 史莱姆（原创造型，audit B18）
+
+正典需要史莱姆（`剧本/00起源.md` 的草露史莱姆：拳头大小，「通体淡蓝，身体里漂着几片没消化的叶子」，像一滴滚动的果冻；`设定集/07` 的麦露、盐泡、镜泥、熔胶史莱姆）。统一画法：
+
+- **轮廓**：低矮的软糖块 / 半融的果冻，底部贴着地面摊开、略呈扁椭圆，顶部是一条平缓的圆弧。**没有水滴尖**、没有尖顶、没有「头部」凸起。
+- **半透明**：体色块带透明度（`fill-opacity` 约 0.55–0.75），能看见身后的草或地面；边缘一圈同色系加深的描边（不用黑线）；左上方一道受光高光，底部一圈贴地的深色接触阴影。
+- **体内有东西**：2–4 片没消化的叶子或草屑，颜色比外面的叶子暗、略模糊（不透明度约 0.6），再加几颗小气泡。叶子是辨认它的标志，不能省。
+- **不笑、没有五官**：不画眼睛、嘴、腮红。情绪只靠形体：受惊时缩成更高更圆的一团，好奇时朝一个方向伸出一小截身体，贴在东西上时压扁。需要表现「朝向」时，用体内一颗稍亮的核或气泡的位置暗示。
+- **品种只换体色与内容物，轮廓规则不变**：草露＝淡蓝、叶子；麦露＝麦黄、体内几粒麦子、会粘火星；盐泡＝灰白、体内盐泡结晶；镜泥＝银灰、表面映出模糊倒影；熔胶＝橙红、冷却处结出暗色硬壳。
+- **矢量实现**：体色块 + 加深描边 + 叶片 path + 气泡圆；最多用一个小模糊滤镜做体内叶子的失焦；不用 `<text>`。剪影缩到 64px 时仍应读作「一团软东西」，而不是水滴或小人。
 
 ## 4. 技术约束
 
@@ -51,7 +62,7 @@
 - 所有 `id` 以资产前缀命名（如 `lia-`, `cgIntro-`），避免日后内联时冲突。
 - 必须带 `viewBox`，不写死 `width/height`；`preserveAspectRatio` 默认即可。
 - 滤镜克制：立绘/CG 每张 ≤ 4 个 `filter`；卡面 ≤ 1 个；图标 0 个。避免大面积 `feTurbulence`（低端机渲染慢）。
-- 体积预算（与各 build 脚本的校验一致）：立绘 ≤ 70KB、服装立绘 ≤ 80KB（`portrait/build.mjs`）、CG ≤ 90KB（`cg/*-set.mjs`）、主线背景 ≤ 90KB、主线胸像 ≤ 70KB（`story/build.mjs`）、卡面 ≤ 14KB（`cards/*.mjs`）、进化卡面 ≤ 24KB（`build-cards.mjs`）、Boss 每阶段 ≤ 60KB。
+- 体积预算（与各 build 脚本的校验一致）：立绘 ≤ 70KB、服装立绘 ≤ 80KB（`portrait/build.mjs`）、CG ≤ 90KB（`cg/*-set.mjs`）、主线背景 ≤ 90KB、主线胸像 ≤ 70KB（`story/build.mjs`）、标题背景 ≤ 90KB（`stage/build.mjs`）、卡面 ≤ 14KB（`cards/*.mjs`）、进化卡面 ≤ 24KB（`build-cards.mjs`）、Boss 每阶段 ≤ 60KB。
 
 ## 5. 画布与构图
 
@@ -59,6 +70,7 @@
 |---|---|---|
 | 女主立绘 / 服装立绘 | `0 0 832 1216` | 半身胸像，正面微侧；头顶约 y≈170，眼线约 y≈440，下巴约 y≈600；八人共用同一身体/头部模板，保证并排一致 |
 | CG | `0 0 1600 900` | 16:9 电影构图；人物可用剪影/中远景，但轮廓须可辨（莉亚高马尾+塔盾、米娅机械猫耳、塞雷娜长发+月相发饰） |
+| 标题背景 | `0 0 1600 900` | 见 §5.3；以 `background-size: cover` 显示，手机竖屏只留中间约 420 宽，所以月蚀放在正中上方 |
 | 卡面 | `0 0 300 300` | 主体居中偏上，四周留暗角；同职业共享背景语言 |
 | 世界地图 | `0 0 1000 560` | 与 `app.js` 中城镇坐标一致（百分比坐标 × 1000/560） |
 | Boss | `0 0 1000 1000` | 透明背景，主体居中 |
@@ -70,22 +82,52 @@
 
 - **背景**（`public/assets/story/bg/<id>.svg`，每个 `public/story/locations.json` 场景一张）：1600×900，平涂色块、**不勾墨线**（细节线用同色系加深色或受光边）；光从左上方来，远景用大气透视减淡；**按时段配色**（午后暖金、黄昏橙紫、夜晚靛蓝、黎明灰粉、黑焰之夜去色灰紫）；底部渐暗方便字幕。共用部件在 `story/lib.mjs`（房屋 `house()`、焦黑骨架 `skeleton()`、钟楼 `bellTower()`、岩石、云、烟）与 `bg-night.mjs` 的 `blackFire()`。
 - **NPC 胸像**（`public/assets/story/npc/<id>.svg`）：600×800、**透明底**，逆光剪影：深色墨块 + 角色色（`speakers.json` 的 `color`）边缘光 + 少量亮部标志物，**不勾墨线**；底部 16% 渐隐。
-- **莉亚胸像**（`public/assets/story/npc/lia.svg`，`lia` 与 `lia_unknown` 共用）：由立绘模板 `compose(lia, { background: false, extras: ['shield'] })` 生成，去掉夜景底板与整幅光照，只保留人物与轮廓光，背后加塔盾「赤誓」（从左肩后露出一角）；外传/召唤用的 `portraits/lia.svg` 不受影响。
+- **莉亚胸像**（`public/assets/story/npc/lia.svg`，`lia` 与 `lia_unknown` 共用）：由立绘模板 `compose(lia, { background: false, extras: ['shield'] })` 生成，去掉夜景底板与整幅光照，只保留人物与轮廓光，背后加塔盾「赤誓」（从左肩后露出一角）。外传/召唤用的 `portraits/lia.svg` 和她的 6 套服装立绘也带同一面塔盾（audit B10，`heroines/lia.mjs` 的 `portraitExtras`），位置一律在她自己的左肩后（画面右侧）。
 - 预算以 `story/build.mjs` 为准：背景 ≤ 90KB、胸像 ≤ 70KB，每张 ≤ 4 个 `filter`，id 带文件前缀。
+
+### 5.2 服装立绘的女主专属装饰（audit B11）
+
+6 个服装模板由 8 位女主共用，单靠换色会变成「6 个模板 × 8 种颜色」。所以每位女主带着自己的**徽记**（全彩别针 / 吊坠 / 刺绣）和**纹样**（单色小图形）进入每一套服装，位置由服装决定（`tools/art/portrait/accents.mjs` + 各 `outfits/*.mjs` 读取 `p.accent`）：
+
+| 女主 | 徽记 | 纹样 | 依据（设定集/03） |
+|---|---|---|---|
+| 莉亚 | 塔盾纹章，中间是带裂纹的金色誓约晶体 | 火焰；夏日裙印花＝小草莓 | 塔盾「赤誓」、誓约晶体、火律、爱吃草莓蛋糕 |
+| 米娅 | 铜色齿轮，青蓝发光芯，一把小扳手 | 齿轮 | 魔具发明师、扳手发卡、青蓝回路 |
+| 塞雷娜 | 闭合眼睑形银吊坠，紫色泪滴宝石 | 新月 | 闭合眼睑银吊坠、月相盘发饰 |
+| 芙蕾娅 | 冰晶雪花胸针 | 雪花 | 冰晶发梳、雪花宝珠 |
+| 莉莉丝 | 金色新月托着匕首（家纹） | 叶片 | 双匕首、翠影公国、木律 |
+| 伊芙琳 | 带小翅膀的星形吊坠 | 祈祷铃 | 星形吊坠、羽翼圣冠、辫尾祈祷铃 |
+| 奥菲利亚 | 银色龙爪抓着粉色宝石 | 龙角 | 龙爪饰物、额侧小龙角 |
+| 艾拉 | 蓝金太阳徽章 | 太阳 | 蓝金轻骑士甲、光律 |
+
+| 服装 | 徽记的位置 | 纹样的位置 |
+|---|---|---|
+| 女仆服 | 白色胸前围兜上的刺绣 | 腰带上一排小纹样 |
+| 新年服 | — | 右胸金线团花（替换一朵祥云） |
+| 圣诞服 | 斗篷金扣链下的吊坠 | 裙子的纽扣 |
+| 端午服 | 白色腰带上、结的右边 | 下层衣领边的白线刺绣（上层仍是龙舟浪纹） |
+| 周年庆服 | 星形勋章的中心 | 绶带上的小饰章 |
+| 夏日度假服 | 项链吊坠 | 连衣裙的碎花印花 |
+
+装饰保持小而清楚：不加新滤镜，体积仍在服装立绘 80KB 预算内。服装触发的「分支剧情」暂不制作（游戏内显示「敬请期待」）。
+
+### 5.3 标题背景（audit B7，`public/assets/title-bg.svg`）
+
+由 `tools/art/stage/title.mjs` 用现有部件拼成，不再使用 AI 主视觉照片：月蚀与淡淡的月蚀纹章（`stage/lib.mjs` 的 `eclipseSigil`）在正中上方；左边山坡上是入夜的赫麦村（`story/village.mjs`，与主线背景同一布局，`nightfall` 配色），一条路下山——「主线：亚克的旅程」；右边原野上驶过银轨号列车（`stage/scenes.mjs` 的 `trainProfile`，与结局背景同一辆）——「外传：银轨号」。路和铁轨在画面下方中央并排出画。下方 40% 压暗，留给标题页的两张卡片；预算 ≤ 90KB，滤镜 ≤ 4。
 
 ## 6. 资产清单与路径
 
 - 立绘生成器：`tools/art/portrait/`（`npm run art:portraits` 产出）
-  - `public/assets/portraits/<id>.svg` × 8
-  - `public/assets/costumes/<id>_<type>.svg` × 48（type：newyear / maid / christmas / duanwu / anniversary / swimsuit）
+  - `public/assets/portraits/<id>.svg` × 8（莉亚带塔盾，§5.1）
+  - `public/assets/costumes/<id>_<type>.svg` × 48（type：newyear / maid / christmas / duanwu / anniversary / swimsuit；每位女主带自己的徽记与纹样，§5.2）
 - CG：`public/assets/cg/<name>.svg` × 10
 - 卡面：`public/assets/cards/<cardId>.svg` × 38；进化版 `<cardId>_e.svg` × 27 由 `tools/art/build-cards.mjs` 从基础卡面派生
 - 地图：`public/assets/map/world-map.svg`
 - UI 图标：`public/icons.js`（内联 SVG，继承 `currentColor`）
 - Boss：`public/assets/boss/dream-eater-{1,2,3}.svg`（完整 / 破甲 / 封印）
-- 场景与 UI：`public/assets/scenes/*.svg`、`public/assets/ui/*.svg`
+- 场景与 UI：`public/assets/scenes/*.svg`、`public/assets/ui/*.svg`；标题背景 `public/assets/title-bg.svg`（§5.3）
 - 主线：`public/assets/story/bg/*.svg` × 29、`public/assets/story/npc/*.svg` × 16（`tools/art/story/build.mjs`）
-- 厚涂位图：`tools/art/raster/`（出图清单 `manifest.mjs`，预留位清单 `public/assets/paint/README.md` 由 `readme.mjs` 生成）；旧的四张厚涂 PNG 的压缩版 `public/assets/{lia,mia,serena,key-visual}.jpg` 由 `raster/compress-legacy.mjs` 生成。所有位图都必须保留 AIGC 隐式标识（EXIF/XMP），可见的「图片由AI生成」不得裁切或遮挡。
+- 厚涂位图：`tools/art/raster/`（出图清单 `manifest.mjs`，预留位清单 `public/assets/paint/README.md` 由 `readme.mjs` 生成）。游戏画面里的女主一律用矢量 SVG；位图只经 `public/assets/paint/manifest.json` 的预留位替换（audit B9），换上时页面统一显示「AI 生成」角标（`public/paint.js`，audit B17）。旧的四张厚涂 PNG 的压缩版 `public/assets/{lia,mia,serena,key-visual}.jpg` 由 `raster/compress-legacy.mjs` 生成，它们是外传时期的造型（莉亚没有塔盾），不放进立绘预留位。所有位图都必须保留 AIGC 隐式标识（EXIF/XMP），可见的「图片由AI生成」不得裁切或遮挡。
 - 旧资产：不再引用的早期 SVG 在 `tools/art/legacy/`，旧 Boss 厚涂图在 `tools/art/raster/ref/`（只作出图参考，不随站点发布）。
 - 一键重建：`npm run art`（两次运行结果逐字节一致）。
 

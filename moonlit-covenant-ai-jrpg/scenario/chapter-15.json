@@ -41,7 +41,7 @@
         { "type": "dialogue", "speaker": "lia", "text": "我一直很温柔。只是以前没空展示。", "emotion": "defensive" },
         { "type": "dialogue", "speaker": "lia", "text": "……而且。", "emotion": "quiet" },
         { "type": "narration", "text": "她低头看着咖啡杯。" },
-        { "type": "dialogue", "speaker": "lia", "text": "艾琳说'不要恨自己'。我花了三年没做到。但那天在记忆空间里……你们看见了我所有的狼狈。然后你们没有走。", "emotion": "vulnerable" },
+        { "type": "dialogue", "speaker": "lia", "text": "希尔达说'不要恨自己'。我花了三年没做到。但那天在记忆空间里……你们看见了我所有的狼狈。然后你们没有走。", "emotion": "vulnerable" },
         { "type": "dialogue", "speaker": "lia", "text": "所以……也许可以试试了。不恨自己。", "emotion": "healing" },
         { "type": "dialogue", "speaker": "mia", "text": "莉亚姐……", "emotion": "moved" },
         { "type": "dialogue", "speaker": "lia", "text": "行了。别用那种眼神看我。喝咖啡。", "emotion": "tsundere" },

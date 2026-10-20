@@ -301,8 +301,8 @@
           "t": "input",
           "id": "FI_CH002_SC03_GUILD_REGISTRATION_001",
           "kind": "dialogue",
-          "prompt": "登记官询问：你为什么想成为冒险者？（她也还在等你回答剑会不会用。）你可以自由说明，也可以回避、撒谎、反问或沉默。",
-          "placeholder": "回答梅芙，或者写下你的反应……",
+          "prompt": "登记官询问{PLAYER_NAME}为什么想成为冒险者。（她也还在等他回答剑会不会用。）他可以自由说明，也可以回避、撒谎、反问或沉默。",
+          "placeholder": "回答梅芙，或者写下{PLAYER_NAME}的反应……",
           "focus": [
             "maeve",
             "burly_adventurer",
@@ -1038,7 +1038,7 @@
           "t": "input",
           "id": "FI_CH002_SC05_FIRST_MINUTE_001",
           "kind": "free",
-          "prompt": "第一次独自站在晨钟镇的街上。你可以问路、先找旅店、看看委托、买点吃的，或者给托比带点东西。",
+          "prompt": "{PLAYER_NAME}第一次独自站在晨钟镇的街上。他可以问路、先找旅店、看看委托、买点吃的，或者给托比带点东西。",
           "placeholder": "四处看看、问路、买点东西……（也可以跳过）",
           "optional": true,
           "focus": [
@@ -1429,8 +1429,8 @@
           "t": "input",
           "id": "FI_CH002_SC07_STOP_THIEF_001",
           "kind": "action",
-          "prompt": "小偷正冲向你，只剩五步。左边是堆满空木篮的水果摊，右边挂着一条晾湿布的染布绳，脚下是洗街留下的积水，周围全是人。你可以说话、移动、用环境、拔剑、使用低阶属性，或选择不插手。",
-          "placeholder": "怎么拦？写下你的动作或喊话……",
+          "prompt": "小偷正冲向{PLAYER_NAME}，只剩五步。左边是堆满空木篮的水果摊，右边挂着一条晾湿布的染布绳，脚下是洗街留下的积水，周围全是人。他可以说话、移动、用环境、拔剑、使用低阶属性，或选择不插手。",
+          "placeholder": "怎么拦？写下{PLAYER_NAME}的动作或喊话……",
           "focus": [
             "lia_unknown",
             "townsfolk"
@@ -1953,7 +1953,7 @@
           "t": "input",
           "id": "FI_CH002_SC08_CHASE_ROUTE_001",
           "kind": "action",
-          "prompt": "红发少女隔着木栏喊你左转，说右边是死巷。前面就是酒桶坡的岔口——你怎么追？",
+          "prompt": "红发少女隔着木栏喊{PLAYER_NAME}左转，说右边是死巷。前面就是酒桶坡的岔口——他怎么追？",
           "placeholder": "往哪追？听她的、自己判断，还是回她一句……",
           "focus": [
             "lia_unknown",
@@ -3604,7 +3604,7 @@
           "t": "input",
           "id": "FI_CH002_SC12_EXPECT_THANKS_001",
           "kind": "dialogue",
-          "prompt": "红发少女没有道谢。你可以直接讨一句谢谢、抱怨她没礼貌、开玩笑、自我介绍、询问皮袋内容，或不再纠缠。",
+          "prompt": "红发少女没有道谢。{PLAYER_NAME}可以直接讨一句谢谢、抱怨她没礼貌、开玩笑、自我介绍、询问皮袋内容，或不再纠缠。",
           "placeholder": "说点什么，或者不再纠缠……",
           "focus": [
             "lia_unknown"
