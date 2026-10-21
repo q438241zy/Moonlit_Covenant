@@ -73,7 +73,7 @@ test('heroines join on the 30-chapter roster (核#14, 提案 §4.5), stored as p
   });
   // 首次登场章（卡池的登场闸门 unlockChapter）：莉亚04、米娅07、塞雷娜11、莉莉丝13（敌对登场）、伊芙琳16、艾拉17、芙蕾娅18、奥菲利亚19
   assert.deepEqual(Object.fromEntries(CHARACTER_POOL.map((c) => [c.id, c.unlockChapter])), {
-    lia: 'ch004', mia: 'ch007', serena: 'ch011', freya: 'ch018', lilith: 'ch013', evelyn: 'ch016', ophelia: 'ch019', aila: 'ch017'
+    lia: 'ch002', mia: 'ch007', serena: 'ch011', freya: 'ch018', lilith: 'ch013', evelyn: 'ch016', ophelia: 'ch019', aila: 'ch017'
   });
   const n = (id) => Number(id.slice(2));
   for (const heroine of CHARACTER_POOL) {

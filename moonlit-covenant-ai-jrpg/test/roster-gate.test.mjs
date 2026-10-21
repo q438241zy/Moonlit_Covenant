@@ -203,7 +203,7 @@ test('HTTP: pools / costume / pull follow the player\'s recorded main-line progr
   const revealed = (view) => view.characters.filter((c) => !c.sealed).map((c) => c.id).sort();
   assert.deepEqual(revealed(await pools()), []);
 
-  // 通关第四章：莉亚登场；她的服装一起揭开（换衣间的数据同一个闸门）
+  // 莉亚在正式02登场：通关第四章时早已揭开；她的服装一起揭开（换衣间的数据同一个闸门）
   assert.equal((await api(base, '/api/story/progress', { playerId, chapterId: 'ch004' })).status, 200);
   let view = await pools();
   assert.deepEqual(revealed(view), ['lia']);
