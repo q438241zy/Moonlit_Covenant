@@ -3,7 +3,7 @@
 //   node tools/art/story/build.mjs               -> everything
 //   node tools/art/story/build.mjs bg            -> all backgrounds (every locations.json entry, plus generators
 //                                                  not wired into locations.json yet, e.g. new variants)
-//   node tools/art/story/build.mjs npc           -> all 21 busts (19 NPC silhouettes + Lia's and Mia's transparent
+//   node tools/art/story/build.mjs npc           -> all 22 busts (20 NPC silhouettes + Lia's and Mia's transparent
 //                                                  portrait busts, portrait-bust.mjs)
 //   node tools/art/story/build.mjs hemai-day aku -> just those ids
 // Output: public/assets/story/bg/<id>.svg (1600×900) and public/assets/story/npc/<id>.svg (600×800, transparent).
@@ -21,6 +21,8 @@ import { oldMillBgs } from './bg-oldmill.mjs';
 import { marshBgs } from './bg-marsh.mjs';
 import { tideBgs } from './bg-tide.mjs';
 import { harborBgs } from './bg-harbor.mjs';
+import { sewerBgs } from './bg-sewer.mjs';
+import { innBgs } from './bg-inn.mjs';
 import { npcBusts as silhouetteBusts } from './npc.mjs';
 import { liaBust } from './lia-bust.mjs';
 import { miaBust } from './mia-bust.mjs';
@@ -29,7 +31,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../.
 const locations = JSON.parse(fs.readFileSync(path.join(root, 'public/story/locations.json'), 'utf8'));
 const speakers = JSON.parse(fs.readFileSync(path.join(root, 'public/story/speakers.json'), 'utf8'));
 
-const bgs = { ...villageBgs, ...nightBgs, ...dawnBgs, ...townBgs, ...millBgs, ...oldMillBgs, ...marshBgs, ...tideBgs, ...harborBgs };
+const bgs = { ...villageBgs, ...nightBgs, ...dawnBgs, ...townBgs, ...millBgs, ...oldMillBgs, ...marshBgs, ...tideBgs, ...harborBgs, ...sewerBgs, ...innBgs };
 // bust id -> generator; the file is public/assets/story/npc/<id>.svg (several speakers may share one file)
 const npcBusts = { ...silhouetteBusts, lia: () => liaBust(), mia: () => miaBust() };
 const BG_BUDGET = 90 * 1024, NPC_BUDGET = 70 * 1024;

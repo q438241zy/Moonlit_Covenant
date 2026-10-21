@@ -79,5 +79,14 @@
     "file": "/story/chapters/ch008.json",
     "requires": "ch007",
     "source": "剧本/08金律只有一毫米.md"
+  },
+  {
+    "id": "ch009",
+    "number": 9,
+    "title": "第九章｜雾港失踪者",
+    "estimatedMinutes": 11,
+    "file": "/story/chapters/ch009.json",
+    "requires": "ch008",
+    "source": "剧本/09霧港失蹤者.md"
   }
 ]

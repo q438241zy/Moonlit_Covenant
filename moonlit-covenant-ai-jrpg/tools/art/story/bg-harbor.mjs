@@ -4,6 +4,8 @@
 //                            notices pasted on its posts, the stone steps bared under its abutment, a row of iron grate
 //                            mouths stuffed with reeds in the quay wall, and beyond, bridge after bridge, stilt houses and
 //                            piles; the fog only a thin layer lying on the water.
+//   fog-harbor-bridge-dusk — 第一座木桥·黄昏 (chapter 10, one shot): the same picture at dusk; the notices on the posts
+//                            torn off, only the glue marks left; lamps lit in the windows and under the bridge.
 //   fog-harbor-guild       — 冒险者公会雾港分会: see harborGuild().
 //   fog-harbor-drain-dusk / fog-harbor-drain-night — see harborDrain().
 // No reflections, no mirrors, no figures (script 09 美術需求).
@@ -21,7 +23,28 @@ const NOON = {
   plaster: '#d8d0c0', plasterShade: '#a8a090', roof: '#6a6e78', roofShade: '#4e525c', roofRed: '#9a5a48',
   mud: [[0, '#8e887a'], [0.5, '#6e685c'], [1, '#4a463e']], water: '#7e8a88', sheen: '#eeece2',
   paper: '#f2ecdc', ink: '#3a3632', pin: '#8a3a2a', iron: '#2e3034', fog: '#eeeee8',
+  haze: '#dcdcd4', veil: '#e2e2da', win: '#4a4a52', winFar: '#4a4a50', glue: '#5a4a3c', glueEdge: '#c8b490',
 };
+// 第一座木桥·黄昏 (chapter 10): the same picture graded to dusk — every NOON colour pulled toward a dusk violet,
+// then the sky, haze, water and mud replaced outright; lit windows, the notices torn off (see glueMark()).
+const duskTint = (x) => mix(x, '#4a3048', 0.4);
+const DUSK = {
+  ...Object.fromEntries(Object.entries(NOON).map(([k, v]) => [k, typeof v === 'string' ? duskTint(v) : Array.isArray(v) ? v : Object.fromEntries(Object.entries(v).map(([kk, vv]) => [kk, duskTint(vv)]))])),
+  sky: [[0, '#463a5a'], [0.22, '#86586e'], [0.38, '#cc7c6e'], [0.46, '#ec9e6e'], [0.52, '#f4ba82'], [1, '#b88272']],
+  mud: [[0, '#76605e'], [0.5, '#574a4c'], [1, '#383036']], water: '#56505e', sheen: '#f0c4a4', fog: '#e8bea6',
+  haze: '#c48e88', veil: '#d09886', win: '#e09a5c', winFar: '#d89060', paper: '#e2d0bc', glue: '#6a5444',
+};
+
+// Where a missing-person notice was torn off its post: the dried glue square, torn paper corners left under the
+// pin, a ragged strip still stuck along the foot, and the pin. Same signature as coast.mjs notice().
+function glueMark(x, y, w, h, rot, pal) {
+  let s = `<g transform="rotate(${rot} ${f(x + w / 2)} ${f(y)})"><path d="M${f(x)},${f(y)}h${f(w)}v${f(h)}h${f(-w)}z" fill="${pal.glue}" opacity=".5"/>`;
+  s += `<path d="M${f(x)},${f(y)}h${f(w)}v${f(h)}h${f(-w)}z" fill="none" stroke="${pal.glueEdge}" stroke-width="${f(Math.max(0.8, w * 0.04))}" opacity=".55"/>`;
+  s += `<path d="M${f(x)},${f(y)}h${f(w * 0.3)}l${f(-w * 0.18)},${f(h * 0.12)}l${f(-w * 0.12)},${f(h * 0.1)}z" fill="${pal.paper}"/>`;
+  s += `<path d="M${f(x + w * 0.38)},${f(y)}h${f(w * 0.24)}l${f(-w * 0.06)},${f(h * 0.14)}l${f(-w * 0.1)},${f(-h * 0.05)}l${f(-w * 0.06)},${f(h * 0.07)}z" fill="${pal.paper}"/>`;
+  s += `<path d="M${f(x)},${f(y + h)}v${f(-h * 0.12)}l${f(w * 0.2)},${f(h * 0.05)}l${f(w * 0.18)},${f(-h * 0.07)}l${f(w * 0.22)},${f(h * 0.06)}l${f(w * 0.2)},${f(-h * 0.05)}l${f(w * 0.2)},${f(h * 0.04)}v${f(h * 0.09)}z" fill="${pal.paper}" opacity=".85"/>`;
+  return s + `<circle cx="${f(x + w / 2)}" cy="${f(y + h * 0.07)}" r="${f(Math.max(1, w * 0.06))}" fill="${pal.pin}"/></g>`;
+}
 
 // a stilt house in elevation facing the channel: front wall on piles, pitched roof, a door to a little landing
 function stiltHouse(o, x, base, w, floorY, h, pal, R, side = 1) {
@@ -45,29 +68,35 @@ function stiltHouse(o, x, base, w, floorY, h, pal, R, side = 1) {
 // ---------------------------------------------------------------------------------------------
 // 雾港·第一座木桥·近午退潮
 // ---------------------------------------------------------------------------------------------
-function harborBridgeNoon() {
-  const S = new Scene('sbHarborNoon', '雾港·第一座木桥·近午退潮：退潮见底的水道与搁在泥上的渔船（船头挂着不亮的潮灯），桥柱上贴着寻人单的第一座木桥，桥墩下露出的石阶，石墙上一排塞着芦苇的铁栅口，远处一座接一座的木桥、高脚木屋与木桩', 6701);
+function harborBridge(mode = 'noon') {
+  const dusk = mode === 'dusk';
+  const tn = dusk ? (x) => mix(x, '#4a3048', 0.36) : (x) => x; // the dusk grade for every other colour; identity at noon
+  const S = new Scene(dusk ? 'sbHarborDusk' : 'sbHarborNoon', dusk
+    ? '雾港·第一座木桥·黄昏：低垂的夕光在远处一座接一座的木桥后面，退潮的水道与搁在泥上的渔船，桥柱上的寻人单都撕掉了、只剩膠痕与撕剩的纸角，桥下的潮灯亮了；桥墩下的石阶，石墙上一排塞着芦苇的铁栅口，高脚木屋的窗里有灯'
+    : '雾港·第一座木桥·近午退潮：退潮见底的水道与搁在泥上的渔船（船头挂着不亮的潮灯），桥柱上贴着寻人单的第一座木桥，桥墩下露出的石阶，石墙上一排塞着芦苇的铁栅口，远处一座接一座的木桥、高脚木屋与木桩', 6701);
   const R = S.R;
   const F = 820, VP = [800, 400], EYE = 1.7;
   const pr = persp({ vp: VP, F, eye: EYE });
   const q = (pts) => pr.quad(pts);
   const k = (z) => F / z;
   const CW = 5.2, QY = 2.6; // channel half-width, quay height above the mud
-  const P = NOON;
+  const P = dusk ? DUSK : NOON;
 
   // --- sky: high hazy noon --------------------------------------------------------------------------
   S.add(`<rect width="${W}" height="${H}" fill="${S.lin(P.sky)}"/>`);
-  S.add(`<circle cx="760" cy="40" r="620" fill="${S.rad([[0, '#fffef6', 0.75], [0.25, '#fbf8ea', 0.35], [1, '#fbf8ea', 0]])}"/>`);
-  S.add(`<g filter="${S.blur(2)}"><path d="${band(-60, 700, 120, 20, R, 8)}" fill="#ffffff" opacity=".5"/><path d="${band(900, 1700, 170, 18, R, 8)}" fill="#c4ccd0" opacity=".5"/></g>`);
+  S.add(dusk
+    ? `<circle cx="720" cy="392" r="760" fill="${S.rad([[0, '#fff2cc', 0.85], [0.12, '#ffc884', 0.5], [0.4, '#ff9a64', 0.16], [1, '#ff9a64', 0]])}"/>`
+    : `<circle cx="760" cy="40" r="620" fill="${S.rad([[0, '#fffef6', 0.75], [0.25, '#fbf8ea', 0.35], [1, '#fbf8ea', 0]])}"/>`);
+  S.add(`<g filter="${S.blur(2)}"><path d="${band(-60, 700, 120, 20, R, 8)}" fill="${dusk ? '#ffc8a4' : '#ffffff'}" opacity=".5"/><path d="${band(900, 1700, 170, 18, R, 8)}" fill="${dusk ? '#7a5a7c' : '#c4ccd0'}" opacity=".5"/></g>`);
   let gulls = '';
   for (const [x, y, s, fl] of [[620, 170, 0.9, 0.3], [668, 150, 0.7, 0.8], [1060, 200, 0.6, 0.5]]) gulls += bird(x, y, s, fl);
-  S.add(`<path d="${gulls}" fill="#6a7276"/>`);
+  S.add(`<path d="${gulls}" fill="${dusk ? '#3a2a3a' : '#6a7276'}"/>`);
 
   // --- the far reaches: bridge after bridge, stilt houses and piles fading into the haze ----------------
   const far = [90, 62, 44, 32, 22];
   for (const [i, z] of far.entries()) {
-    const fade = Math.min(0.85, 0.15 + i * 0.17), haze = (c) => mix(c, '#dcdcd4', 1 - fade);
-    const pal = { wall: haze(P.plaster), wallShade: haze(P.plasterShade), roof: haze(i % 2 ? P.roof : P.roofRed), roofShade: haze(P.roofShade), rim: haze('#ffffff'), win: haze('#4a4a50'), door: haze('#3a3634'), wood: { lit: haze(P.wood.lit), mid: haze(P.wood.mid), shade: haze(P.wood.shade), wet: haze(P.wood.wet) } };
+    const fade = Math.min(0.85, 0.15 + i * 0.17), haze = (c) => mix(c, P.haze, 1 - fade);
+    const pal = { wall: haze(P.plaster), wallShade: haze(P.plasterShade), roof: haze(i % 2 ? P.roof : P.roofRed), roofShade: haze(P.roofShade), rim: haze('#ffffff'), win: haze(P.winFar), door: haze(tn('#3a3634')), wood: { lit: haze(P.wood.lit), mid: haze(P.wood.mid), shade: haze(P.wood.shade), wet: haze(P.wood.wet) } };
     const o = [];
     // stilt houses lining both banks at this depth
     for (const side of [-1, 1]) {
@@ -89,7 +118,7 @@ function harborBridgeNoon() {
     o.push(`<path d="${rp}" stroke="${pal.wood.shade}" stroke-width="${f(Math.max(1, 0.07 * kk))}"/>`);
     S.add(o.join(''));
     // a veil of haze after each reach
-    S.add(`<rect y="${r0(pr(0, 8, z)[1])}" width="${W}" height="${r0(pr(0, -0.5, z)[1] - pr(0, 8, z)[1])}" fill="#e2e2da" opacity=".16"/>`);
+    S.add(`<rect y="${r0(pr(0, 8, z)[1])}" width="${W}" height="${r0(pr(0, -0.5, z)[1] - pr(0, 8, z)[1])}" fill="${P.veil}" opacity=".16"/>`);
   }
 
   // --- the channel floor: mud to the walls, a thin stream down the middle, wet glints -----------------------
@@ -110,7 +139,7 @@ function harborBridgeNoon() {
     for (let z = 2.5; z < 40; z += 0.9) co += pl(pr.poly([[CW, 0, z], [CW, QY, z]]));
     o.push(`<path d="${co}" stroke="${P.stone.course}" stroke-width="1.4" opacity=".45"/>`);
     // damp tide band on the wall foot
-    o.push(`<path d="${q([[CW - 0.01, 0, 2], [CW - 0.01, 0.9, 2], [CW - 0.01, 0.9, 120], [CW - 0.01, 0, 120]])}" fill="#4e5248" opacity=".45"/>`);
+    o.push(`<path d="${q([[CW - 0.01, 0, 2], [CW - 0.01, 0.9, 2], [CW - 0.01, 0.9, 120], [CW - 0.01, 0, 120]])}" fill="${tn('#4e5248')}" opacity=".45"/>`);
     // grate mouths: arched openings with bars, reed bundles stuffed in, bristling out
     let holes = '', bars = '', reeds = '';
     for (const z of [3.2, 5.2, 7.2, 14.4, 17.4, 20.4, 26]) {
@@ -120,8 +149,8 @@ function harborBridgeNoon() {
       for (let i = 1; i < 4; i++) { const xx = a[0] + ww * i / 4; bars += `M${r0(xx)},${r0(a[1] + (b[1] - a[1]) * i / 4)}V${r0(t[1] + hh * 0.18)}`; }
       for (let i = 0; i < 7; i++) { const xx = a[0] + ww * R.range(0.05, 0.95), yy = a[1] - hh * R.range(0.1, 0.6), L = hh * R.range(0.3, 0.6); reeds += `M${r0(xx)},${r0(yy)}l${f(-L * R.range(0.2, 0.8))},${f(-L * R.range(0.2, 0.7))}`; }
     }
-    o.push(`<path d="${holes}" fill="#2a2824"/><path d="${holes}" fill="#a89a6a" opacity=".55" transform="translate(0 2)"/>`);
-    o.push(`<path d="${reeds}" stroke="#c8b880" stroke-width="2" stroke-linecap="round"/><path d="${bars}" stroke="${P.iron}" stroke-width="3"/>`);
+    o.push(`<path d="${holes}" fill="${tn('#2a2824')}"/><path d="${holes}" fill="${tn('#a89a6a')}" opacity=".55" transform="translate(0 2)"/>`);
+    o.push(`<path d="${reeds}" stroke="${tn('#c8b880')}" stroke-width="2" stroke-linecap="round"/><path d="${bars}" stroke="${P.iron}" stroke-width="3"/>`);
     // houses along the quay street (fronts facing the channel, in the shade of the noon haze)
     for (const [z0, z1, h, rf] of [[17.8, 22, 6.8, P.roof], [13.4, 17.4, 5.6, P.roofRed], [6.6, 10.4, 6.4, P.roof], [1.6, 6.2, 5.2, P.roofRed]]) {
       const x = CW + 1.6, d = 4.4, rise = 2;
@@ -130,8 +159,8 @@ function harborBridgeNoon() {
       o.push(`<path d="${q([[x - 0.2, QY + h - 0.1, z0 - 0.2], [x + d / 2, QY + h + rise, z0 - 0.2], [x + d / 2, QY + h + rise, z1 + 0.2], [x - 0.2, QY + h - 0.1, z1 + 0.2]])}" fill="${rf}"/>`);
       o.push(`<path d="${pz([pr(x, QY + 0.25, z0), pr(x, QY + h, z0), pr(x + d / 2, QY + h + rise, z0), pr(x + d, QY + h, z0), pr(x + d, QY + 0.25, z0)])}" fill="${P.plaster}"/>`);
       o.push(`<path d="${pl([pr(x - 0.2, QY + h - 0.1, z0 - 0.2), pr(x + d / 2, QY + h + rise, z0 - 0.2), pr(x + d + 0.2, QY + h - 0.1, z0 - 0.2)])}" fill="none" stroke="${P.roofShade}" stroke-width="5" stroke-linejoin="round"/>`);
-      o.push(`<path d="${q([[x - 0.01, QY + 0.25, z0 + 0.6], [x - 0.01, QY + 2.2, z0 + 0.6], [x - 0.01, QY + 2.2, z0 + 1.4], [x - 0.01, QY + 0.25, z0 + 1.4]])}" fill="#4a3e36"/><path d="${q([[x - 0.01, QY + 3, z0 + 2.2], [x - 0.01, QY + 4.2, z0 + 2.2], [x - 0.01, QY + 4.2, z0 + 3.1], [x - 0.01, QY + 3, z0 + 3.1]])}" fill="#4a4a52"/>`);
-      o.push(`<path d="${pz([pr(x + 1.2, QY + 2.6, z0 - 0.01), pr(x + 1.2, QY + 3.8, z0 - 0.01), pr(x + 2.2, QY + 3.8, z0 - 0.01), pr(x + 2.2, QY + 2.6, z0 - 0.01)])}" fill="#4a4a52"/>`);
+      o.push(`<path d="${q([[x - 0.01, QY + 0.25, z0 + 0.6], [x - 0.01, QY + 2.2, z0 + 0.6], [x - 0.01, QY + 2.2, z0 + 1.4], [x - 0.01, QY + 0.25, z0 + 1.4]])}" fill="${tn('#4a3e36')}"/><path d="${q([[x - 0.01, QY + 3, z0 + 2.2], [x - 0.01, QY + 4.2, z0 + 2.2], [x - 0.01, QY + 4.2, z0 + 3.1], [x - 0.01, QY + 3, z0 + 3.1]])}" fill="${P.win}"/>`);
+      o.push(`<path d="${pz([pr(x + 1.2, QY + 2.6, z0 - 0.01), pr(x + 1.2, QY + 3.8, z0 - 0.01), pr(x + 2.2, QY + 3.8, z0 - 0.01), pr(x + 2.2, QY + 2.6, z0 - 0.01)])}" fill="${P.win}"/>`);
     }
     S.add(o.join(''));
   }
@@ -152,14 +181,14 @@ function harborBridgeNoon() {
     }
     o.push(`<path d="${st}" fill="${P.stone.mid}"/><path d="${stL}" stroke="${P.stone.lit}" stroke-width="2.4"/>`);
     // weed on the lower steps
-    o.push(`<path d="${q([[CW - 1.1, 0.02, BZ - 4.2], [CW - 1.1, 0.75, BZ - 3.6], [CW, 0.75, BZ - 3.6], [CW, 0.02, BZ - 4.2]])}" fill="#4e5a3e" opacity=".55"/>`);
+    o.push(`<path d="${q([[CW - 1.1, 0.02, BZ - 4.2], [CW - 1.1, 0.75, BZ - 3.6], [CW, 0.75, BZ - 3.6], [CW, 0.02, BZ - 4.2]])}" fill="${tn('#4e5a3e')}" opacity=".55"/>`);
     S.add(o.join(''));
   }
 
   // --- left: stilt houses on piles standing in the mud, their landings and ladders ---------------------------------
   {
     const o = [];
-    const pal = { wall: P.plaster, wallShade: P.plasterShade, roof: P.roof, roofShade: P.roofShade, rim: '#ffffff', win: '#4a4a52', door: '#3a3432', wood: P.wood };
+    const pal = { wall: P.plaster, wallShade: P.plasterShade, roof: P.roof, roofShade: P.roofShade, rim: tn('#ffffff'), win: P.win, door: tn('#3a3432'), wood: P.wood };
     for (const [z0, z1, h, rf] of [[13.8, 18.6, 3.4, P.roofRed], [6.6, 11, 3.2, P.roof], [1.2, 6.0, 3.6, P.roofRed]]) {
       const x = -CW - 0.3, fy = QY + 0.4, d = 4.2, rise = 1.8;
       // piles in the mud
@@ -169,7 +198,7 @@ function harborBridgeNoon() {
       o.push(`<path d="${q([[x, fy, z0], [x, fy + h, z0], [x, fy + h, z1], [x, fy, z1]])}" fill="${P.plaster}"/><path d="${q([[x + 0.2, fy + h - 0.1, z0 - 0.2], [x - d / 2, fy + h + rise, z0 - 0.2], [x - d / 2, fy + h + rise, z1 + 0.2], [x + 0.2, fy + h - 0.1, z1 + 0.2]])}" fill="${rf}"/>`);
       o.push(`<path d="${pz([pr(x, fy, z0), pr(x, fy + h, z0), pr(x - d / 2, fy + h + rise, z0), pr(x - d, fy + h, z0), pr(x - d, fy, z0)])}" fill="${P.plasterShade}"/><path d="${pl([pr(x + 0.2, fy + h - 0.1, z0 - 0.2), pr(x - d / 2, fy + h + rise, z0 - 0.2), pr(x - d - 0.2, fy + h - 0.1, z0 - 0.2)])}" fill="none" stroke="${P.roofShade}" stroke-width="5" stroke-linejoin="round"/>`);
       o.push(`<path d="${q([[x, fy - 0.15, z0 - 0.3], [x, fy, z0 - 0.3], [x, fy, z1 + 0.3], [x, fy - 0.15, z1 + 0.3]])}" fill="${P.wood.shade}"/>`);
-      o.push(`<path d="${q([[x + 0.01, fy, z0 + 1], [x + 0.01, fy + 2, z0 + 1], [x + 0.01, fy + 2, z0 + 1.8], [x + 0.01, fy, z0 + 1.8]])}" fill="#3a3432"/><path d="${q([[x + 0.01, fy + 1.2, z1 - 1.8], [x + 0.01, fy + 2.3, z1 - 1.8], [x + 0.01, fy + 2.3, z1 - 0.9], [x + 0.01, fy + 1.2, z1 - 0.9]])}" fill="#4a4a52"/>`);
+      o.push(`<path d="${q([[x + 0.01, fy, z0 + 1], [x + 0.01, fy + 2, z0 + 1], [x + 0.01, fy + 2, z0 + 1.8], [x + 0.01, fy, z0 + 1.8]])}" fill="${tn('#3a3432')}"/><path d="${q([[x + 0.01, fy + 1.2, z1 - 1.8], [x + 0.01, fy + 2.3, z1 - 1.8], [x + 0.01, fy + 2.3, z1 - 0.9], [x + 0.01, fy + 1.2, z1 - 0.9]])}" fill="${P.win}"/>`);
       // a ladder down to the mud
       const l0 = pr(x + 0.1, fy, z0 + 1.2), l1 = pr(x + 0.5, 0, z0 + 1.0), l2 = pr(x + 0.1, fy, z0 + 1.6), l3 = pr(x + 0.5, 0, z0 + 1.4);
       o.push(`<path d="M${r0(l0[0])},${r0(l0[1])}L${r0(l1[0])},${r0(l1[1])}M${r0(l2[0])},${r0(l2[1])}L${r0(l3[0])},${r0(l3[1])}" stroke="${P.wood.shade}" stroke-width="4"/>`);
@@ -194,15 +223,15 @@ function harborBridgeNoon() {
     const br = (xa, xb) => { const a = pr(xa, DY - 0.2, BZ), b = pr(xb, 0.9, BZ), c = pr(xb, DY - 0.2, BZ), d = pr(xa, 0.9, BZ); return `M${r0(a[0])},${r0(a[1])}L${r0(b[0])},${r0(b[1])}M${r0(c[0])},${r0(c[1])}L${r0(d[0])},${r0(d[1])}`; };
     o.push(`<path d="${br(-3.4, -1.15)}${br(1.15, 3.4)}" stroke="${P.wood.shade}" stroke-width="${f(0.12 * kk)}"/>`);
     // missing-person notices pasted on the posts (one still dark with wet glue), more on the rail
-    const npal = { paper: P.paper, ink: P.ink, pin: P.pin };
+    const npal = { paper: P.paper, ink: P.ink, pin: P.pin, glue: P.glue, glueEdge: P.glueEdge };
     let notes = '';
     for (const [i, x] of postsX.entries()) {
       const t = pr(x, 2.05, BZ), w = 0.3 * kk, h = 0.4 * kk;
-      notes += notice(t[0] - w / 2, t[1], w, h, [-3, 2, -2, 4][i], npal);
-      if (i === 1 || i === 2) notes += notice(t[0] - w / 2 + 2, t[1] + h * 1.1, w * 0.95, h * 0.9, [3, -4][i - 1], npal);
+      notes += (dusk ? glueMark : notice)(t[0] - w / 2, t[1], w, h, [-3, 2, -2, 4][i], npal);
+      if (i === 1 || i === 2) notes += (dusk ? glueMark : notice)(t[0] - w / 2 + 2, t[1] + h * 1.1, w * 0.95, h * 0.9, [3, -4][i - 1], npal);
     }
     o.push(notes);
-    { const t = pr(-1.15, 1.6, BZ), w = 0.3 * kk; o.push(`<path d="M${r0(t[0] - w / 2 + 3)},${r0(t[1] + 4)}h${f(w * 0.9)}v${f(w * 1.2)}h${f(-w * 0.9)}z" fill="#d8ccb0"/><path d="M${r0(t[0] - w / 2 + 3)},${r0(t[1] + 4)}h${f(w * 0.9)}v${f(w * 0.3)}h${f(-w * 0.9)}z" fill="#b4a684" opacity=".8"/>`); }
+    { const t = pr(-1.15, 1.6, BZ), w = 0.3 * kk; o.push(dusk ? glueMark(t[0] - w / 2 + 3, t[1] + 4, w * 0.9, w * 1.2, 0, npal) : `<path d="M${r0(t[0] - w / 2 + 3)},${r0(t[1] + 4)}h${f(w * 0.9)}v${f(w * 1.2)}h${f(-w * 0.9)}z" fill="#d8ccb0"/><path d="M${r0(t[0] - w / 2 + 3)},${r0(t[1] + 4)}h${f(w * 0.9)}v${f(w * 0.3)}h${f(-w * 0.9)}z" fill="#b4a684" opacity=".8"/>`); }
     // the deck spanning quay to stilt landing, its fascia and the railing on top
     const dl = pr(-CW - 0.6, DY, BZ), dr = pr(CW + 0.2, DY, BZ);
     o.push(`<path d="M${r0(dl[0])},${r0(dl[1])}H${r0(dr[0])}v${f(0.3 * kk)}H${r0(dl[0])}Z" fill="${P.wood.mid}"/><path d="M${r0(dl[0])},${r0(dl[1])}H${r0(dr[0])}" stroke="${P.wood.cap}" stroke-width="3"/>`);
@@ -216,11 +245,12 @@ function harborBridgeNoon() {
     o.push(`<path d="${rail}" stroke="${P.wood.shade}" stroke-width="${f(0.1 * kk)}" stroke-linecap="round"/><path d="M${r0(r1[0])},${r0(r1[1] - 2)}H${r0(r2[0])}" stroke="${P.wood.cap}" stroke-width="2" opacity=".8"/>`);
     // more notices along the rail
     let rn = '';
-    for (const x of [-3.9, -2.4, 2.1, 3.0]) { const t = pr(x, DY + 0.95, BZ), w = 0.26 * kk; rn += notice(t[0], t[1], w, w * 1.3, R.range(-6, 6), npal); }
+    for (const x of [-3.9, -2.4, 2.1, 3.0]) { const t = pr(x, DY + 0.95, BZ), w = 0.26 * kk; rn += (dusk ? glueMark : notice)(t[0], t[1], w, w * 1.3, R.range(-6, 6), npal); }
     o.push(rn);
     // a tide lamp hanging under the bridge middle (unlit at noon)
     const lp = pr(0, DY - 0.1, BZ);
-    o.push(tideLamp(lp[0], lp[1] + 18, 1.3, { iron: P.iron, glass: '#5a6066', glow: '#ffd890', core: '#fff', glint: '#e8eef0' }, false));
+    if (dusk) o.push(`<circle cx="${r0(lp[0])}" cy="${r0(lp[1] + 32)}" r="70" fill="${S.rad([[0, '#ffd890', 0.5], [0.3, '#ffa860', 0.16], [1, '#ffa860', 0]])}"/>`);
+    o.push(tideLamp(lp[0], lp[1] + 18, 1.3, { iron: P.iron, glass: tn('#5a6066'), glow: '#ffd890', core: '#fff', glint: tn('#e8eef0') }, dusk));
     S.add(o.join(''));
   }
 
@@ -236,11 +266,11 @@ function harborBridgeNoon() {
       // the bow post with its unlit tide lamp
       const bp = [a[0] + L * 0.47, a[1] - Hh * 1.25];
       s.push(`<path d="M${r0(bp[0])},${r0(bp[1] + Hh * 0.2)}v${f(-0.9 * kk - Hh * 0.2)}h${f(-0.25 * kk)}" fill="none" stroke="${P.wood.shade}" stroke-width="${f(0.09 * kk)}" stroke-linejoin="round"/>`);
-      s.push(tideLamp(bp[0] - 0.25 * kk, bp[1] - 0.9 * kk + 0.12 * kk, 0.018 * kk, { iron: P.iron, glass: '#5a6066', glow: '#ffd890', core: '#fff', glint: '#e8eef0' }, false));
+      s.push(tideLamp(bp[0] - 0.25 * kk, bp[1] - 0.9 * kk + 0.12 * kk, 0.018 * kk, { iron: P.iron, glass: tn('#5a6066'), glow: '#ffd890', core: '#fff', glint: tn('#e8eef0') }, false));
       // a coil of rope in the boat, an oar
-      s.push(`<ellipse cx="${r0(a[0] - L * 0.1)}" cy="${r0(a[1] - Hh * 0.55)}" rx="${f(0.25 * kk)}" ry="${f(0.08 * kk)}" fill="none" stroke="#a8946a" stroke-width="${f(0.04 * kk)}"/><path d="M${r0(a[0] - L * 0.35)},${r0(a[1] - Hh * 0.8)}l${f(L * 0.5)},${f(-Hh * 0.2)}" stroke="${P.wood.lit}" stroke-width="${f(0.05 * kk)}"/>`);
+      s.push(`<ellipse cx="${r0(a[0] - L * 0.1)}" cy="${r0(a[1] - Hh * 0.55)}" rx="${f(0.25 * kk)}" ry="${f(0.08 * kk)}" fill="none" stroke="${tn('#a8946a')}" stroke-width="${f(0.04 * kk)}"/><path d="M${r0(a[0] - L * 0.35)},${r0(a[1] - Hh * 0.8)}l${f(L * 0.5)},${f(-Hh * 0.2)}" stroke="${P.wood.lit}" stroke-width="${f(0.05 * kk)}"/>`);
       s.push(`</g>`);
-      s.push(`<ellipse cx="${r0(a[0])}" cy="${r0(a[1] + 2)}" rx="${f(L * 0.5)}" ry="${f(0.12 * kk)}" fill="#2e2c28" opacity=".45"/>`);
+      s.push(`<ellipse cx="${r0(a[0])}" cy="${r0(a[1] + 2)}" rx="${f(L * 0.5)}" ry="${f(0.12 * kk)}" fill="${tn('#2e2c28')}" opacity=".45"/>`);
       return s.join('');
     };
     S.add(boat(-3.2, 7.4, 3.6, 0, 4) + boat(-2.6, 13.4, 3.4, 0, -3));
@@ -251,9 +281,15 @@ function harborBridgeNoon() {
   S.add(`<g filter="${S.blur(3)}"><path d="${pz([pr(-CW, 0.4, 120), pr(CW, 0.4, 120), pr(CW, 0.4, 6), pr(-CW, 0.4, 6)])}" fill="${P.fog}" opacity=".35"/><path d="${band(500, 1100, VP[1] + 34, 10, R, 4)}" fill="${P.fog}" opacity=".8"/><path d="${band(300, 1300, VP[1] + 80, 14, R, 6)}" fill="${P.fog}" opacity=".55"/></g>`);
 
   // --- grading: noon haze, darker corners, the calm channel floor under the dialogue box --------------------------
-  S.add(`<rect width="${W}" height="${H}" fill="${S.lin([[0, '#fffbe8', 0.12], [0.5, '#fffbe8', 0], [1, '#2a2e2c', 0.2]], 'x1="0" y1="0" x2="1" y2="1"')}"/>`);
-  S.add(`<rect width="${W}" height="${H}" fill="${S.rad([[0.5, '#2a2e2c', 0], [1, '#2a2e2c', 0.4]], 'cx="0.5" cy="0.45" r="0.78"')}"/>`);
-  S.add(`<rect y="600" width="${W}" height="300" fill="${S.lin([[0, '#2a2c28', 0], [1, '#2a2c28', 0.62]])}"/>`);
+  if (dusk) {
+    S.add(`<rect width="${W}" height="${H}" fill="${S.lin([[0, '#ff9a60', 0.14], [0.5, '#ff9a60', 0], [1, '#24142e', 0.32]], 'x1="0" y1="0" x2="1" y2="1"')}"/>`);
+    S.add(`<rect width="${W}" height="${H}" fill="${S.rad([[0.5, '#1c1222', 0], [1, '#1c1222', 0.5]], 'cx="0.5" cy="0.45" r="0.78"')}"/>`);
+    S.add(`<rect y="600" width="${W}" height="300" fill="${S.lin([[0, '#1a1218', 0], [1, '#1a1218', 0.66]])}"/>`);
+  } else {
+    S.add(`<rect width="${W}" height="${H}" fill="${S.lin([[0, '#fffbe8', 0.12], [0.5, '#fffbe8', 0], [1, '#2a2e2c', 0.2]], 'x1="0" y1="0" x2="1" y2="1"')}"/>`);
+    S.add(`<rect width="${W}" height="${H}" fill="${S.rad([[0.5, '#2a2e2c', 0], [1, '#2a2e2c', 0.4]], 'cx="0.5" cy="0.45" r="0.78"')}"/>`);
+    S.add(`<rect y="600" width="${W}" height="300" fill="${S.lin([[0, '#2a2c28', 0], [1, '#2a2c28', 0.62]])}"/>`);
+  }
   return S.out();
 }
 
@@ -419,36 +455,44 @@ function harborGuild() {
 //   right: the stone mouth of the east outfall in the embankment, its iron grate missing two bars and patched
 //          with nailed boards, the boardwalk laid over the stone mouth with a coil of rope and two punt poles,
 //          a post with a tide lamp, a length of loose railing, the fish stall shuttered for the night.
-// night = true: the tide has come up over the grate, and the guild's lamps stand in a row along the boardwalk.
+// mode 'night': the tide has come up over the grate, and the guild's lamps stand in a row along the boardwalk.
+// mode 'dawn' (chapter 10, fog-harbor-drain-dawn; the near-noon shot reuses it): grey-pink first light, the ditch
+//   run low; the grate is the gate — wound up on its chain by the winch on the boardwalk, it hangs raised in the
+//   arch, a tongue of dark water slides out from under it and the stone steps inside the mouth are bared. The
+//   guild's lamps still stand along the boardwalk, burnt low. Same seed and geometry as dusk/night.
 // No reflections, mirrors or figures, and nothing root-like (the roots only ever appear as animated props).
 // ---------------------------------------------------------------------------------------------
 const DRAIN = {
   dusk: { sky: [[0, '#3a3456'], [0.2, '#6a4a6a'], [0.36, '#b8686a'], [0.46, '#e8946a'], [0.52, '#f4b47a'], [1, '#2a2230']], glow: '#ffc88a', farTown: '#6a4a5a', rim: '#ffb07a' },
   night: { sky: [[0, '#0a0c1a'], [0.25, '#161a30'], [0.45, '#262c4a'], [0.52, '#2c3250'], [1, '#090a12']], glow: '#5a6a9a', farTown: '#1c2034', rim: '#8aa0d0' },
+  dawn: { sky: [[0, '#4a5068'], [0.2, '#727690'], [0.36, '#a89eb2'], [0.46, '#d4b6b8'], [0.52, '#e6c6bc'], [1, '#2a2c36']], glow: '#ffe0d0', farTown: '#5e5a6c', rim: '#ffd2c2' },
   brick: { lit: '#9a6252', mid: '#7a4a3e', shade: '#5a3630', course: '#3a2420' },
   plaster: '#b4a08e', plasterShade: '#86766a', stone: { lit: '#a8a094', mid: '#847c72', shade: '#5a544e', course: '#3e3a36' },
   wood: { lit: '#8a7462', mid: '#64544a', shade: '#463a34', dark: '#2a221e' },
   water: '#3a4450', waterHi: '#5a6a7c', ivy: '#3e5a3a', ivyLit: '#6a8a52', iron: '#26282c', fire: '#ffa850', lamp: '#ffd08a',
 };
 
-function harborDrain(night) {
-  const S = new Scene(night ? 'sbDrainNight' : 'sbDrainDusk', night
+function harborDrain(mode) {
+  const night = mode === 'night', dawn = mode === 'dawn';
+  const S = new Scene(night ? 'sbDrainNight' : dawn ? 'sbDrainDawn' : 'sbDrainDusk', night
     ? '旧浴场后沟与排水区东口·入夜：潮水淹过东口的铁栅，分会的灯沿着栈道排开；左边旧浴场后墙、烟囱、烧水间门口与柴堆、沟上的窄木桥'
+    : dawn ? '旧浴场后沟与排水区东口·破晓：栈道上的绞盘把东口的闸吊起，一舌暗水从闸下滑出，露出闸下往里去的石阶；分会的灯还沿着栈道排着；左边旧浴场后墙、烟囱、烧水间门口与柴堆、沟上的窄木桥'
     : '旧浴场后沟与排水区东口·黄昏：左边旧浴场后墙与冒烟的烟囱、烧水间门口与柴堆、沟上的窄木桥、沟边的小铁栅与爬藤的沟墙；右边石砌排水口、缺两根条以木板钉补的铁栅、石口上的木栈道、缆绳与撑篙、挂潮灯的柱子、松了的栏杆、收摊的鱼摊', 6901);
   const R = S.R, R2 = rng(6902);
-  const T = night ? DRAIN.night : DRAIN.dusk;
-  const dk = (c, k = 0.66) => (night ? mix(c, '#0c0e1a', k) : c);
+  const T = DRAIN[mode];
+  const dk = (c, k = 0.66) => (night ? mix(c, '#0c0e1a', k) : dawn ? mix(c, '#4a4a60', k * 0.42) : c);
   const RIM = 520, WTOP = 430, BW = 446, KERB = 650; // ditch's far rim, embankment top, boardwalk deck, near kerb
   const ATOP = 538, ASPR = 584, ABOT = 650, MX0 = 880, MX1 = 1120; // the outfall arch: crown, springing, foot
-  const LVL = night ? 530 : 604; // water level on the far wall: the night tide stands over the whole grate
+  const LVL = night ? 530 : dawn ? 628 : 604; // water level on the far wall: the night tide stands over the whole grate
+  const LIFT = dawn ? 72 : 0; // how far the gate (the grate) is wound up into the arch
 
   // --- sky and the far harbour beyond the boardwalk --------------------------------------------------------
   S.add(`<rect width="${W}" height="${H}" fill="${S.lin(T.sky)}"/>`);
-  S.add(`<circle cx="1180" cy="400" r="760" fill="${S.rad([[0, T.glow, night ? 0.25 : 0.75], [0.15, T.glow, night ? 0.1 : 0.35], [1, T.glow, 0]])}"/>`);
+  S.add(`<circle cx="1180" cy="400" r="760" fill="${S.rad([[0, T.glow, night ? 0.25 : dawn ? 0.6 : 0.75], [0.15, T.glow, night ? 0.1 : dawn ? 0.28 : 0.35], [1, T.glow, 0]])}"/>`);
   if (night) S.add(stars(R2, 70, [0, 0, W, 280], { maxR: 1.2, fill: '#dce4ff', op: [0.15, 0.7] }));
-  const cc = night ? { lit: '#2a3050', shade: '#141828', rim: '#6a7aa8' } : { lit: '#c4787a', shade: '#5a3a56', rim: '#ffc090' };
+  const cc = night ? { lit: '#2a3050', shade: '#141828', rim: '#6a7aa8' } : dawn ? { lit: '#d6b6ba', shade: '#6a6680', rim: '#ffeadc' } : { lit: '#c4787a', shade: '#5a3a56', rim: '#ffc090' };
   S.add(cloud(R, 820, 150, 360, 50, cc, { bumps: 7 }) + cloud(R, 1280, 100, 260, 38, cc, { bumps: 6 }) + cloud(R, 700, 260, 200, 26, cc, { bumps: 5 }));
-  S.add(`<path d="${band(600, 1700, 300, 8, R)}" fill="${night ? '#3a4266' : '#ffc89a'}" opacity=".5"/>`);
+  S.add(`<path d="${band(600, 1700, 300, 8, R)}" fill="${night ? '#3a4266' : dawn ? '#ffe2d4' : '#ffc89a'}" opacity=".5"/>`);
   {
     let rf = '';
     for (let i = 0; i < 16; i++) { const x = 760 + i * 56 + R.range(-10, 10), w = R.range(36, 56), h = R.range(20, 46), y = 408 - R.range(0, 14); rf += `M${r0(x)},${r0(y)}v${r0(-h * 0.5)}l${r0(w / 2)},${r0(-h * 0.5)}l${r0(w / 2)},${r0(h * 0.5)}v${r0(h * 0.5)}z`; }
@@ -470,7 +514,20 @@ function harborDrain(night) {
     let vs = '';
     for (let i = 0; i <= 10; i++) { const a = Math.PI + i * Math.PI / 10; vs += `M${r0(cx + Math.cos(a) * rx)},${r0(ASPR + Math.sin(a) * ry)}L${r0(cx + Math.cos(a) * (rx + 20))},${r0(ASPR + Math.sin(a) * (ry + 20))}`; }
     o.push(`<path d="${vs}" stroke="${st.course}" stroke-width="2" opacity=".6"/>`);
-    o.push(`<path d="M${MX0},${ABOT}V${ASPR}A${rx},${ry} 0 0 1 ${MX1},${ASPR}V${ABOT}Z" fill="#0c0c10"/>`);
+    const throat = `M${MX0},${ABOT}V${ASPR}A${rx},${ry} 0 0 1 ${MX1},${ASPR}V${ABOT}Z`;
+    o.push(`<path d="${throat}" fill="#0c0c10"/>`);
+    if (dawn) {
+      // the stone steps bared under the raised gate: the threshold at the water, then treads going in and down,
+      // each one narrower and dimmer until the dark takes them
+      let tr = '';
+      for (const [i, [y, w, h, op]] of [[LVL - 6, 1, 6, 0.95], [LVL - 15, 0.9, 5, 0.72], [LVL - 23, 0.8, 4, 0.5], [LVL - 30, 0.71, 3, 0.32], [LVL - 36, 0.63, 3, 0.18]].entries()) {
+        const hw = rx * w;
+        tr += `<path d="M${r0(cx - hw)},${y}h${r0(hw * 2)}v${h}h${r0(-hw * 2)}z" fill="${dk(DRAIN.stone.lit, 0.55)}" opacity="${op}"/>`;
+        if (i < 3) tr += `<path d="M${r0(cx - hw)},${y + h}h${r0(hw * 2)}v${[3, 3, 2][i]}h${r0(-hw * 2)}z" fill="${dk(DRAIN.stone.shade, 0.55)}" opacity="${op}"/>`;
+      }
+      o.push(tr);
+      o.push(`<g clip-path="${S.clip(throat)}"><g transform="translate(0 -${LIFT})">`);
+    }
     // the grate: nine bars with two missing in the middle, two old boards nailed across the gap
     let bars = '';
     const nb = 9;
@@ -480,12 +537,13 @@ function harborDrain(night) {
       bars += `M${r0(x)},${r0(yt + 2)}V${ABOT}`;
     }
     bars += `M${MX0},${ASPR + 6}H${MX1}M${MX0},${ABOT - 16}H${MX1}`;
-    o.push(`<path d="${bars}" stroke="${DRAIN.iron}" stroke-width="7"/><path d="${bars}" stroke="${night ? '#4a5470' : '#a88a74'}" stroke-width="1.6" opacity=".6" transform="translate(-2 0)"/>`);
+    o.push(`<path d="${bars}" stroke="${DRAIN.iron}" stroke-width="7"/><path d="${bars}" stroke="${night ? '#4a5470' : dawn ? '#b4a6aa' : '#a88a74'}" stroke-width="1.6" opacity=".6" transform="translate(-2 0)"/>`);
     const bx = MX0 + (MX1 - MX0) * 3.6 / 10, bw = (MX1 - MX0) * 2.0 / 10;
     o.push(`<path d="M${r0(bx - 10)},${ATOP + 20}l${r0(bw + 20)},-6v20l${r0(-bw - 20)},6zM${r0(bx - 12)},${ASPR + 22}l${r0(bw + 24)},5v20l${r0(-bw - 24)},-5z" fill="${dk(DRAIN.wood.lit, 0.55)}"/>`);
     let nl = '';
     for (const [x, y] of [[bx - 4, ATOP + 30], [bx + bw + 4, ATOP + 24], [bx - 6, ASPR + 32], [bx + bw + 6, ASPR + 36]]) nl += circ(x, y, 2.6);
     o.push(`<path d="${nl}" fill="#1a1a1e"/>`);
+    if (dawn) o.push('</g></g>');
     S.add(o.join(''));
   }
 
@@ -522,12 +580,29 @@ function harborDrain(night) {
     const lx = 1000;
     o.push(`<path d="M${lx},${BW - 16}V${BW - 200}h44" fill="none" stroke="${wd.shade}" stroke-width="9"/><path d="M${lx - 3},${BW - 16}V${BW - 200}" stroke="${T.rim}" stroke-width="1.5" opacity=".6"/>`);
     if (night) o.push(`<circle cx="${lx + 40}" cy="${BW - 170}" r="90" fill="${S.rad([[0, DRAIN.lamp, 0.55], [0.3, '#ffa860', 0.18], [1, '#ffa860', 0]])}"/>`);
-    o.push(tideLamp(lx + 40, BW - 186, 1.3, { iron: DRAIN.iron, glass: dk('#5a5258', 0.55), glow: DRAIN.lamp, core: '#fff6d8', glint: '#ffe8c8' }, night));
+    if (dawn) o.push(`<circle cx="${lx + 40}" cy="${BW - 170}" r="60" fill="${S.rad([[0, DRAIN.lamp, 0.35], [0.3, '#ffa860', 0.1], [1, '#ffa860', 0]])}"/>`);
+    o.push(tideLamp(lx + 40, BW - 186, 1.3, { iron: DRAIN.iron, glass: dk('#5a5258', 0.55), glow: DRAIN.lamp, core: '#fff6d8', glint: '#ffe8c8' }, night || dawn));
+    if (dawn) {
+      // the winch that wound the gate up: two trestle frames, the drum wrapped in chain, the crank on its right end;
+      // the chain runs off the drum over a sheave at the deck edge and straight down into the slot above the arch
+      const wx = 904, wy = BW - 16, ch = '#3a3a42';
+      o.push(`<path d="M${wx - 34},${wy}L${wx - 26},${wy - 50}L${wx - 18},${wy}M${wx + 18},${wy}L${wx + 26},${wy - 50}L${wx + 34},${wy}" fill="none" stroke="${wd.shade}" stroke-width="6" stroke-linejoin="round"/><path d="M${wx - 30},${wy - 20}h12M${wx + 22},${wy - 20}h12" stroke="${wd.shade}" stroke-width="4"/>`);
+      o.push(`<path d="M${wx - 24},${wy - 60}h48v22h-48z" fill="${wd.lit}"/><path d="M${wx - 24},${wy - 60}h48" stroke="${T.rim}" stroke-width="1.5" opacity=".6"/>`);
+      let wrap = '';
+      for (let y = wy - 56; y < wy - 40; y += 4) wrap += `M${wx - 20},${y}h40`;
+      o.push(`<path d="${wrap}" stroke="${ch}" stroke-width="2.4"/><path d="M${wx + 24},${wy - 49}h12v-22h10" fill="none" stroke="${DRAIN.iron}" stroke-width="4" stroke-linejoin="round"/><circle cx="${wx + 26}" cy="${wy - 49}" r="4" fill="${DRAIN.iron}"/>`);
+      let links = '';
+      for (let y = wy - 38; y < BW + 4; y += 8) links += `<ellipse cx="${wx}" cy="${y}" rx="2.4" ry="4"/>`;
+      const hookY = ABOT - 16 - LIFT; // the raised gate's lower crossbar, just inside the arch
+      for (let y = BW + 14; y < hookY - 8; y += 8) links += `<ellipse cx="${wx}" cy="${y}" rx="2.4" ry="4"/>`;
+      o.push(`<circle cx="${wx}" cy="${BW + 8}" r="7" fill="${DRAIN.iron}"/><g fill="none" stroke="${ch}" stroke-width="2">${links}</g>`);
+      o.push(`<path d="M${wx},${hookY - 10}v8a4,4 0 0 1 -8,0" fill="none" stroke="${DRAIN.iron}" stroke-width="3" stroke-linecap="round"/>`);
+    }
     S.add(o.join(''));
-    if (night) {
+    if (night || dawn) {
       let g = '';
-      for (const x of [880, 1100, 1300, 1480, 1590]) {
-        g += `<circle cx="${x}" cy="${BW - 92}" r="70" fill="${S.rad([[0, DRAIN.lamp, 0.5], [0.3, '#ffa860', 0.16], [1, '#ffa860', 0]])}"/>`;
+      for (const x of dawn ? [1100, 1300, 1480, 1590] : [880, 1100, 1300, 1480, 1590]) {
+        g += `<circle cx="${x}" cy="${BW - 92}" r="${dawn ? 44 : 70}" fill="${S.rad([[0, DRAIN.lamp, dawn ? 0.3 : 0.5], [0.3, '#ffa860', dawn ? 0.08 : 0.16], [1, '#ffa860', 0]])}"/>`;
         g += `<path d="M${x},${BW - 16}V${BW - 96}" stroke="#14141a" stroke-width="5"/>` + tideLamp(x, BW - 104, 1, { iron: DRAIN.iron, glass: '#3a3a40', glow: DRAIN.lamp, core: '#fff6d8', glint: '#fff' }, true);
       }
       S.add(g);
@@ -541,7 +616,7 @@ function harborDrain(night) {
     const cx = 380, cTop = 84;
     let puffs = '', lit = '';
     for (let i = 0; i < 14; i++) { const t = i / 13, px = cx + 20 + 300 * t * t + Math.sin(t * 7) * 10, py = cTop - 6 - 150 * t, rr = 9 + 36 * t; puffs += circ(px, py, rr); lit += circ(px - rr * 0.3, py - rr * 0.3, rr * 0.55); }
-    o.push(`<g filter="${S.blur(1)}"><path d="${puffs}" fill="${night ? '#2a2e40' : '#6a5068'}" opacity=".75"/><path d="${lit}" fill="${night ? '#4a5270' : '#d8a090'}" opacity=".4"/></g>`);
+    o.push(`<g filter="${S.blur(1)}"><path d="${puffs}" fill="${night ? '#2a2e40' : dawn ? '#7a7486' : '#6a5068'}" opacity=".75"/><path d="${lit}" fill="${night ? '#4a5270' : dawn ? '#e6d0cc' : '#d8a090'}" opacity=".4"/></g>`);
     o.push(`<path d="M-20,${RIM + 6}V${top}H${bx1}V${RIM + 6}Z" fill="${dk(DRAIN.plaster, 0.76)}"/><path d="M${bx1 - 140},${RIM + 6}V${top}H${bx1}V${RIM + 6}Z" fill="${dk(DRAIN.plasterShade, 0.76)}" opacity=".6"/>`);
     let patches = '';
     for (const [x, y, w, h] of [[60, 280, 90, 50], [250, 390, 70, 40], [470, 260, 60, 70], [120, 470, 80, 40]]) patches += patch(R, x, y, w / 2, h / 2, 9);
@@ -588,8 +663,13 @@ function harborDrain(night) {
     // the water: flat colour with current streaks (no reflections), from the level on the far walls to the near kerb
     o.push(`<path d="M-20,${LVL}H1620V${KERB}H-20Z" fill="${dk(DRAIN.water, 0.4)}"/>`);
     o.push(currents(R, -20, 1600, LVL + 6, KERB - 6, 40, dk(DRAIN.waterHi, 0.25), 0.6, 1));
-    o.push(`<path d="M-20,${LVL}H1620" stroke="${night ? '#8aa0c8' : '#e8b898'}" stroke-width="2" opacity=".5"/>`);
+    o.push(`<path d="M-20,${LVL}H1620" stroke="${night ? '#8aa0c8' : dawn ? '#e6d2cc' : '#e8b898'}" stroke-width="2" opacity=".5"/>`);
     if (night) o.push(`<path d="M${MX0 - 30},${LVL + 14}q20,-6 40,0t40,0t40,0t40,0t40,0t40,0t40,0" fill="none" stroke="#9ab0d0" stroke-width="2" opacity=".55"/>`);
+    if (dawn) {
+      // the tongue of dark water sliding out from under the raised gate, fanning across the low ditch
+      o.push(`<path d="M${MX0 + 8},${LVL}C${MX0 - 10},${LVL + 10} ${MX0 - 60},${KERB - 8} ${MX0 - 90},${KERB}H${MX1 + 90}C${MX1 + 60},${KERB - 8} ${MX1 + 10},${LVL + 10} ${MX1 - 8},${LVL}Z" fill="#1a1e28" opacity=".55"/>`);
+      o.push(`<path d="M${MX0 + 40},${LVL + 6}q-20,6 -50,14M${(MX0 + MX1) / 2 - 30},${LVL + 8}q-6,6 -12,14M${(MX0 + MX1) / 2 + 30},${LVL + 8}q6,6 12,14M${MX1 - 40},${LVL + 6}q20,6 50,14" fill="none" stroke="#8a90a4" stroke-width="1.6" stroke-linecap="round" opacity=".55"/>`);
+    }
     // the near kerb and the cobbled lane (calm, under the dialogue box)
     o.push(`<path d="M-20,${KERB}H1620v16H-20Z" fill="${dk(DRAIN.stone.lit, 0.55)}"/><path d="M-20,${KERB}H1620" stroke="${T.rim}" stroke-width="2" opacity=".5"/>`);
     o.push(`<path d="M-20,${KERB + 16}H1620V${H}H-20Z" fill="${S.lin([[0, dk('#5a4e4a', 0.55)], [1, '#141016']], `gradientUnits="userSpaceOnUse" x1="0" y1="${KERB + 16}" x2="0" y2="${H}"`)}"/>`);
@@ -615,6 +695,10 @@ function harborDrain(night) {
   if (night) {
     S.add(`<rect width="${W}" height="${H}" fill="${S.rad([[0.4, '#05060c', 0], [1, '#05060c', 0.66]], 'cx="0.55" cy="0.45" r="0.75"')}"/>`);
     S.add(`<rect y="610" width="${W}" height="290" fill="${S.lin([[0, '#05060c', 0], [1, '#05060c', 0.7]])}"/>`);
+  } else if (dawn) {
+    S.add(`<rect width="${W}" height="${H}" fill="${S.lin([[0, '#ffd8cc', 0.12], [0.5, '#ffd8cc', 0], [1, '#20243a', 0.3]], 'x1="1" y1="0" x2="0" y2="1"')}"/>`);
+    S.add(`<rect width="${W}" height="${H}" fill="${S.rad([[0.45, '#141420', 0], [1, '#141420', 0.5]], 'cx="0.55" cy="0.48" r="0.75"')}"/>`);
+    S.add(`<rect y="610" width="${W}" height="290" fill="${S.lin([[0, '#12121a', 0], [1, '#12121a', 0.66]])}"/>`);
   } else {
     S.add(`<rect width="${W}" height="${H}" fill="${S.lin([[0, '#ff9a60', 0.1], [0.5, '#ff9a60', 0], [1, '#1a1440', 0.3]], 'x1="1" y1="0" x2="0" y2="1"')}"/>`);
     S.add(`<rect width="${W}" height="${H}" fill="${S.rad([[0.45, '#120c16', 0], [1, '#120c16', 0.56]], 'cx="0.5" cy="0.48" r="0.75"')}"/>`);
@@ -624,8 +708,10 @@ function harborDrain(night) {
 }
 
 export const harborBgs = {
-  'fog-harbor-bridge-noon': harborBridgeNoon,
+  'fog-harbor-bridge-noon': () => harborBridge('noon'),
+  'fog-harbor-bridge-dusk': () => harborBridge('dusk'),
   'fog-harbor-guild': harborGuild,
-  'fog-harbor-drain-dusk': () => harborDrain(false),
-  'fog-harbor-drain-night': () => harborDrain(true),
+  'fog-harbor-drain-dusk': () => harborDrain('dusk'),
+  'fog-harbor-drain-night': () => harborDrain('night'),
+  'fog-harbor-drain-dawn': () => harborDrain('dawn'),
 };

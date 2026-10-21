@@ -1004,4 +1004,109 @@ CAST.ines = {
   },
 };
 
+// ---------------------------------------------------------------------------------------------
+// chapter 10
+// ---------------------------------------------------------------------------------------------
+
+// 潮腔母虫 (10) — a boat-sized creature of the old cistern: a broad, flat, pale carapace (head end to the left, two
+// short feelers, a pair of small dull eye-spots on the front rim, short paddles under the rear edge), and under its belly a
+// translucent water sac swollen with what it has drawn in. (No paddles under the head end, so nothing there reads as teeth.) Black roots are wound round the sac — they come up from
+// below, cross over and behind it and trail away; they never grow out of the shell, and they never glow. No mouthparts
+// shown, no blood, nothing dragon-like (no horns, wings, neck or teeth). Pale grey-green; the rim light is its colour.
+// authored at full size, then lifted and narrowed so the sac and roots sit above the dialogue box (the player fades
+// busts out below 70% of their height): x' = .92x + 24, y' = .85y - 66 — point-wise for the silhouette, as a group
+// transform for everything painted on it
+const MOTHER_MAP = 'matrix(.92 0 0 .85 24 -66)';
+const mmap = (pts) => pts.map(([x, y, c]) => (c ? [0.92 * x + 24, 0.85 * y - 66, 1] : [0.92 * x + 24, 0.85 * y - 66]));
+const MOTHER_SHELL_PTS = ([[34, 334], [52, 270], [104, 214], [190, 178], [300, 160], [410, 168], [496, 196], [552, 236], [578, 280], [572, 320], [548, 350], [500, 374], [430, 392], [340, 404], [250, 404], [168, 394], [100, 376], [56, 356]]);
+const MOTHER_RIM_PTS = ([[34, 334, 1], [56, 356], [100, 376], [168, 394], [250, 404], [340, 404], [430, 392], [500, 374], [548, 350], [572, 320, 1], [566, 344], [540, 374], [494, 398], [430, 416], [340, 428], [250, 428], [166, 418], [96, 400], [50, 378], [30, 352]]);
+const MOTHER_SHELL = S(MOTHER_SHELL_PTS), MOTHER_RIM = S(MOTHER_RIM_PTS);
+const MOTHER_SAC = S([[166, 412], [134, 456], [118, 520], [126, 598], [158, 664], [220, 712], [300, 728], [380, 714], [440, 668], [476, 600], [488, 522], [474, 452], [444, 410], [380, 424], [300, 428], [222, 424]]);
+// a cubic sampled into points, and a tapered band along points (screen space)
+const cub = (a, b, c, d, n = 14) => Array.from({ length: n + 1 }, (_, i) => { const t = i / n, u = 1 - t; return [u * u * u * a[0] + 3 * u * u * t * b[0] + 3 * u * t * t * c[0] + t * t * t * d[0], u * u * u * a[1] + 3 * u * u * t * b[1] + 3 * u * t * t * c[1] + t * t * t * d[1]]; });
+const rootBand = (pts, w0, w1) => {
+  const L = [], R = [], n = pts.length;
+  for (let i = 0; i < n; i++) {
+    const a = pts[Math.max(0, i - 1)], b = pts[Math.min(n - 1, i + 1)];
+    let tx = b[0] - a[0], ty = b[1] - a[1];
+    const l = Math.hypot(tx, ty) || 1;
+    tx /= l; ty /= l;
+    const w = (w0 + (w1 - w0) * i / (n - 1)) / 2 * (1 + 0.16 * Math.sin(i * 1.7));
+    L.push([pts[i][0] - ty * w, pts[i][1] + tx * w]); R.unshift([pts[i][0] + ty * w, pts[i][1] - tx * w]);
+  }
+  return 'M' + [...L, ...R].map(([x, y]) => `${f(x, 1)},${f(y, 1)}`).join('L') + 'Z';
+};
+// the roots' course round the sac: rear runs (behind the membrane) and front runs, plus the loose ends
+const ROOT_BACK = [
+  [cub([486, 630], [420, 560], [200, 520], [122, 500]), 14, 13],
+  [cub([452, 682], [400, 640], [240, 628], [160, 640]), 9, 8],
+];
+const ROOT_FRONT = [
+  [[...cub([60, 1000], [40, 820], [80, 670], [124, 600]), ...cub([124, 600], [220, 692], [390, 694], [486, 630]).slice(1)], 24, 15],
+  [[...cub([122, 500], [204, 578], [392, 584], [488, 520]), ...cub([488, 520], [528, 590], [566, 720], [586, 1000]).slice(1)], 14, 10],
+  [[...cub([240, 1000], [212, 820], [184, 726], [176, 690]), ...cub([176, 690], [240, 748], [380, 748], [452, 682]).slice(1)], 14, 8],
+  [cub([160, 640], [126, 660], [96, 720], [80, 820]), 8, 3],
+];
+const ROOTLETS = [[[56, 800], [24, 786], [8, 800]], [[92, 650], [62, 628], [52, 606]], [[548, 668], [584, 656], [596, 640]], [[568, 780], [596, 800], [604, 830]], [[204, 800], [174, 818], [164, 846]], [[110, 704], [80, 712], [66, 730]]];
+CAST.tide_cavity_mother = {
+  id: 'tide_cavity_mother', label: '潮腔母虫：小船大小的扁平苍白甲壳，头端两根短触须和一对暗淡的眼点，壳缘下几只短桨足；腹下鼓着半透明的水囊，几道黑色的根从下面缠上来、绕过水囊又垂下去（缠着，不是从壳里长出来，不发光）；不画口器，不像龙', rim: '#b4c2ae',
+  sil: [
+    S(mmap(MOTHER_SHELL_PTS)), S(mmap(MOTHER_RIM_PTS)),
+    // the two short feelers off the head end, drooping forward (nothing points up like a horn)
+    S(mmap([[46, 318, 1], [26, 312], [8, 318], [0, 334, 1], [10, 336, 1], [16, 324], [30, 322], [50, 328, 1]])),
+    S(mmap([[48, 348, 1], [26, 358], [10, 376], [4, 398, 1], [14, 400, 1], [20, 380], [32, 366], [56, 356, 1]])),
+    // short paddles under the rear of the shell's edge (none under the head end)
+    S(mmap([[462, 404, 1], [478, 440], [496, 462], [510, 452], [494, 420], [484, 396, 1]])),
+    S(mmap([[514, 384, 1], [540, 414], [566, 430], [576, 418], [552, 392], [534, 370, 1]])),
+  ],
+  tonesM: [
+    // the pale carapace: lit toward the upper left, shading off toward the rear and the rim
+    [MOTHER_SHELL, '#7a887c', 0.95],
+    [S([[52, 300], [88, 230], [170, 190], [280, 170], [360, 172], [300, 214], [200, 250], [120, 296], [70, 330]]), '#a6b2a2', 0.55],
+    [S([[300, 404], [420, 392], [520, 360], [570, 312], [560, 270], [500, 300], [420, 340], [330, 372]]), '#55635a', 0.55],
+    [MOTHER_RIM, '#3a463e', 0.95],
+    // the darker head shield at the front
+    [S([[34, 334], [48, 280], [86, 232], [120, 214], [104, 262], [92, 320], [74, 362], [50, 360]]), '#5e6c62', 0.7],
+    // paddles and feelers, pale
+    [S([[462, 404], [478, 440], [496, 462], [510, 452], [494, 420], [484, 396]]) + S([[514, 384], [540, 414], [566, 430], [576, 418], [552, 392], [534, 370]]), '#6a786c', 0.85],
+  ],
+  linesM: [
+    // the lit upper-left edge of the shell and the head rim
+    [`M34,334C40,262 118,190 300,160`, 3.4, 0.85],
+    [`M300,160C380,160 470,180 552,236`, 2, 0.5],
+    // the keel down its back and six segment ridges across it (bowed toward the head)
+    [`M78,304C200,280 400,262 568,282`, 2, 0.45, '#46544a'],
+    [[176, 236, 296, 356, 416, 476].map((x) => { const yt = 162 + ((x - 300) / 280) ** 2 * 88, yb = 404 - ((x - 300) / 280) ** 2 * 44; return `M${x},${r0(yt + 6)}C${x - 26},${r0(yt + (yb - yt) * 0.35)} ${x - 22},${r0(yt + (yb - yt) * 0.7)} ${x + 6},${r0(yb - 4)}`; }).join(''), 2.4, 0.7, '#4a584e'],
+    [[176, 236, 296, 356, 416, 476].map((x) => { const yt = 162 + ((x - 300) / 280) ** 2 * 88, yb = 404 - ((x - 300) / 280) ** 2 * 44; return `M${x + 3},${r0(yt + 8)}C${x - 22},${r0(yt + (yb - yt) * 0.35)} ${x - 18},${r0(yt + (yb - yt) * 0.68)} ${x + 8},${r0(yb - 8)}`; }).join(''), 1.2, 0.4],
+    // the scalloped rear rim where the segments end
+    [`M496,196l8,10l6,-2M552,236l2,12l8,0M578,280l-6,10l4,8`, 1.6, 0.55],
+  ],
+  defs: (p) => [
+    `<linearGradient id="${p}-sac" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d2e2d4" stop-opacity=".2"/><stop offset=".55" stop-color="#a8c6b4" stop-opacity=".32"/><stop offset="1" stop-color="#7aa290" stop-opacity=".46"/></linearGradient>`,
+  ],
+  front: ({ rim, p }) => {
+    const spec = CAST.tide_cavity_mother;
+    let s = `<g transform="${MOTHER_MAP}">`;
+    s += spec.tonesM.map(([d, c, op = 1]) => `<path d="${d}" fill="${c}"${op < 1 ? ` opacity="${op}"` : ''}/>`).join('');
+    s += spec.linesM.map(([d, w, op = 0.8, c = rim]) => `<path d="${d}" fill="none" stroke="${c}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" opacity="${op}"/>`).join('');
+    // the two small eye-spots on the head rim: dull, not glowing
+    s += `<ellipse cx="76" cy="304" rx="7" ry="5" fill="#101412"/><ellipse cx="101" cy="293" rx="6" ry="4.4" fill="#101412"/><circle cx="74" cy="302" r="1.6" fill="#dfe8dc" opacity=".7"/><circle cx="99" cy="291" r="1.4" fill="#dfe8dc" opacity=".7"/>`;
+    // the roots' rear runs, seen dimly through the membrane
+    s += `<path d="${ROOT_BACK.map(([pts, a, b]) => rootBand(pts, a, b)).join('')}" fill="#0c0e0c"/>`;
+    // the water sac: translucent, fuller and greener toward the bottom, a few bubbles, a soft light on its shoulder
+    s += `<path d="${MOTHER_SAC}" fill="url(#${p}-sac)"/>`;
+    s += `<path d="M126,592C200,604 300,598 400,604C440,606 470,598 482,590C478,622 460,650 440,668C400,706 350,724 300,728C250,726 200,706 160,664C140,642 128,618 126,592Z" fill="#6e9a86" opacity=".22"/>`;
+    s += `<path d="M130,594q40,8 80,2t80,0t80,2t80,-2t48,-2" fill="none" stroke="#cfe2d4" stroke-width="1.6" opacity=".45"/>`;
+    s += `<g fill="none" stroke="#dbeadf" stroke-width="1.5" opacity=".55"><circle cx="232" cy="520" r="6"/><circle cx="252" cy="548" r="3.5"/><circle cx="376" cy="480" r="5"/><circle cx="350" cy="560" r="3"/><circle cx="300" cy="462" r="4"/></g>`;
+    s += `<path d="M146,480C146,444 176,428 214,428" fill="none" stroke="#eef6ef" stroke-width="5" stroke-linecap="round" opacity=".35"/><path d="M138,540C136,512 140,494 150,480" fill="none" stroke="#eef6ef" stroke-width="2.4" stroke-linecap="round" opacity=".3"/>`;
+    s += `<path d="${MOTHER_SAC}" fill="none" stroke="${rim}" stroke-width="2.4" opacity=".55"/>`;
+    // the roots' front runs and their loose ends trailing away below, with thin rootlets; matte black
+    s += `<path d="${ROOT_FRONT.map(([pts, a, b]) => rootBand(pts, a, b)).join('')}${ROOTLETS.map((pts) => rootBand(cub(pts[0], pts[1], pts[1], pts[2], 6), 4, 1)).join('')}" fill="#0c0e0c"/>`;
+    s += `<path d="${ROOT_FRONT.slice(0, 3).map(([pts]) => pts.filter((_, i) => i % 5 === 2).map(([x, y]) => `M${f(x - 3, 1)},${f(y - 3, 1)}h6`).join('')).join('')}" stroke="#262c26" stroke-width="1.6" opacity=".7"/>`;
+    // the shell's rim band over the top of the sac (the sac hangs beneath it)
+    s += `<path d="${MOTHER_RIM}" fill="#3a463e"/><path d="M50,378C120,404 240,430 340,428C430,420 500,398 540,374" fill="none" stroke="#1a201c" stroke-width="2" opacity=".8"/><path d="M34,334C60,360 120,382 168,394" fill="none" stroke="${rim}" stroke-width="2" opacity=".5"/>`;
+    return s + '</g>';
+  },
+};
+
 export const npcBusts = Object.fromEntries(Object.entries(CAST).map(([id, spec]) => [id, (rim) => render(spec, rim)]));
