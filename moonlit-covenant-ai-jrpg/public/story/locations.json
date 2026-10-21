@@ -172,5 +172,65 @@
     "svg": "/assets/story/bg/mill-road-night.svg",
     "top": "#262c4a",
     "bottom": "#0a0b14"
+  },
+  "salt-marsh-bridge": {
+    "name": "盐沼桥·午后涨潮",
+    "svg": "/assets/story/bg/salt-marsh-bridge.svg",
+    "top": "#d8dcd6",
+    "bottom": "#62746c"
+  },
+  "forest-edge-inn": {
+    "name": "林边旅店·黄昏",
+    "svg": "/assets/story/bg/forest-edge-inn.svg",
+    "top": "#d9925a",
+    "bottom": "#1e1a22"
+  },
+  "forest-edge-channel-night": {
+    "name": "林边水道泥滩·夜",
+    "svg": "/assets/story/bg/forest-edge-channel-night.svg",
+    "top": "#26344e",
+    "bottom": "#070a12"
+  },
+  "tide-station-dawn": {
+    "name": "量潮老站·站顶·天亮",
+    "svg": "/assets/story/bg/tide-station-dawn.svg",
+    "top": "#d6dade",
+    "bottom": "#727c84"
+  },
+  "tide-station-predawn": {
+    "name": "量潮老站·站顶·天亮前",
+    "svg": "/assets/story/bg/tide-station-predawn.svg",
+    "top": "#4e5664",
+    "bottom": "#14181e"
+  },
+  "tide-station-room": {
+    "name": "量潮老站·潮室·拂晓",
+    "svg": "/assets/story/bg/tide-station-room.svg",
+    "top": "#8a8a7e",
+    "bottom": "#202428"
+  },
+  "fog-harbor-bridge-noon": {
+    "name": "雾港·第一座木桥·近午退潮",
+    "svg": "/assets/story/bg/fog-harbor-bridge-noon.svg",
+    "top": "#dcdcd2",
+    "bottom": "#666c64"
+  },
+  "fog-harbor-guild": {
+    "name": "冒险者公会雾港分会",
+    "svg": "/assets/story/bg/fog-harbor-guild.svg",
+    "top": "#b4a88c",
+    "bottom": "#262a30"
+  },
+  "fog-harbor-drain-dusk": {
+    "name": "旧浴场后沟与排水区东口·黄昏",
+    "svg": "/assets/story/bg/fog-harbor-drain-dusk.svg",
+    "top": "#cf8a68",
+    "bottom": "#28222e"
+  },
+  "fog-harbor-drain-night": {
+    "name": "旧浴场后沟与排水区东口·入夜",
+    "svg": "/assets/story/bg/fog-harbor-drain-night.svg",
+    "top": "#2c3250",
+    "bottom": "#090a12"
   }
 }

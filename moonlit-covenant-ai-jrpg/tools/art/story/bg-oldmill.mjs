@@ -31,7 +31,7 @@ const circ = (cx, cy, r) => `M${r0(cx - r)},${r0(cy)}a${r0(r)},${r0(r)} 0 1 0 ${
 
 // A bank of reeds standing on a base line, its ragged top following top(x); stalk texture, a few long
 // leaves, and plumes on the tips (plumeL(x) sets their length so near banks get big feathery heads).
-function reedBank(S, R, o) {
+export function reedBank(S, R, o) {
   const { x0, x1, top, base, pal, seed, step = 6, amp = 14, plumeP = 0.45, plumeL, lean = 1, leafP = 0.12, stalkW = 1.4 } = o;
   const n = noise1(seed, 34), n2 = noise1(seed + 5, 9);
   const dir = Math.sign(x1 - x0) || 1;

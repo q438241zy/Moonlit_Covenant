@@ -157,7 +157,7 @@ function market() {
 }
 
 // Guild emblem: a pointed sword laid diagonally behind a small bell (no text, no cross shape)
-function swordBell(cx, cy, k) {
+export function swordBell(cx, cy, k) {
   const a = Math.PI / 4, c = Math.cos(a), sn = Math.sin(a), L = 34 * k;
   const tip = [cx + c * L, cy - sn * L], pom = [cx - c * L * 0.8, cy + sn * L * 0.8], g0 = [cx - c * L * 0.42 - sn * 11 * k, cy + sn * L * 0.42 - c * 11 * k], g1 = [cx - c * L * 0.42 + sn * 11 * k, cy + sn * L * 0.42 + c * 11 * k];
   return `<path d="M${r0(pom[0])},${r0(pom[1])}L${r0(tip[0])},${r0(tip[1])}" stroke="#e8d0a0" stroke-width="${f(5 * k)}" stroke-linecap="round"/><path d="M${r0(g0[0])},${r0(g0[1])}L${r0(g1[0])},${r0(g1[1])}" stroke="#e8d0a0" stroke-width="${f(4 * k)}"/><circle cx="${r0(pom[0])}" cy="${r0(pom[1])}" r="${f(4 * k)}" fill="#e8d0a0"/>`

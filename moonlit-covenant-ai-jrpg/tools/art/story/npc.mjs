@@ -763,4 +763,245 @@ CAST.goblin_chief = {
   },
 };
 
+// ---------------------------------------------------------------------------------------------
+// chapters 06–09
+// ---------------------------------------------------------------------------------------------
+
+// 沼地食人魔 (06) — taller than a covered wagon: a small heavy-browed head sunk between enormous shoulders, mud-
+// coloured skin, a mantle of reeds draped over the shoulders, a long bridge plank carried across them behind the
+// head; slow, sleepy eyes. No collar and no chain (this is not the black-chain ogre), nothing grotesque.
+const OGRE_BODY = S([[226, 312], [186, 300], [130, 296], [80, 314], [44, 352], [24, 410], [14, 480], [10, 560], [6, 820], [594, 820], [590, 560], [584, 480], [574, 410], [552, 352], [512, 316], [460, 298], [410, 300], [376, 316]]);
+const OGRE_HEAD = S([[236, 170], [212, 196], [200, 222], [188, 236, 1], [196, 248], [186, 262], [178, 278, 1], [188, 290], [184, 304, 1], [196, 316], [214, 332], [246, 344], [290, 346], [334, 334], [366, 306], [380, 262], [376, 214], [354, 174], [312, 152], [270, 152]]);
+const OGRE_PLANK = S([[14, 300, 1], [594, 272, 1], [594, 318, 1], [14, 346, 1]]);
+// the reed shawl: draped over both shoulders and down the upper arms, hem ragged with hanging stalks
+const OGRE_SHAWL = S([[44, 354], [86, 316], [140, 300], [190, 304], [226, 314], [300, 338], [376, 316], [420, 302], [474, 302], [520, 320], [556, 356], [574, 410], [578, 470, 1], [566, 508], [556, 470], [546, 520], [532, 474], [516, 512], [500, 462], [470, 448], [440, 468], [420, 440], [390, 460], [364, 430], [336, 450], [300, 424], [264, 450], [236, 430], [208, 460], [180, 440], [150, 466], [120, 444], [100, 474], [84, 462], [70, 514], [56, 474], [40, 516], [28, 470, 1], [26, 410]]);
+CAST.marsh_ogre = {
+  id: 'marsh_ogre', label: '沼地食人魔：比篷车还高，泥色皮肤，肩上披着芦苇，扛着一块长木板，眼神迟缓；没有颈圈，没有锁链', rim: '#8a7a56',
+  sil: [OGRE_PLANK, OGRE_HEAD, S([[352, 232], [378, 220, 1], [394, 236], [388, 262, 1], [366, 266]]), OGRE_BODY, OGRE_SHAWL],
+  tones: [
+    // the plank behind the shoulders (pale old timber) — painted first so the head and shawl sit over it
+    [OGRE_PLANK, '#4e4434', 0.8],
+    // mud-brown skin: chest, the huge upper arms below the shawl, the head
+    [S([[60, 470], [140, 450], [300, 440], [460, 450], [550, 470], [580, 560], [590, 820], [10, 820], [20, 560]]), '#2e2618', 0.8],
+    [OGRE_HEAD, '#2c2417'],
+    [OGRE_SHAWL, '#3e3622', 0.92],
+    // the chest's middle in deeper shade, the arm creases
+    [S([[200, 520], [300, 500], [400, 520], [420, 820], [180, 820]]), '#1e180e', 0.5],
+  ],
+  lines: [
+    // plank edges and grain (only outside the head)
+    [`M14,300L190,292M392,282L594,272`, 2.2, 0.75],
+    [`M40,318L160,312M420,298L560,290`, 1.4, 0.4],
+    // brow ridge, heavy lids, broad nose, slack mouth, the jaw rim
+    [`M196,226C214,212 238,208 262,214`, 3.4, 0.85],
+    [`M184,282q12,8 26,4M196,318q18,8 40,4`, 2, 0.6],
+    [pl([[378, 262], [366, 306], [334, 334], [290, 346]]), 3.4, 0.85],
+    // reed stalks in the shawl, falling over the shoulders and arms
+    [Array.from({ length: 30 }, (_, i) => { const x = 40 + i * 18, y0 = 330 + Math.abs(x - 300) * 0.1 - (i % 3) * 6 - (Math.abs(x - 300) < 80 ? -10 : 0); return `M${r0(x)},${r0(y0)}l${r0((x - 300) * 0.06)},${r0(100 + (i % 4) * 22)}`; }).join(''), 1.6, 0.6],
+    [`M86,316C150,298 200,302 226,314M376,316C430,298 490,300 520,320C540,334 552,350 556,356`, 2.6, 0.75],
+    // the huge arms falling out of frame, a crease at the elbow
+    [`M26,470C16,540 12,640 10,800M574,470C584,540 588,640 590,800`, 2.6, 0.6],
+    [`M60,640q30,10 60,0M480,640q30,10 60,0`, 1.8, 0.4],
+  ],
+  front: ({ rim }) => {
+    let s = '';
+    // the sleepy eye: a heavy half-closed lid, a small dull pupil
+    s += `<path d="M206,246q14,-8 30,-4q-2,10 -14,12q-12,0 -16,-8z" fill="#0a0806"/><path d="M208,246q14,-7 28,-3" fill="none" stroke="${rim}" stroke-width="2.6" stroke-linecap="round" opacity=".85"/><circle cx="224" cy="250" r="2.4" fill="#c8b890" opacity=".85"/>`;
+    // reed plumes poking up from the shawl at the shoulders, two old nail holes in the plank
+    let pl2 = '';
+    for (const [x, y, l, a] of [[96, 316, 46, -30], [124, 306, 38, -14], [468, 302, 44, 18], [498, 308, 40, 32], [520, 322, 34, 44]]) { const r = a * Math.PI / 180; pl2 += `M${x},${y}l${r0(Math.sin(r) * l)},${r0(-Math.cos(r) * l)}`; }
+    s += `<path d="${pl2}" stroke="#c8b47a" stroke-width="3" stroke-linecap="round" opacity=".85"/>`;
+    s += `<circle cx="110" cy="316" r="3" fill="#120e0a"/><circle cx="540" cy="292" r="3" fill="#120e0a"/>`;
+    // the near hand gripping the plank's edge over the shoulder (thick fingers)
+    s += `<path d="M478,276q10,-14 26,-12q14,2 18,14l-2,40q-14,8 -34,0z" fill="#2a2216"/><path d="M482,282h34M480,296h36M480,310h36" stroke="#120e0a" stroke-width="2"/><path d="M478,276q10,-14 26,-12" fill="none" stroke="${rim}" stroke-width="2" opacity=".7"/>`;
+    // dried mud flaking on the shoulders
+    s += `<g fill="#6a5a3a" opacity=".6"><circle cx="300" cy="350" r="3"/><circle cx="318" cy="356" r="2"/><circle cx="270" cy="352" r="2.5"/></g>`;
+    return s;
+  },
+};
+
+// 领队 (06–09) — the caravan leader: a round-faced woman in middle age, hair in a kerchief-tied bun, an apron over a
+// sturdy work dress, sleeves rolled to the elbows, fists on her hips, the abacus hanging at her waist.
+const LEADER_FACE = [[238, 182], [222, 210], [214, 238], [216, 252], [204, 272, 1], [214, 282], [210, 294], [218, 302], [216, 312], [226, 332], [250, 356], [286, 368], [326, 354], [364, 310], [384, 256], [372, 198]];
+CAST.caravan_leader = {
+  id: 'caravan_leader', label: '领队：圆脸的中年女商队领队，头巾包着发髻，袖子卷到手肘，双手叉腰，腰上挂着算盘', rim: '#d4a46a',
+  sil: [
+    circle(308, 236, 98),
+    S(T(LEADER_FACE, 0, 6, 1.02, 300, 240)),
+    // kerchief over the hair, knotted at the back; the bun behind
+    S([[220, 206], [226, 162], [264, 132], [320, 124], [372, 144], [404, 184], [410, 230], [396, 260], [370, 222], [320, 196], [268, 192], [240, 210]]),
+    circle(420, 196, 40),
+    S([[430, 214], [470, 236], [480, 270], [458, 254], [446, 280], [436, 244]]),
+    neck(0, 8, 1.02),
+    // broad body, arms akimbo: elbows out at the frame edges, fists on the hips
+    S([[250, 398], [180, 420], [120, 450], [86, 500], [56, 540], [26, 590], [20, 630], [60, 650], [130, 640], [150, 680], [140, 820], [460, 820], [450, 680], [470, 640], [540, 650], [580, 630], [574, 590], [544, 540], [514, 500], [480, 450], [420, 420], [356, 398]]),
+  ],
+  tones: [
+    [S([[220, 206], [226, 162], [264, 132], [320, 124], [372, 144], [404, 184], [410, 230], [396, 260], [370, 222], [320, 196], [268, 192], [240, 210]]) + circle(420, 196, 40), '#4a3424', 0.85],
+    // dress body; apron bib and skirt
+    [S([[180, 420], [120, 450], [86, 500], [56, 540], [26, 590], [20, 630], [60, 650], [130, 640], [150, 680], [140, 820], [460, 820], [450, 680], [470, 640], [540, 650], [580, 630], [574, 590], [544, 540], [514, 500], [480, 450], [420, 420]]), '#2a2430', 0.9],
+    [S([[236, 520], [364, 520], [380, 820], [220, 820]]), '#3a3438', 0.92],
+    // bare forearms from the rolled sleeves down to the fists
+    [S([[56, 556], [26, 592], [22, 628], [60, 648], [128, 638], [150, 672], [164, 662], [140, 626], [96, 590]]) + S([[544, 556], [574, 592], [578, 628], [540, 648], [472, 638], [450, 672], [436, 662], [460, 626], [504, 590]]), '#4a3a32', 0.85],
+  ],
+  lines: [
+    [pl([[384, 262], [364, 312], [326, 356], [286, 370]]), 3.5, 0.85],
+    // the kerchief's folds and its knot
+    [pl([[264, 140], [320, 134], [372, 156]]) + pl([[250, 172], [312, 160], [370, 186]]), 2.4, 0.6],
+    // rolled sleeve cuffs at the elbows (thick bands)
+    [`M50,548q20,-14 44,0M70,534q20,-12 40,2M506,548q20,-14 44,0M490,536q20,-12 40,0`, 4, 0.75],
+    // shoulders, apron edges and straps
+    [pl([[120, 450], [180, 420], [250, 398]]) + pl([[356, 398], [420, 420], [480, 450]]), 3, 0.6],
+    [pl([[236, 520], [364, 520]]) + pl([[236, 440], [246, 520]]) + pl([[364, 440], [354, 520]]), 2.4, 0.6],
+    [pl([[60, 648], [128, 638], [150, 672]]) + pl([[540, 648], [472, 638], [450, 672]]), 2.4, 0.6],
+  ],
+  front: ({ rim }) => {
+    let s = '';
+    // round cheek blush of the rim light, a crinkled smiling eye, a pencil tucked behind the kerchief
+    s += `<path d="M220,268q10,-8 22,-2" fill="none" stroke="${rim}" stroke-width="2.6" stroke-linecap="round" opacity=".85"/><path d="M226,286q10,4 18,0" fill="none" stroke="${rim}" stroke-width="1.6" opacity=".5"/>`;
+    s += `<path d="M390,190L436,150" stroke="#e0c890" stroke-width="5" stroke-linecap="round"/><path d="M436,150l6,-6" stroke="#3a2a20" stroke-width="5" stroke-linecap="round"/>`;
+    // the belt and the abacus hanging from it on a cord: wooden frame, rods, beads catching the light
+    s += `<path d="M150,664H450" stroke="#5a3e2a" stroke-width="10"/><path d="M188,664l-10,16M206,664l10,16" stroke="#c8a870" stroke-width="2"/>`;
+    s += `<path d="M150,680h96v60h-96z" fill="#5a3a24"/><path d="M158,688h80v44h-80z" fill="#1e1612"/><path d="M158,704h80" stroke="#5a3a24" stroke-width="4"/>`;
+    let beads = '';
+    for (let i = 0; i < 6; i++) { const x = 166 + i * 13; beads += `<path d="M${x},688v44" stroke="#8a6a44" stroke-width="1.5"/><ellipse cx="${x}" cy="696" rx="5" ry="3.4" fill="#d8a85a"/><ellipse cx="${x}" cy="${714 + (i % 3) * 5}" rx="5" ry="3.4" fill="#c89a50"/>`; }
+    s += beads;
+    s += `<path d="M150,680h96" stroke="${rim}" stroke-width="2" opacity=".7"/>`;
+    // a ledger tucked into the apron pocket
+    s += `<path d="M322,576h36v54h-36z" fill="#6a4a36"/><path d="M318,600h46v40h-46z" fill="#3a3036"/>`;
+    return s;
+  },
+};
+
+// 拾铁机 (07) — the scrap-picker: a barrel body on three spindly legs, one dragging; a single magnet arm; a small
+// glass porthole in its chest (the core chamber) with one blue-glowing lens behind it ("the blue eye"); an
+// emergency-stop ring sticking up from its back; an iron tag hung on a wire, the old number scratched out and a
+// new one cut beside it (marks only, never lettering). No face. Built like a lamp stand of junk, not a weapon.
+CAST.scrap_picker = {
+  id: 'scrap_picker', label: '拾铁机：三足桶身的废铁机器，一条磁臂，胸前小玻璃窗里一只发蓝光的镜片，背上的急停环，一条拖着的腿，挂着改了编号的铁牌', rim: '#6fa8c8',
+  sil: [
+    // the emergency-stop ring on its back, standing up behind the cap (right)
+    S([[388, 176], [404, 112, 1], [440, 86], [478, 96], [496, 132, 1], [484, 172], [466, 178], [476, 140, 1], [460, 116], [436, 116], [420, 140, 1], [418, 182]]),
+    // the cap: a riveted dome with a stub chimney
+    S([[176, 250], [190, 196], [236, 160], [300, 150], [364, 160], [410, 196], [424, 250]]),
+    S([[280, 152], [282, 118], [318, 118], [320, 152]]),
+    // the barrel body
+    S([[168, 246], [432, 246], [446, 300], [452, 420], [446, 540], [430, 600], [170, 600], [154, 540], [148, 420], [154, 300]]),
+    // the magnet arm from the left shoulder: upper pipe, elbow, forearm raised, the magnet disc
+    S([[176, 300], [120, 330], [86, 380], [70, 440], [96, 448], [112, 392], [140, 352], [184, 330]]),
+    S([[70, 440], [52, 380], [44, 320], [40, 270], [66, 266], [72, 318], [80, 376], [98, 436]]),
+    S([[20, 274, 1], [24, 230], [56, 214], [90, 228], [96, 270, 1], [72, 262], [58, 246], [42, 250], [36, 266]]),
+    // three legs: two planted, the third bent and dragging behind (right)
+    S([[206, 596, 1], [150, 700, 1], [130, 820, 1], [154, 820, 1], [170, 708, 1], [226, 600, 1]]),
+    S([[292, 600, 1], [296, 820, 1], [318, 820, 1], [314, 600, 1]]),
+    circle(160, 704, 16),
+    // the dragging leg: thigh down-back to a bent knee, the shin trailing behind, foot scraping
+    S([[392, 592, 1], [470, 690, 1], [490, 678, 1], [410, 586, 1]]),
+    S([[470, 690, 1], [576, 760, 1], [588, 744, 1], [490, 676, 1]]),
+    circle(480, 684, 17),
+    S([[566, 756, 1], [600, 772, 1], [600, 790, 1], [560, 770, 1]]),
+  ],
+  tones: [
+    [S([[168, 246], [432, 246], [446, 300], [452, 420], [446, 540], [430, 600], [170, 600], [154, 540], [148, 420], [154, 300]]), '#20283a', 0.75],
+    [S([[176, 250], [190, 196], [236, 160], [300, 150], [364, 160], [410, 196], [424, 250]]), '#2a3448', 0.8],
+    // mismatched patch plates riveted on the barrel
+    [S([[176, 470], [250, 462], [256, 560], [182, 566]]), '#2e3a50', 0.8],
+    [S([[360, 300], [430, 306], [436, 380], [366, 374]]), '#34404e', 0.8],
+  ],
+  lines: [
+    // hoops round the barrel
+    [`M154,300C220,316 380,316 446,300M150,420C220,436 380,436 452,420M154,540C220,556 380,556 446,540`, 3, 0.7],
+    // the cap seam and rivets row, the chimney rim
+    [`M176,250C230,264 370,264 424,250M190,196C240,186 360,186 410,196`, 2.2, 0.55],
+    // arm joints and legs catching the rim
+    [`M176,300L120,330L86,380L70,440M70,440L52,380L40,270`, 2.4, 0.65],
+    [`M226,600L170,708L154,820M314,600L318,820M410,586L490,678L588,744`, 2.2, 0.55],
+    // the e-stop ring's lit edge
+    [`M404,112C420,92 452,82 478,96`, 3, 0.8],
+  ],
+  defs: (p) => [`<radialGradient id="${p}-lens"><stop offset="0" stop-color="#e8f8ff"/><stop offset=".35" stop-color="#6fd0ff"/><stop offset="1" stop-color="#2a6aa8" stop-opacity="0"/></radialGradient>`],
+  front: ({ rim, p }) => {
+    let s = '';
+    // the chest porthole: a brass-rimmed round window, dark glass with a faint crack, the blue eye glowing behind it
+    s += `<circle cx="292" cy="404" r="62" fill="#0a0e16"/><circle cx="292" cy="404" r="62" fill="none" stroke="#7a6a4a" stroke-width="10"/><circle cx="292" cy="404" r="62" fill="none" stroke="#c8b07a" stroke-width="2" stroke-dasharray="30 360" stroke-dashoffset="-200" opacity=".8"/>`;
+    s += `<circle cx="292" cy="410" r="44" fill="url(#${p}-lens)" opacity=".85"/><circle cx="292" cy="410" r="13" fill="#bff0ff"/><circle cx="292" cy="410" r="6" fill="#ffffff"/>`;
+    s += `<path d="M252,372l26,18l14,-6" fill="none" stroke="#c8e4f0" stroke-width="1.6" opacity=".7"/><path d="M262,380a40,40 0 0 1 30,-16" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" opacity=".55"/>`;
+    // rivets on the hoops and patches
+    let rv = '';
+    for (const [x, y] of [[180, 306], [230, 312], [370, 312], [420, 306], [176, 426], [420, 428], [186, 546], [418, 546], [184, 478], [248, 470], [186, 556], [252, 552], [366, 306], [428, 312], [372, 368], [432, 374]]) rv += `<circle cx="${x}" cy="${y}" r="3.4"/>`;
+    s += `<g fill="#8a98a8" opacity=".8">${rv}</g>`;
+    // the magnet disc's pole faces, a few scraps of iron clinging to it
+    s += `<path d="M24,230C40,214 74,214 90,228" fill="none" stroke="#c8443a" stroke-width="6"/><path d="M28,266l-8,10M44,270l-2,12M90,266l8,8" stroke="#8a8a94" stroke-width="3"/>`;
+    // the iron tag on its wire: the old mark scratched through, a new mark cut beside it
+    s += `<path d="M214,600l8,40" stroke="#5a6070" stroke-width="2"/><path d="M196,640h56v40h-56z" fill="#4a505c"/><path d="M196,640h56" stroke="${rim}" stroke-width="2" opacity=".7"/>`;
+    // old tally of four notches, scratched through; the new tally of five cut beside it
+    s += `<path d="M203,650v22M209,650v22M215,650v22M221,650v22" stroke="#1e222a" stroke-width="2.6"/><path d="M199,670l26,-18" stroke="#c8ccd4" stroke-width="2.4"/>`;
+    s += `<path d="M229,650v22M234,650v22M239,650v22M244,650v22M226,668l22,-14" fill="none" stroke="#dce2ea" stroke-width="2"/>`;
+    // scrape marks along the dragged leg's foot
+    s += `<path d="M560,786l24,-4M548,776l20,-2" stroke="#8a98a8" stroke-width="2" opacity=".7"/><circle cx="160" cy="704" r="6" fill="#6a7888"/><circle cx="480" cy="684" r="6" fill="#6a7888"/>`;
+    return s;
+  },
+};
+
+// 伊涅丝 (09) — branch master of the 雾港 guild, 34: perched on the edge of her counter, leaning back on one hand,
+// a plain guild coat over a high-collared shirt, dark hair in a loose low tail over her shoulder, a string of small
+// silver bells at her waist with their clappers bound in cloth so they cannot ring. No national badge; not sexualised.
+const INES_HAIR = S([[226, 196], [234, 152], [272, 126], [328, 122], [378, 142], [404, 182], [408, 226], [398, 262], [390, 300], [378, 250], [344, 214], [300, 202], [262, 204], [240, 220]]);
+CAST.ines = {
+  id: 'ines', label: '伊涅丝：三十四岁的雾港分会长，侧坐在柜台边，简便的公会外套，低束的深色长发搭在肩前，腰上一串铃舌缠着布的银铃', rim: '#9fb2c8',
+  sil: [
+    head(0, 4, 0.97, true),
+    INES_HAIR,
+    // the low tail brought forward over the near shoulder
+    S([[388, 262], [412, 300], [416, 360], [404, 430], [384, 500], [366, 520], [372, 470], [380, 410], [376, 340], [366, 296]]),
+    neck(0, 4, 0.92),
+    // relaxed shoulders, leaning back on the far hand: the far shoulder lifted, the near arm resting in the lap
+    S([[262, 392], [200, 410], [142, 436], [104, 476], [86, 540], [78, 640], [74, 820], [520, 820], [522, 700], [530, 600], [540, 520], [536, 450], [506, 400], [456, 380], [400, 376], [350, 374]]),
+    // the far arm braced straight down behind her on the counter's edge
+    S([[506, 404], [548, 430], [566, 520], [574, 640], [584, 730], [560, 736], [540, 640], [528, 540]]),
+    // the counter's edge she sits on, along the bottom
+    S([[0, 744, 1], [600, 734, 1], [600, 820, 1], [0, 820, 1]]),
+  ],
+  tones: [
+    [INES_HAIR, '#262a36', 0.9],
+    [S([[388, 262], [412, 300], [416, 360], [404, 430], [384, 500], [366, 520], [372, 470], [380, 410], [376, 340], [366, 296]]), '#262a36', 0.9],
+    // the guild coat (open), the shirt's high collar between its lapels
+    [S([[200, 410], [142, 436], [104, 476], [86, 540], [78, 640], [74, 820], [260, 820], [262, 600], [252, 470], [262, 410]]) + S([[350, 396], [400, 376], [456, 380], [506, 400], [536, 450], [540, 520], [530, 600], [522, 700], [520, 820], [340, 820], [346, 600], [340, 470]]), '#283040', 0.92],
+    [S([[506, 404], [548, 430], [566, 520], [574, 640], [584, 730], [560, 736], [540, 640], [528, 540]]), '#222a38', 0.9],
+    [S([[0, 744], [600, 734], [600, 820], [0, 820]]), '#3a3430', 0.95],
+    [S([[262, 400], [300, 420], [346, 396], [340, 470], [346, 600], [340, 820], [262, 820], [262, 600], [252, 470]]), '#3a4252', 0.9],
+    [S([[264, 392], [300, 408], [344, 390], [340, 422], [300, 436], [266, 420]]), '#48526a', 0.9],
+  ],
+  lines: [
+    [pl([[386, 258], [366, 308], [324, 352]]), 3.4, 0.85],
+    [pl([[272, 134], [330, 130], [378, 150]]) + pl([[258, 168], [316, 156], [372, 180]]), 2.2, 0.55],
+    // the tail's strands
+    [`M396,280C410,320 412,380 398,440M386,290C396,330 396,390 382,470`, 1.8, 0.6],
+    // lapels and coat edges, the belt
+    [pl([[262, 410], [252, 470], [262, 600], [260, 800]]) + pl([[340, 400], [340, 470], [346, 600], [342, 800]]), 2.4, 0.6],
+    [pl([[104, 476], [142, 436], [200, 410]]) + pl([[456, 380], [506, 400], [548, 430], [566, 520], [574, 640], [584, 730]]), 3, 0.6],
+    [`M80,640C200,652 400,652 524,640`, 4, 0.55],
+    [`M0,744L600,734`, 3, 0.7],
+  ],
+  front: ({ rim }) => {
+    let s = '';
+    // a level, measuring eye; a small silver earring
+    s += `<path d="M222,258q12,-6 24,-2" fill="none" stroke="${rim}" stroke-width="2.4" stroke-linecap="round" opacity=".85"/><path d="M226,264h16" stroke="${rim}" stroke-width="1.4" opacity=".5"/><circle cx="356" cy="292" r="4" fill="#dce4ee"/>`;
+    // the shirt collar's two plain buttons; the coat's plain toggles
+    s += `<g fill="#c8d0dc"><circle cx="302" cy="430" r="3.4"/><circle cx="304" cy="470" r="3.4"/></g><path d="M256,500h12M256,560h12M336,500h12M336,560h12" stroke="#8a96a8" stroke-width="4" stroke-linecap="round"/>`;
+    // the string of silver bells at her waist: small bells on a cord, each clapper bound in a strip of cloth
+    let bells = '';
+    for (const [i, x] of [140, 172, 204, 236].entries()) {
+      const y = 652 + (i % 2) * 10;
+      bells += `<path d="M${x},${y}v14" stroke="#9aa6b8" stroke-width="2"/><path d="M${x - 11},${y + 38}q0,-24 11,-24q11,0 11,24z" fill="#cdd6e2"/><path d="M${x - 11},${y + 38}h22" stroke="#7a8698" stroke-width="2"/>`;
+      bells += `<path d="M${x - 4},${y + 38}h8v8h-8z" fill="#e8dcc4"/><path d="M${x + 4},${y + 40}q8,4 6,12" fill="none" stroke="#e8dcc4" stroke-width="2.4"/>`;
+      bells += `<path d="M${x - 8},${y + 30}q2,-12 8,-14" fill="none" stroke="#ffffff" stroke-width="1.6" opacity=".7"/>`;
+    }
+    s += `<path d="M120,652q60,16 140,0" fill="none" stroke="#9aa6b8" stroke-width="2.4"/>` + bells;
+    // her far hand flat on the counter edge
+    s += `<path d="M556,724q14,-6 30,2l4,12h-36z" fill="#2a3040"/><path d="M556,724q14,-6 30,2" fill="none" stroke="${rim}" stroke-width="2" opacity=".7"/>`;
+    return s;
+  },
+};
+
 export const npcBusts = Object.fromEntries(Object.entries(CAST).map(([id, spec]) => [id, (rim) => render(spec, rim)]));

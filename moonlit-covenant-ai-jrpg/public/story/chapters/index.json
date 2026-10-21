@@ -52,5 +52,32 @@
     "file": "/story/chapters/ch005.json",
     "requires": "ch004",
     "source": "剧本/05大車之夜.md"
+  },
+  {
+    "id": "ch006",
+    "number": 6,
+    "title": "第六章｜草莓蛋糕停战",
+    "estimatedMinutes": 11,
+    "file": "/story/chapters/ch006.json",
+    "requires": "ch005",
+    "source": "剧本/06草莓蛋糕停戰.md"
+  },
+  {
+    "id": "ch007",
+    "number": 7,
+    "title": "第七章｜爆炸来自林边",
+    "estimatedMinutes": 11,
+    "file": "/story/chapters/ch007.json",
+    "requires": "ch006",
+    "source": "剧本/07爆炸來自林邊.md"
+  },
+  {
+    "id": "ch008",
+    "number": 8,
+    "title": "第八章｜金律只有一毫米",
+    "estimatedMinutes": 11,
+    "file": "/story/chapters/ch008.json",
+    "requires": "ch007",
+    "source": "剧本/08金律只有一毫米.md"
   }
 ]

@@ -133,5 +133,65 @@
     "name": "治安所带队",
     "color": "#8fa3b8",
     "art": null
+  },
+  "marsh_ogre": {
+    "name": "沼地食人魔",
+    "color": "#8a7a56",
+    "art": "/assets/story/npc/marsh_ogre.svg"
+  },
+  "caravan_leader": {
+    "name": "领队",
+    "color": "#d4a46a",
+    "art": "/assets/story/npc/caravan_leader.svg"
+  },
+  "mule_driver": {
+    "name": "赶骡的",
+    "color": "#a8977c",
+    "art": null
+  },
+  "innkeeper": {
+    "name": "旅店老板",
+    "color": "#b39878",
+    "art": null
+  },
+  "mia": {
+    "name": "米娅",
+    "color": "#3fd0e0",
+    "art": "/assets/story/npc/mia.svg"
+  },
+  "mia_unknown": {
+    "name": "青发少女",
+    "color": "#3fd0e0",
+    "art": "/assets/story/npc/mia.svg"
+  },
+  "scrap_picker": {
+    "name": "拾铁机",
+    "color": "#6fa8c8",
+    "art": "/assets/story/npc/scrap_picker.svg"
+  },
+  "ines": {
+    "name": "伊涅丝",
+    "color": "#9fb2c8",
+    "art": "/assets/story/npc/ines.svg"
+  },
+  "ines_unknown": {
+    "name": "分会长",
+    "color": "#9fb2c8",
+    "art": "/assets/story/npc/ines.svg"
+  },
+  "crystal_picker": {
+    "name": "捡晶人",
+    "color": "#98aab0",
+    "art": null
+  },
+  "bath_keeper": {
+    "name": "烧水的老妇",
+    "color": "#bfa08e",
+    "art": null
+  },
+  "dock_worker": {
+    "name": "码头工人",
+    "color": "#8798a0",
+    "art": null
   }
 }
