@@ -61,10 +61,24 @@ test('the canon spellings are actually in use (the guard is not vacuous)', () =>
   assert.ok(s.includes('米娅·玲'), 'game/content.mjs should use 米娅·玲');
 });
 
+// 主线第十章（总纲010，对照表§六硬锚点）第一次点名「蚀宴会」，从 ch010 起的主线章节可以出现；更早的章节和其他玩家可见文件仍然不行
+const MAIN_LINE_FROM_CH010 = /^public\/story\/chapters\/ch(\d{3})\.json$/;
+const namesEclipseFeastLegally = (f) => Number((rel(f).match(MAIN_LINE_FROM_CH010) || [])[1] ?? -1) >= 10;
+
 test('side-story spoilers 蚀宴会 / 第27章 stay out of every player-facing file', () => {
   const files = textFiles('public', 'game', 'cards', 'scenario');
   assert.ok(files.some((f) => rel(f) === 'public/character-manager.js'));
-  assert.deepEqual(hits(files, ['蚀宴会', '第27章']), []);
+  assert.deepEqual(hits(files.filter((f) => !namesEclipseFeastLegally(f)), ['蚀宴会', '第27章']), []);
+  assert.deepEqual(hits(files.filter(namesEclipseFeastLegally), ['第27章']), []);
+});
+
+test('the main line names 蚀宴会 first in ch010 (hard anchor), never earlier', () => {
+  const chapters = path.join(root, 'public/story/chapters');
+  const ch010 = path.join(chapters, 'ch010.json');
+  if (!fs.existsSync(ch010)) return;
+  assert.ok(fs.readFileSync(ch010, 'utf8').includes('蚀宴会'), 'ch010 should name 蚀宴会');
+  const earlier = fs.readdirSync(chapters).filter((n) => /^ch00\d\.json$/.test(n)).map((n) => path.join(chapters, n));
+  assert.deepEqual(hits(earlier, ['蚀宴会']), []);
 });
 
 test('admin key: the string 123456 appears nowhere under public/ (text and binary files)', () => {

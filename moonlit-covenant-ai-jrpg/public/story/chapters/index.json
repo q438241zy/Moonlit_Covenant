@@ -88,5 +88,14 @@
     "file": "/story/chapters/ch009.json",
     "requires": "ch008",
     "source": "剧本/09霧港失蹤者.md"
+  },
+  {
+    "id": "ch010",
+    "number": 10,
+    "title": "第十章｜下水道的潮声",
+    "estimatedMinutes": 11,
+    "file": "/story/chapters/ch010.json",
+    "requires": "ch009",
+    "source": "剧本/10下水道的潮聲.md"
   }
 ]
