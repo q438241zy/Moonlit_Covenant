@@ -163,14 +163,14 @@ const CONSUMABLES = [
 
 // ===== 服装池（16件）=====
 // art：对应 /assets/costumes/<角色>_<art>.svg；名称与图标都由 art 决定，
-// 命名与正式游戏 game/gacha.mjs 的 COSTUME_POOL 一致（「莉亚·新年服」这类写法），保证名称与画面一一对应。
+// 命名与正式游戏 game/gacha.mjs 的服装目录（COSTUME_CATALOG）一致（「莉亚·新历祭服」这类写法），保证名称与画面一一对应。
 // id 保持旧值，已有的本地存档（ownedCostumes）继续有效。
 const COSTUME_ART = {
-  newyear: { label: '新年服', icon: 'newyear' },
+  newyear: { label: '新历祭服', icon: 'newyear' },
   maid: { label: '女仆服', icon: 'maid' },
-  christmas: { label: '圣诞服', icon: 'christmas' },
-  duanwu: { label: '端午服', icon: 'duanwu' },
-  anniversary: { label: '周年庆服', icon: 'anniversary' },
+  christmas: { label: '冬灯节服', icon: 'christmas' },
+  duanwu: { label: '龙舟祭服', icon: 'duanwu' },
+  anniversary: { label: '纪念日礼服', icon: 'anniversary' },
   swimsuit: { label: '夏日度假服', icon: 'summer' },
 };
 const SHORT_NAME = Object.fromEntries(CHARACTERS.map((c) => [c.id, c.name.split('·')[0]]));

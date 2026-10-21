@@ -933,19 +933,6 @@ function bindGachaEvents() {
       loadGachaPool();
     });
   });
-  document.querySelectorAll('[data-currency]').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      gachaCurrency = btn.dataset.currency === 'diamonds' ? 'diamonds' : 'credit';
-      store.set(GACHA_CURRENCY_KEY, gachaCurrency);
-      document.querySelectorAll('[data-currency]').forEach((b) => {
-        const on = b.dataset.currency === gachaCurrency;
-        b.classList.toggle('active', on);
-        b.setAttribute('aria-checked', String(on));
-      });
-      updateGachaButtons();
-      beep('click');
-    });
-  });
   document.querySelector('#gachaSingle')?.addEventListener('click', () => doGachaPull(1));
   document.querySelector('#gachaTen')?.addEventListener('click', () => doGachaPull(10));
   document.querySelector('#gachaRatesJump')?.addEventListener('click', () => {
@@ -1619,11 +1606,10 @@ let shopContext = { pools: null, cardsMeta: null, index: [] };
 
 async function loadShopContext() {
   const [pools, cardsMeta, index] = await Promise.all([
-    gachaPoolsCache ? Promise.resolve(gachaPoolsCache) : apiGet('/api/gacha/pools').catch(() => null),
+    cachedGachaPools().catch(() => null),
     shopContext.cardsMeta ? Promise.resolve(shopContext.cardsMeta) : apiGet('/api/cards/meta').catch(() => null),
     loadMainlineIndex()
   ]);
-  if (pools) gachaPoolsCache = pools;
   shopContext = { pools, cardsMeta, index };
   refreshRewardWidgets();
 }
@@ -1663,8 +1649,9 @@ function rewardsPanelHtml() {
   const joins = s?.heroineJoins || pools?.heroineJoins || {};
   const joined = new Set(s?.heroinesJoined || []);
   const released = new Set(index.map((ch) => ch.id));
+  // 还没登场的女主（封存卡）只写「？？？ · 第N章登场」，不写名字（登场闸门，核#14）
   const joinRows = characters.filter((c) => joins[c.id] && (released.has(joins[c.id]) || joined.has(c.id)))
-    .map((c) => `<li class="${joined.has(c.id) ? 'done' : ''}">${joined.has(c.id) ? icon('check', { size: 12 }) : icon('lock', { size: 12 })}${escapeHtml(c.name.split('·')[0])} · 通关${escapeHtml(mainlineChapterLabel(joins[c.id], index))}入队${joined.has(c.id) ? ' · 已加入' : ''}</li>`).join('');
+    .map((c) => `<li class="${joined.has(c.id) ? 'done' : ''}">${joined.has(c.id) ? icon('check', { size: 12 }) : icon('lock', { size: 12 })}${escapeHtml(c.sealed ? `${SEALED_NAME} · ${debutText(c, index)}` : c.name.split('·')[0])} · 通关${escapeHtml(mainlineChapterLabel(joins[c.id], index))}入队${joined.has(c.id) ? ' · 已加入' : ''}</li>`).join('');
   const futureJoins = characters.filter((c) => joins[c.id] && !released.has(joins[c.id]) && !joined.has(c.id)).length;
 
   const winCap = num(s?.cardWinCap ?? rules.cardWin?.dailyCap);
@@ -1701,7 +1688,7 @@ function rewardsPanelHtml() {
     <article class="reward-card reward-uses">
       <header><span class="reward-icon">${icon('diamond', { size: 20 })}</span><h3>钻石用途</h3><span class="reward-amount">${diamondBalance() ?? '—'}</span></header>
       <ul class="reward-list plain">
-        <li>${icon('sparkle', { size: 12 })}召唤：单抽 ${costs?.single ?? '—'} · 十连 ${costs?.ten ?? '—'}（也可以用 Credit）</li>
+        <li>${icon('sparkle', { size: 12 })}召唤：单抽 ${costs?.single ?? '—'} · 十连 ${costs?.ten ?? '—'}（召唤只收钻石）</li>
         <li>${icon('pack', { size: 12 })}卡牌开包：单包 ${pack?.costSingle ?? '—'} · 十连 ${pack?.costTen ?? '—'}</li>
         <li>${icon('refresh', { size: 12 })}召唤重复补偿：${dupText}</li>
       </ul>
@@ -1824,29 +1811,26 @@ async function purchaseDiamondPack(packId) {
 }
 
 /* ═══ 抽卡页面 ═══ */
-// 召唤可以用 Credit 或钻石支付（/api/gacha/pull 的 currency）；选择记在本机
-const GACHA_CURRENCY_KEY = 'moonlit:gachaCurrency';
-const CURRENCY_LABEL = { credit: 'Credit', diamonds: '钻石' };
-let gachaCurrency = store.get(GACHA_CURRENCY_KEY) === 'diamonds' ? 'diamonds' : 'credit';
+// 召唤只收钻石（核#14，提案第八节#44）：Credit 只用于 AI 对话；价格以 /api/gacha/pools 的 costs.diamonds 为准
+const GACHA_FALLBACK_COSTS = { single: 80, ten: 720 };
+// 封存卡统一的名字（与服务器 game/gacha.mjs 的 SEALED_TEXT 相同）
+const SEALED_NAME = '？？？';
 
 function gachaCostText(count) {
-  const costs = gachaPoolsCache?.costs?.[gachaCurrency];
-  const fallback = gachaCurrency === 'diamonds' ? { single: 80, ten: 720 } : { single: 10, ten: 90 };
-  const value = (costs || fallback)[count === 10 ? 'ten' : 'single'];
-  return `${count === 10 ? '十连' : '单抽'} · ${value} ${CURRENCY_LABEL[gachaCurrency]}`;
+  const costs = gachaPoolsCache?.costs?.diamonds || GACHA_FALLBACK_COSTS;
+  return `${count === 10 ? '十连' : '单抽'} · ${costs[count === 10 ? 'ten' : 'single']} 钻石`;
 }
 
 function gachaWalletHtml() {
-  const credits = creditMeter?.balance ?? playerAccount?.credits;
   const diamonds = diamondBalance();
-  return `<span>${icon('credit', { size: 15 })}Credit ${credits ?? '—'}</span><span>${icon('diamond', { size: 15 })}钻石 ${diamonds ?? '—'}</span>`;
+  return `<span>${icon('diamond', { size: 15 })}钻石 ${diamonds ?? '—'}</span>`;
 }
 
 function gachaPage() {
   return `${navBar()}
     <main class="page-content">
       <div class="page-header"><div class="eyebrow">SUMMON · 星轨召唤</div><h1>召唤系统</h1>
-        <p class="muted">角色池：8 位女主 · 服饰池：6 套主题服饰 × 8 位女主 · 第 90 抽必出 5★。女主在主线正式入队时会自动加入；重复抽到的会折成钻石。</p>
+        <p class="muted">角色池：8 位女主 · 服饰池：常驻服饰 × 8 位女主（四类节庆服装已转为典藏，不在池中）· 第 90 抽必出 5★。召唤只收钻石。还没在主线登场的女主和她的服装显示为剪影，通关她登场的那一章后揭晓；女主在主线正式入队时会自动加入，重复抽到的会折成钻石。</p>
       </div>
       <div class="gacha-tabs">
         <button class="gacha-tab ${currentGachaPool === 'character' ? 'active' : ''}" data-pool="character">角色池</button>
@@ -1854,9 +1838,6 @@ function gachaPage() {
       </div>
       <section class="gacha-pool" id="gachaPool"><div class="loader">加载中…</div></section>
       <div class="gacha-pay">
-        <div class="pay-toggle" role="radiogroup" aria-label="支付方式">
-          ${Object.entries(CURRENCY_LABEL).map(([id, label]) => `<button type="button" role="radio" class="pay-option ${gachaCurrency === id ? 'active' : ''}" data-currency="${id}" aria-checked="${gachaCurrency === id}">${icon(id === 'diamonds' ? 'diamond' : 'credit', { size: 15 })}${label}</button>`).join('')}
-        </div>
         <div class="gacha-wallet" id="gachaWallet">${gachaWalletHtml()}</div>
       </div>
       <section class="gacha-actions">
@@ -1907,14 +1888,14 @@ function gachaRatesHtml(poolId, data) {
   const pity = Number(data.pity) || 90;
   return `
     <h2 class="section-title" id="gachaRatesTitle">概率公示 · ${isCostume ? '服饰池' : '角色池'}</h2>
-    <p class="muted gacha-rates-note">以下为每次召唤的基础概率，同一稀有度内各条目概率相同。保底：本池连续 ${pity - 1} 次未出 5★ 时，第 ${pity} 次必出 5★（出 5★ 后计数重置）。概率按四舍五入显示。</p>
+    <p class="muted gacha-rates-note">以下为每次召唤的基础概率，同一稀有度内各条目概率相同。保底：本池连续 ${pity - 1} 次未出 5★ 时，第 ${pity} 次必出 5★（出 5★ 后计数重置）。概率按四舍五入显示。尚未登场的女主（及她的服装）同样在池中，名称以「？？？」显示。</p>
     <div class="rates-table" role="table" aria-label="${isCostume ? '服饰池' : '角色池'}概率">
       <div class="rates-row rates-head" role="row"><span role="columnheader">稀有度</span><span role="columnheader">合计</span><span role="columnheader">单个条目</span><span role="columnheader">条目</span></div>
       ${rows.map((row) => `<div class="rates-row rarity-${row.rarity}" role="row">
         <span role="cell" class="rates-rarity">${starsHtml(row.rarity, 5)}<b>${row.rarity}★</b></span>
         <span role="cell" class="rates-total">${formatRate(row.total)}</span>
         <span role="cell" class="rates-each">${formatRate(row.each)} <small>× ${row.items.length}</small></span>
-        <span role="cell" class="rates-items">${row.items.map((item) => `<span>${escapeHtml(item.name || item.id)}</span>`).join('')}</span>
+        <span role="cell" class="rates-items">${row.items.map((item) => `<span${item.sealed ? ` title="${escapeHtml(item.debutLabel || '尚未登场')}"` : ''}>${escapeHtml(item.name || item.id)}</span>`).join('')}</span>
       </div>`).join('')}
     </div>
     ${duplicateNoteHtml(data)}`;
@@ -1938,7 +1919,33 @@ function costumeTypeOf(item) {
 
 let gachaPoolsCache = null;
 
-// 召唤按钮上的价格随支付方式变化；钱包显示两种余额
+/* 卡池的对外视图跟着玩家的主线进度走（登场闸门，核#14 提案第八节#43）：带上 playerId，服务器才按本账户
+   已首通的章节揭开女主；缓存只给同一个账户用（没有账户时是零进度：所有人都是剪影）。 */
+async function fetchGachaPools() {
+  const forPlayer = playerId || null;
+  const data = await apiGet(`/api/gacha/pools${forPlayer ? `?playerId=${encodeURIComponent(forPlayer)}` : ''}`);
+  gachaPoolsCache = { ...data, forPlayer };
+  return gachaPoolsCache;
+}
+
+function cachedGachaPools() {
+  return gachaPoolsCache && gachaPoolsCache.forPlayer === (playerId || null) ? Promise.resolve(gachaPoolsCache) : fetchGachaPools();
+}
+
+/* 封存卡：还没登场的女主（和她的服装）只给剪影与「第N章登场」——不加载立绘，名字写成「？？？」。
+   剪影是纯 CSS 画的通用人形（styles.css 的 .is-silhouette），不带任何角色特征。 */
+function silhouetteThumb(cls, label = '尚未登场') {
+  return `<span class="face-crop ${cls} is-silhouette" role="img" aria-label="${escapeHtml(label)}"><span class="silhouette-figure" aria-hidden="true"></span><span class="silhouette-mark" aria-hidden="true">?</span></span>`;
+}
+
+// 「第四章登场」：章节已上线时用目录里的章名，否则用服务器给的「第13章登场」
+function debutText(item, index = []) {
+  const chapterId = item?.unlockChapter;
+  if (chapterId && index.some((ch) => ch.id === chapterId)) return `${mainlineChapterLabel(chapterId, index)}登场`;
+  return item?.debutLabel || '尚未登场';
+}
+
+// 召唤按钮上的价格与钱包（只有钻石）
 function updateGachaButtons() {
   const single = document.querySelector('#gachaSingle');
   const ten = document.querySelector('#gachaTen');
@@ -1948,9 +1955,10 @@ function updateGachaButtons() {
   if (wallet) wallet.innerHTML = gachaWalletHtml();
 }
 
-// 角色卡片下方的获得方式：已拥有 / 主线某章入队自动获得（章节已上线时写出章节）/ 召唤获得
+// 角色卡片下方的获得方式：未登场 / 已拥有 / 主线某章入队自动获得（章节已上线时写出章节）/ 召唤获得
 function heroineSourceHtml(c, data, index) {
   const owned = (playerAccount?.ownedCharacters || []).includes(c.id);
+  if (c.sealed) return `<div class="gacha-free is-sealed">${icon('lock', { size: 12 })}${escapeHtml(debutText(c, index))}${owned ? ' · 已收入收藏' : ''}</div>`;
   if (owned) return `<div class="gacha-free is-owned">${icon('check', { size: 12 })}已拥有 · 重复折钻石</div>`;
   const joinChapter = data.heroineJoins?.[c.id] || c.joinChapter;
   if (joinChapter && index.some((ch) => ch.id === joinChapter)) {
@@ -1961,8 +1969,7 @@ function heroineSourceHtml(c, data, index) {
 
 async function loadGachaPool() {
   try {
-    const [data, index] = await Promise.all([apiGet('/api/gacha/pools'), loadMainlineIndex()]);
-    gachaPoolsCache = data;
+    const [data, index] = await Promise.all([fetchGachaPools(), loadMainlineIndex()]);
     updateGachaButtons();
     const pool = document.querySelector('#gachaPool');
     if (!pool) return;
@@ -1970,24 +1977,31 @@ async function loadGachaPool() {
     if (ratesBox) ratesBox.innerHTML = gachaRatesHtml(currentGachaPool, data);
     if (currentGachaPool === 'character') {
       pool.innerHTML = `<div class="gacha-grid">${data.characters.map((c) => `
-        <div class="gacha-char-card rarity-${c.rarity}">
-          ${faceThumb(c.portrait || ART.portrait(c.id), { cls: 'gacha-char-avatar', alt: c.name })}
+        <div class="gacha-char-card rarity-${c.rarity}${c.sealed ? ' is-sealed' : ''}">
+          ${c.sealed
+            ? silhouetteThumb('gacha-char-avatar', `尚未登场的女主 · ${debutText(c, index)}`)
+            : faceThumb(c.portrait || ART.portrait(c.id), { cls: 'gacha-char-avatar', alt: c.name })}
           <div class="gacha-char-name">${escapeHtml(c.name)}</div>
-          <div class="gacha-char-title">${escapeHtml(c.title)} · ${escapeHtml(c.element || '')}</div>
+          <div class="gacha-char-title">${c.sealed ? '尚未登场' : `${escapeHtml(c.title)} · ${escapeHtml(c.element || '')}`}</div>
           <div class="gacha-stars">${starsHtml(c.rarity, 5)}</div>
           ${heroineSourceHtml(c, data, index)}
         </div>`).join('')}</div>`;
     } else {
-      const shortNames = Object.fromEntries(data.characters.map((c) => [c.id, c.name.split('·')[0]]));
+      const characters = Object.fromEntries(data.characters.map((c) => [c.id, c]));
       const types = [...new Set(data.costumes.map(costumeTypeOf))];
       pool.innerHTML = types.map((type) => {
         const items = data.costumes.filter((c) => costumeTypeOf(c) === type);
         const typeLabel = items[0]?.name?.split('·')[1] || type;
         return `<div class="costume-type-group"><h3>${icon(COSTUME_TYPE_META[type]?.icon || 'dress', { size: 18 })}${escapeHtml(typeLabel)}<span class="gacha-stars">${starsHtml(items[0]?.rarity || 3)}</span></h3>
-          <div class="gacha-grid small">${items.map((c) => `
+          <div class="gacha-grid small">${items.map((c) => c.sealed ? `
+            <div class="gacha-costume-card rarity-${c.rarity} is-sealed" title="${escapeHtml(`${c.name}（${debutText(c, index)}）`)}">
+              ${silhouetteThumb('costume-thumb', `${c.name} · ${debutText(c, index)}`)}
+              <div class="gacha-char-name">${escapeHtml(SEALED_NAME)}</div>
+              <div class="gacha-char-title">${escapeHtml(debutText(c, index))}</div>
+            </div>` : `
             <div class="gacha-costume-card rarity-${c.rarity}" title="${escapeHtml(c.description || c.name)}">
               ${faceThumb(c.file || ART.costume(c.characterId, type), { cls: 'costume-thumb', alt: c.name, fallback: ART.portrait(c.characterId), lazy: true })}
-              <div class="gacha-char-name">${escapeHtml(shortNames[c.characterId] || c.characterId)}</div>
+              <div class="gacha-char-name">${escapeHtml(String(characters[c.characterId]?.name || c.characterId).split('·')[0])}</div>
               <div class="gacha-char-title">${escapeHtml(typeLabel)}</div>
             </div>`).join('')}</div></div>`;
       }).join('');
@@ -2011,8 +2025,8 @@ async function doGachaPull(count) {
   gachaPulling = true;
   try {
     await ensureAccount();
-    const r = await apiPost('/api/gacha/pull', { playerId, pool: currentGachaPool, count, currency: gachaCurrency });
-    await reloadAccount();
+    const r = await apiPost('/api/gacha/pull', { playerId, pool: currentGachaPool, count });
+    const [chapters] = await Promise.all([loadMainlineIndex(), reloadAccount()]);
     if (rewardStatus && Number.isFinite(r.balance?.diamonds)) rewardStatus.diamonds = r.balance.diamonds;
     const ownedCharacters = new Set(playerAccount?.ownedCharacters || []);
     const resultEl = document.querySelector('#gachaResult');
@@ -2022,24 +2036,26 @@ async function doGachaPull(count) {
         const rarity = item.rarity || 3;
         const isCostume = Boolean(item.characterId);
         const src = isCostume ? (item.file || ART.costume(item.characterId, costumeTypeOf(item))) : (item.portrait || ART.portrait(item.id));
-        const needsCharacter = isCostume && !ownedCharacters.has(item.characterId);
+        const needsCharacter = isCostume && !item.sealed && !ownedCharacters.has(item.characterId);
         return `
-        <div class="gacha-result-card rarity-${rarity}" style="--delay:${index * 70}ms">
+        <div class="gacha-result-card rarity-${rarity}${item.sealed ? ' is-sealed' : ''}" style="--delay:${index * 70}ms">
           <span class="result-rarity">${GACHA_RARITY_LABEL[rarity] || 'R'}</span>
           ${item.isNew === true ? '<span class="result-new">NEW</span>' : ''}
-          ${faceThumb(src, { cls: 'result-thumb', alt: item.name || item.id, fallback: ART.portrait(isCostume ? item.characterId : item.id) })}
+          ${item.sealed
+            ? silhouetteThumb('result-thumb', `${item.name || SEALED_NAME} · ${debutText(item, chapters)}`)
+            : faceThumb(src, { cls: 'result-thumb', alt: item.name || item.id, fallback: ART.portrait(isCostume ? item.characterId : item.id) })}
           <div class="result-name">${escapeHtml(item.name || item.id)}</div>
           <div class="gacha-stars">${starsHtml(rarity)}</div>
           ${item.duplicate ? `<div class="result-dup">${icon('diamond', { size: 11 })}重复 · +${Number(item.compensation) || 0} 钻石</div>` : ''}
+          ${item.sealed ? `<div class="result-note">${icon('lock', { size: 11 })}${escapeHtml(debutText(item, chapters))}</div>` : ''}
           ${needsCharacter ? `<div class="result-note">${icon('lock', { size: 11 })}需先拥有角色</div>` : ''}
         </div>`;
       }).join('')}</div>
-        <p class="muted">消耗 ${r.cost} ${CURRENCY_LABEL[r.currency] || 'Credit'}${r.compensation?.diamonds ? ` · 重复补偿 +${r.compensation.diamonds} 钻石` : ''} · 保底计数 ${r.pity || 0}/${Number(gachaPoolsCache?.pity) || 90}${r.results.some((item) => item.characterId && !ownedCharacters.has(item.characterId)) ? ' · 未拥有角色的服装已收入换衣间「待解锁角色」' : ''}</p>`;
+        <p class="muted">消耗 ${r.cost} 钻石${r.compensation?.diamonds ? ` · 重复补偿 +${r.compensation.diamonds} 钻石` : ''} · 保底计数 ${r.pity || 0}/${Number(gachaPoolsCache?.pity) || 90}${r.results.some((item) => item.characterId && !ownedCharacters.has(item.characterId)) ? ' · 未拥有角色的服装已收入换衣间「待解锁角色」' : ''}${r.results.some((item) => item.sealed) ? ' · 尚未登场的女主已收入收藏，通关她登场的那一章后揭晓' : ''}</p>`;
       // 结果区在卡池和按钮下方，桌面/手机都在首屏以外：滚到结果，避免「点了没反应」
       resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
       beep(r.results.some((i) => (i.rarity || 3) >= 5) ? 'win' : 'skill');
     }
-    await refreshCredit();
     refreshRewardWidgets();
     updateGachaButtons();
     // 角色卡片上的「已拥有」随这次召唤更新（只重绘卡池，不动结果区）
@@ -2057,7 +2073,7 @@ function costumePage() {
   return `${navBar()}
     <main class="page-content">
       <div class="page-header"><div class="eyebrow">WARDROBE · 换衣间</div><h1>服饰更换</h1>
-        <p class="muted">为已拥有的女主更换皮肤（主线入队或召唤获得）。服装通过「召唤 · 服饰池」获取；抽到了服装但还没有该角色时，服装会先收进「待解锁角色」。服饰分支剧情 · 敬请期待。</p>
+        <p class="muted">为已拥有的女主更换皮肤（主线入队或召唤获得）。服装通过「召唤 · 服饰池」获取；抽到了服装但还没有该角色时，服装会先收进「待解锁角色」；还没在主线登场的女主先收在「尚未登场」里，以剪影显示。「典藏」是已退出常驻服饰池的节庆服装：已经拥有的照样能穿，对应番外上线时会限时复刻。服装对应的番外 · 敬请期待。</p>
       </div>
       <section class="costume-section" id="costumeSection"><div class="loader">加载中…</div></section>
     </main>`;
@@ -2072,8 +2088,21 @@ function costumeTypeOfId(costumeId) {
   return String(costumeId).split('_').pop();
 }
 
+/* 典藏（决定#31）：退出常驻抽取表的服装类型——已经拥有的照样能穿，对应番外上线时限时复刻。
+   /api/costume 的 types 是完整目录，costumePool 是常驻服饰池（抽得到的条目，按登场闸门给视图，sealed 的也带 type）：
+   在 types 里、却不在常驻池里的类型就是典藏。服务器没给常驻池时不分组。 */
+function archiveCostumeTypes(types, costumePool) {
+  const standing = new Set((costumePool || []).filter((c) => c.status !== 'archive').map(costumeTypeOf));
+  if (!standing.size) return new Set();
+  return new Set(Object.keys(types).filter((type) => !standing.has(type)));
+}
+
+function archiveTagHtml(type, archived) {
+  return archived.has(type) ? '<span class="costume-archive-tag">典藏</span>' : '';
+}
+
 // 「待解锁角色」：已经抽到服装、但还没有这名角色（不能穿戴，只展示）
-function pendingCostumesHtml(pendingByChar, charInfoMap, types) {
+function pendingCostumesHtml(pendingByChar, charInfoMap, types, archived) {
   if (!pendingByChar.size) return '';
   return `<section class="costume-pending" aria-labelledby="pendingCostumesTitle">
     <h2 class="section-title" id="pendingCostumesTitle">待解锁角色</h2>
@@ -2091,9 +2120,38 @@ function pendingCostumesHtml(pendingByChar, charInfoMap, types) {
           const label = types[type] || type;
           return `<div class="pending-costume" title="${escapeHtml(`${name} · ${label}（获得该角色后可穿戴）`)}">
             ${faceThumb(ART.costume(charId, type), { cls: 'slot-thumb', alt: `${name} · ${label}`, fallback: ART.portrait(charId), lazy: true })}
-            <span class="slot-label">${icon(COSTUME_TYPE_META[type]?.icon || 'dress', { size: 14 })}${escapeHtml(label)}</span>
+            <span class="slot-label">${icon(COSTUME_TYPE_META[type]?.icon || 'dress', { size: 14 })}${escapeHtml(label)}</span>${archiveTagHtml(type, archived)}
           </div>`;
         }).join('')}</div>
+      </div>`;
+    }).join('')}</div>
+  </section>`;
+}
+
+// 「尚未登场」：已经收进收藏、但她还没在主线登场的女主与服装（封存卡：剪影 + 「第N章登场」，通关那一章后才能换装）
+function sealedCollectionHtml(sealedByChar, charInfoMap, types, index, archived) {
+  if (!sealedByChar.size) return '';
+  // 按登场章先后排（ch011 在 ch013 之前）
+  const debutOrder = (charId) => String(charInfoMap[charId]?.unlockChapter || '');
+  const groups = [...sealedByChar].sort(([a], [b]) => debutOrder(a).localeCompare(debutOrder(b)));
+  return `<section class="costume-pending costume-sealed" aria-labelledby="sealedCollectionTitle">
+    <h2 class="section-title" id="sealedCollectionTitle">尚未登场</h2>
+    <p class="muted">已经收进收藏：通关她在主线登场的那一章后，名字和立绘才会揭晓，到时就能在这里换装。</p>
+    <div class="pending-grid">${groups.map(([charId, entry]) => {
+      const debut = debutText(charInfoMap[charId], index);
+      return `<div class="pending-char is-sealed">
+        <div class="pending-head">
+          ${silhouetteThumb('pending-avatar', `尚未登场的女主 · ${debut}`)}
+          <div class="pending-name"><strong>${escapeHtml(SEALED_NAME)}</strong><span>${icon('lock', { size: 12 })}${escapeHtml(debut)}${entry.owned ? ' · 角色已收藏' : ''}</span></div>
+        </div>
+        ${entry.costumes.length ? `<div class="pending-costumes">${entry.costumes.map((costumeId) => {
+          const type = costumeTypeOfId(costumeId);
+          const label = types[type] || type;
+          return `<div class="pending-costume" title="${escapeHtml(`${SEALED_NAME} · ${label}（${debut}）`)}">
+            ${silhouetteThumb('slot-thumb', `${SEALED_NAME} · ${label}`)}
+            <span class="slot-label">${icon(COSTUME_TYPE_META[type]?.icon || 'dress', { size: 14 })}${escapeHtml(label)}</span>${archiveTagHtml(type, archived)}
+          </div>`;
+        }).join('')}</div>` : ''}
       </div>`;
     }).join('')}</div>
   </section>`;
@@ -2102,11 +2160,11 @@ function pendingCostumesHtml(pendingByChar, charInfoMap, types) {
 async function loadCostumes() {
   try {
     await ensureAccount();
-    const [data, pools] = await Promise.all([
+    const [data, pools, index] = await Promise.all([
       apiGet(`/api/costume?playerId=${encodeURIComponent(playerId)}`),
-      gachaPoolsCache ? Promise.resolve(gachaPoolsCache) : apiGet('/api/gacha/pools')
+      cachedGachaPools(),
+      loadMainlineIndex()
     ]);
-    gachaPoolsCache = pools;
     const section = document.querySelector('#costumeSection');
     if (!section) return;
 
@@ -2114,23 +2172,39 @@ async function loadCostumes() {
     const equipped = data.equipped || {};
     const types = data.types || {};
     const branches = data.branches || {};
+    const archived = archiveCostumeTypes(types, data.costumePool);
     const charInfoMap = Object.fromEntries((pools.characters || []).map((c) => [c.id, c]));
-    // 能在这里换装的角色：已拥有且有角色资料
-    const ownedChars = (data.ownedCharacters || []).filter((charId) => charInfoMap[charId]);
+    const isSealed = (charId) => Boolean(charInfoMap[charId]?.sealed);
+    // 拥有的角色（有角色资料的）；能在这里换装的只有已经登场的
+    const ownedKnown = (data.ownedCharacters || []).filter((charId) => charInfoMap[charId]);
+    const ownedChars = ownedKnown.filter((charId) => !isSealed(charId));
     const ownedCharSet = new Set(ownedChars);
-    // 每一套已拥有的服装要么出现在角色的插槽里，要么出现在「待解锁角色」里，总数与顶部「服装 N 套」一致
+    // 每一套已拥有的服装要么出现在角色的插槽里，要么在「待解锁角色」或「尚未登场」里，总数与顶部「服装 N 套」一致
     const pendingByChar = new Map();
+    const sealedByChar = new Map();
+    for (const charId of ownedKnown.filter(isSealed)) sealedByChar.set(charId, { owned: true, costumes: [] });
     ownedCostumes.forEach((costumeId) => {
       const charId = costumeCharacterOf(costumeId);
+      if (isSealed(charId)) {
+        if (!sealedByChar.has(charId)) sealedByChar.set(charId, { owned: false, costumes: [] });
+        sealedByChar.get(charId).costumes.push(costumeId);
+        return;
+      }
       if (ownedCharSet.has(charId) && types[costumeTypeOfId(costumeId)]) return;
       if (!pendingByChar.has(charId)) pendingByChar.set(charId, []);
       pendingByChar.get(charId).push(costumeId);
     });
     const pendingCount = [...pendingByChar.values()].reduce((sum, list) => sum + list.length, 0);
+    const sealedCostumeCount = [...sealedByChar.values()].reduce((sum, entry) => sum + entry.costumes.length, 0);
+    const sealedCharCount = ownedKnown.length - ownedChars.length;
+    const notes = [
+      pendingCount ? `${pendingCount} 套待解锁角色` : '',
+      sealedCostumeCount ? `${sealedCostumeCount} 套尚未登场` : ''
+    ].filter(Boolean).join('、');
 
     // 顶部工具栏（「一键解锁」是演示工具，关闭时不显示）
     let html = `<div class="wardrobe-toolbar">
-      <span class="muted" id="wardrobeSummary">已拥有角色 ${ownedChars.length} 名 · 服装 ${ownedCostumes.length} 套${pendingCount ? `（其中 ${pendingCount} 套待解锁角色）` : ''}</span>
+      <span class="muted" id="wardrobeSummary">已拥有角色 ${ownedKnown.length} 名${sealedCharCount ? `（其中 ${sealedCharCount} 名尚未登场）` : ''} · 服装 ${ownedCostumes.length} 套${notes ? `（其中 ${notes}）` : ''}</span>
       ${demoToolsEnabled() ? '<button class="button small" id="grantAllCostumes" type="button">演示：一键解锁全部服装</button>' : ''}
     </div>`;
 
@@ -2138,7 +2212,7 @@ async function loadCostumes() {
       html += `<div class="wardrobe-empty">
         <div class="wardrobe-empty-icon">${icon('dress', { size: 44 })}</div>
         <h3>还没有可以换装的角色</h3>
-        <p class="muted">女主在主线正式入队时会自动加入（例如通关主线第五章，莉亚入队）；也可以在「召唤 · 角色池」抽取。</p>
+        <p class="muted">女主在主线正式入队时会自动加入（例如通关主线第五章，第一位同伴入队）；也可以在「召唤 · 角色池」抽取。还没在主线登场的女主要等通关她登场的那一章，才能在这里换装。</p>
         <div class="wardrobe-empty-actions">
           <button class="button primary" type="button" data-wardrobe-nav="gacha">去召唤</button>
           <a class="button secondary" href="/story.html">${icon('moon', { size: 15 })}前往主线</a>
@@ -2154,7 +2228,7 @@ async function loadCostumes() {
       const equippedLabel = equippedType ? (types[equippedType] || equippedType) : null;
       const frameClass = equippedType ? (COSTUME_TYPE_META[equippedType]?.frame || '') : '';
 
-      const slots = ['default', ...Object.keys(types)].map((type) => {
+      const slot = (type) => {
         if (type === 'default') {
           const isActive = !equippedId;
           return `<button class="costume-slot ${isActive ? 'active' : ''}" type="button" data-char="${charId}" data-costume="default" title="默认服装">
@@ -2174,7 +2248,15 @@ async function loadCostumes() {
           <span class="slot-label">${icon(typeIcon, { size: 14 })}${escapeHtml(types[type])}</span>
           ${isActive ? '<span class="slot-wearing">穿着中</span>' : ''}
         </button>`;
-      }).join('');
+      };
+      // 常驻：默认服装 + 抽得到的类型（没拥有的显示锁）；典藏只列已经拥有的（抽不到，不摆锁着的空位），一套都没有就不显示这一组
+      const typeIds = Object.keys(types);
+      const slots = ['default', ...typeIds.filter((type) => !archived.has(type))].map(slot).join('');
+      const archiveOwned = typeIds.filter((type) => archived.has(type) && ownedCostumes.includes(`${charId}_${type}`));
+      const archiveGroup = archiveOwned.length ? `<div class="costume-archive" role="group" aria-label="典藏">
+          <h4 class="costume-group-title">${icon('box', { size: 15 })}典藏<small>已退出常驻服饰池 · 已经拥有的照样能穿</small></h4>
+          <div class="costume-grid">${archiveOwned.map(slot).join('')}</div>
+        </div>` : '';
 
       const portraitSrc = equippedType ? ART.costume(charId, equippedType) : (ch.portrait || ART.portrait(charId));
       return `<div class="costume-char-block">
@@ -2187,15 +2269,17 @@ async function loadCostumes() {
           <div class="wardrobe-info">
             <h3>${escapeHtml(ch.name)}</h3>
             <p class="muted">${escapeHtml(ch.title || '')}</p>
-            <p class="wardrobe-current">${equippedLabel ? `当前皮肤：<strong>${icon(COSTUME_TYPE_META[equippedType]?.icon || 'dress', { size: 16 })} ${escapeHtml(equippedLabel)}</strong>` : `当前皮肤：<strong class="is-default">${icon('outfit-default', { size: 16 })} 默认服装</strong>`}</p>
-            ${equippedType && branches[equippedType] ? `<p class="wardrobe-branch muted">${icon('scroll', { size: 14 })}<span>分支剧情「${escapeHtml(branches[equippedType].title)}」· 敬请期待</span></p>` : ''}
+            <p class="wardrobe-current">${equippedLabel ? `当前皮肤：<strong>${icon(COSTUME_TYPE_META[equippedType]?.icon || 'dress', { size: 16 })} ${escapeHtml(equippedLabel)}</strong>${archiveTagHtml(equippedType, archived)}` : `当前皮肤：<strong class="is-default">${icon('outfit-default', { size: 16 })} 默认服装</strong>`}</p>
+            ${equippedType && branches[equippedType] ? `<p class="wardrobe-branch muted">${icon('scroll', { size: 14 })}<span>番外「${escapeHtml(branches[equippedType].title)}」· 敬请期待</span></p>` : ''}
           </div>
         </div>
         <div class="costume-grid">${slots}</div>
+        ${archiveGroup}
       </div>`;
     }).join('');
 
-    html += pendingCostumesHtml(pendingByChar, charInfoMap, types);
+    html += pendingCostumesHtml(pendingByChar, charInfoMap, types, archived);
+    html += sealedCollectionHtml(sealedByChar, charInfoMap, types, index, archived);
     section.innerHTML = html;
 
     section.querySelectorAll('.costume-slot:not(.locked)').forEach((btn) => {

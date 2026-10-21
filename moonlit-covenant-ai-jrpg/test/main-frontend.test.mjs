@@ -127,7 +127,7 @@ test('B19：设置页不再展示模型预设', () => {
 test('B2/B3（作者修改）与契约 R-1：钻石可玩出来——签到、主线首通、卡牌胜利；召唤可用钻石，重复补偿公示；商店保留', () => {
   assert.ok(app.includes("apiPost('/api/rewards/daily'"));
   assert.ok(app.includes('/api/rewards/status?playerId='));
-  assert.match(app, /'\/api\/gacha\/pull', \{ playerId, pool: currentGachaPool, count, currency: gachaCurrency \}/);
+  assert.match(app, /'\/api\/gacha\/pull', \{ playerId, pool: currentGachaPool, count \}/);
   assert.ok(app.includes('duplicateCompensation'));
   assert.ok(app.includes('玩出来的钻石'));
   assert.match(app, /\{ id: 'shop', label: '商店', icon: 'cart' \}/);
@@ -137,4 +137,35 @@ test('B2/B3（作者修改）与契约 R-1：钻石可玩出来——签到、�
 
 test('B13：主游戏不再链接独立抽卡原型页', () => {
   for (const file of frontFiles) assert.ok(!read(file).includes('gacha-system'), `${file} 不应链接 gacha-system`);
+});
+
+test('核#14（提案第八节#44）：召唤只收钻石——没有支付方式切换，价格和钱包只写钻石', () => {
+  for (const gone of ['data-currency', 'GACHA_CURRENCY_KEY', 'gachaCurrency', 'pay-toggle', '也可以用 Credit']) {
+    assert.ok(!app.includes(gone), `app.js 不应再有「${gone}」`);
+  }
+  assert.match(app, /function gachaCostText\(count\) \{[\s\S]*?costs\?\.diamonds[\s\S]*?钻石`;/);
+  const wallet = app.match(/function gachaWalletHtml\(\) \{[\s\S]*?\n\}/)[0];
+  assert.ok(wallet.includes('钻石 ${diamonds') && !wallet.includes('Credit'), '钱包只显示钻石');
+  assert.match(app, /消耗 \$\{r\.cost\} 钻石/);
+  assert.ok(app.includes('召唤只收钻石'));
+});
+
+test('核#14（提案第八节#43）：未登场女主是封存卡——剪影 + 「第N章登场」，不加载立绘；卡池按本账户进度取', () => {
+  // 卡池带 playerId 取（服务器按已首通章节揭开），缓存只给同一个账户
+  assert.match(app, /\/api\/gacha\/pools\$\{forPlayer \? `\?playerId=\$\{encodeURIComponent\(forPlayer\)\}` : ''\}/);
+  assert.match(app, /gachaPoolsCache\.forPlayer === \(playerId \|\| null\)/);
+  assert.ok(!app.includes("apiGet('/api/gacha/pools')"), '不再取不带进度的卡池');
+  // 角色卡、服装卡、召唤结果、换衣间「尚未登场」、钻石页的入队行都认 sealed
+  assert.match(app, /c\.sealed\s*\?\s*silhouetteThumb\('gacha-char-avatar'/);
+  assert.match(app, /c\.sealed \? `[\s\S]*?silhouetteThumb\('costume-thumb'/);
+  assert.match(app, /item\.sealed\s*\?\s*silhouetteThumb\('result-thumb'/);
+  assert.match(app, /function sealedCollectionHtml\(/);
+  assert.match(app, /c\.sealed \? `\$\{SEALED_NAME\} · \$\{debutText\(c, index\)\}`/);
+  // 剪影不带 <img>，所以不会去请求她的立绘
+  const thumb = app.match(/function silhouetteThumb\([^)]*\) \{[\s\S]*?\n\}/)[0];
+  assert.ok(!thumb.includes('<img'), 'silhouetteThumb 不能加载图片');
+  assert.match(app, /登场`;/);
+  const css = read('public/styles.css');
+  assert.match(css, /\.face-crop\.is-silhouette \{/);
+  assert.match(css, /\.silhouette-figure::before/);
 });

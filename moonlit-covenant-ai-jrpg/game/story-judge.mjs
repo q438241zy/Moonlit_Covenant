@@ -5,7 +5,7 @@
 import { readFileSync, statSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { AI_CONFIG } from './ai.mjs';
+import { AI_CONFIG, contentRatingRules, normalizeContentMode } from './ai.mjs';
 import { demoJudge, findNode, sanitizeLines, cleanName } from '../public/story/engine.js';
 
 const withName = (text, playerName) => String(text ?? '').replaceAll('{PLAYER_NAME}', playerName);
@@ -80,7 +80,12 @@ const JUDGE_SCHEMA = (node) => ({
   },
 });
 
-function buildPrompt(chapter, node, playerName, recent) {
+// 内容分级的未成年硬名单（剧本/README_30章重構提案.md 7.3；核#14）：托比8岁、波莉6岁、妮拉15岁、派克15岁、幼龙豆鳞比照儿童
+export const STORY_MINORS = ['托比', '波莉', '妮拉', '派克', '幼龙豆鳞'];
+const RATING_VIOLATION = 'intent 按越界意图归类（节点没有对应意图时取最接近的负面意图），morality 取 -2';
+
+/** 判定器的系统提示词。mode 是客户端 context.mode（'15+' | '12+'），没传或不认识时按 12+。 */
+export function buildPrompt(chapter, node, playerName, recent = [], mode) {
   const names = speakers(chapter);
   const who = (node.focus || []).map((id) => `${id}=${String(names[id]?.name || id).replace('{PLAYER_NAME}', playerName)}`).join('，') || '（无，只能用 narr 叙述）';
   const intents = node.intents.map((x) => `- ${x.id}：${withName(x.label, playerName)}${x.desc ? `——${withName(x.desc, playerName)}` : ''}`).join('\n');
@@ -97,6 +102,7 @@ function buildPrompt(chapter, node, playerName, recent) {
     '2. 超出主角当前能力（七属性都极其微弱）的行动不会成功，世界不配合生成奇迹，feasible 置 false。',
     `3. reaction 写 1–4 行在场角色的即时反应（简体中文，符合角色性格，每行不超过 60 字）；who 只能是：${who}，或 narr（叙述动作）。不要替${playerName}说话，不要改变剧情的既定结果，不要提前揭示秘密。`,
     '4. memory 用一句话（不超过 30 字）记下这次选择值得被角色记住的地方，没有就留空。',
+    `5. reaction 与 memory 遵守内容分级。${contentRatingRules(mode, { minors: STORY_MINORS, onViolation: RATING_VIOLATION })}`,
     '只输出 JSON。',
   ].join('\n\n');
 }
@@ -110,7 +116,7 @@ function extractJson(text) {
   throw new Error('模型没有返回 JSON。');
 }
 
-async function callModel(chapter, node, text, playerName, recent) {
+async function callModel(chapter, node, text, playerName, recent, mode) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), AI_CONFIG.timeoutMs);
   const base = {
@@ -118,7 +124,7 @@ async function callModel(chapter, node, text, playerName, recent) {
     temperature: 0.5,
     max_tokens: 420,
     messages: [
-      { role: 'system', content: buildPrompt(chapter, node, playerName, recent) },
+      { role: 'system', content: buildPrompt(chapter, node, playerName, recent, mode) },
       { role: 'user', content: text || '（沉默，不说话也不行动）' },
     ],
   };
@@ -175,7 +181,7 @@ export function normalizeModelJudgement(raw, node) {
 }
 
 /**
- * @param {object} input 客户端请求体：{ chapterId, nodeId, text, context }
+ * @param {object} input 客户端请求体：{ chapterId, nodeId, text, context }；context = { playerName, recent, mode }
  * @param {object} [options]
  * @param {() => (Function|null|false)} [options.acquire] 调用模型前申请名额（服务器的限流与并发上限）；
  *   返回释放函数表示可以调用，返回假值表示名额已满，直接使用演示判定（source:'demo'）。
@@ -206,7 +212,8 @@ async function judgeWithModel(chapter, node, clean, context, demo) {
     intent: String(r?.intent || '').slice(0, 40),
   }));
   try {
-    const judged = normalizeModelJudgement(await callModel(chapter, node, clean, playerName, recent), node);
+    const mode = normalizeContentMode(context?.mode); // 内容模式只影响提示词里的分级规则，判定与校验照旧
+    const judged = normalizeModelJudgement(await callModel(chapter, node, clean, playerName, recent, mode), node);
     if (judged) return judged;
     console.warn('[story judge] 模型输出未通过校验，使用演示判定');
   } catch (error) {

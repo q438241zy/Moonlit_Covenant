@@ -6,6 +6,9 @@ import {
   ENGINE_VERSION, DEFAULT_PLAYER_NAME, cleanName, createRun, continueRun, next, resolveInput,
   demoJudge, findNode, evalCond, interpolate, publicSummary, eachBeat,
 } from './engine.js';
+import {
+  DEFAULT_MODE, MODES, SETTINGS_NOTE, CHOICE_NOTE, NOTICE_TEXT, normalizeMode, otherMode, initSettings, acknowledgeRating,
+} from './rating.js';
 import { icon } from '../icons.js';
 import { loadPaint, paint } from '../paint.js';
 
@@ -187,10 +190,13 @@ async function showChapterReward(scr, ch, playerName) {
 }
 
 // ─── 全局状态 ───
+// 内容模式默认 15+（rating.js）：没存过设置的新玩家在标题页选一次；老玩家沿用存档里的模式，只提示一次默认已改
+const BOOT_SETTINGS = initSettings(load(KEYS.settings, null), { speed: 'normal', pace: 'normal' });
 const S = {
   index: [], speakers: {}, locations: {},
   chapters: new Map(),
-  settings: { mode: '12+', speed: 'normal', pace: 'normal', ...load(KEYS.settings, {}) },
+  settings: BOOT_SETTINGS.settings,
+  ratingPrompt: BOOT_SETTINGS.prompt, // 'choose' | 'notice' | null：标题页第一次渲染时处理，之后清空
   focus: null,
   view: 'boot',
   chapter: null, run: null, startRun: null,
@@ -366,6 +372,99 @@ async function renderStart() {
     begin.innerHTML = `${icon('lock', { size: 18 })}<span>主线制作中</span>`;
   }
   if (S.focus && !isAvailable(S.focus)) toast(`「${entryFor(S.focus).label}」尚未开放`, 'warn');
+  showRatingPrompt();
+}
+
+// ─── 内容分级：首次启动的模式选择 / 老玩家的一次性提示（rating.js；提案第七节）───
+function applyMode(mode) {
+  S.settings.mode = normalizeMode(mode, S.settings.mode);
+  if (S.run) S.run.mode = S.settings.mode;
+  $$('#settingsPop input[name="mode"]').forEach((el) => { el.checked = el.value === S.settings.mode; });
+}
+
+function showRatingPrompt() {
+  const kind = S.ratingPrompt;
+  if (!kind || S.view !== 'start' || !$('#start')) return;
+  S.ratingPrompt = null;
+  if (kind === 'choose') ratingChoice();
+  else ratingNotice();
+}
+
+// 首次启动（没有存过设置）：两张选项卡，预选 15+；选完才存设置，所以没选就刷新页面会再问一次。Esc = 用默认的 15+
+function ratingChoice() {
+  const start = $('#start');
+  const wrap = document.createElement('div');
+  wrap.className = 'modal rating-modal';
+  wrap.innerHTML = `<div class="modal-card rating-card" role="dialog" aria-modal="true" aria-labelledby="ratingTitle" aria-describedby="ratingNote">
+      <p class="eyebrow">CONTENT · 内容模式</p>
+      <h2 class="rating-title" id="ratingTitle">选择内容模式</h2>
+      <div class="rating-options">
+        ${['15+', '12+'].map((m) => `<button class="rating-opt${m === DEFAULT_MODE ? ' is-default' : ''}" type="button" data-mode="${esc(m)}">
+          <span class="rating-badge">${esc(MODES[m].label)}</span>
+          <span class="rating-text"><strong>${esc(MODES[m].name)}${m === DEFAULT_MODE ? '<small>默认</small>' : ''}</strong><span>${esc(MODES[m].blurb)}</span></span>
+        </button>`).join('')}
+      </div>
+      <p class="rating-note" id="ratingNote">${esc(CHOICE_NOTE)}</p>
+    </div>`;
+  const buttons = [...wrap.querySelectorAll('[data-mode]')];
+  const onKey = (e) => {
+    if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); done(DEFAULT_MODE); return; }
+    if (e.key === 'Tab') { // 焦点只在两个选项之间循环
+      e.preventDefault();
+      const i = buttons.indexOf(document.activeElement);
+      buttons[(i + (e.shiftKey ? -1 : 1) + buttons.length) % buttons.length].focus();
+    }
+  };
+  function done(mode) {
+    document.removeEventListener('keydown', onKey, true);
+    wrap.remove();
+    if (start) start.inert = false;
+    S.settings = acknowledgeRating(S.settings, mode);
+    applyMode(S.settings.mode);
+    saveSettings();
+    if (start?.isConnected) $('#startActions .btn:not([disabled])')?.focus();
+    toast(`内容模式：${S.settings.mode} ${MODES[S.settings.mode].name}（可在设置里更改）`);
+  }
+  buttons.forEach((b) => b.addEventListener('click', () => done(b.dataset.mode)));
+  document.addEventListener('keydown', onKey, true);
+  if (start) start.inert = true;
+  root.appendChild(wrap);
+  buttons[0].focus();
+}
+
+// 已经存过设置的老玩家：模式不变，标题页提示一次默认已改为 15+（显示出来就记下，不再重复）
+function ratingNotice() {
+  S.settings = acknowledgeRating(S.settings);
+  saveSettings();
+  const actions = $('#startActions');
+  if (!actions) return;
+  const cur = S.settings.mode;
+  const alt = otherMode(cur);
+  const box = document.createElement('aside');
+  box.className = 'rating-notice';
+  box.setAttribute('aria-labelledby', 'ratingNoticeTitle');
+  box.innerHTML = `<p class="rating-notice-head" id="ratingNoticeTitle">${icon('info', { size: 15 })}<strong>内容分级调整</strong></p>
+    <p class="rating-notice-text">${esc(NOTICE_TEXT)}</p>
+    <p class="rating-notice-cur">当前：${esc(cur)} ${esc(MODES[cur].name)}（未改动）</p>
+    <div class="rating-notice-actions">
+      <button class="btn secondary small" type="button" data-rating="keep">保持 ${esc(cur)}</button>
+      <button class="btn ghost small" type="button" data-rating="switch">改用 ${esc(alt)} ${esc(MODES[alt].name)}</button>
+    </div>`;
+  actions.after(box);
+  // 宽屏的标题区垂直居中、本来就接近一屏高：提示落在折叠线以下时把页面滚到刚好露出它（手机上它本来就在按钮下方可见）
+  requestAnimationFrame(() => { if (box.isConnected) box.scrollIntoView({ block: 'nearest', behavior: reducedMotion ? 'auto' : 'smooth' }); });
+  const close = () => {
+    const hadFocus = box.contains(document.activeElement);
+    box.remove();
+    if (hadFocus) $('#startActions .btn:not([disabled])')?.focus();
+  };
+  $('[data-rating="keep"]', box).addEventListener('click', close);
+  $('[data-rating="switch"]', box).addEventListener('click', () => {
+    applyMode(alt);
+    saveSettings();
+    toast(`内容模式：${alt} ${MODES[alt].name}`);
+    close();
+  });
 }
 
 function chapterCardHtml(id) {
@@ -489,8 +588,8 @@ function settingsHtml() {
     </div></fieldset>`;
   return `<div class="pop" id="settingsPop" role="dialog" aria-label="设置" hidden>
     <div class="pop-head"><strong>${icon('settings', { size: 16 })}设置</strong><button class="icon-btn sm" type="button" data-act="close-settings" aria-label="关闭设置">${icon('close', { size: 16 })}</button></div>
-    ${seg('mode', '内容模式', { '12+': { label: '12+' }, '15+': { label: '15+' } }, S.settings.mode)}
-    <p class="pop-note">15+ 会显示更直接的伤亡描写，主线剧情相同。</p>
+    ${seg('mode', '内容模式', { '15+': { label: `15+ ${MODES['15+'].name}` }, '12+': { label: `12+ ${MODES['12+'].name}` } }, S.settings.mode)}
+    <p class="pop-note">${esc(SETTINGS_NOTE)}</p>
     ${seg('speed', '文字速度', SPEEDS, S.settings.speed)}
     ${seg('pace', '自动播放', PACES, S.settings.pace)}
   </div>`;
@@ -517,7 +616,10 @@ function bindSettings(scope) {
   $('[data-act="close-settings"]', pop).addEventListener('click', (e) => close(e.detail > 0 ? 'stage' : true));
   pop.addEventListener('change', (e) => {
     const { name, value } = e.target;
-    if (name === 'mode') { S.settings.mode = value === '15+' ? '15+' : '12+'; if (S.run) S.run.mode = S.settings.mode; }
+    if (name === 'mode') {
+      applyMode(value);
+      $('.rating-notice')?.remove(); // 老玩家的一次性提示：在设置里改过就不用再看
+    }
     if (name === 'speed' && SPEEDS[value]) S.settings.speed = value;
     if (name === 'pace' && PACES[value]) S.settings.pace = value;
     saveSettings();
@@ -1400,7 +1502,8 @@ async function judgeInput(nodeId, text, def) {
     const res = await fetch('/api/story/judge', {
       method: 'POST',
       headers: { 'content-type': 'application/json', accept: 'application/json' },
-      body: JSON.stringify({ chapterId: S.chapter.id, nodeId, text, context: publicSummary(S.run) }),
+      // mode：判定器按当前内容模式写在场角色的反应（game/story-judge.mjs；没传时按 12+）
+      body: JSON.stringify({ chapterId: S.chapter.id, nodeId, text, context: { ...publicSummary(S.run), mode: normalizeMode(S.run.mode) } }),
       signal: ctrl.signal,
     });
     if (res.ok) {

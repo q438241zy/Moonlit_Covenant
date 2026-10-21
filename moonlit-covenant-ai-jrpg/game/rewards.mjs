@@ -4,9 +4,11 @@
  * 三个来源（数字全部在 REWARD_RULES，README「钻石与奖励」一节有同一张表）：
  *   1. 每日签到：基础 50 钻石，连续签到每天多 10，最多多 40（第 1 天 50 … 第 5 天起每天 90）；断签从第 1 天重新算。
  *   2. 主线章节首次通关：每章 160 钻石（两次钻石单抽），每章只发一次；同时按 CHARACTER_POOL[].joinChapter
- *      自动获得在该章正式入队的女主（莉亚 ch005、米娅 ch010……），已经抽到的按重复补偿表折成钻石。
+ *      自动获得在该章正式入队的女主（30章入队表，核#14／提案 §4.5：莉亚 ch005、米娅 ch010、塞雷娜 ch012、
+ *      伊芙琳 ch017、艾拉 ch018、芙蕾娅 ch019、奥菲利亚 ch020、莉莉丝 ch021），已经抽到的按重复补偿表折成钻石。
+ *      入队章一定晚于她的登场章（unlockChapter），所以自动入队的女主在卡池里已经揭开封存卡。
  *   3. 卡牌对战（实验模式）获胜：每胜 40 钻石，每天前 5 胜有奖励，之后照常可以打，只是不再发钻石。
- * 价格参照：钻石召唤单抽 80 / 十连 720，卡牌单包 80 / 十连 800；商店的演示充值仍是免费补充，不受影响。
+ * 价格参照：召唤（只收钻石）单抽 80 / 十连 720，卡牌单包 80 / 十连 800；商店的演示充值仍是免费补充，不受影响。
  *
  * 「一天」按服务器本地日期计算（和会员每日 Credit 相同），nextAt 是下一个本地零点的时间戳（毫秒）。
  * 所有函数只改传入的 account 对象，不做 I/O；account.rewards 来自旧存档时会先被规整。
@@ -22,7 +24,7 @@ export const REWARD_RULES = Object.freeze({
   cardStarter: Object.freeze({ diamonds: 800, shards: 500 })
 });
 
-/** 女主 id → 她在主线正式成为长期伙伴的章节 id（来自 CHARACTER_POOL 的 joinChapter，设定集/03 §10）。 */
+/** 女主 id → 她在主线正式成为长期伙伴的章节 id（来自 CHARACTER_POOL 的 joinChapter，30章入队表：提案 §4.5）。 */
 export const HEROINE_JOIN_CHAPTERS = Object.freeze(Object.fromEntries(
   CHARACTER_POOL.filter((c) => typeof c.joinChapter === 'string').map((c) => [c.id, c.joinChapter])
 ));

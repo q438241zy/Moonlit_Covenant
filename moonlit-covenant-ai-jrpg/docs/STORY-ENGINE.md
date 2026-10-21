@@ -16,6 +16,7 @@
 | `public/assets/story/npc/<id>.svg` | NPC 剪影胸像（600×800，透明底） |
 | `game/story-judge.mjs` | 服务端自由输入判定：演示模式用关键词，openai 模式调模型并校验 |
 | `public/story.html` + `public/story/player.js` + `public/story/story.css` | 主线播放界面 |
+| `public/story/rating.js` | 内容模式设置（默认 15+、首次选择、老玩家一次性提示）的纯函数，见第 9、10 节 |
 
 ## 2. 章节 JSON
 
@@ -56,7 +57,7 @@
 
 | t | 字段 | 说明 |
 |---|---|---|
-| `narr` | `text`, `text15?`, `style?`, `intel?` | 叙述。`style`：`picture`（画面描写，默认）/ `voice`（旁白引用）/ `caption`（系统字幕，如「遭遇战开始」）。`text15` 为 15+ 模式替换文本。`intel: true`：照常演出，但轮到玩家输入时一并列进输入框上方的「情报」栏（如 00-14 的三件紧急情况） |
+| `narr` | `text`, `text15?`, `style?`, `intel?` | 叙述。`style`：`picture`（画面描写，默认）/ `voice`（旁白引用）/ `caption`（系统字幕，如「遭遇战开始」）。`text15` 为 15+ 模式（默认）的替换文本，`text` 是 12+ 基底，缺 `text15` 时两种模式都显示 `text`（见第 10 节）。`intel: true`：照常演出，但轮到玩家输入时一并列进输入框上方的「情报」栏（如 00-14 的三件紧急情况） |
 | `say` | `who`, `text`, `note?`, `text15?` | 对白。`who` 为说话人 id；`note` 如「画外」「更大声」 |
 | `think` | `text` | 主角内心独白 |
 | `bg` | `bg`, `fx?` | 切换背景（`fx`: `fade` / `cut`） |
@@ -138,7 +139,7 @@
 { "intent": "FI_CH000_SC26_TOBY_AFTER_001", "is": "promise" }        // 主或次意图命中
 { "intent": "FI_…", "in": ["promise", "hope"] }
 { "voice": "warm", "gte": 2 }
-{ "mode": "15+" }
+{ "mode": "15+" }                        // 只在 15+ 出现的整个节拍（第 10 节）
 { "battle": "BATTLE_CH002_STREET_AMBUSH", "is": "clean" }            // clean | hurt | collateral
 { "all": [ … ] }  { "any": [ … ] }  { "not": { … } }
 ```
@@ -183,11 +184,12 @@ evalCond(run, cond)  interpolate(text, run)  publicSummary(run)
 
 ## 8. 判定服务
 
-`POST /api/story/judge { chapterId, nodeId, text, context: { playerName, recent: [{ id, text, intent }] } }`
+`POST /api/story/judge { chapterId, nodeId, text, context: { playerName, recent: [{ id, text, intent }], mode } }`
 
 - 服务端从 `public/story/chapters/` 读取节点定义（不信任客户端传来的节点）。
 - `AI_MODE=demo`：`demoJudge`。`AI_MODE=openai`：用 `game/ai.mjs` 的同一套配置调用模型，JSON Schema → JSON Object → 纯文本三级兜底；意图必须在节点枚举内、台词说话人必须在 `focus` 或 `narr`、最多 4 行、每行 ≤ 90 字，不合格即回退演示判定（`source: "fallback"`）。
 - 模型只负责「归类 + 给角色台词」，不能改变硬事件、不能凭空让主角获得超出当前能力的结果。
+- `context.mode`（`15+` / `12+`）是播放器当前的内容模式（`publicSummary(run)` 加上 `run.mode`）；没传或不认识时按 `12+`。它只决定提示词第 5 条「内容分级」写哪一档（第 10 节），意图、分数与校验都不受影响。
 
 ## 9. 播放界面
 
@@ -198,7 +200,22 @@ evalCond(run, cond)  interpolate(text, run)  publicSummary(run)
 - 「情报」折叠栏：收集上一次回应之后出现过的系统字幕（`style: caption`）和标了 `intel` 的叙述。只有一句、又夹在别的叙述中间的零散字幕不算情报；紧挨着输入框的那一句字幕照样列出（05-08「笼锁要钥匙……」）。
 - 战斗：情报面板 + HP 条 + 战术输入框。
 - 章末：章节完成页（正史记录摘要、下一章、重玩），自动存档。
-- 首通奖励（契约 R-2 / R-4）：完成页弹出后，播放器在后台调用 `POST /api/story/progress { playerId, chapterId }`（服务端对照 `chapters/index.json` 校验章节，幂等）。账户与主游戏共用：`localStorage` 的 `moonlit:playerId`（原样字符串，不是 JSON）；没有或已失效（`GET /api/account` 返回 404 / 400）时像主游戏一样 `POST /api/account/create` 建号并写回；网络或服务器错误、离线都静默跳过，不影响完成页。返回 `chapterReward > 0` 时显示「首次通关奖励：钻石 +N」，`heroinesGranted` 里的女主显示「正式成为同伴：已加入角色收藏」（莉亚 = ch005、米娅 = ch010，表在 `game/gacha.mjs` 的 `joinChapter`），`heroinesCompensated` 显示折算的钻石；重玩已通关的章节只显示「本章首通奖励已领取」。数额见 README「钻石与奖励」。
+- 首通奖励（契约 R-2 / R-4）：完成页弹出后，播放器在后台调用 `POST /api/story/progress { playerId, chapterId }`（服务端对照 `chapters/index.json` 校验章节，幂等）。账户与主游戏共用：`localStorage` 的 `moonlit:playerId`（原样字符串，不是 JSON）；没有或已失效（`GET /api/account` 返回 404 / 400）时像主游戏一样 `POST /api/account/create` 建号并写回；网络或服务器错误、离线都静默跳过，不影响完成页。返回 `chapterReward > 0` 时显示「首次通关奖励：钻石 +N」，`heroinesGranted` 里的女主显示「正式成为同伴：已加入角色收藏」（30 章入队表，核#14：莉亚 = ch005、米娅 = ch010、塞雷娜 = ch012、伊芙琳 = ch017、艾拉 = ch018、芙蕾娅 = ch019、奥菲利亚 = ch020、莉莉丝 = ch021，表在 `game/gacha.mjs` 的 `joinChapter`；同一份首通记录也决定召唤卡池的登场闸门 `unlockChapter`——没通关登场章的女主在卡池里是剪影），`heroinesCompensated` 显示折算的钻石；重玩已通关的章节只显示「本章首通奖励已领取」。数额见 README「钻石与奖励」。
 - 厚涂位图的「AI 生成」标（B17）：`paint()` 把背景或立绘换成位图（`.jpg/.png/.webp`）时，播放栏章节名旁亮出统一的「AI 生成」小标（`.ai-badge`，纯 CSS，不碰 CSP）；全是矢量 SVG 时不显示。
 - 标题页注明「这里是正史主线」，主菜单里的「银轨号」是 IF 外传（B1）；左上角「返回主菜单」。
-- 设置：内容模式 12+ / 15+、文字速度。
+- 设置：内容模式 15+ 戏剧模式（默认）/ 12+ 柔和模式、文字速度、自动播放节奏。设置存在 `localStorage` 的 `moonlit:story:settings`（`{ mode, speed, pace, ratingAck }`），改模式立即作用于当前进度（`run.mode`）。
+- 内容模式的首次选择与一次性提示（`public/story/rating.js`，纯函数，`test/rating.test.mjs`）：
+  - 首次启动（没有存过设置）：标题页弹出「选择内容模式」，两张选项卡——「15+ 戏剧模式（默认）：擦边与流血可以出现，但不露骨。」「12+ 柔和模式：以剪影、遮挡与结果带过。」——焦点预先落在 15+，`Esc` 等于选默认。选完才写入设置（`ratingAck: 1`），没选就刷新会再问一次。
+  - 已经存过设置的老玩家：模式**不强制切换**（存档里是 12+ 就还是 12+；缺失或不认识的值按 12+），标题页按钮下方提示一次「本作默认15+：有擦边与血腥描写，但不露骨。也可以改用12+柔和模式，剧情与结局完全相同。」，附「保持当前」「改用另一档」两个按钮；提示一出现就记下 `ratingAck`，以后不再出现。
+  - 以后分级说明再改，把 `rating.js` 的 `RATING_VERSION` 加一，所有玩家会再看到一次提示。
+
+## 10. 内容分级
+
+作者核#13 第 8 条、核#14（`剧本/README_30章重構提案.md` 第七节）：本作默认 **15+ 戏剧模式**，**12+ 柔和模式**随时可切换。两种模式的剧情、选择、数值与结局完全相同，只换显示的文本。
+
+- **数据**：`text` 是 12+ 基底，必须自己就安全；`text15` 是默认显示版（引擎 `present()` 在 `run.mode === '15+'` 时优先用它，缺了退回 `text`）。只在 15+ 出现的整个节拍用 `{ "mode": "15+" }` 条件包起来。已写的 ch000–ch010 只有 ch000 的 3 句 `text15`，按作者核可原样保留。
+- **15+ 可以写**：血、刀伤、倒下不再动、远景或中景的遗体、战场余波；撩拨、意外接触、浴场或换衣误会（蒸汽、浴巾、剪影）、差点吻下去——都不露骨。
+- **12+ 只写**：倒下、呻吟、盖布、遗物、帐上的数字；亲密只写神态与台词，以剪影、遮挡与结果带过。
+- **两种模式都禁止**：裸露与性行为、性暴力、虐杀与刑求过程、断肢与创口特写、以身体部位为焦点的描写；同一节拍不同时有血与擦边。**未成年硬名单**——托比（8）、波莉（6）、妮拉（15）、派克（15）、幼龙豆鳞，以及任何孩子——永远不进擦边或血腥节拍。
+- **模型提示词**：`game/ai.mjs` 的 `contentRatingRules(mode, { minors, onViolation })` 是唯一的一份规则文字，主线判定器（`game/story-judge.mjs` 的 `buildPrompt` 第 5 条，带未成年硬名单；玩家要求露骨性内容、性暴力或伤害孩子时在场角色拒绝或制止、按越界意图归类、`morality` 取 -2）与外传聊天（`buildSystemPrompt` 第 6 条，取代原来的「保持PG-13」）共用。外传页面还没有内容模式设置，聊天按 12+ 规则；`generateCharacterReply(state, id, message, { contentMode })` 已留好入口。
+

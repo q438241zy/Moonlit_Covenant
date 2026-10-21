@@ -975,6 +975,12 @@ button:focus-visible, input:focus-visible, textarea:focus-visible {
 .costume-slot.locked:hover { transform:none; border-color:var(--line); }
 .slot-wearing { position:absolute; top:7px; right:7px; font-size:.56rem; padding:2px 7px; border-radius:99px; background: linear-gradient(135deg, var(--accent), var(--pink)); color:#120a1e; font-weight:700; }
 .slot-label { display:inline-flex; align-items:center; gap:4px; white-space:nowrap; }
+/* 典藏（决定#31）：退出常驻服饰池、已拥有照样能穿的节庆服装，在角色区块里单列一组 */
+.costume-archive { margin-top:16px; padding-top:14px; border-top:1px dashed var(--line); }
+.costume-group-title { display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:0 0 10px; font-size:.86rem; color:var(--gold); }
+.costume-group-title small { flex:1 1 auto; color:var(--faint); font-size:.72rem; font-weight:400; }
+.costume-archive-tag { display:inline-block; margin-left:6px; padding:1px 7px; border:1px solid rgba(255,210,125,.45); border-radius:99px; color:var(--gold); font-size:.6rem; line-height:1.5; vertical-align:middle; white-space:nowrap; }
+.pending-costume .costume-archive-tag { margin-left:0; }
 
 /* ═══ 换衣间 · 皮肤预览 ═══ */
 .wardrobe-toolbar {
@@ -1472,6 +1478,18 @@ body:has(.game-frame) .cg-unlock-stack { top:10px; }
 .result-dup { display: inline-flex; align-items: center; gap: 3px; margin-top: 6px; padding: 2px 7px; border: 1px solid rgba(110,220,255,.3); border-radius: 99px; color: var(--blue); background: rgba(110,220,255,.08); font-size: .62rem; }
 .gacha-free { display: inline-flex; align-items: center; justify-content: center; gap: 3px; line-height: 1.4; position: relative; z-index: 1; }
 .gacha-free.is-owned { color: var(--success); }
+
+/* 封存卡（核#14 登场闸门）：还没在主线登场的女主和她的服装。
+   纯 CSS 画的通用人形剪影——不加载任何立绘，也没有发型、配色这些能认出是谁的特征；头部写一个「?」 */
+.face-crop.is-silhouette { container-type: inline-size; background: radial-gradient(circle at 50% 30%, #241d44, #0c0a1c); }
+.silhouette-figure { position: absolute; inset: 0; }
+.silhouette-figure::before, .silhouette-figure::after { content: ""; position: absolute; left: 50%; transform: translateX(-50%); background: linear-gradient(180deg, rgba(122, 106, 168, .55), rgba(66, 56, 104, .55)); }
+.silhouette-figure::before { top: 20%; width: 36%; aspect-ratio: 1; border-radius: 50%; }
+.silhouette-figure::after { bottom: -14%; width: 86%; height: 44%; border-radius: 50% 50% 12% 12% / 80% 80% 10% 10%; }
+.silhouette-mark { position: absolute; left: 50%; top: 38%; z-index: 1; transform: translate(-50%, -50%); color: rgba(247, 242, 255, .72); font-size: 1rem; font-size: 20cqi; font-weight: 800; line-height: 1; text-shadow: 0 1px 6px rgba(0, 0, 0, .45); }
+.is-sealed .gacha-char-name, .is-sealed .result-name, .pending-char.is-sealed strong { color: var(--muted); letter-spacing: .12em; }
+.gacha-free.is-sealed { color: var(--faint); }
+
 .gacha-dup-note { display: flex; align-items: flex-start; gap: 6px; margin-top: 14px; }
 .gacha-dup-note .ico { flex: none; margin-top: 3px; color: var(--blue); }
 .wardrobe-empty-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }

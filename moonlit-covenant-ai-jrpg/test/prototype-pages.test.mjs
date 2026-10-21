@@ -240,8 +240,30 @@ test('B1：v3 存档升级到 v4 时，三人组换成正典人设；没改过�
   const notes = Object.fromEntries(page.milestones.map((m) => [m.id, m.note]));
   assert.ok(notes.m1.includes('设定集/03'));
   assert.equal(notes.m2, '作者自己改过的备注');
-  assert.equal(JSON.parse(store.get('moonlit_char_manager')).profileVersion, 4);
+  assert.equal(JSON.parse(store.get('moonlit_char_manager')).profileVersion, page.PROFILE_VERSION);
   assert.doesNotThrow(() => page.refreshAll());
+});
+
+// 核#14（提案第八节#43）：本页不按主线进度遮挡，只写开局就能公开的内容——
+// 莉莉丝、艾拉不写姓（正式20才揭晓）、不写姐妹关系与家族往事，莉莉丝的故国也留到那一章
+test('核#14：角色管理器的莉莉丝、艾拉不剧透姓氏、姐妹关系与故国；旧存档升级到 v5 时换掉', () => {
+  const { page } = cm();
+  assert.ok(page.PROFILE_VERSION >= 5);
+  const byId = Object.fromEntries(page.DEFAULT_CHARACTERS.map((c) => [c.id, c]));
+  for (const id of ['lilith', 'ayla']) {
+    const text = profileText(byId[id]);
+    for (const w of ['瓦尔哈拉', 'Valhalla', '翠影', '姐姐', '妹妹', '灭门', '屠杀', '家纹']) {
+      assert.ok(!text.includes(w), `${id} 的人设不应提前揭示「${w}」`);
+    }
+    assert.ok(!byId[id].relations.some((r) => r.type === 'sister'), `${id} 不应有姐妹关系`);
+  }
+  assert.equal(byId.lilith.name, '莉莉丝');
+  assert.equal(byId.ayla.name, '艾拉');
+  // 旧版（v4）存档里没改过的默认人设也一并换掉
+  const v4 = { profileVersion: 4, characters: [{ id: 'lilith', name: '莉莉丝·瓦尔哈拉', nation: '翠影公国', relations: [{ target: 'ayla', type: 'sister', desc: '旧' }] }], artStatus: {}, milestones: [] };
+  const upgraded = cm({ storage: { moonlit_char_manager: JSON.stringify(v4) } }).page;
+  assert.equal(upgraded.characters[0].name, '莉莉丝');
+  assert.ok(!profileText(upgraded.characters[0]).includes('瓦尔哈拉'));
 });
 
 test('独立抽卡原型的角色称号也用正典职业（外传称号不再出现）', () => {

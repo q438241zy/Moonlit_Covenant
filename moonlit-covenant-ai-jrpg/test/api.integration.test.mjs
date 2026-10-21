@@ -149,7 +149,10 @@ async function startServer(t, extraEnv = {}) {
 test('HTTP gacha + wardrobe: pulls are recorded once, isNew is honest, equip validates the default outfit too', { timeout: 12000 }, async (t) => {
   const baseUrl = await startServer(t);
   const playerId = (await post(baseUrl, '/api/account/create', { playerName: '测试' })).body.account.id;
+  // 召唤只收钻石（核#14）：demo 起始 300 钻石不够两次十连，先用演示充值补到 300 + 2×776
+  for (let i = 0; i < 2; i += 1) assert.equal((await post(baseUrl, '/api/diamonds/purchase', { playerId, packId: 'pack_648' })).body.ok, true);
   const first = (await post(baseUrl, '/api/gacha/pull', { playerId, pool: 'costume', count: 10 })).body;
+  assert.equal(first.ok, true, JSON.stringify(first).slice(0, 200));
   const owned = await (await fetch(`${baseUrl}/api/costume?playerId=${playerId}`)).json();
   const ids = first.results.map((r) => r.id);
   assert.deepEqual([...new Set(owned.ownedCostumes)].sort(), [...new Set(ids)].sort(), 'every pulled costume is owned, nothing else');

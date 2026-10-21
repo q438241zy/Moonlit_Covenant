@@ -52,7 +52,8 @@ test('reward numbers are the documented ones and stay small next to the pull pri
   assert.deepEqual(REWARD_RULES.cardWin, { diamonds: 40, dailyCap: 5 });
   assert.deepEqual(REWARD_RULES.cardStarter, { diamonds: PACK.costTen, shards: 500 });
   assert.deepEqual(GACHA_DIAMOND_COSTS, { single: 80, ten: 720 });
-  assert.deepEqual(GACHA_COSTS.credit, { single: 10, ten: 90 });
+  // 核#14（提案第八节#44）：召唤只收钻石，公示的价格表里也只有钻石
+  assert.deepEqual(GACHA_COSTS, { diamonds: { single: 80, ten: 720 } });
   assert.equal(GACHA_DIAMOND_COSTS.single, PACK.costSingle, 'one summon costs the same as one card pack');
   assert.deepEqual(DUPLICATE_COMPENSATION, { 3: 8, 4: 16, 5: 160 });
   // 每种稀有度的补偿都低于两次单抽，最常见的 3★/4★ 只是单抽的一小部分
@@ -66,11 +67,25 @@ test('reward numbers are the documented ones and stay small next to the pull pri
   assert.ok(fullDay < GACHA_DIAMOND_COSTS.ten);
 });
 
-test('heroines join on the canon long-term-partner chapters (设定集/03 §10), stored as pool data', () => {
+test('heroines join on the 30-chapter roster (核#14, 提案 §4.5), stored as pool data', () => {
   assert.deepEqual(HEROINE_JOIN_CHAPTERS, {
-    lia: 'ch005', mia: 'ch010', serena: 'ch014', freya: 'ch028', lilith: 'ch030', evelyn: 'ch024', ophelia: 'ch030', aila: 'ch030'
+    lia: 'ch005', mia: 'ch010', serena: 'ch012', freya: 'ch019', lilith: 'ch021', evelyn: 'ch017', ophelia: 'ch020', aila: 'ch018'
   });
-  for (const heroine of CHARACTER_POOL) assert.match(heroine.joinChapter, /^ch\d{3}$/, heroine.id);
+  // 首次登场章（卡池的登场闸门 unlockChapter）：莉亚04、米娅07、塞雷娜11、莉莉丝13（敌对登场）、伊芙琳16、艾拉17、芙蕾娅18、奥菲利亚19
+  assert.deepEqual(Object.fromEntries(CHARACTER_POOL.map((c) => [c.id, c.unlockChapter])), {
+    lia: 'ch004', mia: 'ch007', serena: 'ch011', freya: 'ch018', lilith: 'ch013', evelyn: 'ch016', ophelia: 'ch019', aila: 'ch017'
+  });
+  const n = (id) => Number(id.slice(2));
+  for (const heroine of CHARACTER_POOL) {
+    assert.match(heroine.joinChapter, /^ch\d{3}$/, heroine.id);
+    assert.match(heroine.unlockChapter, /^ch\d{3}$/, heroine.id);
+    // 登场到入队至少隔一章；最后一位在正式21入队，入队后至少在队8章（算到30）
+    assert.ok(n(heroine.joinChapter) > n(heroine.unlockChapter), `${heroine.id} joins after her debut`);
+    assert.ok(n(heroine.joinChapter) <= 21 && 30 - n(heroine.joinChapter) + 1 >= 8, `${heroine.id} stays at least 8 chapters`);
+  }
+  // 每章最多一位女主登场
+  const debuts = CHARACTER_POOL.map((c) => c.unlockChapter);
+  assert.equal(new Set(debuts).size, debuts.length);
 });
 
 // ─── R-1 每日签到 ───
@@ -216,43 +231,50 @@ test('rewards state from an old or tampered save is normalized', () => {
 
 test('gacha: diamonds pay 80 / 720 and nothing changes when the balance is short', (t) => {
   t.mock.method(Math, 'random', () => 0.5);
-  const account = newAccount({ credits: 0, diamonds: 100 });
-  const short = pullGacha(account, account._meter, 'character', 10, { currency: 'diamonds' });
+  const account = newAccount({ credits: 5000, diamonds: 100 });
+  const short = pullGacha(account, 'character', 10);
   assert.equal(short.ok, false);
   assert.equal(short.code, 'INSUFFICIENT_DIAMONDS');
   assert.equal(account.diamonds, 100);
   assert.equal(account.pityCounters, undefined);
   assert.equal(account.ownedCharacters, undefined);
 
-  const single = pullGacha(account, account._meter, 'character', 1, { currency: 'diamonds' });
+  const single = pullGacha(account, 'character', 1, { currency: 'diamonds' });
   assert.equal(single.ok, true);
   assert.equal(single.currency, 'diamonds');
   assert.equal(single.cost, 80);
-  assert.equal(single.balance.diamonds, 20);
-  assert.equal(account._meter.balance, 0, 'credit untouched');
+  assert.deepEqual(single.balance, { diamonds: 20 });
+  assert.equal(account._meter.balance, 5000, 'credit untouched');
+  assert.equal(account.credits, 5000);
 
-  const noCredit = pullGacha(account, account._meter, 'character', 1);
-  assert.equal(noCredit.ok, false);
-  assert.equal(noCredit.code, 'INSUFFICIENT_CREDIT');
+  // 核#14：召唤只收钻石。旧前端传 currency: 'credit' 时明确拒绝（不悄悄改扣钻石），什么都不变
+  const legacy = pullGacha(account, 'character', 1, { currency: 'credit' });
+  assert.deepEqual([legacy.ok, legacy.code], [false, 'DIAMONDS_ONLY']);
+  assert.equal(account.diamonds, 20);
+  assert.equal(account.pityCounters.character, 1);
+  const broke = pullGacha(account, 'character', 1);
+  assert.equal(broke.code, 'INSUFFICIENT_DIAMONDS');
+  // 旧签名 pullGacha(account, meter, pool, count) 直接报错，不会把计量器当成池名
+  assert.throws(() => pullGacha(account, account._meter, 'character', 1), TypeError);
 });
 
 test('gacha: duplicates (also inside one ten-pull) are compensated in diamonds by rarity', (t) => {
   t.mock.method(Math, 'random', () => 0.5); // 角色池 0.5 → 4★，候选里固定取中间那位
-  const account = newAccount({ credits: 1000, diamonds: 0 });
-  const ten = pullGacha(account, account._meter, 'character', 10);
+  const account = newAccount({ credits: 1000, diamonds: 720 + 720 });
+  const ten = pullGacha(account, 'character', 10);
   assert.equal(ten.ok, true);
-  assert.equal(ten.currency, 'credit');
+  assert.equal(ten.currency, 'diamonds');
   const ids = new Set(ten.results.map((r) => r.id));
   assert.equal(ids.size, 1, 'the mocked roll picks one 4★ every time');
   assert.deepEqual(ten.results.map((r) => r.duplicate), [false, true, true, true, true, true, true, true, true, true]);
   assert.deepEqual(ten.results.map((r) => r.compensation), [0, 16, 16, 16, 16, 16, 16, 16, 16, 16]);
   assert.deepEqual(ten.compensation, { diamonds: 144 });
-  assert.equal(account.diamonds, 144);
-  assert.equal(ten.balance.diamonds, 144);
-  assert.equal(ten.balance.credits, 910);
+  assert.equal(account.diamonds, 720 + 144);
+  assert.equal(ten.balance.diamonds, 720 + 144);
+  assert.equal(account.credits, 1000, 'Credit untouched');
 
   // 服饰池 3★ 重复补 8
-  const costume = pullGacha(account, account._meter, 'costume', 10);
+  const costume = pullGacha(account, 'costume', 10);
   const firstId = costume.results[0].id;
   assert.equal(costume.results[0].rarity, 3);
   assert.equal(costume.results.filter((r) => r.id === firstId && r.duplicate).length, 9);
@@ -269,14 +291,14 @@ test('gacha: compensation never turns pulling into a diamond loop (seeded 20,000
     const before = account.diamonds;
     let spent = 0;
     for (let i = 0; i < 2000; i += 1) {
-      const result = pullGacha(account, account._meter, pool, 10, { currency: 'diamonds' });
+      const result = pullGacha(account, pool, 10);
       assert.equal(result.ok, true);
       spent += result.cost;
     }
     const refunded = account.diamonds - (before - spent);
     const perPull = refunded / 20000;
-    // 期望值：角色池约 19、服饰池约 14（见 gacha.mjs 注释）
-    const expected = pool === 'character' ? 19.4 : 14.2;
+    // 期望值：角色池约 19、服饰池约 13（典藏退出后常驻表暂时没有 4★，见 gacha.mjs 注释）
+    const expected = pool === 'character' ? 19.4 : 12.9;
     assert.ok(Math.abs(perPull - expected) < 1.5, `${pool}: ${perPull.toFixed(2)} per pull`);
     assert.ok(perPull < GACHA_DIAMOND_COSTS.single / 3);
   }

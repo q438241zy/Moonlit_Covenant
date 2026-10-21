@@ -20,7 +20,7 @@ import { generateCharacterReply, fallbackReply, AI_CONFIG } from './game/ai.mjs'
 import { CHARACTERS, STRATEGIES, DECISIONS, GAME_TITLE, GAME_SUBTITLE, CG_GALLERY } from './game/content.mjs';
 import { MEMBERSHIP_TIERS, DIAMOND_PACKS, createPlayerAccount, purchaseMembership, purchaseDiamonds, grantDailyCredits, getMembershipInfo } from './game/membership.mjs';
 import { CREDIT_COSTS, createCreditMeter, addCredit, getMeterStatus } from './game/credit.mjs';
-import { CHARACTER_POOL, COSTUME_POOL, GACHA_RATES, GACHA_COSTS, DUPLICATE_COMPENSATION, pullGacha, PITY_THRESHOLD } from './game/gacha.mjs';
+import { CHARACTER_POOL, COSTUME_POOL, GACHA_RATES, GACHA_COSTS, GACHA_CURRENCY, DUPLICATE_COMPENSATION, pullGacha, PITY_THRESHOLD, publicPools, clearedChaptersOf, highestClearedChapter } from './game/gacha.mjs';
 import { COSTUME_LABELS, equipCostume, getEquippedCostumes, BRANCH_SCENES } from './game/costume.mjs';
 import { createAnalyticsStore, trackSession, trackDailyActive, getDashboardData, getRealtimeStats, pruneAnalytics } from './game/analytics.mjs';
 import { AI_MODELS, PER_PLAYER_ROUTING, getActiveModel, switchModel, createDefaultSettings } from './game/settings.mjs';
@@ -598,17 +598,24 @@ async function handleApi(req, res, url) {
 
   // ═══ 抽卡系统 ═══
   if (req.method === 'GET' && url.pathname === '/api/gacha/pools') {
+    // 登场闸门（核#14）：按这个玩家的主线进度（POST /api/story/progress 记下的已首通章节）给出对外视图——
+    // 还没登场的女主和她的服装是封存卡（sealed: true，只有稀有度与「第N章登场」）。没有 playerId 或账户不存在时按零进度。
+    const account = getAccount(url.searchParams.get('playerId'));
+    const cleared = clearedChaptersOf(account);
+    const pools = publicPools(cleared);
     return sendJson(res, 200, {
       ok: true,
-      characters: CHARACTER_POOL,
-      costumes: COSTUME_POOL,
+      characters: pools.characters,
+      costumes: pools.costumes,
       rates: GACHA_RATES,
       pity: PITY_THRESHOLD,
-      // 召唤价格（Credit 或钻石）与重复补偿（按稀有度折成钻石）
+      // 召唤只收钻石（核#14）；重复补偿按稀有度折成钻石
+      currency: GACHA_CURRENCY,
       costs: GACHA_COSTS,
       duplicateCompensation: DUPLICATE_COMPENSATION,
       // 主线正式入队的章节：通关该章自动获得这位女主（POST /api/story/progress）
-      heroineJoins: HEROINE_JOIN_CHAPTERS
+      heroineJoins: HEROINE_JOIN_CHAPTERS,
+      progress: { highestCleared: highestClearedChapter(cleared) }
     });
   }
 
@@ -616,10 +623,11 @@ async function handleApi(req, res, url) {
     const body = await readJson(req);
     const account = getAccount(body.playerId);
     if (!account) return sendError(res, 404, '账户不存在。', 'NO_ACCOUNT');
-    if (!account._meter) account._meter = createCreditMeter(account);
-    // pullGacha 自己把抽到的条目记入 ownedCharacters / ownedCostumes（isNew 以这一抽之前为准），重复的折成钻石；
-    // currency: 'diamonds' 用钻石支付，其余（含缺省）用 Credit
-    const result = pullGacha(account, account._meter, body.pool || 'character', body.count || 1, { currency: body.currency });
+    // pullGacha 自己扣钻石、把抽到的条目记入 ownedCharacters / ownedCostumes（isNew 以这一抽之前为准），重复的折成钻石；
+    // 只收钻石：currency 省略或为 'diamonds'，旧前端传来的 'credit' 返回 400 DIAMONDS_ONLY。结果按本账户进度给封存卡视图
+    // 池名只认字符串（其余按角色池，与 normalizePool 一致）：对象 / 数组会撞上 pullGacha 的旧签名检查（TypeError → 500）
+    const pool = typeof body.pool === 'string' ? body.pool : 'character';
+    const result = pullGacha(account, pool, body.count || 1, { currency: body.currency });
     if (!result.ok) return sendJson(res, 400, result);
     trackSession(analyticsStore, account.id, 'gacha_pull');
     return sendJson(res, 200, { ...result, account: publicAccount(account) });
@@ -636,7 +644,8 @@ async function handleApi(req, res, url) {
       ownedCharacters: account.ownedCharacters || [],
       types: COSTUME_LABELS,
       branches: BRANCH_SCENES,
-      costumePool: COSTUME_POOL
+      // 与 /api/gacha/pools 同一个登场闸门：未登场女主的服装是封存卡
+      costumePool: publicPools(clearedChaptersOf(account)).costumes
     });
   }
 

@@ -25,6 +25,8 @@
 
 第五章已由审阅稿升为**正式稿**（核#11）。每章约 11–24 分钟，预计时长见章节选择页（`public/story/chapters/index.json` 的 `estimatedMinutes`）。章节数据在 `public/story/chapters/`，格式与引擎见 [`docs/STORY-ENGINE.md`](docs/STORY-ENGINE.md)；校验与自动试玩：`npm run story:check`。
 
+内容分级（作者核#13 第8条、核#14）：主线默认 **15+ 戏剧模式**（擦边与流血可以出现，但不露骨），设置里可随时切换 **12+ 柔和模式**（以剪影、遮挡与结果带过），两种模式的剧情、选择与结局完全相同。第一次进入主线时选择一次；已经存过设置的玩家沿用原来的模式，只看到一次「默认已改为 15+」的提示。两档共同禁区：裸露与性行为、性暴力、虐杀与肢解特写，未满 18 岁的角色永远不进擦边或血腥描写；主线判定器与外传聊天的模型提示词带同一份规则（外传还没有模式设置，按 12+）。细则见 `docs/STORY-ENGINE.md` §10。
+
 ### 标题页（`/`）
 
 三个入口各有一张说明卡片：「主线：亚克的旅程」（进入 `/story.html`）、「外传：银轨号」（IF 外传，名字输入框在这张卡片里）、「实验模式：卡牌对战」（进入 `/cards.html`）。
@@ -41,9 +43,12 @@
 
 ### 召唤、换衣、商店与设置（同在 `/`）
 
-- 召唤：角色池 / 服饰池，游戏内公示概率与保底；可以用 Credit 或钻石支付，抽到已拥有的条目会按稀有度折成钻石（见「钻石与奖励」）。卡池里的女主介绍使用正典身份（`设定集/03` 的基本资料、正典武器名与第一印象），不写正式章节尚未揭示的身世秘密。
-- 女主在主线**正式入队时自动获得**：通关第五章获得莉亚、第十章获得米娅（其余女主按 `设定集/03` §10 的入队章节登记在卡池数据里，章节上线后自动生效）；之前已经抽到的按重复补偿折成钻石。角色池照常保留。
-- 换衣：8 位女主 × 6 套服装；抽到的服装都会出现在换衣间（还没拥有对应女主的，列在「待解锁角色」里）。换装「分支剧情」尚未制作，界面显示「敬请期待」。
+- 召唤：角色池 / 服饰池，游戏内公示概率与保底；**只收钻石**（核#14；Credit 留给 AI 对话），抽到已拥有的条目会按稀有度折成钻石（见「钻石与奖励」）。卡池里的女主介绍使用正典身份（`设定集/03` 的基本资料、正典武器名与第一印象），不写正式章节尚未揭示的身世秘密。
+- **登场闸门（封存卡）**：8 位女主从一开始就都在池里、照常能抽到，但在玩家通关她的**登场章**之前，卡池、召唤结果、换衣间与钻石页只显示剪影和「第N章登场」——名字、称号、立绘、介绍都不出现，她的服装同样封存。登场章：莉亚 04、米娅 07、塞雷娜 11、莉莉丝 13（敌对登场）、伊芙琳 16、艾拉 17、芙蕾娅 18、奥菲利亚 19；莉莉丝与艾拉的姓（以及莉莉丝的故国）到通关第 20 章才显示。进度取服务器记录的主线首通（`POST /api/story/progress`），通关登场章或之后任何一章都算。
+- 女主在主线**正式入队时自动获得**（30 章入队表，`剧本/README_30章重構提案.md` §4.5）：莉亚 05、米娅 10、塞雷娜 12、伊芙琳 17、艾拉 18、芙蕾娅 19、奥菲利亚 20、莉莉丝 21（登记在卡池数据的 `joinChapter`，还没写出来的章节上线后自动生效）；之前已经抽到的按重复补偿折成钻石。角色池照常保留。
+- 换衣：8 位女主 × 6 类服装；抽到的服装都会出现在换衣间（还没拥有对应女主的，列在「待解锁角色」里；女主还没登场的，以剪影列在「尚未登场」里，通关她的登场章后才能换装）。
+- **典藏**（决定#31，`剧本/README_轉蛋服裝設計.md` §5.1）：原来的新年、圣诞、端午、周年庆四类改为典藏，显示名换成世界内的节庆——新历祭服、冬灯节服、龙舟祭服、纪念日礼服（稀有度不变）。它们退出常驻服饰池（抽不到），但服装 id 不变，已经拥有的照样能穿，换衣间在每位女主下面单列「典藏」一组（只列已拥有的）；对应番外上线时以限时池复刻。常驻服饰池暂时只有夏日度假服（5★）和女仆服（3★）两类，原样保留——真泳装重画、女仆改版和新增的婚礼 / 运动短袖 / OL 三类随美术阶段一起做。存档不需要迁移。
+- 每类服装对应一篇将来的番外（`game/costume.mjs` 的 `BRANCH_SCENES`：番外 id、开放章节与入口文案），番外系统还没上线，界面显示「番外 · 敬请期待」。服装不是番外的解锁条件。
 - 商店：会员、钻石充值保留为**演示用的免费补充**（没有真实支付，标价仅作展示）；由「演示工具」开关控制（见下文），本地运行默认开启。
 - 设置：AI 模式说明、音效开关、后台管理入口。按玩家切换模型尚未实现，设置页不再展示模型预设（所有玩家共用服务器配置的 AI）。
 
@@ -65,10 +70,12 @@
 
 | 花费 | 价格 |
 |---|---|
-| 召唤（角色池 / 服饰池） | 单抽 10 Credit 或 80 钻石；十连 90 Credit 或 720 钻石 |
+| 召唤（角色池 / 服饰池） | 只收钻石：单抽 80；十连 720 |
 | 卡牌开包 | 单包 80 钻石；十连 800 钻石 |
 
-重复补偿（召唤抽到已拥有的条目，含同一次十连里的第二份；主线入队时已经抽到的女主同样适用）：3★ 8 钻石（单抽的 10%）、4★ 16（20%）、5★ 160（两次单抽）。全部拥有后每抽的期望返还约为角色池 19、服饰池 14 钻石，远低于单抽价格，不会形成刷钻循环。
+重复补偿（召唤抽到已拥有的条目，含同一次十连里的第二份；主线入队时已经抽到的女主同样适用）：3★ 8 钻石（单抽的 10%）、4★ 16（20%）、5★ 160（两次单抽）。全部拥有后每抽的期望返还约为角色池 19、服饰池 13 钻石，远低于单抽价格，不会形成刷钻循环。
+
+服饰池的标准概率是 5★ 3% / 4★ 17% / 3★ 80%。典藏退出后常驻表暂时没有 4★，那 17% 并进 3★，所以现在公示的是 5★ 3% / 3★ 97%（保底不变）；4★ 的 OL 装随美术阶段上线时恢复。
 
 签到、首通与胜场记录存在服务器账户里（`account.rewards`），随存档一起保存。主线（`/story.html`）和卡牌页与主游戏共用浏览器里的同一个账户（`localStorage` 的 `moonlit:playerId`）。
 
@@ -258,11 +265,11 @@ game/
   engine.mjs            外传确定性状态机：关系、战斗与结局判定
   ai.mjs                本地/云端模型适配、结构化输出、验证与保底台词
   story-judge.mjs       主线自由输入的服务端判定
-  gacha.mjs             召唤卡池（角色池 / 服饰池、概率与保底、Credit / 钻石价格、重复补偿、女主入队章节）
+  gacha.mjs             召唤卡池（角色池 / 服饰池、概率与保底、钻石价格、重复补偿、女主登场 / 入队章节与封存卡视图）
   rewards.mjs           玩出来的钻石：每日签到、主线首通、卡牌胜利、女主自动入队
   costume.mjs           换衣系统
   membership.mjs        会员与钻石充值（演示，无真实支付）
-  credit.mjs            Credit 计量
+  credit.mjs            Credit 计量（只用于 AI 对话，不能召唤）
   settings.mjs          AI 模型预设目录（按玩家路由实现前不对玩家开放）
   analytics.mjs         运营统计（后台仪表板）
   persist.mjs           存档持久化（data/saves.json）
@@ -272,7 +279,7 @@ public/
   index.html, app.js    主游戏：标题页、IF 外传、地图、剧本草稿阅读器、召唤、换衣、商店、设置
   styles.css, icons.js, paint.js   主游戏样式、原创线性图标库、厚涂图替换清单读取
   story.html            主线「亚克的旅程」
-  story/                主线播放器（player.js）、纯函数引擎（engine.js）、章节数据（chapters/）、角色与场景表
+  story/                主线播放器（player.js）、纯函数引擎（engine.js）、内容分级设置（rating.js）、章节数据（chapters/）、角色与场景表
   cards.html, cards.js, cards.css   卡牌对战（实验模式）
   character-manager.html 角色设定管理原型
   assets/               美术资产（矢量 SVG 由 tools/art/ 生成，详见「资产说明」）
@@ -337,7 +344,7 @@ Dockerfile, docker-compose.yml
 
 **主线「亚克的旅程」**
 
-- `POST /api/story/judge`：自由输入判定（节点定义由服务器从章节文件读取）。
+- `POST /api/story/judge`：自由输入判定（节点定义由服务器从章节文件读取）；`context.mode`（`15+` / `12+`，缺省按 `12+`）只决定提示词里的内容分级规则。
 - `POST /api/story/progress`：`{ playerId, chapterId }` 报告章节通关（契约 R-2）。章节必须在 `public/story/chapters/index.json` 里，否则 400 `UNKNOWN_CHAPTER`；幂等，首次通关才发奖励。返回 `{ granted, diamonds, chapterReward, heroinesGranted, heroinesCompensated, alreadyCleared, chaptersCleared, balance, account }`：`granted` 表示这次是否发了任何东西，`diamonds` 是这次发的钻石总数（首通奖励 + 已拥有女主的补偿），`heroinesGranted` 是这次加入 `ownedCharacters` 的女主 id，`balance` 是发放后的钻石余额。
 
 **钻石奖励**
@@ -349,9 +356,9 @@ Dockerfile, docker-compose.yml
 
 - `POST /api/account/create`、`GET /api/account?playerId=`：创建 / 读取账户。
 - `GET /api/credit?playerId=`：Credit 余额。
-- `GET /api/gacha/pools`：卡池、概率与保底，以及 `costs`（`{ credit: { single, ten }, diamonds: { single, ten } }`）、`duplicateCompensation`（`{ 3: 8, 4: 16, 5: 160 }`）、`heroineJoins`（女主 id → 入队章节）。
-- `POST /api/gacha/pull`：`{ playerId, pool, count, currency? }` 召唤；`currency: 'diamonds'` 用钻石支付，缺省用 Credit。返回 `{ pool, currency, results, cost, pity, compensation: { diamonds }, balance: { credits, diamonds }, account }`，`results[i]` 带 `isNew`、`duplicate`、`compensation`；余额不足返回 400，`code` 为 `INSUFFICIENT_DIAMONDS` / `INSUFFICIENT_CREDIT`。
-- `GET /api/costume?playerId=`、`POST /api/costume/equip`：服装列表、穿戴。
+- `GET /api/gacha/pools?playerId=`：卡池、概率与保底，以及 `currency: 'diamonds'`、`costs`（`{ diamonds: { single, ten } }`）、`duplicateCompensation`（`{ 3: 8, 4: 16, 5: 160 }`）、`heroineJoins`（女主 id → 入队章节）、`progress: { highestCleared }`。`characters` / `costumes` 是按这个玩家主线进度的对外视图：还没登场的女主是 `{ id, rarity, sealed: true, name: '？？？', title: '？？？', unlockChapter, joinChapter, debutLabel }`（`debutLabel` 形如「第13章登场」），她的服装是 `{ id, characterId, type, rarity, sealed: true, name: '？？？·女仆服', unlockChapter, debutLabel }`（没有立绘路径）；已登场的带完整资料与 `sealed: false`。不带 `playerId`（或账户不存在）按零进度。
+- `POST /api/gacha/pull`：`{ playerId, pool, count }` 召唤，只收钻石；`currency` 可以省略或写 `'diamonds'`，旧前端传来的 `'credit'` 返回 400 `DIAMONDS_ONLY`、不扣任何东西。返回 `{ pool, currency: 'diamonds', results, cost, pity, compensation: { diamonds }, balance: { diamonds }, account }`，`results[i]` 是同一个登场闸门下的视图，另带 `isNew`、`duplicate`、`compensation`；钻石不足返回 400 `INSUFFICIENT_DIAMONDS`。
+- `GET /api/costume?playerId=`、`POST /api/costume/equip`：服装列表（`costumePool` 同样按登场闸门给视图）、穿戴。
 - `GET /api/membership/tiers`：会员档位与钻石包。
 - 演示工具（`DEMO_TOOLS`，关闭时 403）：`POST /api/membership/purchase`、`POST /api/diamonds/purchase`、`POST /api/costume/grant-all`。
 - `GET /api/settings/ai?playerId=`：`{ perPlayerRouting: false, current, models: [], settings }`，`current` 是所有玩家共用的 AI（同 `/api/meta` 的 `ai`）；按玩家路由实现前不下发模型预设。`POST /api/settings/ai` 对存在的账户返回 409 `PER_PLAYER_ROUTING_UNAVAILABLE`。

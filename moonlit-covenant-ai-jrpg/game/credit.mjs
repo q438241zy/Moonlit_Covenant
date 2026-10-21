@@ -1,14 +1,15 @@
 /**
  * Credit计量系统
  * 管理玩家Credit余额、消耗、赠送及历史记录
+ *
+ * Credit 只用于 AI 对话。召唤只收钻石（核#14，剧本/README_30章重構提案.md 第八节#44；见 game/gacha.mjs），
+ * 所以这里不再有召唤的价格。
  */
 
 // 各行为Credit消耗定义
 export const CREDIT_COSTS = {
   chat: 1,           // 普通聊天
   battle_action: 0,  // 战斗行动（免费）
-  gacha_single: 10,  // 单抽
-  gacha_ten: 90,     // 十连抽
   costume_preview: 0,// 服装预览（免费）
   ai_dialogue: 2     // AI深度对话
 };

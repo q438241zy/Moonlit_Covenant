@@ -130,7 +130,7 @@ const HERO_ICONS = { lia_hero: 'crown', lilith_hero: 'crown', serena_hero: 'crow
 const CLASS_ICON = { lia: 'guard', lilith: 'dagger', serena: 'moon-orb', neutral: 'sword' };
 const CLASS_PICK = [
   ['lia', '莉亚·赫斯特', '守护 / 中速', '以守护随从稳住阵线，护甲与群体伤害收割'],
-  ['lilith', '莉莉丝·瓦尔哈拉', '快攻', '突进与疾驰抢节奏，直取敌方主战者'],
+  ['lilith', '莉莉丝', '快攻', '突进与疾驰抢节奏，直取敌方主战者'],
   ['serena', '塞雷娜·诺克斯', '控制', '抽牌、消灭与群体法术掌控全场']
 ];
 const CARD_BACK = '/assets/ui/card-back.svg';
