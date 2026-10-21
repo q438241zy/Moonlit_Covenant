@@ -4,6 +4,7 @@
 //   node tools/story/check.mjs ch000 --transcript      导出逐字稿（默认玩法）到 stdout，便于与剧本对照
 //   node tools/story/check.mjs ch000 --play intent=0   每个节点都选第 N 个非沉默意图试玩
 // 试玩策略：silent（全部沉默）、fallback（无法归类的输入）、每个意图各跑一遍（逐节点轮换），确保所有分支都能走到章末。
+// 另有逐章接续的高信赖路线（LEAH_TRUST、MIA_TRUST 各一条），让只在高信赖时出现的节点也能被覆盖。
 // 意图覆盖同时统计「从本章开始」和「接续上一章各策略的存档」两种开局：只在特定前章结果下才出现的节点也算进覆盖。
 
 import fs from 'node:fs';
@@ -113,8 +114,32 @@ function wordingErrors(chapter) {
   return errs;
 }
 
+// 高信赖路线：只有信赖累积够了才出现的节点（例如第六章的同行者营地，要第五章末 LEAH_TRUST ≥ 20）靠轮换策略走不到。
+// 每个输入都试遍意图、本章其余沉默走完，取章末该变量最高的意图；逐章接续，章末存档并入下一章的接续试玩。
+const MAXIMIZE = ['LEAH_TRUST', 'MIA_TRUST'];
+function greedy(chapter, run, key) {
+  for (let guard = 0; guard < 20000; guard += 1) {
+    const item = next(run, chapter);
+    if (item.kind === 'end') return run;
+    if (item.kind !== 'input') continue;
+    const def = findDef(chapter, item.node.id);
+    let best = null;
+    for (const intent of def.intents) {
+      const text = intent.id === def.silent ? '' : intent.id;
+      const trial = structuredClone(run);
+      resolveInput(trial, chapter, { intent: intent.id }, text);
+      const r = play(chapter, 'silent', trial);
+      const score = r.ok ? Number(r.run.vars?.[key]) || 0 : -Infinity;
+      if (!best || score > best.score) best = { id: intent.id, text, score };
+    }
+    resolveInput(run, chapter, { intent: best.id }, best.text);
+  }
+  return null;
+}
+
 let failed = false;
 let prevRuns = [];
+let greedyRuns = MAXIMIZE.map(() => null);
 for (const entry of index) {
   if (only.length && !only.includes(entry.id)) continue;
   const chapter = loadChapter(entry.id);
@@ -173,20 +198,25 @@ for (const entry of index) {
       carried += 1;
     }
   }
-  // 补触达：对仍未覆盖的意图，固定该节点的选择，其余节点逐一尝试第 j 个意图
+  // 补触达：对仍未覆盖的意图，固定该节点的选择，其余节点逐一尝试第 j 个意图（从本章开局，也从上一章各存档接续）
   for (const pair of [...allIntents].filter((h) => !covered.has(h))) {
     if (covered.has(pair)) continue;
     const [nodeId, intentId] = pair.split(':');
-    for (let j = 0; j < maxChoices && !covered.has(pair); j += 1) {
-      const r = play(chapter, { fixed: { [nodeId]: intentId }, j });
-      if (!r.ok) { failed = true; console.log(`✗ ${entry.id} 定点策略 ${pair}/${j} 未能走到章末`); break; }
-      r.hit.forEach((h) => covered.add(h));
+    for (const prev of [null, ...prevRuns]) {
+      for (let j = 0; j < maxChoices && !covered.has(pair); j += 1) {
+        const r = play(chapter, { fixed: { [nodeId]: intentId }, j }, prev ? continueRun(prev, chapter) : undefined);
+        if (!r.ok) { failed = true; console.log(`✗ ${entry.id} 定点策略 ${pair}/${j} 未能走到章末`); break; }
+        r.hit.forEach((h) => covered.add(h));
+      }
+      if (covered.has(pair)) break;
     }
   }
   const minutes = main ? (main.chars / 320 + main.inputs * 0.4).toFixed(1) : '?';
   const unreached = [...allIntents].filter((h) => !covered.has(h));
   console.log(`✓ ${entry.id} ${chapter.title}：${chapter.shots.length} 分镜 · ${main?.beats} 节拍 · ${main?.inputs} 次输入 · ${main?.chars} 字 · 估算 ${minutes} 分钟 · 意图覆盖 ${covered.size}/${allIntents.size}${carried ? ` · 接续存档试玩 ${carried} 局` : ''}`);
   if (unreached.length) console.log(`   演示判定无法触达的意图（关键词与其他意图冲突？）：${unreached.slice(0, 12).join('，')}${unreached.length > 12 ? '…' : ''}`);
-  prevRuns = runs;
+  greedyRuns = MAXIMIZE.map((key, k) => greedy(chapter, greedyRuns[k] ? continueRun(greedyRuns[k], chapter) : createRun({ chapter, playerName: '亚克' }), key));
+  if (greedyRuns.some((r) => !r)) { failed = true; console.log(`✗ ${entry.id} 高信赖路线未能走到章末`); }
+  prevRuns = [...runs, ...greedyRuns.filter(Boolean)];
 }
 process.exitCode = failed ? 1 : 0;
