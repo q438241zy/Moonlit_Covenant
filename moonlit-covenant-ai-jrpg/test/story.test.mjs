@@ -271,7 +271,7 @@ test('B14: prompts, placeholders, captions and battle intel name the hero instea
   for (const entry of index) {
     const chapter = readJson(`public/story/chapters/${entry.id}.json`);
     for (const shot of chapter.shots) {
-      if (/^自由输入[：:]/.test(shot.title)) assert.ok(!addressesPlayer(shot.title), `${shot.id} title「${shot.title}」`);
+      if (/^自由(输入|战斗)[：:]/.test(shot.title)) assert.ok(!addressesPlayer(shot.title), `${shot.id} title「${shot.title}」`);
     }
     eachBeat(chapter, (beat) => {
       if (beat.t === 'input') {

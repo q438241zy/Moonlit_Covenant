@@ -417,11 +417,16 @@ button, input, textarea { font: inherit; color: inherit; }
   height: min(88vh, 920px);
   opacity: 0;
   transform: translateY(18px);
-  transition: opacity .35s ease, transform .45s ease, filter .35s ease;
+  transition: opacity .35s ease, transform .45s ease, filter .35s ease, right .45s ease;
   pointer-events: none;
 }
 .art-left { left: 3vw; }
 .art-right { right: 3vw; }
+/* 桌面上战斗面板浮在右上角（360px 宽），右侧立绘的脸正好压在面板底下（第七章拾铁机、第十章潮腔里莉亚和米娅边打边说）：
+   面板在场时右侧立绘往左让，让脸露在面板左边；手机（面板横跨顶部）和矮横屏（面板改右侧栏）不动 */
+@media (min-width: 1081px) and (min-height: 561px) {
+  .play.has-hud .art-right { right: calc(min(360px, 100vw - 24px) + clamp(12px, 2vw, 28px) - 140px); }
+}
 .art img {
   max-width: 100%;
   max-height: 100%;
@@ -882,6 +887,23 @@ button, input, textarea { font: inherit; color: inherit; }
 .end-reward > .end-reward-note:only-child { margin: 0; }
 .end-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 22px; }
 .end-actions .btn.large { flex-basis: 100%; }
+/* 第六章起正史记录每条两三行，加上首通奖励，完成页在 1440×900 也放不下：「下一章 / 重玩」被挤到屏幕外，
+   焦点却已经落在按钮上（focus 用了 preventScroll）。按钮行贴住完成页可视区的底边，摘要在它后面滚动；放得下时停在原位。 */
+.end-card .end-actions {
+  position: sticky;
+  bottom: calc(-20px - var(--safe-bottom));
+  z-index: 1;
+  margin: 12px calc(-1 * clamp(20px, 4vw, 38px)) 0;
+  padding: 16px clamp(20px, 4vw, 38px) calc(18px + var(--safe-bottom));
+  /* 不透明：「下一章制作中」这类禁用按钮是半透明的，后面滚过的金色奖励字不能透出来 */
+  background: linear-gradient(180deg, rgba(11, 8, 26, 0), rgb(11, 8, 26) 16px);
+}
+.end-card:has(> .end-actions) { padding-bottom: 10px; } /* 按钮行自带底部留白，卡片总高与原来相近 */
+/* 横屏手机 / 矮窗口：两行按钮会占掉三分之一屏，三个按钮并成一行 */
+@media (max-height: 560px) {
+  .end-card .end-actions { padding-top: 12px; padding-bottom: calc(10px + var(--safe-bottom)); gap: 8px; }
+  .end-card .end-actions .btn.large { flex: 1 1 auto; min-height: 44px; padding-block: 8px; }
+}
 .fatal .muted { line-height: 1.7; word-break: break-word; }
 
 /* ─── 响应式 ─── */

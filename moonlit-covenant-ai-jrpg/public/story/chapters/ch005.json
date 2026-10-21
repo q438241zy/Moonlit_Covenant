@@ -16922,7 +16922,7 @@
   ],
   "end": {
     "save": "SAVE_CH005_END_CART_NIGHT_RESCUE",
-    "next": null,
+    "next": "ch006",
     "nextLabel": "CH006_STRAWBERRY_CAKE_TRUCE",
     "set": {
       "flags": {

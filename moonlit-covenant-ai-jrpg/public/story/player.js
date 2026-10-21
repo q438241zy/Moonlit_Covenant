@@ -845,8 +845,9 @@ function upcomingBeats(n = 4) {
 function showShotCaption(shot) {
   const loc = S.locations[shot.bg];
   // 读档时传进来的是章节里的原始分镜（标题可能带 {PLAYER_NAME}），这里统一替换。
-  // 剧本规格把自由输入分镜标成「自由输入：钉笼子的人」，那是给写作者看的分类前缀，玩家只看标题本身（源数据不动）
-  const title = interpolate(shot.title || '', S.run).replace(/^自由输入[：:]\s*/, '');
+  // 剧本规格把自由输入分镜标成「自由输入：钉笼子的人」、战斗分镜标成「自由战斗：根往水花去」（第十章），
+  // 那是给写作者看的分类前缀，玩家只看标题本身（源数据不动）
+  const title = interpolate(shot.title || '', S.run).replace(/^自由(?:输入|战斗)[：:]\s*/, '');
   P.shotCap.innerHTML = `<span class="shot-id">${esc(shot.id)}</span><span class="shot-title">${esc(title)}</span>${loc ? `<span class="shot-loc">${icon('compass', { size: 12 })}${esc(loc.name)}</span>` : ''}`;
   P.shotCap.classList.remove('show');
   void P.shotCap.offsetWidth;
@@ -1025,8 +1026,9 @@ function preload(url) {
   return imgCache.get(url);
 }
 
-// 画外音、回忆里的声音不在场：只显示名牌，不上立绘
-const OFFSTAGE_NOTE = /回忆|记忆|画外|远处|梦中|脑海|幻听/;
+// 画外音、回忆里的声音不在场：只显示名牌，不上立绘。
+// 隔着东西传过来的声音也一样：第十章米娅在三号泵房，经铁管跟潮腔里的人喊话（「管子里」，69 句）；第九章烧水的老妇「隔着门」
+const OFFSTAGE_NOTE = /回忆|记忆|画外|远处|梦中|脑海|幻听|管子里|隔着|门外|门后|传声/;
 function updateArt(beat) {
   if (beat.t !== 'say' || OFFSTAGE_NOTE.test(beat.note || '')) { setArtActive(null); return; }
   const sp = speakerOf(beat.who);
@@ -1094,10 +1096,12 @@ async function setBackground(id, mode = 'fade') {
   const loc = id && id !== 'black' ? S.locations[id] : null;
   let image = '';
   let raster = false;
+  let late = null; // 1.6 秒内没读完的背景图：先用渐变顶上，读完后再淡入（见函数末尾）
   if (loc?.svg) {
     const url = paint(loc.svg);
-    const ok = await Promise.race([preload(url), sleep(1600).then(() => false)]);
-    if (ok) { image = `url("${String(url).replace(/["\\]/g, '')}")`; raster = isRaster(url); }
+    const loading = preload(url);
+    const ok = await Promise.race([loading, sleep(1600).then(() => false)]);
+    if (ok) { image = `url("${String(url).replace(/["\\]/g, '')}")`; raster = isRaster(url); } else late = loading;
   }
   if (S.bg !== id || !P.bgLayers) return null;
   const nextIdx = S.bgFront ^ 1;
@@ -1111,6 +1115,13 @@ async function setBackground(id, mode = 'fade') {
   P.scene.setAttribute('aria-label', loc ? `场景：${loc.name}` : '黑画面');
   S.bgFront = nextIdx;
   updateAiBadge();
+  // 网络慢 / 解码忙时背景图超过 1.6 秒才到：以前整个分镜都停在兜底渐变上（第六章 06-02 东门在 QA 里出现过）。
+  // 图一到、画面还停在这一处（没换场、没离开播放页），就再走一次淡入，把渐变换成真正的背景
+  if (late) {
+    late.then((ok) => {
+      if (ok && S.view === 'play' && S.bg === id && P.scene?.isConnected && P.bgLayers?.[S.bgFront] === incoming) setBackground(id, 'fade');
+    });
+  }
   if (mode === 'cut' || reducedMotion) {
     P.bgLayers.forEach((l) => l.classList.add('cut'));
     incoming.classList.add('show');
@@ -1699,8 +1710,9 @@ async function onEnd(end) {
       });
       focusBest();
     } else {
+      // 目录里还没有下一章（第十章读完时）：明确写「敬请期待」，与主菜单地图上未开放城镇的说法一致
       nextBtn.disabled = true;
-      nextBtn.innerHTML = `${icon('clock', { size: 18 })}<span>下一章制作中</span>`;
+      nextBtn.innerHTML = `${icon('clock', { size: 18 })}<span>下一章制作中 · 敬请期待</span>`;
     }
   };
   await wireNext();
