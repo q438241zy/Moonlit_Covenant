@@ -16,7 +16,7 @@ const C = {
 
 export default {
   id: 'lilith',
-  name: '莉莉丝·瓦尔哈拉',
+  name: '莉莉丝', // 只写名：姓氏「瓦尔哈拉」到主线正式20才揭晓（核#14），SVG 的 aria-label 不能提前带出
   palette: {
     accent: '#c084fc', accent2: '#d9a441',
     hair: '#f6cf58', hairShadow: '#d89c34', hairDeep: '#9c6420', hairHighlight: '#fff6c4', hairLine: '#6a3c10',
