@@ -193,5 +193,20 @@
     "name": "码头工人",
     "color": "#8798a0",
     "art": null
+  },
+  "tide_cavity_mother": {
+    "name": "潮腔母虫",
+    "color": "#b4c2ae",
+    "art": "/assets/story/npc/tide_cavity_mother.svg"
+  },
+  "dali": {
+    "name": "达利",
+    "color": "#8798a0",
+    "art": null
+  },
+  "outsider": {
+    "name": "外地客",
+    "color": "#9a9488",
+    "art": null
   }
 }

@@ -232,5 +232,47 @@
     "svg": "/assets/story/bg/fog-harbor-drain-night.svg",
     "top": "#2c3250",
     "bottom": "#090a12"
+  },
+  "fog-harbor-sewer-pump": {
+    "name": "雾港·东口以下·砖拱水道与三号泵房",
+    "svg": "/assets/story/bg/fog-harbor-sewer-pump.svg",
+    "top": "#4a4038",
+    "bottom": "#0c0d10"
+  },
+  "fog-harbor-tide-cavity": {
+    "name": "雾港·潮腔·旧蓄水池",
+    "svg": "/assets/story/bg/fog-harbor-tide-cavity.svg",
+    "top": "#3a4a46",
+    "bottom": "#080e10"
+  },
+  "fog-harbor-tide-cavity-ebb": {
+    "name": "雾港·潮腔·排水后",
+    "svg": "/assets/story/bg/fog-harbor-tide-cavity-ebb.svg",
+    "top": "#4a5652",
+    "bottom": "#10161a"
+  },
+  "fog-harbor-drain-dawn": {
+    "name": "旧浴场后沟与排水区东口·破晓",
+    "svg": "/assets/story/bg/fog-harbor-drain-dawn.svg",
+    "top": "#b4b0b8",
+    "bottom": "#2e3038"
+  },
+  "fog-harbor-bridge-dusk": {
+    "name": "雾港·第一座木桥·黄昏",
+    "svg": "/assets/story/bg/fog-harbor-bridge-dusk.svg",
+    "top": "#cc8e6c",
+    "bottom": "#2c2830"
+  },
+  "fog-harbor-bridge-inn-night": {
+    "name": "雾港·桥头旅店·入夜",
+    "svg": "/assets/story/bg/fog-harbor-bridge-inn-night.svg",
+    "top": "#3a302c",
+    "bottom": "#0c0a0e"
+  },
+  "fog-harbor-bridge-inn-eyes": {
+    "name": "雾港·桥头旅店·镜中紫眼",
+    "svg": "/assets/story/bg/fog-harbor-bridge-inn-eyes.svg",
+    "top": "#382c44",
+    "bottom": "#0a0812"
   }
 }
