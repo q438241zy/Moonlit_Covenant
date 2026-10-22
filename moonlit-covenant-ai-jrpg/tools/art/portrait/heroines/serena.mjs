@@ -35,6 +35,10 @@ export default {
     foreground: gloveHand,
     irisDetail,
   },
+  // optional layer, drawn only when compose() is asked for it (opts.extras): the head of her canon staff
+  // (设定集/03: 黑曜法杖“无眠镜”) rising behind her right shoulder (viewer's left). Only the story-mode bust
+  // (tools/art/story/serena-bust.mjs) asks for it; the gacha portrait and costume portraits are unchanged.
+  extras: { staff },
 };
 
 // ------------------------------------------------------------------ background: eclipse + star-chart rings
@@ -336,5 +340,29 @@ function gloveHand(p) {
     + `<circle cx="0" cy="40" r="3.4" fill="${C.silver}" stroke="${C.silverLine}" stroke-width=".9"/><circle cx="0" cy="40" r="5.6" fill="none" stroke="${C.violet}" stroke-width=".8" stroke-dasharray="1 1.4" opacity=".7"/>`
     + `</g>`
     + `<path d="${band(12)}" stroke="${C.silver}" stroke-width="2.4" opacity=".9"/><path d="${band(22)}" stroke="${C.silver}" stroke-width="1.2" stroke-dasharray="3 4" opacity=".75"/>`
+    + `</g>`;
+}
+
+// ------------------------------------------------------------------ extras: the obsidian staff "Sleepless Mirror", behind her right shoulder
+function staff(p) {
+  const { n } = p.helpers;
+  // local frame: head centre at the origin, shaft running down +y; the whole staff leans a little outward
+  const shaftG = p.lin('staffShaft', [[0, '#3a2f52'], [0.5, '#1a1428'], [1, '#0c0916']], [-9, 0, 9, 0]);
+  const glassG = p.lin('staffGlass', [[0, '#5a4a86'], [0.35, '#1c1530'], [0.7, '#0a0814'], [1, '#2a2148']], [-30, -80, 30, 60]);
+  const crystal = 'M0,-96L26,-28L20,34L0,58L-20,34L-26,-28Z';
+  const facet = 'M0,-96L-8,-24L0,58M-8,-24L-26,-28M-8,-24L20,34';
+  // silver crescent cradle holding the crystal, open upward like a waxing moon on its back
+  const cradle = 'M-44,-6Q-46,52 0,74Q46,52 44,-6Q36,40 0,56Q-36,40 -44,-6Z';
+  return `<g transform="translate(146 500) rotate(-9) scale(1.4)" stroke-linejoin="round">`
+    + `<path d="M-8,60L8,60L11,560L-11,560Z" fill="${shaftG}" stroke="${C.robeLine}" stroke-width="3"/>`
+    + `<path d="M-2,70L-3,550" stroke="${C.violet}" stroke-width="1.6" opacity=".35"/>`
+    + `<path d="M-13,96h26v12h-26zM-12,124h24v6h-24z" fill="${C.silverShade}" stroke="${C.silverLine}" stroke-width="2"/>`
+    + `<path d="${crystal}" fill="${glassG}" stroke="${C.silverLine}" stroke-width="3"/>`
+    + `<path d="${facet}" fill="none" stroke="#6a5a9a" stroke-width="1.6" opacity=".7"/>`
+    + `<path d="M-6,-70L-14,-30" stroke="${C.moonW}" stroke-width="3" stroke-linecap="round" opacity=".55"/>`
+    + `<circle cx="${n(4)}" cy="${n(4)}" r="7" fill="${C.violet}" opacity=".35"/>`
+    + `<path d="${cradle}" fill="${C.silver}" stroke="${C.silverLine}" stroke-width="2.6"/>`
+    + `<path d="M-38,4Q-34,40 0,52" fill="none" stroke="${C.silverLit}" stroke-width="2.2" stroke-linecap="round" opacity=".8"/>`
+    + `<circle cx="-44" cy="-6" r="5" fill="${C.silverLit}" stroke="${C.silverLine}" stroke-width="1.6"/><circle cx="44" cy="-6" r="5" fill="${C.silverLit}" stroke="${C.silverLine}" stroke-width="1.6"/>`
     + `</g>`;
 }

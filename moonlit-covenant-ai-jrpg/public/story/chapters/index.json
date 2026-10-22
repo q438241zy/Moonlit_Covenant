@@ -97,5 +97,14 @@
     "file": "/story/chapters/ch010.json",
     "requires": "ch009",
     "source": "剧本/10下水道的潮聲.md"
+  },
+  {
+    "id": "ch011",
+    "number": 11,
+    "title": "第十一章｜镜中紫影",
+    "estimatedMinutes": 11,
+    "file": "/story/chapters/ch011.json",
+    "requires": "ch010",
+    "source": "剧本/11鏡中紫影.md"
   }
 ]

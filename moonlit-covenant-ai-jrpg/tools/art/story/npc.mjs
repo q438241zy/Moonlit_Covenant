@@ -1109,4 +1109,51 @@ CAST.tide_cavity_mother = {
   },
 };
 
+// 蚀痕残响 (chapter 11, the dream fight "on the other side of the mirror") — a figure with no face whose outline and
+// bearing are Aku's: his head, messy hair, neck, shoulders and cloak (CAST.aku's silhouette without the old sword's
+// hilt), no details, no clasp, no glint at the eye. Not monstrous, no blood (script 11 美術需求). Two versions:
+//   scar_echo    (12+, the default file) — where the face would be, one flat plane of dark shadow;
+//   scar_echo_15 (15+)                  — where the face would be, a smooth mirror sheen with his own outline
+//                                          faintly in it (horror atmosphere, not gore).
+const ECHO_HAIR = [[214, 214], [208, 170], [236, 176], [238, 132], [268, 150], [288, 104], [312, 140], [350, 106], [360, 146], [406, 132], [396, 170], [404, 214], [376, 236], [330, 216], [290, 200], [262, 214], [240, 240]];
+function scarEcho(mirrorFace) {
+  return {
+    id: mirrorFace ? 'scar_echo_15' : 'scar_echo',
+    label: mirrorFace
+      ? '蚀痕残响（15+）：没有脸的人影，头发、肩膀与斗篷的轮廓像亚克，不画细节、不画剑；脸的位置是一片光滑的镜面反光，隐约映着他自己的轮廓；不画血，不像怪物'
+      : '蚀痕残响：没有脸的人影，头发、肩膀与斗篷的轮廓像亚克，不画细节、不画剑；脸的位置是一片平涂的暗影；不画血，不像怪物',
+    rim: '#9aa0b8', dir: 1,
+    sil: CAST.aku.sil.slice(3),
+    defs: (p) => (mirrorFace ? [
+      `<linearGradient id="${p}-glass" x1="0" y1="0" x2=".6" y2="1"><stop offset="0" stop-color="#c4cad8"/><stop offset=".45" stop-color="#7a8296"/><stop offset="1" stop-color="#3a3f50"/></linearGradient>`,
+      `<clipPath id="${p}-faceClip"><path d="${head(0, 0, 1)}"/></clipPath>`,
+    ] : []),
+    tones: [
+      [S([[96, 520], [150, 470], [230, 440], [300, 430], [370, 438], [450, 470], [504, 520], [520, 820], [80, 820]]), '#1a1822', 0.9],
+      [S([[262, 440], [300, 452], [334, 440], [352, 820], [238, 820]]), '#0e0d14', 0.95],
+    ],
+    lines: [
+      [pl([[386, 256], [366, 306], [324, 352]]), 3, 0.6],
+      [pl([[170, 470], [230, 446], [262, 440]]) + pl([[334, 440], [380, 446], [452, 476]]), 2.5, 0.45],
+      [pl([[380, 384], [430, 404], [470, 440]]), 3, 0.5],
+    ],
+    front: ({ p, rim }) => {
+      const face = head(0, 0, 1);
+      let s = mirrorFace
+        ? `<path d="${face}" fill="url(#${p}-glass)"/>`
+          // the sheen: two soft diagonal bands, and his own outline faint and small in the glass
+          + `<path d="M232,200L300,160L318,174L246,226ZM226,262L330,186L340,196L232,278Z" fill="#eef0f8" opacity=".35"/>`
+          + `<g clip-path="url(#${p}-faceClip)"><g transform="translate(300 272) scale(.26) translate(-300 -330)" fill="#1c1f2a" opacity=".34"><path d="${head(0, 0, 1)}"/><path d="${S(ECHO_HAIR)}"/><path d="${torso(188, 478, 1.1)}"/></g></g>`
+          + `<path d="${face}" fill="none" stroke="#d8dcea" stroke-width="2" opacity=".5"/>`
+        : `<path d="${face}" fill="#07060c" opacity=".92"/>`;
+      // the hair falls over the top of the face plane again
+      s += `<path d="${CAST.aku.sil[4]}" fill="#121119"/><path d="${S(ECHO_HAIR)}" fill="#2a2a36"/>`;
+      s += `<path d="${pl([[288, 104], [300, 150], [282, 196]]) + pl([[350, 106], [346, 158], [326, 200]])}" fill="none" stroke="${rim}" stroke-width="2.5" opacity=".5"/>`;
+      return s;
+    },
+  };
+}
+CAST.scar_echo = scarEcho(false);
+CAST.scar_echo_15 = scarEcho(true);
+
 export const npcBusts = Object.fromEntries(Object.entries(CAST).map(([id, spec]) => [id, (rim) => render(spec, rim)]));

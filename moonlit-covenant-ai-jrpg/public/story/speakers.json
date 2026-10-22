@@ -208,5 +208,25 @@
     "name": "外地客",
     "color": "#9a9488",
     "art": null
+  },
+  "serena_unknown": {
+    "name": "镜中人",
+    "color": "#b58cff",
+    "art": "/assets/story/npc/serena.svg"
+  },
+  "serena": {
+    "name": "塞雷娜",
+    "color": "#b58cff",
+    "art": "/assets/story/npc/serena.svg"
+  },
+  "scar_echo": {
+    "name": "蚀痕残响",
+    "color": "#9aa0b8",
+    "art": "/assets/story/npc/scar_echo.svg"
+  },
+  "scar_echo_15": {
+    "name": "蚀痕残响",
+    "color": "#9aa0b8",
+    "art": "/assets/story/npc/scar_echo_15.svg"
   }
 }

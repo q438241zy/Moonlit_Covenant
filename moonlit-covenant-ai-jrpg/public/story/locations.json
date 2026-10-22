@@ -274,5 +274,23 @@
     "svg": "/assets/story/bg/fog-harbor-bridge-inn-eyes.svg",
     "top": "#382c44",
     "bottom": "#0a0812"
+  },
+  "fog-harbor-bridge-inn-room": {
+    "name": "雾港·桥头旅店·亚克的房间",
+    "svg": "/assets/story/bg/fog-harbor-bridge-inn-room.svg",
+    "top": "#3a302a",
+    "bottom": "#0c0a0e"
+  },
+  "fog-harbor-bridge-inn-mirror": {
+    "name": "雾港·桥头旅店·镜子的那一边",
+    "svg": "/assets/story/bg/fog-harbor-bridge-inn-mirror.svg",
+    "top": "#2a3040",
+    "bottom": "#08090e"
+  },
+  "fog-harbor-bridge-inn-covered": {
+    "name": "雾港·桥头旅店·镜子蒙上毛巾",
+    "svg": "/assets/story/bg/fog-harbor-bridge-inn-covered.svg",
+    "top": "#3a302c",
+    "bottom": "#0c0a0e"
   }
 }
