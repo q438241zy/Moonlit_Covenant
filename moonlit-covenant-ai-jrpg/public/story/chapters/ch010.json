@@ -24958,7 +24958,7 @@
   ],
   "end": {
     "save": "SAVE_CH010_END_SEWER_TIDE_SOUND",
-    "next": null,
+    "next": "ch011",
     "nextLabel": "CH011_PURPLE_SHADOW_IN_MIRROR",
     "set": {
       "flags": {

@@ -1129,8 +1129,9 @@ function preload(url) {
 }
 
 // 画外音、回忆里的声音不在场：只显示名牌，不上立绘。
-// 隔着东西传过来的声音也一样：第十章米娅在三号泵房，经铁管跟潮腔里的人喊话（「管子里」，69 句）；第九章烧水的老妇「隔着门」
-const OFFSTAGE_NOTE = /回忆|记忆|画外|远处|梦中|脑海|幻听|管子里|隔着|门外|门后|传声/;
+// 隔着东西传过来的声音也一样：第十章米娅在三号泵房，经铁管跟潮腔里的人喊话（「管子里」，69 句）；第九章烧水的老妇「隔着门」；
+// 第十一章亚克被拖进镜子另一边的走廊，莉亚在梦外敲盾、叫他的名字（「外面」）
+const OFFSTAGE_NOTE = /回忆|记忆|画外|远处|梦中|梦外|脑海|幻听|管子里|隔着|门外|门后|外面|传声/;
 function updateArt(beat) {
   if (beat.t !== 'say' || OFFSTAGE_NOTE.test(beat.note || '')) { setArtActive(null); return; }
   const sp = speakerOf(beat.who);
