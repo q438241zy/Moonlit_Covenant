@@ -477,7 +477,12 @@ test('HTTP: R-1 / R-2 rewards, heroine auto-grant and diamond summons', { timeou
   assert.equal(pull.json.cost, 80);
   assert.equal(pull.json.balance.diamonds, balance - 80 + pull.json.compensation.diamonds);
   assert.equal(pull.json.account.diamonds, pull.json.balance.diamonds);
-  const tooMuch = await api(srv.base, '/api/gacha/pull', { body: { playerId, pool: 'character', count: 10, currency: 'diamonds' } });
+  // 起始 1600 钻石（核#15）够十连：一直十连到余额不足，最后一次必须被拒
+  let tooMuch;
+  for (let i = 0; i < 6; i += 1) {
+    tooMuch = await api(srv.base, '/api/gacha/pull', { body: { playerId, pool: 'character', count: 10, currency: 'diamonds' } });
+    if (tooMuch.status !== 200) break;
+  }
   assert.equal(tooMuch.status, 400);
   assert.equal(tooMuch.json.code, 'INSUFFICIENT_DIAMONDS');
 

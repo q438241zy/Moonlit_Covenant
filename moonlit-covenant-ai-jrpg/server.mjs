@@ -554,7 +554,7 @@ async function handleApi(req, res, url) {
     // demo 模式：发放起始资源，确保进入即可体验召唤（无需真实支付）
     if (process.env.AI_MODE !== 'openai') {
       account.credits += 600;
-      account.diamonds += 300;
+      account.diamonds += 1600; // 核#15：抽卡只收钻石后，起始资源足够两次十连加两次单抽
     }
     account.updatedAt = Date.now();
     playerAccounts.set(account.id, account);
