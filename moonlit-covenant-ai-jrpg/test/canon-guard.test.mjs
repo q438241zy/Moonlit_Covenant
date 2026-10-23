@@ -193,6 +193,21 @@ test('核#14: the summon pool reveals each spoiler only after its chapter is cle
   assert.ok(!JSON.stringify(publicPools(chapterIds(19))).includes('瓦尔哈拉'));
 });
 
+// 莉莉丝在正式13以无名的「金发刺客」登场，正式20才报上姓名：卡池（角色卡与她的服装名）在那之前不写她的名和匕首名。
+// 角色管理器、卡牌对战等开局可见的页面另有自己的口径，不在这张表里，所以单独检查卡池。
+const SUMMON_POOL_NAME_VEILS = [{ term: '莉莉丝', from: 20 }, { term: '昼盲', from: 20 }, { term: '夜醒', from: 20 }];
+
+test('核#14: the summon pool calls her 「金发刺客」 from ch013 and gives her name and weapon names only after ch020', () => {
+  for (let highest = -1; highest <= 30; highest += 1) {
+    const view = JSON.stringify(publicPools(highest < 0 ? [] : chapterIds(highest)));
+    const leaked = SUMMON_POOL_NAME_VEILS.filter((s) => s.from > highest && view.includes(s.term)).map((s) => s.term);
+    assert.deepEqual(leaked, [], `after clearing up to ch${String(highest).padStart(3, '0')}`);
+    assert.equal(view.includes('金发刺客'), highest >= 13 && highest < 20, `「金发刺客」 after ch${String(highest).padStart(3, '0')}`);
+  }
+  const named = JSON.stringify(publicPools(chapterIds(20)));
+  for (const { term } of SUMMON_POOL_NAME_VEILS) assert.ok(named.includes(term), term);
+});
+
 test('核#14: a main-line chapter only names what has been revealed by then', () => {
   const chapters = path.join(root, 'public/story/chapters');
   const files = fs.existsSync(chapters) ? fs.readdirSync(chapters).filter((n) => /^ch\d{3}\.json$/.test(n)) : [];

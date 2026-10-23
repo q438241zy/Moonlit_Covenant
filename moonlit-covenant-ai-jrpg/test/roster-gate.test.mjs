@@ -1,7 +1,7 @@
 // 核#14（剧本/README_30章重構提案.md 第八节#43、#44，§4.5 入队表；服装稿 1.2「封存卡」）：
 //   - 卡池的登场闸门：女主从一开始就在池里、照常能抽到，但在玩家通关她的登场章之前只给剪影——
 //     名字、称号、立绘、介绍都不出现，只留稀有度与「第N章登场」；她的服装同样封存；
-//   - 莉莉丝、艾拉的姓到正式20通关才显示（莉莉丝的故国也是）；
+//   - 莉莉丝、艾拉的姓到正式20通关才显示（莉莉丝的故国也是）；莉莉丝在正式13～19 只叫「金发刺客」（名、武器名、服装名里的名同样到正式20）；
 //   - 召唤只收钻石（Credit 留给 AI 对话）；
 //   - 进度来自服务器已经记录的主线首通（POST /api/story/progress），/api/gacha/pools、/api/gacha/pull、/api/costume 都按它给视图。
 import test from 'node:test';
@@ -65,29 +65,46 @@ test('each heroine is revealed by clearing her debut chapter (or any later one),
     // 她的服装跟着她揭开
     const maid = COSTUME_POOL.find((c) => c.id === `${heroine.id}_maid`);
     assert.equal(viewCostume(maid, upTo(debut - 1)).sealed, true);
-    assert.deepEqual(viewCostume(maid, upTo(debut)), { ...maid, sealed: false });
+    const shown = viewCharacter(heroine, upTo(debut)).name.split('·')[0];
+    assert.deepEqual(viewCostume(maid, upTo(debut)), { ...maid, name: `${shown}·女仆服`, sealed: false });
+    assert.deepEqual(viewCostume(maid, upTo(20)), { ...maid, sealed: false }, 'after ch020 the costume is shown as catalogued');
   }
   assert.equal(isHeroineRevealed('nobody', upTo(30)), false);
 });
 
-test('莉莉丝 shows her given name from ch013 but her surname and homeland only after ch020; 艾拉 likewise', () => {
+test('莉莉丝 is 「金发刺客」 from ch013 to ch019 — no given name, surname, homeland or weapon names until ch020; 艾拉 hides her surname likewise', () => {
   const lilith = byId.lilith;
   for (const highest of [13, 16, 19]) {
     const view = viewCharacter(lilith, upTo(highest));
-    assert.equal(view.name, '莉莉丝', `after ch0${highest}`);
+    assert.equal(view.sealed, false, 'her card is open from her debut');
+    assert.equal(view.name, '金发刺客', `after ch0${highest}`);
     assert.equal(view.nation, SEALED_TEXT);
+    assert.equal(view.weapon, SEALED_TEXT);
+    assert.equal(view.portrait, lilith.portrait);
+    assert.ok(view.desc && view.desc !== lilith.desc, 'a neutral description');
     const json = JSON.stringify(view);
-    for (const w of ['瓦尔哈拉', '翠影']) assert.ok(!json.includes(w), `「${w}」 before ch020`);
-    assert.ok(view.desc.includes('昼盲') && view.portrait, 'the rest of her card is shown');
+    for (const w of ['莉莉丝', '瓦尔哈拉', '翠影', '昼盲', '夜醒']) assert.ok(!json.includes(w), `「${w}」 before ch020`);
+    // 她的服装名也跟着遮
+    for (const costume of COSTUME_POOL.filter((c) => c.characterId === 'lilith')) {
+      const cv = viewCostume(costume, upTo(highest));
+      assert.equal(cv.sealed, false);
+      assert.match(cv.name, /^金发刺客·/, costume.id);
+      assert.ok(!JSON.stringify(cv).includes('莉莉丝'), costume.id);
+    }
+    const pools = JSON.stringify(publicPools(upTo(highest)));
+    for (const w of ['莉莉丝', '瓦尔哈拉', '翠影', '昼盲', '夜醒']) assert.ok(!pools.includes(w), `pools: 「${w}」 after ch0${highest}`);
   }
   const named = viewCharacter(lilith, upTo(20));
   assert.equal(named.name, '莉莉丝·瓦尔哈拉');
   assert.equal(named.nation, '翠影公国');
+  assert.equal(named.weapon, lilith.weapon);
   assert.equal(named.desc, lilith.desc);
+  assert.equal(viewCostume(COSTUME_POOL.find((c) => c.id === 'lilith_maid'), upTo(20)).name, '莉莉丝·女仆服');
 
   assert.equal(viewCharacter(byId.aila, upTo(17)).name, '艾拉');
   assert.equal(viewCharacter(byId.aila, upTo(19)).name, '艾拉');
   assert.equal(viewCharacter(byId.aila, upTo(20)).name, '艾拉·瓦尔哈拉');
+  assert.equal(viewCostume(COSTUME_POOL.find((c) => c.id === 'aila_maid'), upTo(17)).name, '艾拉·女仆服');
   // 服装名本来就只用名
   for (const c of COSTUME_POOL) assert.ok(!c.name.includes('瓦尔哈拉'), c.id);
 });
@@ -247,4 +264,13 @@ test('HTTP: pools / costume / pull follow the player\'s recorded main-line progr
     assert.equal(odd.status, 200, `${JSON.stringify(pool)}: ${odd.text}`);
     assert.equal(odd.json.pool, 'character');
   }
+
+  // 正式13：她以「金发刺客」揭开——卡池与换衣间都不写名和匕首名（正式20 报上姓名，见上面的视图测试；那一章还没上线）
+  await api(base, '/api/story/progress', { playerId, chapterId: 'ch013' });
+  view = await pools();
+  const assassin = view.characters.find((c) => c.id === 'lilith');
+  assert.deepEqual([assassin.sealed, assassin.name], [false, '金发刺客']);
+  const wardrobe13 = (await api(base, `/api/costume?playerId=${playerId}`)).json;
+  assert.ok(wardrobe13.costumePool.filter((c) => c.characterId === 'lilith').every((c) => !c.sealed && c.name.startsWith('金发刺客·')));
+  for (const w of ['莉莉丝', '昼盲', '夜醒', '瓦尔哈拉']) assert.ok(!JSON.stringify([view, wardrobe13]).includes(w), w);
 });

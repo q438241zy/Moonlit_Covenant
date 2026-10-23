@@ -14,7 +14,8 @@
  *
  * 登场闸门（核#14，提案第八节#43、§4.5；服装稿 1.2「封存卡」）：女主从一开始就都在池里、照常能抽到，
  * 但在玩家通关她的登场章（unlockChapter）之前，对外只给剪影——名字、称号、立绘、介绍一律隐藏，
- * 只留稀有度和「第N章登场」；她的服装同样封存。莉莉丝与艾拉的姓到正式20通关才显示（veils）。
+ * 只留稀有度和「第N章登场」；她的服装同样封存。莉莉丝与艾拉的姓到正式20通关才显示（veils）；
+ * 莉莉丝在正式13以无名的敌人登场，正式13～19 卡面只叫「金发刺客」（名、武器名也到正式20才显示），她的服装名同样遮住。
  * 对外的数据一律经过 viewCharacter / viewCostume（/api/gacha/pools、/api/gacha/pull、/api/costume），
  * CHARACTER_POOL / COSTUME_CATALOG 本身是完整的正典数据，只给服务器内部用，不能原样发给客户端。
  */
@@ -38,9 +39,10 @@ export const CHARACTER_POOL = [
   { id: 'mia', name: '米娅·玲', title: '魔具发明师', rarity: 4, element: '金', nation: '铸金联邦', weapon: '多功能魔导棍“叮当三号”', portrait: '/assets/portraits/mia.svg', unlockChapter: 'ch007', joinChapter: 'ch010', age: 18, desc: '铸金联邦工匠家庭出身的魔具发明师，挥着多功能魔导棍“叮当三号”，身边漂浮着球形小无人机“零号”。语速快、点子跳跃，看到新素材就会忘记危险，把爆炸称作“非计划拆解”；可她真能用废料造出奇迹，一心想做出普通人也负担得起的魔具。' },
   { id: 'serena', name: '塞雷娜·诺克斯', title: '暗系魔法师', rarity: 5, element: '暗', nation: '夜鸦公国', weapon: '黑曜法杖“无眠镜”', portrait: '/assets/portraits/serena.svg', unlockChapter: 'ch011', joinChapter: 'ch012', age: 19, desc: '夜鸦公国诺克斯家族的暗系魔法师，执黑曜法杖“无眠镜”，左侧细辫上串着银色月相盘发饰，右手戴半截白手套。冷静、机敏、嘴上不饶人，习惯先从镜面与影子里掌握情报再开口；说出危险的话时，表情反而格外认真。' },
   { id: 'freya', name: '芙蕾娅·霜华', title: '冰系魔法师', rarity: 5, element: '水', nation: '霜潮王国', weapon: '长法杖“春眠”', portrait: '/assets/portraits/freya.svg', unlockChapter: 'ch018', joinChapter: 'ch019', age: 19, desc: '霜潮王国的冰系魔法师兼守墓人，手持顶端嵌着雪花宝珠的长杖“春眠”。说话轻柔，像可靠的大姐姐，会自然地递上热饮、替人整理围巾；战斗时眼神却冷静得像冻结的湖面。' },
-  // 正式13以敌对身份登场、不报名；正式20报上姓名——在那之前只显示名，不显示姓与故国
+  // 正式13以敌对身份登场、不报名；正式20报上姓名——在那之前只叫「金发刺客」，不显示名、姓、故国与武器名
   { id: 'lilith', name: '莉莉丝·瓦尔哈拉', title: '暗影刺客', rarity: 5, element: '木', nation: '翠影公国', weapon: '双匕首“昼盲”“夜醒”', portrait: '/assets/portraits/lilith.svg', unlockChapter: 'ch013', joinChapter: 'ch021', age: 19, desc: '翠影公国出身的暗影刺客，金色长发高束，鼻梁贴着一块小创可贴，双肩后露出双匕首“昼盲”“夜醒”的刀柄。警惕、尖锐、行动先于思考，身手像猫科动物一样敏捷。',
-    veils: [{ until: 'ch020', name: '莉莉丝', nation: SEALED_TEXT, desc: '金发的暗影刺客，长发高束，鼻梁贴着一块小创可贴，双肩后露出双匕首“昼盲”“夜醒”的刀柄。警惕、尖锐、行动先于思考，身手像猫科动物一样敏捷。' }] },
+    // 正式13～19：她还没报上名字，卡面只叫「金发刺客」——不写名、姓、故国、武器名，介绍只写玩家亲眼见过的样子
+    veils: [{ until: 'ch020', name: '金发刺客', nation: SEALED_TEXT, weapon: SEALED_TEXT, desc: '还没有报上名字的金发刺客，长发高束，鼻梁贴着一块小创可贴，双肩后露出一对匕首的刀柄。警惕、尖锐、行动先于思考，身手像猫科动物一样敏捷。' }] },
   { id: 'evelyn', name: '伊芙琳·星歌', title: '圣教圣女', rarity: 4, element: '光', nation: '圣辉教国', weapon: '圣歌弓“微光”、祈祷铃', portrait: '/assets/portraits/evelyn.svg', unlockChapter: 'ch016', joinChapter: 'ch017', age: 18, desc: '圣辉教国的圣教圣女，背着圣歌弓“微光”，侧辫尾端系着祈祷铃。胆小、容易哭、说话很轻；可只要有人受伤，她会一边掉眼泪一边坚持施法。' },
   { id: 'ophelia', name: '奥菲利亚·使诺德', title: '龙族圣女', rarity: 5, element: '土', nation: '龙脊古国', weapon: '龙纹法杖“祖语”', portrait: '/assets/portraits/ophelia.svg', unlockChapter: 'ch019', joinChapter: 'ch020', age: 19, desc: '龙脊古国使诺德氏族的龙族圣女，额侧一对小龙角、金紫异色瞳，能在人形与龙形之间切换，人形时使用龙纹法杖“祖语”。外表端庄，其实对人类的日常充满好奇，笑起来会露出一颗小虎牙。' },
   // 姓氏和莉莉丝一起在正式20揭晓（姐妹关系同样留到那一章）
@@ -65,7 +67,8 @@ export const COSTUME_TYPE_META = {
 
 /**
  * 服装目录：8 位女主 × 全部类型（常驻 + 典藏）。拥有、穿戴校验（game/costume.mjs）和演示发放都查这份完整目录，
- * 所以存档里的旧 id（<女主>_<类型>）全都继续有效，不需要迁移。名称只用名、不带姓，所以登场后不必再遮。
+ * 所以存档里的旧 id（<女主>_<类型>）全都继续有效，不需要迁移。名称只用名、不带姓；veils 遮住了名的女主（莉莉丝在正式20以前），
+ * 对外视图里服装名跟着换成遮挡后的叫法（viewCostume）。
  */
 export const COSTUME_CATALOG = [];
 for (const char of CHARACTER_POOL) {
@@ -160,11 +163,17 @@ export function viewCharacter(heroine, cleared) {
 }
 
 /**
- * 服饰池条目的对外视图：主人还没登场时是封存卡——「？？？·女仆服」、没有立绘与介绍；登场后原样。
+ * 服饰池条目的对外视图：主人还没登场时是封存卡——「？？？·女仆服」、没有立绘与介绍；登场后原样，只有服装名里的名按 veils 遮挡。
  */
 export function viewCostume(costume, cleared) {
   const owner = CHARACTER_BY_ID.get(costume.characterId);
-  if (!owner || isHeroineRevealed(owner, cleared)) return { ...costume, sealed: false };
+  if (!owner) return { ...costume, sealed: false };
+  if (isHeroineRevealed(owner, cleared)) {
+    // 服装名里的名跟着角色卡的遮挡走：正式20以前是「金发刺客·女仆服」，不是「莉莉丝·女仆服」
+    const shownName = viewCharacter(owner, cleared).name.split('·')[0];
+    const label = COSTUME_TYPE_META[costume.type]?.label || costume.type;
+    return { ...costume, name: `${shownName}·${label}`, sealed: false };
+  }
   return {
     id: costume.id, characterId: costume.characterId, type: costume.type, rarity: costume.rarity, status: costume.status, sealed: true,
     name: `${SEALED_TEXT}·${COSTUME_TYPE_META[costume.type]?.label || costume.type}`,
