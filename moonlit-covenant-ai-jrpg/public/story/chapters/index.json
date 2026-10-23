@@ -124,5 +124,14 @@
     "file": "/story/chapters/ch013.json",
     "requires": "ch012",
     "source": "剧本/13雨中的金色刺客.md"
+  },
+  {
+    "id": "ch014",
+    "number": 14,
+    "title": "第十四章｜潮穴开门",
+    "estimatedMinutes": 11,
+    "file": "/story/chapters/ch014.json",
+    "requires": "ch013",
+    "source": "剧本/14潮穴開門.md"
   }
 ]
