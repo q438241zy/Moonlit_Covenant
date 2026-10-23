@@ -334,5 +334,29 @@
     "svg": "/assets/story/bg/fog-harbor-fish-market-roofs-rain.svg",
     "top": "#141a26",
     "bottom": "#06080c"
+  },
+  "fog-harbor-tide-cave-sluice": {
+    "name": "雾港·老涵洞尽头·潮穴老闸",
+    "svg": "/assets/story/bg/fog-harbor-tide-cave-sluice.svg",
+    "top": "#3a2a22",
+    "bottom": "#0a0706"
+  },
+  "fog-harbor-tide-cave-sluice-shut": {
+    "name": "雾港·潮穴老闸·闸落",
+    "svg": "/assets/story/bg/fog-harbor-tide-cave-sluice-shut.svg",
+    "top": "#3a2a22",
+    "bottom": "#0a0706"
+  },
+  "fog-harbor-tide-cave": {
+    "name": "雾港·潮穴·茧壁",
+    "svg": "/assets/story/bg/fog-harbor-tide-cave.svg",
+    "top": "#2a3434",
+    "bottom": "#06090a"
+  },
+  "fog-harbor-tide-cave-flood": {
+    "name": "雾港·潮穴·涨水",
+    "svg": "/assets/story/bg/fog-harbor-tide-cave-flood.svg",
+    "top": "#26302f",
+    "bottom": "#050809"
   }
 }

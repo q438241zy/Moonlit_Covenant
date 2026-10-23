@@ -1219,4 +1219,102 @@ function apprentice(blanket) {
 CAST.mirror_apprentice = apprentice(false);
 CAST.mirror_apprentice_blanket = apprentice(true);
 
+// ---------------------------------------------------------------------------------------------
+// chapter 14
+// ---------------------------------------------------------------------------------------------
+
+// 欧妲 (14) — one of the nine carried out of the cocoons in the tide cave: an adult woman of about thirty, a farm woman
+// from 晨祷平原. Wet hair dragged back and knotted any old how at the nape, strands plastered to the brow and temple; pale,
+// the lips gone bluish; the guild's coarse blanket round her shoulders, one hand holding it shut at the throat, and under
+// it the collar of a worn, patched work shirt. Just woken: wide, wary eyes under a lifted brow. Not sexualised in any way.
+// `tagged` = speaker plains_woman (14-08 before she gives her name): a small wooden tag tied to that wrist with a cord,
+// an ink mark on it (no writing). Untagged = speaker oda (from 14-08's fixed beat on, after the tag has been cut off with
+// her consent): the tag gone, a faint reddish line round the wrist where the cord was — a mark, never blood.
+const ODA_HAIR = [[228, 214], [238, 172], [276, 146], [328, 140], [376, 160], [402, 198], [408, 244], [400, 282], [388, 304], [366, 258], [326, 222], [284, 214], [258, 222], [242, 240]];
+const ODA_BLANKET = [[244, 410], [198, 422], [150, 448], [114, 490], [94, 550], [84, 640], [80, 820], [524, 820], [518, 640], [506, 550], [484, 488], [452, 444], [414, 416], [372, 400], [330, 402], [292, 414]];
+const ODA_COLLAR = [[324, 396], [372, 372], [420, 382], [450, 418], [446, 448], [404, 434], [356, 422]];
+const odaAx = (t, v) => [366 - 66 * t + 0.909 * v, 640 - 144 * t - 0.416 * v]; // forearm axis: t 0 = out of the blanket, 1 = wrist
+const ODA_ARM = S([odaAx(0.05, -21), odaAx(1, -16), odaAx(1, 16), odaAx(0.05, 21)]);
+function oda(tagged) {
+  return {
+    id: tagged ? 'plains_woman' : 'oda',
+    label: tagged
+      ? '晨祷平原来的女人：三十岁上下的农家妇人，湿发随手束在脑后，几绺贴在额上，脸色苍白、嘴唇发青，裹着分会的粗毯子，一只手在领口把毯子攥紧，手腕上用绳子绑着一块小木牌；刚醒，茫然又警觉'
+      : '欧妲：三十岁上下的农家妇人，湿发随手束在脑后，几绺贴在额上，脸色苍白、嘴唇发青，裹着分会的粗毯子，一只手在领口把毯子攥紧，手腕上的木牌已经剪掉，只留一圈淡淡的红痕；刚醒，茫然又警觉',
+    rim: '#c9a594',
+    sil: [
+      // the knot at the nape and its wet tail, behind the head
+      circle(404, 302, 30),
+      S([[394, 324], [414, 362], [410, 404, 1], [426, 364], [420, 322]]),
+      head(0, 16, 0.95, true),
+      S(ODA_HAIR),
+      // wet strands stuck to the brow and down in front of the ear
+      S([[252, 218], [242, 248], [236, 280, 1], [250, 254], [262, 224]]),
+      S([[350, 248], [358, 296], [352, 340, 1], [368, 298], [364, 252]]),
+      neck(0, 18, 0.86),
+      S(ODA_COLLAR),
+      S(ODA_BLANKET),
+      ODA_ARM,
+      circle(288, 470, 27),
+    ],
+    tones: [
+      // wet hair, nearly black-brown
+      [circle(404, 302, 30), '#26221e', 0.92],
+      [S(ODA_HAIR), '#2a2520', 0.92],
+      [S([[252, 218], [242, 248], [236, 280], [250, 254], [262, 224]]) + S([[350, 248], [358, 296], [352, 340], [368, 298], [364, 252]]), '#2a2520', 0.9],
+      // a cold pallor over the face plane
+      [S(T(FACE_SOFT, 0, 16, 0.95, 300, 240)), '#a8b4c4', 0.1],
+      // the coarse blanket (grey-brown wool), its woven band near the edge, the bunched collar
+      [S(ODA_BLANKET), '#34302b', 0.94],
+      [S([[160, 470], [204, 444], [220, 460], [184, 488], [146, 548], [126, 640], [118, 820], [102, 820], [110, 636], [130, 544]]), '#2a2622', 0.92],
+      [S(ODA_COLLAR), '#33302b', 0.95],
+      // the work shirt's collar in the blanket's opening: worn dark cloth, one patch
+      [S([[262, 422], [300, 446], [344, 420], [332, 520], [276, 524]]), '#22242a', 0.95],
+      [S([[312, 470], [334, 466], [332, 494], [312, 496]]), '#2e3036', 0.95],
+      // the bare forearm and the fist, a shade lighter; the shirt's frayed cuff where it leaves the blanket
+      [ODA_ARM, '#3e3a42', 0.95],
+      [S([odaAx(0.12, -22), odaAx(0.3, -21), odaAx(0.3, 21), odaAx(0.12, 22)]), '#22242a', 0.95],
+      [circle(288, 470, 27), '#45404a', 0.95],
+      // the blanket's edge folded back over the elbow, hiding where the arm comes out
+      [S([[318, 596], [366, 584], [416, 598], [446, 632], [424, 668], [372, 676], [326, 656]]), '#34302b', 1],
+    ],
+    lines: [
+      // the jaw edge, hair strands combed back wet, the tail
+      [pl([[382, 262], [364, 310], [324, 352]]), 3, 0.6],
+      [`M262,170C300,152 344,150 380,170M252,196C292,176 340,172 386,194M246,224C280,206 326,204 370,226`, 2, 0.55],
+      [`M402,330C410,352 412,376 410,398`, 1.8, 0.6],
+      // the blanket's edges, folds, the opening
+      [pl([[114, 490], [150, 448], [198, 422], [244, 410]]) + pl([[414, 416], [452, 444], [484, 488], [506, 550]]), 3, 0.6],
+      [`M440,700C448,740 452,780 454,812M206,560C196,640 192,720 190,812M150,600C146,680 144,750 144,812`, 2, 0.32],
+      [pl([[262, 422], [276, 524]]) + pl([[344, 420], [332, 520]]), 2, 0.45],
+      [`M318,598C346,590 378,582 416,598C430,608 440,620 446,632`, 2.4, 0.55],
+      // the forearm's lit edge
+      [pl([odaAx(0.3, 21), odaAx(1, 16)]), 2.2, 0.7],
+    ],
+    front: ({ rim }) => {
+      let s = '';
+      // knuckles of the fist gripping the blanket's two edges; the edges bunched in it
+      s += `<path d="M268,458q7,-8 15,-8M266,472q8,-6 17,-4M270,486q8,-4 15,-2" fill="none" stroke="${rim}" stroke-width="2" stroke-linecap="round" opacity=".8"/>`;
+      s += `<path d="M262,452C252,436 250,420 256,410M310,454C322,440 330,424 332,410" fill="none" stroke="#4a443c" stroke-width="4" stroke-linecap="round" opacity=".9"/>`;
+      // the wrist: the tag on its cord, or only the faint mark the cord left
+      const w0 = odaAx(0.9, -17), w1 = odaAx(0.9, 17);
+      if (tagged) {
+        s += `<path d="M${r0(w0[0])},${r0(w0[1])}Q${r0((w0[0] + w1[0]) / 2 + 3)},${r0((w0[1] + w1[1]) / 2 + 6)} ${r0(w1[0])},${r0(w1[1])}" fill="none" stroke="#8a7a62" stroke-width="3"/>`;
+        s += `<path d="M${r0(w1[0] - 2)},${r0(w1[1] + 2)}l6,20" stroke="#8a7a62" stroke-width="2"/><g transform="rotate(10 ${r0(w1[0] + 6)} ${r0(w1[1] + 34)})"><rect x="${r0(w1[0] - 8)}" y="${r0(w1[1] + 22)}" width="30" height="22" rx="2" fill="#a08460"/><path d="M${r0(w1[0] - 8)},${r0(w1[1] + 22)}h30" stroke="#d8c4a0" stroke-width="1.6" opacity=".7"/><path d="M${r0(w1[0] - 3)},${r0(w1[1] + 28)}h7M${r0(w1[0] + 7)},${r0(w1[1] + 28)}h5M${r0(w1[0] - 3)},${r0(w1[1] + 33)}h4M${r0(w1[0] + 4)},${r0(w1[1] + 33)}h9M${r0(w1[0] - 3)},${r0(w1[1] + 38)}h6" stroke="#1a1410" stroke-width="1.8" opacity=".7"/><circle cx="${r0(w1[0] + 18)}" cy="${r0(w1[1] + 26)}" r="2" fill="#5a4a38"/></g>`;
+      } else {
+        s += `<path d="M${r0(w0[0])},${r0(w0[1])}Q${r0((w0[0] + w1[0]) / 2 + 3)},${r0((w0[1] + w1[1]) / 2 + 6)} ${r0(w1[0])},${r0(w1[1])}" fill="none" stroke="#b86a66" stroke-width="2.2" opacity=".5"/>`;
+      }
+      // a wide, wary eye under a lifted brow; the bluish lips pressed together
+      s += `<path d="M226,258q9,-7 20,-5" fill="none" stroke="${rim}" stroke-width="2.4" stroke-linecap="round" opacity=".85"/>`;
+      s += `<ellipse cx="238" cy="273" rx="6.4" ry="6" fill="#e8e4e8" opacity=".88"/><circle cx="235" cy="274" r="3.6" fill="#16141a"/><circle cx="234" cy="272" r="1.3" fill="#ffffff"/><path d="M231,267q7,-3 14,0" fill="none" stroke="#16141a" stroke-width="1.8"/>`;
+      s += `<path d="M222,318q7,2 13,0" fill="none" stroke="#8c9cba" stroke-width="2.2" stroke-linecap="round" opacity=".75"/>`;
+      // water: a drop at the tail's end and at the strand by the ear
+      for (const [x, y] of [[410, 404], [352, 342]]) s += `<path d="M${x},${y}q-4,7 0,10q4,-3 0,-10z" fill="#dce8f0" opacity=".75"/>`;
+      return s;
+    },
+  };
+}
+CAST.plains_woman = oda(true);
+CAST.oda = oda(false);
+
 export const npcBusts = Object.fromEntries(Object.entries(CAST).map(([id, spec]) => [id, (rim) => render(spec, rim)]));

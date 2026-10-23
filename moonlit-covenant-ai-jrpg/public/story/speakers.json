@@ -253,5 +253,15 @@
     "name": "金发刺客",
     "color": "#d9a441",
     "art": "/assets/story/npc/golden_assassin.svg"
+  },
+  "plains_woman": {
+    "name": "晨祷平原来的女人",
+    "color": "#c9a594",
+    "art": "/assets/story/npc/plains_woman.svg"
+  },
+  "oda": {
+    "name": "欧妲",
+    "color": "#c9a594",
+    "art": "/assets/story/npc/oda.svg"
   }
 }
