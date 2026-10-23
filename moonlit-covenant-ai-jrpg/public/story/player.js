@@ -186,7 +186,20 @@ async function showChapterReward(scr, ch, playerName) {
   if (!html) return;
   box.innerHTML = html;
   box.hidden = false;
-  if (r.granted) announce($$('.end-reward-list li', box).map((li) => li.textContent.trim()).join('；'));
+  if (r.granted) {
+    announce($$('.end-reward-list li', box).map((li) => li.textContent.trim()).join('；'));
+    revealReward(scr, box);
+  }
+}
+// 正史记录长（第十二章起六条、手机上每条两三行）时，后到的首通奖励落在贴底的按钮行后面，不往下滚就看不见
+// 「钻石 +160」「塞雷娜正式成为同伴」——首通只发这一次，所以奖励到了就把完成页滚到它刚好露出按钮行之上
+function revealReward(scr, box) {
+  requestAnimationFrame(() => {
+    const actions = $('.end-actions', scr);
+    if (!actions || !box.isConnected || scr.hidden) return;
+    const over = box.getBoundingClientRect().bottom + 8 - actions.getBoundingClientRect().top;
+    if (over > 0) scr.scrollBy({ top: over, behavior: reducedMotion ? 'auto' : 'smooth' });
+  });
 }
 
 // ─── 全局状态 ───
