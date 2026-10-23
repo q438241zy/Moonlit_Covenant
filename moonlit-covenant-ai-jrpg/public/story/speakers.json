@@ -228,5 +228,25 @@
     "name": "蚀痕残响",
     "color": "#9aa0b8",
     "art": "/assets/story/npc/scar_echo_15.svg"
+  },
+  "mirror_apprentice": {
+    "name": "镜咒学徒",
+    "color": "#8fb0c4",
+    "art": "/assets/story/npc/mirror_apprentice.svg"
+  },
+  "mirror_apprentice_blanket": {
+    "name": "镜咒学徒",
+    "color": "#8fb0c4",
+    "art": "/assets/story/npc/mirror_apprentice_blanket.svg"
+  },
+  "lia_mirror": {
+    "name": "莉亚",
+    "color": "#ff6b7c",
+    "art": "/assets/story/npc/lia_mirror.svg"
+  },
+  "serena_staff_wrapped": {
+    "name": "塞雷娜",
+    "color": "#b58cff",
+    "art": "/assets/story/npc/serena_staff_wrapped.svg"
   }
 }

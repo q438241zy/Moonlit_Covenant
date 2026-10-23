@@ -225,6 +225,10 @@ function towerBase() {
 
   // ---- the furnishings: camp bed on the right, table with a clay jug -------------------------------------
   {
+    // behind the bed (drawn first): a coil of old rope on the floor and a crate against the wall
+    const rp = pr(1.2, 0, 6.0);
+    S.add(`<ellipse cx="${r0(rp[0])}" cy="${r0(rp[1])}" rx="42" ry="12" fill="#5e5240"/><ellipse cx="${r0(rp[0])}" cy="${r0(rp[1] - 5)}" rx="30" ry="8" fill="none" stroke="#3a3226" stroke-width="3"/><ellipse cx="${r0(rp[0])}" cy="${r0(rp[1] - 9)}" rx="18" ry="5" fill="none" stroke="#3a3226" stroke-width="3"/>`);
+    S.add(`<path d="${pr.quad([[2.2, 0, 5.9], [2.75, 0, 5.6], [2.75, 0.5, 5.6], [2.2, 0.5, 5.9]])}" fill="${P.wood}"/><path d="${pr.quad([[2.2, 0.5, 5.9], [2.75, 0.5, 5.6], [2.6, 0.5, 5.1], [2.05, 0.5, 5.4]])}" fill="${P.woodLit}"/>`);
     // camp bed: canvas on an X-frame, lying along the right wall, a folded grey blanket
     const bx0 = 1.75, bx1 = 2.55, bz0 = 3.3, bz1 = 5.2, by = 0.46;
     let s = '';
@@ -255,14 +259,13 @@ function towerBase() {
     const st = pr(-1.5, 0, 4.0);
     S.add(`<path d="${pr.quad([[-1.75, 0.45, 3.8], [-1.35, 0.45, 3.8], [-1.35, 0.45, 4.2], [-1.75, 0.45, 4.2]])}" fill="${P.woodLit}"/><path d="${pl(pr.poly([[-1.7, 0, 3.85], [-1.7, 0.45, 3.85]])) + pl(pr.poly([[-1.4, 0, 3.85], [-1.4, 0.45, 3.85]]))}" stroke="${P.woodDark}" stroke-width="6"/>`);
     void st;
-    const rp = pr(1.2, 0, 6.0);
-    S.add(`<ellipse cx="${r0(rp[0])}" cy="${r0(rp[1])}" rx="42" ry="12" fill="#5e5240"/><ellipse cx="${r0(rp[0])}" cy="${r0(rp[1] - 5)}" rx="30" ry="8" fill="none" stroke="#3a3226" stroke-width="3"/><ellipse cx="${r0(rp[0])}" cy="${r0(rp[1] - 9)}" rx="18" ry="5" fill="none" stroke="#3a3226" stroke-width="3"/>`);
-    S.add(`<path d="${pr.quad([[2.2, 0, 5.9], [2.75, 0, 5.6], [2.75, 0.5, 5.6], [2.2, 0.5, 5.9]])}" fill="${P.wood}"/><path d="${pr.quad([[2.2, 0.5, 5.9], [2.75, 0.5, 5.6], [2.6, 0.5, 5.1], [2.05, 0.5, 5.4]])}" fill="${P.woodLit}"/>`);
   }
 
   // ---- grade: cool fog haze, darker corners -------------------------------------------------------------
   S.add(`<rect width="${W}" height="${H}" fill="${S.lin([[0, '#c8d0d6', 0.08], [0.5, '#c8d0d6', 0], [1, '#0a0c10', 0.4]])}"/>`);
   S.add(`<rect width="${W}" height="${H}" fill="${S.rad([[0.5, '#0a0c10', 0], [1, '#0a0c10', 0.55]], 'cx="0.52" cy="0.45" r="0.78"')}"/>`);
+  // the dialogue band: the floor and the lowest steps sink a little further into shade
+  S.add(`<rect y="600" width="${W}" height="300" fill="${S.lin([[0, '#0a0c10', 0], [1, '#0a0c10', 0.45]])}"/>`);
   return S.out();
 }
 
