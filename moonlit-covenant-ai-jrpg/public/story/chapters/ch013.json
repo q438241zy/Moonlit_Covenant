@@ -26295,7 +26295,7 @@
   ],
   "end": {
     "save": "SAVE_CH013_END_GOLDEN_ASSASSIN",
-    "next": null,
+    "next": "ch014",
     "nextLabel": "CH014_TIDE_CAVITY_OPENS",
     "set": {
       "flags": {

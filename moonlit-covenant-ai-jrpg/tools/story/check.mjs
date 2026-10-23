@@ -4,7 +4,7 @@
 //   node tools/story/check.mjs ch000 --transcript      导出逐字稿（默认玩法）到 stdout，便于与剧本对照
 //   node tools/story/check.mjs ch000 --play intent=0   每个节点都选第 N 个非沉默意图试玩
 // 试玩策略：silent（全部沉默）、fallback（无法归类的输入）、每个意图各跑一遍（逐节点轮换），确保所有分支都能走到章末。
-// 另有逐章接续的高信赖路线（LEAH_TRUST、MIA_TRUST 各一条），让只在高信赖时出现的节点也能被覆盖。
+// 另有逐章接续的高信赖路线（LEAH_TRUST、MIA_TRUST 各一条），让只在高信赖时出现的节点也能被覆盖。另按 promise_* 组合各带一份接续存档进下一章（最多 6 种），覆盖「没立约才再问」的节点。
 // 意图覆盖同时统计「从本章开始」和「接续上一章各策略的存档」两种开局：只在特定前章结果下才出现的节点也算进覆盖。
 
 import fs from 'node:fs';
@@ -137,6 +137,12 @@ function greedy(chapter, run, key) {
   return null;
 }
 
+// 约定路线：前几章没立约（或立了别的约）的存档只在接续试玩里出现，按 promise_* 的组合各留一份带进下一章，
+// 让「没立约才再问一次」这类节点也能被覆盖（最多 6 种组合）。
+function promiseSignature(run) {
+  return Object.keys(run.vars || {}).filter((k) => k.startsWith('promise_')).sort().map((k) => `${k}=${run.vars[k]}`).join('|');
+}
+
 let failed = false;
 let prevRuns = [];
 let greedyRuns = MAXIMIZE.map(() => null);
@@ -190,12 +196,15 @@ for (const entry of index) {
   }
   // 跨章继承：上一章每种策略的章末存档接进本章，再按各策略试玩
   let carried = 0;
+  const promiseRuns = new Map();
   for (const prev of prevRuns) {
     for (const s of strategies) {
       const r = play(chapter, s, continueRun(prev, chapter));
       if (!r.ok) { failed = true; console.log(`✗ ${entry.id} 从上一章存档继续（策略 ${s}）时未能走到章末`); break; }
       r.hit.forEach((h) => covered.add(h));
       carried += 1;
+      const sig = promiseSignature(r.run);
+      if (!promiseRuns.has(sig)) promiseRuns.set(sig, r.run);
     }
   }
   // 补触达：对仍未覆盖的意图，固定该节点的选择，其余节点逐一尝试第 j 个意图（从本章开局，也从上一章各存档接续）
@@ -217,6 +226,7 @@ for (const entry of index) {
   if (unreached.length) console.log(`   演示判定无法触达的意图（关键词与其他意图冲突？）：${unreached.slice(0, 12).join('，')}${unreached.length > 12 ? '…' : ''}`);
   greedyRuns = MAXIMIZE.map((key, k) => greedy(chapter, greedyRuns[k] ? continueRun(greedyRuns[k], chapter) : createRun({ chapter, playerName: '亚克' }), key));
   if (greedyRuns.some((r) => !r)) { failed = true; console.log(`✗ ${entry.id} 高信赖路线未能走到章末`); }
-  prevRuns = [...runs, ...greedyRuns.filter(Boolean)];
+  const known = new Set([...runs, ...greedyRuns.filter(Boolean)].map(promiseSignature));
+  prevRuns = [...runs, ...greedyRuns.filter(Boolean), ...[...promiseRuns].filter(([sig]) => !known.has(sig)).map(([, r]) => r).slice(0, 6)];
 }
 process.exitCode = failed ? 1 : 0;
