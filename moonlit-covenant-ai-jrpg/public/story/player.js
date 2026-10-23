@@ -797,9 +797,9 @@ function enterPlay(chapter, run, { fresh, backlog = [], stage = null }) {
   S.skip = false;
   renderPlay();
   setBackground(run.bg || 'black', 'cut');
+  const my = ++S.token; // 先换令牌：restoreStage 里恢复立绘的异步加载认的是这一局的令牌
   if (!fresh) restoreStage(stage);
   P.dlg.focus({ preventScroll: true });
-  const my = ++S.token;
   runLoop(my);
 }
 
@@ -816,9 +816,24 @@ function restoreStage(stage) {
   const shot = S.chapter.shots[S.run.shotIdx];
   // 地点用当前背景（分镜里可能已经换过场景），不是分镜开头的那个
   if (shot && S.run.stack.length && !S.run.done) showShotCaption({ ...shot, bg: S.run.bg || shot.bg });
+  // 台上的立绘：刷新在输入框上时，那一问之前说话的人（如 14-08 晨祷平原来的女人）照旧以「倾听」的暗态留在台上；
+  // 不存的话 artForInput 只能保留已经在台上的人，而刷新后台上是空的
+  const art = stage?.art;
+  if (art && typeof art === 'object') {
+    for (const side of ['left', 'right']) {
+      const who = typeof art[side] === 'string' ? art[side] : '';
+      const sp = who ? speakerOf(who) : null;
+      if (sp?.art) setSlot(side, paint(sp.art), who);
+    }
+  }
 }
 function stageState() {
-  return { desat: Boolean(P.scene?.classList.contains('desat')), veil: Boolean(P.veil?.classList.contains('on')), ...(S.hudHold ? { hudHold: S.hudHold } : {}) };
+  const art = {};
+  for (const side of ['left', 'right']) {
+    const slot = P.art?.[side];
+    if (slot?.dataset.who && slot.dataset.url) art[side] = slot.dataset.who;
+  }
+  return { desat: Boolean(P.scene?.classList.contains('desat')), veil: Boolean(P.veil?.classList.contains('on')), ...(S.hudHold ? { hudHold: S.hudHold } : {}), ...(Object.keys(art).length ? { art } : {}) };
 }
 
 function cancelPlay() {
