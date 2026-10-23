@@ -358,5 +358,35 @@
     "svg": "/assets/story/bg/fog-harbor-tide-cave-flood.svg",
     "top": "#26302f",
     "bottom": "#050809"
+  },
+  "fog-harbor-tide-nest": {
+    "name": "雾港·石门后·沉船残巢",
+    "svg": "/assets/story/bg/fog-harbor-tide-nest.svg",
+    "top": "#0c1214",
+    "bottom": "#060909"
+  },
+  "fog-harbor-tide-nest-ruin": {
+    "name": "雾港·沉船残巢·战后",
+    "svg": "/assets/story/bg/fog-harbor-tide-nest-ruin.svg",
+    "top": "#0c1214",
+    "bottom": "#060909"
+  },
+  "fog-harbor-tide-nest-burned": {
+    "name": "雾港·沉船残巢·烧巢",
+    "svg": "/assets/story/bg/fog-harbor-tide-nest-burned.svg",
+    "top": "#14100e",
+    "bottom": "#060707"
+  },
+  "fog-harbor-guild-dock": {
+    "name": "雾港·分会门前的码头·午后",
+    "svg": "/assets/story/bg/fog-harbor-guild-dock.svg",
+    "top": "#b4b8b2",
+    "bottom": "#3a342c"
+  },
+  "fog-harbor-guild-shed": {
+    "name": "雾港·分会的仓内",
+    "svg": "/assets/story/bg/fog-harbor-guild-shed.svg",
+    "top": "#4a3e30",
+    "bottom": "#120e0a"
   }
 }

@@ -263,5 +263,25 @@
     "name": "欧妲",
     "color": "#c9a594",
     "art": "/assets/story/npc/oda.svg"
+  },
+  "tide_king": {
+    "name": "潮虫王",
+    "color": "#c4c9bc",
+    "art": "/assets/story/npc/tide_king.svg"
+  },
+  "tide_king_split": {
+    "name": "潮虫王",
+    "color": "#c4c9bc",
+    "art": "/assets/story/npc/tide_king_split.svg"
+  },
+  "serena_copy": {
+    "name": "塞雷娜",
+    "color": "#b58cff",
+    "art": "/assets/story/npc/serena_copy.svg"
+  },
+  "relief_officer": {
+    "name": "赈灾司的官",
+    "color": "#a9b0ba",
+    "art": "/assets/story/npc/relief_officer.svg"
   }
 }

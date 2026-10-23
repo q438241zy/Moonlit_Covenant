@@ -1317,4 +1317,186 @@ function oda(tagged) {
 CAST.plains_woman = oda(true);
 CAST.oda = oda(false);
 
+// ---------------------------------------------------------------------------------------------
+// chapter 15
+// ---------------------------------------------------------------------------------------------
+
+// 潮虫王 (15, battle portrait) — the thing in the sunk nest, longer than the ship: one long arched grey-white carapace
+// filling the frame and running out of it at the right, its plates like stacked old boat planks (courses, nail heads)
+// and shells (barnacle cones along the lower flank), broad segment bands across its back, a pale seam along the
+// underside. The front end (left) has no face at all: only a round collar of shell round a ring of thin pleated
+// membrane, a little open (it talks with it) — soft folds, never teeth. Small white grubs crawl on the shell. Nothing
+// dragon-like (no horns, wings, neck, claws or teeth), no human face grown on it, no blood. `split` = speaker
+// tide_king_split (the second variant): the shell split open along the back — a long dark rift, its lips lifted and
+// lit, a few pale fibres across it; still no blood, no flesh shown. Kept above the dialogue box like the other boss.
+const TK_TOP = [[54, 382], [60, 318], [94, 252], [148, 196], [226, 148], [316, 112], [410, 94], [500, 90], [580, 102], [640, 120]];
+const TK_BOT = [[70, 420], [106, 446], [160, 468], [226, 490], [300, 516], [380, 544], [470, 574], [560, 604], [640, 632]];
+const tkAt = (pts, x) => { for (let i = 1; i < pts.length; i++) if (x <= pts[i][0]) { const [x0, y0] = pts[i - 1], [x1, y1] = pts[i]; return y0 + (y1 - y0) * (x - x0) / (x1 - x0); } return pts[pts.length - 1][1]; };
+const tkTop = (x) => tkAt(TK_TOP, x), tkBot = (x) => tkAt(TK_BOT, x);
+const TK_SHELL = S([...TK_TOP.map(([x, y], i) => (i === 0 ? [x, y, 1] : [x, y])), [660, 120, 1], [660, 660, 1], [640, 632, 1], ...TK_BOT.slice().reverse().slice(1)]);
+const TK_RING = [92, 372]; // the membrane ring at the front end
+function tideKing(split) {
+  return {
+    id: split ? 'tide_king_split' : 'tide_king',
+    label: split
+      ? '潮虫王（壳从背上裂开）：比船还长的灰白甲壳生物，壳片像叠起来的老船板与贝壳，背上的壳沿着脊裂开一道长长的黑缝，裂口的壳片翘起；前端没有脸，只有一圈薄膜；壳上爬着白色的小虫；不画血、不像龙'
+      : '潮虫王：比船还长的灰白甲壳生物，壳片像叠起来的老船板与贝壳，背上一道一道宽宽的壳节，腹下一道浅色的缝；前端没有脸，只有一圈会一张一合的薄膜；壳上爬着白色的小虫；不画血、不像龙',
+    rim: '#c4c9bc',
+    sil: [TK_SHELL],
+    tones: [
+      [TK_SHELL, '#6e766e', 0.95],
+      // lit upper-left of the back, shade toward the belly and the rear
+      [S([[60, 330], [100, 250], [160, 192], [240, 144], [330, 110], [420, 96], [380, 140], [290, 176], [210, 222], [140, 280], [96, 340]]), '#a6ada2', 0.6],
+      [S([[110, 440], [230, 478], [380, 530], [560, 590], [660, 620], [660, 470], [520, 470], [380, 452], [240, 430], [140, 412]]), '#3e463f', 0.65],
+      // the shell collar round the front end
+      [circle(TK_RING[0], TK_RING[1], 62), '#5a625a', 0.95],
+    ],
+    lines: [],
+    defs: (p) => [`<linearGradient id="${p}-vol" x1="0" y1="0" x2="1" y2=".3"><stop offset="0" stop-color="#ffffff" stop-opacity=".08"/><stop offset=".45" stop-color="#000000" stop-opacity="0"/><stop offset="1" stop-color="#000000" stop-opacity=".42"/></linearGradient>`],
+    front: ({ rim, p }) => {
+      let s = '';
+      // segment bands across the back: a broad lip lit along its front edge, a dark seam behind it
+      let face = '', seam = '', lip = '';
+      for (const x of [150, 198, 252, 314, 384, 462, 548, 636]) {
+        const yt = tkTop(x) + 3, xb = x + 34, yb = tkBot(xb) - 4;
+        const c1 = [x - 40, yt + (yb - yt) * 0.35], c2 = [xb - 34, yt + (yb - yt) * 0.75];
+        const d = (o) => `M${x + o},${r0(yt)}C${r0(c1[0] + o)},${r0(c1[1])} ${r0(c2[0] + o)},${r0(c2[1])} ${xb + o},${r0(yb)}`;
+        face += `${d(0)}L${xb + 22},${r0(yb)}C${r0(c2[0] + 22)},${r0(c2[1])} ${r0(c1[0] + 22)},${r0(c1[1])} ${x + 22},${r0(yt)}Z`;
+        seam += d(22);
+        lip += d(0);
+      }
+      s += `<path d="${face}" fill="#4e5650" opacity=".55"/><path d="${seam}" fill="none" stroke="#1a1e1a" stroke-width="5"/><path d="${lip}" fill="none" stroke="#c8ccc0" stroke-width="2.6" opacity=".75"/>`;
+      // plank courses along the flank with nail heads, like an old hull's strakes
+      let crs = '', nails = '';
+      for (const k of [0.22, 0.42, 0.62, 0.8]) {
+        const pts = []; for (let x = 140; x <= 660; x += 20) pts.push([x, tkTop(x) + (tkBot(x) - tkTop(x)) * k + 3 * Math.sin(x / 37 + k * 9)]);
+        crs += pl(pts);
+        if (k === 0.42 || k === 0.62) pts.forEach(([x, y], i) => { if (i % 2 === 0) nails += `<circle cx="${r0(x)}" cy="${r0(y - 6)}" r="2.2"/>`; });
+      }
+      s += `<path d="${crs}" fill="none" stroke="#2a302c" stroke-width="2" opacity=".6"/><g fill="#8a7a62" opacity=".7">${nails}</g>`;
+      // barnacle shells along the lower flank
+      let barn = '', barnLit = '', barnHole = '';
+      for (const [x, k, w] of [[190, 0.74, 14], [214, 0.82, 10], [262, 0.7, 16], [330, 0.86, 12], [352, 0.78, 15], [420, 0.72, 11], [470, 0.84, 16], [506, 0.76, 12], [580, 0.8, 14], [612, 0.7, 10]]) {
+        const y = tkTop(x) + (tkBot(x) - tkTop(x)) * k;
+        const v = w * 0.7;
+        barn += `M${x - v},${r0(y + v * 0.4)}Q${x - v * 0.7},${r0(y - v * 0.5)} ${x - v * 0.3},${r0(y - v * 0.6)}h${r0(v * 0.6)}Q${x + v * 0.7},${r0(y - v * 0.5)} ${x + v},${r0(y + v * 0.4)}Z`;
+        barnLit += `M${x - v},${r0(y + v * 0.4)}Q${x - v * 0.7},${r0(y - v * 0.5)} ${x - v * 0.3},${r0(y - v * 0.6)}`;
+        barnHole += `<ellipse cx="${x}" cy="${r0(y - v * 0.6)}" rx="${f(v * 0.3)}" ry="${f(v * 0.12)}"/>`;
+      }
+      s += `<path d="${barn}" fill="#8a8e84"/><path d="${barnLit}" fill="none" stroke="#e2e4d8" stroke-width="1.4" opacity=".7"/><g fill="#1e221e">${barnHole}</g>`;
+      // the pale seam along the belly
+      const sm = []; for (let x = 116; x <= 660; x += 24) sm.push([x, tkBot(x) - 9]);
+      s += `<path d="${pl(sm)}" fill="none" stroke="#e4e8dc" stroke-width="10" opacity=".14"/><path d="${pl(sm)}" fill="none" stroke="#e4e8dc" stroke-width="3" opacity=".7"/>`;
+      s += `<path d="${TK_SHELL}" fill="url(#${p}-vol)"/>`;
+      // the lit back edge
+      s += `<path d="${pl(TK_TOP.slice(1, 7))}" fill="none" stroke="#e2e6da" stroke-width="3" opacity=".6"/>`;
+      // the front end: the collar's ridged lip and, inside it, the ring of membrane — loose overlapping flaps like a
+      // drawn purse-string, gathered to a small crooked slit (soft, dull, no teeth, nothing round like an eye)
+      const [rx, ry] = TK_RING;
+      s += `<ellipse cx="${rx}" cy="${ry}" rx="50" ry="56" fill="#8e8680" transform="rotate(-12 ${rx} ${ry})"/>`;
+      let flaps = '', flapLit = '';
+      for (let i = 0; i < 9; i++) {
+        const a0 = i / 9 * Math.PI * 2 + 0.2, a1 = a0 + Math.PI * 2 / 9 * 1.25, am = (a0 + a1) / 2;
+        const o0 = [rx + Math.cos(a0) * 48, ry + Math.sin(a0) * 54], o1 = [rx + Math.cos(a1) * 48, ry + Math.sin(a1) * 54];
+        const tip = [rx + Math.cos(am) * 9 + 3, ry + Math.sin(am) * 6];
+        const cm = [rx + Math.cos(am) * 30, ry + Math.sin(am) * 34];
+        flaps += `M${r0(o0[0])},${r0(o0[1])}Q${r0(cm[0] - Math.sin(am) * 12)},${r0(cm[1] + Math.cos(am) * 12)} ${r0(tip[0])},${r0(tip[1])}Q${r0(cm[0] + Math.sin(am) * 10)},${r0(cm[1] - Math.cos(am) * 10)} ${r0(o1[0])},${r0(o1[1])}Z`;
+        flapLit += `M${r0(o0[0])},${r0(o0[1])}Q${r0(cm[0] - Math.sin(am) * 12)},${r0(cm[1] + Math.cos(am) * 12)} ${r0(tip[0])},${r0(tip[1])}`;
+      }
+      s += `<g transform="rotate(-12 ${rx} ${ry})"><path d="${flaps}" fill="#b0a69e" stroke="#6a625c" stroke-width="1.6" stroke-linejoin="round"/><path d="${flapLit}" fill="none" stroke="#d8d0c8" stroke-width="1.4" opacity=".6"/>`
+        + `<path d="M${rx - 9},${ry + 2}q5,-5 10,-1q6,4 10,-2" fill="none" stroke="#1a1414" stroke-width="3.4" stroke-linecap="round"/></g>`;
+      s += `<path d="M${rx - 34},${ry - 40}Q${rx - 50},${ry - 4} ${rx - 40},${ry + 34}" fill="none" stroke="#e8e0d8" stroke-width="2.4" opacity=".35"/>`;
+      // the collar's thick lip overlapping the membrane's edge, notched like broken plank ends
+      s += `<circle cx="${rx}" cy="${ry}" r="58" fill="none" stroke="#4e564e" stroke-width="12"/><circle cx="${rx}" cy="${ry}" r="64" fill="none" stroke="#2a302c" stroke-width="3"/>`;
+      let notch = '';
+      for (let i = 0; i < 12; i++) { const a = i / 12 * Math.PI * 2; notch += `M${r0(rx + Math.cos(a) * 52)},${r0(ry + Math.sin(a) * 52)}L${r0(rx + Math.cos(a) * 64)},${r0(ry + Math.sin(a) * 64)}`; }
+      s += `<path d="${notch}" stroke="#2a302c" stroke-width="2.4"/><path d="M${rx - 62},${ry - 12}A64,64 0 0 1 ${rx + 18},${ry - 61}" fill="none" stroke="${rim}" stroke-width="3" opacity=".8"/>`;
+      // the split along the back (second variant)
+      if (split) {
+        const lipU = [], lipD = [];
+        for (let x = 216, i = 0; x <= 660; x += 24, i++) {
+          const t = Math.min(1, (x - 216) / 260), gap = 4 + 26 * Math.sin(Math.PI * Math.min(1, t * 0.5 + 0.02)) , y = tkTop(x) + 26;
+          lipU.push([x, y - gap * 0.45 + (i % 2 ? 2 : -2)]); lipD.push([x + 2, y + gap * 0.55 + (i % 3 === 1 ? 4 : 0)]);
+        }
+        s += `<path d="${S([[212, tkTop(212) + 26], ...lipU, [664, tkTop(660) + 10], ...lipD.slice().reverse()])}" fill="#0a0c0a"/>`;
+        s += `<path d="${pl(lipU)}" fill="none" stroke="#dfe3d6" stroke-width="2.6" opacity=".8"/><path d="${pl(lipD)}" fill="none" stroke="#8a9086" stroke-width="2" opacity=".6"/>`;
+        // lifted plate edges either side of the rift and a few pale fibres across it
+        let fib = '';
+        lipU.forEach(([x, y], i) => { if (i % 2 === 0 && lipD[i]) fib += `M${x},${y + 4}Q${x + 8},${(y + lipD[i][1]) / 2} ${lipD[i][0] + 6},${lipD[i][1] - 4}`; });
+        s += `<path d="${fib}" fill="none" stroke="#b8bcb0" stroke-width="1.2" opacity=".55"/>`;
+        s += `<path d="${lipU.map(([x, y], i) => (i % 3 === 1 ? `M${x - 14},${y + 2}l10,-14l16,6z` : '')).join('')}" fill="#9aa094"/>`;
+      }
+      // small white grubs crawling on the shell
+      let gr = '', sg = '';
+      for (const [x, y, a] of [[260, 168, 20], [300, 152, -10], [384, 128, 5], [442, 150, 40], [520, 132, -20], [180, 232, 60], [340, 300, 10], [560, 250, -35], [470, 330, 15], [230, 380, 30], [600, 420, -5]]) {
+        if (split && y < tkTop(x) + 60 && x > 200) continue;
+        gr += `<ellipse cx="${x}" cy="${y}" rx="7" ry="3" transform="rotate(${a} ${x} ${y})"/>`;
+        const rad = a * Math.PI / 180, c = Math.cos(rad), sn = Math.sin(rad);
+        for (const t of [-3, 0, 3]) sg += `M${r0(x + c * t - sn * 3)},${r0(y + sn * t + c * 3)}l${f(sn * 6)},${f(-c * 6)}`;
+      }
+      s += `<g fill="#f0f2ea">${gr}</g><path d="${sg}" stroke="#9a9c90" stroke-width="1" opacity=".8"/>`;
+      return s;
+    },
+  };
+}
+CAST.tide_king = tideKing(false);
+CAST.tide_king_split = tideKing(true);
+
+// 赈灾司的官 (15) — the relief office's man, no name: a man of about forty in a grey office coat buttoned up to the top
+// of its standing collar, neat short hair with a side parting, a polite, level, unreadable face (calm brow, closed mouth);
+// in his near hand, held flat against his chest, one sheet of paper folded very neatly — on the back of it, at the
+// lower corner, the outline of a round seal (a small crown under a seven-pointed star, faint, not legible). No weapon,
+// not a villain's face.
+const RO_HAIR = [[220, 214], [226, 170], [262, 140], [316, 126], [368, 138], [402, 174], [410, 222], [400, 262], [384, 254], [376, 208], [336, 182], [276, 178], [242, 196]];
+const RO_COLLAR = [[244, 392], [262, 362], [300, 374], [352, 360], [374, 388], [372, 436], [300, 446], [240, 436]];
+const RO_PAPER = [[194, 522], [272, 512], [282, 620], [204, 630]];
+CAST.relief_officer = {
+  id: 'relief_officer', label: '赈灾司的官：四十岁上下的男人，灰色的官署外套，立领扣到最上一颗，头发梳得整齐；神情有礼、平静，看不出情绪；手里一张摺得很整齐的纸贴在胸前，纸背一角隐约看得见一个圆形御印的轮廓；不带武器', rim: '#a9b0ba',
+  sil: [
+    head(0, 0, 1),
+    S(RO_HAIR),
+    neck(0, 0, 0.95),
+    torso(206, 478, 1.0),
+    S(RO_COLLAR),
+    pz(RO_PAPER),
+    // the hand holding the paper's edge
+    S([[256, 548], [286, 536], [308, 556], [304, 596], [278, 608], [256, 594]]),
+  ],
+  tones: [
+    [S(RO_HAIR), '#262a30', 0.9],
+    // the grey coat, its closed front and the standing collar
+    [S([[96, 520], [160, 470], [236, 442], [300, 450], [366, 442], [440, 470], [504, 520], [518, 820], [82, 820]]), '#30343c', 0.92],
+    [S(RO_COLLAR), '#3a3f48', 0.95],
+    [S([[300, 446], [312, 820], [292, 820]]), '#1c1f26', 0.8],
+    [S([[256, 548], [286, 536], [308, 556], [304, 596], [278, 608], [256, 594]]), '#3e3a40', 0.95],
+  ],
+  lines: [
+    // jaw, the neat comb lines of the hair, its parting
+    [pl([[386, 256], [366, 306], [324, 352]]), 3.2, 0.8],
+    [pl([[262, 150], [316, 140], [370, 156]]) + pl([[250, 178], [310, 166], [380, 184]]), 2, 0.55],
+    [pl([[300, 130], [292, 176]]), 1.6, 0.5],
+    // collar edge, coat front, shoulder seams
+    [pl([[262, 362], [300, 374], [352, 360]]) + pl([[240, 436], [300, 446], [372, 436]]), 2.2, 0.65],
+    [pl([[300, 446], [304, 800]]), 2, 0.5],
+    [pl([[150, 476], [236, 446]]) + pl([[366, 446], [452, 478]]), 2.6, 0.6],
+    [pl([[150, 560], [160, 790]]) + pl([[446, 560], [440, 790]]), 1.8, 0.3],
+  ],
+  front: ({ rim }) => {
+    let s = '';
+    // the collar's top button and the row of plain buttons down the coat
+    s += `<circle cx="302" cy="404" r="5" fill="#c8ccd4"/><circle cx="300" cy="402" r="1.8" fill="#ffffff"/>`;
+    s += `<g fill="#9aa0aa">${[480, 540, 600, 660, 720].map((y) => `<circle cx="${302 + (y - 446) * 0.012}" cy="${y}" r="4.4"/>`).join('')}</g>`;
+    // the paper: pale, its neat folds, a faint shadow from the hand, the seal's outline at the lower corner
+    s += `<path d="${pz(RO_PAPER)}" fill="#e2dccc"/><path d="${pl([[199, 556], [273, 546]]) + pl([[202, 592], [276, 582]])}" stroke="#a8a090" stroke-width="1.6" opacity=".8"/>`;
+    s += `<path d="M196,520L270,510L272,520L198,530Z" fill="#f4f0e4" opacity=".7"/>`;
+    s += `<g opacity=".26" fill="none" stroke="#a8743a" stroke-width="1.4"><path d="M216,624A12,12 0 0 1 226,602A12,12 0 0 1 240,612"/><path d="M222,614l2,-6l3,3l2,-4l2,4l3,-3l1,6z"/></g>`;
+    // fingers over the paper's edge
+    const fingers = 'M276,556q-8,0 -12,6M277,570q-8,0 -12,6M278,584q-7,0 -10,5';
+    s += `<path d="${fingers}" fill="none" stroke="#3e3a40" stroke-width="8" stroke-linecap="round"/><path d="${fingers}" fill="none" stroke="${rim}" stroke-width="1.4" stroke-linecap="round" opacity=".55" transform="translate(0 -3)"/>`;
+    // a level, calm eye and brow; a closed mouth
+    s += `<path d="M224,252q12,-4 24,-1" fill="none" stroke="${rim}" stroke-width="2.2" stroke-linecap="round" opacity=".8"/><path d="M228,264h14" stroke="${rim}" stroke-width="1.8" opacity=".75"/><path d="M220,320h10" stroke="${rim}" stroke-width="1.6" opacity=".5"/>`;
+    return s;
+  },
+};
+
 export const npcBusts = Object.fromEntries(Object.entries(CAST).map(([id, spec]) => [id, (rim) => render(spec, rim)]));
