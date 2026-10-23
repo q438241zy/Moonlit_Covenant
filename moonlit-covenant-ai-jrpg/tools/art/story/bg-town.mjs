@@ -166,7 +166,7 @@ export function swordBell(cx, cy, k) {
 
 // Narrow alley in one-point perspective: half-timbered walls at X = ±hw, eaves, cobbles.
 // pal: { wall, wallFar, timber, shade, glass, ground, eave } ; dim (0..1) darkens toward the far end.
-function alley(S, R, pr, { hw = 2.2, z0 = 1.4, z1 = 40, hgt = 9, pal, segs = null }) {
+export function alley(S, R, pr, { hw = 2.2, z0 = 1.4, z1 = 40, hgt = 9, pal, segs = null }) {
   const out = [];
   const segList = segs || (() => { const a = []; let z = z0; while (z < z1) { const l = R.range(3, 5.5); a.push([z, Math.min(z1, z + l)]); z += l; } return a; })();
   for (const side of [-1, 1]) {

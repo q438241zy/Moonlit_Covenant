@@ -38,7 +38,9 @@ export default {
   // optional layer, drawn only when compose() is asked for it (opts.extras): the head of her canon staff
   // (设定集/03: 黑曜法杖“无眠镜”) rising behind her right shoulder (viewer's left). Only the story-mode bust
   // (tools/art/story/serena-bust.mjs) asks for it; the gacha portrait and costume portraits are unchanged.
-  extras: { staff },
+  // `staffWrapped` (chapter 12, from 12-03 on): the same staff with its head bound in cloth — she wraps it after the
+  // apology, so nothing on her shines back at anyone. Only the story bust serena_staff_wrapped asks for it.
+  extras: { staff, staffWrapped },
 };
 
 // ------------------------------------------------------------------ background: eclipse + star-chart rings
@@ -364,5 +366,29 @@ function staff(p) {
     + `<path d="${cradle}" fill="${C.silver}" stroke="${C.silverLine}" stroke-width="2.6"/>`
     + `<path d="M-38,4Q-34,40 0,52" fill="none" stroke="${C.silverLit}" stroke-width="2.2" stroke-linecap="round" opacity=".8"/>`
     + `<circle cx="-44" cy="-6" r="5" fill="${C.silverLit}" stroke="${C.silverLine}" stroke-width="1.6"/><circle cx="44" cy="-6" r="5" fill="${C.silverLit}" stroke="${C.silverLine}" stroke-width="1.6"/>`
+    + `</g>`;
+}
+
+// ------------------------------------------------------------------ extras: the same staff, its head wrapped in cloth (chapter 12)
+function staffWrapped(p) {
+  const shaftG = p.lin('staffShaft', [[0, '#3a2f52'], [0.5, '#1a1428'], [1, '#0c0916']], [-9, 0, 9, 0]);
+  const clothG = p.lin('staffCloth', [[0, '#5a5068'], [0.45, '#3a3248'], [1, '#1c1824']], [-50, -100, 50, 80]);
+  // a bundle of plain dark linen over the crystal and its crescent cradle, bound under the cradle with cord
+  const bundle = 'M-10,-110L4,-118L14,-106C30,-100 42,-74 46,-44L54,-36L50,-20C56,8 52,36 38,58C28,70 14,76 8,80L-8,80C-18,74 -30,68 -40,56L-52,60L-46,44C-56,20 -56,-10 -50,-38L-58,-50L-46,-54C-40,-80 -26,-102 -10,-110Z';
+  const folds = 'M-2,-104C-14,-60 -16,-12 -8,40M18,-96C26,-56 30,-4 18,52M-32,-60C-36,-20 -34,18 -24,50M40,-30C44,0 40,30 28,54M-46,-38C-30,-30 -10,-34 6,-46M-40,10C-20,18 10,16 34,4';
+  // the loose corner of the cloth hanging out under the cord
+  const flap = 'M-20,78L-34,112L-12,100L-4,120L4,82Z';
+  return `<g transform="translate(146 500) rotate(-9) scale(1.4)" stroke-linejoin="round">`
+    + `<path d="M-8,60L8,60L11,560L-11,560Z" fill="${shaftG}" stroke="${C.robeLine}" stroke-width="3"/>`
+    + `<path d="M-2,70L-3,550" stroke="${C.violet}" stroke-width="1.6" opacity=".35"/>`
+    + `<path d="M-13,96h26v12h-26zM-12,124h24v6h-24z" fill="${C.silverShade}" stroke="${C.silverLine}" stroke-width="2"/>`
+    + `<path d="${bundle}" fill="${clothG}" stroke="${C.robeLine}" stroke-width="3"/>`
+    + `<path d="${flap}" fill="#2a2434" stroke="${C.robeLine}" stroke-width="2.4"/>`
+    + `<path d="${folds}" fill="none" stroke="#120f18" stroke-width="2.4" stroke-linecap="round" opacity=".8"/>`
+    + `<path d="M-42,-48C-38,-82 -24,-102 -8,-108M44,-40C48,-20 48,0 46,16" fill="none" stroke="#8a7ea8" stroke-width="2.6" stroke-linecap="round" opacity=".75"/>`
+    // the cord: two turns round the neck of the bundle, a knot, two short tails
+    + `<path d="M-30,64Q0,74 30,62M-26,74Q0,84 26,72" fill="none" stroke="${C.silver}" stroke-width="3.4" stroke-linecap="round"/>`
+    + `<circle cx="18" cy="72" r="5" fill="${C.silver}" stroke="${C.silverLine}" stroke-width="1.4"/>`
+    + `<path d="M20,75Q28,94 24,112M16,76Q14,96 8,108" fill="none" stroke="${C.silver}" stroke-width="2.6" stroke-linecap="round"/>`
     + `</g>`;
 }

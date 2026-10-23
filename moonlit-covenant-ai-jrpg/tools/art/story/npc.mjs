@@ -1156,4 +1156,67 @@ function scarEcho(mirrorFace) {
 CAST.scar_echo = scarEcho(false);
 CAST.scar_echo_15 = scarEcho(true);
 
+// 镜咒学徒 (chapter 12) — the mirror-curse apprentice: a thin, small boy, not sexualised, soaked through; a short
+// wrap-front jacket (短褂) clinging to narrow, hunched shoulders, wet hair plastered to the brow in pointed clumps, the
+// face kept in shadow (no features drawn), drops of water at the hair tips and the hem. No wound, no blood (he is on
+// the minors list: never in a suggestive or bloody beat). `blanket` = the 12-11 variant: a grey blanket round his
+// shoulders, held shut at the chest by one small fist.
+const APP_HAIR = [[236, 312], [244, 292], [270, 276], [316, 268], [360, 280], [390, 308], [400, 348], [406, 394, 1], [392, 382], [398, 420, 1], [380, 400], [378, 432, 1], [362, 402], [350, 356], [322, 322], [292, 316], [272, 322], [264, 354, 1], [256, 330], [246, 350, 1], [240, 326], [230, 340, 1]];
+const APP_BLANKET = [[250, 470], [214, 486], [178, 512], [148, 556], [128, 620], [116, 700], [110, 820], [500, 820], [494, 700], [482, 618], [462, 556], [434, 512], [402, 486], [366, 470], [330, 478], [296, 480]];
+function apprentice(blanket) {
+  return {
+    id: blanket ? 'mirror_apprentice_blanket' : 'mirror_apprentice',
+    label: blanket
+      ? '镜咒学徒（裹着毯子）：瘦小的少年，湿透的头发贴在额上，脸在阴影里看不清，肩上裹着一条灰毯子，一只小手在胸前把毯子攥紧；不画伤、不画血'
+      : '镜咒学徒：瘦小的少年，湿透的短褂贴在缩着的窄肩上，头发一绺一绺贴在额上，脸在阴影里看不清，发梢和衣摆滴着水；不画伤、不画血',
+    rim: '#8fb0c4',
+    sil: [
+      head(10, 120, 0.8, true),
+      S(APP_HAIR),
+      neck(10, 128, 0.66),
+      blanket ? S(APP_BLANKET) : torso(140, 586, 1.5, 10),
+      ...(blanket ? [circle(300, 560, 22)] : []),
+    ],
+    tones: [
+      // wet hair, almost black, the clumps a shade lighter where they catch the light
+      [S(APP_HAIR), '#1c222a', 0.92],
+      [S([[270, 282], [316, 274], [356, 286], [380, 306], [352, 300], [316, 292], [282, 296]]), '#3a4a58', 0.7],
+      // the face turned into shadow: one flat dark plane, no features
+      [S(T(FACE_SOFT, 10, 120, 0.8, 300, 240)), '#07080c', 0.6],
+      [neck(10, 128, 0.66), '#0e1016', 0.85],
+      ...(blanket ? [
+        [S(APP_BLANKET), '#2c3036', 0.94],
+        [S([[170, 526], [210, 500], [224, 516], [192, 544], [158, 600], [140, 664], [130, 820], [114, 820], [122, 660], [142, 596]]), '#1e2228', 0.9],
+        [S([[284, 486], [300, 500], [318, 486], [330, 600], [334, 820], [268, 820], [272, 600]]), '#14181e', 0.92],
+        [circle(300, 560, 22), '#3a4048', 0.95],
+      ] : [
+        // the short jacket: slate cloth gone dark with water, the wrap-front overlap, a cloth tie at the waist
+        [torso(140, 586, 1.5, 10), '#1e262e', 0.9],
+        [S([[262, 512], [312, 600], [352, 516], [366, 530], [318, 640], [302, 640], [248, 526]]), '#2e3a44', 0.85],
+        [S([[200, 720], [440, 716], [442, 738], [198, 742]]), '#141a20', 0.9],
+      ]),
+    ],
+    lines: [
+      // strands of the plastered hair
+      [`M290,284C300,300 296,318 284,330M330,280C340,300 336,320 324,330M366,296C378,320 384,350 392,380`, 2.2, 0.65],
+      // jaw edge in the dark, the narrow shoulders' wet sheen
+      [pl([[376, 334], [362, 370], [330, 402]]), 2.5, 0.6],
+      ...(blanket
+        ? [[pl([[148, 556], [178, 512], [214, 486], [250, 470]]) + pl([[402, 486], [434, 512], [462, 556], [482, 618]]), 3, 0.55], [`M420,580C430,650 436,730 438,812M206,600C198,670 194,740 192,812`, 2, 0.35]]
+        : [[`M206,512C232,500 262,496 284,500M404,500C424,506 438,516 448,532`, 3, 0.6], [pl([[262, 512], [312, 600], [352, 516]]), 2, 0.5], [`M214,560C210,620 206,690 204,800M432,560C438,620 442,690 444,800`, 1.8, 0.3]]),
+    ],
+    front: ({ rim }) => {
+      let s = '';
+      // water: drops hanging at the hair tips, a few falling
+      for (const [x, y] of [[378, 438], [406, 400], [398, 426]]) s += `<path d="M${x},${y}q-4,7 0,10q4,-3 0,-10z" fill="#dce8f0" opacity=".8"/>`;
+      for (const [x, y] of [[392, 470], [410, 446]]) s += `<ellipse cx="${x}" cy="${y}" rx="2" ry="3.4" fill="#dce8f0" opacity=".55"/>`;
+      if (blanket) s += `<path d="M280,548q8,-8 18,-6M278,560q9,-6 20,-4M280,572q8,-4 16,-2" fill="none" stroke="${rim}" stroke-width="2.2" stroke-linecap="round" opacity=".85"/><path d="M296,540C312,534 322,548 318,566" fill="none" stroke="#141820" stroke-width="3" opacity=".7"/><path d="M262,532C276,522 300,524 322,534" fill="none" stroke="${rim}" stroke-width="1.8" opacity=".5"/>`;
+      else for (const [x, y] of [[214, 748], [300, 752], [404, 746]]) s += `<path d="M${x},${y}q-4,7 0,10q4,-3 0,-10z" fill="#dce8f0" opacity=".7"/>`;
+      return s;
+    },
+  };
+}
+CAST.mirror_apprentice = apprentice(false);
+CAST.mirror_apprentice_blanket = apprentice(true);
+
 export const npcBusts = Object.fromEntries(Object.entries(CAST).map(([id, spec]) => [id, (rim) => render(spec, rim)]));
