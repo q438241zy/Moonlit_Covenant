@@ -31486,7 +31486,7 @@
   ],
   "end": {
     "save": "SAVE_CH012_END_DARK_MAGE_TERMS",
-    "next": null,
+    "next": "ch013",
     "nextLabel": "CH013_GOLDEN_ASSASSIN_IN_RAIN",
     "set": {
       "flags": {
