@@ -24491,7 +24491,7 @@
   ],
   "end": {
     "save": "SAVE_CH011_END_PURPLE_SHADOW_IN_MIRROR",
-    "next": null,
+    "next": "ch012",
     "nextLabel": "CH012_DARK_MAGE_TERMS",
     "set": {
       "flags": {

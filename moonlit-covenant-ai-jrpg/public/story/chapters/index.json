@@ -106,5 +106,14 @@
     "file": "/story/chapters/ch011.json",
     "requires": "ch010",
     "source": "剧本/11鏡中紫影.md"
+  },
+  {
+    "id": "ch012",
+    "number": 12,
+    "title": "第十二章｜暗法师的条件",
+    "estimatedMinutes": 11,
+    "file": "/story/chapters/ch012.json",
+    "requires": "ch011",
+    "source": "剧本/12暗法師的條件.md"
   }
 ]
