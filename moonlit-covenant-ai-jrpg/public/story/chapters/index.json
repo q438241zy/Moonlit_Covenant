@@ -115,5 +115,14 @@
     "file": "/story/chapters/ch012.json",
     "requires": "ch011",
     "source": "剧本/12暗法師的條件.md"
+  },
+  {
+    "id": "ch013",
+    "number": 13,
+    "title": "第十三章｜雨中的金色刺客",
+    "estimatedMinutes": 11,
+    "file": "/story/chapters/ch013.json",
+    "requires": "ch012",
+    "source": "剧本/13雨中的金色刺客.md"
   }
 ]
