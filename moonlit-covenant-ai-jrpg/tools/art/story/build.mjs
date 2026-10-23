@@ -3,9 +3,10 @@
 //   node tools/art/story/build.mjs               -> everything
 //   node tools/art/story/build.mjs bg            -> all backgrounds (every locations.json entry, plus generators
 //                                                  not wired into locations.json yet, e.g. new variants)
-//   node tools/art/story/build.mjs npc           -> all 29 busts (24 NPC silhouettes incl. both versions of 蚀痕残响 and
-//                                                  of 镜咒学徒 + Lia's, Mia's and Serena's transparent portrait busts and
-//                                                  the chapter 12 variants lia_mirror / serena_staff_wrapped, portrait-bust.mjs)
+//   node tools/art/story/build.mjs npc           -> all 30 busts (24 NPC silhouettes incl. both versions of 蚀痕残响 and
+//                                                  of 镜咒学徒 + Lia's, Mia's and Serena's transparent portrait busts,
+//                                                  the chapter 12 variants lia_mirror / serena_staff_wrapped and the
+//                                                  chapter 13 hooded golden_assassin, portrait-bust.mjs)
 //   node tools/art/story/build.mjs hemai-day aku -> just those ids
 // Output: public/assets/story/bg/<id>.svg (1600×900) and public/assets/story/npc/<id>.svg (600×800, transparent).
 // Every file is validated against docs/ART-DIRECTION.md §4 (self-contained, no text/script/external refs,
@@ -26,19 +27,21 @@ import { sewerBgs } from './bg-sewer.mjs';
 import { innBgs } from './bg-inn.mjs';
 import { lighthouseBgs } from './bg-lighthouse.mjs';
 import { alleyBgs } from './bg-alley.mjs';
+import { roofBgs } from './bg-roofs.mjs';
 import { npcBusts as silhouetteBusts } from './npc.mjs';
 import { liaBust } from './lia-bust.mjs';
 import { miaBust } from './mia-bust.mjs';
 import { serenaBust } from './serena-bust.mjs';
 import { ch12Busts } from './ch12-busts.mjs';
+import { goldenAssassinBust } from './golden-assassin-bust.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const locations = JSON.parse(fs.readFileSync(path.join(root, 'public/story/locations.json'), 'utf8'));
 const speakers = JSON.parse(fs.readFileSync(path.join(root, 'public/story/speakers.json'), 'utf8'));
 
-const bgs = { ...villageBgs, ...nightBgs, ...dawnBgs, ...townBgs, ...millBgs, ...oldMillBgs, ...marshBgs, ...tideBgs, ...harborBgs, ...sewerBgs, ...innBgs, ...lighthouseBgs, ...alleyBgs };
+const bgs = { ...villageBgs, ...nightBgs, ...dawnBgs, ...townBgs, ...millBgs, ...oldMillBgs, ...marshBgs, ...tideBgs, ...harborBgs, ...sewerBgs, ...innBgs, ...lighthouseBgs, ...alleyBgs, ...roofBgs };
 // bust id -> generator; the file is public/assets/story/npc/<id>.svg (several speakers may share one file)
-const npcBusts = { ...silhouetteBusts, lia: () => liaBust(), mia: () => miaBust(), serena: () => serenaBust(), ...ch12Busts };
+const npcBusts = { ...silhouetteBusts, lia: () => liaBust(), mia: () => miaBust(), serena: () => serenaBust(), ...ch12Busts, golden_assassin: () => goldenAssassinBust() };
 const BG_BUDGET = 90 * 1024, NPC_BUDGET = 70 * 1024;
 
 function validate(rel, svg, { w, h, budget }) {

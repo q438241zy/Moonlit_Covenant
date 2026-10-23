@@ -226,7 +226,8 @@ function hilt(p, side) {
     + `<circle cx="${pm[0]}" cy="${pm[1]}" r="9" fill="${gem}" stroke="${C.goldLine}" stroke-width="1.6"/><circle cx="${n(Number(pm[0]) - 2.5)}" cy="${n(Number(pm[1]) - 2.5)}" r="2.2" fill="#fff" opacity=".85"/>`
     + `</g>`;
 }
-function gear(p) {
+// hoodDown = false leaves out the cowl behind the neck (the hooded story bust, tools/art/story/golden-assassin-bust.mjs)
+function gear(p, { hoodDown = true } = {}) {
   const { smooth, taper } = p.helpers;
   // cape on the viewer's left shoulder only, falling behind the arm to a cut, pointed hem
   const capeG = p.lin('cape', [[0, '#2c2238'], [1, '#120d1a']], [0, 760, 0, 1216]);
@@ -241,9 +242,9 @@ function gear(p) {
     + `<path d="M60,1216L96,1216L104,1150L122,1196L128,1216" fill="none" stroke="${C.gold}" stroke-width="2.4"/>`
     + `<path d="${taper([[160, 800], [124, 880], [104, 980]], { w: 8, start: 0.2, end: 0, peak: 0.4 })}" fill="${C.hoodLit}" opacity=".9"/>`
     + hilt(p, 'L') + hilt(p, 'R')
-    + `<path d="${hood}" fill="${p.lin('hood', [[0, C.hoodLit], [0.5, C.hood], [1, C.hoodShade]], [290, 0, 546, 0])}" stroke="${C.suitLine}" stroke-width="3"/>`
+    + (!hoodDown ? '' : `<path d="${hood}" fill="${p.lin('hood', [[0, C.hoodLit], [0.5, C.hood], [1, C.hoodShade]], [290, 0, 546, 0])}" stroke="${C.suitLine}" stroke-width="3"/>`
     + `<path d="${hoodRim}" fill="none" stroke="${C.violetDark}" stroke-width="10"/><path d="${hoodRim}" fill="none" stroke="${C.gold}" stroke-width="2"/>`
-    + `<path d="M316,690Q330,716 324,748M346,660Q350,690 344,720M516,690Q502,716 508,748M486,660Q482,690 488,720" fill="none" stroke="${C.hoodShade}" stroke-width="3"/>`
+    + `<path d="M316,690Q330,716 324,748M346,660Q350,690 344,720M516,690Q502,716 508,748M486,660Q482,690 488,720" fill="none" stroke="${C.hoodShade}" stroke-width="3"/>`)
     + `</g>`;
 }
 
@@ -314,3 +315,6 @@ function wisps(p) {
   return `<path d="${d}" fill="${g}"/><path d="${core}" fill="#e9d5ff" opacity=".55"/>`
     + `<path d="${sparks}" stroke="#f1e4ff" stroke-width="5" stroke-linecap="round" opacity=".85"/>`;
 }
+
+// the parts the hooded story bust reuses (tools/art/story/golden-assassin-bust.mjs)
+export { C as LILITH_COLORS, hairBack, hairFront, gear, faceMarks };

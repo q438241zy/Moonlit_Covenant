@@ -248,5 +248,10 @@
     "name": "塞雷娜",
     "color": "#b58cff",
     "art": "/assets/story/npc/serena_staff_wrapped.svg"
+  },
+  "golden_assassin": {
+    "name": "金发刺客",
+    "color": "#d9a441",
+    "art": "/assets/story/npc/golden_assassin.svg"
   }
 }

@@ -305,10 +305,34 @@
     "top": "#1c2230",
     "bottom": "#06070a"
   },
+  "fog-harbor-old-lighthouse-night": {
+    "name": "雾港·旧灯塔·塔底夜雨",
+    "svg": "/assets/story/bg/fog-harbor-old-lighthouse-night.svg",
+    "top": "#1a1e28",
+    "bottom": "#07080c"
+  },
+  "fog-harbor-old-lighthouse-night-broken": {
+    "name": "雾港·旧灯塔·塔底夜雨·破窗",
+    "svg": "/assets/story/bg/fog-harbor-old-lighthouse-night-broken.svg",
+    "top": "#181c26",
+    "bottom": "#06070b"
+  },
+  "fog-harbor-old-lighthouse-dawn": {
+    "name": "雾港·旧灯塔·清晨",
+    "svg": "/assets/story/bg/fog-harbor-old-lighthouse-dawn.svg",
+    "top": "#6e7076",
+    "bottom": "#1a1c20"
+  },
   "fog-harbor-mirror-alley": {
     "name": "雾港·镜巷",
     "svg": "/assets/story/bg/fog-harbor-mirror-alley.svg",
     "top": "#5a4058",
     "bottom": "#120e14"
+  },
+  "fog-harbor-fish-market-roofs-rain": {
+    "name": "雾港·鱼市屋顶·雨夜",
+    "svg": "/assets/story/bg/fog-harbor-fish-market-roofs-rain.svg",
+    "top": "#141a26",
+    "bottom": "#06080c"
   }
 }
