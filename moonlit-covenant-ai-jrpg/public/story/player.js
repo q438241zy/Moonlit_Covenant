@@ -1088,6 +1088,9 @@ function typeText(text, instant) {
     return Promise.resolve();
   }
   P.dlg.classList.remove('done');
+  // 第一帧打字之前先清掉上一句：否则对话框刚亮出来的那一帧，新名牌下面还是上一句的全文（换分镜时尤其明显）
+  P.shown.textContent = '';
+  P.rest.textContent = text;
   // 标点处稍作停顿
   const times = [];
   let t = 0;
