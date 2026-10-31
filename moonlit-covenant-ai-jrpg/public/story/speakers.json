@@ -283,5 +283,70 @@
     "name": "赈灾司的官",
     "color": "#a9b0ba",
     "art": "/assets/story/npc/relief_officer.svg"
+  },
+  "evelyn_unknown": {
+    "name": "圣女",
+    "color": "#f4e2b2",
+    "art": "/assets/story/npc/evelyn.svg"
+  },
+  "evelyn": {
+    "name": "伊芙琳",
+    "color": "#f4e2b2",
+    "art": "/assets/story/npc/evelyn.svg"
+  },
+  "emperor": {
+    "name": "皇帝",
+    "color": "#d8cfb4",
+    "art": "/assets/story/npc/emperor.svg"
+  },
+  "rowena": {
+    "name": "洛温娜",
+    "color": "#ead8a0",
+    "art": "/assets/story/npc/rowena.svg"
+  },
+  "celestine": {
+    "name": "塞莱斯汀",
+    "color": "#e4e0f0",
+    "art": "/assets/story/npc/celestine.svg"
+  },
+  "severin_unknown": {
+    "name": "掌簿官",
+    "color": "#b4b2aa",
+    "art": "/assets/story/npc/severin.svg"
+  },
+  "severin": {
+    "name": "塞弗林",
+    "color": "#b4b2aa",
+    "art": "/assets/story/npc/severin.svg"
+  },
+  "ceremony_officer": {
+    "name": "白面的礼仪官",
+    "color": "#e6e6ee",
+    "art": "/assets/story/npc/ceremony_officer.svg"
+  },
+  "archivist": {
+    "name": "典册官",
+    "color": "#c4ccd8",
+    "art": "/assets/story/npc/archivist.svg"
+  },
+  "gate_clerk": {
+    "name": "晨门书记",
+    "color": "#a8a090",
+    "art": null
+  },
+  "pilgrim_elder": {
+    "name": "朝圣的老人",
+    "color": "#b0a48e",
+    "art": null
+  },
+  "burial_petitioner": {
+    "name": "等葬帖的男人",
+    "color": "#9a9080",
+    "art": null
+  },
+  "morningstar_guard": {
+    "name": "晨星卫",
+    "color": "#dfe4ec",
+    "art": null
   }
 }

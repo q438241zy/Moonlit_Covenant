@@ -388,5 +388,35 @@
     "svg": "/assets/story/bg/fog-harbor-guild-shed.svg",
     "top": "#4a3e30",
     "bottom": "#120e0a"
+  },
+  "white-tower-morning-gate": {
+    "name": "白塔圣都·晨门·上午",
+    "svg": "/assets/story/bg/white-tower-morning-gate.svg",
+    "top": "#dcdcd6",
+    "bottom": "#aeaaa2"
+  },
+  "white-tower-morning-gate-dusk": {
+    "name": "白塔圣都·晨门·黄昏",
+    "svg": "/assets/story/bg/white-tower-morning-gate-dusk.svg",
+    "top": "#8a7c8a",
+    "bottom": "#8a7472"
+  },
+  "white-tower-registry-hall": {
+    "name": "白塔·册厅",
+    "svg": "/assets/story/bg/white-tower-registry-hall.svg",
+    "top": "#cfcac0",
+    "bottom": "#d8d2c4"
+  },
+  "white-tower-registry-hall-court": {
+    "name": "白塔·册厅·御前列席",
+    "svg": "/assets/story/bg/white-tower-registry-hall-court.svg",
+    "top": "#cfcac0",
+    "bottom": "#d8d2c4"
+  },
+  "white-tower-registry-hall-night": {
+    "name": "白塔·册厅·入夜",
+    "svg": "/assets/story/bg/white-tower-registry-hall-night.svg",
+    "top": "#141620",
+    "bottom": "#0c0e16"
   }
 }

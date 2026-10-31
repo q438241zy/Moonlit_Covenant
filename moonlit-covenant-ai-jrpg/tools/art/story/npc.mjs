@@ -1499,4 +1499,245 @@ CAST.relief_officer = {
   },
 };
 
+// ---------------------------------------------------------------------------------------------
+// chapter 16 — the court in the registry hall
+// ---------------------------------------------------------------------------------------------
+
+// 皇帝 (16) — 晨星皇帝阿尔德里克四世, 47: a grown man with short grey-and-white hair and a short grey beard, a plain white
+// robe with only a very thin gold line round the collar, a thin gold band on his brow (not a crown); calm, tired,
+// unreadable eyes; an open register at his near hand along the bottom of the frame. No weapon, not a villain's face.
+const EM_HAIR = [[218, 212], [224, 166], [262, 136], [316, 124], [368, 136], [402, 172], [410, 220], [400, 258], [386, 250], [378, 206], [338, 178], [276, 176], [242, 194]];
+const EM_BEARD = [[212, 286], [218, 312], [232, 338], [254, 358], [284, 370], [318, 362], [350, 340], [372, 306], [380, 276], [362, 300], [330, 318], [290, 322], [252, 312], [228, 296]];
+const EM_COLLAR = [[236, 392], [262, 370], [300, 382], [350, 368], [376, 392], [352, 412], [300, 420], [252, 412]];
+const EM_BOOK = [[60, 700, 1], [260, 676, 1], [300, 760, 1], [96, 790, 1]];
+CAST.emperor = {
+  id: 'emperor', label: '皇帝：四十七岁的成年男性，灰白相间的短发与短须，简朴的白色长袍、领口一圈极细的金线，额上一道很薄的金环；眼神平静、疲倦、看不出情绪；手边一本摊开的册；不带武器', rim: '#d8cfb4',
+  sil: [
+    head(0, 0, 1), S(EM_HAIR), S(EM_BEARD), neck(0, 0, 1),
+    torso(212, 480, 0.9),
+    pz(EM_BOOK),
+  ],
+  tones: [
+    [S(EM_HAIR), '#8a8780', 0.85],
+    [S(EM_BEARD), '#8e8a82', 0.8],
+    // the plain white robe falling straight, its fold down the front, the collar
+    [S([[92, 520], [160, 468], [240, 440], [300, 448], [362, 440], [442, 468], [508, 520], [520, 820], [80, 820]]), '#9c988e', 0.88],
+    [S([[300, 448], [318, 820], [286, 820]]), '#7a766e', 0.6],
+    [S(EM_COLLAR), '#b0aca2', 0.95],
+    [pz(EM_BOOK), '#d8d0bc', 0.95],
+  ],
+  lines: [
+    [pl([[386, 254], [380, 276]]), 3, 0.8],
+    [pl([[262, 150], [318, 140], [372, 156]]) + pl([[248, 180], [312, 168], [382, 186]]), 2, 0.5],
+    // beard strands
+    ['M246,318C262,338 286,348 312,344M266,334C282,350 304,354 326,346M238,300C250,320 262,330 280,336', 1.6, 0.55],
+    // the robe's shoulder seams and long folds
+    [pl([[150, 476], [240, 446]]) + pl([[362, 446], [452, 478]]), 2.6, 0.6],
+    ['M170,560C176,640 172,720 168,800M432,560C428,640 432,720 436,800M250,520C254,620 252,720 250,800', 1.8, 0.35],
+    // the open book's spine and page edges
+    [pl([[160, 688], [196, 776]]) + pl([[80, 708], [252, 686]]) + pl([[90, 724], [256, 702]]), 1.8, 0.6, '#8a7a5a'],
+  ],
+  front: ({ rim }) => {
+    let s = '';
+    // the thin gold band on the brow, catching the light
+    s += `<path d="M214,196C252,180 318,174 404,190" fill="none" stroke="#e2c46a" stroke-width="4" stroke-linecap="round"/><path d="M226,190C262,178 316,174 360,180" fill="none" stroke="#fff0b8" stroke-width="1.4" opacity=".7"/>`;
+    // the very thin gold line round the collar
+    s += `<path d="M252,412L300,420L352,412" fill="none" stroke="#e2c46a" stroke-width="2"/>`;
+    // a level, tired eye under a heavy lid; a closed mouth half hidden in the beard
+    s += `<path d="M222,250q14,-4 26,0" fill="none" stroke="${rim}" stroke-width="2.4" stroke-linecap="round" opacity=".85"/><path d="M226,262q8,3 18,0" fill="none" stroke="${rim}" stroke-width="1.8" opacity=".7"/><path d="M228,270q8,4 18,2" fill="none" stroke="${rim}" stroke-width="1.2" opacity=".4"/><path d="M226,316h12" stroke="${rim}" stroke-width="1.6" opacity=".45"/>`;
+    // his hand resting on the open page
+    s += `<path d="M200,700q20,-14 46,-8q10,10 2,22q-26,10 -46,4z" fill="#5a544c"/><path d="M200,700q20,-14 46,-8" fill="none" stroke="${rim}" stroke-width="1.6" opacity=".6"/>`;
+    return s;
+  },
+};
+
+// 洛温娜 (16) — 皇女, 23: a grown woman standing very straight, deep gold hair pinned up neatly at the back of the head,
+// a white and pale-gold court gown with a high collar and long sleeves; a sincere, upright, slightly proud face.
+// Never a suggestive composition: high collar, nothing shown below but the gown's straight front.
+const ROW_HAIR = [[224, 200], [232, 158], [270, 130], [324, 124], [374, 142], [402, 180], [406, 226], [394, 250], [380, 214], [342, 188], [290, 184], [254, 192], [238, 214]];
+const ROW_BUN = [[368, 134], [396, 112], [432, 116], [452, 146], [446, 182], [418, 196], [390, 184]];
+const ROW_COLLAR = [[252, 384], [258, 346], [300, 356], [344, 344], [352, 384], [344, 420], [300, 428], [258, 420]];
+CAST.rowena = {
+  id: 'rowena', label: '洛温娜：二十三岁的成年女性，深金色头发整齐盘起，白与淡金的宫廷礼服，领口高、袖长，站姿笔直；神情端正、真诚，有一点骄傲', rim: '#ead8a0',
+  sil: [
+    head(0, 4, 0.96, true), S(ROW_HAIR), S(ROW_BUN), neck(0, 4, 0.86),
+    torso(184, 488, 1.1),
+    S(ROW_COLLAR),
+  ],
+  tones: [
+    [S(ROW_HAIR) + S(ROW_BUN), '#7a6232', 0.9],
+    // the gown: white bodice, pale gold panel down the front, the long sleeves
+    [S([[120, 520], [176, 470], [246, 446], [300, 452], [356, 446], [424, 470], [480, 520], [490, 820], [110, 820]]), '#a8a294', 0.9],
+    [S([[262, 460], [300, 466], [338, 460], [350, 820], [250, 820]]), '#b8a676', 0.8],
+    [S(ROW_COLLAR), '#c4beb0', 0.95],
+  ],
+  lines: [
+    [pl([[386, 258], [366, 306], [326, 350]]), 3, 0.8],
+    [pl([[272, 140], [328, 134], [374, 152]]) + pl([[258, 172], [318, 162], [374, 186]]), 2, 0.55],
+    ['M378,140C396,124 424,124 440,140M384,164C404,152 426,154 444,168', 1.8, 0.6],
+    // collar edge, the panel's gold borders, sleeve seams
+    [pl([[258, 420], [300, 428], [344, 420]]), 2.2, 0.7, '#e8d088'],
+    [pl([[262, 460], [250, 800]]) + pl([[338, 460], [350, 800]]), 2, 0.7, '#e8d088'],
+    [pl([[176, 474], [246, 448]]) + pl([[356, 448], [424, 474]]), 2.4, 0.6],
+  ],
+  front: ({ rim }) => {
+    let s = '';
+    // a pin through the bun
+    s += `<path d="M396,120L452,170" stroke="#e8d088" stroke-width="3" stroke-linecap="round"/><circle cx="398" cy="122" r="5" fill="#fff0c0"/>`;
+    // a direct, upright gaze: a clear brow and open eye, a composed mouth
+    s += `<path d="M222,248q14,-8 28,-3" fill="none" stroke="${rim}" stroke-width="2.4" stroke-linecap="round" opacity=".9"/><path d="M226,262q10,-5 20,0" fill="none" stroke="${rim}" stroke-width="2" opacity=".85"/><circle cx="236" cy="264" r="2.4" fill="${rim}" opacity=".8"/><path d="M226,320q6,2 12,0" fill="none" stroke="${rim}" stroke-width="1.6" opacity=".55"/>`;
+    // a small gold brooch at the collar
+    s += `<circle cx="300" cy="398" r="7" fill="#e2c46a"/><circle cx="298" cy="396" r="2.4" fill="#fff4cc"/>`;
+    return s;
+  },
+};
+
+// 塞莱斯汀 (16) — 大主教, 冠礼院首席, 52: a grown woman in the white robe and cape of the chief prelate, a seven-pointed
+// star on her breast, grey hair tucked under a soft white cap; a pen in her hand; a mild, careful face with fine lines
+// at the corners of her eyes.
+const CEL_CAP = [[218, 206], [226, 150], [262, 118], [314, 106], [366, 118], [400, 152], [410, 204], [392, 214], [372, 184], [330, 166], [278, 166], [244, 184]];
+const CEL_HAIR = [[226, 206], [232, 236], [246, 222], [258, 196]];
+const CEL_CAPE = [[244, 400], [200, 414], [140, 446], [98, 490], [76, 560], [66, 680], [62, 820], [538, 820], [534, 680], [522, 560], [498, 490], [456, 444], [398, 412], [356, 398], [300, 420]];
+CAST.celestine = {
+  id: 'celestine', label: '塞莱斯汀：五十二岁的成年女性，冠礼院首席的白色主教长袍与披肩，胸前一枚七角星；灰发收在白帽下；手里一支笔；神情温和、谨慎，眼角有细纹', rim: '#e4e0f0',
+  sil: [
+    head(0, 6, 0.95, true), S(CEL_CAP), neck(0, 6, 0.86),
+    S(CEL_CAPE),
+  ],
+  tones: [
+    [S(CEL_CAP), '#a8a4b4', 0.9],
+    [S(CEL_HAIR), '#6a6872', 0.85],
+    [S(CEL_CAPE), '#96929e', 0.9],
+    // the robe beneath, showing down the front between the cape's edges
+    [S([[262, 430], [300, 446], [338, 430], [356, 820], [244, 820]]), '#aeaab6', 0.9],
+  ],
+  lines: [
+    [pl([[384, 262], [364, 308], [326, 350]]), 2.8, 0.75],
+    // the cap's soft folds
+    ['M246,180C276,160 330,158 372,178M236,196C270,176 334,172 394,196', 1.8, 0.6],
+    // the cape's edges and its embroidered yoke
+    [pl([[262, 430], [244, 800]]) + pl([[338, 430], [356, 800]]), 2.4, 0.7, '#d8c890'],
+    ['M140,446C200,420 250,410 300,420C350,410 400,420 456,444', 2.2, 0.6],
+  ],
+  front: ({ rim }) => {
+    let s = '';
+    // the seven-pointed star on her breast
+    s += `<path d="${star7(300, 520, 30)}" fill="#e2c46a"/><path d="${star7(300, 520, 14)}" fill="#fff4cc"/>`;
+    // a mild, careful eye with fine lines at its corner; a quiet mouth
+    s += `<path d="M222,260q12,-4 24,0" fill="none" stroke="${rim}" stroke-width="2.2" stroke-linecap="round" opacity=".85"/><path d="M226,270q8,3 16,0" fill="none" stroke="${rim}" stroke-width="1.6" opacity=".7"/><path d="M216,262l-6,-3M216,268l-7,1" stroke="${rim}" stroke-width="1.2" opacity=".5"/><path d="M228,326q6,2 12,0" fill="none" stroke="${rim}" stroke-width="1.6" opacity=".55"/>`;
+    // her hand at the cape's edge holding a pen
+    s += `<path d="M196,600q18,-12 40,-6q8,12 0,24q-22,8 -40,2z" fill="#4e4a58"/><path d="M196,600q18,-12 40,-6" fill="none" stroke="${rim}" stroke-width="1.6" opacity=".6"/><path d="M226,596L264,540" stroke="#2a2630" stroke-width="5" stroke-linecap="round"/><path d="M262,542l6,-8" stroke="#e2c46a" stroke-width="3" stroke-linecap="round"/>`;
+    return s;
+  },
+};
+
+// 塞弗林 (16) — 掌簿官 (nameplate 掌簿官 until the roll call, then 塞弗林; one bust), 58: an old man with thin grey hair
+// combed back, a dark grey scribe's robe with ink on its cuffs, a pen in his hand; a flat face, eyes on the paper, not on
+// people. Not a sinister face.
+const SEV_HAIR = [[224, 200], [234, 160], [270, 136], [320, 128], [366, 140], [396, 172], [404, 214], [396, 246], [382, 236], [372, 200], [336, 180], [280, 180], [248, 192]];
+const SEV_ARM = [[150, 820], [176, 700], [214, 640], [256, 616], [290, 626], [284, 660], [244, 690], [220, 760], [214, 820]];
+CAST.severin = {
+  id: 'severin', label: '塞弗林：五十八岁的灰发老人，头发稀薄向后梳，深灰色的书记长袍、袖口沾着墨；手里一支笔；脸很平，眼睛低垂看着纸，不看人', rim: '#b4b2aa',
+  sil: [
+    head(0, 8, 0.97), S(SEV_HAIR), neck(0, 8, 0.9),
+    torso(200, 486, 0.85),
+    // the forearm and hand with the pen, coming up from the lower left
+    S(SEV_ARM),
+  ],
+  tones: [
+    [S(SEV_HAIR), '#7a7872', 0.85],
+    [S([[100, 524], [166, 476], [240, 452], [300, 460], [360, 452], [434, 476], [500, 524], [512, 820], [88, 820]]), '#3a3a3e', 0.92],
+    [S(SEV_ARM), '#323236', 0.95],
+    // the ink-stained cuff
+    [S([[200, 660], [236, 640], [250, 668], [216, 690]]), '#1a1c26', 0.95],
+  ],
+  lines: [
+    [pl([[386, 262], [366, 312], [324, 356]]), 3, 0.8],
+    // thin combed-back hair
+    [pl([[264, 148], [320, 138], [370, 154]]) + pl([[252, 174], [312, 162], [376, 182]]) + pl([[248, 190], [306, 180], [372, 198]]), 1.6, 0.5],
+    // the robe's high plain collar, shoulder seams
+    [pl([[252, 420], [300, 436], [350, 420]]), 2.4, 0.6],
+    [pl([[160, 482], [240, 456]]) + pl([[360, 456], [440, 482]]), 2.4, 0.55],
+    // age lines by the mouth
+    [pl([[230, 300], [236, 322]]), 1.4, 0.45],
+  ],
+  front: ({ rim }) => {
+    let s = '';
+    // eyes lowered to the page: a heavy, almost closed lid, a flat brow, a closed mouth
+    s += `<path d="M222,256h24" stroke="${rim}" stroke-width="2.2" stroke-linecap="round" opacity=".8"/><path d="M226,272q9,4 18,0" fill="none" stroke="${rim}" stroke-width="2" opacity=".8"/><path d="M222,326h12" stroke="${rim}" stroke-width="1.6" opacity=".5"/>`;
+    // the pen between his fingers, its nib dark with ink
+    s += `<path d="M262,624L330,520" stroke="#2a2a2e" stroke-width="6" stroke-linecap="round"/><path d="M262,624l-8,12" stroke="#0e1018" stroke-width="3" stroke-linecap="round"/><path d="M326,526L334,514" stroke="${rim}" stroke-width="2" opacity=".7"/>`;
+    s += `<path d="M256,616q20,-4 32,8" fill="none" stroke="${rim}" stroke-width="1.8" opacity=".6"/>`;
+    // ink spots on the cuff
+    s += `<g fill="#0e1018"><circle cx="222" cy="664" r="4"/><circle cx="236" cy="674" r="2.6"/><circle cx="214" cy="680" r="2"/></g>`;
+    return s;
+  },
+};
+
+// 白面的礼仪官 (16) — a grown woman in a white ceremonial officer's uniform, her face very pale (powder or her own, not a
+// mask); gentle and patient. Unnamed in this chapter; she stands one step behind the saint.
+const CO_HAIR = [[222, 214], [228, 166], [266, 134], [320, 124], [372, 140], [402, 180], [408, 230], [404, 290], [392, 316], [382, 270], [376, 212], [338, 184], [278, 182], [244, 198]];
+CAST.ceremony_officer = {
+  id: 'ceremony_officer', label: '白面的礼仪官：成年女性，白色的礼仪官服，脸色极白（是妆或天生，不是面具），神情温柔、耐心', rim: '#e6e6ee',
+  sil: [
+    head(0, 4, 0.96, true), S(CO_HAIR), neck(0, 4, 0.86),
+    torso(190, 484, 1.0),
+  ],
+  tones: [
+    // the very pale face (powder-white over the ink), then the dark hair over it
+    [head(0, 4, 0.96, true), '#d8d6de', 0.55],
+    [S(CO_HAIR), '#3a3644', 0.95],
+    [S([[112, 520], [170, 470], [244, 446], [300, 452], [356, 446], [430, 470], [488, 520], [500, 820], [100, 820]]), '#a6a4ae', 0.9],
+    [S([[254, 400], [300, 414], [346, 400], [346, 440], [300, 452], [254, 440]]), '#c4c2cc', 0.95],
+  ],
+  lines: [
+    [pl([[384, 262], [366, 308], [326, 350]]), 2.6, 0.7],
+    [pl([[266, 144], [322, 136], [372, 154]]) + pl([[252, 176], [314, 166], [376, 188]]), 1.8, 0.55],
+    // the uniform's front, its pale gold shoulder boards
+    [pl([[300, 452], [304, 800]]), 2, 0.5],
+    [pl([[170, 472], [244, 450]]) + pl([[356, 450], [430, 472]]), 4, 0.5, '#d8d0b0'],
+  ],
+  front: () => {
+    let s = '';
+    // gentle, patient: a soft lowered lid, a faint closed smile — drawn dark, since the face is pale
+    s += `<path d="M224,262q11,4 22,0" fill="none" stroke="#5a5664" stroke-width="2.2" stroke-linecap="round"/><path d="M224,250q12,-5 24,-2" fill="none" stroke="#6a6674" stroke-width="1.6" opacity=".8"/><path d="M226,324q6,3 12,0" fill="none" stroke="#8a6a74" stroke-width="1.8" opacity=".8"/>`;
+    s += `<g fill="#d8d0b0">${[490, 550, 610, 670].map((y) => `<circle cx="302" cy="${y}" r="4"/>`).join('')}</g>`;
+    return s;
+  },
+};
+
+// 典册官 (16) — a grown man of about thirty in the registry hall's pale grey uniform, glasses, a thin register held to his
+// chest. Unnamed in this chapter.
+const AR_HAIR = [[220, 214], [228, 168], [264, 138], [318, 128], [370, 142], [400, 178], [406, 224], [398, 258], [384, 250], [376, 206], [336, 180], [274, 178], [240, 196]];
+const AR_BOOK = [[180, 540, 1], [330, 526, 1], [336, 660, 1], [186, 674, 1]];
+CAST.archivist = {
+  id: 'archivist', label: '典册官：三十岁上下的成年男性，册厅的浅灰制服，戴眼镜，怀里抱着一本薄册', rim: '#c4ccd8',
+  sil: [
+    head(0, 2, 0.98), S(AR_HAIR), neck(0, 2, 0.92),
+    torso(200, 482, 1.0),
+    pz(AR_BOOK),
+  ],
+  tones: [
+    [S(AR_HAIR), '#3a3630', 0.9],
+    [S([[102, 520], [164, 472], [240, 448], [300, 456], [360, 448], [436, 472], [498, 520], [510, 820], [90, 820]]), '#7a7e86', 0.9],
+    [pz(AR_BOOK), '#d6ccb4', 0.95],
+  ],
+  lines: [
+    [pl([[386, 256], [366, 306], [324, 352]]), 3, 0.8],
+    [pl([[262, 148], [318, 138], [370, 156]]) + pl([[250, 178], [312, 166], [380, 186]]), 1.8, 0.55],
+    [pl([[300, 456], [304, 800]]), 2, 0.5],
+    [pl([[164, 474], [240, 450]]) + pl([[360, 450], [436, 474]]), 2.4, 0.55],
+    [pl([[184, 560], [330, 546]]) + pl([[186, 574], [331, 560]]), 1.4, 0.6, '#8a7e64'],
+  ],
+  front: ({ rim }) => {
+    let s = '';
+    // round glasses over the eye, the earpiece back to the ear
+    s += `<circle cx="236" cy="262" r="16" fill="#e8f0f8" fill-opacity=".14" stroke="${rim}" stroke-width="2.6"/><path d="M252,260L344,250" stroke="${rim}" stroke-width="2" opacity=".8"/><path d="M226,256q6,-4 12,-3" fill="none" stroke="#ffffff" stroke-width="1.4" opacity=".7"/>`;
+    s += `<path d="M228,266h14" stroke="${rim}" stroke-width="1.8" opacity=".75"/><path d="M224,324h10" stroke="${rim}" stroke-width="1.6" opacity=".5"/>`;
+    // hands holding the thin register to his chest
+    s += `<path d="M300,600q20,-6 40,4l-2,26q-20,6 -38,-4z" fill="#4a4e56"/><path d="M300,600q20,-6 40,4" fill="none" stroke="${rim}" stroke-width="1.6" opacity=".6"/>`;
+    return s;
+  },
+};
+
 export const npcBusts = Object.fromEntries(Object.entries(CAST).map(([id, spec]) => [id, (rim) => render(spec, rim)]));
