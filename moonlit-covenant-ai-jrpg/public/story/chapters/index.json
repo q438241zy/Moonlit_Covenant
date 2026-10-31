@@ -232,5 +232,14 @@
     "file": "/story/chapters/ch025.json",
     "requires": "ch024",
     "source": "剧本/25冰庫的名冊.md"
+  },
+  {
+    "id": "ch026",
+    "number": 26,
+    "title": "第二十六章｜衡炉城的账",
+    "estimatedMinutes": 12,
+    "file": "/story/chapters/ch026.json",
+    "requires": "ch025",
+    "source": "剧本/26衡爐城的帳.md"
   }
 ]

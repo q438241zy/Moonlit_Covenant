@@ -12796,7 +12796,7 @@
   ],
   "end": {
     "save": "SAVE_CH025_END_ICE_ARCHIVE",
-    "next": null,
+    "next": "ch026",
     "nextLabel": "CH026_FURNACE_LEDGER",
     "set": {
       "flags": {
