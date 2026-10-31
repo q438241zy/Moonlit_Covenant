@@ -550,5 +550,35 @@
     "svg": "/assets/story/bg/verdant-camp-night.svg",
     "top": "#060a10",
     "bottom": "#2a2418"
+  },
+  "ash-pass-far": {
+    "name": "灰烬关·远景",
+    "svg": "/assets/story/bg/ash-pass-far.svg",
+    "top": "#5a3a3a",
+    "bottom": "#3a2c22"
+  },
+  "ash-pass-camp-night": {
+    "name": "灰烬关下·营地·夜",
+    "svg": "/assets/story/bg/ash-pass-camp-night.svg",
+    "top": "#0c0808",
+    "bottom": "#140c08"
+  },
+  "ash-pass-camp-day": {
+    "name": "灰烬关下·营地·白天",
+    "svg": "/assets/story/bg/ash-pass-camp-day.svg",
+    "top": "#8a7a72",
+    "bottom": "#5a4636"
+  },
+  "ash-pass-gate-dawn": {
+    "name": "灰烬关·旧营关门前·黎明",
+    "svg": "/assets/story/bg/ash-pass-gate-dawn.svg",
+    "top": "#8a8aa0",
+    "bottom": "#8a8078"
+  },
+  "ash-pass-throat": {
+    "name": "灰烬关·山口里",
+    "svg": "/assets/story/bg/ash-pass-throat.svg",
+    "top": "#3a1a14",
+    "bottom": "#2a120c"
   }
 }

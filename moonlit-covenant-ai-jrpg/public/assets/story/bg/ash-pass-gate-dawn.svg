@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="灰烬关·旧营关门前·黎明：山口里一座石砌的关楼，城墙上一排箭孔，一条灰色的石路往上通到关门，红色岩石上方是苍白的黎明天空">
+<defs><linearGradient id="sbApGate-g0" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a8aa0"/><stop offset="0.5" stop-color="#d8c0b0"/><stop offset="1" stop-color="#e8c8a0"/></linearGradient><radialGradient id="sbApGate-g1" cx="0.5" cy="0.5" r="0.75"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="0.7" stop-color="#000" stop-opacity="0.1"/><stop offset="1" stop-color="#000" stop-opacity="0.45"/></radialGradient></defs>
+<rect width="1600" height="900" fill="url(#sbApGate-g0)"/>
+<path d="M0,900L0,0L360,0L420,300L380,900Z" fill="#5a2a24"/><path d="M1600,900L1600,0L1240,0L1180,300L1220,900Z" fill="#4a221e"/>
+<path d="M480,560V220H1120V560Z" fill="#6a5a52"/><path d="M480,220h640v-30H480z" fill="#5a4a44"/>
+<path d="M480,190v-30h40v30M544,190v-30h40v30M608,190v-30h40v30M672,190v-30h40v30M736,190v-30h40v30M800,190v-30h40v30M864,190v-30h40v30M928,190v-30h40v30M992,190v-30h40v30M1056,190v-30h40v30" fill="#5a4a44"/>
+<path d="M520,300h10v36h-10zM590,300h10v36h-10zM660,300h10v36h-10zM730,300h10v36h-10zM800,300h10v36h-10zM870,300h10v36h-10zM940,300h10v36h-10zM1010,300h10v36h-10zM1080,300h10v36h-10z" fill="#1a1210"/>
+<path d="M700,560V420q100,-80 200,0V560Z" fill="#2a1e1a"/><path d="M700,560V420q100,-80 200,0" fill="none" stroke="#3a2e2a" stroke-width="6"/>
+<path d="M520,220V150" stroke="#2a1a16" stroke-width="3"/><path d="M520,152l34,10l-34,10z" fill="#c8302a"/>
+<path d="M1080,220V150" stroke="#2a1a16" stroke-width="3"/><path d="M1080,152l34,10l-34,10z" fill="#c8302a"/>
+<path d="M600,900L740,560H860L1000,900Z" fill="#8a8078"/>
+<path d="M730,580h140M715,616h170M700,652h200M685,688h230M670,724h260M655,760h290M640,796h320M625,832h350M610,868h380" stroke="#6a6058" stroke-width="2"/>
+<rect width="1600" height="900" fill="url(#sbApGate-g1)"/>
+</svg>

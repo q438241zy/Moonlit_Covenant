@@ -518,5 +518,35 @@
     "name": "继承人",
     "color": "#c8b060",
     "art": null
+  },
+  "cassia": {
+    "name": "卡西娅",
+    "color": "#e8603a",
+    "art": "/assets/story/npc/cassia.svg"
+  },
+  "hector": {
+    "name": "赫克托",
+    "color": "#ff7a3a",
+    "art": "/assets/story/npc/hector.svg"
+  },
+  "red_shield_veteran": {
+    "name": "红盾的老兵",
+    "color": "#d8504a",
+    "art": "/assets/story/npc/red_shield_veteran.svg"
+  },
+  "miner": {
+    "name": "矿工",
+    "color": "#a8907a",
+    "art": null
+  },
+  "crimson_deserter": {
+    "name": "赤焰的降兵",
+    "color": "#c86a4a",
+    "art": null
+  },
+  "cassia_envoy": {
+    "name": "赤焰的使者",
+    "color": "#d86a4a",
+    "art": null
   }
 }

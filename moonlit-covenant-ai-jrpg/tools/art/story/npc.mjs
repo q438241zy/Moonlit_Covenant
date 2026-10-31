@@ -1952,4 +1952,54 @@ CAST.house_head = {
   front: () => `<path d="M222,262q11,-3 22,0" fill="none" stroke="#3a3a40" stroke-width="2.6" stroke-linecap="round"/><path d="M224,326q6,-2 14,0" fill="none" stroke="#5a4a4a" stroke-width="2"/>`,
 };
 
+// 卡西娅·焰冠 (24) — the queen of the Crimson Flame: thirty-nine, red hair cut to the jaw, battle armour, the crown held under
+// her arm rather than worn; direct, unbowed.
+const CS_HAIR = [[220, 228], [228, 168], [266, 134], [322, 124], [372, 140], [406, 184], [414, 250], [404, 300], [388, 300], [382, 236], [344, 194], [282, 186], [242, 206]];
+CAST.cassia = {
+  id: 'cassia', label: '卡西娅·焰冠：三十九岁的赤焰女王，齐下颌的红发，战甲，王冠抱在臂弯里，没有戴', rim: '#e8603a',
+  sil: [head(0, 2, 0.96, true), S(CS_HAIR), neck(0, 2, 0.9), torso(214, 482, 0.9),
+        S([[86, 520], [130, 450], [220, 420], [246, 470], [196, 540]]), S([[514, 520], [470, 450], [380, 420], [354, 470], [404, 540]]),
+        S([[380, 620], [470, 610], [474, 650], [384, 660]])],
+  tones: [
+    [S(CS_HAIR), '#a8302a', 0.92],
+    [S([[100, 526], [164, 488], [240, 462], [300, 468], [360, 462], [436, 488], [500, 526], [512, 820], [88, 820]]), '#6a3a30', 0.92],
+    [S([[86, 520], [130, 450], [220, 420], [246, 470], [196, 540]]), '#8a4a3a', 0.9],
+    [S([[380, 620], [470, 610], [474, 650], [384, 660]]), '#d8a84a', 0.95],
+  ],
+  lines: [[pl([[384, 262], [366, 310], [326, 350]]), 2.8, 0.8], [pl([[300, 468], [302, 800]]), 2, 0.5],
+          [pl([[384, 612], [396, 596], [410, 612], [424, 594], [438, 612], [452, 596], [466, 612]]), 2.4, 0.9, '#f0c860']],
+  front: () => `<path d="M222,262q11,-3 22,0" fill="none" stroke="#3a2a2a" stroke-width="2.8" stroke-linecap="round"/><path d="M220,250q13,-6 28,-3" fill="none" stroke="#7a2a24" stroke-width="2.6"/><path d="M226,326h12" stroke="#5a3a3a" stroke-width="2"/>`,
+};
+
+// 赫克托 (24) — the fire-vein priest: a red robe with a high collar, the hands glowing red from drawing the vein; gaunt, intent.
+const HC_HAIR = [[228, 190], [246, 148], [298, 130], [354, 138], [390, 172], [398, 214], [386, 204], [352, 180], [296, 174], [254, 184]];
+CAST.hector = {
+  id: 'hector', label: '赫克托：炎脉司祭，高领的红袍，双手因为抽取炎脉而发红，瘦削，眼神专注', rim: '#ff7a3a',
+  sil: [head(0, 4, 0.94), S(HC_HAIR), neck(0, 4, 0.86), torso(206, 486, 1.0), S([[200, 440], [300, 400], [400, 440], [380, 480], [300, 452], [220, 480]])],
+  tones: [
+    [S(HC_HAIR), '#3a2a26', 0.9],
+    [S([[108, 532], [170, 492], [244, 466], [300, 472], [356, 466], [430, 492], [492, 532], [504, 820], [96, 820]]), '#8a2a20', 0.92],
+    [S([[200, 440], [300, 400], [400, 440], [380, 480], [300, 452], [220, 480]]), '#a8382a', 0.9],
+  ],
+  lines: [[pl([[384, 262], [366, 310], [326, 350]]), 2.6, 0.8], [pl([[300, 472], [302, 800]]), 2, 0.5]],
+  front: () => `<path d="M224,262h20" stroke="#3a2a2a" stroke-width="2.6" stroke-linecap="round"/><path d="M226,326h10" stroke="#5a3a3a" stroke-width="2"/>`
+    + `<path d="M180,660q20,-20 44,-4l-6,40q-24,8 -38,-8zM376,660q-20,-20 -44,-4l6,40q24,8 38,-8z" fill="#ff6a2a"/><path d="M180,660q20,-20 44,-4M376,660q-20,-20 -44,-4" fill="none" stroke="#ffd080" stroke-width="2"/>`,
+};
+
+// 红盾的老兵 (24) — a veteran of Odd Herst's Red Shield, helmet taken off and held at his side: grizzled, cropped grey hair,
+// a scarred face, battered red-trimmed plate.
+const RV_HAIR = [[230, 196], [250, 156], [300, 140], [352, 146], [388, 176], [396, 214], [384, 204], [350, 180], [298, 176], [256, 186]];
+CAST.red_shield_veteran = {
+  id: 'red_shield_veteran', label: '红盾的老兵：摘下头盔夹在身侧，短短的灰发，脸上有疤，磨损的红边铠甲', rim: '#d8504a',
+  sil: [head(0, 6, 0.96), S(RV_HAIR), neck(0, 6, 1.05), torso(230, 484, 0.85), S([[96, 640], [180, 620], [196, 700], [110, 716]])],
+  tones: [
+    [S(RV_HAIR), '#8a8a8a', 0.88],
+    [S([[90, 524], [158, 486], [238, 460], [300, 466], [362, 460], [442, 486], [510, 524], [522, 820], [78, 820]]), '#6a6a72', 0.92],
+    [S([[96, 640], [180, 620], [196, 700], [110, 716]]), '#7a7a82', 0.9],
+  ],
+  lines: [[pl([[386, 256], [368, 304], [326, 350]]), 2.8, 0.8], [pl([[300, 466], [302, 800]]), 2, 0.5], [pl([[90, 524], [510, 524]]), 4, 0.6, '#c83a30'],
+          [pl([[240, 230], [262, 280]]), 2, 0.7, '#e8c0b0']],
+  front: () => `<path d="M222,264h22" stroke="#3a3a40" stroke-width="2.6" stroke-linecap="round"/><path d="M226,328h12" stroke="#4a4248" stroke-width="2"/>`,
+};
+
 export const npcBusts = Object.fromEntries(Object.entries(CAST).map(([id, spec]) => [id, (rim) => render(spec, rim)]));

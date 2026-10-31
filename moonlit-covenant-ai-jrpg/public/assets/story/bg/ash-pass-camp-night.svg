@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="灰烬关下的营地·夜：帐篷，一顶带桌子的军帐，营火，后面暗红的山，山口里透出红光">
+<defs><linearGradient id="sbApCamp-g0" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0c0808"/><stop offset="0.6" stop-color="#1e1210"/><stop offset="1" stop-color="#2a1a14"/></linearGradient><radialGradient id="sbApCamp-g1" ><stop offset="0" stop-color="#ff6a30" stop-opacity="0.6"/><stop offset="1" stop-color="#ff6a30" stop-opacity="0"/></radialGradient><linearGradient id="sbApCamp-g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a1c14"/><stop offset="1" stop-color="#140c08"/></linearGradient><radialGradient id="sbApCamp-g3" ><stop offset="0" stop-color="#ffb060" stop-opacity="0.35"/><stop offset="1" stop-color="#ffb060" stop-opacity="0"/></radialGradient><radialGradient id="sbApCamp-g4" cx="0.5" cy="0.55" r="0.75"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="0.6" stop-color="#000" stop-opacity="0.15"/><stop offset="1" stop-color="#000" stop-opacity="0.6"/></radialGradient></defs>
+<rect width="1600" height="900" fill="url(#sbApCamp-g0)"/>
+<path d="M0,620L0,300L180,180L380,120L560,220L740,300L780,400L800,620Z" fill="#2a1412"/>
+<path d="M1600,620L1600,260L1420,150L1220,110L1040,210L860,310L820,400L800,620Z" fill="#22100e"/>
+<path d="M1420.9,359.9l1.2,30M1035.9,329.9l-52.3,54.3M1210.3,393.9l25,67M304.1,265.3l45,74.6M1407.1,508.8l-56.2,41.2M563.2,526.7l51.3,57.8M118,352.8l59.6,35.9M503.1,351.5l37.6,84.6M307.8,204.7l54.5,48.8M1006,546.8l53.3,57.4M382.9,265.2l-1.3,41.5M244.9,532.2l-51.3,58.5M154.6,260.4l31.1,38M670.3,454.9l-1.4,62.9M1164.7,494.2l35.1,33.5M168.5,502.3l41.7,31.1M448,447.8l-53.3,31.5M521.9,408.9l0.5,75.3" stroke="#1b0d0c" stroke-width="3" fill="none" opacity=".6"/>
+<ellipse cx="800" cy="360" rx="120" ry="80" fill="url(#sbApCamp-g1)"/>
+<path d="M0,600H1600V900H0Z" fill="url(#sbApCamp-g2)"/>
+<path d="M80,700L190,530L300,700Z" fill="#3a2e24"/><path d="M190,530L204,700H176Z" fill="#120c08"/>
+<path d="M1260,700L1380,520L1500,700Z" fill="#3a2e24"/><path d="M1380,520L1394,700H1366Z" fill="#120c08"/>
+<path d="M1440,700L1520,580L1600,700Z" fill="#3a2e24"/><path d="M1520,580L1534,700H1506Z" fill="#120c08"/>
+<path d="M420,760V520L800,430L1180,520V760Z" fill="#46382a"/><path d="M520,760V560H1080V760Z" fill="#1a120c"/>
+<path d="M600,700h400l30,-40h-460z" fill="#6a4a30"/><path d="M640,690l320,0l20,-28l-320,0z" fill="#d8c8a0"/><path d="M700,680l120,-14l60,8" stroke="#a83a2a" stroke-width="3" fill="none"/>
+<ellipse cx="800" cy="680" rx="420" ry="220" fill="url(#sbApCamp-g3)"/>
+<path d="M260,800l30,-60l30,60zM272,800l18,-36l18,36z" fill="#ff9a40"/>
+<rect width="1600" height="900" fill="url(#sbApCamp-g4)"/>
+</svg>
