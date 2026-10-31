@@ -196,5 +196,14 @@
     "file": "/story/chapters/ch021.json",
     "requires": "ch020",
     "source": "剧本/21誰都不是祭品.md"
+  },
+  {
+    "id": "ch022",
+    "number": 22,
+    "title": "第二十二章｜回到麦田",
+    "estimatedMinutes": 12,
+    "file": "/story/chapters/ch022.json",
+    "requires": "ch021",
+    "source": "剧本/22回到麥田.md"
   }
 ]

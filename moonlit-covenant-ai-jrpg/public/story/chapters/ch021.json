@@ -15063,7 +15063,7 @@
   ],
   "end": {
     "save": "SAVE_CH021_END_NO_ONE_IS_OFFERING",
-    "next": null,
+    "next": "ch022",
     "nextLabel": "CH022_BACK_TO_THE_WHEAT",
     "set": {
       "flags": {
