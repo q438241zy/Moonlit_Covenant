@@ -18145,7 +18145,7 @@
   ],
   "end": {
     "save": "SAVE_CH019_END_IMPERIAL_HEARING",
-    "next": null,
+    "next": "ch020",
     "nextLabel": "CH020_SISTER_ALIVE",
     "set": {
       "flags": {

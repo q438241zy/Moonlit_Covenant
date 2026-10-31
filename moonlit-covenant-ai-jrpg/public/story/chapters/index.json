@@ -178,5 +178,14 @@
     "file": "/story/chapters/ch019.json",
     "requires": "ch018",
     "source": "剧本/19御前聽證.md"
+  },
+  {
+    "id": "ch020",
+    "number": 20,
+    "title": "第二十章｜姐姐还活着",
+    "estimatedMinutes": 11,
+    "file": "/story/chapters/ch020.json",
+    "requires": "ch019",
+    "source": "剧本/20姐姐還活著.md"
   }
 ]
