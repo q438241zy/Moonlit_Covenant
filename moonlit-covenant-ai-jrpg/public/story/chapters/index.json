@@ -241,5 +241,14 @@
     "file": "/story/chapters/ch026.json",
     "requires": "ch025",
     "source": "剧本/26衡爐城的帳.md"
+  },
+  {
+    "id": "ch027",
+    "number": 27,
+    "title": "第二十七章｜龙脊的锁链",
+    "estimatedMinutes": 12,
+    "file": "/story/chapters/ch027.json",
+    "requires": "ch026",
+    "source": "剧本/27龍脊的鎖鏈.md"
   }
 ]
