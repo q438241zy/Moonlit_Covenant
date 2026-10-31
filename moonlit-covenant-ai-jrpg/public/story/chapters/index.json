@@ -250,5 +250,14 @@
     "file": "/story/chapters/ch027.json",
     "requires": "ch026",
     "source": "剧本/27龍脊的鎖鏈.md"
+  },
+  {
+    "id": "ch028",
+    "number": 28,
+    "title": "第二十八章｜鸦羽城的镜子",
+    "estimatedMinutes": 12,
+    "file": "/story/chapters/ch028.json",
+    "requires": "ch027",
+    "source": "剧本/28鴉羽城的鏡子.md"
   }
 ]

@@ -33518,7 +33518,7 @@
   ],
   "end": {
     "save": "SAVE_CH027_END_DRAGONSPINE_CHAIN",
-    "next": null,
+    "next": "ch028",
     "nextLabel": "CH028_RAVEN_MIRRORS",
     "set": {
       "flags": {
