@@ -1803,4 +1803,39 @@ CAST.envoy_chief = {
   },
 };
 
+// 雷蒙德 (19) — the knight commander of 16's door: about forty-five, short grey hair, a calm, settled face (not a villain's),
+// silver plate with a high gorget, a hand resting on the sword hilt at his hip.
+const RY_HAIR = [[226, 190], [246, 150], [296, 130], [352, 136], [390, 168], [402, 212], [392, 240], [380, 220], [350, 188], [296, 178], [254, 184]];
+CAST.raymond = {
+  id: 'raymond', label: '雷蒙德：四十五岁上下的骑士长，短灰发，神情沉稳，银色板甲和高护颈，一只手搭在腰间剑柄上', rim: '#c8d0dc',
+  sil: [
+    head(0, 0, 1.0), S(RY_HAIR), neck(0, 0, 1.05),
+    torso(232, 478, 0.85),
+    // pauldrons
+    S([[90, 520], [130, 448], [220, 418], [250, 470], [200, 540]]), S([[510, 520], [470, 448], [380, 418], [350, 470], [400, 540]]),
+    // the sword hilt at his hip, lower left
+    S([[150, 700], [168, 610], [184, 612], [170, 702]]),
+  ],
+  tones: [
+    [S(RY_HAIR), '#8a8c92', 0.9],
+    [S([[96, 520], [162, 484], [240, 458], [300, 464], [360, 458], [438, 484], [504, 520], [516, 820], [84, 820]]), '#8e96a2', 0.9],
+    [S([[90, 520], [130, 448], [220, 418], [250, 470], [200, 540]]), '#b4bcc8', 0.9],
+    [S([[510, 520], [470, 448], [380, 418], [350, 470], [400, 540]]), '#9aa2ae', 0.9],
+    [S([[248, 404], [300, 420], [352, 404], [356, 452], [300, 466], [244, 452]]), '#c4ccd6', 0.95],
+  ],
+  lines: [
+    [pl([[386, 256], [368, 304], [326, 350]]), 3, 0.8],
+    [pl([[300, 466], [302, 800]]), 2.4, 0.6],
+    [pl([[180, 560], [260, 600], [300, 640]]) + pl([[420, 560], [340, 600], [300, 640]]), 2, 0.5],
+    [pl([[150, 610], [200, 612]]), 4, 0.7, '#d8c890'],
+  ],
+  front: ({ rim }) => {
+    let s = '';
+    // a steady, level gaze; a short line of a closed mouth
+    s += `<path d="M224,262h20" stroke="#4a4e58" stroke-width="2.6" stroke-linecap="round"/><path d="M222,248q12,-4 26,-1" fill="none" stroke="#6a6e78" stroke-width="2"/><path d="M226,324h12" stroke="#5a5660" stroke-width="2"/>`;
+    s += `<path d="M140,700q20,-8 40,4l-4,28q-20,6 -36,-6z" fill="#5a606a"/><path d="M140,700q20,-8 40,4" fill="none" stroke="${rim}" stroke-width="1.6" opacity=".7"/>`;
+    return s;
+  },
+};
+
 export const npcBusts = Object.fromEntries(Object.entries(CAST).map(([id, spec]) => [id, (rim) => render(spec, rim)]));

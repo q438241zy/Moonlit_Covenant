@@ -460,5 +460,23 @@
     "svg": "/assets/story/bg/white-tower-outer-court-thawed.svg",
     "top": "#b8c8d8",
     "bottom": "#b8c2cc"
+  },
+  "white-tower-seven-angle-hall": {
+    "name": "白塔·七角殿",
+    "svg": "/assets/story/bg/white-tower-seven-angle-hall.svg",
+    "top": "#3a3a44",
+    "bottom": "#cfc8ba"
+  },
+  "white-tower-outer-court-dusk": {
+    "name": "白塔·外庭·黄昏",
+    "svg": "/assets/story/bg/white-tower-outer-court-dusk.svg",
+    "top": "#6a6a8a",
+    "bottom": "#a8907e"
+  },
+  "white-tower-outer-court-night": {
+    "name": "白塔·外庭·夜",
+    "svg": "/assets/story/bg/white-tower-outer-court-night.svg",
+    "top": "#0a1020",
+    "bottom": "#3a4256"
   }
 }

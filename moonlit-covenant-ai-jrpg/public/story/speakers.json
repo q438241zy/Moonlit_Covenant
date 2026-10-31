@@ -403,5 +403,25 @@
     "name": "妮拉",
     "color": "#a8d0e8",
     "art": "/assets/story/npc/nila.svg"
+  },
+  "ophelia_unknown": {
+    "name": "龙脊的使节",
+    "color": "#e0905a",
+    "art": "/assets/story/npc/ophelia.svg"
+  },
+  "ophelia": {
+    "name": "奥菲莉亚",
+    "color": "#e0905a",
+    "art": "/assets/story/npc/ophelia.svg"
+  },
+  "raymond": {
+    "name": "雷蒙德",
+    "color": "#c8d0dc",
+    "art": "/assets/story/npc/raymond.svg"
+  },
+  "noah": {
+    "name": "诺亚",
+    "color": "#c4ccd8",
+    "art": "/assets/story/npc/archivist.svg"
   }
 }

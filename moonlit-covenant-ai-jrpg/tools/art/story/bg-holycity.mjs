@@ -345,10 +345,12 @@ function garden(dawn) {
 // ---------------------------------------------------------------------------------------------
 // 白塔·外庭·霜
 // ---------------------------------------------------------------------------------------------
-function frost(thawed = false) {
-  const S = new Scene(thawed ? 'sbHcThawed' : 'sbHcFrost', thawed ? '白塔·外庭·正午：同一片铺石的外庭，霜化了，石板湿着；喷泉的冰融成水；北方的厚木马车车轮上的霜化成水滴，车窗里没有人影；淡蓝转成正午的白' : '白塔·外庭·霜：晨门外一片铺石的外庭，中央一座喷泉，水面结了一层薄冰；一辆北方样式的厚木马车停在那里，车轮和车篷边缘结着霜；车窗里一个模糊、一动不动的人影，看不见脸；冷白和淡蓝，和圣都纸一样的白分开', thawed ? 17411 : 17401);
+function frost(thawed = false, eve = null) {
+  const S = new Scene(eve ? (eve === 'night' ? 'sbHcCourtNight' : 'sbHcCourtDusk') : thawed ? 'sbHcThawed' : 'sbHcFrost', eve === 'night' ? '白塔·外庭·夜：同一片铺石的外庭，喷泉的水在灯下发亮，北方的马车旁搭着霜潮使团的两顶帐篷，帐篷里亮着灯；一间空屋的窗也亮着；夜蓝和暖黄' : eve === 'dusk' ? '白塔·外庭·黄昏：同一片铺石的外庭，夕阳斜照，北方的马车旁搭着霜潮使团的两顶帐篷，一间空屋的门开着；橙色和灰蓝' : thawed ? '白塔·外庭·正午：同一片铺石的外庭，霜化了，石板湿着；喷泉的冰融成水；北方的厚木马车车轮上的霜化成水滴，车窗里没有人影；淡蓝转成正午的白' : '白塔·外庭·霜：晨门外一片铺石的外庭，中央一座喷泉，水面结了一层薄冰；一辆北方样式的厚木马车停在那里，车轮和车篷边缘结着霜；车窗里一个模糊、一动不动的人影，看不见脸；冷白和淡蓝，和圣都纸一样的白分开', eve === 'night' ? 17431 : eve === 'dusk' ? 17421 : thawed ? 17411 : 17401);
   const R = rng(17402);
-  const C = { sky: [[0, '#b8c8d8'], [0.6, '#dce6ee'], [1, '#eef2f6']], wall: '#c8d0d8', wallShade: '#98a4b2', pave: '#b8c2cc', paveFar: '#ccd4dc', joint: '#8a96a4', frost: '#f4f8fc', ice: thawed ? '#8ab0c8' : '#d8e8f4', wood: '#5a4a40', woodLit: '#7a6656', woodDeep: '#3a302a', iron: '#4a5058' };
+  const C = eve === 'night' ? { sky: [[0, '#0a1020'], [0.6, '#18223a'], [1, '#26304a']], wall: '#4a5468', wallShade: '#2a3244', pave: '#3a4256', paveFar: '#4a5266', joint: '#22283a', frost: '#5a6478', ice: '#4a6a8a', wood: '#3a3028', woodLit: '#5a4a3a', woodDeep: '#201a16', iron: '#2a2e36' }
+    : eve === 'dusk' ? { sky: [[0, '#6a6a8a'], [0.55, '#d8987a'], [1, '#f0c08a']], wall: '#c8a890', wallShade: '#8a7478', pave: '#a8907e', paveFar: '#c4a488', joint: '#7a6460', frost: '#d8b8a0', ice: '#c89a7a', wood: '#5a4232', woodLit: '#7a5a44', woodDeep: '#3a2a20', iron: '#3a3438' }
+    : { sky: [[0, '#b8c8d8'], [0.6, '#dce6ee'], [1, '#eef2f6']], wall: '#c8d0d8', wallShade: '#98a4b2', pave: '#b8c2cc', paveFar: '#ccd4dc', joint: '#8a96a4', frost: '#f4f8fc', ice: thawed ? '#8ab0c8' : '#d8e8f4', wood: '#5a4a40', woodLit: '#7a6656', woodDeep: '#3a302a', iron: '#4a5058' };
   S.add(`<rect width="${W}" height="${H}" fill="${S.lin(C.sky)}"/>`);
   // the morning gate's wall across the back with the arch, the tower rising behind into a cold haze
   farTower(S, 800, -40, 300, 46, 56, '#eef2f6', '#a8b4c2', '#c0cad6');
@@ -375,7 +377,7 @@ function frost(thawed = false) {
   {
     let d = '';
     for (let k = 0; k < 26; k++) d += ell(R.range(0, W), R.range(440, H), R.range(40, 140), R.range(6, 18));
-    S.add(`<path d="${d}" fill="${thawed ? '#8a98a8' : C.frost}" opacity="${thawed ? 0.35 : 0.55}"/>`);
+    if (!eve) S.add(`<path d="${d}" fill="${thawed ? '#8a98a8' : C.frost}" opacity="${thawed ? 0.35 : 0.55}"/>`);
   }
   // the fountain in the middle: basin, column, and a skin of ice with cracks
   {
@@ -411,16 +413,114 @@ function frost(thawed = false) {
     // the window with the blurred, unmoving figure
     const wx = x0 + 170, wy = bt + 50, ww = 150, wh = 110;
     S.add(`<path d="M${wx},${wy}h${ww}v${wh}h${-ww}z" fill="#3a4658"/>`);
-    if (!thawed) S.add(`<path d="M${wx + 50},${wy + wh}q2,-50 25,-56q23,6 25,56zM${wx + 75},${wy + 46}m-16,0a16,18 0 1 0 32,0a16,18 0 1 0 -32,0" fill="#6a7a8e" filter="${S.blur(1)}"/>`);
+    if (!thawed && !eve) S.add(`<path d="M${wx + 50},${wy + wh}q2,-50 25,-56q23,6 25,56zM${wx + 75},${wy + 46}m-16,0a16,18 0 1 0 32,0a16,18 0 1 0 -32,0" fill="#6a7a8e" filter="${S.blur(1)}"/>`);
     S.add(`<path d="M${wx},${wy}h${ww}v${wh}h${-ww}z" fill="${S.lin([[0, '#f4f8fc', 0.55], [0.4, '#f4f8fc', 0.15], [1, '#f4f8fc', 0.4]])}" stroke="${C.woodDeep}" stroke-width="8"/>`);
     // frost along the body's bottom edge and the step
     S.add(`<path d="M${x0},${by}h${x1 - x0}" stroke="${C.frost}" stroke-width="4"/><path d="M${x0 + 300},${by + 14}h80v12h-80z" fill="${C.woodDeep}" stroke="${C.frost}" stroke-width="2"/>`);
     // the shaft resting on the ground to the left, no horse
     S.add(`<path d="M${x0},${by - 20}L${x0 - 210},${by + 110}" stroke="${C.woodDeep}" stroke-width="12"/><path d="M${x0},${by - 20}L${x0 - 210},${by + 110}" stroke="${C.frost}" stroke-width="2"/>`);
   }
+  if (eve) {
+    // the envoy's two tents to the left of the carriage, and the empty house by the wall with its door (dusk) or window (night) lit
+    const lit = eve === 'night' ? '#ffd890' : '#f0b880';
+    for (const [x, w, h] of [[760, 170, 150], [130, 220, 180]]) {
+      S.add(`<path d="M${x},700L${x + w / 2},${700 - h}L${x + w},700Z" fill="${eve === 'night' ? '#5a5048' : '#e8dccb'}"/><path d="M${x + w / 2},${700 - h}L${x + w / 2 + 14},700H${x + w / 2 - 14}Z" fill="${lit}" opacity="${eve === 'night' ? 0.9 : 0.5}"/>`);
+      S.add(`<path d="M${x},700L${x + w / 2},${700 - h}L${x + w},700" fill="none" stroke="${C.woodDeep}" stroke-width="3"/>`);
+    }
+    S.add(`<path d="M1450,420V300h140V420Z" fill="${C.wallShade}"/><path d="M1490,420v-70h40v70z" fill="${eve === 'night' ? '#1a1410' : lit}"/><path d="M1550,330h24v24h-24z" fill="${lit}" opacity="${eve === 'night' ? 1 : 0.4}"/>`);
+    if (eve === 'night') {
+      let st = '';
+      for (let k = 0; k < 40; k++) st += circ(R.range(0, W), R.range(0, 200), R.range(0.6, 1.4));
+      S.add(`<path d="${st}" fill="#e8ecff" opacity=".7"/>`);
+      S.add(`<ellipse cx="560" cy="560" rx="380" ry="160" fill="${S.rad([[0, '#ffd890', 0.18], [1, '#ffd890', 0]])}"/>`);
+    }
+  }
   // a cold haze over everything, slight vignette
-  S.add(`<rect width="${W}" height="${H}" fill="${S.lin([[0, '#f4f8fc', 0.25], [0.5, '#f4f8fc', 0.05], [1, '#f4f8fc', 0.15]])}"/>`);
+  if (!eve) S.add(`<rect width="${W}" height="${H}" fill="${S.lin([[0, '#f4f8fc', 0.25], [0.5, '#f4f8fc', 0.05], [1, '#f4f8fc', 0.15]])}"/>`);
   S.add(`<rect width="${W}" height="${H}" fill="${S.rad([[0, '#20304a', 0], [0.75, '#20304a', 0.06], [1, '#20304a', 0.3]], 'cx="0.5" cy="0.5" r="0.75"')}"/>`);
+  return S.out();
+}
+
+// ---------------------------------------------------------------------------------------------
+// 七角殿
+// ---------------------------------------------------------------------------------------------
+// The seven banners: 晨星 (white/gold star), 赤焰, 铸金, 霜潮, 翠影, 夜鸦, 龙脊 (a coiled dragon) — colour fields with simple
+// emblems, never letters.
+const BANNERS = [
+  { c: '#ece6d4', e: '#c8a050', k: 'star' }, { c: '#a8342a', e: '#f0b060', k: 'flame' }, { c: '#8a6a2a', e: '#e8c860', k: 'gear' },
+  { c: '#3a6a8a', e: '#e8f4fc', k: 'flake' }, { c: '#2a5a3a', e: '#a8d890', k: 'leaf' }, { c: '#2a2438', e: '#b8a8d8', k: 'moon' },
+  { c: '#3a2a5a', e: '#c89048', k: 'dragon' },
+];
+function emblem(k, cx, cy, r) {
+  if (k === 'star') return star7(cx, cy, r);
+  if (k === 'flame') return `M${f1(cx)},${f1(cy - r)}q${f1(r * 0.8)},${f1(r * 0.8)} 0,${f1(r * 1.8)}q${f1(-r * 0.8)},${f1(-r * 1)} 0,${f1(-r * 1.8)}z`;
+  if (k === 'gear') { let d = ''; for (let i = 0; i < 8; i++) { const a = i * Math.PI / 4; d += circ(cx + Math.cos(a) * r * 0.8, cy + Math.sin(a) * r * 0.8, r * 0.22); } return d + circ(cx, cy, r * 0.6); }
+  if (k === 'flake') { let d = ''; for (let i = 0; i < 3; i++) { const a = i * Math.PI / 3; d += `M${f1(cx - Math.cos(a) * r)},${f1(cy - Math.sin(a) * r)}L${f1(cx + Math.cos(a) * r)},${f1(cy + Math.sin(a) * r)}`; } return d; }
+  if (k === 'leaf') return `M${f1(cx)},${f1(cy - r)}q${f1(r * 0.9)},${f1(r)} 0,${f1(r * 2)}q${f1(-r * 0.9)},${f1(-r)} 0,${f1(-r * 2)}z`;
+  if (k === 'moon') return `M${f1(cx + r * 0.3)},${f1(cy - r)}a${f1(r)},${f1(r)} 0 1 0 0,${f1(r * 2)}a${f1(r * 0.75)},${f1(r * 0.75)} 0 1 1 0,${f1(-r * 2)}z`;
+  // a coiled dragon: a widening spiral ending in a head
+  return `M${f1(cx - r * 0.2)},${f1(cy)}a${f1(r * 0.2)},${f1(r * 0.2)} 0 1 1 ${f1(r * 0.4)},0a${f1(r * 0.45)},${f1(r * 0.45)} 0 1 1 ${f1(-r * 0.9)},0a${f1(r * 0.7)},${f1(r * 0.7)} 0 1 1 ${f1(r * 1.4)},0l${f1(r * 0.3)},${f1(-r * 0.4)}`;
+}
+function sevenHall() {
+  const S = new Scene('sbHcSevenHall', '白塔·七角殿：七角形的石殿，七张椅子各对一个角，每把椅子后面一面旗——晨星、赤焰、铸金、霜潮、翠影、夜鸦、龙脊（盘着的龙）；殿的正中一张矮桌，桌上一本册；墙上嵌着高窄的窗和镜面；晨星卫沿着墙站成一圈（剪影）；冷白和七种颜色，不画人脸', 17501);
+  const C = { floor: '#cfc8ba', floorFar: '#bdb6a8', wall: '#e2ddd2', wallShade: '#a8a294', deep: '#6e695e', gold: '#c8a050', glass: '#9aa8b8' };
+  S.add(`<rect width="${W}" height="${H}" fill="#2a2a30"/>`);
+  // the floor: a large heptagon seen from above the near side, its far vertex up the middle
+  const cx = 800, cy = 600, rx = 900, ry = 300;
+  const V = Array.from({ length: 7 }, (_, i) => { const a = -Math.PI / 2 + i * 2 * Math.PI / 7; return [cx + Math.cos(a) * rx, cy + Math.sin(a) * ry]; });
+  const WH = 420;
+  // the vault above, then the far walls rising from the heptagon's edges
+  S.add(`<path d="M0,0H${W}V${f1(V[0][1] - WH + 40)}H0Z" fill="#3a3a44"/>`);
+  for (const i of [4, 5, 6, 0, 1, 2]) {
+    const a = V[i], b = V[(i + 1) % 7];
+    const sh = 0.08 + 0.1 * Math.abs(i - 6.5) / 3;
+    S.add(`<path d="${pz1([[a[0], a[1]], [b[0], b[1]], [b[0], b[1] - WH], [a[0], a[1] - WH]])}" fill="${mix(C.wall, C.wallShade, Math.min(sh, 0.6))}"/>`);
+  }
+  // tall windows and mirrors on the far walls, pilasters at the corners
+  for (const i of [5, 6, 0, 1]) {
+    const a = V[i], b = V[(i + 1) % 7];
+    for (const t of [0.3, 0.7]) {
+      const x = a[0] + (b[0] - a[0]) * t, y = a[1] + (b[1] - a[1]) * t;
+      const w = Math.max(18, Math.abs(b[0] - a[0]) * 0.08);
+      S.add(`<path d="M${f1(x - w)},${f1(y - 140)}V${f1(y - WH + 70)}q${f1(w)},-40 ${f1(w * 2)},0V${f1(y - 140)}Z" fill="${t < 0.5 ? S.lin([[0, '#dfe8f2'], [1, C.glass]]) : S.lin([[0, '#c8ccd4'], [0.5, '#f4f6fa'], [1, '#a8acb4']])}" stroke="${C.deep}" stroke-width="3"/>`);
+    }
+  }
+  for (const i of [5, 6, 0, 1, 2]) { const a = V[i]; S.add(`<path d="M${f1(a[0] - 14)},${f1(a[1])}V${f1(a[1] - WH)}h28V${f1(a[1])}Z" fill="${C.wallShade}"/>`); }
+  // the floor with its rings and the inlaid seven-pointed star
+  S.add(`<path d="${pz1(V)}" fill="${S.rad([[0, C.floor], [1, C.floorFar]], 'cx="0.5" cy="0.7" r="0.7"')}"/>`);
+  {
+    let d = '';
+    for (const k of [0.33, 0.66]) d += pz1(V.map(([x, y]) => [cx + (x - cx) * k, cy + (y - cy) * k]));
+    for (const v of V) d += `M${cx},${cy}L${f1(v[0])},${f1(v[1])}`;
+    S.add(`<path d="${d}" fill="none" stroke="${C.wallShade}" stroke-width="2" opacity=".6"/>`);
+    S.add(`<path d="${star7(cx, cy / 0.34, 70, 0.46)}" fill="none" stroke="${C.gold}" stroke-width="3" opacity=".7" transform="matrix(1 0 0 0.34 0 0)"/>`);
+  }
+  // Morningstar guards along the far walls (silhouettes with halberds)
+  for (const i of [5, 6, 0, 1]) {
+    const a = V[i], b = V[(i + 1) % 7];
+    for (const t of [0.15, 0.5, 0.85]) {
+      const x = a[0] + (b[0] - a[0]) * t, y = a[1] + (b[1] - a[1]) * t - 6;
+      const s = 0.9 + (y - 300) / 900;
+      S.add(`<path d="${person(x, y, 4.2 * s)}" fill="#e8ecf2" stroke="#8a929e" stroke-width="1.5"/><path d="M${f1(x + 9 * s)},${f1(y)}V${f1(y - 120 * s)}" stroke="#5a5e66" stroke-width="${f1(2.4 * s)}"/>`);
+    }
+  }
+  // seven chairs, each at a corner, with its banner behind; far ones first
+  const idx = [0, 1, 6, 2, 5, 3, 4];
+  for (const i of idx) {
+    const x = cx + (V[i][0] - cx) * 0.82, y = cy + (V[i][1] - cy) * 0.82;
+    const s = 0.6 + (y - 300) / 600;
+    const B = BANNERS[i];
+    const bw = 60 * s, bh = 150 * s;
+    S.add(`<path d="M${f1(x)},${f1(y - bh - 110 * s)}V${f1(y)}" stroke="${C.deep}" stroke-width="${f1(4 * s)}"/>`);
+    S.add(`<path d="M${f1(x - bw / 2)},${f1(y - bh - 100 * s)}h${f1(bw)}v${f1(bh)}l${f1(-bw / 2)},${f1(-18 * s)}l${f1(-bw / 2)},${f1(18 * s)}z" fill="${B.c}" stroke="${C.deep}" stroke-width="1.5"/>`);
+    const e = emblem(B.k, x, y - bh * 0.62 - 100 * s, 16 * s);
+    S.add(B.k === 'flake' || B.k === 'dragon' ? `<path d="${e}" fill="none" stroke="${B.e}" stroke-width="${f1(3 * s)}"/>` : `<path d="${e}" fill="${B.e}"/>`);
+    S.add(`<path d="M${f1(x - 26 * s)},${f1(y)}v${f1(-50 * s)}h${f1(52 * s)}v${f1(50 * s)}zM${f1(x - 26 * s)},${f1(y - 50 * s)}v${f1(-60 * s)}h${f1(52 * s)}v${f1(60 * s)}z" fill="${mix('#5a4636', B.c, 0.25)}" stroke="#2a201a" stroke-width="1.5"/>`);
+  }
+  // the low table and the open register in the middle
+  S.add(`<path d="M${cx - 120},${cy + 40}h240l30,-50h-300z" fill="#7a5a3a"/><path d="M${cx - 120},${cy + 40}h240v14h-240z" fill="#4a3424"/>`);
+  S.add(`<path d="M${cx - 50},${cy + 20}l100,0l12,-24l-100,0zM${cx},${cy + 20}l12,-24" fill="#efe6d0" stroke="#8a7a5a" stroke-width="1.5"/>`);
+  S.add(`<rect width="${W}" height="${H}" fill="${S.rad([[0, '#000', 0], [0.7, '#000', 0.1], [1, '#000', 0.5]], 'cx="0.5" cy="0.55" r="0.75"')}"/>`);
   return S.out();
 }
 
@@ -432,4 +532,7 @@ export const holyCityBgs = {
   'white-tower-outer-court-frost': () => frost(),
   'white-tower-outer-court-thawed': () => frost(true),
   'holy-city-pilgrim-hostel-day': () => hostel(true),
+  'white-tower-outer-court-dusk': () => frost(true, 'dusk'),
+  'white-tower-outer-court-night': () => frost(true, 'night'),
+  'white-tower-seven-angle-hall': () => sevenHall(),
 };
