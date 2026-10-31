@@ -151,5 +151,14 @@
     "file": "/story/chapters/ch016.json",
     "requires": "ch015",
     "source": "剧本/16冊廳.md"
+  },
+  {
+    "id": "ch017",
+    "number": 17,
+    "title": "第十七章｜光明骑士的拦截",
+    "estimatedMinutes": 11,
+    "file": "/story/chapters/ch017.json",
+    "requires": "ch016",
+    "source": "剧本/17光明騎士的攔截.md"
   }
 ]

@@ -20001,7 +20001,7 @@
   ],
   "end": {
     "save": "SAVE_CH016_END_REGISTRY_HALL",
-    "next": null,
+    "next": "ch017",
     "nextLabel": "CH017_KNIGHT_INTERCEPT",
     "set": {
       "flags": {
