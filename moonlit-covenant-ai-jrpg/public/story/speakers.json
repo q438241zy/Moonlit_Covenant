@@ -97,7 +97,7 @@
   "dragon": {
     "name": "黑龙",
     "color": "#a33b3b",
-    "art": null
+    "art": "/assets/story/npc/dragon.svg"
   },
   "finn": {
     "name": "芬恩",
@@ -592,7 +592,7 @@
   "gold_scale": {
     "name": "金衡圣印",
     "color": "#f0d070",
-    "art": null
+    "art": "/assets/story/npc/gold_scale.svg"
   },
   "soldier": {
     "name": "士兵",
