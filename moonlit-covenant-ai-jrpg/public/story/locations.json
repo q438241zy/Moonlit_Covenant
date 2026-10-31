@@ -448,5 +448,17 @@
     "svg": "/assets/story/bg/white-tower-outer-court-frost.svg",
     "top": "#b8c8d8",
     "bottom": "#b8c2cc"
+  },
+  "holy-city-pilgrim-hostel-day": {
+    "name": "白塔圣都·朝圣者旅舍·白天",
+    "svg": "/assets/story/bg/holy-city-pilgrim-hostel-day.svg",
+    "top": "#5a4a44",
+    "bottom": "#7a6048"
+  },
+  "white-tower-outer-court-thawed": {
+    "name": "白塔·外庭·正午",
+    "svg": "/assets/story/bg/white-tower-outer-court-thawed.svg",
+    "top": "#b8c8d8",
+    "bottom": "#b8c2cc"
   }
 }

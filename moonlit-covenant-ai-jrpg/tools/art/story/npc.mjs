@@ -1740,4 +1740,67 @@ CAST.archivist = {
   },
 };
 
+// 妮拉 (18) — fifteen, Freya's apprentice; wrapped to the chin in a thick blanket, only her face and hands show, hugging
+// a small round machine (Mia's 零号) to her chest. Everyday and unsexualised: a child in the back of a cart.
+const NI_HAIR = [[232, 204], [250, 152], [300, 128], [356, 138], [394, 176], [404, 230], [400, 300], [384, 312], [380, 250], [346, 206], [282, 196], [246, 214]];
+const NI_BLANKET = [[150, 330, 1], [220, 270, 1], [300, 262, 1], [384, 272, 1], [452, 330, 1], [490, 470], [512, 820], [88, 820], [110, 470]];
+CAST.nila = {
+  id: 'nila', label: '妮拉：十五岁的冰法学徒，裹着厚毯子只露出脸和手，怀里抱着一个圆形的小机械，有点怕冷', rim: '#a8d0e8',
+  sil: [head(0, 20, 0.86, true), S(NI_HAIR), S(NI_BLANKET), circle(300, 560, 64)],
+  tones: [
+    [S(NI_HAIR), '#c8d8e4', 0.9],
+    [S(NI_BLANKET), '#6a5a7a', 0.92],
+    [circle(300, 560, 64), '#c8ccd4', 0.95],
+  ],
+  lines: [
+    [pl([[372, 270], [356, 312], [322, 344]]), 2.4, 0.7],
+    [pl([[160, 340], [230, 300], [300, 296], [372, 300], [440, 340]]), 3, 0.6],
+    [pl([[150, 420], [200, 470]]) + pl([[450, 420], [400, 470]]), 2, 0.4],
+    [circle(300, 560, 64), 2.4, 0.7],
+  ],
+  front: ({ rim }) => {
+    let s = '';
+    // the little machine's eye and the two hands on it
+    s += `<circle cx="300" cy="552" r="16" fill="#2a3a4a"/><circle cx="296" cy="548" r="5" fill="${rim}"/>`;
+    s += `<path d="M236,580q14,-22 34,-16l2,30q-22,6 -36,-14zM364,580q-14,-22 -34,-16l-2,30q22,6 36,-14z" fill="#e8dcd4"/>`;
+    // a shy, cold face: eyes looking up, a small mouth
+    s += `<path d="M232,268q9,-5 18,-1" fill="none" stroke="#3a4a5a" stroke-width="2.4" stroke-linecap="round"/><path d="M234,322q6,2 11,0" fill="none" stroke="#8a6a74" stroke-width="1.8"/>`;
+    return s;
+  },
+};
+
+// 霜潮的使团长 (18) — an elderly man of the north, frost-white beard, a heavy northern robe with a fur collar, holding a
+// block of ice with a folded letter inside it.
+const EN_HAIR = [[226, 196], [244, 152], [292, 128], [350, 134], [392, 170], [404, 222], [394, 256], [378, 236], [356, 194], [300, 178], [252, 188]];
+const EN_BEARD = [[212, 300], [222, 340], [248, 384], [286, 404], [324, 392], [350, 352], [356, 316], [330, 330], [300, 340], [262, 334], [232, 316]];
+const EN_ICE = [[214, 560], [328, 548], [338, 668], [222, 680]];
+CAST.envoy_chief = {
+  id: 'envoy_chief', label: '霜潮的使团长：年长的北境男性，霜白的胡子，厚重的毛领长袍，手里握着一块封着信的冰', rim: '#b8d4e8',
+  sil: [
+    head(0, 4, 0.98), S(EN_HAIR), S(EN_BEARD), neck(0, 4, 0.95),
+    torso(226, 486, 0.9),
+    S([[150, 470], [222, 420], [300, 410], [380, 420], [452, 470], [440, 520], [300, 490], [160, 520]]),
+    pz(EN_ICE),
+  ],
+  tones: [
+    [S(EN_HAIR), '#d8e0e8', 0.85],
+    [S(EN_BEARD), '#e4eaf0', 0.9],
+    [S([[92, 530], [160, 500], [300, 486], [440, 500], [508, 530], [520, 820], [80, 820]]), '#4a4e62', 0.92],
+    [S([[150, 470], [222, 420], [300, 410], [380, 420], [452, 470], [440, 520], [300, 490], [160, 520]]), '#e8e4dc', 0.9],
+    [pz(EN_ICE), '#cfe4f2', 0.7],
+  ],
+  lines: [
+    [pl([[386, 256], [370, 300]]), 2.6, 0.7],
+    [pl([[300, 500], [304, 800]]), 2, 0.4],
+    [pl([[236, 600], [318, 592]]) + pl([[240, 616], [314, 610]]), 1.6, 0.7, '#f4f0e4'],
+  ],
+  front: ({ rim }) => {
+    let s = '';
+    s += `<path d="M224,262q10,-3 20,0" fill="none" stroke="#5a6070" stroke-width="2.4" stroke-linecap="round"/><path d="M226,246q12,-6 26,-3" fill="none" stroke="#e8eef4" stroke-width="3"/>`;
+    s += `<path d="M216,566l10,-6M330,552l6,8" stroke="#ffffff" stroke-width="2" opacity=".8"/>`;
+    s += `<path d="M200,640q20,-10 30,6l-4,30q-20,4 -30,-10zM340,630q-16,-8 -24,6l2,28q18,4 26,-10z" fill="#5a5048"/>`;
+    return s;
+  },
+};
+
 export const npcBusts = Object.fromEntries(Object.entries(CAST).map(([id, spec]) => [id, (rim) => render(spec, rim)]));

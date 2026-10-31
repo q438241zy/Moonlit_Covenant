@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="白塔圣都·朝圣者旅舍·白天：同一间窄小的二楼房间，午后的光从后墙的窗照进来，窗外是白塔的下半段和对街白石的房子；两张木床、小桌、熄着的油灯，门缝底下没有影子，墙上的小镜子仍翻着；不画人">
+<defs><linearGradient id="sbHcHostelDay-g0" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7a6048"/><stop offset="0.6" stop-color="#a8865e"/><stop offset="1" stop-color="#7a6048"/></linearGradient><linearGradient id="sbHcHostelDay-g1" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3a2e30"/><stop offset="1" stop-color="#8a7a6a"/></linearGradient><linearGradient id="sbHcHostelDay-g2" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8a7a6a"/><stop offset="1" stop-color="#3a2e30"/></linearGradient><linearGradient id="sbHcHostelDay-g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a8c4e4"/><stop offset="1" stop-color="#e4ecf2"/></linearGradient><linearGradient id="sbHcHostelDay-g4" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#7a8098"/><stop offset="0.35" stop-color="#c8ccd8"/><stop offset="0.7" stop-color="#c8ccd8"/><stop offset="1" stop-color="#7a8098"/></linearGradient><linearGradient id="sbHcHostelDay-g5" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ffe0a0" stop-opacity="0.75"/><stop offset="1" stop-color="#ffe0a0" stop-opacity="0"/></linearGradient><radialGradient id="sbHcHostelDay-g6" ><stop offset="0" stop-color="#fff4dc" stop-opacity="0.22"/><stop offset="0.5" stop-color="#e8a050" stop-opacity="0.05"/><stop offset="1" stop-color="#e8a050" stop-opacity="0"/></radialGradient><radialGradient id="sbHcHostelDay-g7" cx="0.5" cy="0.5" r="0.75"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="0.7" stop-color="#000" stop-opacity="0.1"/><stop offset="1" stop-color="#000" stop-opacity="0.6"/></radialGradient></defs>
+<rect width="1600" height="900" fill="#3a3028"/>
+<path d="M535,630L1105,630L1105,264L535,264Z" fill="#a89070"/>
+<path d="M-178,-126L1818,-126L1105,264L535,264Z" fill="#5a4a44"/>
+<path d="M-178,1156L1818,1156L1105,630L535,630Z" fill="url(#sbHcHostelDay-g0)"/>
+<path d="M-178,1156L535,630L535,264L-178,-126Z" fill="url(#sbHcHostelDay-g1)"/>
+<path d="M1818,1156L1105,630L1105,264L1818,-126Z" fill="url(#sbHcHostelDay-g2)"/>
+<path d="M-177.5,1156.3L535,630.4M-11.3,1156.3L582.5,630.4M155,1156.3L630,630.4M321.3,1156.3L677.5,630.4M487.5,1156.3L725,630.4M653.8,1156.3L772.5,630.4M820,1156.3L820,630.4M986.3,1156.3L867.5,630.4M1152.5,1156.3L915,630.4M1318.8,1156.3L962.5,630.4M1485,1156.3L1010,630.4M1651.3,1156.3L1057.5,630.4M1817.5,1156.3L1105,630.4" stroke="#4a3626" stroke-width="1.6" opacity=".55"/>
+<path d="M95,23L1545,23L1545,64L95,64ZM351,163L1289,163L1289,190L351,190ZM473,230L1167,230L1167,250L473,250Z" fill="#4a3626"/>
+<path d="M840.4,331.8L1016.8,331.8L1016.8,494.6L840.4,494.6Z" fill="url(#sbHcHostelDay-g3)"/>
+<path d="M895.4,327.8L919.4,327.8L927.4,442.6L887.4,442.6Z" fill="url(#sbHcHostelDay-g4)"/>
+<path d="M893.3,357.8H921.5M890.1,403.8H924.7" stroke="#9aa0b4" stroke-width="2"/>
+<path d="M932.1,494.6V424.6l42.3,-26L1016.8,424.6V494.6Z" fill="#b8bccb"/>
+<path d="M946.1,438.6h14v18h-14zM978.1,438.6h14v18h-14z" fill="#5a6478"/>
+<path d="M840.4,464.6H932.1V494.6H840.4Z" fill="#2a3048"/>
+<path d="M840.4,331.8L1016.8,331.8L1016.8,494.6L840.4,494.6ZM928.6,331.8V494.6M840.4,413.2H1016.8" fill="none" stroke="#7a5a3a" stroke-width="6"/>
+<path d="M832.4,494.6h192.4v8h-192.4z" fill="#a87e52"/>
+<path d="M22,1009L270,826L270,289L22,230Z" fill="#4a3626"/>
+<path d="M87.9,946.4L87.9,259.6M143.7,906.3L143.7,271.9M191.7,871.8L191.7,282.4M233.2,841.9L233.2,291.5" stroke="#241a14" stroke-width="2"/>
+<path d="M37.6,997.5L262,831.9L385.7,840.7L241,981Z" fill="url(#sbHcHostelDay-g5)"/>
+<path d="M240.9,570.4a5,5 0 1 0 10,0a5,5 0 1 0 -10,0Z" fill="#c8a060"/>
+<path d="M1263,441L1209,439L1209,346L1263,336Z" fill="#7a5a40" stroke="#4a3426" stroke-width="2"/>
+<path d="M1257.3,336.7L1234.5,305.5L1214.1,344.9" fill="none" stroke="#3a2a20" stroke-width="1.6"/>
+<path d="M473,676L630,676L630,511L473,511Z" fill="#7a5a3a" stroke="#4a3626" stroke-width="2"/>
+<path d="M440,932L630,676L630,597L440,774Z" fill="#7a5a3a"/><path d="M126,932L440,932L440,774L126,774Z" fill="#a87e52"/>
+<path d="M126,774L440,774L630,597L473,597Z" fill="#c8b8a0"/>
+<path d="M145,754L430,754L588,619L419,619Z" fill="#6a5a7a"/>
+<path d="M448,598L582,598L605,581L484,581Z" fill="#e8dcc8"/>
+<path d="M1010,676L1167,676L1167,511L1010,511Z" fill="#7a5a3a" stroke="#4a3626" stroke-width="2"/>
+<path d="M1200,932L1010,676L1010,597L1200,774Z" fill="#7a5a3a"/><path d="M1200,932L1514,932L1514,774L1200,774Z" fill="#a87e52"/>
+<path d="M1200,774L1514,774L1167,597L1010,597Z" fill="#c8b8a0"/>
+<path d="M1210,754L1495,754L1221,619L1052,619Z" fill="#5a6a7a"/>
+<path d="M1058,598L1192,598L1156,581L1035,581Z" fill="#e8dcc8"/>
+<ellipse cx="820" cy="528.9" rx="560" ry="380" fill="url(#sbHcHostelDay-g6)"/>
+<path d="M731,766L909,766L909,606L731,606Z" fill="#7a5a3a"/>
+<path d="M740,764L751,764L751,604L740,604Z" fill="#4a3626"/>
+<path d="M891,764L902,764L902,604L891,604Z" fill="#4a3626"/>
+<path d="M731,606L909,606L896,578L744,578Z" fill="#a87e52"/>
+<path d="M750,600L820,600L820,584L756,584Z" fill="#efe4cc"/>
+<path d="M780.5,592.8a6.2,2.3 0 1 0 12.4,0a6.2,2.3 0 1 0 -12.4,0ZM777.3,592.8a9.4,3.4 0 1 0 18.8,0a9.4,3.4 0 1 0 -18.8,0ZM774.1,592.8a12.6,4.5 0 1 0 25.2,0a12.6,4.5 0 1 0 -25.2,0ZM770.9,592.8a15.8,5.6 0 1 0 31.6,0a15.8,5.6 0 1 0 -31.6,0ZM767.7,592.8a19,6.7 0 1 0 38,0a19,6.7 0 1 0 -38,0ZM764.5,592.8a22.2,7.8 0 1 0 44.4,0a22.2,7.8 0 1 0 -44.4,0ZM761.3,592.8a25.4,8.9 0 1 0 50.8,0a25.4,8.9 0 1 0 -50.8,0Z" fill="none" stroke="#3a3430" stroke-width="1.2" opacity=".7"/>
+<path d="M845.7,597.7l26,-4l2,4l-26,4z" fill="#1a1818"/>
+<path d="M848.6,588.2h32l-6,-10h-20z" fill="#8a6a3a"/><path d="M855.6,578.2q-3,-30 9,-44q12,14 9,44z" fill="#f8e4b8" opacity=".55"/>
+<path d="M840.4,630.4L1016.8,630.4L1352,812.7L907.7,873.1Z" fill="#fff0c8" opacity="0.22"/>
+<rect width="1600" height="900" fill="url(#sbHcHostelDay-g7)"/>
+</svg>

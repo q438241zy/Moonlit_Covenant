@@ -41,13 +41,14 @@ function farTower(S, cx, y0, y1, w0, w1, lit, shade, band) {
 // ---------------------------------------------------------------------------------------------
 // 朝圣者旅舍·夜
 // ---------------------------------------------------------------------------------------------
-function hostel() {
-  const S = new Scene('sbHcHostel', '白塔圣都·朝圣者旅舍·夜：窄小的二楼房间，两侧墙边各一张木床，中间一张小桌，桌上一盏油灯；后墙的窗对着街，窗外远处是白塔的下半段和对街一栋白石的房子；左边的门缝底下一道光，光里一双靴子的影子；墙上一面小镜子翻了过去，背面朝外；暖黄的灯光和夜蓝，不画人', 17101);
+function hostel(day = false) {
+  const S = new Scene(day ? 'sbHcHostelDay' : 'sbHcHostel', day ? '白塔圣都·朝圣者旅舍·白天：同一间窄小的二楼房间，午后的光从后墙的窗照进来，窗外是白塔的下半段和对街白石的房子；两张木床、小桌、熄着的油灯，门缝底下没有影子，墙上的小镜子仍翻着；不画人' : '白塔圣都·朝圣者旅舍·夜：窄小的二楼房间，两侧墙边各一张木床，中间一张小桌，桌上一盏油灯；后墙的窗对着街，窗外远处是白塔的下半段和对街一栋白石的房子；左边的门缝底下一道光，光里一双靴子的影子；墙上一面小镜子翻了过去，背面朝外；暖黄的灯光和夜蓝，不画人', day ? 17111 : 17101);
   const R = rng(17102);
   const P = persp({ vp: [820, 420], F: 760, eye: 1.55 });
   const X0 = -2.1, X1 = 2.1, Y1 = 2.7, ZN = 1.6, ZF = 5.6;
-  const C = { wall: '#5a4a44', wallLit: '#8a6a50', wallFar: '#6a5448', ceil: '#2e2630', floor: '#4a3a30', floorLit: '#7a5a3e', wood: '#6a4a32', woodLit: '#9a7048', woodDeep: '#3a2a20', night: '#1c2440', lamp: '#ffd890' };
-  S.add(`<rect width="${W}" height="${H}" fill="#1a1620"/>`);
+  const C = day ? { wall: '#8a7a6a', wallLit: '#b89a78', wallFar: '#a89070', ceil: '#5a4a44', floor: '#7a6048', floorLit: '#a8865e', wood: '#7a5a3a', woodLit: '#a87e52', woodDeep: '#4a3626', night: '#a8c0e0', lamp: '#fff4dc' }
+    : { wall: '#5a4a44', wallLit: '#8a6a50', wallFar: '#6a5448', ceil: '#2e2630', floor: '#4a3a30', floorLit: '#7a5a3e', wood: '#6a4a32', woodLit: '#9a7048', woodDeep: '#3a2a20', night: '#1c2440', lamp: '#ffd890' };
+  S.add(`<rect width="${W}" height="${H}" fill="${day ? '#3a3028' : '#1a1620'}"/>`);
   // the back wall, the ceiling, the floor and the two side walls
   S.add(`<path d="${P.quad([[X0, 0, ZF], [X1, 0, ZF], [X1, Y1, ZF], [X0, Y1, ZF]])}" fill="${C.wallFar}"/>`);
   S.add(`<path d="${P.quad([[X0, Y1, ZN], [X1, Y1, ZN], [X1, Y1, ZF], [X0, Y1, ZF]])}" fill="${C.ceil}"/>`);
@@ -66,14 +67,14 @@ function hostel() {
   // the window in the back wall, right of centre: night street, the far tower, the white house across the street
   const wx0 = 0.15, wx1 = 1.45, wy0 = 1.0, wy1 = 2.2;
   const wa = P(wx0, wy1, ZF), wb = P(wx1, wy0, ZF);
-  S.add(`<path d="${pz1([wa, [wb[0], wa[1]], wb, [wa[0], wb[1]]])}" fill="${S.lin([[0, '#141c38'], [1, '#2c3658']])}"/>`);
+  S.add(`<path d="${pz1([wa, [wb[0], wa[1]], wb, [wa[0], wb[1]]])}" fill="${day ? S.lin([[0, '#a8c4e4'], [1, '#e4ecf2']]) : S.lin([[0, '#141c38'], [1, '#2c3658']])}"/>`);
   {
     const cx = wa[0] + (wb[0] - wa[0]) * 0.38;
     farTower(S, cx, wa[1] - 4, wb[1] - 52, 12, 20, '#c8ccd8', '#7a8098', '#9aa0b4');
     // the white house across the street, its upper windows lit
     const hx0 = wa[0] + (wb[0] - wa[0]) * 0.52, hy = wb[1] - 70;
     S.add(`<path d="M${f1(hx0)},${f1(wb[1])}V${f1(hy)}l${f1((wb[0] - hx0) * 0.5)},-26L${f1(wb[0])},${f1(hy)}V${f1(wb[1])}Z" fill="#b8bccb"/>`);
-    S.add(`<path d="M${f1(hx0 + 14)},${f1(hy + 14)}h14v18h-14zM${f1(hx0 + 46)},${f1(hy + 14)}h14v18h-14z" fill="#f0c878"/>`);
+    S.add(`<path d="M${f1(hx0 + 14)},${f1(hy + 14)}h14v18h-14zM${f1(hx0 + 46)},${f1(hy + 14)}h14v18h-14z" fill="${day ? '#5a6478' : '#f0c878'}"/>`);
     S.add(`<path d="M${f1(wa[0])},${f1(wb[1] - 30)}H${f1(hx0)}V${f1(wb[1])}H${f1(wa[0])}Z" fill="#2a3048"/>`);
     // mullions and frame
     const mx = (wa[0] + wb[0]) / 2, my = (wa[1] + wb[1]) / 2;
@@ -90,7 +91,7 @@ function hostel() {
     // the light bar on the floor under the door and the two boot shadows breaking it
     const l0 = P(X0, 0, za + 0.04), l1 = P(X0, 0, zb - 0.04), l2 = P(X0 + 0.5, 0, zb - 0.1), l3 = P(X0 + 0.5, 0, za + 0.1);
     S.add(`<path d="${pz1([l0, l1, l2, l3])}" fill="${S.lin([[0, '#ffe0a0', 0.75], [1, '#ffe0a0', 0]], 'x1="0" y1="0" x2="1" y2="0"')}"/>`);
-    for (const t of [0.3, 0.62]) {
+    for (const t of day ? [] : [0.3, 0.62]) {
       const z0 = za + (zb - za) * t, z1 = z0 + 0.12;
       S.add(`<path d="${pz1([P(X0, 0, z0), P(X0, 0, z1), P(X0 + 0.42, 0, z1 + 0.02), P(X0 + 0.42, 0, z0 - 0.02)])}" fill="#1a120e" opacity=".85"/>`);
     }
@@ -124,7 +125,7 @@ function hostel() {
   // the small table between the beds, the oil lamp on it, and the lamp's warm pool
   const tz = 3.7, ty = 0.72;
   const lampP = P(0, ty + 0.3, tz);
-  S.add(`<ellipse cx="${f1(lampP[0])}" cy="${f1(lampP[1])}" rx="560" ry="380" fill="${S.rad([[0, C.lamp, 0.4], [0.5, '#e8a050', 0.14], [1, '#e8a050', 0]])}"/>`);
+  S.add(`<ellipse cx="${f1(lampP[0])}" cy="${f1(lampP[1])}" rx="560" ry="380" fill="${S.rad([[0, C.lamp, day ? 0.22 : 0.4], [0.5, '#e8a050', day ? 0.05 : 0.14], [1, '#e8a050', 0]])}"/>`);
   {
     const top = [[-0.4, ty, tz - 0.3], [0.4, ty, tz - 0.3], [0.4, ty, tz + 0.3], [-0.4, ty, tz + 0.3]];
     S.add(`<path d="${P.quad([[-0.4, 0, tz - 0.3], [0.4, 0, tz - 0.3], [0.4, ty, tz - 0.3], [-0.4, ty, tz - 0.3]])}" fill="${C.wood}"/>`);
@@ -141,10 +142,10 @@ function hostel() {
     S.add(`<path d="M${f1(ch[0])},${f1(ch[1])}l26,-4l2,4l-26,4z" fill="#1a1818"/>`);
     // the lamp
     const lb = P(0.22, ty, tz + 0.05);
-    S.add(`<path d="M${f1(lb[0] - 16)},${f1(lb[1])}h32l-6,-10h-20z" fill="#8a6a3a"/><path d="M${f1(lb[0] - 9)},${f1(lb[1] - 10)}q-3,-30 9,-44q12,14 9,44z" fill="#f8e4b8" opacity=".55"/><path d="M${f1(lb[0])},${f1(lb[1] - 18)}q-6,-10 0,-22q6,12 0,22z" fill="#fff4d0"/>`);
+    S.add(`<path d="M${f1(lb[0] - 16)},${f1(lb[1])}h32l-6,-10h-20z" fill="#8a6a3a"/><path d="M${f1(lb[0] - 9)},${f1(lb[1] - 10)}q-3,-30 9,-44q12,14 9,44z" fill="#f8e4b8" opacity=".55"/>${day ? '' : `<path d="M${f1(lb[0])},${f1(lb[1] - 18)}q-6,-10 0,-22q6,12 0,22z" fill="#fff4d0"/>`}`);
   }
   // night-blue cast from the window over the near floor, then a vignette
-  S.add(`<path d="${pz1([P(0.15, 0, ZF), P(1.45, 0, ZF), P(2.1, 0, 3.0), P(0.3, 0, 2.6)])}" fill="#3a4a7a" opacity=".16"/>`);
+  S.add(`<path d="${pz1([P(0.15, 0, ZF), P(1.45, 0, ZF), P(2.1, 0, 3.0), P(0.3, 0, 2.6)])}" fill="${day ? '#fff0c8' : '#3a4a7a'}" opacity="${day ? 0.22 : 0.16}"/>`);
   S.add(`<rect width="${W}" height="${H}" fill="${S.rad([[0, '#000', 0], [0.7, '#000', 0.1], [1, '#000', 0.6]], 'cx="0.5" cy="0.5" r="0.75"')}"/>`);
   return S.out();
 }
@@ -344,10 +345,10 @@ function garden(dawn) {
 // ---------------------------------------------------------------------------------------------
 // 白塔·外庭·霜
 // ---------------------------------------------------------------------------------------------
-function frost() {
-  const S = new Scene('sbHcFrost', '白塔·外庭·霜：晨门外一片铺石的外庭，中央一座喷泉，水面结了一层薄冰；一辆北方样式的厚木马车停在那里，车轮和车篷边缘结着霜；车窗里一个模糊、一动不动的人影，看不见脸；冷白和淡蓝，和圣都纸一样的白分开', 17401);
+function frost(thawed = false) {
+  const S = new Scene(thawed ? 'sbHcThawed' : 'sbHcFrost', thawed ? '白塔·外庭·正午：同一片铺石的外庭，霜化了，石板湿着；喷泉的冰融成水；北方的厚木马车车轮上的霜化成水滴，车窗里没有人影；淡蓝转成正午的白' : '白塔·外庭·霜：晨门外一片铺石的外庭，中央一座喷泉，水面结了一层薄冰；一辆北方样式的厚木马车停在那里，车轮和车篷边缘结着霜；车窗里一个模糊、一动不动的人影，看不见脸；冷白和淡蓝，和圣都纸一样的白分开', thawed ? 17411 : 17401);
   const R = rng(17402);
-  const C = { sky: [[0, '#b8c8d8'], [0.6, '#dce6ee'], [1, '#eef2f6']], wall: '#c8d0d8', wallShade: '#98a4b2', pave: '#b8c2cc', paveFar: '#ccd4dc', joint: '#8a96a4', frost: '#f4f8fc', ice: '#d8e8f4', wood: '#5a4a40', woodLit: '#7a6656', woodDeep: '#3a302a', iron: '#4a5058' };
+  const C = { sky: [[0, '#b8c8d8'], [0.6, '#dce6ee'], [1, '#eef2f6']], wall: '#c8d0d8', wallShade: '#98a4b2', pave: '#b8c2cc', paveFar: '#ccd4dc', joint: '#8a96a4', frost: '#f4f8fc', ice: thawed ? '#8ab0c8' : '#d8e8f4', wood: '#5a4a40', woodLit: '#7a6656', woodDeep: '#3a302a', iron: '#4a5058' };
   S.add(`<rect width="${W}" height="${H}" fill="${S.lin(C.sky)}"/>`);
   // the morning gate's wall across the back with the arch, the tower rising behind into a cold haze
   farTower(S, 800, -40, 300, 46, 56, '#eef2f6', '#a8b4c2', '#c0cad6');
@@ -374,18 +375,18 @@ function frost() {
   {
     let d = '';
     for (let k = 0; k < 26; k++) d += ell(R.range(0, W), R.range(440, H), R.range(40, 140), R.range(6, 18));
-    S.add(`<path d="${d}" fill="${C.frost}" opacity=".55"/>`);
+    S.add(`<path d="${d}" fill="${thawed ? '#8a98a8' : C.frost}" opacity="${thawed ? 0.35 : 0.55}"/>`);
   }
   // the fountain in the middle: basin, column, and a skin of ice with cracks
   {
     const cx = 560, cy = 560;
     S.add(`<path d="${ell(cx, cy + 26, 230, 60)}" fill="${C.wallShade}"/><path d="${ell(cx, cy, 230, 60)}" fill="${C.wall}"/><path d="${ell(cx, cy + 6, 205, 48)}" fill="${C.ice}"/>`);
-    S.add(`<path d="M${cx - 70},${cy}l50,10l30,-14l40,18M${cx + 20},${cy + 8}l20,26M${cx - 20},${cy + 10}l-30,22" fill="none" stroke="#f8fcff" stroke-width="2"/>`);
+    if (!thawed) S.add(`<path d="M${cx - 70},${cy}l50,10l30,-14l40,18M${cx + 20},${cy + 8}l20,26M${cx - 20},${cy + 10}l-30,22" fill="none" stroke="#f8fcff" stroke-width="2"/>`);
     S.add(`<path d="M${cx - 18},${cy}v-130h36v130z" fill="${C.wall}"/><path d="${ell(cx, cy - 132, 64, 16)}" fill="${C.wallShade}"/><path d="${ell(cx, cy - 136, 54, 12)}" fill="${C.ice}"/>`);
     // icicles hanging from the upper dish
     let ic = '';
     for (let k = 0; k < 9; k++) { const x = cx - 50 + k * 12.5; ic += `M${f1(x - 3)},${cy - 128}l3,${f1(R.range(14, 34))}l3,${f1(-R.range(14, 34))}z`; }
-    S.add(`<path d="${ic}" fill="${C.frost}"/>`);
+    if (!thawed) S.add(`<path d="${ic}" fill="${C.frost}"/>`);
   }
   // the northern carriage on the right: heavy wooden body, arched hood, big iron-rimmed wheels, all edged in frost
   {
@@ -410,7 +411,7 @@ function frost() {
     // the window with the blurred, unmoving figure
     const wx = x0 + 170, wy = bt + 50, ww = 150, wh = 110;
     S.add(`<path d="M${wx},${wy}h${ww}v${wh}h${-ww}z" fill="#3a4658"/>`);
-    S.add(`<path d="M${wx + 50},${wy + wh}q2,-50 25,-56q23,6 25,56zM${wx + 75},${wy + 46}m-16,0a16,18 0 1 0 32,0a16,18 0 1 0 -32,0" fill="#6a7a8e" filter="${S.blur(1)}"/>`);
+    if (!thawed) S.add(`<path d="M${wx + 50},${wy + wh}q2,-50 25,-56q23,6 25,56zM${wx + 75},${wy + 46}m-16,0a16,18 0 1 0 32,0a16,18 0 1 0 -32,0" fill="#6a7a8e" filter="${S.blur(1)}"/>`);
     S.add(`<path d="M${wx},${wy}h${ww}v${wh}h${-ww}z" fill="${S.lin([[0, '#f4f8fc', 0.55], [0.4, '#f4f8fc', 0.15], [1, '#f4f8fc', 0.4]])}" stroke="${C.woodDeep}" stroke-width="8"/>`);
     // frost along the body's bottom edge and the step
     S.add(`<path d="M${x0},${by}h${x1 - x0}" stroke="${C.frost}" stroke-width="4"/><path d="M${x0 + 300},${by + 14}h80v12h-80z" fill="${C.woodDeep}" stroke="${C.frost}" stroke-width="2"/>`);
@@ -429,4 +430,6 @@ export const holyCityBgs = {
   'starsong-garden-predawn': () => garden(false),
   'starsong-garden-dawn': () => garden(true),
   'white-tower-outer-court-frost': () => frost(),
+  'white-tower-outer-court-thawed': () => frost(true),
+  'holy-city-pilgrim-hostel-day': () => hostel(true),
 };

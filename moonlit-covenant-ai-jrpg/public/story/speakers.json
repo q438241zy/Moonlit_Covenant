@@ -368,5 +368,40 @@
     "name": "侍女",
     "color": "#d8cfc4",
     "art": null
+  },
+  "freya_unknown": {
+    "name": "北境的女人",
+    "color": "#9fd4e4",
+    "art": "/assets/story/npc/freya.svg"
+  },
+  "freya": {
+    "name": "芙蕾娅",
+    "color": "#9fd4e4",
+    "art": "/assets/story/npc/freya.svg"
+  },
+  "nila_unknown": {
+    "name": "车里的孩子",
+    "color": "#a8d0e8",
+    "art": "/assets/story/npc/nila.svg"
+  },
+  "envoy_chief": {
+    "name": "使团长",
+    "color": "#b8d4e8",
+    "art": "/assets/story/npc/envoy_chief.svg"
+  },
+  "frost_captain": {
+    "name": "晨星卫队长",
+    "color": "#dfe4ec",
+    "art": null
+  },
+  "envoy_retinue": {
+    "name": "使团的随员",
+    "color": "#b0c4d4",
+    "art": null
+  },
+  "nila": {
+    "name": "妮拉",
+    "color": "#a8d0e8",
+    "art": "/assets/story/npc/nila.svg"
   }
 }
