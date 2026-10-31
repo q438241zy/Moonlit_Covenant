@@ -3,7 +3,7 @@
 //   node tools/art/story/build.mjs               -> everything
 //   node tools/art/story/build.mjs bg            -> all backgrounds (every locations.json entry, plus generators
 //                                                  not wired into locations.json yet, e.g. new variants)
-//   node tools/art/story/build.mjs npc           -> all 43 busts (35 NPC silhouettes incl. both versions of 蚀痕残响, of
+//   node tools/art/story/build.mjs npc           -> all 44 busts (35 NPC silhouettes incl. both versions of 蚀痕残响, of
 //                                                  镜咒学徒, of chapter 14's 欧妲 (plains_woman with the wrist tag,
 //                                                  oda with it cut off) and of chapter 15's 潮虫王 (tide_king, and
 //                                                  tide_king_split with the shell split along the back), plus 赈灾司的官
@@ -12,7 +12,7 @@
 //                                                  + Lia's, Mia's and Serena's transparent portrait busts,
 //                                                  the chapter 12 variants lia_mirror / serena_staff_wrapped, the
 //                                                  chapter 13 hooded golden_assassin, the chapter 15 serena_copy and
-//                                                  the chapter 16 evelyn, portrait-bust.mjs)
+//                                                  the chapter 16 evelyn and the chapter 17 aila, portrait-bust.mjs)
 //   node tools/art/story/build.mjs hemai-day aku -> just those ids
 // Output: public/assets/story/bg/<id>.svg (1600×900) and public/assets/story/npc/<id>.svg (600×800, transparent).
 // Every file is validated against docs/ART-DIRECTION.md §4 (self-contained, no text/script/external refs,
@@ -38,6 +38,7 @@ import { tideCaveBgs } from './bg-tidecave.mjs';
 import { tideNestBgs } from './bg-tidenest.mjs';
 import { guildDockBgs } from './bg-guilddock.mjs';
 import { whiteTowerBgs } from './bg-whitetower.mjs';
+import { holyCityBgs } from './bg-holycity.mjs';
 import { npcBusts as silhouetteBusts } from './npc.mjs';
 import { liaBust } from './lia-bust.mjs';
 import { miaBust } from './mia-bust.mjs';
@@ -46,14 +47,15 @@ import { ch12Busts } from './ch12-busts.mjs';
 import { goldenAssassinBust } from './golden-assassin-bust.mjs';
 import { ch15Busts } from './ch15-busts.mjs';
 import { ch16Busts } from './ch16-busts.mjs';
+import { ch17Busts } from './ch17-busts.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const locations = JSON.parse(fs.readFileSync(path.join(root, 'public/story/locations.json'), 'utf8'));
 const speakers = JSON.parse(fs.readFileSync(path.join(root, 'public/story/speakers.json'), 'utf8'));
 
-const bgs = { ...villageBgs, ...nightBgs, ...dawnBgs, ...townBgs, ...millBgs, ...oldMillBgs, ...marshBgs, ...tideBgs, ...harborBgs, ...sewerBgs, ...innBgs, ...lighthouseBgs, ...alleyBgs, ...roofBgs, ...tideCaveBgs, ...tideNestBgs, ...guildDockBgs, ...whiteTowerBgs };
+const bgs = { ...villageBgs, ...nightBgs, ...dawnBgs, ...townBgs, ...millBgs, ...oldMillBgs, ...marshBgs, ...tideBgs, ...harborBgs, ...sewerBgs, ...innBgs, ...lighthouseBgs, ...alleyBgs, ...roofBgs, ...tideCaveBgs, ...tideNestBgs, ...guildDockBgs, ...whiteTowerBgs, ...holyCityBgs };
 // bust id -> generator; the file is public/assets/story/npc/<id>.svg (several speakers may share one file)
-const npcBusts = { ...silhouetteBusts, lia: () => liaBust(), mia: () => miaBust(), serena: () => serenaBust(), ...ch12Busts, golden_assassin: () => goldenAssassinBust(), ...ch15Busts, ...ch16Busts };
+const npcBusts = { ...silhouetteBusts, lia: () => liaBust(), mia: () => miaBust(), serena: () => serenaBust(), ...ch12Busts, golden_assassin: () => goldenAssassinBust(), ...ch15Busts, ...ch16Busts, ...ch17Busts };
 const BG_BUDGET = 90 * 1024, NPC_BUDGET = 70 * 1024;
 
 function validate(rel, svg, { w, h, budget }) {

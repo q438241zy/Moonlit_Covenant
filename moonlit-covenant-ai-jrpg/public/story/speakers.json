@@ -348,5 +348,25 @@
     "name": "晨星卫",
     "color": "#dfe4ec",
     "art": null
+  },
+  "aila_unknown": {
+    "name": "金发的骑士",
+    "color": "#f0d070",
+    "art": "/assets/story/npc/aila.svg"
+  },
+  "aila": {
+    "name": "艾拉",
+    "color": "#f0d070",
+    "art": "/assets/story/npc/aila.svg"
+  },
+  "knight_runner": {
+    "name": "传令的骑士",
+    "color": "#c8d0dc",
+    "art": null
+  },
+  "residence_maid": {
+    "name": "侍女",
+    "color": "#d8cfc4",
+    "art": null
   }
 }

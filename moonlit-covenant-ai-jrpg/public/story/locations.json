@@ -418,5 +418,35 @@
     "svg": "/assets/story/bg/white-tower-registry-hall-night.svg",
     "top": "#141620",
     "bottom": "#0c0e16"
+  },
+  "holy-city-pilgrim-hostel-night": {
+    "name": "白塔圣都·朝圣者旅舍·夜",
+    "svg": "/assets/story/bg/holy-city-pilgrim-hostel-night.svg",
+    "top": "#2e2630",
+    "bottom": "#4a3a30"
+  },
+  "saint-residence-smoke-night": {
+    "name": "圣女居所·夜·烟",
+    "svg": "/assets/story/bg/saint-residence-smoke-night.svg",
+    "top": "#06070c",
+    "bottom": "#24232a"
+  },
+  "starsong-garden-predawn": {
+    "name": "星歌花园·天未亮",
+    "svg": "/assets/story/bg/starsong-garden-predawn.svg",
+    "top": "#0a1024",
+    "bottom": "#2a3a44"
+  },
+  "starsong-garden-dawn": {
+    "name": "星歌花园·黎明",
+    "svg": "/assets/story/bg/starsong-garden-dawn.svg",
+    "top": "#8a96b0",
+    "bottom": "#6a8a5a"
+  },
+  "white-tower-outer-court-frost": {
+    "name": "白塔·外庭·霜",
+    "svg": "/assets/story/bg/white-tower-outer-court-frost.svg",
+    "top": "#b8c8d8",
+    "bottom": "#b8c2cc"
   }
 }
