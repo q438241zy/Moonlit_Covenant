@@ -13303,7 +13303,7 @@
   ],
   "end": {
     "save": "SAVE_CH024_END_ASH_PASS",
-    "next": null,
+    "next": "ch025",
     "nextLabel": "CH025_ICE_ARCHIVE",
     "set": {
       "flags": {
