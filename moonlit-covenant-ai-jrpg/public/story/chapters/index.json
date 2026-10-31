@@ -214,5 +214,14 @@
     "file": "/story/chapters/ch023.json",
     "requires": "ch022",
     "source": "剧本/23霧港起義.md"
+  },
+  {
+    "id": "ch024",
+    "number": 24,
+    "title": "第二十四章｜灰烬关",
+    "estimatedMinutes": 12,
+    "file": "/story/chapters/ch024.json",
+    "requires": "ch023",
+    "source": "剧本/24灰燼關.md"
   }
 ]

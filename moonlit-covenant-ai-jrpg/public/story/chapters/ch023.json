@@ -11075,7 +11075,7 @@
   ],
   "end": {
     "save": "SAVE_CH023_END_FOG_HARBOR_RISING",
-    "next": null,
+    "next": "ch024",
     "nextLabel": "CH024_ASH_PASS",
     "set": {
       "flags": {
