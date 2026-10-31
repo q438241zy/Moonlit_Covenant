@@ -38462,7 +38462,7 @@
   ],
   "end": {
     "save": "SAVE_CH028_END_RAVEN_MIRRORS",
-    "next": null,
+    "next": "ch029",
     "nextLabel": "CH029_WHITE_TOWER_SIEGE",
     "set": {
       "flags": {

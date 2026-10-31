@@ -259,5 +259,14 @@
     "file": "/story/chapters/ch028.json",
     "requires": "ch027",
     "source": "剧本/28鴉羽城的鏡子.md"
+  },
+  {
+    "id": "ch029",
+    "number": 29,
+    "title": "第二十九章｜白塔之围",
+    "estimatedMinutes": 15,
+    "file": "/story/chapters/ch029.json",
+    "requires": "ch028",
+    "source": "剧本/29白塔之圍.md"
   }
 ]
