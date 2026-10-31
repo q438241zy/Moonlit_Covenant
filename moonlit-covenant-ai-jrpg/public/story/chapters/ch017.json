@@ -21143,7 +21143,7 @@
   ],
   "end": {
     "save": "SAVE_CH017_END_KNIGHT_INTERCEPT",
-    "next": null,
+    "next": "ch018",
     "nextLabel": "CH018_GENTLE_NORTHERN_GUEST",
     "set": {
       "flags": {

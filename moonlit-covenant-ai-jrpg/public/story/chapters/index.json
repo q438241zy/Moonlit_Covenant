@@ -160,5 +160,14 @@
     "file": "/story/chapters/ch017.json",
     "requires": "ch016",
     "source": "剧本/17光明騎士的攔截.md"
+  },
+  {
+    "id": "ch018",
+    "number": 18,
+    "title": "第十八章｜温柔的北境来客",
+    "estimatedMinutes": 11,
+    "file": "/story/chapters/ch018.json",
+    "requires": "ch017",
+    "source": "剧本/18溫柔的北境來客.md"
   }
 ]
