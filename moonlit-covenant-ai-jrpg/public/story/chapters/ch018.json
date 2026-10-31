@@ -17376,7 +17376,7 @@
   ],
   "end": {
     "save": "SAVE_CH018_END_GENTLE_NORTHERN_GUEST",
-    "next": null,
+    "next": "ch019",
     "nextLabel": "CH019_IMPERIAL_HEARING",
     "set": {
       "flags": {
