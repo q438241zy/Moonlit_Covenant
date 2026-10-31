@@ -478,5 +478,11 @@
     "svg": "/assets/story/bg/white-tower-outer-court-night.svg",
     "top": "#0a1020",
     "bottom": "#3a4256"
+  },
+  "white-tower-underground-archive": {
+    "name": "册厅底下·地下档案库",
+    "svg": "/assets/story/bg/white-tower-underground-archive.svg",
+    "top": "#202028",
+    "bottom": "#4a4850"
   }
 }

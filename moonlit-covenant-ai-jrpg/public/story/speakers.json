@@ -423,5 +423,20 @@
     "name": "诺亚",
     "color": "#c4ccd8",
     "art": "/assets/story/npc/archivist.svg"
+  },
+  "lilith_unknown": {
+    "name": "兜帽的人",
+    "color": "#e8c860",
+    "art": "/assets/story/npc/golden_assassin.svg"
+  },
+  "lilith": {
+    "name": "莉莉丝",
+    "color": "#e8c860",
+    "art": "/assets/story/npc/lilith.svg"
+  },
+  "bronze_plate": {
+    "name": "铜板",
+    "color": "#c89048",
+    "art": null
   }
 }
