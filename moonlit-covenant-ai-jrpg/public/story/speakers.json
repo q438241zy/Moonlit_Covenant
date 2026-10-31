@@ -568,5 +568,40 @@
     "name": "索拉恩",
     "color": "#b8b0d8",
     "art": null
+  },
+  "grantz": {
+    "name": "格兰茨",
+    "color": "#d8b860",
+    "art": "/assets/story/npc/grantz.svg"
+  },
+  "cora": {
+    "name": "柯拉",
+    "color": "#c89060",
+    "art": "/assets/story/npc/cora.svg"
+  },
+  "lindor": {
+    "name": "林铎",
+    "color": "#b8a070",
+    "art": "/assets/story/npc/lindor.svg"
+  },
+  "mammongo": {
+    "name": "玛门戈",
+    "color": "#d8a850",
+    "art": "/assets/story/npc/mammongo.svg"
+  },
+  "gold_scale": {
+    "name": "金衡圣印",
+    "color": "#f0d070",
+    "art": null
+  },
+  "soldier": {
+    "name": "士兵",
+    "color": "#9a9a8a",
+    "art": null
+  },
+  "ledger_clerk": {
+    "name": "账房",
+    "color": "#a89a7a",
+    "art": null
   }
 }

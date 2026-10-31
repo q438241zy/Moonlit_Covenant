@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="衡炉城议会：半圆形层层的黄铜长椅，台上一座巨大的天平，高窗里透进烟色的光">
+<defs><linearGradient id="sbFcCouncil-g0" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a2018"/><stop offset="1" stop-color="#4a3626"/></linearGradient><linearGradient id="sbFcCouncil-g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c8a070"/><stop offset="1" stop-color="#806040"/></linearGradient><linearGradient id="sbFcCouncil-g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c8a070"/><stop offset="1" stop-color="#806040"/></linearGradient><linearGradient id="sbFcCouncil-g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c8a070"/><stop offset="1" stop-color="#806040"/></linearGradient><linearGradient id="sbFcCouncil-g4" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c8a070"/><stop offset="1" stop-color="#806040"/></linearGradient><radialGradient id="sbFcCouncil-g5" ><stop offset="0" stop-color="#ffd080" stop-opacity="0.18"/><stop offset="1" stop-color="#ffd080" stop-opacity="0"/></radialGradient><radialGradient id="sbFcCouncil-g6" cx="0.5" cy="0.5" r="0.75"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="0.6" stop-color="#000" stop-opacity="0.165"/><stop offset="1" stop-color="#000" stop-opacity="0.55"/></radialGradient></defs>
+<rect width="1600" height="900" fill="url(#sbFcCouncil-g0)"/>
+<path d="M110,120h140v360h-140z" fill="url(#sbFcCouncil-g1)" opacity=".7"/><path d="M180,120v360M110,300h140" stroke="#2a2018" stroke-width="6"/>
+<path d="M450,120h140v360h-140z" fill="url(#sbFcCouncil-g2)" opacity=".7"/><path d="M520,120v360M450,300h140" stroke="#2a2018" stroke-width="6"/>
+<path d="M1010,120h140v360h-140z" fill="url(#sbFcCouncil-g3)" opacity=".7"/><path d="M1080,120v360M1010,300h140" stroke="#2a2018" stroke-width="6"/>
+<path d="M1350,120h140v360h-140z" fill="url(#sbFcCouncil-g4)" opacity=".7"/><path d="M1420,120v360M1350,300h140" stroke="#2a2018" stroke-width="6"/>
+<path d="M80,560Q800,470 1520,560v26Q800,496 80,586z" fill="#b08840"/>
+<path d="M140,630Q800,540 1460,630v26Q800,566 140,656z" fill="#9b7739"/>
+<path d="M200,700Q800,610 1400,700v26Q800,636 200,726z" fill="#866632"/>
+<path d="M260,770Q800,680 1340,770v26Q800,706 260,796z" fill="#70552b"/>
+<path d="M640,560h320v-40H640z" fill="#5a4430"/><path d="M800,520V250" stroke="#d8b050" stroke-width="10"/><path d="M640,270H960" stroke="#d8b050" stroke-width="8"/>
+<path d="M640,270l-40,110h80zM960,270l-40,110h80z" fill="none" stroke="#d8b050" stroke-width="3"/><path d="M590,380h100l-10,14h-80zM910,380h100l-10,14h-80z" fill="#d8b050"/><path d="M784,246a16,16 0 1 0 32,0a16,16 0 1 0 -32,0Z" fill="#f0d070"/>
+<ellipse cx="800" cy="300" rx="300" ry="220" fill="url(#sbFcCouncil-g5)"/>
+<rect width="1600" height="900" fill="url(#sbFcCouncil-g6)"/>
+</svg>

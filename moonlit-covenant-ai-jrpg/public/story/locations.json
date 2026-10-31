@@ -610,5 +610,59 @@
     "svg": "/assets/story/bg/ice-archive-deep.svg",
     "top": "#06101a",
     "bottom": "#14202c"
+  },
+  "furnace-city-far": {
+    "name": "衡炉城·远景",
+    "svg": "/assets/story/bg/furnace-city-far.svg",
+    "top": "#6a5038",
+    "bottom": "#2a1e16"
+  },
+  "furnace-council": {
+    "name": "衡炉城·议会",
+    "svg": "/assets/story/bg/furnace-council.svg",
+    "top": "#2a2018",
+    "bottom": "#4a3626"
+  },
+  "furnace-camp-night": {
+    "name": "衡炉城外·营地·夜",
+    "svg": "/assets/story/bg/furnace-camp-night.svg",
+    "top": "#0a0808",
+    "bottom": "#100a06"
+  },
+  "furnace-zero": {
+    "name": "零号衡炉",
+    "svg": "/assets/story/bg/furnace-zero.svg",
+    "top": "#0e0c0a",
+    "bottom": "#14100c"
+  },
+  "furnace-secret-workshop": {
+    "name": "零号衡炉底下·秘密工坊",
+    "svg": "/assets/story/bg/furnace-secret-workshop.svg",
+    "top": "#1a1410",
+    "bottom": "#20180f"
+  },
+  "furnace-debt-vault": {
+    "name": "衡炉城·债库前",
+    "svg": "/assets/story/bg/furnace-debt-vault.svg",
+    "top": "#3a3038",
+    "bottom": "#4a4038"
+  },
+  "furnace-workshop-night": {
+    "name": "衡炉城·米娅的临时工坊·夜",
+    "svg": "/assets/story/bg/furnace-workshop-night.svg",
+    "top": "#100c0a",
+    "bottom": "#1a140e"
+  },
+  "furnace-street-night": {
+    "name": "衡炉城·工人区的街口·夜",
+    "svg": "/assets/story/bg/furnace-street-night.svg",
+    "top": "#0a0a10",
+    "bottom": "#3a3430"
+  },
+  "furnace-rail-night": {
+    "name": "魔轨的车头·夜",
+    "svg": "/assets/story/bg/furnace-rail-night.svg",
+    "top": "#06080e",
+    "bottom": "#0a0a0c"
   }
 }

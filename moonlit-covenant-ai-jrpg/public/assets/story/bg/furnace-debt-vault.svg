@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="衡炉城·债库前：石砌门面里一扇矮壮的铁箍门，账房的灯，铺石的广场">
+<defs><linearGradient id="sbFcVault-g0" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a3038"/><stop offset="1" stop-color="#6a5a52"/></linearGradient><radialGradient id="sbFcVault-g1" ><stop offset="0" stop-color="#ffc870" stop-opacity="0.4"/><stop offset="1" stop-color="#ffc870" stop-opacity="0"/></radialGradient><radialGradient id="sbFcVault-g2" ><stop offset="0" stop-color="#ffc870" stop-opacity="0.4"/><stop offset="1" stop-color="#ffc870" stop-opacity="0"/></radialGradient><radialGradient id="sbFcVault-g3" cx="0.5" cy="0.5" r="0.75"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="0.6" stop-color="#000" stop-opacity="0.15"/><stop offset="1" stop-color="#000" stop-opacity="0.5"/></radialGradient></defs>
+<rect width="1600" height="900" fill="url(#sbFcVault-g0)"/>
+<path d="M200,700V160H1400V700z" fill="#7a6a5e"/><path d="M200,160h1200v-40H200z" fill="#6a5a50"/>
+<path d="M236,700V200h48V700z" fill="#8a7a6c"/>
+<path d="M396,700V200h48V700z" fill="#8a7a6c"/>
+<path d="M1156,700V200h48V700z" fill="#8a7a6c"/>
+<path d="M1316,700V200h48V700z" fill="#8a7a6c"/>
+<path d="M600,700V380h400V700z" fill="#3a3430"/><path d="M620,700V400h360V700z" fill="#5a5048" stroke="#2a2420" stroke-width="6"/>
+<path d="M620,440h360M620,500h360M620,560h360M620,620h360M620,680h360M660,400v300M740,400v300M820,400v300M900,400v300" stroke="#2a2420" stroke-width="8"/>
+<path d="M754,550a46,46 0 1 0 92,0a46,46 0 1 0 -92,0Z" fill="none" stroke="#a89060" stroke-width="10"/><path d="M800,504v92M754,550h92" stroke="#a89060" stroke-width="6"/>
+<path d="M500,700V460" stroke="#2a2420" stroke-width="6"/><path d="M484,440h32v30h-32z" fill="#ffc870"/><ellipse cx="500" cy="456" rx="90" ry="90" fill="url(#sbFcVault-g1)"/>
+<path d="M1100,700V460" stroke="#2a2420" stroke-width="6"/><path d="M1084,440h32v30h-32z" fill="#ffc870"/><ellipse cx="1100" cy="456" rx="90" ry="90" fill="url(#sbFcVault-g2)"/>
+<path d="M0,700H1600V900H0Z" fill="#4a4038"/>
+<path d="M0,720H1600M0,744H1600M0,768H1600M0,792H1600M0,816H1600M0,840H1600M0,864H1600M0,888H1600" stroke="#3a3028" stroke-width="2"/>
+<rect width="1600" height="900" fill="url(#sbFcVault-g3)"/>
+</svg>
