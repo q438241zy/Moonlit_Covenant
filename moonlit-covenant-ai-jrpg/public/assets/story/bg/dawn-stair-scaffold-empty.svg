@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="晨阶刑台：白石阶顶端、冠礼院正门前的刑台，黎明，台下空无一人">
+<defs><linearGradient id="sbSgScafEmpty-g0" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a6a90"/><stop offset="0.55" stop-color="#e8c8b0"/><stop offset="1" stop-color="#f4dcc0"/></linearGradient><radialGradient id="sbSgScafEmpty-g1" cx="0.5" cy="0.5" r="0.75"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="0.6" stop-color="#000" stop-opacity="0.12"/><stop offset="1" stop-color="#000" stop-opacity="0.4"/></radialGradient></defs>
+<rect width="1600" height="900" fill="url(#sbSgScafEmpty-g0)"/>
+<path d="M360,420V160H1240V420z" fill="#efeae0"/><path d="M700,420V260q100,-70 200,0V420z" fill="#3a3430"/>
+<path d="M500,520h600v-100H500z" fill="#5a4636"/><path d="M500,420h600v-16H500z" fill="#3a2a1e"/><path d="M780,404V300h14v104M770,300h120" stroke="#2a1e14" stroke-width="10"/>
+<path d="M300,520H1300v46H300z" fill="#e8e2d6"/>
+<path d="M260,566H1340v46H260z" fill="#e2dcd0"/>
+<path d="M220,612H1380v46H220z" fill="#ddd6ca"/>
+<path d="M180,658H1420v46H180z" fill="#d7d1c3"/>
+<path d="M140,704H1460v46H140z" fill="#d2cbbd"/>
+<path d="M100,750H1500v46H100z" fill="#ccc5b7"/>
+<path d="M60,796H1540v46H60z" fill="#c6bfb1"/>
+<path d="M20,842H1580v46H20z" fill="#c1b9ab"/>
+<rect width="1600" height="900" fill="url(#sbSgScafEmpty-g1)"/>
+</svg>

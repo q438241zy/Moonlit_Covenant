@@ -760,5 +760,95 @@
     "svg": "/assets/story/bg/road-to-white-tower-dawn.svg",
     "top": "#5a6a8a",
     "bottom": "#6a6a40"
+  },
+  "white-tower-city-siege-far": {
+    "name": "白塔城·远景",
+    "svg": "/assets/story/bg/white-tower-city-siege-far.svg",
+    "top": "#8aa0c0",
+    "bottom": "#5a5a40"
+  },
+  "white-tower-walls-predawn": {
+    "name": "白塔城外·天亮前",
+    "svg": "/assets/story/bg/white-tower-walls-predawn.svg",
+    "top": "#141a30",
+    "bottom": "#2a2a30"
+  },
+  "white-tower-walls-dawn": {
+    "name": "白塔城外城墙下·黎明",
+    "svg": "/assets/story/bg/white-tower-walls-dawn.svg",
+    "top": "#5a6a90",
+    "bottom": "#8a7a5a"
+  },
+  "white-tower-camp-predawn": {
+    "name": "白塔城外·营地·天亮前",
+    "svg": "/assets/story/bg/white-tower-camp-predawn.svg",
+    "top": "#141a30",
+    "bottom": "#14100c"
+  },
+  "white-tower-camp-night": {
+    "name": "白塔城外·营地·夜",
+    "svg": "/assets/story/bg/white-tower-camp-night.svg",
+    "top": "#060810",
+    "bottom": "#14100c"
+  },
+  "white-tower-belltower": {
+    "name": "白塔城·钟楼",
+    "svg": "/assets/story/bg/white-tower-belltower.svg",
+    "top": "#2a2420",
+    "bottom": "#14100c"
+  },
+  "morning-gate": {
+    "name": "晨门·门洞",
+    "svg": "/assets/story/bg/morning-gate.svg",
+    "top": "#2a2a30",
+    "bottom": "#3a3a40"
+  },
+  "coronation-hall-exterior": {
+    "name": "冠礼院大殿外",
+    "svg": "/assets/story/bg/coronation-hall-exterior.svg",
+    "top": "#8aa0c0",
+    "bottom": "#b8b4ac"
+  },
+  "coronation-hall-ruin": {
+    "name": "冠礼院·废墟",
+    "svg": "/assets/story/bg/coronation-hall-ruin.svg",
+    "top": "#5a5a60",
+    "bottom": "#8a8680"
+  },
+  "coronation-hall-feast": {
+    "name": "冠礼院大殿·宴",
+    "svg": "/assets/story/bg/coronation-hall-feast.svg",
+    "top": "#2a2018",
+    "bottom": "#2a1e14"
+  },
+  "white-stair-dusk": {
+    "name": "白石阶·黄昏",
+    "svg": "/assets/story/bg/white-stair-dusk.svg",
+    "top": "#3a2a4a",
+    "bottom": "#a89888"
+  },
+  "register-hall-night": {
+    "name": "册厅·夜",
+    "svg": "/assets/story/bg/register-hall-night.svg",
+    "top": "#0c0a08",
+    "bottom": "#1a140e"
+  },
+  "dawn-stair-scaffold": {
+    "name": "晨阶刑台",
+    "svg": "/assets/story/bg/dawn-stair-scaffold.svg",
+    "top": "#5a6a90",
+    "bottom": "#3a3436"
+  },
+  "dawn-stair-scaffold-empty": {
+    "name": "晨阶刑台·空场",
+    "svg": "/assets/story/bg/dawn-stair-scaffold-empty.svg",
+    "top": "#5a6a90",
+    "bottom": "#b0a898"
+  },
+  "hemai-ruin-camp-night": {
+    "name": "赫麦·祷堂废墟外的营地·夜",
+    "svg": "/assets/story/bg/hemai-ruin-camp-night.svg",
+    "top": "#060810",
+    "bottom": "#0c0a08"
   }
 }

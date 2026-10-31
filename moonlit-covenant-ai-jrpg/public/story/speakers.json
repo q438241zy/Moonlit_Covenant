@@ -628,5 +628,35 @@
     "name": "莫伊拉",
     "color": "#c8c0e8",
     "art": "/assets/story/npc/moira.svg"
+  },
+  "arkan": {
+    "name": "阿尔坎",
+    "color": "#a8a8b0",
+    "art": "/assets/story/npc/arkan.svg"
+  },
+  "morcan": {
+    "name": "莫尔坎",
+    "color": "#8a7ab8",
+    "art": "/assets/story/npc/morcan.svg"
+  },
+  "bell_ringer": {
+    "name": "敲钟人",
+    "color": "#c8b090",
+    "art": "/assets/story/npc/bell_ringer.svg"
+  },
+  "executioner": {
+    "name": "刽子手",
+    "color": "#8a7a7a",
+    "art": "/assets/story/npc/executioner.svg"
+  },
+  "tower_child": {
+    "name": "孩子",
+    "color": "#d8c8a8",
+    "art": null
+  },
+  "adela": {
+    "name": "阿德拉",
+    "color": "#e8e8f0",
+    "art": null
   }
 }

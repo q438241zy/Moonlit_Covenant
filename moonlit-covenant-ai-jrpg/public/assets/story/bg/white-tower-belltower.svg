@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="白塔城的钟楼里：一道盘旋往上的楼梯，头顶一口大钟，一扇高窗">
+<defs><linearGradient id="sbSgBell-g0" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a2420"/><stop offset="1" stop-color="#14100c"/></linearGradient><linearGradient id="sbSgBell-g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c8d0e0"/><stop offset="1" stop-color="#8a90a0"/></linearGradient><radialGradient id="sbSgBell-g2" ><stop offset="0" stop-color="#e8ecff" stop-opacity="0.35"/><stop offset="1" stop-color="#e8ecff" stop-opacity="0"/></radialGradient><radialGradient id="sbSgBell-g3" cx="0.5" cy="0.5" r="0.75"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="0.6" stop-color="#000" stop-opacity="0.165"/><stop offset="1" stop-color="#000" stop-opacity="0.55"/></radialGradient></defs>
+<rect width="1600" height="900" fill="url(#sbSgBell-g0)"/>
+<path d="M620,0h360v120H620z" fill="url(#sbSgBell-g1)" opacity=".6"/>
+<path d="M680,300q0,-180 120,-180q120,0 120,180h20v30H660v-30z" fill="#9a7a3a"/><path d="M800,330v40" stroke="#5a4a2a" stroke-width="10"/>
+<path d="M1150,880h140v14h-140zM1098.6,846h140v14h-140zM956.9,812h140v14h-140zM759.7,778h140v14h-140zM555.2,744h140v14h-140zM393.5,710h140v14h-140zM314.2,676h140v14h-140zM336.7,642h140v14h-140zM455.5,608h140v14h-140zM641.5,574h140v14h-140zM849.1,540h140v14h-140zM1027.6,506h140v14h-140zM1133.3,472h140v14h-140zM1140.2,438h140v14h-140zM1046.6,404h140v14h-140zM875.6,370h140v14h-140z" fill="#5a4a3a"/>
+<ellipse cx="800" cy="60" rx="260" ry="140" fill="url(#sbSgBell-g2)"/>
+<rect width="1600" height="900" fill="url(#sbSgBell-g3)"/>
+</svg>

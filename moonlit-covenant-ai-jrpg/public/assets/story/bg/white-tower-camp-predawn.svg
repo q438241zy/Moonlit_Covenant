@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="白塔城外的营地·天亮前：帐篷，一张军议桌，后面是白色的城墙">
+<defs><linearGradient id="sbSgCampPre-g0" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#141a30"/><stop offset="0.6" stop-color="#3a4260"/><stop offset="1" stop-color="#6a6a80"/></linearGradient><linearGradient id="sbSgCampPre-g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a2620"/><stop offset="1" stop-color="#14100c"/></linearGradient><radialGradient id="sbSgCampPre-g2" ><stop offset="0" stop-color="#ffb060" stop-opacity="0.3"/><stop offset="1" stop-color="#ffb060" stop-opacity="0"/></radialGradient><radialGradient id="sbSgCampPre-g3" cx="0.5" cy="0.6" r="0.75"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="0.6" stop-color="#000" stop-opacity="0.165"/><stop offset="1" stop-color="#000" stop-opacity="0.55"/></radialGradient></defs>
+<rect width="1600" height="900" fill="url(#sbSgCampPre-g0)"/>
+<path d="M200,520V380h1200V520z" fill="#5a5c6a"/><path d="M780,520V120l20,-60l20,60V520z" fill="#7a7c88"/>
+<path d="M0,520H1600V900H0Z" fill="url(#sbSgCampPre-g1)"/>
+<path d="M60,700L180,520L300,700Z" fill="#3a3228"/><path d="M180,520L192,700H168Z" fill="#120c08"/>
+<path d="M1280,700L1395,530L1510,700Z" fill="#3a3228"/><path d="M1395,530L1407,700H1383Z" fill="#120c08"/>
+<path d="M1480,690L1540,600L1600,690Z" fill="#3a3228"/><path d="M1540,600L1552,690H1528Z" fill="#120c08"/>
+<path d="M420,760V560L800,470L1180,560V760Z" fill="#463a2c"/><path d="M520,760V600H1080V760Z" fill="#1a120c"/>
+<path d="M600,730h400l30,-40h-460z" fill="#6a4a30"/><path d="M640,720h320l20,-28h-320z" fill="#d8c8a0"/>
+<ellipse cx="800" cy="700" rx="380" ry="200" fill="url(#sbSgCampPre-g2)"/>
+<rect width="1600" height="900" fill="url(#sbSgCampPre-g3)"/>
+</svg>
