@@ -438,5 +438,30 @@
     "name": "铜板",
     "color": "#c89048",
     "art": null
+  },
+  "inge_unknown": {
+    "name": "床上的女人",
+    "color": "#c8b8a0",
+    "art": "/assets/story/npc/inge.svg"
+  },
+  "inge": {
+    "name": "茵格",
+    "color": "#c8b8a0",
+    "art": "/assets/story/npc/inge.svg"
+  },
+  "hans_unknown": {
+    "name": "堤岸上的老人",
+    "color": "#b0a898",
+    "art": null
+  },
+  "hans": {
+    "name": "汉斯",
+    "color": "#b0a898",
+    "art": null
+  },
+  "maid": {
+    "name": "侍女",
+    "color": "#d8cfc4",
+    "art": null
   }
 }

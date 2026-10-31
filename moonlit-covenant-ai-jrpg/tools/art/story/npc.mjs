@@ -1838,4 +1838,29 @@ CAST.raymond = {
   },
 };
 
+// 茵格 (21) — "大三" from the plains, a grown woman: thin, eyes half-open (drained), hair loose and unkempt, a coarse shift,
+// a small wooden tag tied at her wrist (chapter 14's grade tag).
+const IN_HAIR = [[218, 230], [226, 172], [262, 140], [316, 128], [368, 142], [402, 182], [412, 250], [418, 340], [404, 372], [388, 300], [376, 236], [340, 196], [276, 188], [240, 206]];
+CAST.inge = {
+  id: 'inge', label: '茵格：瘦削的成年女性，眼睛半睁，头发散乱，粗布衣，手腕上绑着一块木牌', rim: '#c8b8a0',
+  sil: [head(0, 8, 0.94, true), S(IN_HAIR), neck(0, 8, 0.82), torso(186, 492, 1.1), pz([[210, 640], [262, 632], [266, 668], [214, 676]])],
+  tones: [
+    [S(IN_HAIR), '#6a5a4a', 0.9],
+    [S([[120, 540], [178, 498], [246, 474], [300, 480], [354, 474], [422, 498], [480, 540], [492, 820], [108, 820]]), '#8a8070', 0.9],
+    [pz([[210, 640], [262, 632], [266, 668], [214, 676]]), '#b89a6a', 0.95],
+  ],
+  lines: [
+    [pl([[384, 262], [366, 310], [326, 348]]), 2.4, 0.7],
+    [pl([[300, 480], [302, 800]]), 2, 0.4],
+    [pl([[200, 650], [276, 646]]), 2, 0.7, '#4a3a2a'],
+  ],
+  front: () => {
+    let s = '';
+    // half-open eyes: a heavy lid line low over the eye; a thin, pale mouth
+    s += `<path d="M222,268q11,-2 22,1" fill="none" stroke="#4a4248" stroke-width="2.8" stroke-linecap="round"/><path d="M224,272q10,3 20,0" fill="none" stroke="#6a6266" stroke-width="1.4" opacity=".8"/><path d="M226,326h10" stroke="#7a6a6a" stroke-width="1.8"/>`;
+    s += `<path d="M196,600q16,-10 30,0l4,40q-18,8 -30,-4z" fill="#8a7a6a"/>`;
+    return s;
+  },
+};
+
 export const npcBusts = Object.fromEntries(Object.entries(CAST).map(([id, spec]) => [id, (rim) => render(spec, rim)]));

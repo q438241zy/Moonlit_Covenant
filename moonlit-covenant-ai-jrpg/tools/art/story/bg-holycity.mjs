@@ -346,9 +346,10 @@ function garden(dawn) {
 // 白塔·外庭·霜
 // ---------------------------------------------------------------------------------------------
 function frost(thawed = false, eve = null) {
-  const S = new Scene(eve ? (eve === 'night' ? 'sbHcCourtNight' : 'sbHcCourtDusk') : thawed ? 'sbHcThawed' : 'sbHcFrost', eve === 'night' ? '白塔·外庭·夜：同一片铺石的外庭，喷泉的水在灯下发亮，北方的马车旁搭着霜潮使团的两顶帐篷，帐篷里亮着灯；一间空屋的窗也亮着；夜蓝和暖黄' : eve === 'dusk' ? '白塔·外庭·黄昏：同一片铺石的外庭，夕阳斜照，北方的马车旁搭着霜潮使团的两顶帐篷，一间空屋的门开着；橙色和灰蓝' : thawed ? '白塔·外庭·正午：同一片铺石的外庭，霜化了，石板湿着；喷泉的冰融成水；北方的厚木马车车轮上的霜化成水滴，车窗里没有人影；淡蓝转成正午的白' : '白塔·外庭·霜：晨门外一片铺石的外庭，中央一座喷泉，水面结了一层薄冰；一辆北方样式的厚木马车停在那里，车轮和车篷边缘结着霜；车窗里一个模糊、一动不动的人影，看不见脸；冷白和淡蓝，和圣都纸一样的白分开', eve === 'night' ? 17431 : eve === 'dusk' ? 17421 : thawed ? 17411 : 17401);
+  const S = new Scene(eve ? (eve === 'night' ? 'sbHcCourtNight' : eve === 'day' ? 'sbHcCourtDay' : 'sbHcCourtDusk') : thawed ? 'sbHcThawed' : 'sbHcFrost', eve === 'night' ? '白塔·外庭·夜：同一片铺石的外庭，喷泉的水在灯下发亮，北方的马车旁搭着霜潮使团的两顶帐篷，帐篷里亮着灯；一间空屋的窗也亮着；夜蓝和暖黄' : eve === 'day' ? '白塔·外庭·白天：同一片铺石的外庭，喷泉流着水，北方的马车旁搭着霜潮使团的两顶帐篷，通报牌立在墙边；白天平平的光' : eve === 'dusk' ? '白塔·外庭·黄昏：同一片铺石的外庭，夕阳斜照，北方的马车旁搭着霜潮使团的两顶帐篷，一间空屋的门开着；橙色和灰蓝' : thawed ? '白塔·外庭·正午：同一片铺石的外庭，霜化了，石板湿着；喷泉的冰融成水；北方的厚木马车车轮上的霜化成水滴，车窗里没有人影；淡蓝转成正午的白' : '白塔·外庭·霜：晨门外一片铺石的外庭，中央一座喷泉，水面结了一层薄冰；一辆北方样式的厚木马车停在那里，车轮和车篷边缘结着霜；车窗里一个模糊、一动不动的人影，看不见脸；冷白和淡蓝，和圣都纸一样的白分开', eve === 'night' ? 17431 : eve === 'dusk' ? 17421 : eve === 'day' ? 17441 : thawed ? 17411 : 17401);
   const R = rng(17402);
   const C = eve === 'night' ? { sky: [[0, '#0a1020'], [0.6, '#18223a'], [1, '#26304a']], wall: '#4a5468', wallShade: '#2a3244', pave: '#3a4256', paveFar: '#4a5266', joint: '#22283a', frost: '#5a6478', ice: '#4a6a8a', wood: '#3a3028', woodLit: '#5a4a3a', woodDeep: '#201a16', iron: '#2a2e36' }
+    : eve === 'day' ? { sky: [[0, '#b8c4d0'], [0.6, '#dce2e8'], [1, '#eef0f2']], wall: '#d0d4d8', wallShade: '#a0a8b2', pave: '#bcc2c8', paveFar: '#ccd2d8', joint: '#8a929c', frost: '#e8eef4', ice: '#8ab0c8', wood: '#5a4a40', woodLit: '#7a6656', woodDeep: '#3a302a', iron: '#4a5058' }
     : eve === 'dusk' ? { sky: [[0, '#6a6a8a'], [0.55, '#d8987a'], [1, '#f0c08a']], wall: '#c8a890', wallShade: '#8a7478', pave: '#a8907e', paveFar: '#c4a488', joint: '#7a6460', frost: '#d8b8a0', ice: '#c89a7a', wood: '#5a4232', woodLit: '#7a5a44', woodDeep: '#3a2a20', iron: '#3a3438' }
     : { sky: [[0, '#b8c8d8'], [0.6, '#dce6ee'], [1, '#eef2f6']], wall: '#c8d0d8', wallShade: '#98a4b2', pave: '#b8c2cc', paveFar: '#ccd4dc', joint: '#8a96a4', frost: '#f4f8fc', ice: thawed ? '#8ab0c8' : '#d8e8f4', wood: '#5a4a40', woodLit: '#7a6656', woodDeep: '#3a302a', iron: '#4a5058' };
   S.add(`<rect width="${W}" height="${H}" fill="${S.lin(C.sky)}"/>`);
@@ -422,7 +423,7 @@ function frost(thawed = false, eve = null) {
   }
   if (eve) {
     // the envoy's two tents to the left of the carriage, and the empty house by the wall with its door (dusk) or window (night) lit
-    const lit = eve === 'night' ? '#ffd890' : '#f0b880';
+    const lit = eve === 'night' ? '#ffd890' : eve === 'day' ? '#8a7a68' : '#f0b880';
     for (const [x, w, h] of [[760, 170, 150], [130, 220, 180]]) {
       S.add(`<path d="M${x},700L${x + w / 2},${700 - h}L${x + w},700Z" fill="${eve === 'night' ? '#5a5048' : '#e8dccb'}"/><path d="M${x + w / 2},${700 - h}L${x + w / 2 + 14},700H${x + w / 2 - 14}Z" fill="${lit}" opacity="${eve === 'night' ? 0.9 : 0.5}"/>`);
       S.add(`<path d="M${x},700L${x + w / 2},${700 - h}L${x + w},700" fill="none" stroke="${C.woodDeep}" stroke-width="3"/>`);
@@ -534,5 +535,6 @@ export const holyCityBgs = {
   'holy-city-pilgrim-hostel-day': () => hostel(true),
   'white-tower-outer-court-dusk': () => frost(true, 'dusk'),
   'white-tower-outer-court-night': () => frost(true, 'night'),
+  'white-tower-outer-court-day': () => frost(true, 'day'),
   'white-tower-seven-angle-hall': () => sevenHall(),
 };

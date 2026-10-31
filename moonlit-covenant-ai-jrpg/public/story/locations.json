@@ -484,5 +484,29 @@
     "svg": "/assets/story/bg/white-tower-underground-archive.svg",
     "top": "#202028",
     "bottom": "#4a4850"
+  },
+  "white-tower-outer-court-day": {
+    "name": "白塔·外庭·白天",
+    "svg": "/assets/story/bg/white-tower-outer-court-day.svg",
+    "top": "#b8c4d0",
+    "bottom": "#bcc2c8"
+  },
+  "arch-tide-gate-sanctuary": {
+    "name": "拱潮门下·护界院",
+    "svg": "/assets/story/bg/arch-tide-gate-sanctuary.svg",
+    "top": "#26262e",
+    "bottom": "#4e4c50"
+  },
+  "arch-tide-gate-channel": {
+    "name": "拱潮门·水道",
+    "svg": "/assets/story/bg/arch-tide-gate-channel.svg",
+    "top": "#0a0a0e",
+    "bottom": "#2a2a30"
+  },
+  "canal-bank-dawn": {
+    "name": "城外运河的堤岸·黎明",
+    "svg": "/assets/story/bg/canal-bank-dawn.svg",
+    "top": "#7a8094",
+    "bottom": "#4a5a3a"
   }
 }
