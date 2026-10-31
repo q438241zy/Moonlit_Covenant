@@ -706,5 +706,59 @@
     "svg": "/assets/story/bg/dragonsleep-memory-hall.svg",
     "top": "#4a3a5a",
     "bottom": "#6a6458"
+  },
+  "ravenfeather-city-far": {
+    "name": "鸦羽城·远景",
+    "svg": "/assets/story/bg/ravenfeather-city-far.svg",
+    "top": "#2a1e3a",
+    "bottom": "#100a10"
+  },
+  "ravenfeather-gate": {
+    "name": "鸦羽城·城门",
+    "svg": "/assets/story/bg/ravenfeather-gate.svg",
+    "top": "#3a3046",
+    "bottom": "#3a3238"
+  },
+  "ravenfeather-camp-night": {
+    "name": "鸦羽城外·营地·夜",
+    "svg": "/assets/story/bg/ravenfeather-camp-night.svg",
+    "top": "#08060e",
+    "bottom": "#0c080e"
+  },
+  "sleepless-mirror-palace": {
+    "name": "无眠镜宫",
+    "svg": "/assets/story/bg/sleepless-mirror-palace.svg",
+    "top": "#0a0814",
+    "bottom": "#14101e"
+  },
+  "heras-nest": {
+    "name": "镜网深处·赫拉斯的巢",
+    "svg": "/assets/story/bg/heras-nest.svg",
+    "top": "#06040a",
+    "bottom": "#1a1424"
+  },
+  "ravenfeather-council-hall": {
+    "name": "鸦羽城·七议席的议厅",
+    "svg": "/assets/story/bg/ravenfeather-council-hall.svg",
+    "top": "#1a1420",
+    "bottom": "#20181e"
+  },
+  "sleepless-mirror-last": {
+    "name": "无眠镜宫·最深处",
+    "svg": "/assets/story/bg/sleepless-mirror-last.svg",
+    "top": "#1a1828",
+    "bottom": "#040308"
+  },
+  "ravenfeather-belltower-night": {
+    "name": "鸦羽城·钟楼下·夜",
+    "svg": "/assets/story/bg/ravenfeather-belltower-night.svg",
+    "top": "#06060c",
+    "bottom": "#2a2630"
+  },
+  "road-to-white-tower-dawn": {
+    "name": "往白塔的大道·黎明",
+    "svg": "/assets/story/bg/road-to-white-tower-dawn.svg",
+    "top": "#5a6a8a",
+    "bottom": "#6a6a40"
   }
 }

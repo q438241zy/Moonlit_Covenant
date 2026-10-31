@@ -608,5 +608,25 @@
     "name": "维斯拉",
     "color": "#a8c8f0",
     "art": "/assets/story/npc/veslra.svg"
+  },
+  "cassandra": {
+    "name": "卡珊德拉",
+    "color": "#a888c8",
+    "art": "/assets/story/npc/cassandra.svg"
+  },
+  "edwin": {
+    "name": "艾德温",
+    "color": "#a8a8b8",
+    "art": "/assets/story/npc/edwin.svg"
+  },
+  "heras": {
+    "name": "赫拉斯",
+    "color": "#b8a8ff",
+    "art": "/assets/story/npc/heras.svg"
+  },
+  "moira": {
+    "name": "莫伊拉",
+    "color": "#c8c0e8",
+    "art": "/assets/story/npc/moira.svg"
   }
 }
