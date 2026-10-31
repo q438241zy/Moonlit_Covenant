@@ -1,0 +1,155 @@
+[
+  {
+    "id": "ch000",
+    "number": 0,
+    "title": "序章｜黑翼焚麦之夜",
+    "estimatedMinutes": 24,
+    "file": "/story/chapters/ch000.json",
+    "requires": null,
+    "source": "剧本/00起源.md"
+  },
+  {
+    "id": "ch001",
+    "number": 1,
+    "title": "第一章｜导师",
+    "estimatedMinutes": 12,
+    "file": "/story/chapters/ch001.json",
+    "requires": "ch000",
+    "source": "剧本/01導師.md"
+  },
+  {
+    "id": "ch002",
+    "number": 2,
+    "title": "第二章｜红发女孩",
+    "estimatedMinutes": 13,
+    "file": "/story/chapters/ch002.json",
+    "requires": "ch001",
+    "source": "剧本/02紅髮女孩.md"
+  },
+  {
+    "id": "ch003",
+    "number": 3,
+    "title": "第三章｜临时契约",
+    "estimatedMinutes": 11,
+    "file": "/story/chapters/ch003.json",
+    "requires": "ch002",
+    "source": "剧本/03臨時契約.md"
+  },
+  {
+    "id": "ch004",
+    "number": 4,
+    "title": "第四章｜旧磨坊",
+    "estimatedMinutes": 11,
+    "file": "/story/chapters/ch004.json",
+    "requires": "ch003",
+    "source": "剧本/04舊磨坊.md"
+  },
+  {
+    "id": "ch005",
+    "number": 5,
+    "title": "第五章｜大车之夜",
+    "estimatedMinutes": 11,
+    "file": "/story/chapters/ch005.json",
+    "requires": "ch004",
+    "source": "剧本/05大車之夜.md"
+  },
+  {
+    "id": "ch006",
+    "number": 6,
+    "title": "第六章｜草莓蛋糕停战",
+    "estimatedMinutes": 11,
+    "file": "/story/chapters/ch006.json",
+    "requires": "ch005",
+    "source": "剧本/06草莓蛋糕停戰.md"
+  },
+  {
+    "id": "ch007",
+    "number": 7,
+    "title": "第七章｜爆炸来自林边",
+    "estimatedMinutes": 11,
+    "file": "/story/chapters/ch007.json",
+    "requires": "ch006",
+    "source": "剧本/07爆炸來自林邊.md"
+  },
+  {
+    "id": "ch008",
+    "number": 8,
+    "title": "第八章｜金律只有一毫米",
+    "estimatedMinutes": 11,
+    "file": "/story/chapters/ch008.json",
+    "requires": "ch007",
+    "source": "剧本/08金律只有一毫米.md"
+  },
+  {
+    "id": "ch009",
+    "number": 9,
+    "title": "第九章｜雾港失踪者",
+    "estimatedMinutes": 11,
+    "file": "/story/chapters/ch009.json",
+    "requires": "ch008",
+    "source": "剧本/09霧港失蹤者.md"
+  },
+  {
+    "id": "ch010",
+    "number": 10,
+    "title": "第十章｜下水道的潮声",
+    "estimatedMinutes": 11,
+    "file": "/story/chapters/ch010.json",
+    "requires": "ch009",
+    "source": "剧本/10下水道的潮聲.md"
+  },
+  {
+    "id": "ch011",
+    "number": 11,
+    "title": "第十一章｜镜中紫影",
+    "estimatedMinutes": 11,
+    "file": "/story/chapters/ch011.json",
+    "requires": "ch010",
+    "source": "剧本/11鏡中紫影.md"
+  },
+  {
+    "id": "ch012",
+    "number": 12,
+    "title": "第十二章｜暗法师的条件",
+    "estimatedMinutes": 11,
+    "file": "/story/chapters/ch012.json",
+    "requires": "ch011",
+    "source": "剧本/12暗法師的條件.md"
+  },
+  {
+    "id": "ch013",
+    "number": 13,
+    "title": "第十三章｜雨中的金色刺客",
+    "estimatedMinutes": 11,
+    "file": "/story/chapters/ch013.json",
+    "requires": "ch012",
+    "source": "剧本/13雨中的金色刺客.md"
+  },
+  {
+    "id": "ch014",
+    "number": 14,
+    "title": "第十四章｜潮穴开门",
+    "estimatedMinutes": 11,
+    "file": "/story/chapters/ch014.json",
+    "requires": "ch013",
+    "source": "剧本/14潮穴開門.md"
+  },
+  {
+    "id": "ch015",
+    "number": 15,
+    "title": "第十五章｜潮虫王·涅洛萨",
+    "estimatedMinutes": 11,
+    "file": "/story/chapters/ch015.json",
+    "requires": "ch014",
+    "source": "剧本/15潮蟲王涅洛薩.md"
+  },
+  {
+    "id": "ch016",
+    "number": 16,
+    "title": "第十六章｜册厅",
+    "estimatedMinutes": 11,
+    "file": "/story/chapters/ch016.json",
+    "requires": "ch015",
+    "source": "剧本/16冊廳.md"
+  }
+]

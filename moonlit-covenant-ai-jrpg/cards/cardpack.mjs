@@ -4,7 +4,8 @@
 // 保底：
 //   · 每包至少 1 张银或以上
 //   · 每 10 包至少 1 张虹（出虹后计数清零）
-// 碎片：超过3张上限的重复卡自动转化为碎片，碎片可合成指定卡牌
+// 碎片：超过3张上限的重复卡自动转化为碎片（收录数封顶为3），碎片可合成指定卡牌；
+//       已有3张的卡不能再合成
 // ═══════════════════════════════════════════════════════════════
 
 import { CARDS, getCard, cardsByRarity, RARITIES } from './database.mjs';
@@ -29,6 +30,10 @@ function ensureAccount(account) {
   if (typeof account.shards !== 'number') account.shards = 0;
   if (typeof account.packPity !== 'number') account.packPity = 0;
   if (typeof account.totalPacks !== 'number') account.totalPacks = 0;
+  // 旧存档里转碎片后仍被计数的卡（>3），碎片当时已经发过，这里只把数量封顶
+  for (const [id, n] of Object.entries(account.collection)) {
+    if (n > MAX_COPIES_KEEP) account.collection[id] = MAX_COPIES_KEEP;
+  }
   return account;
 }
 
@@ -77,17 +82,19 @@ function openOnePack(account, rng) {
   return cards;
 }
 
-// 收录卡牌到图鉴，处理重复转碎片
+// 收录卡牌到图鉴，处理重复转碎片：已有3张时这张转成碎片，不再计入收录数
 function collectCard(account, card) {
   const owned = account.collection[card.id] || 0;
-  account.collection[card.id] = owned + 1;
   const isNew = owned === 0;
   let converted = false;
   let shardsGained = 0;
-  if (owned + 1 > MAX_COPIES_KEEP) {
+  if (owned >= MAX_COPIES_KEEP) {
     converted = true;
     shardsGained = SHARD_GAIN[card.rarity];
     account.shards += shardsGained;
+    account.collection[card.id] = MAX_COPIES_KEEP;
+  } else {
+    account.collection[card.id] = owned + 1;
   }
   return { card, rarity: card.rarity, isNew, converted, shardsGained, count: account.collection[card.id] };
 }
@@ -124,6 +131,9 @@ export function craftCard(account, cardId, rng = Math.random) {
   ensureAccount(account);
   const card = getCard(cardId);
   if (!card) return { ok: false, error: { code: 'NO_CARD', message: '卡牌不存在。' } };
+  if ((account.collection[card.id] || 0) >= MAX_COPIES_KEEP) {
+    return { ok: false, error: { code: 'MAX_COPIES', message: `已拥有 ${MAX_COPIES_KEEP} 张，无法再合成。` } };
+  }
   const cost = SHARD_COST[card.rarity];
   if (account.shards < cost) {
     return { ok: false, error: { code: 'NO_SHARDS', message: `碎片不足，需要 ${cost}。` } };

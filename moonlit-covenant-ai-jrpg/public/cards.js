@@ -1,15 +1,15 @@
 /* ═══════════════════════════════════════════════════════════
-   月蚀契约·暗影对决 —— 前端 SPA（原生 JS，无依赖）
+   月蚀契约·暗影对决（实验模式，B12）—— 前端 SPA（原生 JS，无依赖）
    界面：主菜单 / 抽卡 / 图鉴 / 组牌 / 战斗
+   规则：Shadowverse 式进化（每回合一次、刚入场即进化只获得突进），先后手开局抛硬币（state.coinToss）
+   账户：与主游戏、主线播放器共用 localStorage「moonlit:playerId」（契约 R-4）；获胜奖励来自服务器（契约 R-3）
+   美术：原创矢量卡面 /assets/cards/*.svg（进化版 *_e.svg）、女主立绘、
+         UI 图标统一来自 ./icons.js（不再用 emoji 充当美术）；paint() 换成厚涂位图时加「AI 生成」角标（B17）
+   交互：长按（350ms）或右键任意卡牌查看详情；AI 回合按 aiActions 逐步回放
    ═══════════════════════════════════════════════════════════ */
 
-// ─── API 客户端 ───
-async function api(path, opts) {
-  const r = await fetch(path, opts);
-  return r.json();
-}
-const get = (path) => api(path);
-const post = (path, body) => api(path, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
+import { icon } from './icons.js';
+import { loadPaint, paint, aiPaintedClass, aiBadge } from './paint.js';
 
 // ─── 全局状态 ───
 const S = {
@@ -19,42 +19,133 @@ const S = {
   cardById: {},
   playerId: null,
   summary: null,
-  busy: false,
+  busy: false,          // 出牌 / 攻击 / 进化 / 结束回合 共用的防重复提交锁
+  booting: true,
+  recovering: false,
+  resetNotice: false,   // 服务器上找不到本地记住的账户（存档已重置）
+  rewardStatus: null,   // GET /api/rewards/status：今日对战胜利奖励进度（契约 R-1）
+  battleReward: null,   // 本局的胜利奖励 { diamonds, capped, winsToday, cap, balance }（契约 R-3）
   // 战斗
   battle: null,
+  resumable: null,      // 刷新页面后可继续的对局
   pendingPlayUid: null,
-  selAttacker: null,
+  selAttacker: null,    // 当前选中的己方随从（可攻击或可进化）
+  replaying: false,     // AI 回合回放中：锁定输入
+  skipReplay: false,
+  conceded: false,
+  notes: [],            // 本地追加到日志里的 AI 回合摘要 { turn, msg }
+  logOpen: false,
   // 组牌
   deckClass: 'lia',
   deckData: null,
   deckEdit: [], // 当前编辑中的牌组
+  collection: null,
   // 图鉴筛选
-  colFilter: { cls: 'all', rarity: 'all' }
+  colFilter: { cls: 'all', rarity: 'all' },
+  // 长按查看详情后吞掉随之而来的 click
+  suppressClick: false,
+  lpAt: 0
 };
 
+// ─── 小工具 ───
 const $ = (sel, root = document) => root.querySelector(sel);
+const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
 const app = () => $('#app');
+const sleep = (ms) => new Promise((ok) => setTimeout(ok, ms));
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+const RULE = (k, d) => (S.meta?.rules && S.meta.rules[k] != null ? S.meta.rules[k] : d);
+const MAX_KEEP = () => S.meta?.maxCopies ?? 3;
+// localStorage 可能不可用（隐私模式、禁用站点数据）：读写一律兜底
+const store = {
+  get(k) { try { return localStorage.getItem(k); } catch { return null; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch { /* 忽略 */ } },
+  remove(k) { try { localStorage.removeItem(k); } catch { /* 忽略 */ } }
+};
+// 契约 R-4：和主游戏（public/app.js）、主线播放器（public/story/player.js）共用同一个本机账户，存的是原样字符串
+const ACCOUNT_KEY = 'moonlit:playerId';
+const LEGACY_CARD_ACCOUNT_KEY = 'moonlit:cardPlayerId'; // 旧版卡牌页单独记的账户：主账户不可用时迁移过来
+const NAME_KEY = 'moonlit:name';
 
-// ─── 工具 ───
+// ─── API 客户端 ───
+// 任何接口返回 NO_ACCOUNT（服务器重启或存档过期）都提示「存档已重置」并重新建号
+async function api(path, opts) {
+  let r;
+  try {
+    const res = await fetch(path, opts);
+    r = await res.json();
+  } catch {
+    r = { ok: false, error: { code: 'NETWORK', message: '网络连接失败，请确认服务器已启动。' } };
+  }
+  if (r && r.ok === false && r.error?.code === 'NO_ACCOUNT' && !S.booting) setTimeout(onAccountLost, 0);
+  return r || { ok: false, error: { code: 'EMPTY', message: '服务器没有返回数据。' } };
+}
+const get = (path) => api(path);
+const post = (path, body) => api(path, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
+const pid = () => encodeURIComponent(S.playerId || '');
+
+// 请求失败的提示；NO_ACCOUNT 由 api() 统一提示「存档已重置」，这里不再重复
+function failToast(r, fallback) {
+  if (r?.error?.code === 'NO_ACCOUNT') return;
+  toast(r?.error?.message || fallback, true);
+}
+
 function toast(msg, isErr = false) {
   const root = $('#toast-root');
   const el = document.createElement('div');
   el.className = 'toast' + (isErr ? ' err' : '');
+  el.setAttribute('role', 'status');
   el.textContent = msg;
   root.appendChild(el);
   setTimeout(() => { el.style.opacity = '0'; el.style.transition = 'opacity .3s'; setTimeout(() => el.remove(), 300); }, 1800);
 }
 
-function modal(html) {
+let lastFocus = null;
+let modalOnClose = null; // 弹层关闭（按钮、点遮罩、Esc）后要继续做的事，例如抛硬币之后开始对局
+function modal(html, { label = '详情', onClose = null } = {}) {
   const root = $('#modal-root');
-  root.innerHTML = `<div class="mask"><div class="sheet">${html}</div></div>`;
+  if (!modalOpen()) lastFocus = document.activeElement;
+  if (modalOnClose) { const pending = modalOnClose; modalOnClose = null; setTimeout(pending, 0); } // 被新弹层顶掉也要接着做
+  modalOnClose = onClose;
+  root.innerHTML = `<div class="mask"><div class="sheet" role="dialog" aria-modal="true" aria-label="${esc(label)}" tabindex="-1">${html}</div></div>`;
   $('.mask', root).addEventListener('click', (e) => { if (e.target.classList.contains('mask')) closeModal(); });
+  const sheet = $('.sheet', root);
+  // 焦点移进弹层，键盘用户可以直接 Tab 到按钮
+  (sheet.querySelector('button') || sheet).focus({ preventScroll: true });
 }
-function closeModal() { $('#modal-root').innerHTML = ''; }
+function closeModal() {
+  $('#modal-root').innerHTML = '';
+  // 关闭后把焦点还给打开弹层前的元素（键盘操作不会「丢位置」）
+  if (lastFocus?.isConnected) lastFocus.focus({ preventScroll: true });
+  lastFocus = null;
+  const after = modalOnClose;
+  modalOnClose = null;
+  after?.();
+}
+const modalOpen = () => !!$('#modal-root')?.firstElementChild;
 
 const CLASS_COLOR = { lia: 'var(--c-lia)', lilith: 'var(--c-lilith)', serena: 'var(--c-serena)', neutral: 'var(--c-neutral)' };
-const KEYWORD_ICON = { guard: '🛡️', rush: '👢', storm: '⚡', bane: '☠️', drain: '🩸' };
-const HERO_ICONS = { lia_hero: '🛡️', lilith_hero: '🗡️', serena_hero: '🔮', n_dragon: '🐉', n_angel: '👼️' };
+// 图标名（见 ./icons.js）
+const KEYWORD_ICON = { guard: 'guard', rush: 'rush', storm: 'storm', bane: 'bane', drain: 'blood' };
+const HERO_ICONS = { lia_hero: 'crown', lilith_hero: 'crown', serena_hero: 'crown', n_dragon: 'dragon', n_angel: 'angel' };
+const CLASS_ICON = { lia: 'guard', lilith: 'dagger', serena: 'moon-orb', neutral: 'sword' };
+const CLASS_PICK = [
+  ['lia', '莉亚·赫斯特', '守护 / 中速', '以守护随从稳住阵线，护甲与群体伤害收割'],
+  ['lilith', '莉莉丝', '快攻', '突进与疾驰抢节奏，直取敌方主战者'],
+  ['serena', '塞雷娜·诺克斯', '控制', '抽牌、消灭与群体法术掌控全场']
+];
+const CARD_BACK = '/assets/ui/card-back.svg';
+const CARD_PACK = '/assets/ui/card-pack.svg';
+// 货币/资源：图标 + 数值
+const cur = (name, n) => `<span class="cur cur-${name}">${icon(name, { size: '1.1em' })}<b>${n}</b></span>`;
+// 主战者头像（圆形、脸部居中的女主立绘；图片失败时露出职业图标）
+function avatarHTML(cls, extra = '') {
+  const info = S.meta?.classes?.[cls];
+  const img = info?.portrait ? `<img class="avatar-img" src="${paint(info.portrait)}" alt="" draggable="false">` : '';
+  // 厚涂位图（AI 生成）时加统一角标（B17）；20px 的小头像放不下，由 CSS 隐藏
+  const ai = info?.portrait ? aiPaintedClass(info.portrait) : '';
+  const badge = info?.portrait ? aiBadge(info.portrait) : '';
+  return `<span class="avatar ${extra} ${ai}" style="--accent:${info?.accent || '#666'}"><span class="avatar-fallback">${icon(CLASS_ICON[cls] || 'sword', { size: '55%' })}</span>${img}${badge}</span>`;
+}
 
 // ─── 程序化卡牌美术（SVG，零依赖、可离线，真实立绘就绪后自动让位给 <img>）───
 const CLASS_HEX = { lia: '#ff6b5e', lilith: '#b58cff', serena: '#7c6bff', neutral: '#9aa7b5' };
@@ -152,70 +243,151 @@ function cardArtSVG(card, evolved) {
   </svg>`;
 }
 
+// 卡牌类型徽记（图标名）：用于详情弹窗等处的小图标
 function cardIcon(card) {
   if (HERO_ICONS[card.id || card.cardId]) return HERO_ICONS[card.id || card.cardId];
   if (card.type === 'spell') {
     const e = card.effects || [];
-    if (e.some((x) => x.type === 'destroy')) return '☠️';
-    if (e.some((x) => x.type === 'damage' && x.targeting === 'allEnemyFollowers')) return '💥';
-    if (e.some((x) => x.type === 'damage')) return '✦';
-    if (e.some((x) => x.type === 'heal')) return '✨';
-    if (e.some((x) => x.type === 'draw')) return '📜';
-    if (e.some((x) => x.type === 'buff')) return '⬆️';
-    return '✧';
+    if (e.some((x) => x.type === 'destroy')) return 'skull';
+    if (e.some((x) => x.type === 'damage' && x.targeting === 'allEnemyFollowers')) return 'burst';
+    if (e.some((x) => x.type === 'damage')) return 'bolt';
+    if (e.some((x) => x.type === 'heal')) return 'sparkle';
+    if (e.some((x) => x.type === 'draw')) return 'scroll';
+    if (e.some((x) => x.type === 'buff')) return 'up-arrow';
+    return 'star4';
   }
   const kw = card.keywords || [];
-  if (kw.includes('guard')) return '🛡️';
-  if (kw.includes('bane')) return '☠️';
-  if (kw.includes('storm')) return '⚡';
-  if (kw.includes('rush')) return '🗡️';
-  return { lia: '🔥', lilith: '🌑', serena: '🌙', neutral: '⚔️' }[card.class] || '⚔️';
+  if (kw.includes('guard')) return 'guard';
+  if (kw.includes('bane')) return 'bane';
+  if (kw.includes('storm')) return 'storm';
+  if (kw.includes('rush')) return 'dagger';
+  return { lia: 'flame', lilith: 'eclipse', serena: 'moon', neutral: 'sword' }[card.class] || 'sword';
 }
 
-// 把战场实例合并成可渲染的卡面对象
+// 关键词说明（详情面板与规则面板共用）
+const KEYWORD_DESC = {
+  guard: '对手场上有守护随从时，必须先攻击守护随从。',
+  rush: '入场当回合即可攻击随从（不能攻击主战者）。',
+  storm: '入场当回合即可攻击，包括主战者。',
+  bane: '与随从交战时（主动攻击或被攻击），被它造成伤害的随从直接被消灭。',
+  drain: '攻击时为自己的主战者回复等同于造成伤害的生命。'
+};
+const clsName = (cls) => S.meta?.classes?.[cls]?.name || '';
+
+// 把战场实例合并成可渲染的卡面对象（带 uid = 对战中的实例）
 function instToCard(inst) {
   const def = S.cardById[inst.cardId] || {};
-  return { ...def, cardId: inst.cardId, attack: inst.attack, health: inst.health, maxHealth: inst.maxHealth, evolved: inst.evolved, canAttack: inst.canAttack, uid: inst.uid };
+  return {
+    ...def, cardId: inst.cardId, uid: inst.uid,
+    attack: inst.attack, health: inst.health, maxHealth: inst.maxHealth,
+    baseAttack: inst.baseAttack, baseHealth: inst.baseHealth,
+    evolved: inst.evolved, canAttack: inst.canAttack, canAttackLeader: inst.canAttackLeader,
+    attackedThisTurn: inst.attackedThisTurn, enteredThisTurn: inst.enteredThisTurn, keywords: inst.keywords || def.keywords || []
+  };
+}
+
+// 卡面攻防：对战实例（有 uid）一律显示实际数值并按增减染色；只有图鉴里的进化预览用印刷数值
+function statView(card, opts) {
+  if (card.uid != null) {
+    const def = S.cardById[card.cardId] || {};
+    const bonus = card.evolved ? RULE('EVOLVE_BONUS', 2) : 0;
+    const baseA = (card.baseAttack ?? def.attack ?? card.attack) + bonus;
+    const baseH = (card.baseHealth ?? def.health ?? card.health) + bonus;
+    const maxH = card.maxHealth ?? card.health;
+    return {
+      atk: card.attack,
+      hp: Math.max(0, card.health),
+      atkCls: card.attack > baseA ? 'up' : card.attack < baseA ? 'down' : '',
+      hpCls: card.health < maxH ? 'hurt' : maxH > baseH ? 'up' : ''
+    };
+  }
+  const evo = opts.evolved && card.evolveAttack != null;
+  return { atk: evo ? card.evolveAttack : card.attack, hp: evo ? card.evolveHealth : card.health, atkCls: '', hpCls: '' };
 }
 
 // 渲染一张卡（card 需含 name/type/rarity/class/keywords/cost/attack/health）
 function cardHTML(card, opts = {}) {
   const cc = CLASS_COLOR[card.class] || 'var(--c-neutral)';
   const rc = `var(--r-${card.rarity})`;
-  const icon = cardIcon(card);
-  const kwIcons = (card.keywords || []).map((k) => KEYWORD_ICON[k] || '').join('');
+  const kwIcons = (card.keywords || []).map((k) => KEYWORD_ICON[k] ? `<span class="kw-i kw-${k}">${icon(KEYWORD_ICON[k], { size: '100%', title: S.meta?.keywords?.[k] || k })}</span>` : '').join('');
   const isSpell = card.type === 'spell';
-  const cls = ['card', card.rarity, isSpell ? 'spell' : '', opts.evolved ? 'evolved' : '', opts.locked ? 'locked' : '', opts.isNew ? 'new' : '', opts.playable ? 'playable' : '', opts.sel ? 'sel' : '', opts.targetable ? 'targetable' : '', opts.attackerSel ? 'attackerSel' : ''].filter(Boolean).join(' ');
-  const atk = opts.evolved && card.evolveAttack != null ? card.evolveAttack : card.attack;
-  const hp = opts.evolved && card.evolveHealth != null ? card.evolveHealth : card.health;
-  const stats = isSpell ? '<div class="stats"></div>' : `<div class="stats"><div class="atk">${atk}</div><div class="hpv">${hp}</div></div>`;
-  const count = opts.count > 1 ? `<div class="count-badge">×${opts.count}</div>` : '';
-  const evolveBtn = opts.canEvolve ? `<div class="evolve-btn" data-evolve="${card.uid}">进化</div>` : '';
-  const dataAttr = opts.dataUid ? `data-uid="${card.uid}"` : '';
-  const artUrl = (opts.evolved && card.artEvolve) ? card.artEvolve : card.art;
-  const artImg = artUrl ? `<img class="art-img" src="${artUrl}" alt="" loading="lazy">` : '';
-  return `<div class="${cls}" style="--cc:${cc};--rc:${rc}" ${dataAttr}>
+  const st = isSpell ? null : statView(card, opts);
+  const count = opts.count > 0 ? Math.min(opts.count, MAX_KEEP()) : 0; // 数量显示封顶 ×3
+  const cls = ['card', card.rarity, isSpell ? 'spell' : '', opts.evolved ? 'evolved' : '', opts.locked ? 'locked' : '', opts.maxed ? 'maxed' : '',
+    opts.isNew ? 'new' : '', opts.playable ? 'playable' : '', opts.sel ? 'sel' : '', opts.targetable ? 'targetable' : '',
+    opts.attackerSel ? 'attackerSel' : '', opts.ready ? 'ready' : '', opts.canEvolve ? 'can-evolve' : '', opts.extra || ''].filter(Boolean).join(' ');
+  const stats = isSpell ? '<div class="stats"></div>' : `<div class="stats"><div class="atk ${st.atkCls}">${st.atk}</div><div class="hpv ${st.hpCls}">${st.hp}</div></div>`;
+  const countBadge = (opts.maxed || count > 1) ? `<div class="count-badge${opts.maxed ? ' full' : ''}">×${count}</div>` : '';
+  const shard = opts.shards ? `<div class="shard-badge">${icon('shard', { size: 11 })}+${opts.shards}</div>` : '';
+  // 「可进化」用紫色闪光徽记，和金色的「进化」（已进化）标记区分开；真正的进化按钮在下方操作栏
+  const evoBadge = opts.canEvolve ? `<div class="evo-badge" title="可以进化">${icon('sparkle', { size: '100%' })}</div>` : '';
+  const artSrc = (opts.evolved && card.artEvolve) ? card.artEvolve : card.art;
+  const artUrl = paint(artSrc);
+  // 矢量卡面叠在程序化 SVG 之上；加载失败由 init() 里的捕获监听隐藏，露出底层程序化美术
+  const artImg = artUrl ? `<img class="art-img" src="${artUrl}" alt="" loading="lazy" decoding="async" draggable="false">` : '';
+  // 卡面换成厚涂位图（AI 生成）时，卡面容器加统一的「AI 生成」角标（B17）
+  const artAi = artSrc ? aiPaintedClass(artSrc) : '';
+  const artBadge = artSrc ? aiBadge(artSrc) : '';
+  const a11y = opts.interactive
+    ? ` role="button" tabindex="0" aria-label="${esc(`${card.name}，${card.cost}费${isSpell ? '法术' : `，攻击${st.atk} 生命${st.hp}`}${opts.ariaExtra || ''}`)}"`
+    : '';
+  return `<div class="${cls}" style="--cc:${cc};--rc:${rc}" ${opts.attrs || ''}${a11y}>
     <div class="cost">${card.cost}</div>
     ${kwIcons ? `<div class="kw">${kwIcons}</div>` : ''}
-    <div class="art">${cardArtSVG(card, opts.evolved)}${artImg}</div>
+    <div class="art ${artAi}">${cardArtSVG(card, opts.evolved)}${artImg}${artBadge}</div>
     <div class="cname">${card.name}</div>
-    ${stats}${count}${evolveBtn}
+    ${stats}${countBadge}${shard}${evoBadge}
   </div>`;
 }
 
+const resChips = () => `<span class="res-wrap"><span class="res diamond" title="钻石">${cur('diamond', S.summary?.diamonds ?? 0)}</span><span class="res shard" title="碎片">${cur('shard', S.summary?.shards ?? 0)}</span></span>`;
+// 只重绘顶栏资源，不动页面其余部分（开包、合成之后立即刷新）
+function updateResChips() { $$('.res-wrap').forEach((el) => { el.outerHTML = resChips(); }); }
+
 function topbar(title, showRes = true) {
-  const res = showRes && S.summary
-    ? `<span class="res diamond">💎${S.summary.diamonds}</span><span class="res shard">✦${S.summary.shards}</span>`
-    : '';
+  const res = showRes && S.summary ? resChips() : '';
   return `<div class="topbar">
-    <button class="back" data-nav="hub">‹</button>
+    <button type="button" class="back" data-nav="hub" aria-label="返回卡牌主菜单">${icon('chevron-left', { size: 18 })}</button>
     <div class="title">${title}</div>
     ${res}
   </div>`;
 }
 
+// ─── 长按 / 右键查看卡牌详情 ───
+const LONG_PRESS_MS = 350;
+function bindCardDetail(el, open) {
+  let timer = 0, sx = 0, sy = 0;
+  const clear = () => { if (timer) clearTimeout(timer); timer = 0; };
+  el.addEventListener('pointerdown', (e) => {
+    if (e.button !== 0) return; // 右键交给 contextmenu
+    sx = e.clientX; sy = e.clientY;
+    clear();
+    timer = setTimeout(() => {
+      timer = 0;
+      S.suppressClick = true; // 吞掉松手后的那次 click：长按只看详情，不出牌
+      S.lpAt = Date.now();
+      open();
+    }, LONG_PRESS_MS);
+  });
+  el.addEventListener('pointermove', (e) => { if (timer && Math.hypot(e.clientX - sx, e.clientY - sy) > 10) clear(); });
+  el.addEventListener('pointerup', clear);
+  el.addEventListener('pointercancel', clear);
+  el.addEventListener('pointerleave', clear);
+  el.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+    clear();
+    if (Date.now() - S.lpAt < 900) return; // 触屏长按会紧接着触发 contextmenu，不要重复打开
+    open();
+  });
+}
+
 // ─── 路由 ───
-async function go(screen, params = {}) {
+async function go(screen, { force = false } = {}) {
+  // 组牌有未保存的修改：离开前确认
+  if (!force && S.screen === 'deck' && screen !== 'deck' && deckDirty()) {
+    confirmDeckLeave(() => go(screen, { force: true }));
+    return;
+  }
   S.screen = screen;
   S.pendingPlayUid = null;
   S.selAttacker = null;
@@ -227,42 +399,146 @@ async function go(screen, params = {}) {
 }
 
 async function refreshSummary() {
-  const r = await get(`/api/cards/summary?playerId=${S.playerId}`);
+  const r = await get(`/api/cards/summary?playerId=${pid()}`);
   if (r.ok) S.summary = r.summary;
+  return r;
+}
+
+// 本地记下「这个账户有进行中的对局」，没有时就不去问服务器（避免每次进主菜单都收到一个 404）
+const BATTLE_FLAG = 'moonlit:cardBattleOf';
+const markBattle = (on) => store.set(BATTLE_FLAG, on ? S.playerId : '');
+async function checkResumable() {
+  if (!S.playerId || store.get(BATTLE_FLAG) !== S.playerId) { S.resumable = null; return; }
+  const r = await get(`/api/battle/state?playerId=${pid()}`);
+  S.resumable = r.ok && r.state && r.state.phase !== 'gameover' ? r.state : null;
+  if (!S.resumable) markBattle(false);
+}
+
+// 今日对战胜利奖励（契约 R-1 的 cardWinsToday / cardWinCap）；读不到就不显示，不打扰玩家
+async function refreshRewardStatus() {
+  if (!S.playerId) return;
+  const r = await get(`/api/rewards/status?playerId=${pid()}`);
+  if (r.ok && Number.isFinite(r.cardWinCap)) S.rewardStatus = r;
+}
+const winReward = () => S.rewardStatus?.cardWinReward ?? S.rewardStatus?.rules?.cardWin?.diamonds ?? 40;
+function winRewardLine() {
+  const st = S.rewardStatus;
+  if (!st) return '';
+  const left = Math.max(0, st.cardWinCap - st.cardWinsToday);
+  return left > 0
+    ? `获胜 ${cur('diamond', `+${winReward()}`)} · 今日 ${st.cardWinsToday}/${st.cardWinCap}`
+    : `今日 ${st.cardWinCap} 场胜利奖励已领完，明天再来`;
 }
 
 // ─── 主菜单 ───
 async function renderHub() {
-  await refreshSummary();
-  app().innerHTML = `<div class="screen-wrap">
-    <div class="topbar"><div class="title" style="flex:1;text-align:left">月蚀契约</div>
-      <span class="res diamond">💎${S.summary?.diamonds ?? 0}</span><span class="res shard">✦${S.summary?.shards ?? 0}</span></div>
+  await Promise.all([refreshSummary(), checkResumable(), refreshRewardStatus()]);
+  if (S.screen !== 'hub') return;
+  const rb = S.resumable;
+  const notice = S.resetNotice
+    ? `<div class="notice" role="status">${icon('info', { size: 18 })}<span><b>存档已重置</b>：服务器上找不到你之前的存档（服务器重启或存档过期），已为你新建账户；主游戏和主线也会用这个新账户。</span><button type="button" class="btn ghost small" id="noticeOk">知道了</button></div>`
+    : '';
+  const resume = rb
+    ? `<button type="button" class="hub-card wide resume" id="resumeBtn">
+        <span class="ico">${icon('play', { size: 30 })}</span>
+        <span class="txt"><span class="name">继续对局</span><span class="desc">${esc(clsName(rb.playerClass))} 对 ${esc(clsName(rb.opponentClass))} · 你的第 ${rb.players.player.turnCount} 回合 · 生命 ${Math.max(0, rb.players.player.leader.hp)} : ${Math.max(0, rb.players.opponent.leader.hp)}</span></span>
+        <span class="go">${icon('chevron-right', { size: 22 })}</span>
+      </button>`
+    : '';
+  const rewardLine = winRewardLine();
+  app().innerHTML = `<div class="screen-wrap hub-screen">
+    <div class="topbar">
+      <a class="home-link" href="/">${icon('home', { size: 16 })}<span>返回主菜单</span></a>
+      <div class="title hub-title"><span class="hub-title-txt">月蚀契约</span><span class="lab-tag" title="实验模式：规则与平衡仍在调整">实验模式</span></div>${resChips()}
+    </div>
     <div class="scroll">
-      <div class="hub-hero"><h1>暗影对决</h1><p>SHADOWVERSE-LIKE · 卡牌对战</p></div>
-      <div class="hub-menu">
-        <div class="hub-card wide" data-nav="battle"><div class="ico">⚔️</div><div class="name">开始对战</div><div class="desc">选择职业，与 AI 决斗</div></div>
-        <div class="hub-card" data-nav="pack"><div class="ico">🎴</div><div class="name">召唤卡包</div><div class="desc">抽取新卡牌</div></div>
-        <div class="hub-card" data-nav="deck"><div class="ico">📚</div><div class="name">组牌</div><div class="desc">编辑你的牌组</div></div>
-        <div class="hub-card" data-nav="collection"><div class="ico">🖼️</div><div class="name">图鉴</div><div class="desc">收录 ${S.summary?.ownedCards ?? 0}/${S.summary?.totalCards ?? 38}</div></div>
+      <div class="hub-hero">
+        <div class="hub-avatars">${['lilith', 'lia', 'serena'].map((c) => avatarHTML(c)).join('')}</div>
+        <h1>暗影对决</h1><p>实验模式 · 卡牌对战</p>
+        <p class="lab-note">${icon('info', { size: 13 })}<span>规则与平衡还在调整，和主线、外传剧情无关。进化规则参照 Shadowverse，先后手开局抛硬币决定。和主游戏共用同一个账户与钻石：每天前 ${S.rewardStatus?.cardWinCap ?? 5} 场胜利各得 ${winReward()} 钻石。</span></p>
       </div>
-      <div class="hub-credit">卡牌图标美术 · <a href="https://game-icons.net" target="_blank" rel="noopener">game-icons.net</a>（CC BY 3.0）</div>
+      <div class="hub-menu">
+        ${notice}${resume}
+        <button type="button" class="hub-card wide" data-nav="battle"><span class="ico">${icon('battle', { size: 34 })}</span><span class="txt"><span class="name">${rb ? '开始新对战' : '开始对战'}</span><span class="desc">选择职业，与 AI 决斗</span>${rewardLine ? `<span class="desc reward-line">${rewardLine}</span>` : ''}</span><span class="go">${icon('chevron-right', { size: 22 })}</span></button>
+        <button type="button" class="hub-card" data-nav="pack"><span class="ico">${icon('pack', { size: 30 })}</span><span class="name">召唤卡包</span><span class="desc">抽取新卡牌</span></button>
+        <button type="button" class="hub-card" data-nav="deck"><span class="ico">${icon('deck', { size: 30 })}</span><span class="name">组牌</span><span class="desc">编辑你的牌组</span></button>
+        <button type="button" class="hub-card" data-nav="collection"><span class="ico">${icon('collection', { size: 30 })}</span><span class="name">图鉴</span><span class="desc">收录 ${S.summary?.ownedCards ?? 0}/${S.summary?.totalCards ?? 38}</span></button>
+      </div>
+      <div class="hub-links"><button type="button" class="btn ghost" id="rulesBtn">${icon('help', { size: 16 })} 对战规则</button></div>
+      <div class="hub-credit">卡面 / 立绘 / 图标：原创矢量美术 · 备用卡面剪影 <a href="https://game-icons.net" target="_blank" rel="noopener">game-icons.net</a>（CC BY 3.0）</div>
     </div>
   </div>`;
   bindNav();
+  $('#rulesBtn').onclick = () => showRules();
+  const ok = $('#noticeOk');
+  if (ok) ok.onclick = () => { S.resetNotice = false; ok.closest('.notice')?.remove(); };
+  const rbtn = $('#resumeBtn');
+  if (rbtn) rbtn.onclick = () => resumeBattle();
+}
+
+function resumeBattle() {
+  const st = S.resumable;
+  if (!st) return;
+  S.battle = st;
+  S.resumable = null;
+  S.screen = 'battlePlay';
+  S.selAttacker = null;
+  S.pendingPlayUid = st.phase === 'awaitingTarget' ? (st.pending?.handUid || null) : null;
+  S.notes = [];
+  S.conceded = false;
+  S.battleReward = null;
+  drawBattle();
+}
+
+// ─── 规则面板（主菜单与对战中共用）───
+function showRules() {
+  const b = S.battle;
+  const order = !b ? '' : b.firstPlayer === 'opponent' ? '本局抛硬币是反面：对手先手，你后手。' : '本局抛硬币是正面：你先手。';
+  const bonus = RULE('EVOLVE_BONUS', 2);
+  modal(`
+    <h3 class="rules-title">${icon('help', { size: 18 })} 对战规则 <span class="lab-tag">实验模式</span></h3>
+    <dl class="rules">
+      <dt>胜负</dt><dd>双方主战者各 ${RULE('LEADER_HP', 20)} 点生命，先把对方打到 0 即获胜。护甲先于生命承受伤害。${S.rewardStatus ? `每天前 ${S.rewardStatus.cardWinCap} 场胜利各得 ${winReward()} 钻石（和主游戏共用）。` : ''}</dd>
+      <dt>先后手</dt><dd>开局抛硬币：正面你先手，反面对手先手。${order}</dd>
+      <dt>PP</dt><dd>每个自己的回合开始时，PP 上限 +1（最多 ${RULE('MAX_PP', 10)}）并回满。出牌消耗与卡牌左上角费用相同的 PP。</dd>
+      <dt>抽牌</dt><dd>起手 3 张，每回合开始抽 1 张（先手第一回合不抽）。手牌最多 ${RULE('MAX_HAND', 9)} 张，满了再抽到的牌会被烧毁。场上最多 ${RULE('MAX_FIELD', 5)} 个随从。</dd>
+      <dt>攻击</dt><dd>随从入场当回合不能攻击，从下个回合起每回合攻击一次。攻击随从时双方互相造成等于攻击力的伤害；攻击主战者时只有对方受伤。</dd>
+      <dt>EP / 进化</dt><dd>先手 2 EP，从自己的第 5 回合起可以进化；后手 3 EP，从第 4 回合起可以进化。<b>每回合最多进化一次</b>：消耗 1 EP，使一个随从 +${bonus}/+${bonus} 并换上进化卡面，每个随从只能进化一次。<br>上回合就在场的随从进化后照常攻击（随从或主战者）；<b>本回合刚入场的随从进化后获得突进</b>，当回合就能攻击随从，但不能攻击主战者（疾驰随从照常可以）。本回合已经攻击过的随从不会因为进化多攻击一次。</dd>
+      <dt>${icon('guard', { size: 14 })}守护</dt><dd>${KEYWORD_DESC.guard}</dd>
+      <dt>${icon('rush', { size: 14 })}突进</dt><dd>${KEYWORD_DESC.rush}</dd>
+      <dt>${icon('storm', { size: 14 })}疾驰</dt><dd>${KEYWORD_DESC.storm}</dd>
+      <dt>${icon('bane', { size: 14 })}剧毒</dt><dd>${KEYWORD_DESC.bane}</dd>
+      <dt>${icon('blood', { size: 14 })}吸血</dt><dd>${KEYWORD_DESC.drain}</dd>
+      <dt>入场曲</dt><dd>随从入场时触发的效果。需要目标的入场曲在没有合法目标时落空，随从照常入场。</dd>
+      <dt>疲劳</dt><dd>牌库抽空后，每次抽牌改为受到疲劳伤害：第 1 次 1 点、第 2 次 2 点……逐次递增。</dd>
+    </dl>
+    <p class="rules-tip">操作：点手牌出牌；点己方随从选中它，再点敌方目标攻击，或点下方「进化」。<b>长按或右键任意卡牌查看详情</b>；没有选中攻击者时，点敌方卡牌也能直接查看。</p>
+    <div class="sheet-foot"><button type="button" class="btn ghost block" id="closeBtn">关闭</button></div>
+  `, { label: '对战规则' });
+  $('#closeBtn').onclick = () => closeModal();
 }
 
 // ─── 抽卡 ───
 async function renderPack() {
   await refreshSummary();
-  app().innerHTML = `<div class="screen-wrap">
+  if (S.screen !== 'pack') return;
+  app().innerHTML = `<div class="screen-wrap pack-screen">
     ${topbar('召唤卡包')}
     <div class="scroll"><div class="pack-stage" id="packStage">
-      <div style="text-align:center;color:var(--text-dim);font-size:13px">每包8张 · 单抽💎${S.meta.pack.costSingle} · 十连💎${S.meta.pack.costTen}<br>保底：每包至少1银+，每${S.meta.pack.legendaryPity}包至少1虹</div>
-      <div class="pack-box" id="packBox">🎁</div>
-      <div style="color:var(--text-dim);font-size:12px">当前保底计数：${S.summary?.packPity ?? 0}/${S.meta.pack.legendaryPity}</div>
-      <div class="row" style="width:100%;max-width:320px">
-        <button class="btn" id="pull1">单抽 💎${S.meta.pack.costSingle}</button>
-        <button class="btn primary" id="pull10">十连 💎${S.meta.pack.costTen}</button>
+      <div class="pack-info">每包8张 · 单抽${cur('diamond', S.meta.pack.costSingle)} · 十连${cur('diamond', S.meta.pack.costTen)}<br>保底：每包至少1银+，每${S.meta.pack.legendaryPity}包至少1虹</div>
+      <button type="button" class="pack-box" id="packBox" aria-label="开启 1 包">
+        <span class="pack-glow"></span>
+        <img class="pack-img" src="${CARD_PACK}" alt="月蚀卡包" draggable="false">
+        <span class="pack-shine"></span>
+      </button>
+      <div class="pack-tip">${icon('sparkle', { size: 13 })} 点击卡包开启 1 包</div>
+      <div class="pity">
+        <div class="pity-bar"><i style="width:${Math.min(100, (S.summary?.packPity ?? 0) / S.meta.pack.legendaryPity * 100)}%"></i></div>
+        <span>虹卡保底 ${S.summary?.packPity ?? 0}/${S.meta.pack.legendaryPity}</span>
+      </div>
+      <div class="row pack-btns">
+        <button type="button" class="btn" id="pull1">单抽 ${cur('diamond', S.meta.pack.costSingle)}</button>
+        <button type="button" class="btn primary" id="pull10">十连 ${cur('diamond', S.meta.pack.costTen)}</button>
       </div>
     </div></div>
   </div>`;
@@ -275,33 +551,49 @@ async function renderPack() {
 async function openPack(count) {
   if (S.busy) return;
   S.busy = true;
-  const r = await post('/api/cards/pack', { playerId: S.playerId, count });
-  S.busy = false;
-  if (!r.ok) { toast(r.error?.message || '抽卡失败', true); return; }
+  const box = $('#packBox');
+  if (box) box.classList.add('opening');
+  // 开包动画至少播放一小段，避免请求太快时一闪而过
+  let r;
+  try {
+    [r] = await Promise.all([post('/api/cards/pack', { playerId: S.playerId, count }), sleep(650)]);
+  } finally { S.busy = false; }
+  if (S.screen !== 'pack') return;
+  if (!r.ok) { if (box) box.classList.remove('opening'); failToast(r, '抽卡失败'); return; }
   await refreshSummary();
   showReveal(r.packs, count);
+  updateResChips(); // 顶栏钻石 / 碎片立即更新
 }
 
 function showReveal(packs, count) {
   const stage = $('#packStage');
+  if (!stage) return;
   const cards = packs.flat();
-  let html = `<div style="width:100%"><div style="text-align:center;margin-bottom:10px;font-weight:700">${count >= 10 ? '十连结果' : '抽取结果'}</div>`;
+  const fresh = cards.filter((c) => c.isNew).length;
+  const shards = cards.reduce((n, c) => n + (c.shardsGained || 0), 0);
+  const best = cards.some((c) => c.rarity === 'legendary') ? 'legendary' : cards.some((c) => c.rarity === 'gold') ? 'gold' : '';
+  let html = `<div class="reveal ${best}">
+    <div class="reveal-head">${icon(best === 'legendary' ? 'crown' : 'sparkle', { size: 20 })}<span>${count >= 10 ? '十连结果' : '抽取结果'}</span></div>
+    <div class="reveal-sum"><span>${icon('star', { size: 13 })} 新卡 ${fresh} 张</span>${shards ? `<span>${icon('shard', { size: 13 })} 重复转化碎片 +${shards}</span>` : ''}</div>`;
+  let k = 0;
   for (const pack of packs) {
-    html += `<div class="reveal-grid" style="margin-bottom:12px">`;
+    html += `<div class="reveal-grid">`;
     for (const c of pack) {
-      html += cardHTML(c.card, { isNew: c.isNew, evolved: false });
+      html += `<div class="reveal-slot" style="animation-delay:${(k++ % 8) * 70}ms">${cardHTML(c.card, { isNew: c.isNew, evolved: false, shards: c.converted ? c.shardsGained : 0 })}</div>`;
     }
     html += `</div>`;
   }
-  html += `<button class="btn primary block" id="revealOk">确认</button></div>`;
+  html += `<button type="button" class="btn primary block" id="revealOk">${icon('check', { size: 16 })} 确认</button></div>`;
   stage.innerHTML = html;
+  stage.parentElement.scrollTop = 0;
   $('#revealOk').onclick = () => renderPack();
 }
 
 // ─── 图鉴 ───
 async function renderCollection() {
-  const r = await get(`/api/cards/collection?playerId=${S.playerId}`);
-  if (!r.ok) { toast('载入图鉴失败', true); return; }
+  const r = await get(`/api/cards/collection?playerId=${pid()}`);
+  if (S.screen !== 'collection') return;
+  if (!r.ok) { failToast(r, '载入图鉴失败'); return; }
   S.collection = r;
   drawCollection();
 }
@@ -314,372 +606,1139 @@ function drawCollection() {
   );
   const clsChips = [['all', '全部'], ['lia', '莉亚'], ['lilith', '莉莉丝'], ['serena', '塞雷娜'], ['neutral', '中立']];
   const rarChips = [['all', '全部'], ['bronze', '铜'], ['silver', '银'], ['gold', '金'], ['legendary', '虹']];
-  app().innerHTML = `<div class="screen-wrap">
+  const chip = (attr, v, l, on) => `<button type="button" class="chip ${on ? 'active' : ''}" ${attr}="${v}" aria-pressed="${on}">${l}</button>`;
+  app().innerHTML = `<div class="screen-wrap col-screen">
     ${topbar(`图鉴 ${S.collection.owned}/${S.collection.total} (${S.collection.completion}%)`)}
-    <div class="filters">${clsChips.map(([v, l]) => `<span class="chip ${colFilter.cls === v ? 'active' : ''}" data-cls="${v}">${l}</span>`).join('')}</div>
-    <div class="filters">${rarChips.map(([v, l]) => `<span class="chip ${colFilter.rarity === v ? 'active' : ''}" data-rar="${v}">${l}</span>`).join('')}</div>
+    <div class="filters" role="group" aria-label="职业">${clsChips.map(([v, l]) => chip('data-cls', v, l, colFilter.cls === v)).join('')}</div>
+    <div class="filters" role="group" aria-label="稀有度">${rarChips.map(([v, l]) => chip('data-rar', v, l, colFilter.rarity === v)).join('')}</div>
     <div class="scroll"><div class="pad"><div class="grid">
-      ${cards.map((c) => cardHTML(c, { locked: !c.owned, count: c.count })).join('')}
+      ${cards.map((c) => cardHTML({ ...S.cardById[c.id], ...c }, { locked: !c.owned, count: c.count, interactive: true, ariaExtra: c.owned ? `，已收录${Math.min(c.count, MAX_KEEP())}张` : '，未收录' })).join('')}
     </div></div></div>
   </div>`;
   bindNav();
-  document.querySelectorAll('[data-cls]').forEach((el) => el.onclick = () => { S.colFilter.cls = el.dataset.cls; drawCollection(); });
-  document.querySelectorAll('[data-rar]').forEach((el) => el.onclick = () => { S.colFilter.rarity = el.dataset.rar; drawCollection(); });
-  // 用顺序绑定详情
-  document.querySelectorAll('.grid .card').forEach((el, i) => el.onclick = () => showCardDetail(cards[i]));
+  $$('[data-cls]').forEach((el) => el.onclick = () => { S.colFilter.cls = el.dataset.cls; drawCollection(); });
+  $$('[data-rar]').forEach((el) => el.onclick = () => { S.colFilter.rarity = el.dataset.rar; drawCollection(); });
+  // 用顺序绑定详情（单击、长按、右键都打开）
+  $$('.grid .card').forEach((el, i) => {
+    el.onclick = () => showCardDetail(cards[i]);
+    bindCardDetail(el, () => showCardDetail(cards[i]));
+  });
 }
 
-function showCardDetail(c) {
-  const def = S.cardById[c.id];
-  const kw = (def?.keywords || []).map((k) => S.meta.keywords[k] || k).join(' · ');
+// 卡牌详情：mode = collection（带合成）/ deck / battle（实例，显示实际数值，不带合成）
+function showCardDetail(c, { mode = 'collection', inst = null, side = '', note = '', deckCount = 0 } = {}) {
+  const def = S.cardById[c.id || c.cardId] || c;
+  const live = inst ? instToCard(inst) : null;
+  const kwList = live?.keywords || def.keywords || [];
+  const kw = kwList.map((k) => `<li><span class="kw-tag">${icon(KEYWORD_ICON[k] || 'star4', { size: 13 })}${esc(S.meta.keywords?.[k] || k)}</span><span>${esc(KEYWORD_DESC[k] || '')}</span></li>`).join('');
+  const showPreview = def.type === 'follower' && def.artEvolve && !live?.evolved;
+  const typeLabel = { follower: '随从', spell: '法术', amulet: '护符' }[def.type] || '';
+  const rar = S.meta.rarities?.[def.rarity];
+  const main = live ? cardHTML(live, { evolved: live.evolved }) : cardHTML({ ...def, ...c }, { evolved: false });
+  const mainCap = live ? (live.evolved ? '当前 · 已进化' : '当前') : '基础';
+  let stats = '';
+  if (live && def.type === 'follower') {
+    const status = side === 'mine' && S.battle?.activePlayer === 'player'
+      ? (!live.canAttack
+        ? (live.attackedThisTurn ? '本回合已攻击' : '刚入场：下个回合起可以攻击；现在进化可获得突进')
+        : (live.canAttackLeader === false
+          ? (live.evolved && live.enteredThisTurn && !(live.keywords || []).includes('rush') ? '刚入场即进化，获得突进：本回合只能攻击随从' : '突进：本回合只能攻击随从')
+          : '本回合可以攻击'))
+      : '';
+    stats = `<p class="detail-stats">攻击 <b>${live.attack}</b> · 生命 <b>${Math.max(0, live.health)}</b>/${live.maxHealth ?? live.health}${status ? ` · ${status}` : ''}</p>`;
+  }
+  let own = '';
+  let actions = `<button type="button" class="btn ghost block" id="closeBtn">关闭</button>`;
+  if (mode === 'collection') {
+    const full = (c.count || 0) >= MAX_KEEP();
+    const shards = S.summary?.shards ?? 0;
+    const short = !full && shards < c.craftCost;
+    own = `<p class="detail-own">${c.owned ? `${icon('check', { size: 13 })} 已收录 ${Math.min(c.count, MAX_KEEP())} 张` : `${icon('lock', { size: 13 })} 未收录`}${short ? ` · 碎片不足（持有 ${shards}）` : ''}</p>`;
+    actions = `<div class="row" style="margin-top:12px">
+      <button type="button" class="btn ghost" id="closeBtn">关闭</button>
+      <button type="button" class="btn primary" id="craftBtn" ${full || short ? 'disabled' : ''} ${full ? 'title="已拥有 3 张，不能再合成"' : ''}>${full ? `${icon('check', { size: 14 })} 已满` : `合成 ${cur('shard', c.craftCost)}`}</button>
+    </div>`;
+  } else if (mode === 'deck') {
+    own = `<p class="detail-own">${icon('deck', { size: 13 })} 牌组中 ${deckCount}/${S.meta.maxCopies || 3} 张</p>`;
+  }
   modal(`
-    <div class="detail-card">${cardHTML(c, { evolved: false })}</div>
-    <h3 style="text-align:center">${c.name}</h3>
-    <p style="text-align:center">${c.desc || ''}</p>
-    ${kw ? `<p style="text-align:center;color:var(--gold)">${kw}</p>` : ''}
-    <p style="text-align:center">已收录：${c.count} 张${c.owned ? '' : '（未收录）'}</p>
-    <div class="row" style="margin-top:12px">
-      <button class="btn ghost" id="closeBtn">关闭</button>
-      <button class="btn primary" id="craftBtn">合成 ✦${c.craftCost}</button>
+    <div class="detail-cards">
+      <div class="detail-card">${main}<span class="detail-cap">${mainCap}</span></div>
+      ${showPreview ? `<div class="detail-card evolved-preview">${cardHTML({ ...def }, { evolved: true })}<span class="detail-cap">${icon('sparkle', { size: 11 })}进化后</span></div>` : ''}
     </div>
-  `);
+    <h3 class="detail-name">${icon(cardIcon(def), { size: 18 })}<span>${esc(def.name)}</span></h3>
+    <div class="detail-meta"><span style="color:${rar?.color || 'inherit'}">${rar?.name || ''}</span><span>${typeLabel}</span><span>${esc(S.meta.classes?.[def.class]?.name || '')}</span><span>${def.cost} 费</span></div>
+    ${stats}
+    ${kw ? `<ul class="detail-kw">${kw}</ul>` : ''}
+    <p class="detail-desc">${esc(def.desc || '')}</p>
+    ${def.flavor ? `<p class="detail-flavor">${esc(def.flavor)}</p>` : ''}
+    ${note ? `<p class="detail-note">${icon('info', { size: 13 })} ${esc(note)}</p>` : ''}
+    ${own}
+    ${actions}
+  `, { label: `${def.name} 详情` });
   $('#closeBtn').onclick = () => closeModal();
-  $('#craftBtn').onclick = async () => {
-    const r = await post('/api/cards/craft', { playerId: S.playerId, cardId: c.id });
-    if (r.ok) { toast(`合成成功：${c.name}`); closeModal(); await refreshSummary(); renderCollection(); }
-    else toast(r.error?.message || '合成失败', true);
+  const craft = $('#craftBtn');
+  if (craft) craft.onclick = async () => {
+    if (S.busy) return;
+    S.busy = true;
+    craft.disabled = true;
+    let r;
+    try { r = await post('/api/cards/craft', { playerId: S.playerId, cardId: c.id }); } finally { S.busy = false; }
+    if (r.ok) { toast(`合成成功：${def.name}`); closeModal(); await refreshSummary(); renderCollection(); }
+    else { craft.disabled = false; failToast(r, '合成失败'); }
   };
 }
 
 // ─── 组牌 ───
+const savedDeck = (cls = S.deckClass) => S.deckData?.[cls]?.deck || [];
+function deckDirty() {
+  const a = [...savedDeck()].sort();
+  const b = [...S.deckEdit].sort();
+  return a.length !== b.length || a.some((x, i) => x !== b[i]);
+}
+
 async function renderDeck() {
-  const r = await get(`/api/cards/decks?playerId=${S.playerId}`);
+  const r = await get(`/api/cards/decks?playerId=${pid()}`);
+  if (S.screen !== 'deck') return;
   S.deckData = r.ok ? r.decks : {};
-  S.deckEdit = [...(S.deckData[S.deckClass]?.deck || [])];
+  S.deckEdit = [...savedDeck()];
   drawDeck();
+}
+
+async function saveDeck() {
+  const cls = S.deckClass;
+  const deck = [...S.deckEdit];
+  const r = await post('/api/cards/deck/save', { playerId: S.playerId, classId: cls, deck });
+  if (r.ok) {
+    toast('牌组已保存');
+    S.deckData = S.deckData || {};
+    S.deckData[cls] = { ...(S.deckData[cls] || {}), deck };
+  } else failToast(r, '保存失败');
+  return r.ok;
+}
+
+// 有未保存修改时离开组牌 / 切换职业：保存 / 放弃 / 取消
+function confirmDeckLeave(proceed) {
+  modal(`
+    <h3>${icon('deck', { size: 18 })} 牌组还没保存</h3>
+    <p>「${esc(clsName(S.deckClass))}」的牌组有未保存的修改（当前 ${S.deckEdit.length}/${S.meta.deckSize || 40} 张）。</p>
+    <div class="row confirm-row">
+      <button type="button" class="btn ghost" id="cfCancel">继续编辑</button>
+      <button type="button" class="btn danger" id="cfDrop">放弃修改</button>
+      <button type="button" class="btn primary" id="cfSave" ${S.deckEdit.length === (S.meta.deckSize || 40) ? '' : `disabled title="牌组需要正好 ${S.meta.deckSize || 40} 张才能保存"`}>保存</button>
+    </div>
+  `, { label: '牌组还没保存' });
+  $('#cfCancel').onclick = () => closeModal();
+  $('#cfDrop').onclick = () => { S.deckEdit = [...savedDeck()]; closeModal(); proceed(); };
+  $('#cfSave').onclick = async () => {
+    const ok = await saveDeck();
+    closeModal();
+    if (ok) proceed();
+  };
 }
 
 function drawDeck() {
   const cls = S.deckClass;
   const available = S.allCards.filter((c) => c.class === cls || c.class === 'neutral');
+  const maxCopies = S.meta.maxCopies || 3;
+  const deckSize = S.meta.deckSize || 40;
   const counts = {};
   for (const id of S.deckEdit) counts[id] = (counts[id] || 0) + 1;
   const curve = Array(8).fill(0);
   for (const id of S.deckEdit) { const c = S.cardById[id]; if (c) curve[Math.min(7, c.cost)]++; }
   const maxCurve = Math.max(1, ...curve);
-  app().innerHTML = `<div class="screen-wrap">
+  const dirty = deckDirty();
+  // 当前牌组清单（按费用排序，点击移除一张）
+  const inDeck = Object.keys(counts).map((id) => S.cardById[id]).filter(Boolean)
+    .sort((a, b) => a.cost - b.cost || a.name.localeCompare(b.name, 'zh'));
+  const deckList = inDeck.length
+    ? inDeck.map((c) => `<button type="button" class="deck-chip ${c.rarity}" data-rm="${c.id}" style="--cc:${CLASS_COLOR[c.class] || 'var(--c-neutral)'};--rc:var(--r-${c.rarity})" title="移除一张 ${c.name}">
+        <img class="art-img chip-art" src="${paint(c.art)}" alt="" loading="lazy" draggable="false"><span class="chip-cost">${c.cost}</span><span class="chip-name">${c.name}</span><span class="chip-n">×${counts[c.id]}</span>
+      </button>`).join('')
+    : `<span class="deck-empty">${icon('deck', { size: 14 })} 牌组为空：点击下方卡牌加入，或点「重置」恢复初始牌组</span>`;
+  // 加/减卡会整屏重绘：保留滚动位置（仅当已在组牌界面时）
+  const onDeck = !!$('.deck-list');
+  const keepScroll = onDeck ? $('.scroll')?.scrollTop || 0 : 0;
+  const keepList = onDeck ? $('.deck-list')?.scrollLeft || 0 : 0;
+  app().innerHTML = `<div class="screen-wrap deck-screen">
     ${topbar('组牌')}
-    <div class="filters">${[['lia','莉亚·守护'],['lilith','莉莉丝·快攻'],['serena','塞雷娜·控制']].map(([v,l]) => `<span class="chip ${cls===v?'active':''}" data-dcls="${v}">${l}</span>`).join('')}</div>
+    <div class="filters deck-classes" role="group" aria-label="职业">${[['lia', '莉亚·守护'], ['lilith', '莉莉丝·快攻'], ['serena', '塞雷娜·控制']].map(([v, l]) => `<button type="button" class="chip ${cls === v ? 'active' : ''}" data-dcls="${v}" aria-pressed="${cls === v}">${avatarHTML(v, 'xs')}${l}</button>`).join('')}</div>
     <div class="deckbar">
-      <span>牌组：<span class="cnt" style="color:${S.deckEdit.length===40?'#7dffa0':'#ffb0b8'}">${S.deckEdit.length}/40</span></span>
+      <span class="deck-count">${icon('deck', { size: 15 })}牌组 <span class="cnt ${S.deckEdit.length === deckSize ? 'ok' : 'bad'}">${S.deckEdit.length}/${deckSize}</span></span>
+      ${dirty ? '<span class="dirty-tag">未保存</span>' : ''}
       <span style="flex:1"></span>
-      <button class="btn ghost" id="deckReset" style="padding:6px 12px;font-size:12px">重置</button>
-      <button class="btn primary" id="deckSave" style="padding:6px 12px;font-size:12px">保存</button>
+      <button type="button" class="btn ghost small" id="deckReset" title="恢复为初始牌组">${icon('refresh', { size: 13 })} 重置</button>
+      <button type="button" class="btn ghost small" id="deckClear" title="清空牌组">${icon('trash', { size: 13 })} 清空</button>
+      <button type="button" class="btn primary small ${dirty ? 'pulse' : ''}" id="deckSave">${icon('save', { size: 13 })} 保存</button>
     </div>
-    <div class="curve">${curve.map((n,i)=>`<div class="bar" style="height:${n/maxCurve*100}%"><b>${n||''}</b><i>${i===7?'7+':i}</i></div>`).join('')}</div>
-    <div class="section-title">可用卡牌（点击加入牌组）</div>
+    <div class="curve" aria-hidden="true">${curve.map((n, i) => `<div class="bar" style="height:${n / maxCurve * 100}%"><b>${n || ''}</b><i>${i === 7 ? '7+' : i}</i></div>`).join('')}</div>
+    <div class="deck-list">${deckList}</div>
+    <div class="section-title">可用卡牌（点击加入 · 长按或右键查看详情 · 点上方清单移除）</div>
     <div class="scroll"><div class="pad"><div class="grid">
-      ${available.map((c) => cardHTML(c, { count: counts[c.id] || 0, locked: (counts[c.id]||0) >= 3 })).join('')}
+      ${available.map((c) => { const n = counts[c.id] || 0; return cardHTML(c, { count: n, maxed: n >= maxCopies, interactive: true, ariaExtra: `，牌组中${n}张` }); }).join('')}
     </div></div></div>
   </div>`;
   bindNav();
-  document.querySelectorAll('[data-dcls]').forEach((el) => el.onclick = () => { S.deckClass = el.dataset.dcls; S.deckEdit = [...(S.deckData[S.deckClass]?.deck || [])]; drawDeck(); });
-  document.querySelectorAll('.grid .card').forEach((el, i) => el.onclick = () => {
-    const c = available[i];
-    if ((counts[c.id] || 0) >= 3) { toast('同名卡最多3张', true); return; }
-    if (S.deckEdit.length >= 40) { toast('牌组已满40张', true); return; }
-    S.deckEdit.push(c.id); drawDeck();
+  $$('[data-dcls]').forEach((el) => el.onclick = () => {
+    const next = el.dataset.dcls;
+    if (next === S.deckClass) return;
+    const switchTo = () => {
+      S.deckClass = next; S.deckEdit = [...savedDeck(next)];
+      const sc = $('.scroll'); if (sc) sc.scrollTop = 0; // 换职业：卡池变了，回到顶部
+      const dl = $('.deck-list'); if (dl) dl.scrollLeft = 0;
+      drawDeck();
+    };
+    if (deckDirty()) confirmDeckLeave(switchTo); else switchTo();
   });
-  $('#deckReset').onclick = () => { S.deckEdit = []; drawDeck(); };
+  const sc = $('.scroll'); if (sc) sc.scrollTop = keepScroll;
+  const dl = $('.deck-list'); if (dl) dl.scrollLeft = keepList;
+  $$('.grid .card').forEach((el, i) => {
+    const c = available[i];
+    el.onclick = () => {
+      if ((counts[c.id] || 0) >= maxCopies) { toast(`同名卡最多${maxCopies}张`, true); return; }
+      if (S.deckEdit.length >= deckSize) { toast(`牌组已满${deckSize}张`, true); return; }
+      S.deckEdit.push(c.id); drawDeck();
+    };
+    bindCardDetail(el, () => showCardDetail(c, { mode: 'deck', deckCount: counts[c.id] || 0 }));
+  });
+  $$('[data-rm]').forEach((el) => el.onclick = () => {
+    const at = S.deckEdit.lastIndexOf(el.dataset.rm);
+    if (at >= 0) { S.deckEdit.splice(at, 1); drawDeck(); }
+  });
+  $('#deckReset').onclick = async () => {
+    if (!S.starterDecks) {
+      const r = await get('/api/cards/deck/starter');
+      if (!r.ok) { toast(r.error?.message || '无法载入初始牌组', true); return; }
+      S.starterDecks = r.decks;
+    }
+    if (S.screen !== 'deck' || S.deckClass !== cls) return;
+    S.deckEdit = [...(S.starterDecks[cls] || [])];
+    drawDeck();
+    toast(deckDirty() ? '已恢复初始牌组（尚未保存）' : '已是初始牌组');
+  };
+  $('#deckClear').onclick = () => {
+    if (!S.deckEdit.length) return;
+    S.deckEdit = [];
+    drawDeck();
+    toast('已清空（尚未保存）');
+  };
   $('#deckSave').onclick = async () => {
-    const r = await post('/api/cards/deck/save', { playerId: S.playerId, classId: cls, deck: S.deckEdit });
-    if (r.ok) { toast('牌组已保存'); S.deckData[cls] = { deck: S.deckEdit }; }
-    else toast(r.error?.message || '保存失败', true);
+    if (S.busy) return;
+    S.busy = true;
+    try { await saveDeck(); } finally { S.busy = false; }
+    if (S.screen === 'deck') drawDeck();
   };
 }
 
 // ─── 对战设置 ───
 function renderBattleSetup() {
-  app().innerHTML = `<div class="screen-wrap">
+  const rb = S.resumable;
+  app().innerHTML = `<div class="screen-wrap setup-screen">
     ${topbar('选择职业')}
     <div class="scroll"><div class="pad">
+      ${rb ? `<p class="setup-note">${icon('info', { size: 14 })} 开始新对局会放弃进行中的对局（你的第 ${rb.players.player.turnCount} 回合）。</p>` : ''}
+      ${winRewardLine() ? `<p class="setup-note reward-note">${icon('gift', { size: 14 })}<span>${winRewardLine()}</span></p>` : ''}
+      <p class="setup-note dim-note">${icon('coin', { size: 14 })}<span>先后手开局抛硬币决定：先手 2 EP，后手 3 EP 且早一回合可以进化。</span></p>
       <div class="section-title" style="padding-left:0">选择你的职业</div>
-      <div class="hub-menu" style="padding:0">
-        ${[['lia','莉亚·赫斯特','守护 / 中速','🛡️'],['lilith','莉莉丝·瓦尔哈拉','快攻','🗡️'],['serena','塞雷娜·诺克斯','控制','🔮']].map(([id,n,s,i])=>`
-          <div class="hub-card" data-pick="${id}"><div class="ico">${i}</div><div class="name">${n}</div><div class="desc">${s}</div></div>`).join('')}
+      <div class="class-pick">
+        ${CLASS_PICK.map(([id, n, st, d]) => `
+          <button type="button" class="pick-card" data-pick="${id}" style="--accent:${S.meta.classes?.[id]?.accent || '#888'}">
+            ${avatarHTML(id, 'lg')}
+            <span class="pick-txt"><span class="name">${n}</span><span class="style">${icon(CLASS_ICON[id], { size: 14 })}${st}</span><span class="desc">${d}</span></span>
+            <span class="go">${icon('play', { size: 18 })}</span>
+          </button>`).join('')}
       </div>
       <div class="section-title" style="padding-left:0;margin-top:16px">对手</div>
-      <div class="filters" style="padding:0">
-        <span class="chip active" data-opp="random">随机</span>
-        <span class="chip" data-opp="lia">莉亚</span>
-        <span class="chip" data-opp="lilith">莉莉丝</span>
-        <span class="chip" data-opp="serena">塞雷娜</span>
+      <div class="filters" style="padding:0" role="group" aria-label="对手">
+        ${[['random', '随机'], ['lia', '莉亚'], ['lilith', '莉莉丝'], ['serena', '塞雷娜']].map(([v, l], i) => `<button type="button" class="chip ${i === 0 ? 'active' : ''}" data-opp="${v}" aria-pressed="${i === 0}">${l}</button>`).join('')}
       </div>
     </div></div>
   </div>`;
   bindNav();
   let opp = 'random';
-  document.querySelectorAll('[data-opp]').forEach((el) => el.onclick = () => {
-    document.querySelectorAll('[data-opp]').forEach((x) => x.classList.remove('active'));
-    el.classList.add('active'); opp = el.dataset.opp;
+  $$('[data-opp]').forEach((el) => el.onclick = () => {
+    $$('[data-opp]').forEach((x) => { x.classList.remove('active'); x.setAttribute('aria-pressed', 'false'); });
+    el.classList.add('active'); el.setAttribute('aria-pressed', 'true'); opp = el.dataset.opp;
   });
-  document.querySelectorAll('[data-pick]').forEach((el) => el.onclick = async () => {
+  $$('[data-pick]').forEach((el) => el.onclick = async () => {
+    if (S.busy) return;
+    S.busy = true;
     const playerClass = el.dataset.pick;
-    toast('对局开始！');
-    const r = await post('/api/battle/start', { playerId: S.playerId, playerClass, opponentClass: opp === 'random' ? undefined : opp });
-    if (!r.ok) { toast('开局失败', true); return; }
-    S.battle = r.state;
+    let r;
+    try { r = await post('/api/battle/start', { playerId: S.playerId, playerClass, opponentClass: opp === 'random' ? undefined : opp }); } finally { S.busy = false; }
+    if (!r.ok) { failToast(r, '开局失败'); return; }
+    markBattle(true);
+    S.resumable = null;
+    S.notes = [];
+    S.conceded = false;
+    S.selAttacker = null;
+    S.pendingPlayUid = null;
+    S.battleReward = r.reward || null;
     S.screen = 'battlePlay';
-    drawBattle();
+    startBattle(r.state, Array.isArray(r.aiActions) ? r.aiActions : []);
   });
 }
 
-// ─── 战斗界面 ───
-function leaderBlock(side, p, meta, active) {
-  const cls = side === 'player' ? S.battle.playerClass : S.battle.opponentClass;
-  const info = meta.classes[cls];
+// ─── 开局：抛硬币（B12）。对手先手时服务器已经替它跑完第一回合，这里先摆出开局盘面，硬币落定后回放 ───
+function startBattle(after, actions) {
+  const before = after.firstPlayer === 'opponent' && actions.length ? openingBoard(after, actions) : null;
+  S.battle = after;
+  if (before) drawBattle({ board: before, replay: { caption: '抛硬币决定先后手…', log: before.log } });
+  else drawBattle();
+  showCoinToss(after, () => {
+    if (S.screen !== 'battlePlay' || S.battle !== after) return;
+    if (before) replayAiTurn(before, after, actions);
+  });
+}
+
+function showCoinToss(b, done) {
+  const firstPlayer = b.coinToss?.firstPlayer || b.firstPlayer || 'player';
+  const result = b.coinToss?.result || (firstPlayer === 'opponent' ? 'tails' : 'heads');
+  const youFirst = firstPlayer !== 'opponent';
+  const me = b.players.player;
+  const face = result === 'tails' ? '反面' : '正面';
+  modal(`
+    <h3 class="coin-title">${icon('coin', { size: 18 })} 抛硬币决定先后手</h3>
+    <p class="coin-rule">正面（月）你先手 · 反面（蚀）对手先手</p>
+    <div class="coin-stage" aria-hidden="true">
+      <div class="coin ${result === 'tails' ? 'tails' : 'heads'}">
+        <span class="coin-face front">${icon('moon', { size: 34 })}<b>正</b></span>
+        <span class="coin-face back"><svg class="coin-eclipse" viewBox="0 0 40 40" width="36" height="36" aria-hidden="true"><circle cx="20" cy="20" r="13.5" fill="none" stroke="currentColor" stroke-width="2.5"/><circle cx="20" cy="20" r="10.5" fill="#1d1238"/><path d="M20 3.5v3M20 33.5v3M3.5 20h3M33.5 20h3M8.3 8.3l2.1 2.1M29.6 29.6l2.1 2.1M8.3 31.7l2.1-2.1M29.6 10.4l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".8"/></svg><b>反</b></span>
+      </div>
+    </div>
+    <div class="coin-result" role="status">
+      <p class="coin-verdict ${youFirst ? 'first' : 'second'}">${face} · ${youFirst ? '你先手' : '对手先手，你后手'}</p>
+      <p class="coin-detail">${youFirst
+        ? `先手：${me.ep} EP，从自己的第 5 回合起可以进化；第一回合不抽牌。`
+        : `后手：${me.ep} EP，从自己的第 4 回合起就能进化；第一回合照常抽牌。`}</p>
+    </div>
+    <div class="coin-foot"><button type="button" class="btn primary block" id="coinGo">${icon('play', { size: 15 })} ${youFirst ? '开始对局' : '看对手的第一回合'}</button></div>
+  `, { label: '抛硬币决定先后手', onClose: done });
+  $('#coinGo').onclick = () => closeModal();
+}
+
+// 对手先手时的开局盘面：服务器只返回对手第一回合之后的状态，这里倒推回开局（双方满血、空场、各 3 张起手牌），
+// 供 replayAiTurn 逐步重演。回放只是演出，结束后一律以服务器状态为准。
+function openingBoard(after, actions) {
+  const m = clone(after);
+  for (const k of ['legalPlays', 'evolvable', 'attackTargets', 'targetOptions', 'pendingCardId']) delete m[k];
+  const hand = RULE('INITIAL_HAND', 3);
+  m.turn = 0;
+  m.activePlayer = 'opponent';
+  m.phase = 'main';
+  m.pending = null;
+  m.winner = null;
+  m.log = (after.log || []).filter((l) => !(l.turn > 0));
+  for (const key of ['player', 'opponent']) {
+    const P = m.players[key];
+    const maxHp = P.leader?.maxHp ?? RULE('LEADER_HP', 20);
+    P.leader = { hp: maxHp, maxHp, armor: 0 };
+    P.pp = { current: 0, max: 0 };
+    P.turnCount = 0;
+    P.field = [];
+    P.graveyard = [];
+    P.fatigue = 0;
+    P.canEvolve = false;
+    P.evolvedThisTurn = false;
+  }
+  // 玩家：后手第一回合开头抽的那张在手牌末尾
+  const me = m.players.player;
+  const drawnByMe = Math.max(0, me.hand.length - hand);
+  me.hand = me.hand.slice(0, hand);
+  if (Number.isFinite(me.deckCount)) me.deckCount += drawnByMe;
+  // 对手：打出去的牌放回起手，回合中途抽到的牌还在牌库里
+  const o = m.players.opponent;
+  const played = actions.filter((a) => a.type === 'play' && a.handUid);
+  const playedUids = new Set(played.map((a) => a.handUid));
+  const kept = o.hand.filter((h) => !playedUids.has(h.uid));
+  const keepFromOpening = Math.max(0, hand - played.length);
+  const drawnByOpp = Math.max(0, kept.length - keepFromOpening);
+  o.hand = [...kept.slice(0, keepFromOpening), ...played.map((a) => ({ uid: a.handUid, hidden: true }))];
+  if (Number.isFinite(o.deckCount)) o.deckCount += drawnByOpp;
+  return m;
+}
+
+// ═══ 战斗界面 ═══
+function leaderBlock(side, p, b, active, extra = '') {
+  const cls = side === 'player' ? b.playerClass : b.opponentClass;
+  const info = S.meta.classes[cls];
   const hp = Math.max(0, p.leader.hp);
-  const pct = hp / p.leader.maxHp * 100;
-  const icon = { lia: '🛡️', lilith: '🗡️', serena: '🔮' }[cls] || '⚔️';
-  return `<div class="b-leader">
-    <div class="portrait ${active ? 'active' : ''}" style="border-color:${info?.accent || '#666'}">${icon}</div>
+  const pct = Math.max(0, Math.min(100, hp / p.leader.maxHp * 100));
+  const ppPips = Array.from({ length: p.pp.max }, (_, i) => `<i class="${i < p.pp.current ? 'on' : ''}"></i>`).join('');
+  const deckLeft = p.deckCount ?? '?';
+  // 先后手（开局抛硬币）；EP：可进化且本回合还没进化过才亮
+  const order = b.firstPlayer ? `<span class="order-tag ${b.firstPlayer === side ? 'first' : 'second'}" title="开局抛硬币决定">${b.firstPlayer === side ? '先手' : '后手'}</span>` : '';
+  const epReady = p.canEvolve && p.ep > 0 && !p.evolvedThisTurn;
+  const epTitle = p.evolvedThisTurn ? '进化点 · 本回合已进化（每回合一次）' : p.canEvolve ? '进化点 · 本回合可以进化一次' : '进化点';
+  return `<div class="b-leader ${side} ${extra}">
+    <div class="portrait ${active ? 'active' : ''}" style="--accent:${info?.accent || '#666'}">${avatarHTML(cls)}</div>
     <div class="info">
-      <div class="lname">${info?.name || ''}${p.leader.armor > 0 ? ` 🛡${p.leader.armor}` : ''}</div>
-      <div class="hpbar"><div class="fill" style="width:${pct}%"></div><div class="txt">${hp}/${p.leader.maxHp}</div></div>
-      <div class="pips"><span class="pp">PP ${p.pp.current}/${p.pp.max}</span><span class="ep">EP ${p.ep}${p.canEvolve ? '✦' : ''}</span></div>
+      <div class="lname"><span>${info?.name || ''}</span>${order}${p.leader.armor > 0 ? `<span class="armor" title="护甲">${icon('shield', { size: 12 })}${p.leader.armor}</span>` : ''}</div>
+      <div class="hpbar ${pct <= 30 ? 'low' : ''}"><div class="fill" style="width:${pct}%"></div><div class="txt">${icon('heart', { size: 11 })}${hp}/${p.leader.maxHp}</div></div>
+      <div class="pips">
+        <span class="pp" title="PP">${icon('crystal', { size: 12 })}${p.pp.current}/${p.pp.max}<span class="pp-pips">${ppPips}</span></span>
+        <span class="ep ${epReady ? 'ready' : ''} ${p.evolvedThisTurn ? 'used' : ''}" title="${epTitle}">${icon('sparkle', { size: 12 })}EP ${p.ep}</span>
+        <span class="deckleft" title="牌库剩余 ${deckLeft} 张">${icon('deck', { size: 12 })}<span class="deckleft-n">${deckLeft}</span></span>
+      </div>
     </div>
   </div>`;
 }
 
-function drawBattle() {
-  const b = S.battle;
+// 日志：标出回合标题与行动方，并把本地的 AI 回合摘要插在该回合末尾；只取最近 20 行
+function logEntries(log) {
+  const out = [];
+  let side = '';
+  (log || []).forEach((l, i) => {
+    const head = /^——/.test(l.msg);
+    if (head) side = /：对手/.test(l.msg) ? 'opp' : /：玩家/.test(l.msg) ? 'me' : '';
+    out.push({ msg: l.msg, kind: head ? `turn ${side}` : side });
+    const next = log[i + 1];
+    if (!next || next.turn !== l.turn) for (const n of S.notes) if (n.turn === l.turn) out.push({ msg: n.msg, kind: 'note' });
+  });
+  return out.slice(-20);
+}
+
+function turnTagText(b) {
+  if (b.phase === 'gameover') return `对局结束 · 双方共 ${b.turn} 回合`;
+  const who = b.activePlayer === 'player' ? '你' : '对手';
+  return `${who}的第 ${b.players[b.activePlayer]?.turnCount ?? b.turn} 回合`;
+}
+
+/**
+ * 绘制对战盘。
+ * opts.board  —— 要画的盘面（默认 S.battle；AI 回放时是逐步重演的副本）
+ * opts.replay —— 回放帧 { actor, target, targetSide, caption, cast, log }：高亮行动者与目标、锁定输入
+ * opts.fx     —— 与上一帧的差异 { floats, ghosts, entering }：伤害数字、阵亡淡出、入场动画
+ */
+function drawBattle(opts = {}) {
+  const b = opts.board || S.battle;
   if (!b) return;
-  const meta = S.meta;
-  const myTurn = b.activePlayer === 'player' && b.phase === 'main';
-  const targeting = b.phase === 'awaitingTarget';
-  const legalUids = new Set((b.legalPlays || []).map((p) => p.uid));
-  const evolvable = new Set(b.evolvable || []);
-  const attackTargets = b.attackTargets || {};
+  const rp = opts.replay || null;
+  const fx = opts.fx || null;
+  const live = !rp;
+  const myTurn = live && b.activePlayer === 'player' && b.phase === 'main';
+  const targeting = live && b.phase === 'awaitingTarget';
+  const legalUids = new Set(live ? (b.legalPlays || []).map((p) => p.uid) : []);
+  const evolvable = new Set(myTurn ? (b.evolvable || []) : []);
+  const attackTargets = live ? (b.attackTargets || {}) : {};
+  if (S.selAttacker && !b.players.player.field.some((f) => f.uid === S.selAttacker)) S.selAttacker = null;
+  const sel = myTurn ? S.selAttacker : null;
+  const selTargets = sel ? (attackTargets[sel] || []) : [];
+  const selCanEvo = !!(sel && evolvable.has(sel));
   // 目标高亮集合
-  let targetUids = new Set();
+  const targetUids = new Set();
   let targetLeader = false;
   if (targeting && b.targetOptions) {
     for (const o of b.targetOptions) { if (o.uid === 'leader') targetLeader = true; else targetUids.add(o.uid); }
   }
-  if (S.selAttacker && attackTargets[S.selAttacker]) {
-    for (const o of attackTargets[S.selAttacker]) { if (o.uid === 'leader') targetLeader = true; else targetUids.add(o.uid); }
-  }
+  for (const o of selTargets) { if (o.uid === 'leader') targetLeader = true; else targetUids.add(o.uid); }
   // 选中了攻击者且可打脸 → 显示醒目的「攻击主战者」按钮
-  const showAttackFace = !!S.selAttacker && targetLeader;
-  const hint = targeting
-    ? '🎯 选择法术目标（点击高亮的敌方目标）'
-    : (S.selAttacker ? '⚔️ 选择攻击目标 — 点击敌方随从，或点击下方按钮直击主战者' : '');
+  const showAttackFace = !!sel && selTargets.some((o) => o.uid === 'leader');
+  // 选中的是本回合刚入场的随从：进化后只获得突进（Shadowverse 规则，与 cards/battle.mjs 的 evolvedAttackRights 一致）
+  const selInst = sel ? b.players.player.field.find((f) => f.uid === sel) : null;
+  const selFresh = !!(selInst && !selInst.attackedThisTurn && (selInst.enteredThisTurn ?? (!selInst.canAttack || selInst.canAttackLeader === false)));
+  const freshNote = selCanEvo && selFresh && !(selInst.keywords || []).includes('storm') ? '；它刚入场，进化后获得突进，只能攻击随从' : '';
+  let hint = '';
+  if (targeting) hint = `${icon('target', { size: 13 })} 选择法术目标（点击高亮的目标，或点「取消」）`;
+  else if (sel && selTargets.length) hint = `${icon('sword', { size: 13 })} 选择攻击目标：点击敌方随从${showAttackFace ? '，或点「攻击主战者」' : ''}${selCanEvo ? '；也可以先进化（每回合一次）' : ''}`;
+  else if (sel && selCanEvo) hint = `${icon('sparkle', { size: 13 })} 点「进化」消耗 1 EP，+${RULE('EVOLVE_BONUS', 2)}/+${RULE('EVOLVE_BONUS', 2)}（每回合一次，剩余 EP ${b.players.player.ep}）${freshNote}`;
+  else if (myTurn && b.players.player.turnCount <= 2) hint = `${icon('info', { size: 13 })} 点手牌出牌 · 点己方随从攻击 · 长按卡牌看详情`;
 
-  const oppHand = b.players.opponent.hand.map(() => `<div class="back"></div>`).join('');
-  const oppField = b.players.opponent.field.map((inst) => {
+  const hl = (uid) => (rp ? (rp.actor === uid ? ' acting' : rp.target === uid ? ' hit' : '') : '');
+  const fieldList = (key) => {
+    const list = b.players[key].field.slice();
+    for (const g of (fx?.ghosts?.[key] || [])) list.splice(Math.min(g.index, list.length), 0, { ...g.inst, __ghost: true });
+    return list;
+  };
+  const unitHTML = (inst, key) => {
     const c = instToCard(inst);
-    return cardHTML(c, { evolved: inst.evolved, dataUid: true, targetable: targetUids.has(inst.uid) });
-  }).join('') || '<span style="color:var(--text-dim);font-size:11px">—</span>';
-  const myField = b.players.player.field.map((inst) => {
-    const c = instToCard(inst);
-    const canAtk = myTurn && attackTargets[inst.uid];
-    return cardHTML(c, { evolved: inst.evolved, dataUid: true, canEvolve: myTurn && evolvable.has(inst.uid), targetable: targetUids.has(inst.uid), attackerSel: S.selAttacker === inst.uid });
-  }).join('') || '<span style="color:var(--text-dim);font-size:11px">—</span>';
+    const dead = inst.__ghost || inst.health <= 0;
+    const extra = [dead ? 'dying' : '', fx?.entering?.has(inst.uid) ? 'entering' : '', hl(inst.uid)].join(' ');
+    const attrs = dead ? `data-ghost="1" data-fx="${esc(inst.uid)}"` : `data-uid="${esc(inst.uid)}" data-fx="${esc(inst.uid)}"`;
+    if (key === 'opponent') {
+      return cardHTML(c, { evolved: inst.evolved, attrs, extra, interactive: !dead && live, targetable: targetUids.has(inst.uid), ariaExtra: '，敌方随从' });
+    }
+    const canAtk = myTurn && (attackTargets[inst.uid] || []).length > 0;
+    return cardHTML(c, {
+      evolved: inst.evolved, attrs, extra, interactive: !dead && live,
+      canEvolve: evolvable.has(inst.uid), targetable: targetUids.has(inst.uid),
+      attackerSel: sel === inst.uid, ready: canAtk && sel !== inst.uid, ariaExtra: '，我方随从'
+    });
+  };
+  const oppHand = b.players.opponent.hand.map(() => `<img class="back" src="${CARD_BACK}" alt="" draggable="false">`).join('');
+  const oppField = fieldList('opponent').map((inst) => unitHTML(inst, 'opponent')).join('') || '<span class="field-empty">对手场上暂无随从</span>';
+  const myField = fieldList('player').map((inst) => unitHTML(inst, 'player')).join('') || '<span class="field-empty">我方场上暂无随从</span>';
   const myHand = b.players.player.hand.map((inst) => {
     const c = instToCard(inst);
     const playable = myTurn && legalUids.has(inst.uid);
-    return cardHTML(c, { dataUid: true, playable, sel: S.pendingPlayUid === inst.uid });
+    return cardHTML(c, {
+      attrs: `data-uid="${esc(inst.uid)}"`, interactive: live, playable, sel: S.pendingPlayUid === inst.uid,
+      extra: fx?.entering?.has(inst.uid) ? 'drawn' : '', ariaExtra: playable ? '，可以使用' : ''
+    });
   }).join('');
 
-  const lastLog = (b.log && b.log.length) ? b.log[b.log.length - 1].msg : '';
-  const turnTag = `第${b.turn}回合 · ${b.activePlayer === 'player' ? '你的回合' : '对手回合'}`;
+  const entries = logEntries(rp ? rp.log : b.log);
+  const lastLine = entries.length ? entries[entries.length - 1].msg : '';
+  const turnTag = rp?.caption || turnTagText(b);
 
-  app().innerHTML = `<div class="screen-wrap"><div class="battle">
-    <div class="b-side opp">
-      ${leaderBlock('opponent', b.players.opponent, meta, b.activePlayer === 'opponent')}
-      <div class="b-hand-opp">${oppHand}</div>
-      <div class="b-field" id="oppField">${oppField}</div>
-    </div>
-    <div class="b-mid"><div class="b-divider"></div><div class="b-turntag">${turnTag}</div><div class="b-divider"></div></div>
-    <div class="b-side me">
-      <div class="b-field" id="myField">${myField}</div>
-      ${leaderBlock('player', b.players.player, meta, b.activePlayer === 'player')}
-      <div class="b-hand" id="myHand">${myHand}</div>
-    </div>
-    <div class="b-controls">
-      <button class="btn ghost" id="concedeBtn" style="padding:10px 12px">投降</button>
-      ${targeting ? `<button class="btn ghost" id="cancelBtn" style="padding:10px 12px">取消</button>` : ''}
-      ${showAttackFace ? `<button class="btn danger face-atk" id="attackFaceBtn">⚔️ 攻击主战者</button>` : ''}
-      <button class="btn primary endturn" id="endTurnBtn" ${myTurn ? '' : 'disabled'}>${myTurn ? '结束回合 ▶' : '对手行动中…'}</button>
-    </div>
-    ${hint ? `<div class="b-hint">${hint}</div>` : ''}
-    <div style="text-align:center;font-size:10px;color:var(--text-dim);padding:0 8px 6px;min-height:14px">${lastLog}</div>
-    ${b.phase === 'gameover' ? resultBanner(b.winner) : ''}
-  </div></div>`;
-
-  bindBattleEvents(myTurn, attackTargets);
-  if (targetLeader) {
-    const oppPortrait = document.querySelector('.b-side.opp .portrait');
-    if (oppPortrait) oppPortrait.classList.add('targetable');
+  let controls;
+  if (rp) {
+    controls = `<button type="button" class="btn ghost endturn" id="skipBtn">${icon('chevron-right', { size: 16 })} 跳过回放</button>`;
+  } else if (b.phase === 'gameover') {
+    controls = `<button type="button" class="btn primary endturn" id="endTurnBtn" disabled>对局结束</button>`;
+  } else if (targeting) {
+    controls = `<button type="button" class="btn ghost" id="cancelBtn">取消</button>
+      <button type="button" class="btn primary endturn" id="endTurnBtn" disabled>选择目标中…</button>`;
+  } else if (sel && (selTargets.length || selCanEvo)) {
+    controls = `${selCanEvo ? `<button type="button" class="btn evolve" id="evolveBtn" data-evolve="${esc(sel)}">${icon('sparkle', { size: 16 })}进化<span class="ep-left">EP ${b.players.player.ep}</span></button>` : ''}
+      ${showAttackFace ? `<button type="button" class="btn danger face-atk" id="attackFaceBtn">${icon('sword', { size: 16 })} 攻击主战者</button>` : ''}
+      <button type="button" class="btn primary endturn" id="endTurnBtn">结束回合 ${icon('play', { size: 14 })}</button>`;
+  } else {
+    controls = `<button type="button" class="btn ghost concede" id="concedeBtn">投降</button>
+      <button type="button" class="btn primary endturn" id="endTurnBtn" ${myTurn ? '' : 'disabled'}>${myTurn ? `结束回合 ${icon('play', { size: 14 })}` : '对手行动中…'}</button>`;
   }
-  if (showAttackFace) {
-    const oppLeader = document.querySelector('.b-side.opp .b-leader');
-    if (oppLeader) oppLeader.classList.add('face-targetable');
+
+  const oppLeaderExtra = [showAttackFace ? 'face-targetable' : '', rp && rp.target === 'leader' && rp.targetSide === 'opponent' ? 'hit' : ''].join(' ');
+  const myLeaderExtra = rp && rp.target === 'leader' && rp.targetSide === 'player' ? 'hit' : '';
+  const cast = rp?.cast ? `<div class="cast-card">${cardHTML(rp.cast)}<span class="cast-cap">对手施放</span></div>` : '';
+
+  app().innerHTML = `<div class="screen-wrap battle-screen ${S.logOpen ? 'log-open' : ''}">
+    <div class="battle ${rp ? 'replaying' : ''}">
+      <div class="b-side opp">
+        ${leaderBlock('opponent', b.players.opponent, b, b.activePlayer === 'opponent' && b.phase !== 'gameover', oppLeaderExtra)}
+        <div class="b-hand-opp" title="对手手牌 ${b.players.opponent.hand.length} 张">${oppHand}<span class="opp-count">${b.players.opponent.hand.length}</span></div>
+        <div class="b-field" id="oppField">${oppField}</div>
+      </div>
+      <div class="b-mid">
+        <div class="b-divider"></div><div class="b-turntag${rp ? ' replay' : ''}">${esc(turnTag)}</div><div class="b-divider"></div>
+        <button type="button" class="b-rules" id="battleRules" aria-label="对战规则" title="对战规则">${icon('help', { size: 18 })}</button>
+      </div>
+      <div class="b-side me">
+        <div class="b-field" id="myField">${myField}</div>
+        ${leaderBlock('player', b.players.player, b, b.activePlayer === 'player' && b.phase !== 'gameover', myLeaderExtra)}
+        <div class="b-hand" id="myHand" style="--n:${b.players.player.hand.length}">${myHand}</div>
+      </div>
+      <div class="b-controls">${controls}</div>
+      ${hint ? `<div class="b-hint">${hint}</div>` : ''}
+      <button type="button" class="b-logbar" id="logToggle" aria-expanded="${S.logOpen}" aria-controls="battleLog">
+        ${icon('scroll', { size: 14 })}<span class="b-logbar-txt">${esc(lastLine)}</span><span class="b-logbar-more">${S.logOpen ? '收起' : '日志'}</span>
+      </button>
+      <div class="fx-layer" aria-hidden="true">${cast}</div>
+      ${live && b.phase === 'gameover' ? resultBanner(b) : ''}
+    </div>
+    <aside class="b-logpanel" id="battleLog" aria-label="对战日志（最近 20 行）">
+      <div class="b-logpanel-head"><span>${icon('scroll', { size: 15 })} 对战日志</span><span class="dim">最近 20 行</span><button type="button" class="logclose" id="logClose" aria-label="收起日志">${icon('close', { size: 16 })}</button></div>
+      <ol class="b-loglist">${entries.map((e) => `<li class="${e.kind}">${esc(e.msg)}</li>`).join('')}</ol>
+    </aside>
+  </div>`;
+
+  const list = $('.b-loglist');
+  if (list) list.scrollTop = list.scrollHeight;
+  if (live && b.phase === 'gameover') markBattle(false);
+  bindBattleEvents({ myTurn, targeting, live, attackTargets, targetLeader, showAttackFace });
+  if (fx) {
+    requestAnimationFrame(() => spawnFloats(fx.floats));
+    if (fx.ghosts && (fx.ghosts.player.length || fx.ghosts.opponent.length)) {
+      setTimeout(() => $$('.b-field [data-ghost]').forEach((el) => { if (!S.replaying) el.remove(); }), 560);
+    }
   }
 }
 
-function resultBanner(winner) {
-  const win = winner === 'player';
-  return `<div class="result-banner">
-    <div class="big ${win ? 'win' : 'lose'}">${win ? '胜利' : winner === 'draw' ? '平局' : '败北'}</div>
-    <div style="color:var(--text-dim)">${win ? '对手主战者已被击破！' : '你的主战者倒下了…'}</div>
+function resultBanner(b) {
+  const win = b.winner === 'player';
+  const draw = b.winner === 'draw';
+  const conceded = !win && !draw && (b.endReason === 'concede' || S.conceded);
+  const sub = win ? '对手主战者已被击破！' : draw ? '双方同时倒下。' : conceded ? '你投降了。' : '你的主战者倒下了…';
+  return `<div class="result-banner ${win ? 'win' : draw ? 'draw' : 'lose'}" role="dialog" aria-label="对局结果">
+    <div class="result-crest">${avatarHTML(win ? b.playerClass : b.opponentClass, 'xl')}<span class="result-glyph">${icon(win ? 'trophy' : draw ? 'shield' : conceded ? 'flag' : 'moon', { size: 22 })}</span></div>
+    <div class="big ${win ? 'win' : 'lose'}">${win ? '胜利' : draw ? '平局' : '败北'}</div>
+    <div class="result-sub">${sub}</div>
+    <div class="result-turn">${icon('clock', { size: 13 })} 你的第 ${b.players.player.turnCount} 回合 · 双方共 ${b.turn} 回合 · ${b.firstPlayer === 'opponent' ? '你后手' : '你先手'}</div>
+    ${win ? rewardBlock() : ''}
     <div class="row" style="max-width:280px;width:100%">
-      <button class="btn ghost" id="backHub">返回</button>
-      <button class="btn primary" id="again">再来一局</button>
+      <button type="button" class="btn ghost" id="backHub">${icon('home', { size: 15 })} 返回</button>
+      <button type="button" class="btn primary" id="again">${icon('refresh', { size: 15 })} 再来一局</button>
     </div>
   </div>`;
 }
 
-function bindBattleEvents(myTurn, attackTargets) {
-  // 手牌
-  document.querySelectorAll('#myHand .card').forEach((el) => {
+// 胜利奖励（契约 R-3：服务器在玩家获胜的那一次响应里发放，GET /api/battle/state 在对局结束后也带着）
+function rewardBlock() {
+  const rw = S.battleReward;
+  if (!rw) return '';
+  if (rw.diamonds > 0) {
+    return `<div class="result-reward" role="status">${icon('gift', { size: 16 })}<span>胜利奖励 ${cur('diamond', `+${rw.diamonds}`)}</span><span class="dim">今日 ${rw.winsToday}/${rw.cap}${Number.isFinite(rw.balance) ? ` · 现有 ${rw.balance}` : ''}</span></div>`;
+  }
+  if (rw.capped) {
+    return `<div class="result-reward capped" role="status">${icon('check', { size: 15 })}<span>今日 ${rw.cap} 场胜利奖励已领完，明天再来</span></div>`;
+  }
+  return '';
+}
+
+// 记下响应里的胜利奖励，并同步顶栏钻石与今日进度
+function noteReward(r) {
+  if (!r || !('reward' in r)) return;
+  S.battleReward = r.reward || null;
+  const rw = S.battleReward;
+  if (!rw) return;
+  if (S.summary && Number.isFinite(rw.balance)) S.summary.diamonds = rw.balance;
+  if (S.rewardStatus && Number.isFinite(rw.winsToday)) S.rewardStatus.cardWinsToday = rw.winsToday;
+}
+
+function unplayableReason(b, inst) {
+  if (b.phase === 'gameover') return '对局已结束';
+  if (b.activePlayer !== 'player') return '还没到你的回合';
+  if (b.phase === 'awaitingTarget') return '请先为法术选择目标，或点「取消」';
+  const def = S.cardById[inst.cardId] || {};
+  const p = b.players.player;
+  if (def.cost > p.pp.current) return `PP 不足（需要 ${def.cost}，现有 ${p.pp.current}）`;
+  if (def.type === 'follower' && p.field.length >= RULE('MAX_FIELD', 5)) return `场上随从已满（最多 ${RULE('MAX_FIELD', 5)} 个）`;
+  if (def.type === 'spell') return '没有可选的目标';
+  return '这张牌现在无法使用';
+}
+
+function showBattleDetail(inst, side, note = '') {
+  if (!inst) return;
+  showCardDetail({ id: inst.cardId }, { mode: 'battle', inst, side, note });
+}
+
+function bindBattleEvents({ myTurn, targeting, live, attackTargets, targetLeader, showAttackFace }) {
+  const findIn = (key, zone, uid) => S.battle?.players[key][zone].find((x) => x.uid === uid);
+  const locked = () => !live || S.busy || S.replaying || !S.battle;
+  // 手牌：单击出牌；长按 / 右键看详情
+  $$('#myHand .card[data-uid]').forEach((el) => {
+    const uid = el.dataset.uid;
+    if (live) bindCardDetail(el, () => showBattleDetail(findIn('player', 'hand', uid), 'hand'));
     el.onclick = () => {
-      if (!myTurn) return;
-      const uid = el.dataset.uid;
-      const play = (S.battle.legalPlays || []).find((p) => p.uid === uid);
-      if (!play) { toast('这张牌现在无法使用', true); return; }
+      if (locked()) return;
+      const inst = findIn('player', 'hand', uid);
+      if (!inst) return;
+      const play = myTurn && (S.battle.legalPlays || []).find((p) => p.uid === uid);
+      if (!play) { toast(unplayableReason(S.battle, inst), true); return; }
       S.selAttacker = null;
-      doPlay(uid, play.needsTarget);
+      doPlay(uid);
     };
   });
-  // 我方随从（攻击/进化）
-  document.querySelectorAll('#myField .card').forEach((el) => {
+  // 我方随从：选中（攻击 / 进化）；无事可做时单击看详情
+  $$('#myField .card[data-uid]').forEach((el) => {
     const uid = el.dataset.uid;
+    if (live) bindCardDetail(el, () => showBattleDetail(findIn('player', 'field', uid), 'mine'));
     el.onclick = () => {
-      if (!myTurn) return;
-      if (S.battle.phase === 'awaitingTarget') return;
-      if (attackTargets[uid]) {
+      if (locked()) return;
+      // 选目标阶段：友方随从也可能是法术目标（如「战吼鼓舞」）
+      if (S.battle.phase === 'awaitingTarget') { resolveTarget(uid); return; }
+      const canAct = myTurn && ((attackTargets[uid] || []).length > 0 || (S.battle.evolvable || []).includes(uid));
+      if (canAct) {
         S.selAttacker = (S.selAttacker === uid) ? null : uid;
         S.pendingPlayUid = null;
         drawBattle();
+        return;
       }
+      showBattleDetail(findIn('player', 'field', uid), 'mine');
     };
   });
-  // 进化按钮
-  document.querySelectorAll('[data-evolve]').forEach((el) => {
-    el.onclick = async (e) => {
-      e.stopPropagation();
-      const uid = el.dataset.evolve;
-      const r = await post('/api/battle/action', { playerId: S.playerId, action: { type: 'evolve', uid } });
-      if (r.ok) { S.battle = r.state; drawBattle(); } else toast(r.error?.message || '无法进化', true);
+  // 敌方随从：有待选攻击者 / 法术目标时作为目标，否则单击直接看详情
+  $$('#oppField .card[data-uid]').forEach((el) => {
+    const uid = el.dataset.uid;
+    if (live) bindCardDetail(el, () => showBattleDetail(findIn('opponent', 'field', uid), 'enemy'));
+    el.onclick = () => {
+      if (locked()) return;
+      const choosing = (targeting && S.pendingPlayUid) || (S.selAttacker && (attackTargets[S.selAttacker] || []).length > 0);
+      if (choosing) { resolveTarget(uid); return; }
+      showBattleDetail(findIn('opponent', 'field', uid), 'enemy');
     };
   });
-  // 敌方随从/主战者作为目标
-  document.querySelectorAll('#oppField .card').forEach((el) => {
-    el.onclick = () => resolveTarget(el.dataset.uid);
-  });
-  // 点击对手头像/整个主战者区块作为打脸目标
-  const oppPortrait = document.querySelector('.b-side.opp .portrait');
-  if (oppPortrait) oppPortrait.onclick = () => resolveTarget('leader');
-  const oppLeaderBlock = document.querySelector('.b-side.opp .b-leader');
-  if (oppLeaderBlock) oppLeaderBlock.onclick = () => resolveTarget('leader');
+  // 对手主战者作为目标（头像 / 整块 / 醒目按钮）
+  const oppLeader = $('.b-side.opp .b-leader');
+  if (oppLeader && live) {
+    if (targetLeader) { oppLeader.classList.add('targetable-face'); oppLeader.setAttribute('role', 'button'); oppLeader.setAttribute('tabindex', '0'); oppLeader.setAttribute('aria-label', '以对手主战者为目标'); }
+    oppLeader.onclick = () => { if (!locked() && targetLeader) resolveTarget('leader'); };
+  }
+  if (targetLeader) $('.b-side.opp .portrait')?.classList.add('targetable');
   const faceBtn = $('#attackFaceBtn');
-  if (faceBtn) faceBtn.onclick = () => resolveTarget('leader');
-
+  if (faceBtn) faceBtn.onclick = () => { if (!locked()) resolveTarget('leader'); };
+  const evoBtn = $('#evolveBtn');
+  if (evoBtn) evoBtn.onclick = () => {
+    if (locked()) return;
+    const uid = evoBtn.dataset.evolve;
+    act({ type: 'evolve', uid }, { fallback: '无法进化', onOk: (st) => { S.selAttacker = st.attackTargets?.[uid]?.length ? uid : null; } });
+  };
   const endBtn = $('#endTurnBtn');
   if (endBtn) endBtn.onclick = () => doEndTurn();
   const cancelBtn = $('#cancelBtn');
-  if (cancelBtn) cancelBtn.onclick = async () => {
-    const r = await post('/api/battle/action', { playerId: S.playerId, action: { type: 'cancel' } });
-    if (r.ok) { S.battle = r.state; S.pendingPlayUid = null; drawBattle(); }
-  };
+  if (cancelBtn) cancelBtn.onclick = () => { if (!locked()) act({ type: 'cancel' }, { onOk: () => { S.pendingPlayUid = null; } }); };
   const concede = $('#concedeBtn');
-  if (concede) concede.onclick = async () => {
-    const r = await post('/api/battle/concede', { playerId: S.playerId });
-    if (r.ok) { S.battle = r.state; drawBattle(); }
+  if (concede) concede.onclick = () => doConcede(concede);
+  const skip = $('#skipBtn');
+  if (skip) skip.onclick = () => { S.skipReplay = true; S.replayWake?.(); };
+  // 日志、规则在回放中也能用
+  const toggleLog = (open) => {
+    S.logOpen = open;
+    store.set('moonlit:cardLogOpen', open ? '1' : '0');
+    $('.battle-screen')?.classList.toggle('log-open', open);
+    const t = $('#logToggle');
+    if (t) { t.setAttribute('aria-expanded', String(open)); const m = $('.b-logbar-more', t); if (m) m.textContent = open ? '收起' : '日志'; }
+    const list = $('.b-loglist'); if (list) list.scrollTop = list.scrollHeight;
   };
-  const backHub = $('#backHub'); if (backHub) backHub.onclick = () => go('hub');
-  const again = $('#again'); if (again) again.onclick = () => go('battle');
+  const lt = $('#logToggle'); if (lt) lt.onclick = () => toggleLog(!S.logOpen);
+  const lc = $('#logClose'); if (lc) lc.onclick = () => toggleLog(false);
+  const rules = $('#battleRules'); if (rules) rules.onclick = () => showRules();
+  const backHub = $('#backHub'); if (backHub) backHub.onclick = () => { S.battle = null; go('hub'); };
+  const again = $('#again'); if (again) again.onclick = () => { S.battle = null; go('battle'); };
 }
 
-async function doPlay(uid, needsTarget) {
-  if (needsTarget) {
-    // 进入选目标
-    const r = await post('/api/battle/action', { playerId: S.playerId, action: { type: 'play', handUid: uid } });
-    if (r.ok) { S.battle = r.state; S.pendingPlayUid = uid; drawBattle(); }
-    else toast(r.error?.message || '无法使用', true);
+// ─── 对战动作：出牌 / 攻击 / 进化 / 取消 共用一个 busy 锁，防止双击重复提交 ───
+function handleBattleError(r, fallback) {
+  if (r.error?.code === 'NO_BATTLE') {
+    markBattle(false);
+    toast('这局对战已失效，请重新开始', true);
+    S.battle = null;
+    go('hub');
+    return;
+  }
+  if (r.error?.code === 'NO_ACCOUNT') return; // 由 api() 统一提示「存档已重置」
+  toast(r.error?.message || fallback, true);
+}
+
+async function act(action, { fallback = '非法动作', onOk } = {}) {
+  if (S.busy || S.replaying || !S.battle) return null;
+  S.busy = true;
+  $('.battle')?.classList.add('busy');
+  const prev = S.battle;
+  let r;
+  try { r = await post('/api/battle/action', { playerId: S.playerId, action }); } finally { S.busy = false; }
+  if (S.screen !== 'battlePlay' || S.battle !== prev) return r; // 等待期间已离开对局
+  if (r.ok) {
+    S.battle = r.state;
+    noteReward(r);
+    onOk?.(r.state);
+    drawBattle({ fx: diffFx(prev, r.state) });
   } else {
-    const r = await post('/api/battle/action', { playerId: S.playerId, action: { type: 'play', handUid: uid } });
-    if (r.ok) { S.battle = r.state; drawBattle(); }
-    else toast(r.error?.message || '无法使用', true);
+    $('.battle')?.classList.remove('busy');
+    handleBattleError(r, fallback);
+  }
+  return r;
+}
+
+function doPlay(uid) {
+  return act({ type: 'play', handUid: uid }, {
+    fallback: '无法使用',
+    onOk: (st) => { S.pendingPlayUid = st.phase === 'awaitingTarget' ? uid : null; }
+  });
+}
+
+function resolveTarget(targetUid) {
+  const b = S.battle;
+  if (!b) return;
+  if (b.phase === 'awaitingTarget' && S.pendingPlayUid) {
+    const valid = (b.targetOptions || []).some((o) => o.uid === targetUid);
+    if (!valid) { toast(targetUid === 'leader' ? '这张卡只能以随从为目标' : '无效目标', true); return; }
+    act({ type: 'play', handUid: S.pendingPlayUid, target: targetUid }, { fallback: '无效目标', onOk: () => { S.pendingPlayUid = null; } });
+  } else if (S.selAttacker) {
+    const opts = b.attackTargets?.[S.selAttacker] || [];
+    if (!opts.some((o) => o.uid === targetUid)) {
+      const guard = b.players.opponent.field.some((f) => (f.keywords || []).includes('guard'));
+      toast(guard ? '对手有守护随从：必须先攻击守护随从' : targetUid === 'leader' ? '这个随从本回合只能攻击随从' : '无效目标', true);
+      return;
+    }
+    const attackerUid = S.selAttacker;
+    act({ type: 'attack', attackerUid, targetUid }, { fallback: '无法攻击', onOk: () => { S.selAttacker = null; } });
   }
 }
 
-async function resolveTarget(targetUid) {
-  if (S.battle.phase === 'awaitingTarget' && S.pendingPlayUid) {
-    const valid = (S.battle.targetOptions || []).some((o) => o.uid === targetUid);
-    if (!valid) { toast('无效目标', true); return; }
-    const r = await post('/api/battle/action', { playerId: S.playerId, action: { type: 'play', handUid: S.pendingPlayUid, target: targetUid } });
-    S.pendingPlayUid = null;
-    if (r.ok) { S.battle = r.state; drawBattle(); } else toast(r.error?.message || '无效目标', true);
-  } else if (S.selAttacker) {
-    const valid = (S.battle.attackTargets?.[S.selAttacker] || []).some((o) => o.uid === targetUid);
-    if (!valid) { toast('无效目标', true); return; }
-    const r = await post('/api/battle/action', { playerId: S.playerId, action: { type: 'attack', attackerUid: S.selAttacker, targetUid } });
-    S.selAttacker = null;
-    if (r.ok) { S.battle = r.state; drawBattle(); } else toast(r.error?.message || '无法攻击', true);
+async function doConcede(btn) {
+  if (S.busy || S.replaying || !S.battle) return;
+  // 投降紧挨结束回合，手机上容易误触：3 秒内再点一次才生效
+  if (!(S.concedeArmedAt && Date.now() - S.concedeArmedAt < 3000)) {
+    S.concedeArmedAt = Date.now();
+    btn.textContent = '确认投降？';
+    btn.classList.add('armed');
+    setTimeout(() => { if (btn.isConnected) { btn.textContent = '投降'; btn.classList.remove('armed'); } }, 3000);
+    return;
   }
+  S.concedeArmedAt = 0;
+  S.busy = true;
+  let r;
+  try { r = await post('/api/battle/concede', { playerId: S.playerId }); } finally { S.busy = false; }
+  if (r.ok) { S.conceded = true; S.battle = r.state; noteReward(r); drawBattle(); } else handleBattleError(r, '投降失败');
 }
 
 async function doEndTurn() {
-  if (S.busy) return;
+  if (S.busy || S.replaying || !S.battle) return;
   S.busy = true;
   S.selAttacker = null; S.pendingPlayUid = null;
+  const before = S.battle;
   const btn = $('#endTurnBtn');
   if (btn) { btn.disabled = true; btn.textContent = '对手行动中…'; }
-  const r = await post('/api/battle/end-turn', { playerId: S.playerId });
-  S.busy = false;
-  if (!r.ok) { toast(r.error?.message || '回合失败', true); return; }
-  S.battle = r.state;
-  drawBattle();
-  if (r.aiActions?.length) {
-    const played = r.aiActions.filter((a) => a.type === 'play').length;
-    const atk = r.aiActions.filter((a) => a.type === 'attack').length;
-    if (played || atk) toast(`对手：出${played}牌 · 攻击${atk}次`);
+  let r;
+  try { r = await post('/api/battle/end-turn', { playerId: S.playerId }); } finally { S.busy = false; }
+  if (S.screen !== 'battlePlay' || S.battle !== before) return;
+  if (!r.ok) { handleBattleError(r, '回合失败'); if (S.battle) drawBattle(); return; }
+  noteReward(r);
+  await replayAiTurn(before, r.state, r.aiActions || []);
+}
+
+// ═══ AI 回合回放 ═══
+// 在「回合前」的盘面副本上按 aiActions 逐步重演（规则与 cards/battle.mjs 一致），
+// 每步高亮行动的卡和目标、弹出伤害数字、阵亡的卡淡出，并显示该步对应的日志行（契约 K-7 的 logFrom/logTo）。
+// 回放只是演出：结束后一律以服务器返回的最终状态为准。
+const STEP_MS = 650;
+let simSeq = 0;
+const clone = (o) => JSON.parse(JSON.stringify(o));
+
+function replayWait(ms) {
+  return new Promise((ok) => {
+    const t = setTimeout(() => { S.replayWake = null; ok(); }, ms);
+    S.replayWake = () => { clearTimeout(t); S.replayWake = null; ok(); };
+  });
+}
+
+function simFind(m, key, uid) { return m.players[key].field.find((f) => f.uid === uid) || null; }
+function simDamageLeader(m, key, n) {
+  if (n <= 0) return;
+  const L = m.players[key].leader;
+  const absorbed = Math.min(L.armor || 0, n);
+  L.armor = (L.armor || 0) - absorbed;
+  L.hp -= n - absorbed;
+}
+function simHeal(m, key, n) { const L = m.players[key].leader; L.hp = Math.min(L.maxHp, L.hp + Math.max(0, n)); }
+function simDamageFollower(f, n, bane = false) {
+  if (!f || (n <= 0 && !bane)) return;
+  f.health -= n;
+  if (bane && n > 0) f.health = 0;
+}
+function simDraw(m, key) {
+  const p = m.players[key];
+  if ((p.deckCount ?? 1) <= 0) { p.fatigue = (p.fatigue || 0) + 1; simDamageLeader(m, key, p.fatigue); return; }
+  if (p.deckCount != null) p.deckCount -= 1;
+  if (p.hand.length >= RULE('MAX_HAND', 9)) return;
+  p.hand.push({ uid: `sim${++simSeq}`, hidden: true });
+}
+function simEffects(m, key, effects, source, target) {
+  const foe = key === 'player' ? 'opponent' : 'player';
+  for (const e of effects || []) {
+    const n = e.amount || 0;
+    if (e.type === 'draw') for (let i = 0; i < (n || 1); i++) simDraw(m, key);
+    else if (e.type === 'heal') simHeal(m, key, n);
+    else if (e.type === 'gainArmor') m.players[key].leader.armor = (m.players[key].leader.armor || 0) + n;
+    else if (e.type === 'damage') {
+      if (e.targeting === 'enemyLeader') simDamageLeader(m, foe, n);
+      else if (e.targeting === 'allEnemyFollowers') m.players[foe].field.forEach((f) => simDamageFollower(f, n));
+      else if (e.targeting === 'enemyFollower') simDamageFollower(simFind(m, foe, target), n);
+      else if (e.targeting === 'enemyAny') { if (target === 'leader') simDamageLeader(m, foe, n); else simDamageFollower(simFind(m, foe, target), n); }
+    } else if (e.type === 'destroy') {
+      const f = simFind(m, foe, target); if (f) f.health = 0;
+    } else if (e.type === 'buff') {
+      const buff = (f) => { if (!f) return; f.attack += e.attack || 0; f.maxHealth += e.health || 0; f.health += e.health || 0; };
+      if (e.targeting === 'friendlyFollower') buff(simFind(m, key, target));
+      else if (e.targeting === 'otherFriendlyFollowers') m.players[key].field.forEach((f) => { if (f.uid !== source?.uid) buff(f); });
+      else if (e.targeting === 'allFriendlyFollowers') m.players[key].field.forEach(buff);
+    }
   }
+}
+function simCleanup(m) { for (const key of ['player', 'opponent']) m.players[key].field = m.players[key].field.filter((f) => f.health > 0); }
+
+function boardForReplay(before) {
+  const m = clone(before);
+  for (const k of ['legalPlays', 'evolvable', 'attackTargets', 'targetOptions', 'pendingCardId']) delete m[k];
+  m.pending = null;
+  m.phase = 'main';
+  return m;
+}
+
+function simTurnStart(m, after) {
+  const o = m.players.opponent;
+  m.turn = (m.turn || 0) + 1;
+  m.activePlayer = 'opponent';
+  o.turnCount = (o.turnCount || 0) + 1;
+  o.pp.max = Math.min(RULE('MAX_PP', 10), o.turnCount);
+  o.pp.current = o.pp.max;
+  o.canEvolve = after.players.opponent.canEvolve;
+  o.evolvedThisTurn = false;
+  for (const f of o.field) { f.canAttack = true; f.canAttackLeader = true; f.attackedThisTurn = false; f.enteredThisTurn = false; }
+  if (!(m.firstPlayer === 'opponent' && o.turnCount === 1)) simDraw(m, 'opponent');
+}
+
+// 执行一步，返回本步的演出信息（死亡的随从先留在场上、生命 ≤ 0，渲染为淡出）
+function simApply(m, a) {
+  const key = 'opponent', foe = 'player';
+  const P = m.players[key];
+  const nameOf = (uid) => (uid === 'leader' ? '你的主战者' : (simFind(m, foe, uid) || simFind(m, key, uid))?.name || '');
+  if (a.type === 'play') {
+    const def = S.cardById[a.cardId];
+    if (!def) return { caption: '对手出牌' };
+    let hi = P.hand.findIndex((h) => h.uid === a.handUid);
+    if (hi < 0) hi = P.hand.length - 1;
+    if (hi >= 0) P.hand.splice(hi, 1);
+    P.pp.current = Math.max(0, P.pp.current - def.cost);
+    const tName = a.target ? nameOf(a.target) : '';
+    const targetSide = a.target === 'leader' ? foe : undefined;
+    let inst = null;
+    if (def.type === 'follower') {
+      const kws = [...(def.keywords || [])];
+      inst = {
+        uid: a.handUid, cardId: def.id, name: def.name, type: def.type, cost: def.cost, keywords: kws, evolved: false,
+        canAttack: kws.includes('storm') || kws.includes('rush'), canAttackLeader: !kws.includes('rush') || kws.includes('storm'), attackedThisTurn: false, enteredThisTurn: true,
+        attack: def.attack, health: def.health, maxHealth: def.health, baseAttack: def.attack, baseHealth: def.health
+      };
+      P.field.push(inst);
+    }
+    simEffects(m, key, def.effects, inst, a.target);
+    const verb = def.type === 'spell' ? '施放了' : '召唤了';
+    return { actor: inst?.uid, target: a.target || null, targetSide, cast: def.type === 'spell' ? def : null, caption: `对手${verb} ${def.name}${tName ? ` → ${tName}` : ''}` };
+  }
+  if (a.type === 'attack') {
+    const att = simFind(m, key, a.attackerUid);
+    if (!att) return { caption: '对手攻击' };
+    const tName = nameOf(a.targetUid);
+    att.canAttack = false;
+    att.attackedThisTurn = true;
+    const drain = (att.keywords || []).includes('drain');
+    if (a.targetUid === 'leader') {
+      simDamageLeader(m, foe, att.attack);
+      if (drain) simHeal(m, key, att.attack);
+    } else {
+      const t = simFind(m, foe, a.targetUid);
+      if (t) {
+        const aa = att.attack, ta = t.attack;
+        simDamageFollower(t, aa, (att.keywords || []).includes('bane'));
+        simDamageFollower(att, ta, (t.keywords || []).includes('bane'));
+        if (drain && aa > 0) simHeal(m, key, aa);
+      }
+    }
+    return { actor: att.uid, target: a.targetUid, targetSide: a.targetUid === 'leader' ? foe : undefined, caption: `${att.name} 攻击 ${tName}` };
+  }
+  if (a.type === 'evolve') {
+    const f = simFind(m, key, a.uid);
+    if (!f) return { caption: '对手进化' };
+    if (!f.evolved) {
+      const bonus = RULE('EVOLVE_BONUS', 2);
+      // 与 cards/battle.mjs 的 evolvedAttackRights 一致：刚入场即进化只获得突进
+      const fresh = f.enteredThisTurn ?? (!f.canAttack || f.canAttackLeader === false);
+      f.evolved = true; f.attack += bonus; f.health += bonus; f.maxHealth += bonus;
+      f.canAttack = !f.attackedThisTurn;
+      f.canAttackLeader = f.attackedThisTurn ? f.canAttackLeader !== false : (!fresh || (f.keywords || []).includes('storm'));
+      P.ep = Math.max(0, (P.ep || 0) - 1);
+      P.evolvedThisTurn = true;
+    }
+    return { actor: f.uid, caption: `${f.name} 进化！` };
+  }
+  return { caption: '' };
+}
+
+// 两个盘面之间的差异 → 伤害 / 治疗 / 强化数字，消失的随从（阵亡淡出），新入场的随从
+function diffFx(prev, next) {
+  const fx = { floats: [], ghosts: { player: [], opponent: [] }, entering: new Set() };
+  if (!prev || !next) return fx;
+  for (const key of ['player', 'opponent']) {
+    const P = prev.players[key], N = next.players[key];
+    const nmap = new Map(N.field.map((f) => [f.uid, f]));
+    const pmap = new Map(P.field.map((f) => [f.uid, f]));
+    P.field.forEach((f, i) => {
+      if (f.health <= 0) return;
+      const n = nmap.get(f.uid);
+      if (!n) { fx.ghosts[key].push({ inst: f, index: i }); fx.floats.push({ uid: f.uid, text: '击破', kind: 'ko' }); return; }
+      const da = n.attack - f.attack;
+      const dmh = (n.maxHealth ?? n.health) - (f.maxHealth ?? f.health);
+      const dmg = f.health + Math.max(0, dmh) - n.health;
+      if (dmg > 0) fx.floats.push({ uid: n.uid, text: `−${dmg}`, kind: 'dmg' });
+      if (da > 0 || dmh > 0) fx.floats.push({ uid: n.uid, text: `+${Math.max(0, da)}/+${Math.max(0, dmh)}`, kind: 'buff' });
+    });
+    N.field.forEach((f) => { if (!pmap.has(f.uid)) fx.entering.add(f.uid); });
+    const pl = P.leader, nl = N.leader;
+    const lost = Math.max(0, pl.hp - nl.hp) + Math.max(0, (pl.armor || 0) - (nl.armor || 0));
+    if (lost > 0) fx.floats.push({ side: key, text: `−${lost}`, kind: 'dmg' });
+    if (nl.hp > pl.hp) fx.floats.push({ side: key, text: `+${nl.hp - pl.hp}`, kind: 'heal' });
+    if ((nl.armor || 0) > (pl.armor || 0)) fx.floats.push({ side: key, text: `+${nl.armor - (pl.armor || 0)} 护甲`, kind: 'armor' });
+  }
+  return fx;
+}
+
+function spawnFloats(list) {
+  const layer = $('.fx-layer');
+  const host = $('.battle');
+  if (!layer || !host || !list?.length) return;
+  const base = host.getBoundingClientRect();
+  const stack = new Map();
+  for (const f of list) {
+    const el = f.uid ? document.querySelector(`[data-fx="${CSS.escape(f.uid)}"]`) : $(`.b-leader.${f.side} .portrait`);
+    if (!el) continue;
+    const r = el.getBoundingClientRect();
+    const k = f.uid || f.side;
+    const n = stack.get(k) || 0;
+    stack.set(k, n + 1);
+    const s = document.createElement('span');
+    s.className = `float ${f.kind}`;
+    s.textContent = f.text;
+    s.style.left = `${r.left - base.left + r.width / 2}px`;
+    s.style.top = `${r.top - base.top + r.height * 0.35 + n * 20}px`;
+    layer.appendChild(s);
+    setTimeout(() => s.remove(), 1100);
+  }
+}
+
+async function replayAiTurn(before, after, actions) {
+  const steps = actions.filter((a) => a.type !== 'endTurn');
+  const aiTurn = (before.turn || 0) + 1;
+  const ranged = actions.length > 0 && actions.every((a) => Number.isInteger(a.logFrom) && Number.isInteger(a.logTo));
+  const hasAiTurn = (after.log || []).some((l) => l.turn === aiTurn);
+  S.replaying = true;
+  S.skipReplay = false;
+  try {
+    if (hasAiTurn) {
+      const m = boardForReplay(before);
+      simTurnStart(m, after);
+      // AI 回合在最终日志中的起点：有区间时取第一步的 logFrom；旧数据按回合号定位新增的行
+      const start = ranged ? actions[0].logFrom : Math.max(0, after.log.findIndex((l) => l.turn > before.turn));
+      drawBattle({ board: m, replay: { caption: `对手的第 ${m.players.opponent.turnCount} 回合`, log: after.log.slice(0, start + 1) } });
+      await replayWait(STEP_MS * 0.7);
+      if (ranged) {
+        for (const a of steps) {
+          if (S.skipReplay || S.screen !== 'battlePlay') break;
+          const prev = clone(m);
+          const info = simApply(m, a);
+          drawBattle({ board: m, fx: diffFx(prev, m), replay: { ...info, log: after.log.slice(0, a.logTo) } });
+          await replayWait(STEP_MS);
+          simCleanup(m);
+        }
+      } else {
+        // 兼容：没有 logFrom/logTo 时，把新增的日志行逐条回放
+        const end = after.log.reduce((n, l, i) => (l.turn === aiTurn ? i + 1 : n), start + 1);
+        for (let i = start + 1; i < end; i++) {
+          if (S.skipReplay || S.screen !== 'battlePlay') break;
+          drawBattle({ board: m, replay: { caption: after.log[i].msg, log: after.log.slice(0, i + 1) } });
+          await replayWait(STEP_MS);
+        }
+      }
+    }
+  } finally {
+    S.replaying = false;
+    S.replayWake = null;
+  }
+  if (S.screen !== 'battlePlay') return;
+  S.battle = after;
+  if (hasAiTurn) {
+    const n = (t) => steps.filter((a) => a.type === t).length;
+    const parts = [n('play') && `出牌 ${n('play')} 张`, n('attack') && `攻击 ${n('attack')} 次`, n('evolve') && `进化 ${n('evolve')} 次`].filter(Boolean);
+    S.notes.push({ turn: aiTurn, msg: `对手本回合：${parts.length ? parts.join(' · ') : '没有出牌或攻击'}` });
+  }
+  // 最终以服务器状态为准；新抽到的手牌播放入手动画
+  const had = new Set(before.players.player.hand.map((h) => h.uid));
+  const fx = { floats: [], ghosts: { player: [], opponent: [] }, entering: new Set(after.players.player.hand.filter((h) => !had.has(h.uid)).map((h) => h.uid)) };
+  drawBattle({ fx });
 }
 
 // ─── 导航绑定 ───
 function bindNav() {
-  document.querySelectorAll('[data-nav]').forEach((el) => {
+  $$('[data-nav]').forEach((el) => {
     el.onclick = () => go(el.dataset.nav);
   });
 }
 
+// ─── 账户（契约 R-4：和主游戏共用 localStorage「moonlit:playerId」）───
+// 没有可用账户时像主游戏那样新建（POST /api/account/create，名字取主游戏记住的称呼，没有就叫「旅行者」），
+// 并写回同一个键：之后主游戏、主线播放器读到的也是这个账户。
+async function createAccount() {
+  const r = await post('/api/account/create', { playerName: (store.get(NAME_KEY) || '').trim() || '旅行者' });
+  if (!r.ok || !r.account?.id) throw new Error(r.error?.message || '无法创建账户');
+  S.playerId = r.account.id;
+  store.set(ACCOUNT_KEY, S.playerId);
+  await refreshSummary();
+}
+
+// 依次尝试主游戏的账户、旧版卡牌页单独记的账户；找到就用（旧账户迁移成共用账户），都不可用返回 false。
+// 网络错误直接抛出（不误建新号，同 app.js 的 loadOrCreateAccount）。
+async function adoptStoredAccount() {
+  const candidates = [store.get(ACCOUNT_KEY), store.get(LEGACY_CARD_ACCOUNT_KEY)]
+    .map((id) => (id || '').trim()).filter((id, i, list) => id && list.indexOf(id) === i);
+  let lost = false;
+  for (const id of candidates) {
+    S.playerId = id;
+    S.summary = null;
+    const r = await refreshSummary();
+    if (r.ok && S.summary) {
+      if (store.get(ACCOUNT_KEY) !== id) store.set(ACCOUNT_KEY, id);
+      if (store.get(LEGACY_CARD_ACCOUNT_KEY)) store.remove(LEGACY_CARD_ACCOUNT_KEY);
+      return true;
+    }
+    if (r.error?.code === 'NETWORK') throw new Error(r.error.message);
+    lost = true;
+  }
+  S.playerId = null;
+  S.summary = null;
+  S.resetNotice = lost; // 记住过账户，但服务器上已经没有了
+  return false;
+}
+
+// 会话中途发现账户不存在（服务器重启且没有存档、或存档过期）：提示「存档已重置」并重新建号
+async function onAccountLost() {
+  if (S.recovering || S.booting) return;
+  S.recovering = true;
+  try {
+    S.skipReplay = true; S.replayWake?.();
+    S.battle = null; S.resumable = null; S.selAttacker = null; S.pendingPlayUid = null;
+    closeModal();
+    await createAccount();
+    S.resetNotice = true;
+    toast('存档已重置', true);
+    await go('hub', { force: true });
+  } catch (err) {
+    toast(`存档已重置，且无法新建账户：${err.message}`, true);
+  } finally {
+    S.recovering = false;
+  }
+}
+
 // ─── 初始化 ───
 async function init() {
-  // 真实立绘加载失败时隐藏 <img>，露出底层程序化 SVG 美术（error 事件不冒泡，需捕获阶段）
+  // 卡面 / 头像图片加载失败时隐藏 <img>，露出底层程序化 SVG 美术或职业图标
+  // （CSP 禁止内联 onerror；error 事件不冒泡，需在捕获阶段统一监听）
   document.addEventListener('error', (e) => {
     const t = e.target;
-    if (t && t.tagName === 'IMG' && t.classList.contains('art-img')) t.style.display = 'none';
+    if (!t || t.tagName !== 'IMG') return;
+    if (t.classList.contains('art-img') || t.classList.contains('avatar-img')) {
+      t.style.display = 'none';
+      t.parentElement?.classList.add('img-failed');
+    }
   }, true);
+  document.addEventListener('keydown', (e) => {
+    // 弹层：Esc 关闭（与点遮罩、点「关闭」一致）
+    if (e.key === 'Escape' && modalOpen()) { closeModal(); return; }
+    // role=button 的非 <button> 元素（卡牌、可选目标）：Enter / 空格 等同点击
+    const t = e.target;
+    if ((e.key === 'Enter' || e.key === ' ') && t?.matches?.('[role="button"]:not(button):not(a)')) {
+      e.preventDefault();
+      t.click();
+    }
+  });
+  // 长按看详情后，吞掉随之而来的那一次 click（否则会把牌打出去 / 立刻关掉弹层）
+  document.addEventListener('pointerdown', () => { S.suppressClick = false; }, true);
+  document.addEventListener('click', (e) => {
+    if (!S.suppressClick) return;
+    S.suppressClick = false;
+    if (Date.now() - S.lpAt > 2000) return;
+    e.stopPropagation();
+    e.preventDefault();
+  }, true);
+  // 组牌有未保存的修改时，关页 / 刷新先确认
+  window.addEventListener('beforeunload', (e) => {
+    if (S.screen === 'deck' && deckDirty()) { e.preventDefault(); e.returnValue = ''; }
+  });
   try {
-    const [metaR, cardsR] = await Promise.all([get('/api/cards/meta'), get('/api/cards/all')]);
+    const [metaR, cardsR] = await Promise.all([get('/api/cards/meta'), get('/api/cards/all'), loadPaint()]);
+    if (!metaR.ok || !cardsR.ok) throw new Error(metaR.error?.message || cardsR.error?.message || '载入卡牌数据失败');
     S.meta = metaR;
     S.allCards = cardsR.cards;
     S.cardById = {};
     for (const c of cardsR.cards) S.cardById[c.id] = c;
-    // 玩家账户
-    S.playerId = localStorage.getItem('moonlit:cardPlayerId');
-    if (!S.playerId) {
-      const r = await post('/api/account/create', { playerName: '牌手' });
-      S.playerId = r.account.id;
-      localStorage.setItem('moonlit:cardPlayerId', S.playerId);
-    }
-    await refreshSummary();
+    S.logOpen = store.get('moonlit:cardLogOpen') === '1';
+    // 玩家账户：服务器端有存档；若本地记住的 id 在服务器上已不存在（存档被重置），提示后重新建号
+    if (!(await adoptStoredAccount())) await createAccount();
+    S.booting = false;
     go('hub');
   } catch (err) {
-    app().innerHTML = `<div class="boot"><div class="boot-logo">连接失败</div><div class="boot-sub">${err.message}</div><div class="boot-loading">请确认服务器已启动</div></div>`;
+    app().innerHTML = '<div class="boot"><div class="boot-logo">连接失败</div><div class="boot-sub"></div><div class="boot-loading">请确认服务器已启动</div></div>';
+    $('.boot-sub').textContent = err.message;
   }
 }
 

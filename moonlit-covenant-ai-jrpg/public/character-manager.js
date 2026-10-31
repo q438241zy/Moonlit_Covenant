@@ -1,0 +1,951 @@
+// 月蚀契约 · 角色管理系统（独立原型页 character-manager.html 的脚本）
+//
+// 页面受 CSP 保护（script-src 'self'）：不能有内联 <script> 与 on*= 事件属性。
+// 所有可交互元素（包括模板字符串里动态生成的）只写 data-action（+ data-* 参数），
+// 由文件末尾按事件类型（click / change / input）委托监听，查 ACTIONS 动作表分发。
+// 本模块不向 window 暴露任何全局变量。
+import { icon } from '/icons.js';
+
+// ============ DATA STORE ============
+const STORAGE_KEY = 'moonlit_char_manager';
+// 默认人设变更时递增：旧存档中的默认角色会被替换为新版本，自建角色保留
+// v3：去掉结局前剧透、改正正典事实、统一「塞雷娜」「米娅·玲」写法、清理过时里程碑
+// v4（核#12 · B1/B15）：莉亚、米娅、塞雷娜换成正典人设（设定集/03：盾战士 / 魔具发明师 / 夜鸦公国的暗系魔法师），
+//     不再用银轨号 IF 外传的称号与背景；新增「国家」「武器」两栏（正典武器名）；只写到正式章节已揭示的程度
+// v5（核#14 · 提案第八节#43 劇透守门）：本页不按进度遮挡，所以只写开局就能公开的内容——莉莉丝、艾拉不写姓
+//     （主线正式20才揭晓）、不写姐妹关系与家族往事，莉莉丝的故国也留到那一章；旧存档里的这两位默认人设一并换掉
+const PROFILE_VERSION = 5;
+
+const DEFAULT_CHARACTERS = [
+  {
+    id: 'lia', name: '莉亚·赫斯特', nameEn: 'Lia Hest', age: 19, height: '172cm',
+    nation: '赤焰王国', weapon: '塔盾“赤誓”＋细身长剑“断章”',
+    hair: '赤红高马尾，左侧一缕近黑的暗红挑染', eyes: '琥珀金（右眼下一道细疤）',
+    profession: '盾战士 / 前锋 · 护援反击', element: '火·土辅律',
+    personality: '严肃、守时、讲规则，说话像下命令，对准备不足的人毫不客气。她不是天生冷淡，而是相信严格能减少死亡：看到有人冲出阵型，会直接用盾把人拍回去。对弱者却格外耐心，会默默修补队友的装备。晨钟镇冒险者公会的高阶成员。',
+    quirks: ['战前必查药剂、护具与撤退路线', '塔盾边缘满是她自己敲上的修补铆钉', '谁笑她爱吃甜点，她就把谁的训练量加倍'],
+    playerInteraction: '起初把亚克看成热血有余、纪律不足的麻烦新手；亚克肯执行战术、不抢指挥，她才会把后背交给他。私下拿草莓蛋糕或她的过度认真开玩笑可以——她会反击，或直接让人闭嘴。公开否定她的能力、拿同伴的性命开玩笑、临战失约，都是雷区。',
+    likes: ['草莓蛋糕（坚称是『高效率糖分补给』）', '准时与周全的准备', '肯执行战术的队友'],
+    dislikes: ['拿同伴的性命开玩笑', '临战失约', '把鲁莽冒充勇敢'],
+    relations: [
+      { target: 'mia', type: 'bond', desc: '安全规范遇上爆炸天才：一个先确认撤退路线，一个先按下开关' },
+      { target: 'serena', type: 'rival', desc: '边界冲突最强的一对，真到守阵时却是最可靠的防守组合' },
+      { target: 'freya', type: 'bond', desc: '两位照顾者，一眼就能识破对方在逞强' }
+    ]
+  },
+  {
+    id: 'mia', name: '米娅·玲', nameEn: 'Mia Lin', age: 18, height: '158cm',
+    nation: '铸金联邦', weapon: '多功能魔导棍“叮当三号”',
+    hair: '青蓝短发（自剪碎发，发尾霓虹渐变），右侧别扳手形发卡，戴哑光钛合金的机械猫耳接收器', eyes: '亮青色（鼻尖一颗小痣）',
+    profession: '魔具发明师 / 范围攻击 · 弱点扫描', element: '金·雷术',
+    personality: '语速快、注意力跳跃，看到新素材会忘记危险，把爆炸称作“非计划拆解”。但她并非无能：她能用废料造出奇迹，只是安全意识长期追不上想象力。乐于分享知识，讨厌权威垄断技术，想做出普通人也负担得起的魔具。出身工匠家庭——母亲柯拉经营修理铺，父亲林铎曾在联邦魔具院工作。',
+    quirks: ['给装置编号却总记错', '严肃会议上会偷偷画零件图', '身边漂浮着球形小无人机“零号”'],
+    playerInteraction: '喜欢别人认真听她解释——“你不懂公式没关系，你有认真听完”；肯让人看未完成的设计，是很高的信任。给失败原型起古怪名字、吐槽“非计划拆解”都可以，前提是不否定她的专业。擅自拆她的装置、把失败归咎于她的年龄、要她制造伤害平民的工具，都是雷区。',
+    likes: ['被认真听完解释', '新素材和拆开又装回去的东西', '普通人也用得起的魔具'],
+    dislikes: ['别人擅自拆她的装置', '把失败归咎于她的年龄', '被要求制造伤害平民的工具'],
+    relations: [
+      { target: 'lia', type: 'bond', desc: '爆炸天才遇上安全规范：试作机通电前，总得先过莉亚那一关' },
+      { target: 'serena', type: 'bond', desc: '把塞雷娜的诡异社交当成可改进的流程，塞雷娜反而接受这种直接反馈' }
+    ]
+  },
+  {
+    id: 'serena', name: '塞雷娜·诺克斯', nameEn: 'Serena Nox', age: 19, height: '168cm',
+    nation: '夜鸦公国', weapon: '黑曜法杖“无眠镜”',
+    hair: '紫黑长直发，发尾渐变为月白；左侧细辫串着银色月相盘发饰', eyes: '淡紫（虹膜有极细星轨纹）',
+    profession: '暗系魔法师 / 诅咒 · 控制干扰', element: '暗·镜术',
+    personality: '神秘、冷静、机敏，嘴上不饶人，习惯先从镜面与影子里掌握情报再开口。出身夜鸦公国的诺克斯家族。她会处理队伍难以面对的脏活，也会护着被歧视的暗术者；表情通常平静，真正生气时反而笑得温柔。',
+    quirks: ['会把普通社交写成流程表', '说危险的话时表情格外认真', '右手戴半截白手套，胸前挂闭合眼睑形银吊坠'],
+    playerInteraction: '习惯观察细节、只说半句真话，测试亚克会不会主动诚实。等她自己承认了观察欲，再用冷幽默提醒“镜子也该休息”可以——她会用更阴冷的玩笑回敬。突然失联、用虚假的承诺安抚她、当众揭她的伤疤，都是雷区。',
+    likes: ['主动说真话的人', '镜面与影子', '直截了当的反馈'],
+    dislikes: ['突然失联', '用虚假的承诺安抚', '被当众揭开伤疤'],
+    relations: [
+      { target: 'lia', type: 'rival', desc: '谁也不肯先让步的边界之争，却能组成最可靠的防守组合' },
+      { target: 'mia', type: 'bond', desc: '米娅的直接反馈让她意外地放松' },
+      { target: 'evelyn', type: 'bond', desc: '暗与圣，一起证明属性不决定道德' }
+    ]
+  },
+  {
+    id: 'freya', name: '芙蕾娅·霜华', nameEn: 'Freya Frostbloom', age: 19, height: '170cm',
+    nation: '霜潮王国', weapon: '长法杖“春眠”',
+    hair: '青蓝色波浪长发，发间别冰晶发梳', eyes: '暖琥珀色',
+    profession: '冰系魔法师 / 守墓人 · 冻结控制', element: '水·冰',
+    personality: '像可靠的大姐姐，说话轻柔，善于照顾伤员和调停争执。擅长察觉别人的需要，却从不表达自己的需要。数年前为阻止魔力瘟疫冻结了整座地下祭堂，把生死未卜的同伴也封在冰里——她害怕解冻之后，必须承认自己没能救下所有人。',
+    quirks: ['自然地递热饮、替人整理围巾', '用笑容避开别人对她状况的关心', '酒量差却热衷研究热酒，冷笑话只有米娅会认真分析'],
+    playerInteraction: '偶尔叫玩家“小弟弟”，但玩家做出成熟判断时会认真改口叫“队长”；喜欢并肩安静做事，也喜欢偶尔被别人照顾。逼她立刻放下过去、或把自我牺牲称作成熟，会让她把心门重新冻上。',
+    likes: ['热饮', '并肩安静做事', '偶尔被照顾'],
+    dislikes: ['被逼着立刻放下过去', '把自我牺牲称作成熟', '用世界危机否定休息'],
+    relations: [
+      { target: 'mia', type: 'bond', desc: '米娅是唯一会认真分析她冷笑话的人' },
+      { target: 'serena', type: 'bond', desc: '两个习惯把情绪藏起来的人，彼此心照不宣' }
+    ]
+  },
+  {
+    id: 'lilith', name: '莉莉丝', nameEn: 'Lilith', age: 19, height: '168cm',
+    nation: '（尚未揭晓）', weapon: '双匕首“昼盲”与“夜醒”',
+    hair: '金色长发高束成马尾，鼻梁贴一块小创可贴', eyes: '金色',
+    profession: '暗影刺客 / 高速单体输出', element: '木·暗',
+    personality: '警惕、尖锐、行动先于思考，身手像猫科动物一样敏捷。很少谈起自己的来历，只知道她在城市的暗处长大、靠匕首活了下来。对街头孩子和流浪动物异常温柔；害怕亲近的人被夺走，所以习惯先离开或先攻击。',
+    quirks: ['很喜欢被摸头却嘴硬，真被摸会僵住几秒', '黑金轻甲、单侧短披风，双匕首“昼盲”“夜醒”从不离身', '动作像猫科动物，落地没有声音'],
+    playerInteraction: '对玩家的安危容易冲动；训练后递水、给她明确而不带怜悯的肯定最有效。从背后突然抓住她、拿她和别人比较、用怜悯的口气对她说话，都是雷区。',
+    likes: ['安静的陪伴', '被认可', '街头的流浪猫'],
+    dislikes: ['被同情', '被拿来和别人比较', '有人从背后靠近'],
+    relations: [
+      { target: 'ayla', type: 'rival', desc: '刺客与光明骑士，一照面就针锋相对，谁也不肯先收手' },
+      { target: 'serena', type: 'rival', desc: '一度把亚克当成被塞雷娜迷惑的教团棋子' }
+    ]
+  },
+  {
+    id: 'evelyn', name: '伊芙琳·星歌', nameEn: 'Evelyn Starsong', age: 18, height: '160cm',
+    nation: '圣辉教国', weapon: '圣歌弓“微光”与祈祷铃',
+    hair: '浅金偏白长发，编成松散侧辫，额前戴羽翼形圣冠', eyes: '星蓝色',
+    profession: '圣教圣女 / 纯结持有者 · 治疗净化', element: '光·纯结',
+    personality: '胆小、爱哭、说话很轻，常从柱子、窗边或人群后远远看着亚克。但她并不无能——有人受伤时会一边流泪一边坚持施法。从小在白塔圣都的圣堂长大，发言、服装、朋友甚至喜欢的花都被规定；她害怕自己真实的愿望会让所有信徒失望。',
+    quirks: ['一聊到草莓蛋糕就会突然非常坚定', '偷偷练习普通人打招呼的方式', '记得每个普通人的名字和伤势'],
+    playerInteraction: '需要不被催促的陪伴：远远挥手、写着具体内容的小纸条都会让她开心很久。称她“完美圣女”、替她回答问题、把哭泣当成无能、要求她为团队牺牲，都是雷区。',
+    likes: ['草莓蛋糕', '小纸条', '不被催促的陪伴'],
+    dislikes: ['被称作“完美圣女”', '被替自己做决定', '被要求牺牲'],
+    relations: [
+      { target: 'lia', type: 'bond', desc: '因为草莓蛋糕和莉亚结成了意外的同盟' },
+      { target: 'ayla', type: 'bond', desc: '同在圣辉教国长大，艾拉总想保护她' }
+    ]
+  },
+  {
+    id: 'ophelia', name: '奥菲利亚·使诺德', nameEn: 'Ophelia Shinod', age: 19, height: '172cm',
+    nation: '龙脊古国', weapon: '龙纹法杖“祖语”（半龙形用爪与尾）',
+    hair: '铜红色狂野长发，额侧一对小龙角', eyes: '金紫异色瞳（左金右紫）',
+    profession: '龙族圣女 / 变形者 · 爆发压制', element: '土·龙术',
+    personality: '外表端庄自信，带着古老的礼仪感，实际非常好奇，对人类日常缺乏常识，爱收集人类的小物件。她能读取历代龙王的记忆，也因此被要求放弃个人偏好，成为“所有祖先共同的声音”——她害怕拒绝祖先之后，自己就不再算龙族。',
+    quirks: ['幼龙形态会轻咬人的头顶确认气味、叼走餐具、睡在金币堆上', '恢复人形后假装什么都没发生', '笑起来露出一颗小虎牙'],
+    playerInteraction: '用轻咬头顶表达亲近，玩家可以接受、制止，或改成碰拳——她都会记住。交换名字、分享食物、触碰角或鳞片前先询问，都会让她高兴。把龙族当坐骑、要求她代表所有龙，是雷区。',
+    likes: ['人类的小物件', '分享食物', '交换名字'],
+    dislikes: ['被当成坐骑', '被要求代表所有龙', '被鼓励吞下全部祖忆'],
+    relations: [
+      { target: 'evelyn', type: 'bond', desc: '对伊芙琳的“纯结”充满好奇' },
+      { target: 'lilith', type: 'rival', desc: '莉莉丝是少数能察觉她悄悄靠近的人' }
+    ]
+  },
+  {
+    id: 'ayla', name: '艾拉', nameEn: 'Ayla', age: 18, height: '165cm',
+    nation: '圣辉教国', weapon: '光剑“晨罚”＋圆盾',
+    hair: '金色齐肩短发', eyes: '明亮的蓝色',
+    profession: '光明骑士 / 快速坦克 · 反击', element: '光·圣雷',
+    personality: '开朗、好胜、行动大胆，擅长用轻佻的挑衅逼对手认真。在圣辉教国的骑士团里长大，把服从命令当成自己的本分，把“光明骑士”的身份当成自己仍有价值的证明。观察细致，能察觉别人不敢说出口的犹豫。',
+    quirks: ['挑衅成功后若被认真反击，会短暂慌乱，再装作一切都在计划内', '蓝金轻甲的披风内侧，缝着一枚从不示人的旧徽记', '光剑“晨罚”总斜挎在肩后'],
+    playerInteraction: '喜欢公平决斗和明确的规则，爱用“这点力气也想保护别人？”挑战玩家；被坚定地说“不”，她反而会认真起来。把她当成别人的影子、或用“服从命令”替她开脱，是雷区。',
+    likes: ['公平决斗', '明确的规则', '被认真对待'],
+    dislikes: ['被当成别人的附属', '无条件的赞美', '没有命令时的空白'],
+    relations: [
+      { target: 'lilith', type: 'rival', desc: '光明骑士与刺客：一个讲规则，一个只信自己的匕首' },
+      { target: 'evelyn', type: 'bond', desc: '一起在圣辉教国长大，习惯挡在她前面' }
+    ]
+  }
+];
+
+// Art asset types
+const ART_TYPES = ['立绘', '服装立绘', '战斗姿态', '表情差分_害羞', '表情差分_愤怒', '表情差分_微笑', 'Q版立绘', '羁绊技能演出', '受击/负伤'];
+
+// 已交付的原创矢量立绘（docs/ART-DIRECTION.md）：8 位女主的「立绘」（半身像 ×8）和
+// 「服装立绘」（每人 6 套，共 48 套）默认标为已完成。旧存档缺少的类型也按这里补默认值。
+const DEFAULT_ART_STATUS = Object.fromEntries(DEFAULT_CHARACTERS.map(c => [c.id, { '立绘': 'complete', '服装立绘': 'complete' }]));
+
+// Default milestones
+const DEFAULT_MILESTONES = [
+  { id: 'm1', phase: 'design', phaseLabel: '角色设定确认', date: '2026-07-20', chars: ['lia','mia','serena'], note: '莉亚、米娅、塞雷娜的设定按正典 设定集/03 确认（银轨号 IF 外传的设定另见 CHARACTER-DESIGN.md，不收录于此）' },
+  { id: 'm2', phase: 'design', phaseLabel: '角色设定确认', date: '2026-07-22', chars: ['freya','lilith','evelyn','ophelia','ayla'], note: '新增五人组设定完成' },
+  { id: 'm6', phase: 'final', phaseLabel: '最终定稿', date: '2026-10-09', chars: ['lia','mia','serena','freya','lilith','evelyn','ophelia','ayla'], note: '原创矢量半身立绘 ×8 + 服装立绘 ×48 交付（docs/ART-DIRECTION.md）' },
+];
+
+// 已过时的默认里程碑（立绘早已换成原创矢量）：升级到 v3 时从旧存档里移除
+const OBSOLETE_MILESTONE_IDS = new Set(['m3', 'm4', 'm5']);
+// 旧版默认里程碑的原文：升级时只替换玩家没改过的那条（note 与旧默认值一字不差），改过的保留
+const LEGACY_MILESTONE_NOTES = { m1: '月蚀契约三人组设定已从CHARACTER-DESIGN.md确认' };
+
+const PHASE_LABELS = { design:'角色设定确认', lineart:'线稿', coloring:'上色', final:'最终定稿', vfx:'动作/特效', integration:'整合测试' };
+const STATUS_LABELS = { 'complete': '已完成', 'in-progress': '进行中', 'not-started': '未开始' };
+const RELATION_LABELS = { sister: '姐妹', rival: '竞争', bond: '羁绊' };
+
+// ============ 美术资源（原创矢量立绘） ============
+// 本页沿用旧角色 id 'ayla'，美术资源统一使用 'aila'；自定义角色没有立绘时退回首字头像
+const ART_ID = { ayla: 'aila' };
+const PORTRAIT_IDS = new Set(['lia', 'mia', 'serena', 'freya', 'lilith', 'evelyn', 'ophelia', 'aila']);
+function portraitSrc(id) {
+  const artId = ART_ID[id] || id;
+  return PORTRAIT_IDS.has(artId) ? `/assets/portraits/${artId}.svg` : '';
+}
+
+// ============ STATE ============
+let characters = [];
+let artStatus = {};  // { charId: { artType: 'not-started'|'in-progress'|'complete' } }
+let milestones = [];
+let editingCharId = null;
+
+const $ = (id) => document.getElementById(id);
+const prefersReducedMotion = () => { try { return matchMedia('(prefers-reduced-motion: reduce)').matches; } catch { return false; } };
+const clone = (v) => JSON.parse(JSON.stringify(v));
+const list = (v) => (Array.isArray(v) ? v : []);
+const text = (v) => (v == null ? '' : String(v));
+// 角色数据可来自表单与导入的 JSON：插入模板前一律转义
+const esc = (v) => text(v).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+// ============ 数据清洗（本地存档与导入的 JSON 共用） ============
+// 渲染代码假定每个角色 / 关系 / 里程碑都是对象：逐项丢掉 null、数字、数组等坏条目，
+// 而不是让一条坏数据把整页渲染打断（旧版导入 {"milestones":[null]} 后页面会永久空白）。
+const isObj = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
+// 与「新增角色」表单同一规则；同时挡住 __proto__ 这类会污染对象原型的 id
+const CHAR_ID_RE = /^[A-Za-z][A-Za-z0-9_-]*$/;
+const scalarList = (v) => list(v).filter((x) => typeof x === 'string' || typeof x === 'number').map(String);
+
+function cleanCharacters(raw, dropped) {
+  const seen = new Set();
+  const out = [];
+  for (const c of list(raw)) {
+    if (!isObj(c) || typeof c.id !== 'string' || !CHAR_ID_RE.test(c.id) || seen.has(c.id)) { dropped.count++; continue; }
+    seen.add(c.id);
+    const relations = list(c.relations).filter((r) => isObj(r) && typeof r.target === 'string' && r.target);
+    dropped.count += list(c.relations).length - relations.length;
+    out.push({ ...c, quirks: scalarList(c.quirks), likes: scalarList(c.likes), dislikes: scalarList(c.dislikes), relations });
+  }
+  return out;
+}
+function cleanMilestones(raw, dropped) {
+  const out = [];
+  list(raw).forEach((m, i) => {
+    if (!isObj(m)) { dropped.count++; return; }
+    out.push({ ...m, id: text(m.id) || `m_import_${i}`, chars: scalarList(m.chars), date: m.date ? text(m.date) : null });
+  });
+  return out;
+}
+function cleanArtStatus(raw) {
+  if (!isObj(raw)) return {};
+  return Object.fromEntries(Object.entries(raw).filter(([, v]) => isObj(v)));
+}
+// 返回 { characters, artStatus, milestones, dropped }；顶层不是对象或没有角色数组时返回 null
+function sanitizeData(data) {
+  if (!isObj(data) || !Array.isArray(data.characters)) return null;
+  const dropped = { count: 0 };
+  const result = {
+    characters: cleanCharacters(data.characters, dropped),
+    artStatus: cleanArtStatus(data.artStatus),
+    milestones: Array.isArray(data.milestones) ? cleanMilestones(data.milestones, dropped) : [],
+  };
+  result.dropped = dropped.count;
+  return result;
+}
+
+function loadData() {
+  let data = null;
+  try { data = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null'); } catch { data = null; }
+  const clean = sanitizeData(data);
+  if (!clean) { initDefaults(); return; }
+  characters = clean.characters;
+  artStatus = clean.artStatus;
+  milestones = Array.isArray(data.milestones) ? clean.milestones : clone(DEFAULT_MILESTONES);
+  let dirty = clean.dropped > 0;
+  if ((Number(data.profileVersion) || 1) < PROFILE_VERSION) {
+    const defaults = new Map(DEFAULT_CHARACTERS.map((c) => [c.id, c]));
+    characters = characters.map((c) => (defaults.has(c.id) ? clone(defaults.get(c.id)) : c));
+    const defaultMilestones = new Map(DEFAULT_MILESTONES.map((m) => [m.id, m]));
+    milestones = milestones.filter((m) => !OBSOLETE_MILESTONE_IDS.has(m.id))
+      .map((m) => (Object.hasOwn(LEGACY_MILESTONE_NOTES, m.id) && m.note === LEGACY_MILESTONE_NOTES[m.id] && defaultMilestones.has(m.id) ? clone(defaultMilestones.get(m.id)) : m));
+    dirty = true;
+  }
+  ensureArtStatus();
+  if (dirty) saveData();
+}
+
+// Ensure all characters and art types exist（缺的类型取默认值：默认女主的立绘 / 服装立绘为已完成）
+function ensureArtStatus() {
+  characters.forEach(c => {
+    if (!isObj(artStatus[c.id])) artStatus[c.id] = {};
+    ART_TYPES.forEach(t => {
+      if (!Object.hasOwn(STATUS_LABELS, text(artStatus[c.id][t]))) artStatus[c.id][t] = DEFAULT_ART_STATUS[c.id]?.[t] || 'not-started';
+    });
+  });
+}
+
+function initDefaults() {
+  characters = clone(DEFAULT_CHARACTERS);
+  artStatus = clone(DEFAULT_ART_STATUS);
+  milestones = clone(DEFAULT_MILESTONES);
+  ensureArtStatus();
+  saveData();
+}
+
+function saveData() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ profileVersion: PROFILE_VERSION, characters, artStatus, milestones })); } catch { /* 存储不可用时只保留内存状态 */ }
+}
+
+let toastTimer = 0;
+function showToast(msg) {
+  const t = $('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+function getCharById(id) { return characters.find(c => c.id === id); }
+function getCharAccent(id) {
+  const map = { lia:'#ff6b7c', mia:'#5ed7ff', serena:'#b58cff', freya:'#8fd4f5', lilith:'#c084fc', evelyn:'#facc15', ophelia:'#f472b6', ayla:'#fbbf24' };
+  return Object.hasOwn(map, id) ? map[id] : '#8b87a8';
+}
+const initial = (c) => esc(Array.from(text(c.name || c.id))[0] || '?');
+
+// 圆形头像（裁立绘脸部）
+function avatarHTML(c) {
+  const src = portraitSrc(c.id);
+  const style = `style="--accent:${getCharAccent(c.id)}"`;
+  return src
+    ? `<span class="avatar" ${style}><img src="${src}" alt="" loading="lazy"></span>`
+    : `<span class="avatar fallback" ${style}>${initial(c)}</span>`;
+}
+// 角色卡右侧头肩像
+function cardPortraitHTML(c) {
+  const src = portraitSrc(c.id);
+  return src
+    ? `<div class="char-portrait"><img src="${src}" alt="${esc(c.name)}" loading="lazy"></div>`
+    : `<div class="char-portrait fallback">${initial(c)}</div>`;
+}
+function charTagHTML(cid) {
+  const cc = getCharById(cid);
+  return cc ? `<span class="ms-char-tag" style="border-left:2px solid ${getCharAccent(cid)}">${avatarHTML(cc)}${esc(cc.name)}</span>` : '';
+}
+function artProgress(id) {
+  const total = ART_TYPES.length;
+  const done = ART_TYPES.filter(t => artStatus[id]?.[t] === 'complete').length;
+  return { done, total };
+}
+
+// ============ TAB SWITCHING ============
+const TABS = ['overview', 'characters', 'art', 'milestones', 'relations'];
+const TAB_RENDER = { overview: renderOverview, characters: renderCharacters, art: renderArtTable, milestones: renderMilestones, relations: renderRelationGraph };
+let activeTab = 'overview';
+
+function switchTab(tab) {
+  if (!TABS.includes(tab)) tab = 'overview';
+  activeTab = tab;
+  document.querySelectorAll('#mainTabs .tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.toggle('active', c.id === `tab-${tab}`));
+  guarded(TAB_RENDER[tab]);
+}
+
+// ============ OVERVIEW ============
+function renderOverview() {
+  const total = characters.length;
+  const statuses = characters.map(c => artStatus[c.id] || {});
+  const completed = statuses.filter(a => ART_TYPES.every(t => a[t] === 'complete')).length;
+  // 与角色卡状态一致：已有任一资源推进（进行中/已完成）但未全部完成
+  const inProgress = statuses.filter(a => ART_TYPES.some(t => a[t] && a[t] !== 'not-started') && !ART_TYPES.every(t => a[t] === 'complete')).length;
+  const completedMS = milestones.filter(m => m.date).length;
+  const totalMS = milestones.length;
+
+  $('tab-overview').innerHTML = `
+    <div class="overview-grid">
+      <div class="stat-card"><div class="stat-num">${total}</div><div class="stat-label">角色总数</div></div>
+      <div class="stat-card"><div class="stat-num" style="color:var(--success)">${completed}</div><div class="stat-label">美术全部完成</div></div>
+      <div class="stat-card"><div class="stat-num" style="color:var(--warn)">${inProgress}</div><div class="stat-label">美术进行中</div></div>
+      <div class="stat-card"><div class="stat-num" style="color:var(--accent-serena)">${completedMS}/${totalMS}</div><div class="stat-label">里程碑达成</div></div>
+    </div>
+    <div class="progress-section">
+      <h2>角色美术进度</h2>
+      ${characters.map(c => {
+        const { done, total: n } = artProgress(c.id);
+        const pct = Math.round(done / n * 100);
+        return `<div class="progress-bar-row">
+          ${avatarHTML(c)}
+          <span class="name" style="color:${getCharAccent(c.id)}" title="${esc(c.name)}">${esc(c.name)}</span>
+          <div class="progress-track"><div class="progress-fill" style="width:${pct}%;background:${getCharAccent(c.id)}"></div></div>
+          <span class="pct">${done}/${n}</span>
+        </div>`;
+      }).join('')}
+    </div>
+    <div class="progress-section">
+      <h2>最新里程碑</h2>
+      <div class="milestone-timeline">
+        ${milestones.filter(m => m.date).slice(-4).reverse().map(m => `
+          <div class="milestone-item">
+            <div class="ms-header"><span class="ms-phase ${esc(m.phase)}">${esc(m.phaseLabel)}</span><span class="ms-date">${esc(m.date)}</span></div>
+            <div class="ms-chars">${list(m.chars).map(charTagHTML).join('')}</div>
+            <div class="ms-note">${esc(m.note)}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
+
+// ============ CHARACTERS ============
+// 重建下拉选项但保留当前选择
+function fillCharSelect(select) {
+  const value = select.value;
+  select.innerHTML = '<option value="">全部角色</option>' + characters.map(c => `<option value="${esc(c.id)}">${esc(c.name)}</option>`).join('');
+  select.value = characters.some(c => c.id === value) ? value : '';
+}
+
+function renderCharacters() {
+  const search = $('charSearch').value.trim().toLowerCase();
+  fillCharSelect($('charFilter'));
+  const filter = $('charFilter').value;
+  let filtered = characters;
+  if (search) {
+    filtered = filtered.filter(c => [c.name, c.nameEn, c.profession, c.element, c.nation, c.weapon, c.personality, ...list(c.quirks)]
+      .some(v => text(v).toLowerCase().includes(search)));
+  }
+  if (filter) filtered = filtered.filter(c => c.id === filter);
+
+  $('charGrid').innerHTML = filtered.map(c => {
+    const accent = getCharAccent(c.id);
+    const { done, total } = artProgress(c.id);
+    const status = done === total ? 'complete' : done > 0 ? 'in-progress' : 'not-started';
+    const statusText = done === total ? '全部完成' : done > 0 ? `${done}/${total}` : '未开始';
+    return `<div class="char-card ${esc(c.id)}" style="--accent:${accent}" data-action="show-char" data-id="${esc(c.id)}" tabindex="0" role="button" aria-label="查看 ${esc(c.name)}">
+      <div class="char-card-body">
+        <div class="char-card-main">
+          <h3 style="color:${accent}">${esc(c.name)}</h3>
+          <div class="title-badge" style="background:${accent}22;color:${accent}">${esc(c.profession)}</div>
+          <div class="meta-row"><span>年龄 ${esc(c.age)}</span><span>${esc(c.height)}</span><span>${esc(c.element)}</span></div>
+          <div class="tags">${list(c.quirks).slice(0, 2).map(q => `<span class="tag">${esc(text(q).slice(0, 16))}…</span>`).join('')}</div>
+          <div class="bio">${esc(text(c.personality).slice(0, 90))}…</div>
+        </div>
+        ${cardPortraitHTML(c)}
+      </div>
+      <div class="card-footer">
+        <span style="color:${accent};font-weight:600;">${esc(c.nameEn)}</span>
+        <span><span class="status-dot ${status}"></span>${statusText}</span>
+      </div>
+    </div>`;
+  }).join('') || '<div style="color:var(--faint);padding:30px;text-align:center;grid-column:1/-1">无匹配角色</div>';
+  $('charDetail').style.display = 'none';
+}
+
+function showCharDetail(id) {
+  const c = getCharById(id);
+  if (!c) return;
+  const accent = getCharAccent(id);
+  const src = portraitSrc(id);
+  const panel = $('charDetail');
+  panel.style.display = 'block';
+  panel.innerHTML = `
+    <div class="detail-hero" style="--accent:${accent}">
+      ${src ? `<div class="detail-portrait"><img src="${src}" alt="${esc(c.name)}立绘"></div>` : `<div class="detail-portrait fallback">${initial(c)}</div>`}
+      <div>
+        <div class="detail-head">
+          <h2 style="color:${accent}">${esc(c.name)} · ${esc(c.nameEn)}</h2>
+          <div style="display:flex;gap:6px;">
+            <button class="button small" type="button" data-action="open-char-modal" data-id="${esc(id)}">${icon('edit', { size: 14 })}编辑</button>
+            <button class="button danger small" type="button" data-action="delete-char" data-id="${esc(id)}">${icon('trash', { size: 14 })}删除</button>
+          </div>
+        </div>
+        <div class="detail-grid">
+          <div class="detail-item"><div class="label">职业</div><div class="value">${esc(c.profession)}（${esc(c.element)}）</div></div>
+          <div class="detail-item"><div class="label">年龄 · 身高</div><div class="value">${esc(c.age)}岁 · ${esc(c.height)}</div></div>
+          <div class="detail-item"><div class="label">发色发型</div><div class="value">${esc(c.hair)}</div></div>
+          <div class="detail-item"><div class="label">瞳色</div><div class="value">${esc(c.eyes)}</div></div>
+          ${c.nation || c.weapon ? `<div class="detail-item"><div class="label">国家</div><div class="value">${esc(c.nation) || '—'}</div></div>
+          <div class="detail-item"><div class="label">武器</div><div class="value">${esc(c.weapon) || '—'}</div></div>` : ''}
+        </div>
+        <div class="detail-grid" style="margin-top:14px;">
+          <div class="detail-item"><div class="label">性格</div><div class="value">${esc(c.personality)}</div></div>
+          <div class="detail-item"><div class="label">特殊癖好</div><div class="value">${list(c.quirks).map((q, i) => `${i + 1}. ${esc(q)}`).join('<br>')}</div></div>
+        </div>
+        <div class="detail-grid" style="margin-top:14px;">
+          <div class="detail-item"><div class="label">喜欢的</div><div class="value">${list(c.likes).map(esc).join('、')}</div></div>
+          <div class="detail-item"><div class="label">讨厌的</div><div class="value">${list(c.dislikes).map(esc).join('、')}</div></div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:16px;padding:16px;background:var(--bg);border-radius:var(--radius);border:1px solid var(--line)">
+      <div class="label" style="color:${accent};font-size:.78rem;margin-bottom:6px;">玩家互动模式</div>
+      <div class="value">${esc(c.playerInteraction)}</div>
+    </div>
+    ${list(c.relations).length ? `
+    <div style="margin-top:16px;">
+      <div class="label" style="margin-bottom:8px;">角色关系</div>
+      ${list(c.relations).map(r => {
+        const target = getCharById(r.target);
+        const type = RELATION_LABELS[r.type] ? r.type : 'bond';
+        return `<div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;padding:8px 0;border-bottom:1px solid var(--line)">
+          <span style="flex:none;white-space:nowrap;font-size:.7rem;padding:2px 8px;border-radius:99px;background:${type === 'sister' ? 'rgba(244,114,182,.15)' : type === 'rival' ? 'rgba(255,107,124,.15)' : 'rgba(181,140,255,.15)'};color:${type === 'sister' ? 'var(--accent-ophelia)' : type === 'rival' ? 'var(--accent-lia)' : 'var(--accent-serena)'}">${RELATION_LABELS[type]}</span>
+          ${target ? avatarHTML(target) : ''}
+          <span style="white-space:nowrap;color:${target ? getCharAccent(r.target) : 'var(--muted)'}">${esc(target ? target.name : r.target)}</span>
+          <span style="flex:1 1 220px;min-width:0;color:var(--muted);font-size:.82rem;">— ${esc(r.desc)}</span>
+        </div>`;
+      }).join('')}
+    </div>` : ''}
+  `;
+  panel.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
+}
+
+// 从任意标签页（含关系图）查看角色详情
+function viewCharacter(id) {
+  if (!getCharById(id)) return;
+  if (activeTab !== 'characters') switchTab('characters');
+  showCharDetail(id);
+}
+
+// ============ MODAL ============
+function openCharModal(id) {
+  const c = id ? getCharById(id) : null;
+  editingCharId = c ? c.id : null;
+  $('modalTitle').textContent = c ? '编辑角色' : '新增角色';
+  $('modalDelete').style.display = c ? '' : 'none';
+  const val = (k) => esc(c?.[k]);
+  $('modalBody').innerHTML = `
+    <div class="modal-row">
+      <div><label for="f_id">角色 ID (英文)</label><input id="f_id" value="${val('id')}" ${c ? 'disabled' : ''} placeholder="如: freya"></div>
+      <div><label for="f_name">姓名</label><input id="f_name" value="${val('name')}" placeholder="芙蕾娅·霜华"></div>
+    </div>
+    <div class="modal-row">
+      <div><label for="f_nameEn">英文名</label><input id="f_nameEn" value="${val('nameEn')}" placeholder="Freya Frostbloom"></div>
+      <div><label for="f_age">年龄</label><input id="f_age" value="${val('age')}" placeholder="19"></div>
+    </div>
+    <div class="modal-row">
+      <div><label for="f_height">身高</label><input id="f_height" value="${val('height')}" placeholder="166cm"></div>
+      <div><label for="f_element">元素</label><input id="f_element" value="${val('element')}" placeholder="水·冰"></div>
+    </div>
+    <label for="f_profession">职业</label><input id="f_profession" value="${val('profession')}" placeholder="冰系魔法师 / 冻结控制">
+    <div class="modal-row">
+      <div><label for="f_nation">国家</label><input id="f_nation" value="${val('nation')}" placeholder="霜潮王国"></div>
+      <div><label for="f_weapon">武器</label><input id="f_weapon" value="${val('weapon')}" placeholder="长法杖“春眠”"></div>
+    </div>
+    <label for="f_hair">发色发型</label><input id="f_hair" value="${val('hair')}" placeholder="青蓝色波浪长发…">
+    <label for="f_eyes">瞳色</label><input id="f_eyes" value="${val('eyes')}" placeholder="暖琥珀色">
+    <label for="f_personality">性格</label><textarea id="f_personality">${val('personality')}</textarea>
+    <label for="f_quirks">癖好（每行一个）</label><textarea id="f_quirks">${esc(list(c?.quirks).join('\n'))}</textarea>
+    <label for="f_playerInteraction">玩家互动模式</label><textarea id="f_playerInteraction">${val('playerInteraction')}</textarea>
+    <label for="f_likes">喜欢的（用「、」或逗号分隔）</label><input id="f_likes" value="${esc(list(c?.likes).join('、'))}">
+    <label for="f_dislikes">讨厌的（用「、」或逗号分隔）</label><input id="f_dislikes" value="${esc(list(c?.dislikes).join('、'))}">
+  `;
+  $('charModal').classList.add('open');
+  (c ? $('f_name') : $('f_id')).focus();
+}
+
+function closeCharModal() {
+  $('charModal').classList.remove('open');
+  editingCharId = null;
+}
+
+const splitList = (s) => s.split(/[、,，]/).map(x => x.trim()).filter(Boolean);
+
+function saveCharacter() {
+  const editing = editingCharId;
+  const id = editing || $('f_id').value.trim();
+  if (!id) return showToast('角色ID不能为空');
+  if (!CHAR_ID_RE.test(id)) return showToast('角色ID需以英文字母开头，仅含英文、数字、- 或 _');
+  if (!editing && getCharById(id)) return showToast(`角色ID「${id}」已存在`);
+  const field = (k) => $(`f_${k}`).value.trim();
+  const data = {
+    id,
+    name: field('name') || id,
+    nameEn: field('nameEn'),
+    age: field('age'),
+    height: field('height'),
+    element: field('element'),
+    profession: field('profession'),
+    nation: field('nation'),
+    weapon: field('weapon'),
+    hair: field('hair'),
+    eyes: field('eyes'),
+    personality: field('personality'),
+    quirks: $('f_quirks').value.split('\n').map(x => x.trim()).filter(Boolean),
+    playerInteraction: field('playerInteraction'),
+    likes: splitList($('f_likes').value),
+    dislikes: splitList($('f_dislikes').value),
+    relations: editing ? list(getCharById(editing)?.relations) : []
+  };
+  if (editing) {
+    const idx = characters.findIndex(c => c.id === editing);
+    if (idx >= 0) characters[idx] = data;
+  } else {
+    characters.push(data);
+  }
+  ensureArtStatus();
+  saveData();
+  closeCharModal();
+  refreshAll();
+  if (activeTab === 'characters') showCharDetail(id);
+  showToast(editing ? '已更新' : '已新增');
+}
+
+function deleteCharacter(id) {
+  const c = getCharById(id);
+  if (!c) return;
+  if (!confirm(`确定删除 ${c.name} ？此操作不可撤销。`)) return;
+  characters = characters.filter(x => x.id !== id);
+  delete artStatus[id];
+  saveData();
+  if (editingCharId === id) closeCharModal();
+  refreshAll();
+  showToast('已删除');
+}
+
+// ============ ART TABLE ============
+function renderArtTable() {
+  fillCharSelect($('artFilterChar'));
+  const filterChar = $('artFilterChar').value;
+  const filterStatus = $('artFilterStatus').value;
+  const filtered = filterChar ? characters.filter(c => c.id === filterChar) : characters;
+
+  let rows = '';
+  filtered.forEach(c => {
+    ART_TYPES.forEach(t => {
+      const s = artStatus[c.id]?.[t] || 'not-started';
+      if (filterStatus && s !== filterStatus) return;
+      rows += `<tr>
+        <td><span class="char-cell" style="font-weight:600;color:${getCharAccent(c.id)}">${avatarHTML(c)}${esc(c.name)}</span></td>
+        <td>${esc(t)}</td>
+        <td><span class="status-badge ${s}">${STATUS_LABELS[s]}</span></td>
+        <td><select data-action="set-art-status" data-char="${esc(c.id)}" data-type="${esc(t)}" aria-label="${esc(c.name)} ${esc(t)} 状态">
+          ${Object.entries(STATUS_LABELS).reverse().map(([v, label]) => `<option value="${v}" ${s === v ? 'selected' : ''}>${label}</option>`).join('')}
+        </select></td>
+      </tr>`;
+    });
+  });
+
+  $('artTable').innerHTML = `
+    <thead><tr><th>角色</th><th>资源类型</th><th>状态</th><th>操作</th></tr></thead>
+    <tbody>${rows || '<tr><td colspan="4" style="text-align:center;color:var(--faint);padding:30px;">无匹配结果</td></tr>'}</tbody>
+  `;
+}
+
+function updateArtStatus(charId, artType, value) {
+  if (!getCharById(charId) || !ART_TYPES.includes(artType) || !Object.hasOwn(STATUS_LABELS, value)) return;
+  if (!artStatus[charId]) artStatus[charId] = {};
+  artStatus[charId][artType] = value;
+  saveData();
+  renderArtTable();
+  showToast(value === 'complete' ? '✓ 已标记完成' : value === 'in-progress' ? '● 进行中' : '○ 未开始');
+}
+
+// ============ MILESTONES ============
+function renderMilestones() {
+  $('milestoneList').innerHTML = milestones.map((m, i) => `
+    <div class="milestone-item">
+      <div class="ms-header">
+        <span class="ms-phase ${esc(m.phase)}">${esc(m.phaseLabel)}</span>
+        <span class="ms-date">${esc(m.date || '未排期')}</span>
+        <button class="button small danger icon-only" type="button" style="margin-left:auto" data-action="delete-milestone" data-index="${i}" aria-label="删除里程碑">${icon('close', { size: 14 })}</button>
+      </div>
+      <div class="ms-chars">${list(m.chars).map(charTagHTML).join('')}</div>
+      <div class="ms-note">${esc(m.note)}</div>
+    </div>
+  `).join('') || '<div style="color:var(--faint);padding:20px">暂无里程碑</div>';
+}
+
+function addMilestone() {
+  const phase = (prompt('阶段 (design / lineart / coloring / final / vfx / integration):', 'lineart') || '').trim();
+  if (!phase) return;
+  const charList = prompt('关联角色ID（逗号分隔，如 lia,mia,serena）:', characters.map(c => c.id).join(','));
+  if (!charList) return;
+  const note = prompt('备注:', '');
+  const date = (prompt('完成日期 (YYYY-MM-DD，留空=未排期):', '') || '').trim();
+  milestones.push({
+    id: 'm' + Date.now(),
+    phase: PHASE_LABELS[phase] ? phase : 'design',
+    phaseLabel: PHASE_LABELS[phase] || phase,
+    date: date || null,
+    chars: charList.split(/[,，]/).map(s => s.trim()).filter(Boolean),
+    note: note || ''
+  });
+  saveData();
+  renderMilestones();
+  showToast('里程碑已添加');
+}
+
+function deleteMilestone(index) {
+  const m = milestones[index];
+  if (!m) return;
+  if (!confirm(`确定删除里程碑「${m.phaseLabel}${m.date ? ' · ' + m.date : ''}」？`)) return;
+  milestones.splice(index, 1);
+  saveData();
+  renderMilestones();
+  showToast('已删除里程碑');
+}
+
+// ============ RELATION GRAPH ============
+// 估算 SVG 文本宽度：CJK / 全角字符按 1em，其余按 0.58em
+function textWidth(str, size) {
+  let w = 0;
+  for (const ch of text(str)) w += /[\u2e80-\uffff]/.test(ch) ? size : size * 0.58;
+  return w;
+}
+// 关系描述在连线上最多显示 12 个字，超出时以省略号结尾（完整内容见悬停提示 / 角色详情 / 窄屏列表）
+const EDGE_LABEL_MAX = 12;
+function edgeLabel(desc) {
+  const chars = Array.from(text(desc));
+  return chars.length > EDGE_LABEL_MAX ? chars.slice(0, EDGE_LABEL_MAX - 1).join('') + '…' : chars.join('');
+}
+const overlapArea = (a, b) => Math.max(0, Math.min(a.x2, b.x2) - Math.max(a.x1, b.x1)) * Math.max(0, Math.min(a.y2, b.y2) - Math.max(a.y1, b.y1));
+const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
+
+function renderRelationGraph() {
+  const host = $('relationGraph');
+  const W = host.clientWidth || 800;
+  const H = 520;
+  // 图宽不足 600px 时连线上不放文字（会和节点名挤在一起），改为在图下方列出
+  const compact = W < 600;
+  const cx = W / 2, cy = H / 2 - 10;
+  // Positions: ellipse layout（宽屏横向铺开，减少连线标签与节点重叠）
+  const rx = Math.max(110, Math.min(W * 0.36, 430)), ry = H * 0.34;
+  const positions = {};
+  characters.forEach((c, i) => {
+    const angle = (i / characters.length) * Math.PI * 2 - Math.PI / 2;
+    positions[c.id] = { x: cx + Math.cos(angle) * rx, y: cy + Math.sin(angle) * ry };
+  });
+
+  // Collect all relations
+  const allRelations = [];
+  const seen = new Set();
+  characters.forEach(c => {
+    list(c.relations).forEach(r => {
+      const key = [c.id, r.target].sort().join('-') + '-' + r.type;
+      if (!seen.has(key)) {
+        seen.add(key);
+        allRelations.push({ from: c.id, to: r.target, type: RELATION_LABELS[r.type] ? r.type : 'bond', desc: text(r.desc) });
+      }
+    });
+  });
+
+  const typeColors = { sister: 'var(--accent-ophelia)', bond: 'var(--accent-serena)', rival: 'var(--accent-lia)' };
+  const typeWidths = { sister: 2.5, bond: 1.8, rival: 1.5 };
+  const typeDash = { sister: 'none', bond: 'none', rival: '6,4' };
+
+  // 节点占位（头像圆 + 下方中英文名），名字水平方向夹在画布内，避免贴边被裁
+  const R = 24, S = (R * 2) / 440;
+  const nodeLabel = {};
+  const occupied = [];
+  characters.forEach(c => {
+    const p = positions[c.id];
+    const w1 = textWidth(c.name, 12), w2 = textWidth(c.nameEn, 10);
+    const half = Math.max(w1, w2) / 2;
+    const lx = clamp(p.x, half + 4, W - half - 4);
+    nodeLabel[c.id] = lx - p.x;
+    occupied.push({ x1: p.x - R - 8, y1: p.y - R - 8, x2: p.x + R + 8, y2: p.y + R + 8 });
+    occupied.push({ x1: lx - w1 / 2 - 3, y1: p.y + R + 5, x2: lx + w1 / 2 + 3, y2: p.y + R + 22 });
+    if (c.nameEn) occupied.push({ x1: lx - w2 / 2 - 3, y1: p.y + R + 23, x2: lx + w2 / 2 + 3, y2: p.y + R + 36 });
+  });
+
+  // 连线文字：沿线挑一个不压住节点、名字和其他标签的位置（找不到就取重叠最少的）
+  const T_CANDIDATES = [0.5, 0.42, 0.58, 0.34, 0.66, 0.26, 0.74];
+  const DY_CANDIDATES = [-4, 13];
+  const edgeLabels = compact ? [] : allRelations.map(r => {
+    const p1 = positions[r.from], p2 = positions[r.to];
+    if (!p1 || !p2) return null;
+    const label = edgeLabel(r.desc);
+    const w = textWidth(label, 10) + 6;
+    let best = null;
+    for (const t of T_CANDIDATES) {
+      for (const dy of DY_CANDIDATES) {
+        const x = clamp(p1.x + (p2.x - p1.x) * t, w / 2 + 2, W - w / 2 - 2);
+        const y = p1.y + (p2.y - p1.y) * t + dy;
+        const box = { x1: x - w / 2, y1: y - 11, x2: x + w / 2, y2: y + 3 };
+        const cost = occupied.reduce((sum, o) => sum + overlapArea(box, o), 0);
+        if (!best || cost < best.cost) best = { x, y, box, cost };
+        if (cost === 0) break;
+      }
+      if (best.cost === 0) break;
+    }
+    occupied.push(best.box);
+    return { r, label, x: best.x, y: best.y };
+  });
+
+  host.innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="100%" height="${H}" role="img" aria-label="角色关系图">
+      <defs>
+        <filter id="rgGlow"><feGaussianBlur stdDeviation="4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <clipPath id="rgNodeClip"><circle r="${R - 1}"/></clipPath>
+      </defs>
+      <rect width="100%" height="100%" fill="transparent"/>
+      ${allRelations.map(r => {
+        const p1 = positions[r.from], p2 = positions[r.to];
+        if (!p1 || !p2) return '';
+        return `<line x1="${p1.x}" y1="${p1.y}" x2="${p2.x}" y2="${p2.y}"
+          stroke="${typeColors[r.type]}" stroke-width="${typeWidths[r.type]}" stroke-dasharray="${typeDash[r.type]}" opacity=".6"/>`;
+      }).join('')}
+      ${characters.map(c => {
+        const p = positions[c.id];
+        const accent = getCharAccent(c.id);
+        const src = portraitSrc(c.id);
+        const lx = nodeLabel[c.id];
+        const face = src
+          ? `<image href="${src}" x="${-416 * S}" y="${-400 * S}" width="${832 * S}" height="${1216 * S}" clip-path="url(#rgNodeClip)" preserveAspectRatio="xMidYMid meet"/>`
+          : `<text y="5" text-anchor="middle" font-size="13" fill="${accent}" filter="url(#rgGlow)">${esc(text(c.name).slice(0, 2))}</text>`;
+        return `<g class="node" transform="translate(${p.x},${p.y})" data-action="show-char" data-id="${esc(c.id)}" tabindex="0" role="button" aria-label="查看 ${esc(c.name)}">
+          <circle r="${R + 7}" fill="${accent}" opacity=".18"/>
+          <circle r="${R}" fill="var(--bg)"/>
+          ${face}
+          <circle class="node-ring" r="${R}" fill="none" stroke="${accent}" stroke-width="2.5"/>
+          <text class="node-name" x="${lx}" y="${R + 18}" text-anchor="middle" font-size="12" font-weight="600" fill="${accent}" paint-order="stroke" stroke="#1a1838" stroke-width="3" stroke-linejoin="round">${esc(c.name)}</text>
+          <text class="node-name" x="${lx}" y="${R + 32}" text-anchor="middle" font-size="10" fill="var(--muted)" paint-order="stroke" stroke="#1a1838" stroke-width="3" stroke-linejoin="round">${esc(c.nameEn)}</text>
+        </g>`;
+      }).join('')}
+      ${edgeLabels.filter(Boolean).map(({ r, label, x, y }) => `<text class="edge-label" x="${x}" y="${y}" text-anchor="middle" font-size="10" fill="${typeColors[r.type]}" paint-order="stroke" stroke="#1a1838" stroke-width="3" stroke-linejoin="round"><title>${esc(r.desc)}</title>${esc(label)}</text>`).join('')}
+    </svg>
+  `;
+
+  const listHost = $('relationList');
+  if (listHost) {
+    const nameOf = (id) => { const c = getCharById(id); return c ? esc(c.name) : esc(id); };
+    listHost.hidden = !compact || !allRelations.length;
+    listHost.innerHTML = compact ? `<h3>关系说明</h3><ul>${allRelations.map(r => `
+      <li><span class="rel-type ${r.type}">${RELATION_LABELS[r.type]}</span><span class="rel-pair">${nameOf(r.from)} → ${nameOf(r.to)}</span><span class="rel-desc">${esc(r.desc)}</span></li>`).join('')}
+    </ul>` : '';
+  }
+}
+
+// ============ EXPORT / IMPORT ============
+function exportData() {
+  const data = { characters, artStatus, milestones, exportedAt: new Date().toISOString() };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `moonlit-characters-${new Date().toISOString().slice(0, 10)}.json`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  showToast('已导出 JSON');
+}
+
+function importData() {
+  $('importFile').click();
+}
+
+function handleImport(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    let data;
+    try { data = JSON.parse(reader.result); } catch { showToast('JSON 解析失败'); return; }
+    const clean = sanitizeData(data);
+    if (!clean) { showToast('无效的导入文件格式'); return; }
+    if (!clean.characters.length) { showToast('导入文件里没有有效的角色'); return; }
+    const skipped = clean.dropped ? `（另有 ${clean.dropped} 条无效数据会被忽略）` : '';
+    if (!confirm(`导入会覆盖当前的 ${characters.length} 个角色、美术进度和 ${milestones.length} 条里程碑，改为文件中的 ${clean.characters.length} 个角色、${clean.milestones.length} 条里程碑${skipped}。确定导入？`)) return;
+    characters = clean.characters;
+    artStatus = clean.artStatus;
+    milestones = clean.milestones;
+    ensureArtStatus();
+    saveData();
+    refreshAll();
+    showToast(clean.dropped ? `导入成功，已忽略 ${clean.dropped} 条无效数据` : '导入成功！');
+  };
+  reader.onerror = () => showToast('读取文件失败');
+  reader.readAsText(file);
+  input.value = '';
+}
+
+function refreshAll() {
+  guarded(() => {
+    renderOverview();
+    renderCharacters();
+    renderArtTable();
+    renderMilestones();
+    if (activeTab === 'relations') renderRelationGraph();
+  });
+}
+
+// 恢复默认：清掉自建角色、美术进度与里程碑，回到内置的 8 位女主
+function restoreDefaults({ ask = true } = {}) {
+  if (ask && !confirm('恢复默认会清除所有自建角色、美术进度和里程碑（建议先「导出 JSON」备份）。确定吗？')) return false;
+  initDefaults();
+  closeCharModal();
+  refreshAll();
+  showToast('已恢复默认数据');
+  return true;
+}
+
+// 渲染出错（多半是本地数据损坏）时不留白屏：询问是否恢复默认，拒绝则给出说明和按钮
+let recovering = false;
+function guarded(fn) {
+  try {
+    fn();
+    return true;
+  } catch (err) {
+    if (recovering) throw err; // 默认数据也渲染失败：那是代码问题，不再循环恢复
+    console.warn('[character-manager] 渲染失败，数据可能已损坏：', err);
+    recovering = true;
+    try {
+      if (confirm('数据损坏，恢复默认？')) restoreDefaults({ ask: false });
+      else showCorruptNotice();
+    } finally {
+      recovering = false;
+    }
+    return false;
+  }
+}
+function showCorruptNotice() {
+  const host = $(`tab-${activeTab}`) || $('tab-overview');
+  host.innerHTML = `<div class="corrupt-note" role="alert">
+    <p>本地数据已损坏，页面无法正常显示。</p>
+    <p>可以先「导出 JSON」备份，再点下面的按钮恢复默认。</p>
+    <button class="button primary" type="button" data-action="restore-defaults">${icon('refresh', { size: 16 })}恢复默认</button>
+  </div>`;
+}
+
+// 静态 HTML 中的 <span data-icon="名称" data-size="16"> 占位 → 内联 SVG 图标
+function hydrateIcons(root = document) {
+  root.querySelectorAll('[data-icon]').forEach(el => {
+    el.innerHTML = icon(el.dataset.icon, { size: Number(el.dataset.size) || 16 });
+  });
+}
+
+// ============ 事件动作表（data-action → 处理函数） ============
+const ACTIONS = {
+  click: {
+    'switch-tab': (el) => switchTab(el.dataset.tab),
+    'open-char-modal': (el) => openCharModal(el.dataset.id),
+    'export': exportData,
+    'import': importData,
+    'restore-defaults': () => restoreDefaults(),
+    'show-char': (el) => viewCharacter(el.dataset.id),
+    'delete-char': (el) => deleteCharacter(el.dataset.id),
+    'close-modal': closeCharModal,
+    'modal-backdrop': (el, e) => { if (e.target === el) closeCharModal(); },
+    'modal-delete': () => deleteCharacter(editingCharId),
+    'save-char': saveCharacter,
+    'add-milestone': addMilestone,
+    'delete-milestone': (el) => deleteMilestone(Number(el.dataset.index)),
+  },
+  change: {
+    'import-file': (el) => handleImport(el),
+    'filter-chars': renderCharacters,
+    'filter-art': renderArtTable,
+    'set-art-status': (el) => updateArtStatus(el.dataset.char, el.dataset.type, el.value),
+  },
+  input: {
+    'search-chars': renderCharacters,
+  },
+};
+
+for (const type of Object.keys(ACTIONS)) {
+  document.addEventListener(type, (e) => {
+    const el = e.target instanceof Element ? e.target.closest('[data-action]') : null;
+    if (!el) return;
+    const handler = ACTIONS[type][el.dataset.action];
+    if (handler) handler(el, e);
+  });
+}
+
+document.addEventListener('keydown', (e) => {
+  // Escape closes modal
+  if (e.key === 'Escape') { closeCharModal(); return; }
+  // 角色卡 / 关系图节点（role="button"）支持键盘回车/空格打开
+  if ((e.key === 'Enter' || e.key === ' ') && e.target instanceof Element && e.target.matches('[role="button"][data-action="show-char"]')) {
+    e.preventDefault();
+    viewCharacter(e.target.dataset.id);
+  }
+});
+
+let resizeTimer = 0;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => { if (activeTab === 'relations') renderRelationGraph(); }, 120);
+});
+
+// ============ INIT ============
+hydrateIcons();
+guarded(() => {
+  loadData();
+  renderOverview();
+});

@@ -11,11 +11,17 @@ import {
   DECISIONS,
   ENEMY,
   CG_GALLERY,
+  CAMP_CHAT_TURNS,
+  CORRIDOR_CHAT_TURNS,
+  AFTERMATH_CHAT_TURNS,
+  chatKey,
   publicCharacter
 } from './content.mjs';
 
 const MAX_EVENT_LOG = 120;
 const MAX_MEMORIES_PER_CHARACTER = 8;
+// 每名角色记住的「说过的话」条数上限；各场景都有交流上限，正常一局远到不了，只防异常存档膨胀。
+const MAX_SAID_PER_CHARACTER = 64;
 
 function clamp(value, min, max) {
   return Math.min(max, Math.max(min, Number(value) || 0));
@@ -61,6 +67,27 @@ function seededRoll(state, min, max, salt = 0) {
   return Math.floor(min + normalized * (max - min + 1));
 }
 
+function chatLimitsDefault() {
+  return { camp: CAMP_CHAT_TURNS, corridor: CORRIDOR_CHAT_TURNS, aftermath: AFTERMATH_CHAT_TURNS };
+}
+
+/**
+ * B4 的计分记录。旧存档（重启前存下的会话）没有这些字段，这里补齐：
+ * - chatLimits：各场景的交流上限，前端按 state.chatLimits[state.scene] 显示剩余次数；
+ * - aftermathChatTurns：整局累计的战后交流次数，重置战斗再赢也不清零；
+ * - chatScoring.said[角色] 存说过的话（chatKey），chatScoring.promised[角色] 记是否已许过承诺。
+ */
+function ensureChatRules(state) {
+  state.chatLimits = { ...chatLimitsDefault(), ...(state.chatLimits || {}) };
+  if (!Number.isInteger(state.aftermathChatTurns)) {
+    state.aftermathChatTurns = state.scene === 'aftermath' ? Math.max(0, Number(state.chatTurns) || 0) : 0;
+  }
+  if (!state.chatScoring || typeof state.chatScoring !== 'object') state.chatScoring = {};
+  if (!state.chatScoring.said || typeof state.chatScoring.said !== 'object') state.chatScoring.said = {};
+  if (!state.chatScoring.promised || typeof state.chatScoring.promised !== 'object') state.chatScoring.promised = {};
+  return state;
+}
+
 function hydrateEvent(raw) {
   return event(raw.type, raw.text, {
     speakerId: raw.speakerId,
@@ -98,7 +125,10 @@ export function createInitialState(playerName = '队长') {
     selectedCharacterId: 'lia',
     chosenStrategyId: null,
     chatTurns: 0,
-    maxChatTurns: 10,
+    maxChatTurns: CAMP_CHAT_TURNS,
+    chatLimits: chatLimitsDefault(),
+    aftermathChatTurns: 0,
+    chatScoring: { said: {}, promised: {} },
     partyHp: 100,
     partyMaxHp: 100,
     focus: 55,
@@ -135,7 +165,7 @@ export function createInitialState(playerName = '队长') {
 }
 
 export function sanitizeState(state) {
-  const safe = structuredClone(state);
+  const safe = ensureChatRules(structuredClone(state));
   delete safe.rngSeed;
   return safe;
 }
@@ -188,30 +218,61 @@ export function chooseStrategy(state, strategyId) {
   return state;
 }
 
-export function applyChatOutcome(state, characterId, message, outcome) {
+/**
+ * 自由交流的前置检查（场景、各场景次数上限、角色、空消息），返回清理后的消息。
+ * applyChatOutcome 自己会调用它；/api/chat 在请求模型之前也先调一次，超过上限的请求不会白白花掉一次 AI 调用。
+ */
+export function assertChatAllowed(state, characterId, message) {
   if (!['camp', 'corridor', 'aftermath'].includes(state.scene)) {
     throw new Error('现在不是自由交流时间。');
   }
+  ensureChatRules(state);
   if (state.scene === 'camp' && state.chatTurns >= state.maxChatTurns) {
     throw new Error('战前交流次数已用完，请选择战术进入战斗。');
   }
-  if (state.scene === 'corridor' && state.chatTurns >= 4) {
+  if (state.scene === 'corridor' && state.chatTurns >= state.chatLimits.corridor) {
     throw new Error('回廊交流次数已用完，请进入战斗。');
   }
-  const character = state.characters[characterId];
-  if (!character || !CHARACTERS[characterId]) {
+  if (state.scene === 'aftermath' && state.aftermathChatTurns >= state.chatLimits.aftermath) {
+    throw new Error('战后交流次数已用完，请做出最终决定。');
+  }
+  if (!state.characters?.[characterId] || !CHARACTERS[characterId]) {
     throw new Error('未知角色。');
   }
   const cleanMessage = String(message || '').trim().slice(0, 500);
   if (!cleanMessage) {
     throw new Error('请输入想说的话。');
   }
+  return cleanMessage;
+}
+
+export function applyChatOutcome(state, characterId, message, outcome) {
+  const cleanMessage = assertChatAllowed(state, characterId, message);
+  const character = state.characters[characterId];
 
   state.selectedCharacterId = characterId;
   pushEvent(state, event('player', cleanMessage, { speakerId: 'player' }));
 
-  const bondDelta = clamp(outcome.bondDelta, -2, 2);
-  const trustDelta = clamp(outcome.trustDelta, -2, 2);
+  // B4：同一句话对同一名角色只加一次分；承诺对每名角色只计一次。扣分照常（重复辱骂不会因此免罚）。
+  const key = chatKey(cleanMessage);
+  const said = state.chatScoring.said[characterId] || (state.chatScoring.said[characterId] = []);
+  const repeated = Boolean(key) && said.includes(key);
+  const promiseAgain = outcome.intent === 'promise' && Boolean(state.chatScoring.promised[characterId]);
+  let bondDelta = clamp(outcome.bondDelta, -2, 2);
+  let trustDelta = clamp(outcome.trustDelta, -2, 2);
+  // unscored 只在真的扣掉了正分时标注，前端据此提示「说过的话不再加分」
+  let unscored = null;
+  if ((repeated || promiseAgain) && (bondDelta > 0 || trustDelta > 0)) {
+    unscored = repeated ? 'repeat' : 'promise';
+    bondDelta = Math.min(0, bondDelta);
+    trustDelta = Math.min(0, trustDelta);
+  }
+  if (key && !repeated) {
+    said.push(key);
+    if (said.length > MAX_SAID_PER_CHARACTER) said.shift();
+  }
+  // 只有真正计了分的承诺才占用「每名角色一次」：模型判为敷衍（0 分）的承诺不算数
+  if (outcome.intent === 'promise' && (bondDelta > 0 || trustDelta > 0)) state.chatScoring.promised[characterId] = true;
   character.bond = clamp(character.bond + bondDelta, 0, 10);
   character.trust = clamp(character.trust + trustDelta, 0, 10);
   character.mood = String(outcome.emotion || character.mood).slice(0, 8);
@@ -223,7 +284,8 @@ export function applyChatOutcome(state, characterId, message, outcome) {
       intent: outcome.intent,
       emotion: character.mood,
       bondDelta,
-      trustDelta
+      trustDelta,
+      ...(unscored ? { unscored } : {})
     }
   }));
 
@@ -248,6 +310,7 @@ export function applyChatOutcome(state, characterId, message, outcome) {
   }
 
   state.chatTurns += 1;
+  if (state.scene === 'aftermath') state.aftermathChatTurns += 1;
   state.updatedAt = Date.now();
   return state;
 }
@@ -297,9 +360,11 @@ function finishBattleIfNeeded(state) {
   if (state.enemy.hp <= 0) {
     state.enemy.hp = 0;
     state.scene = 'aftermath';
-    state.objective = '决定如何处置”黎明种”。';
+    state.objective = '决定如何处置“黎明种”。';
     state.flags.battleWon = true;
-    state.chatTurns = 0;
+    // 战后交流整局只有 AFTERMATH_CHAT_TURNS 次：重置战斗后再赢，沿用已用掉的次数
+    ensureChatRules(state);
+    state.chatTurns = state.aftermathChatTurns;
     AFTERMATH_EVENTS.forEach((raw) => pushEvent(state, hydrateEvent(raw)));
     unlockCg(state, 'aftermath');
     return true;
@@ -321,6 +386,7 @@ function finishBattleIfNeeded(state) {
     state.partyHp = 70;
     state.focus = 65;
     state.enemy.hp = Math.max(80, state.enemy.hp);
+    state.battlePhase = battlePhaseForHp(state.enemy.hp);
     state.turn = 0;
     pushEvent(state, event('system', '黎明种触发局部时间回卷。战斗重置，但队友仍隐约记得你的失败。'));
     Object.values(state.characters).forEach((character) => {
@@ -372,7 +438,7 @@ export function battleAction(state, actionId) {
       state.enemy.sealed = clamp(state.enemy.sealed + 10, 0, 20);
       state.partyHp = clamp(state.partyHp + 8, 0, state.partyMaxHp);
       damage -= 5;
-      pushEvent(state, event('battle', `塞蕾娜展开「静月封界」，造成 ${damage} 点伤害并形成护盾。`, { speakerId: 'serena' }));
+      pushEvent(state, event('battle', `塞雷娜展开「静月封界」，造成 ${damage} 点伤害并形成护盾。`, { speakerId: 'serena' }));
     }
     state.enemy.hp = clamp(state.enemy.hp - damage, 0, state.enemy.maxHp);
   }
@@ -485,6 +551,13 @@ export function chooseEnding(state, decisionId) {
   return state;
 }
 
+// 回卷会把食梦兽血量抬回去，阶段要跟着回退，阶段剧情与立绘才能重新触发且保持一致
+function battlePhaseForHp(hp) {
+  if (hp <= 50) return 3;
+  if (hp <= 100) return 2;
+  return 1;
+}
+
 export function resetBattle(state) {
   if (!['battle', 'aftermath'].includes(state.scene)) {
     throw new Error('当前无法重置战斗。');
@@ -495,6 +568,7 @@ export function resetBattle(state) {
   state.potions = 2;
   state.turn = 0;
   state.enemy.hp = state.enemy.maxHp;
+  state.battlePhase = 1;
   state.enemy.sealed = 0;
   state.enemy.broken = 0;
   state.flags.battleWon = false;

@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>月蚀契约 · 星轨召唤</title>
+<style>
+:root {
+  --bg: #080617; --surf: #100e24; --card: #181535; --line: #2a2650;
+  --text: #e8e4f0; --muted: #8b87a8; --faint: #8783a7;
+  --legendary: #c084fc; --epic: #f87171; --rare: #fbbf24; --uncommon: #60a5fa; --common: #9ca3af;
+  --diamond: #5ee4ff; --pink: #f472b6; --gold: #fbbf24;
+  --radius: 14px; --shadow: 0 8px 32px rgba(0,0,0,.55);
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+[hidden] { display:none !important; }
+body { background:var(--bg); color:var(--text); font-family:'Segoe UI',system-ui,sans-serif; min-height:100vh; overflow-x:hidden; }
+::-webkit-scrollbar{width:5px} ::-webkit-scrollbar-thumb{background:var(--line);border-radius:3px}
+.app { max-width:1200px; margin:0 auto; padding:14px 20px; }
+
+/* ===== Header ===== */
+.header { display:flex; align-items:center; justify-content:space-between; padding:14px 0; border-bottom:1px solid var(--line); margin-bottom:16px; flex-wrap:wrap; gap:10px; }
+.header h1 { font-size:1.4rem; }
+.resource-bar { display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+.res-badge { display:flex; align-items:center; gap:6px; padding:6px 14px; border-radius:99px; background:var(--card); border:1px solid var(--line); font-weight:700; font-size:.88rem; }
+
+/* ===== Tabs ===== */
+.tabs { display:flex; gap:4px; margin-bottom:20px; flex-wrap:wrap; }
+.tab-btn { padding:9px 20px; border-radius:99px; border:1px solid var(--line); background:var(--surf); color:var(--muted); cursor:pointer; font-size:.85rem; transition:all .2s; }
+.tab-btn:hover { border-color:var(--diamond); color:var(--text); }
+.tab-btn.active { background:var(--diamond); color:#000; border-color:var(--diamond); font-weight:700; }
+.tab-content { display:none; animation:fadeSlide .25s ease; }
+.tab-content.active { display:block; }
+@keyframes fadeSlide { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+
+/* ===== Banner ===== */
+.banner-hero { background:var(--card); border-radius:var(--radius); border:1px solid var(--line); padding:32px 28px; text-align:center; position:relative; overflow:hidden; margin-bottom:20px; }
+.banner-hero::before { content:""; position:absolute; inset:0; background:radial-gradient(ellipse at 50% 15%, rgba(94,228,255,.08), transparent 55%); }
+.banner-hero h2 { font-size:1.6rem; margin-bottom:6px; }
+.banner-hero .banner-sub { color:var(--muted); font-size:.88rem; margin-bottom:14px; }
+.banner-hero .rate-info { font-size:.78rem; color:var(--faint); margin-bottom:16px; line-height:1.8; }
+.rate-info b { color:var(--epic); }
+.pull-actions { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+.pull-btn { padding:14px 32px; border-radius:99px; border:none; cursor:pointer; font-size:1rem; font-weight:700; color:#fff; transition:all .2s; }
+.pull-btn:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,.4); }
+.pull-btn.primary { background:linear-gradient(135deg,#f87171,#dc2626); }
+.pull-btn.ten { background:linear-gradient(135deg,#c084fc,#f472b6); }
+.pull-btn:disabled { opacity:.4; transform:none; cursor:not-allowed; }
+.pull-btn.small { padding:8px 18px; font-size:.8rem; }
+
+/* ===== 稀有度卡片 ===== */
+.item-row { display:grid; grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); gap:12px; margin-top:16px; }
+.item-card { background:var(--card); border-radius:var(--radius); border:1px solid var(--line); padding:14px; text-align:center; transition:all .2s; position:relative; overflow:hidden; }
+.item-card::before { content:""; position:absolute; top:0; left:0; right:0; height:3px; border-radius:3px 3px 0 0; }
+.item-card.r-legendary::before { background:linear-gradient(90deg,#c084fc,#9333ea); }
+.item-card.r-epic::before { background:linear-gradient(90deg,#f87171,#dc2626); }
+.item-card.r-rare::before { background:linear-gradient(90deg,#fbbf24,#d97706); }
+.item-card.r-uncommon::before { background:linear-gradient(90deg,#60a5fa,#2563eb); }
+.item-card.r-common::before { background:linear-gradient(90deg,#9ca3af,#6b7280); }
+.item-card:hover { transform:translateY(-3px); box-shadow:var(--shadow); }
+.item-card .item-icon { font-size:2.2rem; margin:8px 0; }
+.item-card .item-name { font-size:.88rem; font-weight:700; }
+.item-card .item-type { font-size:.7rem; color:var(--muted); margin-top:4px; }
+.item-card .item-stats { font-size:.65rem; color:var(--faint); margin-top:4px; font-style:italic; }
+.item-card.owned { opacity:.55; }
+.item-card.owned::after { content:"✓ 已拥有"; position:absolute; top:8px; right:10px; font-size:.65rem; padding:2px 8px; border-radius:99px; background:var(--diamond); color:#000; }
+.item-card.maxed::after { content:"已满破"; position:absolute; top:8px; right:10px; font-size:.65rem; padding:2px 8px; border-radius:99px; background:var(--gold); color:#000; }
+
+/* ===== 类型分组标签 ===== */
+.type-group { margin-top:20px; }
+.type-group h3 { font-size:.95rem; margin-bottom:8px; display:flex; align-items:center; gap:6px; }
+.type-group h3 .group-icon { font-size:1.1rem; }
+
+/* ===== 仓库 ===== */
+.inv-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:10px; }
+.inv-card { background:var(--card); border-radius:var(--radius); border:1px solid var(--line); padding:14px; display:flex; gap:12px; align-items:center; border-left:3px solid var(--faint); }
+.inv-card.r-legendary { border-left-color:var(--legendary); }
+.inv-card.r-epic { border-left-color:var(--epic); }
+.inv-card.r-rare { border-left-color:var(--rare); }
+.inv-card.r-uncommon { border-left-color:var(--uncommon); }
+.inv-card.r-common { border-left-color:var(--common); }
+.inv-card .quant { font-size:1.3rem; font-weight:700; min-width:38px; text-align:center; }
+.filter-bar { display:flex; gap:8px; align-items:center; margin-bottom:14px; flex-wrap:wrap; }
+.filter-bar select, .filter-bar input { padding:7px 14px; border-radius:99px; background:var(--surf); color:var(--text); border:1px solid var(--line); font-size:.84rem; }
+.filter-bar select:focus, .filter-bar input:focus { outline:none; border-color:var(--diamond); }
+
+/* ===== 商城 ===== */
+.shop-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:12px; }
+.shop-item { background:var(--card); border-radius:var(--radius); border:1px solid var(--line); padding:18px; text-align:center; }
+
+/* ===== 会员 ===== */
+.member-card { background:var(--card); border-radius:var(--radius); border:1px solid var(--line); padding:24px; text-align:center; transition:all .2s; }
+.member-card:hover { transform:translateY(-3px); box-shadow:var(--shadow); }
+.member-card .tier-name { font-size:1.25rem; font-weight:700; margin-bottom:4px; }
+.member-card .tier-perks { font-size:.8rem; color:var(--muted); line-height:1.8; margin:12px 0; }
+.member-card .tier-price { font-size:1.05rem; font-weight:700; margin-bottom:12px; }
+
+/* ===== 召唤动画 ===== */
+.anim-stage { position:relative; width:320px; height:320px; }
+.anim-orb { position:absolute; inset:18%; border-radius:50%; animation:orbPulse .55s ease-in-out infinite alternate; }
+@keyframes orbPulse { from { transform:scale(.88); filter:brightness(.9); } to { transform:scale(1.12); filter:brightness(1.5); } }
+.anim-result { text-align:center; animation:resultReveal .45s cubic-bezier(.175,.885,.32,1.275); display:none; }
+.anim-result.show { display:block; }
+@keyframes resultReveal { from { opacity:0; transform:scale(.4); } to { opacity:1; transform:scale(1); } }
+.anim-result .rarity-name { font-size:1.5rem; font-weight:700; margin:8px 0; }
+.anim-result .item-detail { font-size:1.05rem; color:var(--muted); }
+.anim-skip { position:fixed; bottom:30px; right:30px; z-index:210; }
+.particles { position:absolute; inset:0; pointer-events:none; }
+
+/* ===== 结果条目（旧版样式，保留给 .result-item） ===== */
+.result-item { width:130px; padding:14px; border-radius:var(--radius); text-align:center; animation:popIn .35s cubic-bezier(.175,.885,.32,1.275) backwards; }
+.result-item:nth-child(1) { animation-delay:.08s; } .result-item:nth-child(2) { animation-delay:.12s; }
+.result-item:nth-child(3) { animation-delay:.16s; } .result-item:nth-child(4) { animation-delay:.2s; }
+.result-item:nth-child(5) { animation-delay:.24s; } .result-item:nth-child(6) { animation-delay:.28s; }
+.result-item:nth-child(7) { animation-delay:.32s; } .result-item:nth-child(8) { animation-delay:.36s; }
+.result-item:nth-child(9) { animation-delay:.4s; } .result-item:nth-child(10) { animation-delay:.44s; }
+@keyframes popIn { from { opacity:0; transform:scale(.3) translateY(40px); } to { opacity:1; transform:scale(1) translateY(0); } }
+.result-item .r-icon { font-size:2rem; margin-bottom:6px; }
+.result-item .r-name { font-size:.75rem; font-weight:700; }
+.result-item .r-type { font-size:.62rem; opacity:.7; margin-top:2px; }
+.result-item.r-legendary { background:linear-gradient(135deg,#c084fc,#9333ea); color:#fff; }
+.result-item.r-epic { background:linear-gradient(135deg,#f87171,#dc2626); color:#fff; }
+.result-item.r-rare { background:linear-gradient(135deg,#fbbf24,#d97706); color:#000; }
+.result-item.r-uncommon { background:linear-gradient(135deg,#60a5fa,#2563eb); color:#fff; }
+.result-item.r-common { background:linear-gradient(135deg,#9ca3af,#6b7280); color:#fff; }
+.result-item.r-costume { background:linear-gradient(135deg,#f472b6,#ec4899); color:#fff; }
+.result-item.r-essence { background:linear-gradient(135deg,#fbbf24,#d97706); color:#000; }
+.result-item.r-pink { background:linear-gradient(135deg,#f472b6,#ec4899); color:#fff; }
+
+/* ===== 召唤动画 v2 — 流星坠落+召唤阵+翻转揭示 ===== */
+.anim-overlay {
+  display:none; position:fixed; inset:0; z-index:200; background:rgba(2,2,12,.95);
+  flex-direction:column; align-items:center; justify-content:center; justify-content:safe center;
+  overflow-x:hidden; overflow-y:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch;
+}
+.anim-overlay.active { display:flex; }
+
+/* 召唤阵 */
+.summon-circle {
+  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  width:260px; height:260px; pointer-events:none;
+}
+.summon-circle svg { width:100%; height:100%; animation:circleSpin 3s linear infinite; }
+@keyframes circleSpin { to { transform:rotate(360deg); } }
+
+/* 流星 */
+.meteor {
+  position:absolute; top:-80px; left:50%; transform:translateX(-50%);
+  width:6px; height:120px; border-radius:99px;
+  animation:meteorFall .7s cubic-bezier(.55,.06,.68,.19) forwards;
+  filter:blur(1px);
+}
+@keyframes meteorFall {
+  0% { top:-80px; opacity:1; }
+  80% { top:55%; opacity:1; }
+  100% { top:60%; opacity:0; }
+}
+
+/* 撞击闪光 */
+.impact-flash {
+  position:absolute; inset:0; background:#fff; opacity:0; pointer-events:none;
+}
+.impact-flash.flash { animation:flashFade .35s ease-out; }
+@keyframes flashFade { 0% { opacity:.7; } 100% { opacity:0; } }
+
+/* 冲击波 */
+.impact-ring {
+  position:absolute; top:58%; left:50%; transform:translate(-50%,-50%);
+  width:10px; height:10px; border-radius:50%; border:3px solid currentColor;
+  opacity:0;
+}
+.impact-ring.expand { animation:ringExpand .5s ease-out forwards; }
+@keyframes ringExpand {
+  0% { width:10px; height:10px; opacity:1; }
+  100% { width:300px; height:300px; opacity:0; }
+}
+
+/* 翻转卡片 */
+.flip-card { perspective:1200px; width:220px; height:320px; margin:20px auto; }
+.flip-inner { width:100%; height:100%; position:relative; transform-style:preserve-3d; transition:transform .7s cubic-bezier(.4,0,.2,1); }
+.flip-inner.flipped { transform:rotateY(180deg); }
+.flip-front, .flip-back { position:absolute; inset:0; backface-visibility:hidden; border-radius:16px; overflow:hidden; }
+.flip-front {
+  background:linear-gradient(145deg,#1a1840,#0d0b24);
+  border:2px solid var(--line); display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+}
+.flip-front .moon-emblem { font-size:3.5rem; opacity:.3; animation:emblemPulse 2s ease-in-out infinite; }
+@keyframes emblemPulse { 0%,100% { opacity:.25; transform:scale(1); } 50% { opacity:.5; transform:scale(1.05); } }
+.flip-front .flip-hint { position:absolute; bottom:16px; font-size:.72rem; color:var(--faint); }
+.flip-back { transform:rotateY(180deg); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20px; }
+.flip-back .rarity-badge { position:absolute; top:10px; right:10px; font-size:.62rem; padding:2px 8px; border-radius:99px; font-weight:700; }
+
+/* 稀有度光效 */
+.glow-legendary { box-shadow:0 0 30px #c084fc,0 0 60px #c084fc44,inset 0 0 20px #c084fc22; }
+.glow-epic { box-shadow:0 0 25px #f87171,0 0 50px #f8717144,inset 0 0 15px #f8717122; }
+.glow-rare { box-shadow:0 0 20px #fbbf24,0 0 40px #fbbf2444; }
+.glow-uncommon { box-shadow:0 0 15px #60a5fa,0 0 30px #60a5fa33; }
+
+/* 十连卡片网格 */
+.gacha-cards-grid { display:flex; gap:12px; flex-wrap:wrap; justify-content:center; max-width:960px; padding:20px; }
+.mini-flip-card { perspective:800px; width:110px; height:160px; cursor:pointer; }
+.mini-flip-inner { width:100%; height:100%; position:relative; transform-style:preserve-3d; transition:transform .5s cubic-bezier(.4,0,.2,1); }
+.mini-flip-inner.flipped { transform:rotateY(180deg); }
+.mini-flip-front, .mini-flip-back { position:absolute; inset:0; backface-visibility:hidden; border-radius:10px; overflow:hidden; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+.mini-flip-front { background:linear-gradient(145deg,#1a1840,#0d0b24); border:1.5px solid var(--line); }
+.mini-flip-front .mini-moon { font-size:1.8rem; opacity:.25; }
+.mini-flip-back { transform:rotateY(180deg); padding:8px; }
+.mini-flip-back .mini-icon { font-size:1.6rem; }
+.mini-flip-back .mini-name { font-size:.6rem; font-weight:700; text-align:center; margin-top:4px; }
+.mini-flip-back .mini-rarity { font-size:.5rem; opacity:.7; margin-top:2px; }
+
+/* 结果区 */
+.anim-result-v2 { text-align:center; display:none; animation:resultPop .5s cubic-bezier(.175,.885,.32,1.275); }
+.anim-result-v2.show { display:block; }
+@keyframes resultPop { from { opacity:0; transform:scale(.5); } to { opacity:1; transform:scale(1); } }
+
+.anim-skip-v2 { position:fixed; bottom:30px; right:30px; z-index:210; }
+.reveal-all-btn { position:fixed; bottom:30px; left:50%; transform:translateX(-50%); z-index:210; display:none; }
+
+/* 后台面板 */
+.admin-panel { background:var(--card); border-radius:var(--radius); border:1px solid var(--line); padding:20px; }
+.admin-panel label { display:block; font-size:.8rem; color:var(--muted); margin-top:12px; margin-bottom:4px; }
+.admin-panel input[type=range] { width:100%; accent-color:var(--diamond); }
+.admin-panel input[type=number] { width:80px; padding:6px 10px; border-radius:8px; background:var(--bg); color:var(--text); border:1px solid var(--line); font-size:.84rem; }
+
+/* ===== Toast ===== */
+.toast { position:fixed; bottom:24px; right:24px; padding:12px 24px; border-radius:99px; background:var(--diamond); color:#000; font-weight:700; z-index:300; opacity:0; transition:opacity .3s; pointer-events:none; }
+.toast.show { opacity:1; }
+
+@media(max-width:768px) {
+  .header { flex-direction:column; }
+  .tabs { overflow-x:auto; flex-wrap:nowrap; }
+}
+@media(max-width:600px) {
+  .gacha-cards-grid { gap:10px; padding:56px 12px 12px; }
+  .mini-flip-card { width:96px; height:140px; }
+  .mini-caption { padding:18px 4px 5px; }
+}
+
+/* 原型声明横幅 */
+.proto-banner { display:flex; align-items:flex-start; justify-content:center; gap:8px; margin:0 0 4px; padding:8px 14px; border-radius:10px; border:1px dashed rgba(251,191,36,.55); background:rgba(251,191,36,.08); color:#fcd34d; font-size:.82rem; line-height:1.5; }
+.proto-banner > span:first-child { flex:none; padding-top:1px; }
+.proto-banner > span:last-child { min-width:0; }
+.proto-banner b { color:#fde68a; }
+
+/* ===== 图标（/icons.js 内联 SVG，继承 currentColor） ===== */
+.ico { display:inline-block; flex:none; vertical-align:-.2em; overflow:visible; }
+.ico-colored { filter:drop-shadow(0 1px 2px rgba(0,0,0,.35)); }
+.tab-btn, .pull-btn { display:inline-flex; align-items:center; justify-content:center; gap:6px; }
+.tab-btn { white-space:nowrap; flex:none; }
+.tab-btn.icon-only { padding:5px 9px; }
+.res-badge .ico-diamond { filter:drop-shadow(0 0 6px rgba(94,228,255,.7)); }
+.res-badge .ico-pink-crystal { filter:drop-shadow(0 0 4px rgba(244,114,182,.6)); }
+.res-badge .ico-essence { filter:drop-shadow(0 0 4px rgba(192,132,252,.6)); }
+.res-badge .res-unit { color:var(--muted); font-weight:400; font-size:.78rem; }
+.membership-badge { padding:5px 12px; border-radius:99px; font-size:.78rem; font-weight:700; border:1px solid currentColor; }
+.r-legendary { --rc:var(--legendary); } .r-epic { --rc:var(--epic); } .r-rare { --rc:var(--rare); }
+.r-uncommon { --rc:var(--uncommon); } .r-common { --rc:var(--common); }
+
+/* 标题徽记 */
+.banner-crest { position:relative; display:block; width:88px; height:88px; margin:0 auto 10px; filter:drop-shadow(0 0 18px rgba(94,228,255,.35)); }
+.banner-icon { position:relative; display:flex; justify-content:center; margin-bottom:10px; color:var(--pink); filter:drop-shadow(0 0 12px rgba(244,114,182,.45)); }
+.banner-hero h2, .banner-hero p, .banner-hero .rate-info, .banner-hero .pull-actions { position:relative; }
+.type-group h3 .group-icon { display:inline-flex; color:var(--diamond); }
+.admin-panel h3 { display:flex; align-items:center; gap:8px; }
+
+/* 立绘缩略（832×1216 胸像，裁到头肩） */
+.item-portrait { position:relative; aspect-ratio:3/4; margin:4px 0 10px; border-radius:10px; overflow:hidden; background:#0c0b1b; }
+.item-portrait img { display:block; width:100%; height:100%; object-fit:cover; object-position:50% 0; transform:scale(1.32); transform-origin:50% 24%; transition:transform .3s; }
+.item-card:hover .item-portrait img { transform:scale(1.4); }
+.item-portrait.is-costume img { transform:scale(1.06); transform-origin:50% 10%; }
+.item-card:hover .item-portrait.is-costume img { transform:scale(1.12); }
+/* 角色/服装池：8 列紧凑网格（每位女主一列 / 两套服装两行） */
+.item-row.pool-row { grid-template-columns:repeat(auto-fill,minmax(128px,1fr)); }
+.pool-row .item-card { padding:10px; }
+.pool-row .item-card .item-name { font-size:.8rem; }
+.item-portrait::after { content:""; position:absolute; inset:auto 0 0; height:30%; background:linear-gradient(to top, rgba(12,11,27,.85), transparent); }
+.item-emblem { position:absolute; left:8px; bottom:8px; z-index:1; display:flex; padding:5px; border-radius:50%; background:rgba(12,11,27,.75); border:1px solid var(--rc, var(--line)); color:var(--rc, var(--text)); }
+.item-card .item-icon { display:flex; justify-content:center; align-items:center; height:60px; margin:6px 0; color:var(--rc, var(--text)); }
+.item-card.owned::after, .item-card.maxed::after { z-index:2; }
+
+/* 圆形头像（取立绘脸部） */
+.avatar { position:relative; flex:none; width:44px; height:44px; border-radius:50%; overflow:hidden; background:#17132e; border:2px solid var(--rc, var(--line)); }
+.avatar img { position:absolute; max-width:none; width:181%; left:-40.5%; top:-34%; }
+
+/* 仓库 */
+.inv-thumb { flex:none; width:44px; display:flex; justify-content:center; color:var(--rc, var(--text)); }
+.inv-card .quant { color:var(--rc, var(--text)); }
+
+/* 商城 */
+.shop-item h4 { display:flex; align-items:center; justify-content:center; gap:6px; font-size:1.1rem; margin-bottom:4px; }
+.shop-item .shop-icon { display:flex; justify-content:center; margin-bottom:8px; }
+#shop-pink { grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); }
+#shop-pink .shop-item { padding:12px; }
+.shop-item .shop-portrait { margin:0 0 8px; }
+.shop-item .shop-price { display:flex; align-items:center; justify-content:center; gap:5px; margin:8px 0; font-weight:700; }
+
+/* 会员 */
+.member-card .tier-icon { display:flex; justify-content:center; margin-bottom:8px; }
+.member-card .tier-perks div { display:flex; align-items:center; justify-content:center; gap:5px; }
+.member-card .tier-perks .ico-check { color:var(--diamond); }
+
+/* 召唤卡背 / 揭示面 */
+.card-back-art { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.flip-front .flip-hint { z-index:1; color:var(--text); text-shadow:0 1px 6px #000; }
+.flip-inner { cursor:pointer; }
+.flip-back { background:radial-gradient(circle at 50% 32%, #2a2458, #120f2c 70%); border:1.5px solid rgba(255,255,255,.14); }
+.anim-result-v2 { order:2; position:relative; z-index:1; }
+/* 结果出来后：确认区吸附在视口底部（带底色），内容再多也点得到「确认」 */
+.anim-overlay.has-result .anim-result-v2 {
+  position:sticky; bottom:0; z-index:5; align-self:stretch; flex:none;
+  padding:10px 16px calc(14px + env(safe-area-inset-bottom, 0px));
+  background:linear-gradient(to top, rgba(2,2,12,.98) 72%, rgba(2,2,12,0));
+}
+.anim-close {
+  position:fixed; top:12px; right:12px; z-index:220; display:none; align-items:center; justify-content:center;
+  width:40px; height:40px; border-radius:50%; border:1px solid rgba(255,255,255,.28);
+  background:rgba(16,14,36,.9); color:var(--text); cursor:pointer;
+}
+.anim-close:hover, .anim-close:focus-visible { border-color:var(--diamond); }
+.anim-overlay.has-result .anim-close { display:flex; }
+.gacha-cards-grid, .flip-card { flex:none; }
+.flip-back.has-art { padding:0; justify-content:flex-end; }
+.flip-art { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:50% 0; }
+.flip-caption { position:relative; width:100%; padding:52px 12px 16px; text-align:center; background:linear-gradient(to top, rgba(6,5,18,.95) 45%, transparent); }
+.flip-name { font-size:1.1rem; font-weight:700; }
+.flip-sub { font-size:.72rem; color:var(--muted); margin-top:3px; }
+.flip-icon { margin-bottom:10px; }
+.flip-back .rarity-badge { z-index:1; }
+.anim-result-v2 .result-label { display:inline-flex; align-items:center; gap:8px; }
+.best-line { display:inline-flex; align-items:center; gap:10px; }
+.best-line .avatar { width:36px; height:36px; }
+.mini-flip-back.has-art { padding:0; justify-content:flex-end; }
+.mini-art { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:50% 0; }
+.mini-caption { position:relative; width:100%; padding:22px 4px 6px; text-align:center; background:linear-gradient(to top, rgba(6,5,18,.92) 50%, transparent); }
+.mini-flip-back .mini-icon { display:flex; color:#fff; }
+.mini-new { color:#4ade80; font-size:.55rem; margin-top:2px; font-weight:700; }
+
+/* 减少动态效果：关闭循环动画、翻牌/弹出过渡与悬停位移 */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; animation-delay:0s !important; transition-duration:.01ms !important; transition-delay:0s !important; scroll-behavior:auto !important; }
+  .pull-btn:hover, .item-card:hover, .member-card:hover { transform:none; }
+  .item-card:hover .item-portrait img { transform:scale(1.32); }
+  .item-card:hover .item-portrait.is-costume img { transform:scale(1.06); }
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="proto-banner" role="note"><span data-icon="info" data-size="16"></span><span><b>原型存档</b> · 已移出游戏站点（tools/prototypes/，只能用 preview.mjs 本机预览），自成一套经济，数据与正式游戏不互通</span></div>
+  <div class="header">
+    <h1>月蚀契约 · <span style="color:var(--diamond)">星轨召唤</span></h1>
+    <div class="resource-bar">
+      <div class="res-badge" title="钻石"><span data-icon="diamond" data-size="22"></span><span id="diamondDisplay">0</span></div>
+      <div class="res-badge" title="粉晶"><span data-icon="pink-crystal" data-size="20"></span><span id="pinkDisplay">0</span></div>
+      <div class="res-badge" title="精魄"><span data-icon="essence" data-size="20"></span><span id="essenceDisplay">0</span> <span class="res-unit">精魄</span></div>
+      <span class="membership-badge" id="memberBadge" style="background:rgba(156,163,175,.2);color:#9ca3af">青铜</span>
+      <button class="tab-btn icon-only dev-only" type="button" data-action="switch-tab" data-tab="admin" title="后台调试" aria-label="后台调试" hidden><span data-icon="settings" data-size="16"></span></button>
+    </div>
+  </div>
+
+  <div class="tabs" id="mainTabs">
+    <button class="tab-btn active" type="button" data-action="switch-tab" data-tab="charBanner"><span data-icon="pack" data-size="16"></span>角色召唤</button>
+    <button class="tab-btn" type="button" data-action="switch-tab" data-tab="costumeBanner"><span data-icon="dress" data-size="16"></span>服装召唤</button>
+    <button class="tab-btn" type="button" data-action="switch-tab" data-tab="shop"><span data-icon="cart" data-size="16"></span>商城</button>
+    <button class="tab-btn" type="button" data-action="switch-tab" data-tab="inventory"><span data-icon="box" data-size="16"></span>仓库</button>
+    <button class="tab-btn" type="button" data-action="switch-tab" data-tab="membership"><span data-icon="crown" data-size="16"></span>会员</button>
+    <button class="tab-btn dev-only" type="button" data-action="switch-tab" data-tab="admin" hidden><span data-icon="wrench" data-size="16"></span>后台</button>
+  </div>
+
+  <!-- ===== 角色召唤 ===== -->
+  <div id="tab-charBanner" class="tab-content active">
+    <div class="banner-hero">
+      <img class="banner-crest" src="/assets/ui/eclipse-crest.svg" alt="">
+      <h2>月蚀召唤 · 角色</h2>
+      <p class="banner-sub">八位女主的命运，由你召唤</p>
+      <div class="rate-info" id="charRateInfo"></div>
+      <div class="pull-actions">
+        <button class="pull-btn primary" type="button" data-action="pull" data-banner="character" data-count="1" id="btnSingle">单抽</button>
+        <button class="pull-btn ten" type="button" data-action="pull" data-banner="character" data-count="10" id="btnTen">十连</button>
+      </div>
+    </div>
+    <div class="type-group"><h3><span class="group-icon" data-icon="users" data-size="18"></span> 角色池预览</h3><div class="item-row pool-row" id="charPoolPreview"></div></div>
+  </div>
+
+  <!-- ===== 服装召唤 ===== -->
+  <div id="tab-costumeBanner" class="tab-content">
+    <div class="banner-hero">
+      <div class="banner-icon"><span data-icon="dress" data-size="56"></span></div>
+      <h2>星尘衣橱</h2>
+      <p class="banner-sub">专属服装，限时幻化</p>
+      <div class="rate-info" id="costumeRateInfo"></div>
+      <div class="pull-actions">
+        <button class="pull-btn primary" type="button" data-action="pull" data-banner="costume" data-count="1" id="btnCostSingle">单抽</button>
+        <button class="pull-btn ten" type="button" data-action="pull" data-banner="costume" data-count="5" id="btnCost5">五连</button>
+      </div>
+    </div>
+    <div class="type-group"><h3><span class="group-icon" data-icon="dress" data-size="18"></span> 可获取服装</h3><div class="item-row pool-row" id="costumePoolPreview"></div></div>
+  </div>
+
+  <!-- ===== 商城 ===== -->
+  <div id="tab-shop" class="tab-content">
+    <div class="filter-bar" style="margin-bottom:14px;">
+      <button class="tab-btn active" type="button" data-action="shop-tab" data-shop="diamond"><span data-icon="diamond" data-size="16"></span>钻石充值</button>
+      <button class="tab-btn" type="button" data-action="shop-tab" data-shop="pink"><span data-icon="pink-crystal" data-size="16"></span>粉晶兑换</button>
+      <button class="tab-btn" type="button" data-action="shop-tab" data-shop="essence"><span data-icon="essence" data-size="16"></span>精魄商店</button>
+    </div>
+    <div id="shop-diamond" class="shop-grid"></div>
+    <div id="shop-pink" class="shop-grid" style="display:none"></div>
+    <div id="shop-essence" class="shop-grid" style="display:none"></div>
+  </div>
+
+  <!-- ===== 仓库 ===== -->
+  <div id="tab-inventory" class="tab-content">
+    <div class="filter-bar">
+      <select id="invFilter" data-action="filter-inventory" aria-label="物品类型">
+        <option value="all">全部</option><option value="character">角色</option><option value="weapon">武器</option>
+        <option value="equipment">防具</option><option value="consumable">药品</option><option value="costume">服装</option>
+      </select>
+      <input type="text" id="invSearch" data-action="search-inventory" placeholder="搜索物品..." aria-label="搜索物品" style="margin-left:8px">
+    </div>
+    <div class="inv-grid" id="invGrid"></div>
+  </div>
+
+  <!-- ===== 会员 ===== -->
+  <div id="tab-membership" class="tab-content">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;" id="memberGrid"></div>
+  </div>
+
+  <!-- ===== 后台（只在 ?dev=1 时显示） ===== -->
+  <div id="tab-admin" class="tab-content dev-only" hidden>
+    <div class="admin-panel">
+      <h3><span data-icon="settings" data-size="18"></span>后台调试面板</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:14px;">
+        <div>
+          <h4 style="color:var(--diamond);margin-bottom:10px;">概率调整</h4>
+          <label for="sCharRate">角色: <span id="vCharRate">1</span>%</label><input type="range" min="0.1" max="10" step="0.1" value="1" data-action="rate-slider" data-label="vCharRate" id="sCharRate">
+          <label for="sLegRate">传说: <span id="vLegRate">2</span>%</label><input type="range" min="0" max="20" step="0.5" value="2" data-action="rate-slider" data-label="vLegRate" id="sLegRate">
+          <label for="sEpiRate">史诗: <span id="vEpiRate">8</span>%</label><input type="range" min="0" max="30" step="0.5" value="8" data-action="rate-slider" data-label="vEpiRate" id="sEpiRate">
+          <label for="sRarRate">精良: <span id="vRarRate">20</span>%</label><input type="range" min="0" max="40" step="1" value="20" data-action="rate-slider" data-label="vRarRate" id="sRarRate">
+          <label for="sUncRate">优良: <span id="vUncRate">30</span>%</label><input type="range" min="0" max="50" step="1" value="30" data-action="rate-slider" data-label="vUncRate" id="sUncRate">
+          <label for="sCosRate">服装: 1 / <span id="vCosRate">30</span></label><input type="range" min="5" max="100" step="1" value="30" data-action="rate-slider" data-label="vCosRate" id="sCosRate">
+        </div>
+        <div>
+          <h4 style="color:var(--pink);margin-bottom:10px;">资源调试</h4>
+          <button class="pull-btn primary small" type="button" style="width:100%;margin-bottom:8px" data-action="add-currency" data-currency="diamonds" data-amount="100">+100 <span data-icon="diamond" data-size="16"></span> 钻石</button>
+          <button class="pull-btn primary small" type="button" style="width:100%;margin-bottom:8px;background:var(--pink)" data-action="add-currency" data-currency="pinkCrystals" data-amount="50">+50 <span data-icon="pink-crystal" data-size="16"></span> 粉晶</button>
+          <button class="pull-btn primary small" type="button" style="width:100%;margin-bottom:8px;background:var(--legendary)" data-action="add-currency" data-currency="essence" data-amount="10">+10 <span data-icon="essence" data-size="16"></span> 精魄</button>
+          <button class="pull-btn primary small" type="button" style="width:100%;margin-bottom:8px;background:var(--diamond);color:#000" data-action="unlock-all"><span data-icon="unlock" data-size="16"></span>解锁全部角色</button>
+          <button class="pull-btn primary small" type="button" style="width:100%;background:var(--epic)" data-action="reset-all"><span data-icon="refresh" data-size="16"></span>重置全部</button>
+        </div>
+        <div>
+          <h4 style="color:var(--gold);margin-bottom:10px;">会员调试</h4>
+          <select id="memberSelect" data-action="set-membership" aria-label="会员等级" style="width:100%;padding:8px;border-radius:8px;background:var(--surf);color:var(--text);border:1px solid var(--line)">
+            <option value="bronze">青铜会员</option><option value="silver">白银会员</option>
+            <option value="gold">黄金会员</option><option value="diamond">钻石会员</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 召唤动画 v2 -->
+<div class="anim-overlay" id="animOverlay" data-action="anim-backdrop" role="dialog" aria-modal="true" aria-label="召唤结果">
+  <!-- 召唤阵 -->
+  <div class="summon-circle" id="summonCircle">
+    <svg viewBox="0 0 200 200" fill="none">
+      <circle cx="100" cy="100" r="90" stroke="currentColor" stroke-width="1.5" opacity=".3" stroke-dasharray="8 6"/>
+      <circle cx="100" cy="100" r="70" stroke="currentColor" stroke-width="1" opacity=".2" stroke-dasharray="4 4"/>
+      <circle cx="100" cy="100" r="50" stroke="currentColor" stroke-width="0.8" opacity=".15"/>
+      <path d="M100 10 L100 190 M10 100 L190 100 M40 40 L160 160 M160 40 L40 160" stroke="currentColor" stroke-width=".5" opacity=".1"/>
+      <circle cx="100" cy="100" r="3" fill="currentColor" opacity=".4"/>
+    </svg>
+  </div>
+  <!-- 流星 -->
+  <div class="meteor" id="animMeteor" style="display:none"></div>
+  <!-- 撞击闪光 -->
+  <div class="impact-flash" id="impactFlash"></div>
+  <!-- 冲击波 -->
+  <div class="impact-ring" id="impactRing"></div>
+  <!-- 翻转卡片 -->
+  <div class="flip-card" id="flipCard" style="display:none">
+    <div class="flip-inner" id="flipInner" data-action="flip-single">
+      <div class="flip-front">
+        <img class="card-back-art" src="/assets/ui/card-back.svg" alt="">
+        <div class="flip-hint">点击揭示</div>
+      </div>
+      <div class="flip-back" id="flipBack"></div>
+    </div>
+  </div>
+  <!-- 结果区（单抽） -->
+  <div class="anim-result-v2" id="animResultV2"></div>
+  <!-- 十连卡片网格 -->
+  <div class="gacha-cards-grid" id="multiCardsGrid" style="display:none"></div>
+  <!-- 按钮 -->
+  <button class="pull-btn primary reveal-all-btn" type="button" id="revealAllBtn" data-action="reveal-all"><span data-icon="sparkle" data-size="16"></span>全部揭示</button>
+  <button class="pull-btn primary anim-skip-v2" type="button" id="animSkipV2" data-action="skip-anim">跳过<span data-icon="chevron-right" data-size="16"></span></button>
+  <button class="anim-close" type="button" id="animClose" data-action="end-anim" aria-label="关闭召唤结果" title="关闭"><span data-icon="close" data-size="18"></span></button>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script type="module" src="/gacha-system.js"></script>
+</body>
+</html>

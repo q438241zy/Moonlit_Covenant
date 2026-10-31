@@ -47,25 +47,64 @@
 
 - `AI_MODE=demo`：规则分类 + 手写角色台词；
 - `AI_MODE=openai`：调用 OpenAI 兼容 `/chat/completions`；
-- JSON Schema → JSON Object → 普通请求三档兼容；
-- 超时、接口错误、JSON 错误或禁区命中时自动保底；
-- API Key 仅在服务端使用。
+- JSON Schema → JSON Object → 普通请求三档兼容：只有上游明确拒绝 `response_format`（HTTP 400/422）时才降一级重试；
+- 超时、接口错误、内容不是合法 JSON 或命中禁区时，不再重试，直接退回角色保底台词；
+- API Key 仅在服务端使用；`.env` 从项目根读取（找不到才退回当前目录），已有环境变量优先。
+
+### `game/story-judge.mjs`
+
+主线「亚克的旅程」自由输入的服务端判定：节点定义一律从 `public/story/chapters/` 读取，不信任客户端；`openai` 模式下由模型归类意图，失败时回退到与浏览器相同的 `demoJudge`。章节文件按 mtime 缓存，改了章节不用重启。
+
+### 经济与外围系统（`game/gacha.mjs`、`rewards.mjs`、`membership.mjs`、`credit.mjs`、`costume.mjs`、`settings.mjs`、`analytics.mjs`）
+
+- 召唤卡池（角色池 / 服饰池、概率、保底）、会员与钻石（无真实支付）、Credit 计量、换衣、运营统计；
+- 召唤可以用 Credit（默认）或钻石支付；重复获得（含十连内重复、主线入队时已拥有的女主）按稀有度折算成钻石，数值见 README「钻石与奖励」；
+- `rewards.mjs`（纯函数，无 I/O）：「玩出来的钻石」——每日签到（连续签到加成）、主线每章首通（`POST /api/story/progress`，章节号按 `public/story/chapters/index.json` 校验）、卡牌对战胜利（每天有上限）；女主在主线正式入队的章节（`CHARACTER_POOL[].joinChapter`）首通时自动加入角色收藏；
+- 主游戏、主线播放器、卡牌页共用浏览器里同一个账户（localStorage `moonlit:playerId`）；
+- 只有一本 Credit 账：会员每日 Credit 同时记入计量器；
+- AI 设置：按玩家切换模型尚未开放（`PER_PLAYER_ROUTING=false`），所有玩家共用服务器配置的模型，设置页不提供模型预设；
+- 演示工具（免费会员、钻石补充、一键发放服装）受 `DEMO_TOOLS` 开关控制，`NODE_ENV=production` 时默认关闭；这个版本不公开，Docker 镜像设了 `DEMO_TOOLS=1` 保持开启。
+
+### `game/persist.mjs`
+
+- 把外传会话、账户（召唤 / 换衣 / 会员 / 卡牌收藏）、卡牌对局和 AI 设置写进 `data/saves.json`（路径按模块位置定位，不依赖 cwd；`SAVE_FILE` 可改）；
+- 状态变化后防抖约 1 秒，先写临时文件再 rename；进程收到 SIGINT / SIGTERM / SIGHUP 时先同步落盘再退出；
+- 文件损坏时改名为 `.corrupt-<时间戳>` 后以空状态启动；`PERSIST=0` 关闭，`node --test` 下默认关闭。
+
+### `cards/`（卡牌对战《暗影对决》）
+
+纯函数规则引擎：`database.mjs`（卡牌数据）、`battle.mjs`（对局、进化、攻击、回合）、`ai.mjs`（对手 AI，动作附带日志区间供前端回放）、`deck.mjs`（组牌校验、起始牌组）、`cardpack.mjs`（开包、碎片与合成）。服务端只把对手手牌下发为 `{uid, hidden}`。
+
+### `scenario/`
+
+银轨号外传的 15 章剧本草稿（`chapter-01.json` … `chapter-15.json`）与读取器 `index.mjs`，供游戏内「章节」阅读器使用（只读）。
 
 ### `server.mjs`
 
 - Node 原生 HTTP 服务，无运行时第三方包；
-- 静态网页与 JSON API；
-- 请求体 64 KiB 限制；
-- CSP、nosniff、deny frame、权限策略等响应头；
+- 静态网页与 JSON API；未知的 `/api/*` 返回 404 JSON，不存在的静态文件返回真正的 404；`/story`、`/cards` 这类单段路径 301 到同名 `.html`；
+- 静态资源带 `ETag` / `Last-Modified`，`cache-control: no-cache`，未修改时返回 304；文本类资源按需 gzip，下载中断时释放文件句柄；
+- 请求体 64 KiB 限制；playerId / sessionId 先做格式校验；会话与账户总量有上限（`MAX_SESSIONS`、`MAX_ACCOUNTS`，超出返回 503）；
+- CSP（`script-src 'self'`、`img-src 'self' data:`）、nosniff、deny frame、权限策略等响应头；
 - 每个存档串行锁，防止连续点击导致状态竞争；
-- 内存存档与 24 小时过期清理。
+- 存档持久化见 `game/persist.mjs`；过期清理：外传会话与卡牌对局 24 小时无操作过期，账户闲置 90 天过期；
+- `openai` 模式下按 IP 令牌桶（每分钟 20 次）+ 全局 3 个并发限流，超出时立即走保底台词；
+- 后台 `GET /api/admin/dashboard` 只认请求头 `x-admin-key`（`crypto.timingSafeEqual` 比较）；口令读 `ADMIN_KEY`，未设置时为默认口令 `123456`，设为空字符串则关闭后台；
+- 畸形请求（如非法 Host 头）只影响该请求；未捕获异常只记日志不退出；端口被占用时打印中文提示后退出；
+- 业务规则错误（中文提示）返回 400 原文，程序错误返回 500 通用文案，细节只写服务端日志。
 
 ### `public/`
 
-- 单页 UI，无远程 CDN；
-- 角色切换、快捷输入、日志、战斗 HUD、结局显示；
-- `localStorage` 只保存当前 session id；
-- 所有状态以服务端返回为准。
+- 多个页面，均无远程 CDN、无内联脚本：
+  - `index.html` + `app.js`：标题页（「主线：亚克的旅程」「外传：银轨号」两张模式卡与「实验模式：卡牌对战」入口、每日签到）、IF 外传银轨号、外传地图、章节阅读器（外传剧本草稿，只读）、召唤、换衣、钻石与商店、设置；
+  - `story.html` + `story/`：主线「亚克的旅程」播放器（`story/engine.js` 为浏览器与 Node 通用的纯函数引擎，章节数据在 `story/chapters/`）；
+  - `cards.html` + `cards.js`：卡牌对战（实验模式）；
+  - `character-manager.html`：独立原型页（角色管理器，人设按正典 `设定集/03`），自带 localStorage 数据，与正式游戏数据不互通；
+  - 独立抽卡原型 `gacha-system` 已移到 `tools/prototypes/`，不随站点提供（本机预览：`node tools/prototypes/preview.mjs`）；
+  - 游戏画面里的女主一律是矢量立绘；厚涂位图只经 `paint.js` 的清单替换，并带统一的「AI 生成」角标；
+- 外传、召唤、换衣、卡牌等进度以服务端返回为准，`localStorage` 只保存 session id / player id 与本机便利设置（声音、称呼、已看过的提示）；
+- 主线进度（逐拍自动存档、草稿）保存在浏览器 `localStorage`，服务端只做判定，不保存主线存档；服务端账户只记「哪些章节已首次通关」（发首通钻石与女主入队用）；
+- 外传地图的「已抵达」由外传进度推导（序章通关记在本机 `moonlit:gaiden:cleared`），调试按钮「解锁下一章（测试）」只在 `?dev=1` 出现。
 
 ## 3. 角色模型输出协议
 
@@ -193,12 +232,14 @@ Qwen3 官方提供 0.6B、1.7B、4B、8B、14B、32B 及 MoE 等开源权重，�
 
 ## 7. 生产安全与可靠性
 
+当前已有（单进程范围内）：JSON 文件存档与原子写入、会话 / 账户总量上限、`openai` 模式下的按 IP 限流与全局并发上限、后台口令走请求头、演示工具在 production 下默认关闭、静态资源 304 校验。
+
 上线前增加：
 
-1. IP、账号和 session 三层限流；
+1. IP、账号和 session 三层限流（当前只有 AI 端点的 IP 限流）；
 2. CSRF/Origin 检查（若使用 cookie 登录）；
 3. Redis 分布式锁替代进程内 Map；
-4. PostgreSQL 存档和迁移版本；
+4. PostgreSQL 存档和迁移版本（替代当前的 `data/saves.json`）；
 5. 内容过滤与玩家举报；
 6. AI 服务熔断、并发队列和预算上限；
 7. 全链路日志但默认脱敏；

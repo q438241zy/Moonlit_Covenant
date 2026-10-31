@@ -36,7 +36,7 @@
         { "type": "dialogue", "speaker": "lia", "text": "第三年，北境裂隙爆发。上级命令我们坚守霜牙关七十二小时，等待增援。我们守了。", "emotion": "flat" },
         { "type": "dialogue", "speaker": "lia", "text": "第七十二小时，增援没有来。第七十三小时，第二波攻势来了。", "emotion": "cold" },
         { "type": "narration", "text": "莉亚的声音没有颤抖。但她握着咖啡杯的手指关节发白。" },
-        { "type": "dialogue", "speaker": "lia", "text": "副队长艾琳替我挡了致命的一击。枪兵卡尔断后，让我们撤退。弓手莉莉安……她到死都在射击，箭壶空了就用匕首。", "emotion": "restrained_grief" },
+        { "type": "dialogue", "speaker": "lia", "text": "副队长希尔达替我挡了致命的一击。枪兵卡尔断后，让我们撤退。弓手佩特拉……她到死都在射击，箭壶空了就用匕首。", "emotion": "restrained_grief" },
         { "type": "dialogue", "speaker": "lia", "text": "七个人进去，一个人出来。而我——是那个活着出来的人。", "emotion": "guilty" },
         { "type": "cg", "unlockCg": "cg_ch2_seven_oaths", "description": "CG：回忆中的七名赤誓骑士在篝火前举起刻有誓言的剑。画面边缘逐渐被风雪侵蚀，最终只剩下莉亚一人站在空荡荡的雪原上，手中握着七柄剑。" },
         { "type": "transition", "target": "ch2_scene3" }
@@ -66,13 +66,13 @@
     {
       "id": "ch2_scene4",
       "name": "银轨号·走廊",
-      "background": "餐车外的走廊，米娅正趴在墙壁上，用一把微型螺丝刀拆卸着什么。塞蕾娜站在走廊尽头的窗前，月光将她的影子拉得很长。",
+      "background": "餐车外的走廊，米娅正趴在墙壁上，用一把微型螺丝刀拆卸着什么。塞雷娜站在走廊尽头的窗前，月光将她的影子拉得很长。",
       "events": [
         { "type": "dialogue", "speaker": "mia", "text": "啊，莉亚姐！你终于肯跟人说话了喵！我刚才偷听——不是，我刚才'不小心'听到了一些。那个……你以前的小队，一定很厉害吧喵？", "emotion": "sympathetic" },
         { "type": "dialogue", "speaker": "lia", "text": "……你的猫耳朵是装饰品还是真的能听到十米外的对话？", "emotion": "exasperated" },
         { "type": "dialogue", "speaker": "mia", "text": "是、是接收器啦！增强型的！……好吧确实能听到喵。但是！我保证不会告诉别人的！这是我和莉亚姐还有……还有你的秘密喵！", "emotion": "flustered" },
         { "type": "dialogue", "speaker": "serena", "text": "秘密……吗。在我看见的所有未来里，没有什么是真正能被隐藏的。但——", "emotion": "thoughtful" },
-        { "type": "narration", "text": "塞蕾娜转过身，紫色的眼瞳中映着走廊尽头那扇紧闭的车门。" },
+        { "type": "narration", "text": "塞雷娜转过身，紫色的眼瞳中映着走廊尽头那扇紧闭的车门。" },
         { "type": "dialogue", "speaker": "serena", "text": "有些伤疤，确实只适合在月光下展示。莉亚·赫斯特，你的七道刻痕……我在星图中见过它们的回响。它们没有消失。它们只是换了一种方式守护你。", "emotion": "gentle" },
         { "type": "dialogue", "speaker": "lia", "text": "……你这人说话真让人火大。但……谢了。", "emotion": "reluctantly_grateful" },
         { "type": "dialogue", "speaker": "mia", "text": "好了好了！感伤时间结束喵！我刚才拆了这个面板，发现银轨号的动力系统有异常——列车不是在减速，是在加速！而且轨道……轨道在分叉喵！", "emotion": "alarmed" },

@@ -1,0 +1,352 @@
+{
+  "aku": {
+    "name": "{PLAYER_NAME}",
+    "color": "#e9c46a",
+    "art": "/assets/story/npc/aku.svg"
+  },
+  "erin": {
+    "name": "艾琳",
+    "color": "#d9a77a",
+    "art": "/assets/story/npc/erin.svg"
+  },
+  "toby": {
+    "name": "托比",
+    "color": "#f2d48b",
+    "art": "/assets/story/npc/toby.svg"
+  },
+  "mara": {
+    "name": "玛拉",
+    "color": "#e8b07a",
+    "art": "/assets/story/npc/mara.svg"
+  },
+  "borin": {
+    "name": "伯伦",
+    "color": "#c9875a",
+    "art": "/assets/story/npc/borin.svg"
+  },
+  "horn": {
+    "name": "霍恩",
+    "color": "#b8a07a",
+    "art": "/assets/story/npc/horn.svg"
+  },
+  "villager": {
+    "name": "村民",
+    "color": "#a89a86",
+    "art": null
+  },
+  "kern": {
+    "name": "白·可恩",
+    "color": "#e8edf7",
+    "art": "/assets/story/npc/kern.svg"
+  },
+  "maeve": {
+    "name": "梅芙",
+    "color": "#9fc6a8",
+    "art": "/assets/story/npc/maeve.svg"
+  },
+  "lia_unknown": {
+    "name": "红发少女",
+    "color": "#ff6b7c",
+    "art": "/assets/story/npc/lia.svg"
+  },
+  "lia": {
+    "name": "莉亚",
+    "color": "#ff6b7c",
+    "art": "/assets/story/npc/lia.svg"
+  },
+  "rocky": {
+    "name": "罗奇",
+    "color": "#8f9a6b",
+    "art": "/assets/story/npc/rocky.svg"
+  },
+  "bowman": {
+    "name": "弩手同伙",
+    "color": "#7d8a6a",
+    "art": null
+  },
+  "adventurer": {
+    "name": "冒险者",
+    "color": "#a5a1b8",
+    "art": null
+  },
+  "townsfolk": {
+    "name": "镇民",
+    "color": "#a89a86",
+    "art": null
+  },
+  "guard": {
+    "name": "卫兵",
+    "color": "#8fa3b8",
+    "art": null
+  },
+  "voice": {
+    "name": "神秘声音",
+    "color": "#b58cff",
+    "art": null
+  },
+  "blackrobe": {
+    "name": "黑袍人",
+    "color": "#7a5c9e",
+    "art": "/assets/story/npc/blackrobe.svg"
+  },
+  "ancient": {
+    "name": "古老声音",
+    "color": "#6b4f8f",
+    "art": null
+  },
+  "dragon": {
+    "name": "黑龙",
+    "color": "#a33b3b",
+    "art": null
+  },
+  "finn": {
+    "name": "芬恩",
+    "color": "#c9b48a",
+    "art": "/assets/story/npc/finn.svg"
+  },
+  "goblin": {
+    "name": "哥布林",
+    "color": "#7fa36b",
+    "art": "/assets/story/npc/goblin.svg"
+  },
+  "polly": {
+    "name": "波莉",
+    "color": "#e6c9a8",
+    "art": "/assets/story/npc/polly.svg"
+  },
+  "acolyte": {
+    "name": "念祷文的人",
+    "color": "#9a98ad",
+    "art": "/assets/story/npc/acolyte.svg"
+  },
+  "west_guard": {
+    "name": "西门卫兵",
+    "color": "#8fa3b8",
+    "art": null
+  },
+  "goblin_chief": {
+    "name": "哥布林咒徒长",
+    "color": "#6f8f5c",
+    "art": "/assets/story/npc/goblin_chief.svg"
+  },
+  "police_lead": {
+    "name": "治安所带队",
+    "color": "#8fa3b8",
+    "art": null
+  },
+  "marsh_ogre": {
+    "name": "沼地食人魔",
+    "color": "#8a7a56",
+    "art": "/assets/story/npc/marsh_ogre.svg"
+  },
+  "caravan_leader": {
+    "name": "领队",
+    "color": "#d4a46a",
+    "art": "/assets/story/npc/caravan_leader.svg"
+  },
+  "mule_driver": {
+    "name": "赶骡的",
+    "color": "#a8977c",
+    "art": null
+  },
+  "innkeeper": {
+    "name": "旅店老板",
+    "color": "#b39878",
+    "art": null
+  },
+  "mia": {
+    "name": "米娅",
+    "color": "#3fd0e0",
+    "art": "/assets/story/npc/mia.svg"
+  },
+  "mia_unknown": {
+    "name": "青发少女",
+    "color": "#3fd0e0",
+    "art": "/assets/story/npc/mia.svg"
+  },
+  "scrap_picker": {
+    "name": "拾铁机",
+    "color": "#6fa8c8",
+    "art": "/assets/story/npc/scrap_picker.svg"
+  },
+  "ines": {
+    "name": "伊涅丝",
+    "color": "#9fb2c8",
+    "art": "/assets/story/npc/ines.svg"
+  },
+  "ines_unknown": {
+    "name": "分会长",
+    "color": "#9fb2c8",
+    "art": "/assets/story/npc/ines.svg"
+  },
+  "crystal_picker": {
+    "name": "捡晶人",
+    "color": "#98aab0",
+    "art": null
+  },
+  "bath_keeper": {
+    "name": "烧水的老妇",
+    "color": "#bfa08e",
+    "art": null
+  },
+  "dock_worker": {
+    "name": "码头工人",
+    "color": "#8798a0",
+    "art": null
+  },
+  "tide_cavity_mother": {
+    "name": "潮腔母虫",
+    "color": "#b4c2ae",
+    "art": "/assets/story/npc/tide_cavity_mother.svg"
+  },
+  "dali": {
+    "name": "达利",
+    "color": "#8798a0",
+    "art": null
+  },
+  "outsider": {
+    "name": "外地客",
+    "color": "#9a9488",
+    "art": null
+  },
+  "serena_unknown": {
+    "name": "镜中人",
+    "color": "#b58cff",
+    "art": "/assets/story/npc/serena.svg"
+  },
+  "serena": {
+    "name": "塞雷娜",
+    "color": "#b58cff",
+    "art": "/assets/story/npc/serena.svg"
+  },
+  "scar_echo": {
+    "name": "蚀痕残响",
+    "color": "#9aa0b8",
+    "art": "/assets/story/npc/scar_echo.svg"
+  },
+  "scar_echo_15": {
+    "name": "蚀痕残响",
+    "color": "#9aa0b8",
+    "art": "/assets/story/npc/scar_echo_15.svg"
+  },
+  "mirror_apprentice": {
+    "name": "镜咒学徒",
+    "color": "#8fb0c4",
+    "art": "/assets/story/npc/mirror_apprentice.svg"
+  },
+  "mirror_apprentice_blanket": {
+    "name": "镜咒学徒",
+    "color": "#8fb0c4",
+    "art": "/assets/story/npc/mirror_apprentice_blanket.svg"
+  },
+  "lia_mirror": {
+    "name": "莉亚",
+    "color": "#ff6b7c",
+    "art": "/assets/story/npc/lia_mirror.svg"
+  },
+  "serena_staff_wrapped": {
+    "name": "塞雷娜",
+    "color": "#b58cff",
+    "art": "/assets/story/npc/serena_staff_wrapped.svg"
+  },
+  "golden_assassin": {
+    "name": "金发刺客",
+    "color": "#d9a441",
+    "art": "/assets/story/npc/golden_assassin.svg"
+  },
+  "plains_woman": {
+    "name": "晨祷平原来的女人",
+    "color": "#c9a594",
+    "art": "/assets/story/npc/plains_woman.svg"
+  },
+  "oda": {
+    "name": "欧妲",
+    "color": "#c9a594",
+    "art": "/assets/story/npc/oda.svg"
+  },
+  "tide_king": {
+    "name": "潮虫王",
+    "color": "#c4c9bc",
+    "art": "/assets/story/npc/tide_king.svg"
+  },
+  "tide_king_split": {
+    "name": "潮虫王",
+    "color": "#c4c9bc",
+    "art": "/assets/story/npc/tide_king_split.svg"
+  },
+  "serena_copy": {
+    "name": "塞雷娜",
+    "color": "#b58cff",
+    "art": "/assets/story/npc/serena_copy.svg"
+  },
+  "relief_officer": {
+    "name": "赈灾司的官",
+    "color": "#a9b0ba",
+    "art": "/assets/story/npc/relief_officer.svg"
+  },
+  "evelyn_unknown": {
+    "name": "圣女",
+    "color": "#f4e2b2",
+    "art": "/assets/story/npc/evelyn.svg"
+  },
+  "evelyn": {
+    "name": "伊芙琳",
+    "color": "#f4e2b2",
+    "art": "/assets/story/npc/evelyn.svg"
+  },
+  "emperor": {
+    "name": "皇帝",
+    "color": "#d8cfb4",
+    "art": "/assets/story/npc/emperor.svg"
+  },
+  "rowena": {
+    "name": "洛温娜",
+    "color": "#ead8a0",
+    "art": "/assets/story/npc/rowena.svg"
+  },
+  "celestine": {
+    "name": "塞莱斯汀",
+    "color": "#e4e0f0",
+    "art": "/assets/story/npc/celestine.svg"
+  },
+  "severin_unknown": {
+    "name": "掌簿官",
+    "color": "#b4b2aa",
+    "art": "/assets/story/npc/severin.svg"
+  },
+  "severin": {
+    "name": "塞弗林",
+    "color": "#b4b2aa",
+    "art": "/assets/story/npc/severin.svg"
+  },
+  "ceremony_officer": {
+    "name": "白面的礼仪官",
+    "color": "#e6e6ee",
+    "art": "/assets/story/npc/ceremony_officer.svg"
+  },
+  "archivist": {
+    "name": "典册官",
+    "color": "#c4ccd8",
+    "art": "/assets/story/npc/archivist.svg"
+  },
+  "gate_clerk": {
+    "name": "晨门书记",
+    "color": "#a8a090",
+    "art": null
+  },
+  "pilgrim_elder": {
+    "name": "朝圣的老人",
+    "color": "#b0a48e",
+    "art": null
+  },
+  "burial_petitioner": {
+    "name": "等葬帖的男人",
+    "color": "#9a9080",
+    "art": null
+  },
+  "morningstar_guard": {
+    "name": "晨星卫",
+    "color": "#dfe4ec",
+    "art": null
+  }
+}

@@ -1,0 +1,422 @@
+{
+  "hemai-day": {
+    "name": "赫麦村·午后",
+    "svg": "/assets/story/bg/hemai-day.svg",
+    "top": "#d9b86a",
+    "bottom": "#7a8f4a"
+  },
+  "pasture": {
+    "name": "牧场羊圈",
+    "svg": "/assets/story/bg/pasture.svg",
+    "top": "#e0c27a",
+    "bottom": "#6f8a4a"
+  },
+  "village-road": {
+    "name": "赫麦村村道·傍晚",
+    "svg": "/assets/story/bg/village-road.svg",
+    "top": "#d98f5a",
+    "bottom": "#4a3a5a"
+  },
+  "kitchen-night": {
+    "name": "亚克家厨房·油灯",
+    "svg": "/assets/story/bg/kitchen-night.svg",
+    "top": "#c9854a",
+    "bottom": "#2a1e1a"
+  },
+  "dragon-sky": {
+    "name": "黑翼遮月",
+    "svg": "/assets/story/bg/dragon-sky.svg",
+    "top": "#3a3550",
+    "bottom": "#0a0814"
+  },
+  "village-burning": {
+    "name": "黑焰中的赫麦村",
+    "svg": "/assets/story/bg/village-burning.svg",
+    "top": "#5a4a6a",
+    "bottom": "#0c0a12"
+  },
+  "north-trail-night": {
+    "name": "北山旧牧道·夜",
+    "svg": "/assets/story/bg/north-trail-night.svg",
+    "top": "#3a4058",
+    "bottom": "#0c0e18"
+  },
+  "shepherd-cave-night": {
+    "name": "守羊洞·俯瞰故乡",
+    "svg": "/assets/story/bg/shepherd-cave-night.svg",
+    "top": "#4a3a40",
+    "bottom": "#0a0810"
+  },
+  "south-ridge": {
+    "name": "南侧山脊",
+    "svg": "/assets/story/bg/south-ridge.svg",
+    "top": "#2a2440",
+    "bottom": "#06050c"
+  },
+  "cave-dawn": {
+    "name": "守羊洞·黎明前",
+    "svg": "/assets/story/bg/cave-dawn.svg",
+    "top": "#6a6a88",
+    "bottom": "#1a1a2a"
+  },
+  "hemai-sky-dawn": {
+    "name": "赫麦村上空·破晓",
+    "svg": "/assets/story/bg/hemai-sky-dawn.svg",
+    "top": "#8a7a9a",
+    "bottom": "#2a2440"
+  },
+  "hemai-ruins-dawn": {
+    "name": "赫麦村废墟·黎明",
+    "svg": "/assets/story/bg/hemai-ruins-dawn.svg",
+    "top": "#9a8a7a",
+    "bottom": "#3a3440"
+  },
+  "north-slope-camp": {
+    "name": "北山缓坡·灾民营地",
+    "svg": "/assets/story/bg/north-slope-camp.svg",
+    "top": "#9a9a8a",
+    "bottom": "#3a3a40"
+  },
+  "chime-town-gate": {
+    "name": "晨钟镇东门·清晨",
+    "svg": "/assets/story/bg/chime-town-gate.svg",
+    "top": "#e8d8b0",
+    "bottom": "#8a9ab0"
+  },
+  "guild-hall": {
+    "name": "晨钟镇冒险者公会",
+    "svg": "/assets/story/bg/guild-hall.svg",
+    "top": "#c9a46a",
+    "bottom": "#3a2a20"
+  },
+  "market": {
+    "name": "晨钟镇中央市集",
+    "svg": "/assets/story/bg/market.svg",
+    "top": "#e8c890",
+    "bottom": "#8a7a6a"
+  },
+  "dye-alley": {
+    "name": "染布巷",
+    "svg": "/assets/story/bg/dye-alley.svg",
+    "top": "#b0a0c8",
+    "bottom": "#3a3450"
+  },
+  "barrel-alley": {
+    "name": "旧酒桶巷",
+    "svg": "/assets/story/bg/barrel-alley.svg",
+    "top": "#8a7a6a",
+    "bottom": "#1e1a1a"
+  },
+  "guard-square": {
+    "name": "治安所前·公会广场",
+    "svg": "/assets/story/bg/guard-square.svg",
+    "top": "#d8c8a8",
+    "bottom": "#6a7a8a"
+  },
+  "mill-road-milestone": {
+    "name": "旧磨坊路·第二座里程石",
+    "svg": "/assets/story/bg/mill-road-milestone.svg",
+    "top": "#c9b48a",
+    "bottom": "#4a4a3a"
+  },
+  "mill-road-dusk": {
+    "name": "旧磨坊路·黄昏",
+    "svg": "/assets/story/bg/mill-road-dusk.svg",
+    "top": "#d98a5a",
+    "bottom": "#2a2030"
+  },
+  "training-ground-dawn": {
+    "name": "晨钟镇训练场·日出",
+    "svg": "/assets/story/bg/training-ground-dawn.svg",
+    "top": "#e8b878",
+    "bottom": "#3e4a5a"
+  },
+  "old-mill-dusk": {
+    "name": "旧磨坊·黄昏芦苇",
+    "svg": "/assets/story/bg/old-mill-dusk.svg",
+    "top": "#c9785a",
+    "bottom": "#1e2620"
+  },
+  "old-mill-floor": {
+    "name": "旧磨坊·磨盘间",
+    "svg": "/assets/story/bg/old-mill-floor.svg",
+    "top": "#3a2a4a",
+    "bottom": "#0e0b12"
+  },
+  "old-mill-floor-cart": {
+    "name": "旧磨坊·磨盘间·大车之夜",
+    "svg": "/assets/story/bg/old-mill-floor-cart.svg",
+    "top": "#2a2036",
+    "bottom": "#08070b"
+  },
+  "west-gate-day": {
+    "name": "晨钟镇西门·上午",
+    "svg": "/assets/story/bg/west-gate-day.svg",
+    "top": "#e2d2ae",
+    "bottom": "#6a5842"
+  },
+  "west-gate-dusk": {
+    "name": "晨钟镇西门·黄昏",
+    "svg": "/assets/story/bg/west-gate-dusk.svg",
+    "top": "#e89a6a",
+    "bottom": "#2e1e2a"
+  },
+  "west-gate-night": {
+    "name": "晨钟镇西门·入夜",
+    "svg": "/assets/story/bg/west-gate-night.svg",
+    "top": "#2e3048",
+    "bottom": "#0a0a12"
+  },
+  "mill-road-night": {
+    "name": "旧磨坊路·夜",
+    "svg": "/assets/story/bg/mill-road-night.svg",
+    "top": "#262c4a",
+    "bottom": "#0a0b14"
+  },
+  "salt-marsh-bridge": {
+    "name": "盐沼桥·午后涨潮",
+    "svg": "/assets/story/bg/salt-marsh-bridge.svg",
+    "top": "#d8dcd6",
+    "bottom": "#62746c"
+  },
+  "forest-edge-inn": {
+    "name": "林边旅店·黄昏",
+    "svg": "/assets/story/bg/forest-edge-inn.svg",
+    "top": "#d9925a",
+    "bottom": "#1e1a22"
+  },
+  "forest-edge-channel-night": {
+    "name": "林边水道泥滩·夜",
+    "svg": "/assets/story/bg/forest-edge-channel-night.svg",
+    "top": "#26344e",
+    "bottom": "#070a12"
+  },
+  "tide-station-dawn": {
+    "name": "量潮老站·站顶·天亮",
+    "svg": "/assets/story/bg/tide-station-dawn.svg",
+    "top": "#d6dade",
+    "bottom": "#727c84"
+  },
+  "tide-station-predawn": {
+    "name": "量潮老站·站顶·天亮前",
+    "svg": "/assets/story/bg/tide-station-predawn.svg",
+    "top": "#4e5664",
+    "bottom": "#14181e"
+  },
+  "tide-station-room": {
+    "name": "量潮老站·潮室·拂晓",
+    "svg": "/assets/story/bg/tide-station-room.svg",
+    "top": "#8a8a7e",
+    "bottom": "#202428"
+  },
+  "fog-harbor-bridge-noon": {
+    "name": "雾港·第一座木桥·近午退潮",
+    "svg": "/assets/story/bg/fog-harbor-bridge-noon.svg",
+    "top": "#dcdcd2",
+    "bottom": "#666c64"
+  },
+  "fog-harbor-guild": {
+    "name": "冒险者公会雾港分会",
+    "svg": "/assets/story/bg/fog-harbor-guild.svg",
+    "top": "#b4a88c",
+    "bottom": "#262a30"
+  },
+  "fog-harbor-drain-dusk": {
+    "name": "旧浴场后沟与排水区东口·黄昏",
+    "svg": "/assets/story/bg/fog-harbor-drain-dusk.svg",
+    "top": "#cf8a68",
+    "bottom": "#28222e"
+  },
+  "fog-harbor-drain-night": {
+    "name": "旧浴场后沟与排水区东口·入夜",
+    "svg": "/assets/story/bg/fog-harbor-drain-night.svg",
+    "top": "#2c3250",
+    "bottom": "#090a12"
+  },
+  "fog-harbor-sewer-pump": {
+    "name": "雾港·东口以下·砖拱水道与三号泵房",
+    "svg": "/assets/story/bg/fog-harbor-sewer-pump.svg",
+    "top": "#4a4038",
+    "bottom": "#0c0d10"
+  },
+  "fog-harbor-tide-cavity": {
+    "name": "雾港·潮腔·旧蓄水池",
+    "svg": "/assets/story/bg/fog-harbor-tide-cavity.svg",
+    "top": "#3a4a46",
+    "bottom": "#080e10"
+  },
+  "fog-harbor-tide-cavity-ebb": {
+    "name": "雾港·潮腔·排水后",
+    "svg": "/assets/story/bg/fog-harbor-tide-cavity-ebb.svg",
+    "top": "#4a5652",
+    "bottom": "#10161a"
+  },
+  "fog-harbor-drain-dawn": {
+    "name": "旧浴场后沟与排水区东口·破晓",
+    "svg": "/assets/story/bg/fog-harbor-drain-dawn.svg",
+    "top": "#b4b0b8",
+    "bottom": "#2e3038"
+  },
+  "fog-harbor-bridge-dusk": {
+    "name": "雾港·第一座木桥·黄昏",
+    "svg": "/assets/story/bg/fog-harbor-bridge-dusk.svg",
+    "top": "#cc8e6c",
+    "bottom": "#2c2830"
+  },
+  "fog-harbor-bridge-inn-night": {
+    "name": "雾港·桥头旅店·入夜",
+    "svg": "/assets/story/bg/fog-harbor-bridge-inn-night.svg",
+    "top": "#3a302c",
+    "bottom": "#0c0a0e"
+  },
+  "fog-harbor-bridge-inn-eyes": {
+    "name": "雾港·桥头旅店·镜中紫眼",
+    "svg": "/assets/story/bg/fog-harbor-bridge-inn-eyes.svg",
+    "top": "#382c44",
+    "bottom": "#0a0812"
+  },
+  "fog-harbor-bridge-inn-room": {
+    "name": "雾港·桥头旅店·亚克的房间",
+    "svg": "/assets/story/bg/fog-harbor-bridge-inn-room.svg",
+    "top": "#3a302a",
+    "bottom": "#0c0a0e"
+  },
+  "fog-harbor-bridge-inn-mirror": {
+    "name": "雾港·桥头旅店·镜子的那一边",
+    "svg": "/assets/story/bg/fog-harbor-bridge-inn-mirror.svg",
+    "top": "#2a3040",
+    "bottom": "#08090e"
+  },
+  "fog-harbor-bridge-inn-covered": {
+    "name": "雾港·桥头旅店·镜子蒙上毛巾",
+    "svg": "/assets/story/bg/fog-harbor-bridge-inn-covered.svg",
+    "top": "#3a302c",
+    "bottom": "#0c0a0e"
+  },
+  "fog-harbor-old-lighthouse": {
+    "name": "雾港·旧灯塔",
+    "svg": "/assets/story/bg/fog-harbor-old-lighthouse.svg",
+    "top": "#4a5058",
+    "bottom": "#14171c"
+  },
+  "fog-harbor-old-lighthouse-rain": {
+    "name": "雾港·旧灯塔·雨夜灯室",
+    "svg": "/assets/story/bg/fog-harbor-old-lighthouse-rain.svg",
+    "top": "#1c2230",
+    "bottom": "#06070a"
+  },
+  "fog-harbor-old-lighthouse-night": {
+    "name": "雾港·旧灯塔·塔底夜雨",
+    "svg": "/assets/story/bg/fog-harbor-old-lighthouse-night.svg",
+    "top": "#1a1e28",
+    "bottom": "#07080c"
+  },
+  "fog-harbor-old-lighthouse-night-broken": {
+    "name": "雾港·旧灯塔·塔底夜雨·破窗",
+    "svg": "/assets/story/bg/fog-harbor-old-lighthouse-night-broken.svg",
+    "top": "#181c26",
+    "bottom": "#06070b"
+  },
+  "fog-harbor-old-lighthouse-dawn": {
+    "name": "雾港·旧灯塔·清晨",
+    "svg": "/assets/story/bg/fog-harbor-old-lighthouse-dawn.svg",
+    "top": "#6e7076",
+    "bottom": "#1a1c20"
+  },
+  "fog-harbor-mirror-alley": {
+    "name": "雾港·镜巷",
+    "svg": "/assets/story/bg/fog-harbor-mirror-alley.svg",
+    "top": "#5a4058",
+    "bottom": "#120e14"
+  },
+  "fog-harbor-fish-market-roofs-rain": {
+    "name": "雾港·鱼市屋顶·雨夜",
+    "svg": "/assets/story/bg/fog-harbor-fish-market-roofs-rain.svg",
+    "top": "#141a26",
+    "bottom": "#06080c"
+  },
+  "fog-harbor-tide-cave-sluice": {
+    "name": "雾港·老涵洞尽头·潮穴老闸",
+    "svg": "/assets/story/bg/fog-harbor-tide-cave-sluice.svg",
+    "top": "#3a2a22",
+    "bottom": "#0a0706"
+  },
+  "fog-harbor-tide-cave-sluice-shut": {
+    "name": "雾港·潮穴老闸·闸落",
+    "svg": "/assets/story/bg/fog-harbor-tide-cave-sluice-shut.svg",
+    "top": "#3a2a22",
+    "bottom": "#0a0706"
+  },
+  "fog-harbor-tide-cave": {
+    "name": "雾港·潮穴·茧壁",
+    "svg": "/assets/story/bg/fog-harbor-tide-cave.svg",
+    "top": "#2a3434",
+    "bottom": "#06090a"
+  },
+  "fog-harbor-tide-cave-flood": {
+    "name": "雾港·潮穴·涨水",
+    "svg": "/assets/story/bg/fog-harbor-tide-cave-flood.svg",
+    "top": "#26302f",
+    "bottom": "#050809"
+  },
+  "fog-harbor-tide-nest": {
+    "name": "雾港·石门后·沉船残巢",
+    "svg": "/assets/story/bg/fog-harbor-tide-nest.svg",
+    "top": "#0c1214",
+    "bottom": "#060909"
+  },
+  "fog-harbor-tide-nest-ruin": {
+    "name": "雾港·沉船残巢·战后",
+    "svg": "/assets/story/bg/fog-harbor-tide-nest-ruin.svg",
+    "top": "#0c1214",
+    "bottom": "#060909"
+  },
+  "fog-harbor-tide-nest-burned": {
+    "name": "雾港·沉船残巢·烧巢",
+    "svg": "/assets/story/bg/fog-harbor-tide-nest-burned.svg",
+    "top": "#14100e",
+    "bottom": "#060707"
+  },
+  "fog-harbor-guild-dock": {
+    "name": "雾港·分会门前的码头·午后",
+    "svg": "/assets/story/bg/fog-harbor-guild-dock.svg",
+    "top": "#b4b8b2",
+    "bottom": "#3a342c"
+  },
+  "fog-harbor-guild-shed": {
+    "name": "雾港·分会的仓内",
+    "svg": "/assets/story/bg/fog-harbor-guild-shed.svg",
+    "top": "#4a3e30",
+    "bottom": "#120e0a"
+  },
+  "white-tower-morning-gate": {
+    "name": "白塔圣都·晨门·上午",
+    "svg": "/assets/story/bg/white-tower-morning-gate.svg",
+    "top": "#dcdcd6",
+    "bottom": "#aeaaa2"
+  },
+  "white-tower-morning-gate-dusk": {
+    "name": "白塔圣都·晨门·黄昏",
+    "svg": "/assets/story/bg/white-tower-morning-gate-dusk.svg",
+    "top": "#8a7c8a",
+    "bottom": "#8a7472"
+  },
+  "white-tower-registry-hall": {
+    "name": "白塔·册厅",
+    "svg": "/assets/story/bg/white-tower-registry-hall.svg",
+    "top": "#cfcac0",
+    "bottom": "#d8d2c4"
+  },
+  "white-tower-registry-hall-court": {
+    "name": "白塔·册厅·御前列席",
+    "svg": "/assets/story/bg/white-tower-registry-hall-court.svg",
+    "top": "#cfcac0",
+    "bottom": "#d8d2c4"
+  },
+  "white-tower-registry-hall-night": {
+    "name": "白塔·册厅·入夜",
+    "svg": "/assets/story/bg/white-tower-registry-hall-night.svg",
+    "top": "#141620",
+    "bottom": "#0c0e16"
+  }
+}

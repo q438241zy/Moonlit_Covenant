@@ -1,9 +1,16 @@
 /**
  * AI模型预设
  * 管理可用的AI模型配置及切换逻辑
+ *
+ * B19（作者核#12）：模型预设还没有接到「按玩家路由」——所有玩家共用服务器 .env 里配置的 AI（AI_MODE / AI_MODEL）。
+ * 在按玩家路由实现之前，设置页不再展示预设：/api/settings/ai 返回空的 models 与 perPlayerRouting:false，
+ * 切换请求一律 409 PER_PLAYER_ROUTING_UNAVAILABLE。下面的预设目录保留给以后接入时使用。
  */
 
-// 可用AI模型列表
+/** 是否已实现按玩家切换模型（实现后改为 true，/api/settings/ai 会重新下发预设并允许切换）。 */
+export const PER_PLAYER_ROUTING = false;
+
+// 预设目录（尚未对玩家开放）
 export const AI_MODELS = [
   {
     id: 'deepseek-flash',

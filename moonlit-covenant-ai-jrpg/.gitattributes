@@ -1,0 +1,5 @@
+# Windows 批处理必须是 CRLF：LF 换行的 .cmd 在 cmd.exe 里会出现标签、goto、括号块解析错乱
+*.cmd text eol=crlf
+*.bat text eol=crlf
+# shell 脚本必须是 LF：CRLF 会让 sh 报 $'\r': command not found
+*.sh text eol=lf

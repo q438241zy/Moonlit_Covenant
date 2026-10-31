@@ -54,7 +54,7 @@
         { "type": "narration", "text": "就在米娅说完最后一句话的瞬间，零号的胸腔内，齿轮的转速突然加快了。蓝宝石眼睛亮了起来——不是机械的冷光，而是一种温暖的、仿佛带着好奇的光芒。" },
         { "type": "dialogue", "speaker": "mia", "text": "零、零号？！你……你醒了？不可能，共感齿轮的启动条件是——", "emotion": "shocked" },
         { "type": "dialogue", "speaker": "serena", "text": "——是'被理解'。", "emotion": "knowing" },
-        { "type": "narration", "text": "塞蕾娜从阴影中走出，紫色的长发在灯光下泛着星辉般的光泽。" },
+        { "type": "narration", "text": "塞雷娜从阴影中走出，紫色的长发在灯光下泛着星辉般的光泽。" },
         { "type": "dialogue", "speaker": "serena", "text": "共感齿轮需要的不是技术，不是文献。它需要的是——有人真正看见制造者的孤独，并说出'我理解'。你找了五年的答案，不在万象图书馆里。", "emotion": "gentle" },
         { "type": "dialogue", "speaker": "serena", "text": "它在这节车厢里。在此刻。在莉亚·赫斯特说出'你觉得自己不被理解'的那一刻。", "emotion": "profound" },
         { "type": "dialogue", "speaker": "mia", "text": "……喵。", "emotion": "tearful" },
@@ -66,7 +66,7 @@
         ]},
         { "type": "dialogue", "speaker": "lia", "text": "……行了。擦擦眼泪。我们还有任务。", "emotion": "soft" },
         { "type": "narration", "text": "莉亚别过脸去。但你注意到她悄悄把一块干净的手帕放在了米娅手边。" },
-        { "type": "dialogue", "speaker": "mia", "text": "嗯！米娅·铃，重新出发喵！零号，启动护卫模式！……虽然它现在只会打呼噜和蹭人喵。", "emotion": "renewed" },
+        { "type": "dialogue", "speaker": "mia", "text": "嗯！米娅·玲，重新出发喵！零号，启动护卫模式！……虽然它现在只会打呼噜和蹭人喵。", "emotion": "renewed" },
         { "type": "narration", "text": "零号发出一声满足的'咕噜'声，蜷缩在米娅脚边。它的蓝宝石眼睛映着工坊的暖光，齿轮平稳地转动着——像一颗小小的、终于开始跳动的心。" },
         { "type": "transition", "target": "ch3_end" }
       ],

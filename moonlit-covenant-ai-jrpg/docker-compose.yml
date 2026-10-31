@@ -14,6 +14,19 @@ services:
       AI_TIMEOUT_MS: ${AI_TIMEOUT_MS:-15000}
       WISHLIST_URL: ${WISHLIST_URL:-}
       COMMUNITY_URL: ${COMMUNITY_URL:-}
+      # 下面几项只写名字不写值：宿主机设置了就原样传进容器，没设置就不传，交给服务器的默认值。
+      # ADMIN_KEY：后台口令，不传时为默认口令 123456，公开部署务必在宿主机 .env 里改掉；设为空字符串则关闭后台。
+      ADMIN_KEY:
+      # DEMO_TOOLS：演示工具（免费会员、钻石补充、一键发放）。作者核#12：这个版本不公开，保持开启；宿主机 .env 写 DEMO_TOOLS=0 可关闭。
+      DEMO_TOOLS: ${DEMO_TOOLS:-1}
+      # PERSIST=0 关闭存档；SAVE_FILE 改存档路径（默认 /app/data/saves.json，已挂到下面的命名卷）。
+      PERSIST:
+      SAVE_FILE:
+    volumes:
+      - moonlit-data:/app/data
     extra_hosts:
       - "host.docker.internal:host-gateway"
     restart: unless-stopped
+
+volumes:
+  moonlit-data:

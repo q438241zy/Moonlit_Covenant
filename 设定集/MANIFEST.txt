@@ -1,29 +1,36 @@
-《月蚀契约》AI JRPG 剧情设定包 v0.2
-Build date: 2026-07-23
+《月蚀契约》AI JRPG 剧情设定包 v0.4
+Build date: 2026-10-21
 Encoding: UTF-8
 Line endings: LF
 
 FILES
-00_总览与目录.md	9371 bytes	SHA256 2fb910aca5a1205908a1b30cbf8ae75db4f5d8adaac3f23a914ae3c868760d16
-01_核心企划与叙事支柱.md	14956 bytes	SHA256 7c91917d28d0c0e4a350e7a876ae1353790bd4c8068679518dace5a5fe641654
-02_世界观与历史.md	14710 bytes	SHA256 535f217082196cbb0bb687c07be3f16bc50f0384ee2e3a2fc81bb368d032b043
-03_主角与八位女主角.md	38523 bytes	SHA256 c83c1e06a4682d32de7460cce32040b7cb59fe0fa0a502a5ebf6cac02b9cf70d
-04_阵营与关键NPC.md	11712 bytes	SHA256 a402479e3611e4e164285dc2d70a8efed4cdb85b154c7c20c9de387b80ec7c21
-05_五心系统与主线谜团.md	14438 bytes	SHA256 aa509b8ea6063013ad9162d52842fa9bfaacd68e1a78c4293ca76e412a9317a4
-06_战斗职业魔法与装备.md	15762 bytes	SHA256 7cda7e93dbcac62548b64255aa499a1854685425512807166200cb4628584a19
-07_怪物与Boss图鉴.md	17126 bytes	SHA256 7130f6277755c0749e052772a10d86b0e8a1a28c2a79fd1b087dd552e30177a4
-08_世界地图城镇与支线.md	13774 bytes	SHA256 5f43a9866421667e176afd810fd7f455428728cf62de978405268cb97a366a30
-09_主线剧情100章总纲.md	55012 bytes	SHA256 3fcb6a3e219d54e26e811c019c531b62afa8bc91847ca739d62a525c3d5e2d76
-10_前15章详细剧本.md	56167 bytes	SHA256 aabee8e1ae5a6adead530fef3be4c6f88adb1430e08fdb8335830d76d4b4625c
-11_AI互动好感与结局.md	38761 bytes	SHA256 05ac341e354f013adee03281438d99769bf7fe15a5ea42663e34ac13587cfadb
-12_编剧格式与制作规范.md	31922 bytes	SHA256 6ed986c9f3cb45409b0768a2f885a947ac61aad09584c33068d292130c867f9a
-CHANGELOG_v0.2.md	10586 bytes	SHA256 c95646b79797aebe53ecb2dc05284ac35b10736959d96e1c568a3ddff9fa496c
-99_整合设定集.md	344377 bytes	SHA256 bab4bd15abb0d6f4b29531c369fec7d2f5dada316ad60700844ba9d21b4cc57e
+00_总览与目录.md	39066 bytes	SHA256 4804e2f4120843188a7556935c24c577e6b754a04ae42d947b9e91d8f29e19a8
+01_核心企划与叙事支柱.md	45341 bytes	SHA256 de9bcbba44e7f1ffca8db25f16dc333d6ad5fcd880cdc58bc89cf6a886dd6292
+02_世界观与历史.md	36379 bytes	SHA256 77bca5dffb7bbfcb876864c1b78f9cbf74100b9e3795c632395737e8f0fe1c00
+03_主角与八位女主角.md	111549 bytes	SHA256 94818f008ef7beeb9afc78dd3f6c3a908bb52e5239490953bcd072de51fa2f95
+04_阵营与关键NPC.md	53471 bytes	SHA256 ab9fd26c5fe1434ce15b1b46ecec38e41c534204cf1c71ebd3dbb24b99b5d9a8
+05_五心系统与主线谜团.md	43987 bytes	SHA256 50b27371b53735c16ce0ea9cbca558a8d7b9e9c3856dad2edeb4159cf72d4f53
+06_战斗职业魔法与装备.md	54394 bytes	SHA256 1a063affacecf275e9dc16d49f213815a4440f415adc0af5a50a30b312027a5b
+07_怪物与Boss图鉴.md	45412 bytes	SHA256 4f1b87a2b5107fecc207873f326a74a7da3b78d52ab64755ff2286550d22f65a
+08_世界地图城镇与支线.md	44435 bytes	SHA256 7d92c6898e9b612efdc8feea0f0e031dbcf805ab7dec16b8da385c1dbfb47307
+09_主线剧情30章总纲.md	88945 bytes	SHA256 d6d4c6378a8279c32ef61eb8ccd32f91a1ecdc3d2972f2c9585ffdd5e3e8e4e0
+09B_旧100章总纲_第二部候选（冻结）.md	55793 bytes	SHA256 5e0d6b94694e91bb609bd9e1013a01db4b260791260a679fe6458078d503aad6
+11_AI互动好感与结局.md	156272 bytes	SHA256 69676ce29ab740165154b0655ceac475ddd7b24462aa68acef46e193a4bc3632
+12_编剧格式与制作规范.md	97939 bytes	SHA256 2a82b23f3c18b0e064a08ced623ef429c12350487c58b0cd69b8c713c0229cd5
+13_共同编剧与试玩流程.md	4542 bytes	SHA256 b7f6318fef47e4460700b2395a2270324b949eb8efa673992bf4b4f4911628bb
+CHANGELOG_v0.2.md	10681 bytes	SHA256 549c942becf6f0c067b7639014e45d5c2ce3c7e87108f8bcfb7d4931cb486415
+CHANGELOG_v0.4.md	30203 bytes	SHA256 a64bb1467571ee8ea9e5abe9ee7b30753c77dcafdee9e103d42c2267ee2ce6f7
+99_整合设定集.md	854200 bytes	SHA256 a32f20fede4cc48ffd01e121438002f90aafff4902a3dacb8fe08451fe653685
+99B_v0.3整合设定集（冻结）.md	218646 bytes	SHA256 fbb4e29eae95331cd63b37100e84df2ca857ed8c6e430125e8dc1048f01c610c
 
 CANON SUMMARY
-- Chapters: CH001–CH100 common route; CH101–CH103 endings.
-- All eight heroines appear by Chapter 30.
+- Baseline v0.4 (核#13/#14, 2026-10-21): 剧本/README_30章重構提案.md (commit aa87def) §八 approved as recommended, together with the skill and costume design docs.
+- Chapters: CH000–CH030 main line (formal 00–30; 00–10 written and playable, unchanged); five acts 00–08 / 09–15 / 16–21 / 22–25 / 26–30; extras EX001–EX010 outside the main line; old CH101–CH103 retired, numbers not reused; old outline 031–100 frozen as Part 2 candidates (09B).
+- Joins: Leah 05, Mia 10, Serena 12, Evelyn 17, Aila 18, Freya 19, Ophelia 20, Lilith 21; all eight debut by Chapter 19; first all-heroine battle in Chapter 21.
+- Conquest: 亚克 ({PLAYER_NAME}) overthrows the Morningstar Dynasty (晨星皇朝); conquest order 23–29 = 翠影, 赤焰, 霜潮, 铸金, 龙脊, 夜鸦, 白塔; Chapter 30 is the eclipse coronation; the empire is 艾瑟兰帝国.
 - Seven laws / seven sins / seven nations / seven monster regions / seven sin-linked heroines; Evelyn is Pure Bond.
-- Relics: five World Hearts + two Balance Seals.
-- Endings: single marriage, consensual three-partner marriage, sick-love tragedy, seven-sins worst ending, plus non-romance travel epilogue.
-- Marriage epilogues occur three years after the main story.
+- Relics: five World Hearts + two Balance Seals, taken through conquest in 23–29 (resonance = quality of conquest), relocked as the Seven-Lock Crown (七重锁冠) in Chapter 30.
+- Endings: five monarch endings (仁慈 / 暴君 / 暴君·嗜杀 / 好色 / 无情) with a three-layer ending matrix and 13 entries E01–E13, all inside Chapter 30; killings only before the ending (26–29 custody, Chapter 29 warrant); marriage only in the merciful ending's three-years-later epilogue.
+- Battle: main line free-text with 3 on the field; separate menu skill battle (three slots, five colours red > purple > blue > green > white, +10 cap); gacha items and costumes never enter main-line judgement and never appear in the main line or endings.
+- Rating: default 15+ drama mode (擦边 and blood allowed, never explicit); 12+ soft mode switchable; shared bans and minors list apply to both.
+- Integration: 99_整合设定集.md is re-integrated for v0.4 from 00–09, 11–13 and CHANGELOG_v0.4 (核#14 step 1; proposal §九); the old v0.3 integration is frozen as 99B_v0.3整合设定集（冻结）.md (line offset 0; old "99:N" citations point there).
