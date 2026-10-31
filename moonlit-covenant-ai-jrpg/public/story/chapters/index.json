@@ -205,5 +205,14 @@
     "file": "/story/chapters/ch022.json",
     "requires": "ch021",
     "source": "剧本/22回到麥田.md"
+  },
+  {
+    "id": "ch023",
+    "number": 23,
+    "title": "第二十三章｜雾港起义",
+    "estimatedMinutes": 12,
+    "file": "/story/chapters/ch023.json",
+    "requires": "ch022",
+    "source": "剧本/23霧港起義.md"
   }
 ]

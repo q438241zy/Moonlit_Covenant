@@ -12702,7 +12702,7 @@
   ],
   "end": {
     "save": "SAVE_CH022_END_BACK_TO_THE_WHEAT",
-    "next": null,
+    "next": "ch023",
     "nextLabel": "CH023_FOG_HARBOR_RISING",
     "set": {
       "flags": {
