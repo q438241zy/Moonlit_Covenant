@@ -187,5 +187,14 @@
     "file": "/story/chapters/ch020.json",
     "requires": "ch019",
     "source": "剧本/20姐姐還活著.md"
+  },
+  {
+    "id": "ch021",
+    "number": 21,
+    "title": "第二十一章｜谁都不是祭品",
+    "estimatedMinutes": 12,
+    "file": "/story/chapters/ch021.json",
+    "requires": "ch020",
+    "source": "剧本/21誰都不是祭品.md"
   }
 ]

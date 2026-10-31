@@ -13709,7 +13709,7 @@
   ],
   "end": {
     "save": "SAVE_CH020_END_SISTER_ALIVE",
-    "next": null,
+    "next": "ch021",
     "nextLabel": "CH021_NO_ONE_IS_OFFERING",
     "set": {
       "flags": {
