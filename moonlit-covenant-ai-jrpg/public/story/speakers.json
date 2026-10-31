@@ -603,5 +603,10 @@
     "name": "账房",
     "color": "#a89a7a",
     "art": null
+  },
+  "veslra": {
+    "name": "维斯拉",
+    "color": "#a8c8f0",
+    "art": "/assets/story/npc/veslra.svg"
   }
 }

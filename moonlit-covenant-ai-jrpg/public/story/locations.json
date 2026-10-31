@@ -664,5 +664,47 @@
     "svg": "/assets/story/bg/furnace-rail-night.svg",
     "top": "#06080e",
     "bottom": "#0a0a0c"
+  },
+  "dragonsleep-harbor-far": {
+    "name": "龙眠港·远景",
+    "svg": "/assets/story/bg/dragonsleep-harbor-far.svg",
+    "top": "#7a9ab8",
+    "bottom": "#2a3a4a"
+  },
+  "dragonsleep-council": {
+    "name": "龙眠港·记忆议会",
+    "svg": "/assets/story/bg/dragonsleep-council.svg",
+    "top": "#3a4450",
+    "bottom": "#5a564e"
+  },
+  "dragonsleep-camp-night": {
+    "name": "龙眠港·港口的营地·夜",
+    "svg": "/assets/story/bg/dragonsleep-camp-night.svg",
+    "top": "#060a14",
+    "bottom": "#06080e"
+  },
+  "dragonsleep-sea-sky": {
+    "name": "龙眠港的外海与天空",
+    "svg": "/assets/story/bg/dragonsleep-sea-sky.svg",
+    "top": "#2a3446",
+    "bottom": "#0e161e"
+  },
+  "dragonsleep-reef": {
+    "name": "龙眠港外海的礁石",
+    "svg": "/assets/story/bg/dragonsleep-reef.svg",
+    "top": "#8a98a4",
+    "bottom": "#1a242c"
+  },
+  "dragonsleep-graves": {
+    "name": "龙眠港·海边的墓地",
+    "svg": "/assets/story/bg/dragonsleep-graves.svg",
+    "top": "#8a9098",
+    "bottom": "#3a4a32"
+  },
+  "dragonsleep-memory-hall": {
+    "name": "龙眠港·记忆馆前",
+    "svg": "/assets/story/bg/dragonsleep-memory-hall.svg",
+    "top": "#4a3a5a",
+    "bottom": "#6a6458"
   }
 }

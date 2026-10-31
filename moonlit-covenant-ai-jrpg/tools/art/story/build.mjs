@@ -3,12 +3,12 @@
 //   node tools/art/story/build.mjs               -> everything
 //   node tools/art/story/build.mjs bg            -> all backgrounds (every locations.json entry, plus generators
 //                                                  not wired into locations.json yet, e.g. new variants)
-//   node tools/art/story/build.mjs npc           -> all 66 busts (54 NPC silhouettes incl. both versions of 蚀痕残响, of
+//   node tools/art/story/build.mjs npc           -> all 67 busts (55 NPC silhouettes incl. both versions of 蚀痕残响, of
 //                                                  镜咒学徒, of chapter 14's 欧妲 (plains_woman with the wrist tag,
 //                                                  oda with it cut off) and of chapter 15's 潮虫王 (tide_king, and
 //                                                  tide_king_split with the shell split along the back), plus 赈灾司的官
 //                                                  and chapter 16's court (emperor, rowena, celestine, severin,
-//                                                  ceremony_officer, archivist) chapter 18's nila and envoy_chief chapter 19's raymond chapter 21's inge chapter 22's grave and pike chapter 23's veldra, bram and house_head and chapter 24's cassia, hector and red_shield_veteran and chapter 25's holger, ilvo and lena and chapter 26's grantz, cora, lindor and mammongo
+//                                                  ceremony_officer, archivist) chapter 18's nila and envoy_chief chapter 19's raymond chapter 21's inge chapter 22's grave and pike chapter 23's veldra, bram and house_head and chapter 24's cassia, hector and red_shield_veteran and chapter 25's holger, ilvo and lena and chapter 26's grantz, cora, lindor and mammongo and chapter 27's veslra
 //                                                  + Lia's, Mia's and Serena's transparent portrait busts,
 //                                                  the chapter 12 variants lia_mirror / serena_staff_wrapped, the
 //                                                  chapter 13 hooded golden_assassin, the chapter 15 serena_copy and
@@ -46,6 +46,7 @@ import { verdantBgs } from './bg-verdant.mjs';
 import { ashPassBgs } from './bg-ashpass.mjs';
 import { frostbellBgs } from './bg-frostbell.mjs';
 import { furnaceBgs } from './bg-furnace.mjs';
+import { dragonsleepBgs } from './bg-dragonsleep.mjs';
 import { npcBusts as silhouetteBusts } from './npc.mjs';
 import { liaBust } from './lia-bust.mjs';
 import { miaBust } from './mia-bust.mjs';
@@ -63,7 +64,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../.
 const locations = JSON.parse(fs.readFileSync(path.join(root, 'public/story/locations.json'), 'utf8'));
 const speakers = JSON.parse(fs.readFileSync(path.join(root, 'public/story/speakers.json'), 'utf8'));
 
-const bgs = { ...villageBgs, ...nightBgs, ...dawnBgs, ...townBgs, ...millBgs, ...oldMillBgs, ...marshBgs, ...tideBgs, ...harborBgs, ...sewerBgs, ...innBgs, ...lighthouseBgs, ...alleyBgs, ...roofBgs, ...tideCaveBgs, ...tideNestBgs, ...guildDockBgs, ...whiteTowerBgs, ...holyCityBgs, ...archiveBgs, ...archTideBgs, ...northHillBgs, ...verdantBgs, ...ashPassBgs, ...frostbellBgs, ...furnaceBgs };
+const bgs = { ...villageBgs, ...nightBgs, ...dawnBgs, ...townBgs, ...millBgs, ...oldMillBgs, ...marshBgs, ...tideBgs, ...harborBgs, ...sewerBgs, ...innBgs, ...lighthouseBgs, ...alleyBgs, ...roofBgs, ...tideCaveBgs, ...tideNestBgs, ...guildDockBgs, ...whiteTowerBgs, ...holyCityBgs, ...archiveBgs, ...archTideBgs, ...northHillBgs, ...verdantBgs, ...ashPassBgs, ...frostbellBgs, ...furnaceBgs, ...dragonsleepBgs };
 // bust id -> generator; the file is public/assets/story/npc/<id>.svg (several speakers may share one file)
 const npcBusts = { ...silhouetteBusts, lia: () => liaBust(), mia: () => miaBust(), serena: () => serenaBust(), ...ch12Busts, golden_assassin: () => goldenAssassinBust(), ...ch15Busts, ...ch16Busts, ...ch17Busts, ...ch18Busts, ...ch19Busts, ...ch20Busts };
 const BG_BUDGET = 90 * 1024, NPC_BUDGET = 70 * 1024;
