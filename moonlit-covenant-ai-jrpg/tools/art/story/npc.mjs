@@ -2258,4 +2258,25 @@ CAST.executioner = {
   front: () => `<path d="M236,256h44M320,256h44" stroke="#c8c0b8" stroke-width="5" stroke-linecap="round"/>`,
 };
 
+// 神帝莫尔坎 (30) — Morcan wearing the Morning Star crown: the same black robe and chain-scarred hands, a pale circlet of
+// seven points on his head.
+CAST.morcan_crowned = {
+  ...CAST.morcan, id: 'morcan_crowned', label: '神帝莫尔坎：同一身黑袍与手背的链痕，头上戴着七个尖的苍白晨星冕', rim: '#e8e0ff',
+  front: () => CAST.morcan.front() + `<path d="M226,168l14,-40l14,30l14,-44l14,40l14,-50l14,50l14,-40l14,44l14,-30l14,40z" fill="#f0eef8" stroke="#a8a0c8" stroke-width="2"/>`,
+};
+
+// 托比·十一岁 (30) — Toby three years on: taller, the same unruly light hair, a brass whistle on a cord at his chest.
+const TB11_HAIR = [[224, 214], [226, 160], [262, 120], [318, 108], [370, 126], [400, 168], [404, 222], [390, 206], [380, 172], [352, 150], [300, 146], [262, 160], [240, 190]];
+CAST.toby_11 = {
+  id: 'toby_11', label: '托比·十一岁：长高了，还是乱翘的浅金发，胸前一根绳子挂着铜哨', rim: '#f2d48b',
+  sil: [head(0, 14, 0.9), S(TB11_HAIR), neck(0, 14, 0.82), torso(214, 500, 0.86)],
+  tones: [
+    [S(TB11_HAIR), '#e8d08a', 0.92],
+    [S([[110, 544], [170, 506], [244, 482], [300, 488], [356, 482], [430, 506], [490, 544], [500, 820], [100, 820]]), '#6a7a5a', 0.9],
+  ],
+  lines: [[pl([[384, 270], [366, 316], [326, 356]]), 2.4, 0.8], [pl([[260, 490], [300, 600], [340, 490]]), 2, 0.8, '#5a4a3a']],
+  front: () => `<path d="M222,272q11,-3 22,0" fill="none" stroke="#3a3a3a" stroke-width="2.6" stroke-linecap="round"/><path d="M228,338q8,4 16,0" fill="none" stroke="#7a5a4a" stroke-width="2"/>`
+    + `<path d="M288,600h24l4,30h-32z" fill="#c8a040"/><circle cx="300" cy="606" r="4" fill="#6a5020"/>`,
+};
+
 export const npcBusts = Object.fromEntries(Object.entries(CAST).map(([id, spec]) => [id, (rim) => render(spec, rim)]));

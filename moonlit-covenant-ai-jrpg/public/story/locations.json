@@ -850,5 +850,83 @@
     "svg": "/assets/story/bg/hemai-ruin-camp-night.svg",
     "top": "#060810",
     "bottom": "#0c0a08"
+  },
+  "hemai-prayer-ruin-eclipse": {
+    "name": "赫麦·祷堂废墟·蚀",
+    "svg": "/assets/story/bg/hemai-prayer-ruin-eclipse.svg",
+    "top": "#1a1420",
+    "bottom": "#1a140e"
+  },
+  "moonring-sanctum": {
+    "name": "月环圣所·全蚀",
+    "svg": "/assets/story/bg/moonring-sanctum.svg",
+    "top": "#06060c",
+    "bottom": "#141020"
+  },
+  "moonring-sanctum-dawn": {
+    "name": "月环圣所·晨光",
+    "svg": "/assets/story/bg/moonring-sanctum-dawn.svg",
+    "top": "#3a3440",
+    "bottom": "#6a5a50"
+  },
+  "moonring-inner-stair": {
+    "name": "月环圣所·内阶",
+    "svg": "/assets/story/bg/moonring-inner-stair.svg",
+    "top": "#fff4e0",
+    "bottom": "#2a2630"
+  },
+  "moonring-roof-open": {
+    "name": "掀开的环顶",
+    "svg": "/assets/story/bg/moonring-roof-open.svg",
+    "top": "#8a98b8",
+    "bottom": "#14101a"
+  },
+  "moonring-new-city": {
+    "name": "月环新城",
+    "svg": "/assets/story/bg/moonring-new-city.svg",
+    "top": "#9ab8d8",
+    "bottom": "#a8b888"
+  },
+  "hemai-rebuilt-dawn": {
+    "name": "赫麦·重建·黎明",
+    "svg": "/assets/story/bg/hemai-rebuilt-dawn.svg",
+    "top": "#6a7aa0",
+    "bottom": "#a88a3a"
+  },
+  "hemai-half-built": {
+    "name": "赫麦·重建到一半",
+    "svg": "/assets/story/bg/hemai-half-built.svg",
+    "top": "#2a2a3a",
+    "bottom": "#2a2218"
+  },
+  "white-tower-iron": {
+    "name": "白塔·铁冕",
+    "svg": "/assets/story/bg/white-tower-iron.svg",
+    "top": "#4a4c54",
+    "bottom": "#3a3a3e"
+  },
+  "white-tower-throne": {
+    "name": "白塔·王座",
+    "svg": "/assets/story/bg/white-tower-throne.svg",
+    "top": "#1a1a20",
+    "bottom": "#28282e"
+  },
+  "gilded-cage": {
+    "name": "冠礼院上层的金笼",
+    "svg": "/assets/story/bg/gilded-cage.svg",
+    "top": "#3a2a1a",
+    "bottom": "#3a2a1a"
+  },
+  "seven-sins-feast": {
+    "name": "月环圣所·七罪宴",
+    "svg": "/assets/story/bg/seven-sins-feast.svg",
+    "top": "#1a0c10",
+    "bottom": "#3a1a18"
+  },
+  "silent-empire": {
+    "name": "无声帝国",
+    "svg": "/assets/story/bg/silent-empire.svg",
+    "top": "#6a6a6e",
+    "bottom": "#7a7a7c"
   }
 }

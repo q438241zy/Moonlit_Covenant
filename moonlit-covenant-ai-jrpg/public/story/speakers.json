@@ -658,5 +658,20 @@
     "name": "阿德拉",
     "color": "#e8e8f0",
     "art": null
+  },
+  "god_emperor": {
+    "name": "神帝",
+    "color": "#e8e0ff",
+    "art": "/assets/story/npc/morcan_crowned.svg"
+  },
+  "toby_11": {
+    "name": "托比",
+    "color": "#f2d48b",
+    "art": "/assets/story/npc/toby_11.svg"
+  },
+  "imperial_guard": {
+    "name": "近卫",
+    "color": "#9a9aa8",
+    "art": null
   }
 }

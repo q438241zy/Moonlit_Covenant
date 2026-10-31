@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="月环圣所·全蚀：一座巨大的圆环大厅，八个石座，中间一座祭坛，后面一道往上的内阶，井口落下一道白光">
+<defs><linearGradient id="sbMrSan-g0" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#06060c"/><stop offset="1" stop-color="#141020"/></linearGradient><linearGradient id="sbMrSan-g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/><stop offset="1" stop-color="#ffffff" stop-opacity="0.05"/></linearGradient><radialGradient id="sbMrSan-g2" cx="0.5" cy="0.5" r="0.75"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="0.6" stop-color="#000" stop-opacity="0.18"/><stop offset="1" stop-color="#000" stop-opacity="0.6"/></radialGradient></defs>
+<rect width="1600" height="900" fill="url(#sbMrSan-g0)"/>
+<path d="M80,620a720,230 0 1 0 1440,0a720,230 0 1 0 -1440,0Z" fill="#1a1624"/><path d="M240,620a560,170 0 1 0 1120,0a560,170 0 1 0 -1120,0Z" fill="#22202e"/>
+<path d="M150.1,590.3V520.3q30,-24 60,0V590.3z" fill="#3a3648"/>
+<path d="M252.2,522.4V452.4q30,-24 60,0V522.4z" fill="#3a3648"/>
+<path d="M427.1,471.1V401.1q30,-24 60,0V471.1z" fill="#3a3648"/>
+<path d="M650.1,443.5V373.5q30,-24 60,0V443.5z" fill="#3a3648"/>
+<path d="M889.9,443.5V373.5q30,-24 60,0V443.5z" fill="#3a3648"/>
+<path d="M1112.9,471.1V401.1q30,-24 60,0V471.1z" fill="#3a3648"/>
+<path d="M1287.8,522.4V452.4q30,-24 60,0V522.4z" fill="#3a3648"/>
+<path d="M1389.9,590.3V520.3q30,-24 60,0V590.3z" fill="#3a3648"/>
+<path d="M740,440h120v30h-120z" fill="#8a86a0"/>
+<path d="M744,406h112v30h-112z" fill="#908ca6"/>
+<path d="M748,372h104v30h-104z" fill="#9692ad"/>
+<path d="M752,338h96v30h-96z" fill="#9d99b3"/>
+<path d="M756,304h88v30h-88z" fill="#a39fba"/>
+<path d="M760,270h80v30h-80z" fill="#a9a5c0"/>
+<path d="M764,236h72v30h-72z" fill="#afabc6"/>
+<path d="M768,202h64v30h-64z" fill="#b5b1cd"/>
+<path d="M772,168h56v30h-56z" fill="#bcb8d3"/>
+<path d="M776,134h48v30h-48z" fill="#c2beda"/>
+<path d="M720,600h160l-20,-60H740z" fill="#4a4458"/>
+<path d="M760,0H840L900,600H700Z" fill="url(#sbMrSan-g1)"/>
+<rect width="1600" height="900" fill="url(#sbMrSan-g2)"/>
+</svg>

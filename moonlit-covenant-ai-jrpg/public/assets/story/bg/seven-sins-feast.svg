@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="月环圣所·七罪宴：圆环下一张长桌，七张戴冠的椅子，红与金">
+<defs><linearGradient id="sbMrFeast-g0" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a0c10"/><stop offset="1" stop-color="#3a1a18"/></linearGradient><radialGradient id="sbMrFeast-g1" ><stop offset="0" stop-color="#ffc870" stop-opacity="0.25"/><stop offset="1" stop-color="#ffc870" stop-opacity="0"/></radialGradient><radialGradient id="sbMrFeast-g2" cx="0.5" cy="0.5" r="0.75"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="0.6" stop-color="#000" stop-opacity="0.165"/><stop offset="1" stop-color="#000" stop-opacity="0.55"/></radialGradient></defs>
+<rect width="1600" height="900" fill="url(#sbMrFeast-g0)"/>
+<path d="M100,160a700,140 0 1 0 1400,0a700,140 0 1 0 -1400,0Z" fill="none" stroke="#5a3a2a" stroke-width="30"/>
+<path d="M160,700L400,500H1200L1440,700Z" fill="#8a1a1a"/><path d="M160,700h1280v24H160z" fill="#4a0e0e"/>
+<path d="M324,740V520q36,-30 72,0V740z" fill="#2a1410" stroke="#d8a840" stroke-width="3"/><path d="M340,500l10,-20l10,14l10,-14l10,20z" fill="#d8a840"/>
+<path d="M470.7,740V520q36,-30 72,0V740z" fill="#2a1410" stroke="#d8a840" stroke-width="3"/><path d="M486.7,500l10,-20l10,14l10,-14l10,20z" fill="#d8a840"/>
+<path d="M617.3,740V520q36,-30 72,0V740z" fill="#2a1410" stroke="#d8a840" stroke-width="3"/><path d="M633.3,500l10,-20l10,14l10,-14l10,20z" fill="#d8a840"/>
+<path d="M764,740V520q36,-30 72,0V740z" fill="#2a1410" stroke="#d8a840" stroke-width="3"/><path d="M780,500l10,-20l10,14l10,-14l10,20z" fill="#d8a840"/>
+<path d="M910.7,740V520q36,-30 72,0V740z" fill="#2a1410" stroke="#d8a840" stroke-width="3"/><path d="M926.7,500l10,-20l10,14l10,-14l10,20z" fill="#d8a840"/>
+<path d="M1057.3,740V520q36,-30 72,0V740z" fill="#2a1410" stroke="#d8a840" stroke-width="3"/><path d="M1073.3,500l10,-20l10,14l10,-14l10,20z" fill="#d8a840"/>
+<path d="M1204,740V520q36,-30 72,0V740z" fill="#2a1410" stroke="#d8a840" stroke-width="3"/><path d="M1220,500l10,-20l10,14l10,-14l10,20z" fill="#d8a840"/>
+<ellipse cx="800" cy="560" rx="560" ry="200" fill="url(#sbMrFeast-g1)"/>
+<rect width="1600" height="900" fill="url(#sbMrFeast-g2)"/>
+</svg>

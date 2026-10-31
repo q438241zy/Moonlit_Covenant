@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="赫麦重建到一半：脚手架，没盖完的墙，一扇窗里烛光照着一卷名册">
+<defs><linearGradient id="sbMrHemaiHalf-g0" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a2a3a"/><stop offset="0.6" stop-color="#5a5060"/><stop offset="1" stop-color="#3a3030"/></linearGradient><linearGradient id="sbMrHemaiHalf-g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a4a30"/><stop offset="1" stop-color="#2a2218"/></linearGradient><radialGradient id="sbMrHemaiHalf-g2" ><stop offset="0" stop-color="#ffd080" stop-opacity="0.4"/><stop offset="1" stop-color="#ffd080" stop-opacity="0"/></radialGradient><radialGradient id="sbMrHemaiHalf-g3" cx="0.5" cy="0.5" r="0.75"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="0.6" stop-color="#000" stop-opacity="0.165"/><stop offset="1" stop-color="#000" stop-opacity="0.55"/></radialGradient></defs>
+<rect width="1600" height="900" fill="url(#sbMrHemaiHalf-g0)"/>
+<path d="M0,560H1600V900H0Z" fill="url(#sbMrHemaiHalf-g1)"/>
+<path d="M700,560V400l100,-80l100,80V560z" fill="#6a6058"/>
+<path d="M200,560V480l70,-40l70,40V560z" fill="#5a5048"/>
+<path d="M400,560V480l60,-40l60,40V560z" fill="#5a5048"/>
+<path d="M1080,560V480l75,-40l75,40V560z" fill="#5a5048"/>
+<path d="M1280,560V480l65,-40l65,40V560z" fill="#5a5048"/>
+<path d="M690,560V300M910,560V300M690,380H910M690,460H910M700,300L900,560M900,300L700,560" stroke="#8a7050" stroke-width="5"/>
+<path d="M1310,500h40v34h-40z" fill="#ffd080"/><ellipse cx="1330" cy="517" rx="80" ry="60" fill="url(#sbMrHemaiHalf-g2)"/>
+<rect width="1600" height="900" fill="url(#sbMrHemaiHalf-g3)"/>
+</svg>
