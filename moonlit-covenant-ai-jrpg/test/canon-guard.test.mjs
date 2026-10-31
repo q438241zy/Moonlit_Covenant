@@ -152,10 +152,12 @@ const MAIN_LINE_SPOILERS = [
   // 索拉恩第一次开价（正式25）；黑龙真名（正式27）；册妃诏（正式28）；晨阶刑台与「神帝」（正式29）
   { term: '索拉恩', from: 25 }, { term: '黛薇恩', from: 27 }, { term: '册妃', from: 28 },
   { term: '晨阶刑台', from: 29 }, { term: '斩刑台', from: 29 }, { term: '神帝', from: 29 },
+  // 好色结局名「绯冠」先作士兵的外号上屏：正式26起色轴领先且达到40时（提案§4.3第26列），所以从26起
+  { term: '绯冠', from: 26 },
   // 帝国与结局名（只在正式30）
   { term: '艾瑟兰帝国', from: 30 }, { term: '月环新城', from: 30 },
   { term: '归名之帝', from: 30 }, { term: '数到三的皇帝', from: 30 }, { term: '数到一的皇帝', from: 30 },
-  { term: '绯冠', from: 30 }, { term: '八颗心的冠', from: 30 },
+  { term: '八颗心的冠', from: 30 },
   { term: '仁慈君主', from: 30 }, { term: '好色君主', from: 30 }, { term: '无情君主', from: 30 }
 ];
 const spoilersAfter = (highestCleared) => MAIN_LINE_SPOILERS.filter((s) => s.from > highestCleared).map((s) => s.term);
