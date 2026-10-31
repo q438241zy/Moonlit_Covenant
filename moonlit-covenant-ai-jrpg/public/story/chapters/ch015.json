@@ -26410,7 +26410,7 @@
   ],
   "end": {
     "save": "SAVE_CH015_END_TIDE_KING",
-    "next": null,
+    "next": "ch016",
     "nextLabel": "CH016_REGISTRY_HALL",
     "set": {
       "flags": {

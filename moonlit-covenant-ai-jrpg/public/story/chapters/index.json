@@ -142,5 +142,14 @@
     "file": "/story/chapters/ch015.json",
     "requires": "ch014",
     "source": "剧本/15潮蟲王涅洛薩.md"
+  },
+  {
+    "id": "ch016",
+    "number": 16,
+    "title": "第十六章｜册厅",
+    "estimatedMinutes": 11,
+    "file": "/story/chapters/ch016.json",
+    "requires": "ch015",
+    "source": "剧本/16冊廳.md"
   }
 ]
