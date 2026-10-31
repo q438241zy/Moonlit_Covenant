@@ -520,5 +520,35 @@
     "svg": "/assets/story/bg/north-hill-cave.svg",
     "top": "#2a221e",
     "bottom": "#2a201a"
+  },
+  "verdant-waterway-night": {
+    "name": "往绿镜城的水路·夜",
+    "svg": "/assets/story/bg/verdant-waterway-night.svg",
+    "top": "#070b14",
+    "bottom": "#081014"
+  },
+  "verdant-mirror-vine-gate": {
+    "name": "绿镜城水门·镜藤",
+    "svg": "/assets/story/bg/verdant-mirror-vine-gate.svg",
+    "top": "#0a1410",
+    "bottom": "#4a524a"
+  },
+  "verdant-council-hall": {
+    "name": "绿镜城议会厅",
+    "svg": "/assets/story/bg/verdant-council-hall.svg",
+    "top": "#3a463e",
+    "bottom": "#4a5248"
+  },
+  "fog-marsh-edge": {
+    "name": "沼林边·石台",
+    "svg": "/assets/story/bg/fog-marsh-edge.svg",
+    "top": "#9aa8a0",
+    "bottom": "#3a3a2a"
+  },
+  "verdant-camp-night": {
+    "name": "绿镜城外的营地·夜",
+    "svg": "/assets/story/bg/verdant-camp-night.svg",
+    "top": "#060a10",
+    "bottom": "#2a2418"
   }
 }

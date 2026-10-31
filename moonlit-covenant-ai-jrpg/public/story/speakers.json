@@ -483,5 +483,40 @@
     "name": "排队的男人",
     "color": "#a89a88",
     "art": null
+  },
+  "veldra": {
+    "name": "维尔德拉",
+    "color": "#8ac0a0",
+    "art": "/assets/story/npc/veldra.svg"
+  },
+  "seat_envoy": {
+    "name": "七席的使者",
+    "color": "#8ac0a0",
+    "art": "/assets/story/npc/veldra.svg"
+  },
+  "bram": {
+    "name": "布拉姆",
+    "color": "#c0a888",
+    "art": "/assets/story/npc/bram.svg"
+  },
+  "house_head": {
+    "name": "三家的家主",
+    "color": "#c8b060",
+    "art": "/assets/story/npc/house_head.svg"
+  },
+  "vine_face": {
+    "name": "藤上的脸",
+    "color": "#a8c8a8",
+    "art": null
+  },
+  "flame_rider": {
+    "name": "赤焰的骑手",
+    "color": "#d86a4a",
+    "art": null
+  },
+  "heir": {
+    "name": "继承人",
+    "color": "#c8b060",
+    "art": null
   }
 }

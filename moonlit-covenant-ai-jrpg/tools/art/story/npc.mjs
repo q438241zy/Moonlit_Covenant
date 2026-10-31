@@ -1906,4 +1906,50 @@ CAST.pike = {
   front: () => `<path d="M228,276q9,-4 18,-1" fill="none" stroke="#4a4248" stroke-width="2.2" stroke-linecap="round"/><path d="M230,330q6,3 12,0" fill="none" stroke="#7a5a5a" stroke-width="1.8"/><path d="M250,300q10,6 20,2M210,560q30,10 50,-4" fill="none" stroke="#5a4632" stroke-width="3" opacity=".6"/>`,
 };
 
+// 维尔德拉 (23) — the rotating speaker of the Seven Seats, an apothecary of mimicry: about thirty-six, a long robe in green and
+// grey, her face never the same — drawn as a calm, ordinary face with a faint second outline slipping off it.
+const VD_HAIR = [[222, 220], [232, 160], [270, 132], [324, 124], [372, 140], [404, 184], [414, 250], [420, 360], [404, 400], [390, 300], [378, 230], [340, 190], [280, 184], [244, 202]];
+CAST.veldra = {
+  id: 'veldra', label: '维尔德拉：三十六岁上下的七席议长，绿与灰的长袍，脸一直在变——画成一张平静的普通的脸，边上滑开一道淡淡的第二个轮廓', rim: '#8ac0a0',
+  sil: [head(0, 4, 0.96, true), S(VD_HAIR), neck(0, 4, 0.86), torso(200, 486, 1.0)],
+  tones: [
+    [S(VD_HAIR), '#4a5a4e', 0.9],
+    [S([[108, 532], [170, 490], [244, 466], [300, 472], [356, 466], [430, 490], [492, 532], [504, 820], [96, 820]]), '#5a6a5e', 0.92],
+    [S([[200, 520], [300, 500], [400, 520], [380, 820], [220, 820]]), '#8a948a', 0.6],
+  ],
+  lines: [[pl([[384, 262], [366, 310], [326, 350]]), 2.6, 0.7], [pl([[300, 500], [302, 800]]), 2, 0.4]],
+  front: ({ rim }) => `<path d="M222,266h20" stroke="#3a4a40" stroke-width="2.4" stroke-linecap="round"/><path d="M226,326h10" stroke="#5a5a5a" stroke-width="1.8"/>`
+    + `<path d="M196,250q-6,40 10,74q18,30 50,40" fill="none" stroke="${rim}" stroke-width="2" stroke-dasharray="6 6" opacity=".7"/>`,
+};
+
+// 布拉姆爷爷 (23) — a Valhalla family servant of old, now a shadow-market doctor: sixty-eight, bent over a walking stick, a
+// wooden case held to his chest.
+const BR_HAIR = [[230, 196], [250, 156], [300, 140], [352, 146], [388, 176], [396, 214], [384, 204], [350, 180], [298, 176], [256, 186]];
+CAST.bram = {
+  id: 'bram', label: '布拉姆爷爷：六十八岁的老人，驼着背拄着拐杖，怀里抱着一个木匣', rim: '#c0a888',
+  sil: [head(-10, 30, 0.92), S(T(BR_HAIR, -10, 30, 0.92)), neck(-10, 30, 0.9), torso(206, 510, 0.7, -10), pz([[180, 580, 1], [320, 572, 1], [324, 680, 1], [184, 688, 1]]), S([[440, 520], [452, 520], [470, 820], [456, 820]])],
+  tones: [
+    [S(T(BR_HAIR, -10, 30, 0.92)), '#d8d4cc', 0.85],
+    [S([[100, 556], [160, 516], [230, 494], [290, 500], [350, 494], [420, 516], [480, 556], [492, 820], [88, 820]]), '#6a5a4a', 0.9],
+    [pz([[180, 580, 1], [320, 572, 1], [324, 680, 1], [184, 688, 1]]), '#8a6a48', 0.95],
+  ],
+  lines: [[pl([[366, 290], [350, 330], [314, 360]]), 2.4, 0.7], [pl([[184, 620], [322, 612]]), 2, 0.6, '#5a4430']],
+  front: () => `<path d="M212,290q10,-2 20,0" fill="none" stroke="#4a4248" stroke-width="2.4" stroke-linecap="round"/><path d="M210,276q12,-5 24,-2" fill="none" stroke="#e8e4dc" stroke-width="3"/><path d="M214,350h12" stroke="#6a5a5a" stroke-width="1.8"/>`,
+};
+
+// 三家的家主 (23) — the heads of the three houses that took the Valhalla lands: grown men of the Seven Seats, richly dressed in
+// layered green-and-gold robes with heavy chains of office. One shared bust; not named.
+const HH_HAIR = [[226, 192], [244, 150], [296, 130], [354, 138], [392, 172], [402, 218], [392, 244], [380, 220], [348, 186], [294, 176], [252, 184]];
+CAST.house_head = {
+  id: 'house_head', label: '三家的家主：衣着华贵的成年男人，层叠的绿金长袍，胸前挂着沉重的职位链', rim: '#c8b060',
+  sil: [head(0, 0, 0.98), S(HH_HAIR), neck(0, 0, 1.05), torso(230, 480, 0.85)],
+  tones: [
+    [S(HH_HAIR), '#5a4a3a', 0.9],
+    [S([[90, 524], [158, 484], [238, 458], [300, 464], [362, 458], [442, 484], [510, 524], [522, 820], [78, 820]]), '#3a5a40', 0.92],
+    [S([[200, 470], [300, 520], [400, 470], [420, 500], [300, 560], [180, 500]]), '#c8a850', 0.85],
+  ],
+  lines: [[pl([[386, 256], [368, 304], [326, 350]]), 2.8, 0.8], [pl([[300, 560], [302, 800]]), 2, 0.5], [pl([[200, 600], [400, 600]]), 1.6, 0.5, '#c8a850']],
+  front: () => `<path d="M222,262q11,-3 22,0" fill="none" stroke="#3a3a40" stroke-width="2.6" stroke-linecap="round"/><path d="M224,326q6,-2 14,0" fill="none" stroke="#5a4a4a" stroke-width="2"/>`,
+};
+
 export const npcBusts = Object.fromEntries(Object.entries(CAST).map(([id, spec]) => [id, (rim) => render(spec, rim)]));
