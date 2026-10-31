@@ -40306,7 +40306,7 @@
   ],
   "end": {
     "save": "SAVE_CH029_END_WHITE_TOWER_SIEGE",
-    "next": null,
+    "next": "ch030",
     "nextLabel": "CH030_ECLIPSE_CORONATION",
     "set": {
       "flags": {

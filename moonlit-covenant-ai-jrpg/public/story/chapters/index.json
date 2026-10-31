@@ -268,5 +268,14 @@
     "file": "/story/chapters/ch029.json",
     "requires": "ch028",
     "source": "剧本/29白塔之圍.md"
+  },
+  {
+    "id": "ch030",
+    "number": 30,
+    "title": "第三十章｜月蚀加冕",
+    "estimatedMinutes": 15,
+    "file": "/story/chapters/ch030.json",
+    "requires": "ch029",
+    "source": "剧本/30月蝕加冕.md"
   }
 ]
