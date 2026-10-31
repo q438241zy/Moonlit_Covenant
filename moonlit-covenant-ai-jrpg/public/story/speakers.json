@@ -548,5 +548,25 @@
     "name": "赤焰的使者",
     "color": "#d86a4a",
     "art": null
+  },
+  "holger": {
+    "name": "霍尔格",
+    "color": "#c8dcf0",
+    "art": "/assets/story/npc/holger.svg"
+  },
+  "ilvo": {
+    "name": "伊尔沃",
+    "color": "#a0d8ff",
+    "art": "/assets/story/npc/ilvo.svg"
+  },
+  "lena_voice": {
+    "name": "女声",
+    "color": "#9ad0f0",
+    "art": "/assets/story/npc/lena.svg"
+  },
+  "solaren": {
+    "name": "索拉恩",
+    "color": "#b8b0d8",
+    "art": null
   }
 }

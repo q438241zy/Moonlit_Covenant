@@ -580,5 +580,35 @@
     "svg": "/assets/story/bg/ash-pass-throat.svg",
     "top": "#3a1a14",
     "bottom": "#2a120c"
+  },
+  "frostbell-far": {
+    "name": "霜铃城·远景",
+    "svg": "/assets/story/bg/frostbell-far.svg",
+    "top": "#9aaac0",
+    "bottom": "#c8d2de"
+  },
+  "frostbell-gate": {
+    "name": "霜铃城·城门",
+    "svg": "/assets/story/bg/frostbell-gate.svg",
+    "top": "#a8b4c4",
+    "bottom": "#f2f6f9"
+  },
+  "frostbell-camp-night": {
+    "name": "霜铃城外·营地·夜",
+    "svg": "/assets/story/bg/frostbell-camp-night.svg",
+    "top": "#060a16",
+    "bottom": "#1a2234"
+  },
+  "ice-archive": {
+    "name": "冰库",
+    "svg": "/assets/story/bg/ice-archive.svg",
+    "top": "#0a1420",
+    "bottom": "#0e1a26"
+  },
+  "ice-archive-deep": {
+    "name": "冰库·最深处",
+    "svg": "/assets/story/bg/ice-archive-deep.svg",
+    "top": "#06101a",
+    "bottom": "#14202c"
   }
 }
