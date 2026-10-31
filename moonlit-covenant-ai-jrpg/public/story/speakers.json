@@ -348,5 +348,330 @@
     "name": "晨星卫",
     "color": "#dfe4ec",
     "art": null
+  },
+  "aila_unknown": {
+    "name": "金发的骑士",
+    "color": "#f0d070",
+    "art": "/assets/story/npc/aila.svg"
+  },
+  "aila": {
+    "name": "艾拉",
+    "color": "#f0d070",
+    "art": "/assets/story/npc/aila.svg"
+  },
+  "knight_runner": {
+    "name": "传令的骑士",
+    "color": "#c8d0dc",
+    "art": null
+  },
+  "residence_maid": {
+    "name": "侍女",
+    "color": "#d8cfc4",
+    "art": null
+  },
+  "freya_unknown": {
+    "name": "北境的女人",
+    "color": "#9fd4e4",
+    "art": "/assets/story/npc/freya.svg"
+  },
+  "freya": {
+    "name": "芙蕾娅",
+    "color": "#9fd4e4",
+    "art": "/assets/story/npc/freya.svg"
+  },
+  "nila_unknown": {
+    "name": "车里的孩子",
+    "color": "#a8d0e8",
+    "art": "/assets/story/npc/nila.svg"
+  },
+  "envoy_chief": {
+    "name": "使团长",
+    "color": "#b8d4e8",
+    "art": "/assets/story/npc/envoy_chief.svg"
+  },
+  "frost_captain": {
+    "name": "晨星卫队长",
+    "color": "#dfe4ec",
+    "art": null
+  },
+  "envoy_retinue": {
+    "name": "使团的随员",
+    "color": "#b0c4d4",
+    "art": null
+  },
+  "nila": {
+    "name": "妮拉",
+    "color": "#a8d0e8",
+    "art": "/assets/story/npc/nila.svg"
+  },
+  "ophelia_unknown": {
+    "name": "龙脊的使节",
+    "color": "#e0905a",
+    "art": "/assets/story/npc/ophelia.svg"
+  },
+  "ophelia": {
+    "name": "奥菲莉亚",
+    "color": "#e0905a",
+    "art": "/assets/story/npc/ophelia.svg"
+  },
+  "raymond": {
+    "name": "雷蒙德",
+    "color": "#c8d0dc",
+    "art": "/assets/story/npc/raymond.svg"
+  },
+  "noah": {
+    "name": "诺亚",
+    "color": "#c4ccd8",
+    "art": "/assets/story/npc/archivist.svg"
+  },
+  "lilith_unknown": {
+    "name": "兜帽的人",
+    "color": "#e8c860",
+    "art": "/assets/story/npc/golden_assassin.svg"
+  },
+  "lilith": {
+    "name": "莉莉丝",
+    "color": "#e8c860",
+    "art": "/assets/story/npc/lilith.svg"
+  },
+  "bronze_plate": {
+    "name": "铜板",
+    "color": "#c89048",
+    "art": null
+  },
+  "inge_unknown": {
+    "name": "床上的女人",
+    "color": "#c8b8a0",
+    "art": "/assets/story/npc/inge.svg"
+  },
+  "inge": {
+    "name": "茵格",
+    "color": "#c8b8a0",
+    "art": "/assets/story/npc/inge.svg"
+  },
+  "hans_unknown": {
+    "name": "堤岸上的老人",
+    "color": "#b0a898",
+    "art": null
+  },
+  "hans": {
+    "name": "汉斯",
+    "color": "#b0a898",
+    "art": null
+  },
+  "maid": {
+    "name": "侍女",
+    "color": "#d8cfc4",
+    "art": null
+  },
+  "grave": {
+    "name": "格雷夫",
+    "color": "#9aa0aa",
+    "art": "/assets/story/npc/grave.svg"
+  },
+  "slope_voice": {
+    "name": "坡下的声音",
+    "color": "#9aa0aa",
+    "art": null
+  },
+  "pike": {
+    "name": "派克",
+    "color": "#c8b090",
+    "art": "/assets/story/npc/pike.svg"
+  },
+  "queue_man": {
+    "name": "排队的男人",
+    "color": "#a89a88",
+    "art": null
+  },
+  "veldra": {
+    "name": "维尔德拉",
+    "color": "#8ac0a0",
+    "art": "/assets/story/npc/veldra.svg"
+  },
+  "seat_envoy": {
+    "name": "七席的使者",
+    "color": "#8ac0a0",
+    "art": "/assets/story/npc/veldra.svg"
+  },
+  "bram": {
+    "name": "布拉姆",
+    "color": "#c0a888",
+    "art": "/assets/story/npc/bram.svg"
+  },
+  "house_head": {
+    "name": "三家的家主",
+    "color": "#c8b060",
+    "art": "/assets/story/npc/house_head.svg"
+  },
+  "vine_face": {
+    "name": "藤上的脸",
+    "color": "#a8c8a8",
+    "art": null
+  },
+  "flame_rider": {
+    "name": "赤焰的骑手",
+    "color": "#d86a4a",
+    "art": null
+  },
+  "heir": {
+    "name": "继承人",
+    "color": "#c8b060",
+    "art": null
+  },
+  "cassia": {
+    "name": "卡西娅",
+    "color": "#e8603a",
+    "art": "/assets/story/npc/cassia.svg"
+  },
+  "hector": {
+    "name": "赫克托",
+    "color": "#ff7a3a",
+    "art": "/assets/story/npc/hector.svg"
+  },
+  "red_shield_veteran": {
+    "name": "红盾的老兵",
+    "color": "#d8504a",
+    "art": "/assets/story/npc/red_shield_veteran.svg"
+  },
+  "miner": {
+    "name": "矿工",
+    "color": "#a8907a",
+    "art": null
+  },
+  "crimson_deserter": {
+    "name": "赤焰的降兵",
+    "color": "#c86a4a",
+    "art": null
+  },
+  "cassia_envoy": {
+    "name": "赤焰的使者",
+    "color": "#d86a4a",
+    "art": null
+  },
+  "holger": {
+    "name": "霍尔格",
+    "color": "#c8dcf0",
+    "art": "/assets/story/npc/holger.svg"
+  },
+  "ilvo": {
+    "name": "伊尔沃",
+    "color": "#a0d8ff",
+    "art": "/assets/story/npc/ilvo.svg"
+  },
+  "lena_voice": {
+    "name": "女声",
+    "color": "#9ad0f0",
+    "art": "/assets/story/npc/lena.svg"
+  },
+  "solaren": {
+    "name": "索拉恩",
+    "color": "#b8b0d8",
+    "art": null
+  },
+  "grantz": {
+    "name": "格兰茨",
+    "color": "#d8b860",
+    "art": "/assets/story/npc/grantz.svg"
+  },
+  "cora": {
+    "name": "柯拉",
+    "color": "#c89060",
+    "art": "/assets/story/npc/cora.svg"
+  },
+  "lindor": {
+    "name": "林铎",
+    "color": "#b8a070",
+    "art": "/assets/story/npc/lindor.svg"
+  },
+  "mammongo": {
+    "name": "玛门戈",
+    "color": "#d8a850",
+    "art": "/assets/story/npc/mammongo.svg"
+  },
+  "gold_scale": {
+    "name": "金衡圣印",
+    "color": "#f0d070",
+    "art": null
+  },
+  "soldier": {
+    "name": "士兵",
+    "color": "#9a9a8a",
+    "art": null
+  },
+  "ledger_clerk": {
+    "name": "账房",
+    "color": "#a89a7a",
+    "art": null
+  },
+  "veslra": {
+    "name": "维斯拉",
+    "color": "#a8c8f0",
+    "art": "/assets/story/npc/veslra.svg"
+  },
+  "cassandra": {
+    "name": "卡珊德拉",
+    "color": "#a888c8",
+    "art": "/assets/story/npc/cassandra.svg"
+  },
+  "edwin": {
+    "name": "艾德温",
+    "color": "#a8a8b8",
+    "art": "/assets/story/npc/edwin.svg"
+  },
+  "heras": {
+    "name": "赫拉斯",
+    "color": "#b8a8ff",
+    "art": "/assets/story/npc/heras.svg"
+  },
+  "moira": {
+    "name": "莫伊拉",
+    "color": "#c8c0e8",
+    "art": "/assets/story/npc/moira.svg"
+  },
+  "arkan": {
+    "name": "阿尔坎",
+    "color": "#a8a8b0",
+    "art": "/assets/story/npc/arkan.svg"
+  },
+  "morcan": {
+    "name": "莫尔坎",
+    "color": "#8a7ab8",
+    "art": "/assets/story/npc/morcan.svg"
+  },
+  "bell_ringer": {
+    "name": "敲钟人",
+    "color": "#c8b090",
+    "art": "/assets/story/npc/bell_ringer.svg"
+  },
+  "executioner": {
+    "name": "刽子手",
+    "color": "#8a7a7a",
+    "art": "/assets/story/npc/executioner.svg"
+  },
+  "tower_child": {
+    "name": "孩子",
+    "color": "#d8c8a8",
+    "art": null
+  },
+  "adela": {
+    "name": "阿德拉",
+    "color": "#e8e8f0",
+    "art": null
+  },
+  "god_emperor": {
+    "name": "神帝",
+    "color": "#e8e0ff",
+    "art": "/assets/story/npc/morcan_crowned.svg"
+  },
+  "toby_11": {
+    "name": "托比",
+    "color": "#f2d48b",
+    "art": "/assets/story/npc/toby_11.svg"
+  },
+  "imperial_guard": {
+    "name": "近卫",
+    "color": "#9a9aa8",
+    "art": null
   }
 }

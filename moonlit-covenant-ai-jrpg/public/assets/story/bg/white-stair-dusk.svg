@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="白石阶·黄昏：一长段白色的石阶通往大殿，长长的影子">
+<defs><linearGradient id="sbSgStair-g0" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a2a4a"/><stop offset="0.55" stop-color="#c88a6a"/><stop offset="1" stop-color="#e8b080"/></linearGradient><radialGradient id="sbSgStair-g1" cx="0.5" cy="0.5" r="0.75"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="0.6" stop-color="#000" stop-opacity="0.12"/><stop offset="1" stop-color="#000" stop-opacity="0.4"/></radialGradient></defs>
+<rect width="1600" height="900" fill="url(#sbSgStair-g0)"/>
+<path d="M520,260V120q280,-90 560,0V260z" fill="#e8d8c8"/>
+<path d="M550,260h500v36h-500z" fill="#e8ddd0"/>
+<path d="M517.6,297.6h564.7v36h-564.7z" fill="#e6dbcd"/>
+<path d="M485.3,335.3h629.4v36h-629.4z" fill="#e3d8cb"/>
+<path d="M452.9,372.9h694.1v36h-694.1z" fill="#e1d6c8"/>
+<path d="M420.6,410.6h758.8v36h-758.8z" fill="#dfd3c6"/>
+<path d="M388.2,448.2h823.5v36h-823.5z" fill="#ddd1c3"/>
+<path d="M355.9,485.9h888.2v36h-888.2z" fill="#dacec1"/>
+<path d="M323.5,523.5h952.9v36h-952.9z" fill="#d8ccbe"/>
+<path d="M291.2,561.2h1017.6v36h-1017.6z" fill="#d6cabc"/>
+<path d="M258.8,598.8h1082.4v36h-1082.4z" fill="#d4c7b9"/>
+<path d="M226.5,636.5h1147.1v36h-1147.1z" fill="#d1c5b7"/>
+<path d="M194.1,674.1h1211.8v36h-1211.8z" fill="#cfc2b4"/>
+<path d="M161.8,711.8h1276.5v36h-1276.5z" fill="#cdc0b2"/>
+<path d="M129.4,749.4h1341.2v36h-1341.2z" fill="#cbbdaf"/>
+<path d="M97.1,787.1h1405.9v36h-1405.9z" fill="#c8bbac"/>
+<path d="M64.7,824.7h1470.6v36h-1470.6z" fill="#c6b8aa"/>
+<path d="M32.4,862.4h1535.3v36h-1535.3z" fill="#c4b6a7"/>
+<path d="M0,900h1600v36h-1600z" fill="#c2b4a5"/>
+<path d="M800,260L1500,900H1300L800,300z" fill="#3a2a3a" opacity=".25"/>
+<rect width="1600" height="900" fill="url(#sbSgStair-g1)"/>
+</svg>

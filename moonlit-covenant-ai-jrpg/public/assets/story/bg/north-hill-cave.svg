@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="守羊洞里·北山营地的军帐：粗糙的岩壁，一张木板桌，桌上一盏灯和几张纸，墙边叠着毯子，洞口在深处是一道暗蓝色的拱；灯黄和岩石，不画人">
+<defs><linearGradient id="sbNhCave-g0" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0e1630"/><stop offset="1" stop-color="#1c2440"/></linearGradient><linearGradient id="sbNhCave-g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a2e26"/><stop offset="1" stop-color="#2a201a"/></linearGradient><radialGradient id="sbNhCave-g2" ><stop offset="0" stop-color="#ffcf80" stop-opacity="0.5"/><stop offset="0.5" stop-color="#e09040" stop-opacity="0.16"/><stop offset="1" stop-color="#e09040" stop-opacity="0"/></radialGradient><radialGradient id="sbNhCave-g3" cx="0.52" cy="0.6" r="0.75"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="0.6" stop-color="#000" stop-opacity="0.2"/><stop offset="1" stop-color="#000" stop-opacity="0.7"/></radialGradient></defs>
+<rect width="1600" height="900" fill="#120e0c"/>
+<path d="M640,520Q640,250 800,230Q960,250 960,520Z" fill="url(#sbNhCave-g0)"/>
+<path d="M881.8,399.4a1.2,1.2 0 1 0 2.4,0a1.2,1.2 0 1 0 -2.4,0ZM787.9,314a1.2,1.2 0 1 0 2.4,0a1.2,1.2 0 1 0 -2.4,0ZM729.1,370.1a1.2,1.2 0 1 0 2.4,0a1.2,1.2 0 1 0 -2.4,0ZM722,396.4a1.2,1.2 0 1 0 2.4,0a1.2,1.2 0 1 0 -2.4,0ZM824.2,402a1.2,1.2 0 1 0 2.4,0a1.2,1.2 0 1 0 -2.4,0ZM895.2,351.8a1.2,1.2 0 1 0 2.4,0a1.2,1.2 0 1 0 -2.4,0ZM677.8,353.4a1.2,1.2 0 1 0 2.4,0a1.2,1.2 0 1 0 -2.4,0ZM719.5,273.4a1.2,1.2 0 1 0 2.4,0a1.2,1.2 0 1 0 -2.4,0ZM810.4,295.7a1.2,1.2 0 1 0 2.4,0a1.2,1.2 0 1 0 -2.4,0ZM752.1,366.1a1.2,1.2 0 1 0 2.4,0a1.2,1.2 0 1 0 -2.4,0ZM773.8,384.2a1.2,1.2 0 1 0 2.4,0a1.2,1.2 0 1 0 -2.4,0ZM843.2,366.2a1.2,1.2 0 1 0 2.4,0a1.2,1.2 0 1 0 -2.4,0ZM842.2,339.5a1.2,1.2 0 1 0 2.4,0a1.2,1.2 0 1 0 -2.4,0ZM915.9,414.1a1.2,1.2 0 1 0 2.4,0a1.2,1.2 0 1 0 -2.4,0Z" fill="#e8ecff" opacity=".8"/>
+<path d="M0,0L1600,0L1600,160L1300,240L1080,200L900,150L700,150L500,210L300,240L0,180Z" fill="#2a221e"/>
+<path d="M0,0L0,900L420,900L520,700L560,520L620,380L560,260L400,200L200,160Z" fill="#3a2e28"/>
+<path d="M1600,0L1600,900L1180,900L1080,700L1040,520L980,380L1040,260L1200,200L1400,160Z" fill="#342a24"/>
+<path d="M0,260L0,900L260,900L330,620L300,420Z" fill="#4a3c32"/>
+<path d="M1600,300L1600,900L1340,900L1280,640L1320,440Z" fill="#44362e"/>
+<path d="M0,900L420,700Q800,620 1180,700L1600,900Z" fill="url(#sbNhCave-g1)"/>
+<path d="M1180,720h200q14,10 0,22h-200q-14,-10 0,-22z" fill="#5a6a7a"/>
+<path d="M1210,690h170q14,10 0,22h-170q-14,-10 0,-22z" fill="#5a6a7a"/>
+<path d="M1160,760h240q14,10 0,22h-240q-14,-10 0,-22z" fill="#7a6a5a"/>
+<path d="M420,640h520l40,-60h-520z" fill="#7a5a3a"/><path d="M420,640h520v18h-520z" fill="#4a3424"/><path d="M450,658v120h20v-120zM900,658v120h20v-120z" fill="#3a2a1e"/>
+<path d="M560,612l140,0l12,-24l-140,0z" fill="#efe4cc"/><path d="M720,606l100,4l10,-20l-100,-4z" fill="#e6dac0"/>
+<ellipse cx="860" cy="560" rx="520" ry="360" fill="url(#sbNhCave-g2)"/>
+<path d="M842,600h36l-6,-12h-24z" fill="#8a6a3a"/><path d="M850,588q-4,-34 10,-48q14,14 10,48z" fill="#f8e4b8" opacity=".6"/><path d="M860,572q-6,-12 0,-24q6,12 0,24z" fill="#fff4d0"/>
+<rect width="1600" height="900" fill="url(#sbNhCave-g3)"/>
+</svg>

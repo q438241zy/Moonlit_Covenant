@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="七议席的议厅：一张长桌，七张高背椅，墙上一面镜子">
+<defs><linearGradient id="sbRfHall-g0" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a1420"/><stop offset="1" stop-color="#3a2e3a"/></linearGradient><linearGradient id="sbRfHall-g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a8a0c8"/><stop offset="1" stop-color="#4a4260"/></linearGradient><radialGradient id="sbRfHall-g2" cx="0.5" cy="0.5" r="0.75"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="0.6" stop-color="#000" stop-opacity="0.165"/><stop offset="1" stop-color="#000" stop-opacity="0.55"/></radialGradient></defs>
+<rect width="1600" height="900" fill="url(#sbRfHall-g0)"/>
+<path d="M700,400V200a100,100 0 0 1 200,0V400z" fill="url(#sbRfHall-g1)" stroke="#c8a860" stroke-width="8"/>
+<path d="M200,600L400,480H1200L1400,600Z" fill="#3a2418"/><path d="M200,600h1200v24H200z" fill="#2a1a10"/>
+<path d="M222,640V390q38,-30 76,0V640z" fill="#1a1016" stroke="#6a4a3a" stroke-width="3"/>
+<path d="M402,640V383.3q38,-30 76,0V640z" fill="#1a1016" stroke="#6a4a3a" stroke-width="3"/>
+<path d="M582,640V376.7q38,-30 76,0V640z" fill="#1a1016" stroke="#6a4a3a" stroke-width="3"/>
+<path d="M762,640V370q38,-30 76,0V640z" fill="#1a1016" stroke="#6a4a3a" stroke-width="3"/>
+<path d="M942,640V376.7q38,-30 76,0V640z" fill="#1a1016" stroke="#6a4a3a" stroke-width="3"/>
+<path d="M1122,640V383.3q38,-30 76,0V640z" fill="#1a1016" stroke="#6a4a3a" stroke-width="3"/>
+<path d="M1302,640V390q38,-30 76,0V640z" fill="#1a1016" stroke="#6a4a3a" stroke-width="3"/>
+<path d="M0,700H1600V900H0Z" fill="#20181e"/>
+<rect width="1600" height="900" fill="url(#sbRfHall-g2)"/>
+</svg>

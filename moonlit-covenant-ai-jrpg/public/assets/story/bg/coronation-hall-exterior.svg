@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="冠礼院大殿外：白色的门面，高高的穹顶，门前的台阶">
+<defs><linearGradient id="sbSgHallExt-g0" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8aa0c0"/><stop offset="0.6" stop-color="#d8e0e8"/><stop offset="1" stop-color="#eef0f2"/></linearGradient><radialGradient id="sbSgHallExt-g1" cx="0.5" cy="0.5" r="0.75"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="0.6" stop-color="#000" stop-opacity="0.12"/><stop offset="1" stop-color="#000" stop-opacity="0.4"/></radialGradient></defs>
+<rect width="1600" height="900" fill="url(#sbSgHallExt-g0)"/>
+<path d="M260,620V300H1340V620z" fill="#f0ece4"/><path d="M500,300Q800,40 1100,300z" fill="#e8e4dc"/>
+<path d="M320,620V320h40v300z" fill="#fbf8f2"/>
+<path d="M440,620V320h40v300z" fill="#fbf8f2"/>
+<path d="M560,620V320h40v300z" fill="#fbf8f2"/>
+<path d="M680,620V320h40v300z" fill="#fbf8f2"/>
+<path d="M800,620V320h40v300z" fill="#fbf8f2"/>
+<path d="M920,620V320h40v300z" fill="#fbf8f2"/>
+<path d="M1040,620V320h40v300z" fill="#fbf8f2"/>
+<path d="M1160,620V320h40v300z" fill="#fbf8f2"/>
+<path d="M1280,620V320h40v300z" fill="#fbf8f2"/>
+<path d="M720,620V440q80,-70 160,0V620z" fill="#3a3430"/>
+<path d="M260,620H1340v46H260z" fill="#e8e4dc"/>
+<path d="M220,666H1380v46H220z" fill="#e2ded6"/>
+<path d="M180,712H1420v46H180z" fill="#dcd8d0"/>
+<path d="M140,758H1460v46H140z" fill="#d7d3cb"/>
+<path d="M100,804H1500v46H100z" fill="#d1cdc5"/>
+<path d="M60,850H1540v46H60z" fill="#cbc7bf"/>
+<rect width="1600" height="900" fill="url(#sbSgHallExt-g1)"/>
+</svg>

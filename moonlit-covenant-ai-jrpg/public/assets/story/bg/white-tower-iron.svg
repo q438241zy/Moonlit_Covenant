@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="白塔·铁冕：白塔被一道道黑铁箍住，旗帜，灰色的天">
+<defs><linearGradient id="sbMrIron-g0" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a4c54"/><stop offset="1" stop-color="#8a8a8c"/></linearGradient><radialGradient id="sbMrIron-g1" cx="0.5" cy="0.5" r="0.75"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="0.6" stop-color="#000" stop-opacity="0.135"/><stop offset="1" stop-color="#000" stop-opacity="0.45"/></radialGradient></defs>
+<rect width="1600" height="900" fill="url(#sbMrIron-g0)"/>
+<path d="M720,700V140l80,-100l80,100V700z" fill="#e8e6e0"/>
+<path d="M712,180h176v18h-176zM712,260h176v18h-176zM712,340h176v18h-176zM712,420h176v18h-176zM712,500h176v18h-176zM712,580h176v18h-176zM712,660h176v18h-176z" fill="#1a1a1e"/>
+<path d="M400,700V300" stroke="#1a1a1e" stroke-width="6"/><path d="M400,300h80v120l-40,-20l-40,20z" fill="#2a1a1a"/>
+<path d="M1200,700V300" stroke="#1a1a1e" stroke-width="6"/><path d="M1200,300h80v120l-40,-20l-40,20z" fill="#2a1a1a"/>
+<path d="M0,700H1600V900H0Z" fill="#3a3a3e"/>
+<rect width="1600" height="900" fill="url(#sbMrIron-g1)"/>
+</svg>

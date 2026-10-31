@@ -418,5 +418,515 @@
     "svg": "/assets/story/bg/white-tower-registry-hall-night.svg",
     "top": "#141620",
     "bottom": "#0c0e16"
+  },
+  "holy-city-pilgrim-hostel-night": {
+    "name": "白塔圣都·朝圣者旅舍·夜",
+    "svg": "/assets/story/bg/holy-city-pilgrim-hostel-night.svg",
+    "top": "#2e2630",
+    "bottom": "#4a3a30"
+  },
+  "saint-residence-smoke-night": {
+    "name": "圣女居所·夜·烟",
+    "svg": "/assets/story/bg/saint-residence-smoke-night.svg",
+    "top": "#06070c",
+    "bottom": "#24232a"
+  },
+  "starsong-garden-predawn": {
+    "name": "星歌花园·天未亮",
+    "svg": "/assets/story/bg/starsong-garden-predawn.svg",
+    "top": "#0a1024",
+    "bottom": "#2a3a44"
+  },
+  "starsong-garden-dawn": {
+    "name": "星歌花园·黎明",
+    "svg": "/assets/story/bg/starsong-garden-dawn.svg",
+    "top": "#8a96b0",
+    "bottom": "#6a8a5a"
+  },
+  "white-tower-outer-court-frost": {
+    "name": "白塔·外庭·霜",
+    "svg": "/assets/story/bg/white-tower-outer-court-frost.svg",
+    "top": "#b8c8d8",
+    "bottom": "#b8c2cc"
+  },
+  "holy-city-pilgrim-hostel-day": {
+    "name": "白塔圣都·朝圣者旅舍·白天",
+    "svg": "/assets/story/bg/holy-city-pilgrim-hostel-day.svg",
+    "top": "#5a4a44",
+    "bottom": "#7a6048"
+  },
+  "white-tower-outer-court-thawed": {
+    "name": "白塔·外庭·正午",
+    "svg": "/assets/story/bg/white-tower-outer-court-thawed.svg",
+    "top": "#b8c8d8",
+    "bottom": "#b8c2cc"
+  },
+  "white-tower-seven-angle-hall": {
+    "name": "白塔·七角殿",
+    "svg": "/assets/story/bg/white-tower-seven-angle-hall.svg",
+    "top": "#3a3a44",
+    "bottom": "#cfc8ba"
+  },
+  "white-tower-outer-court-dusk": {
+    "name": "白塔·外庭·黄昏",
+    "svg": "/assets/story/bg/white-tower-outer-court-dusk.svg",
+    "top": "#6a6a8a",
+    "bottom": "#a8907e"
+  },
+  "white-tower-outer-court-night": {
+    "name": "白塔·外庭·夜",
+    "svg": "/assets/story/bg/white-tower-outer-court-night.svg",
+    "top": "#0a1020",
+    "bottom": "#3a4256"
+  },
+  "white-tower-underground-archive": {
+    "name": "册厅底下·地下档案库",
+    "svg": "/assets/story/bg/white-tower-underground-archive.svg",
+    "top": "#202028",
+    "bottom": "#4a4850"
+  },
+  "white-tower-outer-court-day": {
+    "name": "白塔·外庭·白天",
+    "svg": "/assets/story/bg/white-tower-outer-court-day.svg",
+    "top": "#b8c4d0",
+    "bottom": "#bcc2c8"
+  },
+  "arch-tide-gate-sanctuary": {
+    "name": "拱潮门下·护界院",
+    "svg": "/assets/story/bg/arch-tide-gate-sanctuary.svg",
+    "top": "#26262e",
+    "bottom": "#4e4c50"
+  },
+  "arch-tide-gate-channel": {
+    "name": "拱潮门·水道",
+    "svg": "/assets/story/bg/arch-tide-gate-channel.svg",
+    "top": "#0a0a0e",
+    "bottom": "#2a2a30"
+  },
+  "canal-bank-dawn": {
+    "name": "城外运河的堤岸·黎明",
+    "svg": "/assets/story/bg/canal-bank-dawn.svg",
+    "top": "#7a8094",
+    "bottom": "#4a5a3a"
+  },
+  "north-slope-camp-night": {
+    "name": "北山缓坡·营地·夜",
+    "svg": "/assets/story/bg/north-slope-camp-night.svg",
+    "top": "#060a1a",
+    "bottom": "#1a1a20"
+  },
+  "north-hill-cave": {
+    "name": "守羊洞里·北山营地",
+    "svg": "/assets/story/bg/north-hill-cave.svg",
+    "top": "#2a221e",
+    "bottom": "#2a201a"
+  },
+  "verdant-waterway-night": {
+    "name": "往绿镜城的水路·夜",
+    "svg": "/assets/story/bg/verdant-waterway-night.svg",
+    "top": "#070b14",
+    "bottom": "#081014"
+  },
+  "verdant-mirror-vine-gate": {
+    "name": "绿镜城水门·镜藤",
+    "svg": "/assets/story/bg/verdant-mirror-vine-gate.svg",
+    "top": "#0a1410",
+    "bottom": "#4a524a"
+  },
+  "verdant-council-hall": {
+    "name": "绿镜城议会厅",
+    "svg": "/assets/story/bg/verdant-council-hall.svg",
+    "top": "#3a463e",
+    "bottom": "#4a5248"
+  },
+  "fog-marsh-edge": {
+    "name": "沼林边·石台",
+    "svg": "/assets/story/bg/fog-marsh-edge.svg",
+    "top": "#9aa8a0",
+    "bottom": "#3a3a2a"
+  },
+  "verdant-camp-night": {
+    "name": "绿镜城外的营地·夜",
+    "svg": "/assets/story/bg/verdant-camp-night.svg",
+    "top": "#060a10",
+    "bottom": "#2a2418"
+  },
+  "ash-pass-far": {
+    "name": "灰烬关·远景",
+    "svg": "/assets/story/bg/ash-pass-far.svg",
+    "top": "#5a3a3a",
+    "bottom": "#3a2c22"
+  },
+  "ash-pass-camp-night": {
+    "name": "灰烬关下·营地·夜",
+    "svg": "/assets/story/bg/ash-pass-camp-night.svg",
+    "top": "#0c0808",
+    "bottom": "#140c08"
+  },
+  "ash-pass-camp-day": {
+    "name": "灰烬关下·营地·白天",
+    "svg": "/assets/story/bg/ash-pass-camp-day.svg",
+    "top": "#8a7a72",
+    "bottom": "#5a4636"
+  },
+  "ash-pass-gate-dawn": {
+    "name": "灰烬关·旧营关门前·黎明",
+    "svg": "/assets/story/bg/ash-pass-gate-dawn.svg",
+    "top": "#8a8aa0",
+    "bottom": "#8a8078"
+  },
+  "ash-pass-throat": {
+    "name": "灰烬关·山口里",
+    "svg": "/assets/story/bg/ash-pass-throat.svg",
+    "top": "#3a1a14",
+    "bottom": "#2a120c"
+  },
+  "frostbell-far": {
+    "name": "霜铃城·远景",
+    "svg": "/assets/story/bg/frostbell-far.svg",
+    "top": "#9aaac0",
+    "bottom": "#c8d2de"
+  },
+  "frostbell-gate": {
+    "name": "霜铃城·城门",
+    "svg": "/assets/story/bg/frostbell-gate.svg",
+    "top": "#a8b4c4",
+    "bottom": "#f2f6f9"
+  },
+  "frostbell-camp-night": {
+    "name": "霜铃城外·营地·夜",
+    "svg": "/assets/story/bg/frostbell-camp-night.svg",
+    "top": "#060a16",
+    "bottom": "#1a2234"
+  },
+  "ice-archive": {
+    "name": "冰库",
+    "svg": "/assets/story/bg/ice-archive.svg",
+    "top": "#0a1420",
+    "bottom": "#0e1a26"
+  },
+  "ice-archive-deep": {
+    "name": "冰库·最深处",
+    "svg": "/assets/story/bg/ice-archive-deep.svg",
+    "top": "#06101a",
+    "bottom": "#14202c"
+  },
+  "furnace-city-far": {
+    "name": "衡炉城·远景",
+    "svg": "/assets/story/bg/furnace-city-far.svg",
+    "top": "#6a5038",
+    "bottom": "#2a1e16"
+  },
+  "furnace-council": {
+    "name": "衡炉城·议会",
+    "svg": "/assets/story/bg/furnace-council.svg",
+    "top": "#2a2018",
+    "bottom": "#4a3626"
+  },
+  "furnace-camp-night": {
+    "name": "衡炉城外·营地·夜",
+    "svg": "/assets/story/bg/furnace-camp-night.svg",
+    "top": "#0a0808",
+    "bottom": "#100a06"
+  },
+  "furnace-zero": {
+    "name": "零号衡炉",
+    "svg": "/assets/story/bg/furnace-zero.svg",
+    "top": "#0e0c0a",
+    "bottom": "#14100c"
+  },
+  "furnace-secret-workshop": {
+    "name": "零号衡炉底下·秘密工坊",
+    "svg": "/assets/story/bg/furnace-secret-workshop.svg",
+    "top": "#1a1410",
+    "bottom": "#20180f"
+  },
+  "furnace-debt-vault": {
+    "name": "衡炉城·债库前",
+    "svg": "/assets/story/bg/furnace-debt-vault.svg",
+    "top": "#3a3038",
+    "bottom": "#4a4038"
+  },
+  "furnace-workshop-night": {
+    "name": "衡炉城·米娅的临时工坊·夜",
+    "svg": "/assets/story/bg/furnace-workshop-night.svg",
+    "top": "#100c0a",
+    "bottom": "#1a140e"
+  },
+  "furnace-street-night": {
+    "name": "衡炉城·工人区的街口·夜",
+    "svg": "/assets/story/bg/furnace-street-night.svg",
+    "top": "#0a0a10",
+    "bottom": "#3a3430"
+  },
+  "furnace-rail-night": {
+    "name": "魔轨的车头·夜",
+    "svg": "/assets/story/bg/furnace-rail-night.svg",
+    "top": "#06080e",
+    "bottom": "#0a0a0c"
+  },
+  "dragonsleep-harbor-far": {
+    "name": "龙眠港·远景",
+    "svg": "/assets/story/bg/dragonsleep-harbor-far.svg",
+    "top": "#7a9ab8",
+    "bottom": "#2a3a4a"
+  },
+  "dragonsleep-council": {
+    "name": "龙眠港·记忆议会",
+    "svg": "/assets/story/bg/dragonsleep-council.svg",
+    "top": "#3a4450",
+    "bottom": "#5a564e"
+  },
+  "dragonsleep-camp-night": {
+    "name": "龙眠港·港口的营地·夜",
+    "svg": "/assets/story/bg/dragonsleep-camp-night.svg",
+    "top": "#060a14",
+    "bottom": "#06080e"
+  },
+  "dragonsleep-sea-sky": {
+    "name": "龙眠港的外海与天空",
+    "svg": "/assets/story/bg/dragonsleep-sea-sky.svg",
+    "top": "#2a3446",
+    "bottom": "#0e161e"
+  },
+  "dragonsleep-reef": {
+    "name": "龙眠港外海的礁石",
+    "svg": "/assets/story/bg/dragonsleep-reef.svg",
+    "top": "#8a98a4",
+    "bottom": "#1a242c"
+  },
+  "dragonsleep-graves": {
+    "name": "龙眠港·海边的墓地",
+    "svg": "/assets/story/bg/dragonsleep-graves.svg",
+    "top": "#8a9098",
+    "bottom": "#3a4a32"
+  },
+  "dragonsleep-memory-hall": {
+    "name": "龙眠港·记忆馆前",
+    "svg": "/assets/story/bg/dragonsleep-memory-hall.svg",
+    "top": "#4a3a5a",
+    "bottom": "#6a6458"
+  },
+  "ravenfeather-city-far": {
+    "name": "鸦羽城·远景",
+    "svg": "/assets/story/bg/ravenfeather-city-far.svg",
+    "top": "#2a1e3a",
+    "bottom": "#100a10"
+  },
+  "ravenfeather-gate": {
+    "name": "鸦羽城·城门",
+    "svg": "/assets/story/bg/ravenfeather-gate.svg",
+    "top": "#3a3046",
+    "bottom": "#3a3238"
+  },
+  "ravenfeather-camp-night": {
+    "name": "鸦羽城外·营地·夜",
+    "svg": "/assets/story/bg/ravenfeather-camp-night.svg",
+    "top": "#08060e",
+    "bottom": "#0c080e"
+  },
+  "sleepless-mirror-palace": {
+    "name": "无眠镜宫",
+    "svg": "/assets/story/bg/sleepless-mirror-palace.svg",
+    "top": "#0a0814",
+    "bottom": "#14101e"
+  },
+  "heras-nest": {
+    "name": "镜网深处·赫拉斯的巢",
+    "svg": "/assets/story/bg/heras-nest.svg",
+    "top": "#06040a",
+    "bottom": "#1a1424"
+  },
+  "ravenfeather-council-hall": {
+    "name": "鸦羽城·七议席的议厅",
+    "svg": "/assets/story/bg/ravenfeather-council-hall.svg",
+    "top": "#1a1420",
+    "bottom": "#20181e"
+  },
+  "sleepless-mirror-last": {
+    "name": "无眠镜宫·最深处",
+    "svg": "/assets/story/bg/sleepless-mirror-last.svg",
+    "top": "#1a1828",
+    "bottom": "#040308"
+  },
+  "ravenfeather-belltower-night": {
+    "name": "鸦羽城·钟楼下·夜",
+    "svg": "/assets/story/bg/ravenfeather-belltower-night.svg",
+    "top": "#06060c",
+    "bottom": "#2a2630"
+  },
+  "road-to-white-tower-dawn": {
+    "name": "往白塔的大道·黎明",
+    "svg": "/assets/story/bg/road-to-white-tower-dawn.svg",
+    "top": "#5a6a8a",
+    "bottom": "#6a6a40"
+  },
+  "white-tower-city-siege-far": {
+    "name": "白塔城·远景",
+    "svg": "/assets/story/bg/white-tower-city-siege-far.svg",
+    "top": "#8aa0c0",
+    "bottom": "#5a5a40"
+  },
+  "white-tower-walls-predawn": {
+    "name": "白塔城外·天亮前",
+    "svg": "/assets/story/bg/white-tower-walls-predawn.svg",
+    "top": "#141a30",
+    "bottom": "#2a2a30"
+  },
+  "white-tower-walls-dawn": {
+    "name": "白塔城外城墙下·黎明",
+    "svg": "/assets/story/bg/white-tower-walls-dawn.svg",
+    "top": "#5a6a90",
+    "bottom": "#8a7a5a"
+  },
+  "white-tower-camp-predawn": {
+    "name": "白塔城外·营地·天亮前",
+    "svg": "/assets/story/bg/white-tower-camp-predawn.svg",
+    "top": "#141a30",
+    "bottom": "#14100c"
+  },
+  "white-tower-camp-night": {
+    "name": "白塔城外·营地·夜",
+    "svg": "/assets/story/bg/white-tower-camp-night.svg",
+    "top": "#060810",
+    "bottom": "#14100c"
+  },
+  "white-tower-belltower": {
+    "name": "白塔城·钟楼",
+    "svg": "/assets/story/bg/white-tower-belltower.svg",
+    "top": "#2a2420",
+    "bottom": "#14100c"
+  },
+  "morning-gate": {
+    "name": "晨门·门洞",
+    "svg": "/assets/story/bg/morning-gate.svg",
+    "top": "#2a2a30",
+    "bottom": "#3a3a40"
+  },
+  "coronation-hall-exterior": {
+    "name": "冠礼院大殿外",
+    "svg": "/assets/story/bg/coronation-hall-exterior.svg",
+    "top": "#8aa0c0",
+    "bottom": "#b8b4ac"
+  },
+  "coronation-hall-ruin": {
+    "name": "冠礼院·废墟",
+    "svg": "/assets/story/bg/coronation-hall-ruin.svg",
+    "top": "#5a5a60",
+    "bottom": "#8a8680"
+  },
+  "coronation-hall-feast": {
+    "name": "冠礼院大殿·宴",
+    "svg": "/assets/story/bg/coronation-hall-feast.svg",
+    "top": "#2a2018",
+    "bottom": "#2a1e14"
+  },
+  "white-stair-dusk": {
+    "name": "白石阶·黄昏",
+    "svg": "/assets/story/bg/white-stair-dusk.svg",
+    "top": "#3a2a4a",
+    "bottom": "#a89888"
+  },
+  "register-hall-night": {
+    "name": "册厅·夜",
+    "svg": "/assets/story/bg/register-hall-night.svg",
+    "top": "#0c0a08",
+    "bottom": "#1a140e"
+  },
+  "dawn-stair-scaffold": {
+    "name": "晨阶刑台",
+    "svg": "/assets/story/bg/dawn-stair-scaffold.svg",
+    "top": "#5a6a90",
+    "bottom": "#3a3436"
+  },
+  "dawn-stair-scaffold-empty": {
+    "name": "晨阶刑台·空场",
+    "svg": "/assets/story/bg/dawn-stair-scaffold-empty.svg",
+    "top": "#5a6a90",
+    "bottom": "#b0a898"
+  },
+  "hemai-ruin-camp-night": {
+    "name": "赫麦·祷堂废墟外的营地·夜",
+    "svg": "/assets/story/bg/hemai-ruin-camp-night.svg",
+    "top": "#060810",
+    "bottom": "#0c0a08"
+  },
+  "hemai-prayer-ruin-eclipse": {
+    "name": "赫麦·祷堂废墟·蚀",
+    "svg": "/assets/story/bg/hemai-prayer-ruin-eclipse.svg",
+    "top": "#1a1420",
+    "bottom": "#1a140e"
+  },
+  "moonring-sanctum": {
+    "name": "月环圣所·全蚀",
+    "svg": "/assets/story/bg/moonring-sanctum.svg",
+    "top": "#06060c",
+    "bottom": "#141020"
+  },
+  "moonring-sanctum-dawn": {
+    "name": "月环圣所·晨光",
+    "svg": "/assets/story/bg/moonring-sanctum-dawn.svg",
+    "top": "#3a3440",
+    "bottom": "#6a5a50"
+  },
+  "moonring-inner-stair": {
+    "name": "月环圣所·内阶",
+    "svg": "/assets/story/bg/moonring-inner-stair.svg",
+    "top": "#fff4e0",
+    "bottom": "#2a2630"
+  },
+  "moonring-roof-open": {
+    "name": "掀开的环顶",
+    "svg": "/assets/story/bg/moonring-roof-open.svg",
+    "top": "#8a98b8",
+    "bottom": "#14101a"
+  },
+  "moonring-new-city": {
+    "name": "月环新城",
+    "svg": "/assets/story/bg/moonring-new-city.svg",
+    "top": "#9ab8d8",
+    "bottom": "#a8b888"
+  },
+  "hemai-rebuilt-dawn": {
+    "name": "赫麦·重建·黎明",
+    "svg": "/assets/story/bg/hemai-rebuilt-dawn.svg",
+    "top": "#6a7aa0",
+    "bottom": "#a88a3a"
+  },
+  "hemai-half-built": {
+    "name": "赫麦·重建到一半",
+    "svg": "/assets/story/bg/hemai-half-built.svg",
+    "top": "#2a2a3a",
+    "bottom": "#2a2218"
+  },
+  "white-tower-iron": {
+    "name": "白塔·铁冕",
+    "svg": "/assets/story/bg/white-tower-iron.svg",
+    "top": "#4a4c54",
+    "bottom": "#3a3a3e"
+  },
+  "white-tower-throne": {
+    "name": "白塔·王座",
+    "svg": "/assets/story/bg/white-tower-throne.svg",
+    "top": "#1a1a20",
+    "bottom": "#28282e"
+  },
+  "gilded-cage": {
+    "name": "冠礼院上层的金笼",
+    "svg": "/assets/story/bg/gilded-cage.svg",
+    "top": "#3a2a1a",
+    "bottom": "#3a2a1a"
+  },
+  "seven-sins-feast": {
+    "name": "月环圣所·七罪宴",
+    "svg": "/assets/story/bg/seven-sins-feast.svg",
+    "top": "#1a0c10",
+    "bottom": "#3a1a18"
+  },
+  "silent-empire": {
+    "name": "无声帝国",
+    "svg": "/assets/story/bg/silent-empire.svg",
+    "top": "#6a6a6e",
+    "bottom": "#7a7a7c"
   }
 }

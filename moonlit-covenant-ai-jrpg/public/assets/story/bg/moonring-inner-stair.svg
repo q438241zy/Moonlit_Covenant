@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="月环圣所·内阶：窄窄的白色台阶往上，通向一片光">
+<defs><linearGradient id="sbMrStair-g0" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff4e0"/><stop offset="0.4" stop-color="#a8a0a0"/><stop offset="1" stop-color="#2a2630"/></linearGradient><radialGradient id="sbMrStair-g1" cx="0.5" cy="0.5" r="0.75"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="0.6" stop-color="#000" stop-opacity="0.12"/><stop offset="1" stop-color="#000" stop-opacity="0.4"/></radialGradient></defs>
+<rect width="1600" height="900" fill="url(#sbMrStair-g0)"/>
+<path d="M720,120h160v40h-160z" fill="#fffaf0"/>
+<path d="M700,172h200v40h-200z" fill="#f7f2ea"/>
+<path d="M680,224h240v40h-240z" fill="#efeae3"/>
+<path d="M660,276h280v40h-280z" fill="#e8e2dd"/>
+<path d="M640,328h320v40h-320z" fill="#e0dbd6"/>
+<path d="M620,380h360v40h-360z" fill="#d8d3d0"/>
+<path d="M600,432h400v40h-400z" fill="#d0cbca"/>
+<path d="M580,484h440v40h-440z" fill="#c8c3c3"/>
+<path d="M560,536h480v40h-480z" fill="#c1bbbd"/>
+<path d="M540,588h520v40h-520z" fill="#b9b3b6"/>
+<path d="M520,640h560v40h-560z" fill="#b1abb0"/>
+<path d="M500,692h600v40h-600z" fill="#a9a3aa"/>
+<path d="M480,744h640v40h-640z" fill="#a19ca3"/>
+<path d="M460,796h680v40h-680z" fill="#9a949d"/>
+<path d="M440,848h720v40h-720z" fill="#928c96"/>
+<path d="M420,900h760v40h-760z" fill="#8a8490"/>
+<path d="M0,0H500L700,900H0ZM1600,0H1100L900,900H1600Z" fill="#1a1620" opacity=".85"/>
+<rect width="1600" height="900" fill="url(#sbMrStair-g1)"/>
+</svg>

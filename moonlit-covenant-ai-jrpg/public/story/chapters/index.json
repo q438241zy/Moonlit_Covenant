@@ -151,5 +151,131 @@
     "file": "/story/chapters/ch016.json",
     "requires": "ch015",
     "source": "剧本/16冊廳.md"
+  },
+  {
+    "id": "ch017",
+    "number": 17,
+    "title": "第十七章｜光明骑士的拦截",
+    "estimatedMinutes": 11,
+    "file": "/story/chapters/ch017.json",
+    "requires": "ch016",
+    "source": "剧本/17光明騎士的攔截.md"
+  },
+  {
+    "id": "ch018",
+    "number": 18,
+    "title": "第十八章｜温柔的北境来客",
+    "estimatedMinutes": 11,
+    "file": "/story/chapters/ch018.json",
+    "requires": "ch017",
+    "source": "剧本/18溫柔的北境來客.md"
+  },
+  {
+    "id": "ch019",
+    "number": 19,
+    "title": "第十九章｜御前听证",
+    "estimatedMinutes": 11,
+    "file": "/story/chapters/ch019.json",
+    "requires": "ch018",
+    "source": "剧本/19御前聽證.md"
+  },
+  {
+    "id": "ch020",
+    "number": 20,
+    "title": "第二十章｜姐姐还活着",
+    "estimatedMinutes": 11,
+    "file": "/story/chapters/ch020.json",
+    "requires": "ch019",
+    "source": "剧本/20姐姐還活著.md"
+  },
+  {
+    "id": "ch021",
+    "number": 21,
+    "title": "第二十一章｜谁都不是祭品",
+    "estimatedMinutes": 12,
+    "file": "/story/chapters/ch021.json",
+    "requires": "ch020",
+    "source": "剧本/21誰都不是祭品.md"
+  },
+  {
+    "id": "ch022",
+    "number": 22,
+    "title": "第二十二章｜回到麦田",
+    "estimatedMinutes": 12,
+    "file": "/story/chapters/ch022.json",
+    "requires": "ch021",
+    "source": "剧本/22回到麥田.md"
+  },
+  {
+    "id": "ch023",
+    "number": 23,
+    "title": "第二十三章｜雾港起义",
+    "estimatedMinutes": 12,
+    "file": "/story/chapters/ch023.json",
+    "requires": "ch022",
+    "source": "剧本/23霧港起義.md"
+  },
+  {
+    "id": "ch024",
+    "number": 24,
+    "title": "第二十四章｜灰烬关",
+    "estimatedMinutes": 12,
+    "file": "/story/chapters/ch024.json",
+    "requires": "ch023",
+    "source": "剧本/24灰燼關.md"
+  },
+  {
+    "id": "ch025",
+    "number": 25,
+    "title": "第二十五章｜冰库的名册",
+    "estimatedMinutes": 12,
+    "file": "/story/chapters/ch025.json",
+    "requires": "ch024",
+    "source": "剧本/25冰庫的名冊.md"
+  },
+  {
+    "id": "ch026",
+    "number": 26,
+    "title": "第二十六章｜衡炉城的账",
+    "estimatedMinutes": 12,
+    "file": "/story/chapters/ch026.json",
+    "requires": "ch025",
+    "source": "剧本/26衡爐城的帳.md"
+  },
+  {
+    "id": "ch027",
+    "number": 27,
+    "title": "第二十七章｜龙脊的锁链",
+    "estimatedMinutes": 12,
+    "file": "/story/chapters/ch027.json",
+    "requires": "ch026",
+    "source": "剧本/27龍脊的鎖鏈.md"
+  },
+  {
+    "id": "ch028",
+    "number": 28,
+    "title": "第二十八章｜鸦羽城的镜子",
+    "estimatedMinutes": 12,
+    "file": "/story/chapters/ch028.json",
+    "requires": "ch027",
+    "source": "剧本/28鴉羽城的鏡子.md"
+  },
+  {
+    "id": "ch029",
+    "number": 29,
+    "title": "第二十九章｜白塔之围",
+    "estimatedMinutes": 15,
+    "file": "/story/chapters/ch029.json",
+    "requires": "ch028",
+    "source": "剧本/29白塔之圍.md"
+  },
+  {
+    "id": "ch030",
+    "number": 30,
+    "title": "第三十章｜月蚀加冕",
+    "estimatedMinutes": 15,
+    "file": "/story/chapters/ch030.json",
+    "requires": "ch029",
+    "source": "剧本/30月蝕加冕.md"
   }
 ]

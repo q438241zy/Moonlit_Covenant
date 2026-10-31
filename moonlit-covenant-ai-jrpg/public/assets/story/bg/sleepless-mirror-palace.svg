@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="无眠镜宫：一条没有尽头的大厅，高高的镜子互相映照，一路映进黑暗里">
+<defs><linearGradient id="sbRfPalace-g0" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0a0814"/><stop offset="0.5" stop-color="#1e1a30"/><stop offset="1" stop-color="#0a0810"/></linearGradient><radialGradient id="sbRfPalace-g1" ><stop offset="0" stop-color="#d8d0ff" stop-opacity="0.35"/><stop offset="1" stop-color="#d8d0ff" stop-opacity="0"/></radialGradient><radialGradient id="sbRfPalace-g2" cx="0.5" cy="0.5" r="0.75"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="0.6" stop-color="#000" stop-opacity="0.165"/><stop offset="1" stop-color="#000" stop-opacity="0.55"/></radialGradient></defs>
+<rect width="1600" height="900" fill="url(#sbRfPalace-g0)"/>
+<path d="M695,489V402a9,9 0 0 1 18,0V489zM887,489V402a9,9 0 0 1 18,0V489z" fill="#2a2440" opacity="0.4" stroke="#8a80a8" stroke-width="1.5"/>
+<path d="M628.9,513.6V371.8a14.7,14.7 0 0 1 29.3,0V513.6zM941.8,513.6V371.8a14.7,14.7 0 0 1 29.3,0V513.6z" fill="#3c3553" opacity="0.4555555555555556" stroke="#8a80a8" stroke-width="1.7"/>
+<path d="M562.8,538.1V341.6a20.3,20.3 0 0 1 40.7,0V538.1zM996.6,538.1V341.6a20.3,20.3 0 0 1 40.7,0V538.1z" fill="#4d4765" opacity="0.5111111111111111" stroke="#8a80a8" stroke-width="2"/>
+<path d="M496.7,562.7V311.3a26,26 0 0 1 52,0V562.7zM1051.3,562.7V311.3a26,26 0 0 1 52,0V562.7z" fill="#5f5878" opacity="0.5666666666666667" stroke="#8a80a8" stroke-width="2.3"/>
+<path d="M430.6,587.2V281.1a31.7,31.7 0 0 1 63.3,0V587.2zM1106.1,587.2V281.1a31.7,31.7 0 0 1 63.3,0V587.2z" fill="#70698b" opacity="0.6222222222222222" stroke="#8a80a8" stroke-width="2.6"/>
+<path d="M364.4,611.8V250.9a37.3,37.3 0 0 1 74.7,0V611.8zM1160.9,611.8V250.9a37.3,37.3 0 0 1 74.7,0V611.8z" fill="#827b9d" opacity="0.6777777777777778" stroke="#8a80a8" stroke-width="2.9"/>
+<path d="M298.3,636.3V220.7a43,43 0 0 1 86,0V636.3zM1215.7,636.3V220.7a43,43 0 0 1 86,0V636.3z" fill="#938cb0" opacity="0.7333333333333334" stroke="#8a80a8" stroke-width="3.1"/>
+<path d="M232.2,660.9V190.4a48.7,48.7 0 0 1 97.3,0V660.9zM1270.4,660.9V190.4a48.7,48.7 0 0 1 97.3,0V660.9z" fill="#a59dc3" opacity="0.788888888888889" stroke="#8a80a8" stroke-width="3.4"/>
+<path d="M166.1,685.4V160.2a54.3,54.3 0 0 1 108.7,0V685.4zM1325.2,685.4V160.2a54.3,54.3 0 0 1 108.7,0V685.4z" fill="#b6afd5" opacity="0.8444444444444444" stroke="#8a80a8" stroke-width="3.7"/>
+<path d="M100,710V130a60,60 0 0 1 120,0V710zM1380,710V130a60,60 0 0 1 120,0V710z" fill="#c8c0e8" opacity="0.9" stroke="#8a80a8" stroke-width="4"/>
+<path d="M0,820L800,470L1600,820V900H0Z" fill="#14101e"/><path d="M800,470V900" stroke="#2a2440" stroke-width="2"/>
+<path d="M789.4,475.3H810.6M757.5,491.2H842.5M704.4,517.8H895.6M630.1,554.9H969.9M534.6,602.7H1065.4M417.8,661.1H1182.2M279.8,730.1H1320.2M120.5,809.8H1479.5M-60,900H1660" stroke="#2a2440" stroke-width="2"/>
+<ellipse cx="800" cy="460" rx="120" ry="160" fill="url(#sbRfPalace-g1)"/>
+<rect width="1600" height="900" fill="url(#sbRfPalace-g2)"/>
+</svg>

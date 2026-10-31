@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="灰烬关下的营地·白天：帐篷，一顶带桌子的军帐，后面是暗红的山，灰蒙蒙的灰烬光">
+<defs><linearGradient id="sbApCampDay-g0" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a7a72"/><stop offset="0.6" stop-color="#b8a090"/><stop offset="1" stop-color="#c8b098"/></linearGradient><linearGradient id="sbApCampDay-g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a7058"/><stop offset="1" stop-color="#5a4636"/></linearGradient><radialGradient id="sbApCampDay-g2" cx="0.5" cy="0.55" r="0.75"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="0.6" stop-color="#000" stop-opacity="0.15"/><stop offset="1" stop-color="#000" stop-opacity="0.3"/></radialGradient></defs>
+<rect width="1600" height="900" fill="url(#sbApCampDay-g0)"/>
+<path d="M0,620L0,300L180,180L380,120L560,220L740,300L780,400L800,620Z" fill="#6a3a30"/>
+<path d="M1600,620L1600,260L1420,150L1220,110L1040,210L860,310L820,400L800,620Z" fill="#5a302a"/>
+<path d="M85.7,450.9l-43,65M1322.3,366.9l-58.5,84.1M1279.1,254.5l-11.7,72.3M568,381.8l-1.2,73.7M247.9,554.3l-1.3,37M920.6,264.9l27.7,34M107.7,382.1l16,40.5M1513.8,380.1l7.1,42M1056.3,216.2l53.7,72.7M337.3,321.9l57.2,31.4M1362.6,266.8l44.1,34.3M1472.8,478l15.7,70.1M1516.5,227.6l22.4,76.4M1019.4,460.9l24.7,83.2M1132.1,485l48.3,81.1M1130.3,368.3l-45.8,32.1M232.3,448.5l-53.8,53.6M1262.9,527l-14.1,40.1" stroke="#45261f" stroke-width="3" fill="none" opacity=".6"/>
+<path d="M0,600H1600V900H0Z" fill="url(#sbApCampDay-g1)"/>
+<path d="M80,700L190,530L300,700Z" fill="#8a7a62"/><path d="M190,530L204,700H176Z" fill="#4a3c2e"/>
+<path d="M1260,700L1380,520L1500,700Z" fill="#8a7a62"/><path d="M1380,520L1394,700H1366Z" fill="#4a3c2e"/>
+<path d="M1440,700L1520,580L1600,700Z" fill="#8a7a62"/><path d="M1520,580L1534,700H1506Z" fill="#4a3c2e"/>
+<path d="M420,760V520L800,430L1180,520V760Z" fill="#9a8a70"/><path d="M520,760V560H1080V760Z" fill="#5a4c3c"/>
+<path d="M600,700h400l30,-40h-460z" fill="#6a4a30"/><path d="M640,690l320,0l20,-28l-320,0z" fill="#d8c8a0"/><path d="M700,680l120,-14l60,8" stroke="#a83a2a" stroke-width="3" fill="none"/>
+<rect width="1600" height="900" fill="url(#sbApCampDay-g2)"/>
+</svg>

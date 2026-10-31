@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="灰烬关远景：暗红色的山，山口像一道裂开的嘴夹在两座山峰之间，山口的鞍部上一座挂着红旗的旧营，山口里冒出几缕烟">
+<defs><linearGradient id="sbApFar-g0" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a3a3a"/><stop offset="0.5" stop-color="#a86a50"/><stop offset="1" stop-color="#c89a70"/></linearGradient><filter id="sbApFar-b2" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="9"/></filter><linearGradient id="sbApFar-g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6a5240"/><stop offset="1" stop-color="#3a2c22"/></linearGradient><radialGradient id="sbApFar-g2" cx="0.5" cy="0.5" r="0.75"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="0.75" stop-color="#000" stop-opacity="0.05"/><stop offset="1" stop-color="#000" stop-opacity="0.4"/></radialGradient></defs>
+<rect width="1600" height="900" fill="url(#sbApFar-g0)"/>
+<path d="M0,620L0,300L180,180L380,120L560,220L740,300L780,400L800,620Z" fill="#5a2a24"/>
+<path d="M1600,620L1600,260L1420,150L1220,110L1040,210L860,310L820,400L800,620Z" fill="#4a221e"/>
+<path d="M1164.2,483.8l-52.1,44.5M243.9,449.1l13.8,88.5M517.5,396.8l0.6,54.6M557.6,391.8l5.2,54.6M1315.5,345l-40.2,88M932.7,469.7l-57,88.1M1085.5,471.8l14.8,86.7M760,309.1l21.1,35.9M1385.5,319.3l21.5,71.8M1513.3,332.1l59.7,60.7M1258.4,303.5l1.5,58M766.1,421.7l39.2,36.9M414.6,452.1l-50.1,73.2M443.3,281.8l45.1,32.7M58.6,450.5l31.3,85.3M499.2,524.7l-22.6,83.7M434.2,494.1l44.1,63.1M1273.5,323.7l-16.7,46.4" stroke="#3b1b17" stroke-width="3" fill="none" opacity=".6"/>
+<path d="M720,340V280h40v-20h80v20h40V340Z" fill="#3a2a26"/><path d="M736,300h12v14h-12zM852,300h12v14h-12z" fill="#ffb060" opacity=".7"/>
+<path d="M730,280V230" stroke="#2a1a16" stroke-width="3"/><path d="M730,232l30,8l-30,8z" fill="#c8302a"/>
+<path d="M870,280V230" stroke="#2a1a16" stroke-width="3"/><path d="M870,232l30,8l-30,8z" fill="#c8302a"/>
+<path d="M786,250a14,10 0 1 0 28,0a14,10 0 1 0 -28,0ZM796,216a22,16 0 1 0 44,0a22,16 0 1 0 -44,0ZM806,182a30,22 0 1 0 60,0a30,22 0 1 0 -60,0ZM816,148a38,28 0 1 0 76,0a38,28 0 1 0 -76,0ZM826,114a46,34 0 1 0 92,0a46,34 0 1 0 -92,0ZM836,80a54,40 0 1 0 108,0a54,40 0 1 0 -108,0Z" fill="#5a4a4a" opacity=".5" filter="url(#sbApFar-b2)"/>
+<path d="M0,620Q800,590 1600,620V900H0Z" fill="url(#sbApFar-g1)"/>
+<rect width="1600" height="900" fill="url(#sbApFar-g2)"/>
+</svg>

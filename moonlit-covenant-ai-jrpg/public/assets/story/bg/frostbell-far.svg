@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="霜铃城远景：白色的雪原，温泉冒着白汽，冰晶温室闪着光，城里的尖塔，城底下张着一个黑黑的大洞">
+<defs><linearGradient id="sbFbFar-g0" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9aaac0"/><stop offset="0.55" stop-color="#d8e0ea"/><stop offset="1" stop-color="#eef2f6"/></linearGradient><radialGradient id="sbFbFar-g1" ><stop offset="0" stop-color="#0a0e18"/><stop offset="0.7" stop-color="#1a2232"/><stop offset="1" stop-color="#5a6a80"/></radialGradient><linearGradient id="sbFbFar-g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e8eef4"/><stop offset="1" stop-color="#c8d2de"/></linearGradient><filter id="sbFbFar-b3" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="28"/></filter><radialGradient id="sbFbFar-g3" cx="0.5" cy="0.5" r="0.75"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="0.75" stop-color="#000" stop-opacity="0.04"/><stop offset="1" stop-color="#000" stop-opacity="0.3"/></radialGradient></defs>
+<rect width="1600" height="900" fill="url(#sbFbFar-g0)"/>
+<path d="M0,470L240,360L460,420L700,330L980,400L1240,320L1600,420L1600,520L0,520Z" fill="#b8c4d4"/>
+<path d="M520,520V420h560V520Z" fill="#8a96a8"/>
+<path d="M560,420V270l20,-40l20,40V420ZM640,420V310l15,-40l15,40V420ZM720,420V230l25,-40l25,40V420ZM820,420V290l18,-40l18,40V420ZM900,420V250l23,-40l23,40V420ZM990,420V300l17,-40l17,40V420Z" fill="#7a869a"/>
+<path d="M1120,520l60,-90l60,90z" fill="#cfe6f4" opacity=".9"/><path d="M1180,430l-30,90M1180,430l30,90M1135,500h90" stroke="#ffffff" stroke-width="2" opacity=".8"/>
+<path d="M500,600a300,70 0 1 0 600,0a300,70 0 1 0 -600,0Z" fill="url(#sbFbFar-g1)"/>
+<path d="M0,560Q400,520 500,580Q800,680 1100,580Q1200,520 1600,560V900H0Z" fill="url(#sbFbFar-g2)"/>
+<path d="M254,520a26,16 0 1 0 52,0a26,16 0 1 0 -52,0ZM259,490a33,21 0 1 0 66,0a33,21 0 1 0 -66,0ZM264,460a40,26 0 1 0 80,0a40,26 0 1 0 -80,0ZM269,430a47,31 0 1 0 94,0a47,31 0 1 0 -94,0ZM274,400a54,36 0 1 0 108,0a54,36 0 1 0 -108,0ZM279,370a61,41 0 1 0 122,0a61,41 0 1 0 -122,0ZM284,340a68,46 0 1 0 136,0a68,46 0 1 0 -136,0ZM1338,540a22,14 0 1 0 44,0a22,14 0 1 0 -44,0ZM1342,512a28,18 0 1 0 56,0a28,18 0 1 0 -56,0ZM1346,484a34,22 0 1 0 68,0a34,22 0 1 0 -68,0ZM1350,456a40,26 0 1 0 80,0a40,26 0 1 0 -80,0ZM1354,428a46,30 0 1 0 92,0a46,30 0 1 0 -92,0Z" fill="#ffffff" opacity=".55" filter="url(#sbFbFar-b3)"/>
+<path d="M220,560a70,14 0 1 0 140,0a70,14 0 1 0 -140,0ZM1300,580a60,12 0 1 0 120,0a60,12 0 1 0 -120,0Z" fill="#7aa8c0" opacity=".8"/>
+<rect width="1600" height="900" fill="url(#sbFbFar-g3)"/>
+</svg>

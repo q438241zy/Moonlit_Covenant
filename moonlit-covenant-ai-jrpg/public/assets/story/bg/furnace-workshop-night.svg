@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="衡炉城·米娅的临时工坊·夜：一台车床，线圈与工具，一盏灯，一扇挂着沉重门锁的门">
+<defs><linearGradient id="sbFcMiaWs-g0" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#100c0a"/><stop offset="1" stop-color="#2a2018"/></linearGradient><radialGradient id="sbFcMiaWs-g1" ><stop offset="0" stop-color="#ffd080" stop-opacity="0.35"/><stop offset="1" stop-color="#ffd080" stop-opacity="0"/></radialGradient><radialGradient id="sbFcMiaWs-g2" cx="0.5" cy="0.5" r="0.75"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="0.6" stop-color="#000" stop-opacity="0.18"/><stop offset="1" stop-color="#000" stop-opacity="0.6"/></radialGradient></defs>
+<rect width="1600" height="900" fill="url(#sbFcMiaWs-g0)"/>
+<path d="M0,0H1600V640H0Z" fill="#2a221c"/>
+<path d="M1180,640V180h260v460z" fill="#4a3826" stroke="#1a120c" stroke-width="10"/><path d="M1200,300h220M1200,460h220" stroke="#2a1e14" stroke-width="10"/>
+<path d="M1190,380h50v70h-50z" fill="#8a8070"/><path d="M1200,380v-24q15,-24 30,0v24" fill="none" stroke="#8a8070" stroke-width="7"/>
+<path d="M120,140v99.5M180,140v124.8M240,140v95.8M300,140v102.8M360,140v85.1M420,140v125.8M480,140v117.9M540,140v125.1M600,140v116.4M660,140v105.5M720,140v133.7M780,140v102.7M840,140v112.7M900,140v111.6" stroke="#8a8a80" stroke-width="6" stroke-linecap="round"/>
+<path d="M270,540a30,44 0 1 0 60,0a30,44 0 1 0 -60,0ZM292,540a30,44 0 1 0 60,0a30,44 0 1 0 -60,0ZM314,540a30,44 0 1 0 60,0a30,44 0 1 0 -60,0ZM336,540a30,44 0 1 0 60,0a30,44 0 1 0 -60,0ZM358,540a30,44 0 1 0 60,0a30,44 0 1 0 -60,0ZM380,540a30,44 0 1 0 60,0a30,44 0 1 0 -60,0ZM402,540a30,44 0 1 0 60,0a30,44 0 1 0 -60,0Z" fill="none" stroke="#c8784a" stroke-width="5"/>
+<path d="M0,640H1600V900H0Z" fill="#1a140e"/>
+<path d="M520,640h520v26H520zM540,666h20v150h-20zM1000,666h20v150h-20z" fill="#5a4430"/><path d="M600,560h220v80H600zM820,590h140v24H820z" fill="#6a6a62"/><path d="M610,600a30,30 0 1 0 60,0a30,30 0 1 0 -60,0Z" fill="#4a4a44"/>
+<path d="M780,260V380" stroke="#2a2018" stroke-width="3"/><path d="M750,380h60l-10,30h-40z" fill="#c89040"/><ellipse cx="780" cy="440" rx="420" ry="280" fill="url(#sbFcMiaWs-g1)"/>
+<rect width="1600" height="900" fill="url(#sbFcMiaWs-g2)"/>
+</svg>

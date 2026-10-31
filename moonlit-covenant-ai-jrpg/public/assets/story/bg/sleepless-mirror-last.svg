@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="无眠镜宫最深处：一间圆形的暗室里，只立着一面镜子，镜子里一点苍白的光">
+<defs><radialGradient id="sbRfLast-g0" cx="0.5" cy="0.5" r="0.7"><stop offset="0" stop-color="#1a1828"/><stop offset="1" stop-color="#040308"/></radialGradient><linearGradient id="sbRfLast-g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e8e4ff"/><stop offset="0.5" stop-color="#8a84b0"/><stop offset="1" stop-color="#2a2640"/></linearGradient><radialGradient id="sbRfLast-g2" ><stop offset="0" stop-color="#ffffff" stop-opacity="0.6"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></radialGradient><radialGradient id="sbRfLast-g3" cx="0.5" cy="0.5" r="0.75"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="0.6" stop-color="#000" stop-opacity="0.15"/><stop offset="1" stop-color="#000" stop-opacity="0.5"/></radialGradient></defs>
+<rect width="1600" height="900" fill="url(#sbRfLast-g0)"/>
+<path d="M280,820a520,80 0 1 0 1040,0a520,80 0 1 0 -1040,0Z" fill="#120e18"/>
+<path d="M660,740V320a140,140 0 0 1 280,0V740z" fill="url(#sbRfLast-g1)" stroke="#c8c0e0" stroke-width="10"/>
+<ellipse cx="800" cy="420" rx="90" ry="140" fill="url(#sbRfLast-g2)"/>
+<path d="M640,740h320v30H640z" fill="#3a3448"/>
+<rect width="1600" height="900" fill="url(#sbRfLast-g3)"/>
+</svg>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="白塔·王座：一条长长的空大厅尽头，一张高高的铁与白石的王座">
+<defs><linearGradient id="sbMrThrone-g0" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a1a20"/><stop offset="1" stop-color="#3a3a40"/></linearGradient><radialGradient id="sbMrThrone-g1" cx="0.5" cy="0.5" r="0.75"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="0.6" stop-color="#000" stop-opacity="0.165"/><stop offset="1" stop-color="#000" stop-opacity="0.55"/></radialGradient></defs>
+<rect width="1600" height="900" fill="url(#sbMrThrone-g0)"/>
+<path d="M200,730V100M1400,730V100" stroke="#d8d4cc" stroke-width="40"/>
+<path d="M296,738V180M1304,738V180" stroke="#bfbcb6" stroke-width="34"/>
+<path d="M392,746V260M1208,746V260" stroke="#a6a3a1" stroke-width="28"/>
+<path d="M488,754V340M1112,754V340" stroke="#8c8b8b" stroke-width="22"/>
+<path d="M584,762V420M1016,762V420" stroke="#737276" stroke-width="16"/>
+<path d="M680,770V500M920,770V500" stroke="#5a5a60" stroke-width="10"/>
+<path d="M700,520V300l100,-60l100,60V520z" fill="#2a2a30" stroke="#d8d4cc" stroke-width="4"/><path d="M740,520h120v40H740z" fill="#e8e4dc"/>
+<path d="M0,800L700,560H900L1600,800V900H0Z" fill="#28282e"/>
+<rect width="1600" height="900" fill="url(#sbMrThrone-g1)"/>
+</svg>
