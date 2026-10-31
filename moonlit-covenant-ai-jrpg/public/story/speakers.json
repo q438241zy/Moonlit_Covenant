@@ -463,5 +463,25 @@
     "name": "侍女",
     "color": "#d8cfc4",
     "art": null
+  },
+  "grave": {
+    "name": "格雷夫",
+    "color": "#9aa0aa",
+    "art": "/assets/story/npc/grave.svg"
+  },
+  "slope_voice": {
+    "name": "坡下的声音",
+    "color": "#9aa0aa",
+    "art": null
+  },
+  "pike": {
+    "name": "派克",
+    "color": "#c8b090",
+    "art": "/assets/story/npc/pike.svg"
+  },
+  "queue_man": {
+    "name": "排队的男人",
+    "color": "#a89a88",
+    "art": null
   }
 }

@@ -1863,4 +1863,47 @@ CAST.inge = {
   },
 };
 
+// 格雷夫 (22) — the 清册营 commander: thirty-two, grey plate, short hair, calm cold eyes, an open register in one hand — no blade.
+const GV_HAIR = [[226, 186], [246, 146], [298, 128], [356, 136], [394, 170], [404, 214], [394, 236], [382, 214], [350, 182], [296, 172], [252, 180]];
+const GV_BOOK = [[150, 560, 1], [290, 548, 1], [296, 680, 1], [156, 692, 1]];
+CAST.grave = {
+  id: 'grave', label: '格雷夫：三十二岁的清册营统领，灰色的甲，短发，冷静的眼睛，手里摊着一本册，不拿刀', rim: '#9aa0aa',
+  sil: [head(0, 0, 0.98), S(GV_HAIR), neck(0, 0, 1.0), torso(222, 480, 0.9), pz(GV_BOOK)],
+  tones: [
+    [S(GV_HAIR), '#4a4a50', 0.9],
+    [S([[96, 522], [162, 484], [240, 458], [300, 464], [360, 458], [438, 484], [504, 522], [516, 820], [84, 820]]), '#5e626c', 0.92],
+    [pz(GV_BOOK), '#d6ccb4', 0.95],
+  ],
+  lines: [
+    [pl([[386, 256], [368, 304], [326, 350]]), 2.8, 0.8],
+    [pl([[300, 464], [302, 800]]), 2, 0.5],
+    [pl([[160, 580], [290, 568]]) + pl([[162, 600], [291, 588]]) + pl([[164, 620], [292, 608]]), 1.4, 0.6, '#6a5e48'],
+  ],
+  front: () => {
+    let s = '';
+    // a flat, cold gaze; a straight closed mouth
+    s += `<path d="M222,262h22" stroke="#3a3e46" stroke-width="2.8" stroke-linecap="round"/><path d="M224,252q11,-2 22,0" fill="none" stroke="#5a5e66" stroke-width="1.6"/><path d="M226,324h12" stroke="#4a4650" stroke-width="2"/>`;
+    s += `<path d="M146,640q-14,10 -6,30l20,4l8,-28z" fill="#4a4e56"/>`;
+    return s;
+  },
+};
+
+// 派克 (22) — a fifteen-year-old messenger boy from Fog Harbor, thin, mud all over his clothes, a satchel strap across his
+// chest. Everyday and unsexualised: a boy who ran all night.
+const PK_HAIR = [[222, 220], [230, 170], [266, 140], [318, 130], [366, 144], [398, 182], [404, 236], [392, 252], [380, 214], [342, 190], [280, 186], [244, 204]];
+CAST.pike = {
+  id: 'pike', label: '派克：十五岁的信使少年，瘦，满身是泥，斜挎着一个邮包', rim: '#c8b090',
+  sil: [head(0, 18, 0.88, true), S(PK_HAIR), neck(0, 18, 0.8), torso(176, 500, 1.1)],
+  tones: [
+    [S(PK_HAIR), '#5a4a3a', 0.9],
+    [S([[126, 548], [182, 506], [248, 484], [300, 490], [352, 484], [418, 506], [474, 548], [486, 820], [114, 820]]), '#7a6a52', 0.9],
+    [S([[140, 620], [200, 600], [260, 640], [200, 680]]), '#5a4a38', 0.8],
+  ],
+  lines: [
+    [pl([[372, 274], [356, 316], [322, 346]]), 2.4, 0.7],
+    [pl([[150, 520], [440, 780]]), 6, 0.6, '#6a5238'],
+  ],
+  front: () => `<path d="M228,276q9,-4 18,-1" fill="none" stroke="#4a4248" stroke-width="2.2" stroke-linecap="round"/><path d="M230,330q6,3 12,0" fill="none" stroke="#7a5a5a" stroke-width="1.8"/><path d="M250,300q10,6 20,2M210,560q30,10 50,-4" fill="none" stroke="#5a4632" stroke-width="3" opacity=".6"/>`,
+};
+
 export const npcBusts = Object.fromEntries(Object.entries(CAST).map(([id, spec]) => [id, (rim) => render(spec, rim)]));

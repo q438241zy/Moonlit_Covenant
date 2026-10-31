@@ -508,5 +508,17 @@
     "svg": "/assets/story/bg/canal-bank-dawn.svg",
     "top": "#7a8094",
     "bottom": "#4a5a3a"
+  },
+  "north-slope-camp-night": {
+    "name": "北山缓坡·营地·夜",
+    "svg": "/assets/story/bg/north-slope-camp-night.svg",
+    "top": "#060a1a",
+    "bottom": "#1a1a20"
+  },
+  "north-hill-cave": {
+    "name": "守羊洞里·北山营地",
+    "svg": "/assets/story/bg/north-hill-cave.svg",
+    "top": "#2a221e",
+    "bottom": "#2a201a"
   }
 }
