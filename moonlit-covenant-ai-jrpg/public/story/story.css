@@ -492,6 +492,30 @@ button, input, textarea { font: inherit; color: inherit; }
 .art.on { opacity: 1; transform: none; filter: brightness(.5) saturate(.7); }
 .art.on.active { opacity: 1; filter: drop-shadow(0 10px 30px rgba(0, 0, 0, .55)); }
 
+/* 叠图：道具特写（帐页、信、封蜡……）以一张略斜的卡片浮在场景上方，压在立绘之上、黑幕之下；立绘跟着压暗 */
+.insert {
+  position: absolute;
+  top: 9vh;
+  left: 50%;
+  z-index: 3;
+  width: min(46vw, 640px);
+  aspect-ratio: 4 / 3;
+  opacity: 0;
+  transform: translate(-50%, 14px) rotate(-1.2deg) scale(.97);
+  transition: opacity .4s ease, transform .5s cubic-bezier(.2, .7, .2, 1);
+  pointer-events: none;
+}
+.insert img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
+  box-shadow: 0 0 0 1px rgba(232, 214, 170, .35), 0 18px 48px rgba(0, 0, 0, .6);
+}
+.insert.on { opacity: 1; transform: translate(-50%, 0) rotate(-1.2deg); }
+.scene.insert-on .art.on { filter: brightness(.42) saturate(.6); }
+@media (max-width: 720px) { .insert { top: 11vh; width: 82vw; } }
+
 /* 演出层 */
 .veil { position: absolute; inset: 0; z-index: 5; background: #000; opacity: 0; pointer-events: none; transition: opacity 900ms ease; }
 .veil.on { opacity: 1; }

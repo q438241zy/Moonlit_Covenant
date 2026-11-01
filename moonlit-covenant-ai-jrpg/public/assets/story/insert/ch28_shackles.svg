@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="压律镣铐：刻着符纹的沉重铁铐，扣在一双手腕上">
+<defs><radialGradient id="siCh28Shackles-g0" cx="0.5" cy="0.45" r="0.7"><stop offset="0" stop-color="#3a3a42"/><stop offset="1" stop-color="#141418"/></radialGradient><linearGradient id="siCh28Shackles-g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6a6870"/><stop offset="1" stop-color="#2a2830"/></linearGradient><linearGradient id="siCh28Shackles-g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6a6870"/><stop offset="1" stop-color="#2a2830"/></linearGradient><radialGradient id="siCh28Shackles-g3" cx="0.5" cy="0.5" r="0.72"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="0.62" stop-color="#000" stop-opacity="0.1375"/><stop offset="1" stop-color="#000" stop-opacity="0.55"/></radialGradient></defs>
+<rect width="800" height="600" fill="#141418"/>
+<rect width="800" height="600" fill="url(#siCh28Shackles-g0)"/>
+<path d="M0,300C120,280 220,290 290,300L300,360C220,356 120,360 0,380ZM800,300C680,280 580,290 510,300L500,360C580,356 680,360 800,380Z" fill="#c8a890"/>
+<path d="M250,260h100v140h-100z" fill="url(#siCh28Shackles-g1)"/><path d="M250,260h100v140h-100z" fill="none" stroke="#1a181e" stroke-width="5"/>
+<path d="M270,290l10,20l10,-20l10,20l10,-20M270,350h60M300,320v60" fill="none" stroke="#a8a0c8" stroke-width="3" opacity=".8"/>
+<path d="M450,260h100v140h-100z" fill="url(#siCh28Shackles-g2)"/><path d="M450,260h100v140h-100z" fill="none" stroke="#1a181e" stroke-width="5"/>
+<path d="M470,290l10,20l10,-20l10,20l10,-20M470,350h60M500,320v60" fill="none" stroke="#a8a0c8" stroke-width="3" opacity=".8"/>
+<ellipse cx="350" cy="330" rx="16" ry="10" transform="rotate(0 350 330)" fill="none" stroke="#5a5860" stroke-width="7"/><ellipse cx="375" cy="330" rx="16" ry="3.5" transform="rotate(0 375 330)" fill="none" stroke="#5a5860" stroke-width="7"/><ellipse cx="400" cy="330" rx="16" ry="10" transform="rotate(0 400 330)" fill="none" stroke="#5a5860" stroke-width="7"/><ellipse cx="425" cy="330" rx="16" ry="3.5" transform="rotate(0 425 330)" fill="none" stroke="#5a5860" stroke-width="7"/>
+<rect width="800" height="600" fill="url(#siCh28Shackles-g3)"/>
+</svg>

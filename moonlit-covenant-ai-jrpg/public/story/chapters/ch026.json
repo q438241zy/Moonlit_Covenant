@@ -1107,7 +1107,8 @@
         {
           "t": "narr",
           "style": "picture",
-          "text": "契约上，画着一盏灯。"
+          "text": "契约上，画着一盏灯。",
+          "insert": "ch26_contract_lamp"
         },
         {
           "t": "say",
@@ -15991,7 +15992,8 @@
                 {
                   "t": "narr",
                   "style": "picture",
-                  "text": "债契，烧了一整夜。"
+                  "text": "债契，烧了一整夜。",
+                  "insert": "ch26_deeds_burning"
                 },
                 {
                   "t": "say",

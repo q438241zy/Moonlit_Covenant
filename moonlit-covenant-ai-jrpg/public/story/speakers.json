@@ -492,7 +492,7 @@
   "seat_envoy": {
     "name": "七席的使者",
     "color": "#8ac0a0",
-    "art": "/assets/story/npc/veldra.svg"
+    "art": "/assets/story/npc/veldra_young.svg"
   },
   "bram": {
     "name": "布拉姆",
@@ -657,7 +657,7 @@
   "adela": {
     "name": "阿德拉",
     "color": "#e8e8f0",
-    "art": null
+    "art": "/assets/story/npc/ceremony_officer.svg"
   },
   "god_emperor": {
     "name": "神帝",
@@ -873,5 +873,50 @@
     "name": "艾拉",
     "color": "#f0d070",
     "art": "/assets/story/npc/aila_y3_away.svg"
+  },
+  "raymond_disarmed": {
+    "name": "雷蒙德",
+    "color": "#c8d0dc",
+    "art": "/assets/story/npc/raymond_disarmed.svg"
+  },
+  "rowena_plain": {
+    "name": "洛温娜",
+    "color": "#ead8a0",
+    "art": "/assets/story/npc/rowena_plain.svg"
+  },
+  "celestine_keys": {
+    "name": "塞莱斯汀",
+    "color": "#e4e0f0",
+    "art": "/assets/story/npc/celestine_keys.svg"
+  },
+  "veldra_plain": {
+    "name": "维尔德拉",
+    "color": "#8ac0a0",
+    "art": "/assets/story/npc/veldra_plain.svg"
+  },
+  "heras_white": {
+    "name": "赫拉斯",
+    "color": "#b8a8ff",
+    "art": "/assets/story/npc/heras_white.svg"
+  },
+  "ilvo_open": {
+    "name": "伊尔沃",
+    "color": "#a0d8ff",
+    "art": "/assets/story/npc/ilvo_open.svg"
+  },
+  "evelyn_ceremony_unknown": {
+    "name": "圣女",
+    "color": "#f4e2b2",
+    "art": "/assets/story/npc/evelyn_ceremony.svg"
+  },
+  "evelyn_ceremony": {
+    "name": "伊芙琳",
+    "color": "#f4e2b2",
+    "art": "/assets/story/npc/evelyn_ceremony.svg"
+  },
+  "morcan_closed": {
+    "name": "莫尔坎",
+    "color": "#8a7ab8",
+    "art": "/assets/story/npc/morcan_closed.svg"
   }
 }

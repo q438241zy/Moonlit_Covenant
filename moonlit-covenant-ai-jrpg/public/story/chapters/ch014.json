@@ -24890,7 +24890,8 @@
         {
           "t": "narr",
           "style": "picture",
-          "text": "每个人的手腕上，都绑着一块木牌。"
+          "text": "每个人的手腕上，都绑着一块木牌。",
+          "insert": "ch14_tag_board"
         },
         {
           "t": "narr",
@@ -24907,7 +24908,8 @@
         {
           "t": "narr",
           "style": "picture",
-          "text": "木牌背面，烧着那个记号。像拱，又像浪。"
+          "text": "木牌背面，烧着那个记号。像拱，又像浪。",
+          "insert": "ch14_tag_board"
         },
         {
           "t": "narr",

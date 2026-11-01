@@ -172,6 +172,10 @@ function rewardHtml(r) {
   for (const c of Array.isArray(r.heroinesCompensated) ? r.heroinesCompensated : []) {
     if (n(c?.diamonds)) rows.push([icon('diamond', { size: 16 }), `${name(c.id)}已在角色收藏里：折算钻石 +${n(c.diamonds)}`]);
   }
+  // 技能书（主菜单 · 技能）：首通的强化材料，幕界章另有秘技召唤券
+  if (n(r.skillTickets)) rows.push([icon('scroll', { size: 16 }), `秘技召唤券 +${n(r.skillTickets)}（主菜单 · 召唤 · 秘技召唤）`]);
+  const mats = r.skillMaterials || {};
+  if (n(mats.white) || n(mats.green) || n(mats.blue)) rows.push([icon('book', { size: 16 }), `技能强化材料：练习手记 +${n(mats.white)}、实战手记 +${n(mats.green)}、源律残章 +${n(mats.blue)}`]);
   if (!rows.length) return r.alreadyCleared ? `<p class="end-reward-note">${icon('check', { size: 14 })}本章首通奖励已领取</p>` : '';
   const balance = Number.isFinite(r.balance) ? `现有钻石 ${Math.floor(r.balance)} · ` : '';
   return `<ul class="end-reward-list">${rows.map(([ico, t]) => `<li>${ico}<span>${esc(t)}</span></li>`).join('')}</ul>
@@ -661,6 +665,7 @@ function renderPlay() {
         <div class="vignette" aria-hidden="true"></div>
         <div class="art art-left" data-side="left" aria-hidden="true"><img alt="" draggable="false" /></div>
         <div class="art art-right" data-side="right" aria-hidden="true"><img alt="" draggable="false" /></div>
+        <div class="insert" aria-hidden="true"><img alt="" draggable="false" /></div>
       </div>
       <div class="veil" id="veil" aria-hidden="true"></div>
       <div class="flash" id="flash" aria-hidden="true"></div>
@@ -736,7 +741,7 @@ function renderPlay() {
 
   Object.assign(P, {
     play: $('#play'), scene: $('#scene'), bgLayers: $$('.bg'), veil: $('#veil'), flash: $('#flash'),
-    art: { left: $('.art-left'), right: $('.art-right') },
+    art: { left: $('.art-left'), right: $('.art-right') }, insert: $('.insert'),
     shotCap: $('#shotCap'), hud: $('#hud'), banner: $('#banner'), dock: $('#dock'), dlg: $('#dlg'),
     name: $('.dlg-name'), note: $('.dlg-note'), shown: $('.dlg-shown'), rest: $('.dlg-rest'),
     ask: $('#ask'), askKind: $('.ask-kind'), askPrompt: $('#askPrompt'), askInput: $('#askInput'),
@@ -951,6 +956,7 @@ function autoDelayFor(text) {
 async function onShot(shot) {
   hideBanner();
   clearArt();
+  setInsert(null);
   P.dock.classList.add('idle');
   liftVeilIfNeeded();
   showShotCaption(shot);
@@ -995,6 +1001,7 @@ async function onBeat(beat, my) {
       const cut = beat.fx === 'cut';
       // 分镜内换场景：上一处的人不跟着过来，谁在新场景开口谁再登场
       clearArt();
+      setInsert(null);
       // 淡入的换场是「走到了另一个地方」：重新亮出分镜小字，地点跟着换（cut 多是一闪而过的画面，不打扰）
       if (!S.locations[beat.bg]) P.shotCap.classList.remove('show');
       else if (!cut) showShotCaption({ ...S.chapter.shots[S.run.shotIdx], bg: beat.bg });
@@ -1053,6 +1060,7 @@ async function showLine(beat, my) {
   pushLog(line);
   announce(line.name ? `${line.name}${line.note && line.kind === 'say' ? `（${line.note}）` : ''}：${line.text}` : line.text);
 
+  setInsert(beat.insert);
   if (line.kind === 'caption') {
     P.dock.classList.add('idle');
     setArtActive(null); // 系统字幕没有说话人：立绘退回暗态（手机上整个让开），字幕压在干净的画面上
@@ -1218,6 +1226,28 @@ function clearArt(keep = null) {
 // 其余立绘（回忆里的人、已经不在场的人、主角自己）退场，背景保持不变。
 function artForInput(node) {
   clearArt(new Set(node.focus || []));
+  setInsert(null);
+}
+
+// ─── 叠图 ───
+// 台词或叙述带 insert（如第三十章「帐的最后一页」）时，道具特写以一张卡片浮在场景上，随这一句出现；
+// 下一句不带同一张就收起，换分镜、换场景、打开输入框时也收起。图在 /assets/story/insert/<id>.svg（tools/art/story/inserts.mjs）
+function setInsert(id) {
+  const box = P.insert;
+  if (!box) return;
+  const url = id ? paint(`/assets/story/insert/${id}.svg`) : '';
+  if (box.dataset.url === url) return;
+  box.dataset.url = url;
+  box.classList.remove('on');
+  P.scene.classList.remove('insert-on');
+  if (!url) return;
+  const my = S.token;
+  preload(url).then((ok) => {
+    if (!ok || my !== S.token || box.dataset.url !== url) return;
+    box.querySelector('img').src = url;
+    box.classList.add('on');
+    P.scene.classList.add('insert-on');
+  });
 }
 
 // ─── 背景 ───
@@ -1706,6 +1736,7 @@ function fitHud() {
 }
 
 async function onBattleStart(view) {
+  setInsert(null);
   S.hudBattle = null;
   S.hudHold = null;
   renderHud(view);

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="暗紫色的影子贴着石板缠上去，只缠到靴子">
+<defs><radialGradient id="siCh12Shadow-g0" cx="0.5" cy="0.45" r="0.7"><stop offset="0" stop-color="#3a3a42"/><stop offset="1" stop-color="#141418"/></radialGradient><filter id="siCh12Shadow-b2" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="9"/></filter><radialGradient id="siCh12Shadow-g1" cx="0.5" cy="0.5" r="0.72"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="0.62" stop-color="#000" stop-opacity="0.1375"/><stop offset="1" stop-color="#000" stop-opacity="0.55"/></radialGradient></defs>
+<rect width="800" height="600" fill="#141418"/>
+<rect width="800" height="600" fill="url(#siCh12Shadow-g0)"/>
+<path d="M0,60H800M0,170H800M0,280H800M0,390H800M0,500H800M43.63636363636363,60v110M123.63636363636363,170v110M43.63636363636363,280v110M123.63636363636363,390v110M43.63636363636367,500v110M203.63636363636363,60v110M283.6363636363636,170v110M203.63636363636363,280v110M283.6363636363636,390v110M203.63636363636368,500v110M363.6363636363636,60v110M443.6363636363636,170v110M363.6363636363636,280v110M443.6363636363636,390v110M363.6363636363637,500v110M523.6363636363636,60v110M603.6363636363636,170v110M523.6363636363636,280v110M603.6363636363636,390v110M523.6363636363636,500v110M683.6363636363636,60v110M763.6363636363636,170v110M683.6363636363636,280v110M763.6363636363636,390v110M683.6363636363636,500v110" stroke="#0e0e12" stroke-width="4" opacity=".6"/>
+<path d="M0,520C120,500 200,540 300,500S440,430 480,400" fill="none" stroke="#3a1a5a" stroke-width="60" stroke-linecap="round" opacity=".75" filter="url(#siCh12Shadow-b2)"/>
+<path d="M460,180h70v170l40,30v30H460zM570,170h66v180l40,30v30H570z" fill="#1a1612"/>
+<path d="M470,400C440,360 560,350 540,320S460,290 480,260S560,240 560,220M580,410C550,370 670,360 650,330S570,300 590,270S660,250 650,230" fill="none" stroke="#5a2a8a" stroke-width="14" stroke-linecap="round" opacity=".8"/>
+<path d="M470,400C440,360 560,350 540,320S460,290 480,260" fill="none" stroke="#b088ff" stroke-width="3" opacity=".5"/>
+<rect width="800" height="600" fill="url(#siCh12Shadow-g1)"/>
+</svg>

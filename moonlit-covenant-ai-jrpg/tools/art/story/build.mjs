@@ -8,13 +8,15 @@
 //                                                  oda with it cut off) and of chapter 15's 潮虫王 (tide_king, and
 //                                                  tide_king_split with the shell split along the back), plus 赈灾司的官
 //                                                  and chapter 16's court (emperor, rowena, celestine, severin,
-//                                                  ceremony_officer, archivist) chapter 18's nila and envoy_chief chapter 19's raymond chapter 21's inge chapter 22's grave and pike chapter 23's veldra, bram and house_head and chapter 24's cassia, hector and red_shield_veteran and chapter 25's holger, ilvo and lena and chapter 26's grantz, cora, lindor and mammongo and chapter 27's veslra and chapter 28's cassandra, edwin, heras and moira and chapter 29's arkan, morcan, bell_ringer and executioner and chapter 30's morcan_crowned and toby_11, plus the black dragon (dragon) and the Gold Scale seal (gold_scale)
+//                                                  ceremony_officer, archivist) chapter 18's nila and envoy_chief chapter 19's raymond chapter 21's inge chapter 22's grave and pike chapter 23's veldra, bram and house_head and chapter 24's cassia, hector and red_shield_veteran and chapter 25's holger, ilvo and lena and chapter 26's grantz, cora, lindor and mammongo and chapter 27's veslra and chapter 28's cassandra, edwin, heras and moira and chapter 29's arkan, morcan, bell_ringer and executioner and chapter 30's morcan_crowned and toby_11, plus the black dragon (dragon) and the Gold Scale seal (gold_scale), plus the story variants morcan_closed, raymond_disarmed, rowena_plain, celestine_keys, veldra_young, veldra_plain, heras_white and ilvo_open
 //                                                  + Lia's, Mia's and Serena's transparent portrait busts,
 //                                                  the chapter 12 variants lia_mirror / serena_staff_wrapped, the
 //                                                  chapter 13 hooded golden_assassin, the chapter 15 serena_copy and
-//                                                  the chapter 16 evelyn, the chapter 17 aila and the chapter 18 freya and the chapter 19 ophelia and the chapter 20 lilith, portrait-bust.mjs)
+//                                                  the chapter 16 evelyn and evelyn_ceremony, the chapter 17 aila and the chapter 18 freya and the chapter 19 ophelia and the chapter 20 lilith, portrait-bust.mjs)
+//   node tools/art/story/build.mjs insert        -> all story inserts (道具特写叠图, inserts.mjs / inserts-b.mjs)
 //   node tools/art/story/build.mjs hemai-day aku -> just those ids
-// Output: public/assets/story/bg/<id>.svg (1600×900) and public/assets/story/npc/<id>.svg (600×800, transparent).
+// Output: public/assets/story/bg/<id>.svg (1600×900), public/assets/story/npc/<id>.svg (600×800, transparent) and
+// public/assets/story/insert/<id>.svg (800×600, the prop cards a line can carry — docs/STORY-ENGINE.md §3).
 // Every file is validated against docs/ART-DIRECTION.md §4 (self-contained, no text/script/external refs,
 // prefixed ids, ≤ 4 filters, size budget). Deterministic: same input -> byte-identical output.
 import fs from 'node:fs';
@@ -63,6 +65,7 @@ import { ch18Busts } from './ch18-busts.mjs';
 import { ch19Busts } from './ch19-busts.mjs';
 import { ch20Busts } from './ch20-busts.mjs';
 import { ch30Busts } from './ch30-busts.mjs';
+import { inserts } from './inserts.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const locations = JSON.parse(fs.readFileSync(path.join(root, 'public/story/locations.json'), 'utf8'));
@@ -71,7 +74,7 @@ const speakers = JSON.parse(fs.readFileSync(path.join(root, 'public/story/speake
 const bgs = { ...villageBgs, ...nightBgs, ...dawnBgs, ...townBgs, ...millBgs, ...oldMillBgs, ...marshBgs, ...tideBgs, ...harborBgs, ...sewerBgs, ...innBgs, ...lighthouseBgs, ...alleyBgs, ...roofBgs, ...tideCaveBgs, ...tideNestBgs, ...guildDockBgs, ...whiteTowerBgs, ...holyCityBgs, ...archiveBgs, ...archTideBgs, ...northHillBgs, ...verdantBgs, ...ashPassBgs, ...frostbellBgs, ...furnaceBgs, ...dragonsleepBgs, ...ravenfeatherBgs, ...siegeBgs, ...moonringBgs };
 // bust id -> generator; the file is public/assets/story/npc/<id>.svg (several speakers may share one file)
 const npcBusts = { ...silhouetteBusts, lia: () => liaBust(), mia: () => miaBust(), serena: () => serenaBust(), ...ch12Busts, golden_assassin: () => goldenAssassinBust(), ...ch15Busts, ...ch16Busts, ...ch17Busts, ...ch18Busts, ...ch19Busts, ...ch20Busts, ...ch30Busts };
-const BG_BUDGET = 90 * 1024, NPC_BUDGET = 70 * 1024;
+const BG_BUDGET = 90 * 1024, NPC_BUDGET = 70 * 1024, INSERT_BUDGET = 40 * 1024;
 
 function validate(rel, svg, { w, h, budget }) {
   const errs = [];
@@ -113,6 +116,9 @@ for (const id of Object.keys(bgs)) {
 for (const [id, make] of Object.entries(npcBusts)) {
   if (!speakers[id]) console.warn(`note: bust "${id}" has no entry in speakers.json`);
   if (pick('npc', id)) jobs.push({ id, rel: `public/assets/story/npc/${id}.svg`, make: () => make(speakers[id]?.color), w: 600, h: 800, budget: NPC_BUDGET });
+}
+for (const [id, make] of Object.entries(inserts)) {
+  if (pick('insert', id)) jobs.push({ id, rel: `public/assets/story/insert/${id}.svg`, make, w: 800, h: 600, budget: INSERT_BUDGET });
 }
 for (const [id, sp] of Object.entries(speakers)) {
   if (!sp.art || !sp.art.startsWith('/assets/story/npc/')) continue;

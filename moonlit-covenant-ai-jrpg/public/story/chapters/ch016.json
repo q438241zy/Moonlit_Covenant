@@ -667,7 +667,8 @@
         {
           "t": "narr",
           "style": "picture",
-          "text": "零号被放上了长桌。哔。"
+          "text": "零号被放上了长桌。哔。",
+          "insert": "ch16_weapons_table"
         },
         {
           "t": "narr",
@@ -4338,7 +4339,8 @@
         {
           "t": "narr",
           "style": "picture",
-          "text": "桌上三枚章。一颗正着的七角星。一道拱，压着一道浪。还有一盘封蜡——七角的晨星。"
+          "text": "桌上三枚章。一颗正着的七角星。一道拱，压着一道浪。还有一盘封蜡——七角的晨星。",
+          "insert": "ch16_seals"
         },
         {
           "t": "say",
@@ -7971,12 +7973,12 @@
         },
         {
           "t": "say",
-          "who": "evelyn_unknown",
+          "who": "evelyn_ceremony_unknown",
           "text": "愿晨星，照亮屠龙骑士的剑。愿他的剑，只向着龙。"
         },
         {
           "t": "say",
-          "who": "evelyn_unknown",
+          "who": "evelyn_ceremony_unknown",
           "text": "愿雾港的失踪者，皆得安置。愿他们的名字——"
         },
         {
@@ -7987,11 +7989,12 @@
         {
           "t": "narr",
           "style": "picture",
-          "text": "稿子，翻过一页。又翻回来。"
+          "text": "稿子，翻过一页。又翻回来。",
+          "insert": "ch16_saint_draft"
         },
         {
           "t": "say",
-          "who": "evelyn_unknown",
+          "who": "evelyn_ceremony_unknown",
           "text": "……稿子上，没有名字。"
         },
         {
@@ -8001,7 +8004,7 @@
         },
         {
           "t": "say",
-          "who": "evelyn_unknown",
+          "who": "evelyn_ceremony_unknown",
           "text": "失踪的人……叫什么名字？"
         },
         {
@@ -10231,7 +10234,7 @@
                 },
                 {
                   "t": "say",
-                  "who": "evelyn_unknown",
+                  "who": "evelyn_ceremony_unknown",
                   "text": "……谢谢您。"
                 },
                 {
@@ -10330,14 +10333,14 @@
                   "then": [
                     {
                       "t": "say",
-                      "who": "evelyn_unknown",
+                      "who": "evelyn_ceremony_unknown",
                       "text": "……您在雾港，也问过他们吧。"
                     }
                   ],
                   "else": [
                     {
                       "t": "say",
-                      "who": "evelyn_unknown",
+                      "who": "evelyn_ceremony_unknown",
                       "text": "……是。我会自己去问。"
                     }
                   ]
@@ -10378,7 +10381,7 @@
               "reaction": [
                 {
                   "t": "say",
-                  "who": "evelyn_unknown",
+                  "who": "evelyn_ceremony_unknown",
                   "text": "因为……他们不是件。"
                 },
                 {
@@ -10416,7 +10419,7 @@
               "reaction": [
                 {
                   "t": "say",
-                  "who": "evelyn_unknown",
+                  "who": "evelyn_ceremony_unknown",
                   "text": "……对不起。"
                 },
                 {
@@ -10460,7 +10463,7 @@
                 },
                 {
                   "t": "say",
-                  "who": "evelyn_unknown",
+                  "who": "evelyn_ceremony_unknown",
                   "text": "……我自己会说。"
                 }
               ],
@@ -10499,7 +10502,7 @@
               "reaction": [
                 {
                   "t": "say",
-                  "who": "evelyn_unknown",
+                  "who": "evelyn_ceremony_unknown",
                   "text": "……我不是。"
                 }
               ],
@@ -11553,7 +11556,7 @@
         },
         {
           "t": "say",
-          "who": "evelyn_unknown",
+          "who": "evelyn_ceremony_unknown",
           "text": "……愿他们，平安。"
         },
         {
@@ -16023,7 +16026,7 @@
             },
             {
               "t": "say",
-              "who": "evelyn_unknown",
+              "who": "evelyn_ceremony_unknown",
               "text": "这座塔的底下……有东西在裂。七种声音。"
             }
           ],
@@ -16042,7 +16045,7 @@
               "then": [
                 {
                   "t": "say",
-                  "who": "evelyn_unknown",
+                  "who": "evelyn_ceremony_unknown",
                   "text": "……您告诉我的名字，我记着。"
                 }
               ],
@@ -16056,7 +16059,7 @@
                   "then": [
                     {
                       "t": "say",
-                      "who": "evelyn_unknown",
+                      "who": "evelyn_ceremony_unknown",
                       "text": "……您说的名字，我都念了。"
                     }
                   ],
@@ -16070,7 +16073,7 @@
                       "then": [
                         {
                           "t": "say",
-                          "who": "evelyn_unknown",
+                          "who": "evelyn_ceremony_unknown",
                           "text": "……名字，我会自己去问。"
                         }
                       ],
@@ -16084,14 +16087,14 @@
                           "then": [
                             {
                               "t": "say",
-                              "who": "evelyn_unknown",
+                              "who": "evelyn_ceremony_unknown",
                               "text": "……雾港那一句，我听说过。"
                             }
                           ],
                           "else": [
                             {
                               "t": "say",
-                              "who": "evelyn_unknown",
+                              "who": "evelyn_ceremony_unknown",
                               "text": "……雾港那一句，我也听说了。"
                             }
                           ]
@@ -16104,14 +16107,14 @@
             },
             {
               "t": "say",
-              "who": "evelyn_unknown",
+              "who": "evelyn_ceremony_unknown",
               "text": "这座塔的底下……有东西在裂。七种声音。"
             }
           ]
         },
         {
           "t": "say",
-          "who": "evelyn_unknown",
+          "who": "evelyn_ceremony_unknown",
           "text": "……您听不见吧。"
         },
         {
@@ -16121,12 +16124,12 @@
         },
         {
           "t": "say",
-          "who": "evelyn_unknown",
+          "who": "evelyn_ceremony_unknown",
           "text": "……伊芙琳。"
         },
         {
           "t": "say",
-          "who": "evelyn",
+          "who": "evelyn_ceremony",
           "text": "至少现在，叫伊芙琳就好。"
         },
         {
@@ -19802,7 +19805,8 @@
         {
           "t": "narr",
           "style": "picture",
-          "text": "一只戴银甲的手，接过了那张纸。"
+          "text": "一只戴银甲的手，接过了那张纸。",
+          "insert": "ch16_silver_hand"
         },
         {
           "t": "narr",

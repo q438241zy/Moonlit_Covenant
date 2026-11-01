@@ -1532,3 +1532,118 @@ body:has(.game-frame) .cg-unlock-stack { top:10px; }
 .mode-progress span.done { background: linear-gradient(90deg, var(--gold), #ffb38a); }
 .mode-card .mode-next { color: #f0e3c8; font-size: .76rem; }
 .mode-next span { color: var(--faint); }
+
+/* ═══ 技能：五色框、技能书、秘技召唤、委托板（技能稿 2.2：白 绿 蓝 暮紫 赤月，点数 1–5）═══ */
+.sk-tier { display:inline-flex; align-items:center; gap:4px; padding:1px 8px; border-radius:99px; font-size:.68rem; letter-spacing:.08em; color:var(--tier); border:1px solid color-mix(in srgb, var(--tier) 55%, transparent); background:color-mix(in srgb, var(--tier) 12%, transparent); }
+.sk-tier b { font-weight:700; letter-spacing:0; }
+.skill-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:12px; margin:12px 0 22px; }
+.skill-grid.result { grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); }
+.skill-card { position:relative; display:flex; flex-direction:column; gap:6px; padding:12px 14px; border-radius:var(--radius-sm); background:var(--panel); border:1px solid color-mix(in srgb, var(--tier) 45%, transparent); box-shadow:inset 0 0 0 1px rgba(255,255,255,.03), 0 0 18px color-mix(in srgb, var(--tier) 14%, transparent); }
+.skill-card.tier-red { background:linear-gradient(160deg, rgba(226,58,78,.16), var(--panel) 45%); }
+.skill-card.tier-purple { background:linear-gradient(160deg, rgba(164,107,255,.14), var(--panel) 45%); }
+.skill-card.is-locked, .skill-card.is-sealed { opacity:.72; }
+.skill-head { display:flex; align-items:center; gap:6px; }
+.skill-owner { color:var(--muted); display:inline-flex; }
+.skill-level { margin-left:auto; font-weight:800; color:var(--tier); }
+.skill-name { font-weight:800; font-size:1rem; }
+.skill-meta { font-size:.72rem; color:var(--faint); }
+.skill-desc { font-size:.8rem; line-height:1.5; color:var(--muted); }
+.skill-plus10 { font-size:.74rem; color:var(--faint); }
+.skill-plus10 b { color:var(--gold); margin-right:4px; }
+.skill-owned { font-size:.72rem; color:var(--muted); display:flex; align-items:center; gap:4px; }
+.skill-card .button { align-self:flex-start; margin-top:4px; }
+.skill-result { position:relative; animation:skillResultIn .45s ease both; animation-delay:var(--delay, 0ms); }
+.skill-result.material { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; min-height:110px; border-radius:var(--radius-sm); border:1px dashed color-mix(in srgb, var(--tier) 50%, transparent); color:var(--tier); background:var(--panel); }
+.skill-result .result-new { position:absolute; top:8px; right:8px; z-index:1; }
+@keyframes skillResultIn { from { opacity:0; transform:translateY(8px) scale(.97); } to { opacity:1; transform:none; } }
+.skill-pool-state, .material-bar, .board-head { display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center; margin:4px 0 14px; color:var(--muted); font-size:.82rem; }
+.skill-pool-state b, .board-head b { color:var(--text); }
+.skill-pool-title { display:flex; gap:8px; align-items:center; margin:8px 0 0; font-size:.95rem; }
+.material-chip { display:inline-flex; gap:6px; align-items:center; padding:3px 10px; border-radius:99px; border:1px solid var(--line); color:var(--tier, var(--text)); }
+.material-chip b { color:var(--muted); font-weight:600; }
+.owner-tabs { display:flex; flex-wrap:wrap; gap:6px; margin:6px 0 14px; }
+.owner-tab { display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border-radius:99px; border:1px solid var(--line); background:none; color:var(--muted); cursor:pointer; font:inherit; font-size:.82rem; }
+.owner-tab.active { background:var(--panel-soft); color:var(--text); border-color:var(--line-hot); }
+.owner-tab:disabled { opacity:.45; cursor:not-allowed; }
+.loadout-box, .party-box, .convert-box { padding:14px 16px; border-radius:var(--radius-sm); background:var(--panel); border:1px solid var(--line); margin:10px 0; }
+.loadout-box h3, .party-box h3, .convert-box h3 { margin:0 0 10px; font-size:.95rem; }
+.loadout-box p { margin:6px 0 0; font-size:.78rem; }
+.loadout-slots, .party-picks, .convert-actions { display:flex; flex-wrap:wrap; gap:10px; align-items:flex-end; }
+.loadout-slot { display:flex; flex-direction:column; gap:4px; font-size:.75rem; color:var(--muted); }
+.loadout-slot select, .party-oath select { min-width:190px; padding:6px 8px; border-radius:8px; border:1px solid var(--line); background:var(--panel-strong); color:var(--text); font:inherit; font-size:.82rem; }
+.party-pick, .party-oath { display:inline-flex; gap:6px; align-items:center; font-size:.85rem; }
+.party-oath { margin:10px 12px 0 0; }
+.commission-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); gap:12px; }
+.commission-card { padding:14px; border-radius:var(--radius-sm); background:var(--panel); border:1px solid var(--line); display:flex; flex-direction:column; gap:8px; }
+.commission-card.is-challenge { border-color:rgba(255,210,125,.45); }
+.commission-card h3 { display:flex; gap:6px; align-items:center; margin:0; font-size:.95rem; }
+.commission-card p { margin:0; font-size:.8rem; }
+.commission-card .button { align-self:flex-start; }
+.commission-enemies { display:flex; flex-wrap:wrap; gap:6px; }
+.commission-enemies span { padding:1px 8px; border-radius:99px; background:var(--panel-soft); font-size:.72rem; color:var(--muted); }
+.battle-board { display:flex; flex-direction:column; gap:12px; }
+.battle-top { display:flex; flex-wrap:wrap; gap:10px 16px; align-items:center; font-size:.82rem; color:var(--muted); }
+.battle-top h3 { display:flex; gap:6px; align-items:center; margin:0 auto 0 0; color:var(--text); font-size:1rem; }
+.turn-order { display:flex; flex-wrap:wrap; gap:6px; align-items:center; font-size:.75rem; color:var(--muted); }
+.turn-order span { padding:2px 8px; border-radius:99px; border:1px solid var(--line); }
+.turn-order span.side-ally { color:var(--blue); }
+.turn-order span.side-enemy { color:var(--danger); }
+.turn-order span:first-of-type { border-color:var(--line-hot); color:var(--text); }
+.unit-row { display:grid; grid-template-columns:repeat(auto-fit, minmax(170px, 1fr)); gap:10px; }
+.unit-card { position:relative; display:flex; flex-direction:column; gap:5px; padding:10px 12px; border-radius:var(--radius-sm); background:var(--panel); border:1px solid var(--line); color:var(--text); text-align:left; font:inherit; cursor:pointer; }
+.unit-card.side-enemy { border-color:rgba(255,113,132,.28); }
+.unit-card.is-current { border-color:var(--line-hot); box-shadow:var(--shadow-glow); }
+.unit-card.is-target { outline:2px solid var(--gold); outline-offset:2px; }
+.unit-card.is-down { opacity:.35; cursor:default; }
+.unit-card.is-broken { border-color:var(--gold); }
+.unit-name { display:flex; flex-wrap:wrap; gap:6px; align-items:center; font-weight:700; font-size:.88rem; }
+.unit-charge { padding:0 6px; border-radius:6px; background:rgba(255,113,132,.18); color:var(--danger); font-size:.68rem; font-weight:600; }
+.unit-weak { font-size:.7rem; color:var(--gold); }
+.unit-st { display:flex; flex-wrap:wrap; gap:4px; min-height:14px; }
+.unit-st span { padding:0 5px; border-radius:5px; background:var(--panel-soft); font-size:.64rem; color:var(--muted); }
+.bar { position:relative; height:14px; border-radius:7px; background:rgba(255,255,255,.07); overflow:hidden; min-width:120px; }
+.bar i { position:absolute; inset:0 auto 0 0; border-radius:7px; transition:width .35s ease; }
+.bar span { position:relative; display:block; padding:0 6px; font-size:.62rem; line-height:14px; color:#fff; text-shadow:0 1px 2px #000; }
+.bar.hp i { background:linear-gradient(90deg, #ff7184, #ffb37a); }
+.unit-card.side-ally .bar.hp i { background:linear-gradient(90deg, #5fcf8f, #8cf0c9); }
+.bar.mp i { background:linear-gradient(90deg, #5b8cff, #6edcff); }
+.bar.brk i { background:linear-gradient(90deg, #ffd27d, #fff2c8); }
+.bar.res { width:180px; }
+.bar.res i { background:linear-gradient(90deg, #a46bff, #e23a4e); }
+.action-menu { padding:12px 14px; border-radius:var(--radius-sm); background:var(--panel-strong); border:1px solid var(--line-hot); }
+.action-menu p { margin:0 0 10px; font-size:.8rem; }
+.action-buttons { display:flex; flex-wrap:wrap; gap:8px; }
+.action-buttons .button small { display:block; font-size:.62rem; opacity:.8; font-weight:500; }
+.skill-btn { border:1px solid color-mix(in srgb, var(--tier) 60%, transparent); background:color-mix(in srgb, var(--tier) 14%, var(--panel)); color:var(--text); }
+.combo-btn { border:1px solid rgba(110,220,255,.5); background:rgba(110,220,255,.1); color:var(--text); }
+.oath-btn { border:1px solid rgba(255,210,125,.6); background:rgba(255,210,125,.12); color:var(--gold); }
+.battle-log { margin:0; padding:10px 14px 10px 30px; max-height:220px; overflow:auto; border-radius:var(--radius-sm); background:var(--panel); border:1px solid var(--line); font-size:.78rem; color:var(--muted); }
+.battle-log li { margin:2px 0; }
+.battle-log .log-good, .battle-log .log-heal { color:var(--success); }
+.battle-log .log-bad, .battle-log .log-hurt, .battle-log .log-warn { color:var(--danger); }
+.battle-log .log-red { color:#ff8090; font-weight:700; }
+.battle-log .log-purple { color:var(--violet); font-weight:600; }
+.battle-log .log-combo, .battle-log .log-oath { color:var(--gold); font-weight:700; }
+.battle-log .log-sys { color:var(--text); }
+.battle-result { padding:16px; border-radius:var(--radius-sm); text-align:center; background:var(--panel-strong); border:1px solid var(--line-hot); }
+.battle-result h3 { margin:0 0 6px; }
+/* 受击：15+ 是血花（只对敌人），12+ 换成火花；女主卡片只泛红、不带伤 */
+.unit-card.was-hit { animation:unitHit .5s ease; }
+.unit-card.was-hit::after { content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none; animation:unitHitFade .6s ease forwards; background:radial-gradient(circle at 60% 40%, rgba(255,220,120,.45), transparent 60%); }
+.battle-board.mode-blood .unit-card.side-enemy.was-hit::after { background:radial-gradient(circle at 60% 40%, rgba(200,20,40,.55), transparent 60%); }
+@keyframes unitHit { 0%, 100% { transform:none; } 30% { transform:translateX(-3px); } 60% { transform:translateX(3px); } }
+@keyframes unitHitFade { from { opacity:1; } to { opacity:0; } }
+@media (max-width: 640px) {
+  .skill-grid { grid-template-columns:1fr; }
+  .unit-row { grid-template-columns:repeat(2, minmax(0, 1fr)); }
+  .loadout-slot select, .party-oath select { min-width:0; width:100%; }
+  .bar.res { width:120px; }
+}
+/* 赤月 cut-in：一条斜切的红带，左边是她当前服装的立绘，右边是招式与台词 */
+.skill-cutin { position:fixed; inset:0; z-index:90; display:grid; place-items:center; pointer-events:none; background:rgba(6,5,15,.55); animation:cutinFade 1.6s ease forwards; }
+.cutin-band { display:flex; align-items:center; gap:18px; width:min(900px, 96vw); height:min(260px, 36vh); padding:0 24px; overflow:hidden; background:linear-gradient(100deg, rgba(226,58,78,.92), rgba(120,20,40,.92) 60%, rgba(30,8,16,.9)); transform:skewY(-4deg); box-shadow:0 0 60px rgba(226,58,78,.45); animation:cutinSlide 1.6s cubic-bezier(.2,.7,.2,1) forwards; }
+.cutin-band img { height:150%; align-self:flex-start; margin-top:-4%; object-fit:cover; object-position:top; transform:skewY(4deg); }
+.cutin-band p { margin:0; font-size:clamp(1.1rem, 3vw, 1.8rem); font-weight:800; color:#fff; text-shadow:0 2px 12px rgba(0,0,0,.6); transform:skewY(4deg); }
+@keyframes cutinFade { 0% { opacity:0; } 12% { opacity:1; } 80% { opacity:1; } 100% { opacity:0; } }
+@keyframes cutinSlide { 0% { transform:skewY(-4deg) translateX(-30%); } 18% { transform:skewY(-4deg) translateX(0); } 100% { transform:skewY(-4deg) translateX(4%); } }
+@media (prefers-reduced-motion: reduce) { .skill-cutin, .cutin-band { animation:none; } }

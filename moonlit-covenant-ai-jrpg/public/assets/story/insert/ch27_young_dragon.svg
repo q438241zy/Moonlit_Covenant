@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="营火边，小小的幼龙形，停在他头顶上方一寸">
+<defs><radialGradient id="siCh27YoungDragon-g0" cx="0.5" cy="0.8" r="0.7"><stop offset="0" stop-color="#4a2014"/><stop offset="1" stop-color="#140806"/></radialGradient><radialGradient id="siCh27YoungDragon-g1" ><stop offset="0" stop-color="#ffb060" stop-opacity="0.4"/><stop offset="0.4" stop-color="#ffb060" stop-opacity="0.18000000000000002"/><stop offset="1" stop-color="#ffb060" stop-opacity="0"/></radialGradient><radialGradient id="siCh27YoungDragon-g2" cx="0.5" cy="0.5" r="0.72"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="0.62" stop-color="#000" stop-opacity="0.125"/><stop offset="1" stop-color="#000" stop-opacity="0.5"/></radialGradient></defs>
+<rect width="800" height="600" fill="#140806"/>
+<rect width="800" height="600" fill="url(#siCh27YoungDragon-g0)"/>
+<path d="M160,560a240,240 0 1 0 480,0a240,240 0 1 0 -480,0Z" fill="url(#siCh27YoungDragon-g1)"/>
+<path d="M300,330C260,270 200,250 160,260C200,290 210,320 214,350ZM500,330C540,270 600,250 640,260C600,290 590,320 586,350Z" fill="#c8d0e0" opacity=".9"/>
+<path d="M310,340a90,70 0 1 0 180,0a90,70 0 1 0 -180,0Z" fill="#2a4a8a"/><path d="M338,260a62,54 0 1 0 124,0a62,54 0 1 0 -124,0Z" fill="#2e5296"/><path d="M370,220l-14,-34l26,22M430,220l14,-34l-26,22" fill="#e8d8b0"/>
+<path d="M369,258a9,11 0 1 0 18,0a9,11 0 1 0 -18,0ZM413,258a9,11 0 1 0 18,0a9,11 0 1 0 -18,0Z" fill="#ffffff"/><path d="M376,260a4,6 0 1 0 8,0a4,6 0 1 0 -8,0Z" fill="#ffc040"/><path d="M416,260a4,6 0 1 0 8,0a4,6 0 1 0 -8,0Z" fill="#a060e0"/>
+<path d="M480,380C540,410 560,450 520,470" fill="none" stroke="#2a4a8a" stroke-width="14" stroke-linecap="round"/>
+<rect width="800" height="600" fill="url(#siCh27YoungDragon-g2)"/>
+</svg>

@@ -928,5 +928,23 @@
     "svg": "/assets/story/bg/silent-empire.svg",
     "top": "#6a6a6e",
     "bottom": "#7a7a7c"
+  },
+  "fog-harbor-tide-cave-empty": {
+    "name": "雾港·潮穴·退潮",
+    "svg": "/assets/story/bg/fog-harbor-tide-cave-empty.svg",
+    "top": "#2a3434",
+    "bottom": "#06090a"
+  },
+  "arch-tide-gate-sanctuary-cells": {
+    "name": "天牢·拱潮门下的护界院",
+    "svg": "/assets/story/bg/arch-tide-gate-sanctuary-cells.svg",
+    "top": "#1e2028",
+    "bottom": "#3a3a40"
+  },
+  "arch-tide-waterway-mouth": {
+    "name": "拱潮门·水道口",
+    "svg": "/assets/story/bg/arch-tide-waterway-mouth.svg",
+    "top": "#4a4a58",
+    "bottom": "#101016"
   }
 }

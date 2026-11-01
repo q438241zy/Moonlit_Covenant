@@ -1191,7 +1191,8 @@
         {
           "t": "narr",
           "style": "picture",
-          "text": "每一面镜子里，都有一张议桌。"
+          "text": "每一面镜子里，都有一张议桌。",
+          "insert": "ch28_mirror_tables"
         },
         {
           "t": "say",
@@ -7674,7 +7675,8 @@
         {
           "t": "say",
           "who": "serena",
-          "text": "永久追踪镜。"
+          "text": "永久追踪镜。",
+          "insert": "ch28_tracking_mirror"
         },
         {
           "t": "say",
@@ -7846,7 +7848,7 @@
                 },
                 {
                   "t": "say",
-                  "who": "heras",
+                  "who": "heras_white",
                   "text": "……不知道，也可以……爱吗？"
                 },
                 {
@@ -7975,7 +7977,7 @@
                 },
                 {
                   "t": "say",
-                  "who": "heras",
+                  "who": "heras_white",
                   "text": "……不知道，也可以……爱吗？"
                 },
                 {
@@ -8036,7 +8038,7 @@
                 },
                 {
                   "t": "say",
-                  "who": "heras",
+                  "who": "heras_white",
                   "text": "……不知道，也可以……爱吗？"
                 },
                 {
@@ -8171,7 +8173,7 @@
                 },
                 {
                   "t": "say",
-                  "who": "heras",
+                  "who": "heras_white",
                   "text": "……不知道，也可以……爱吗？"
                 },
                 {
@@ -8743,7 +8745,7 @@
                 },
                 {
                   "t": "say",
-                  "who": "heras",
+                  "who": "heras_white",
                   "text": "……不知道，也可以……爱吗？"
                 },
                 {
@@ -8801,7 +8803,7 @@
                 },
                 {
                   "t": "say",
-                  "who": "heras",
+                  "who": "heras_white",
                   "text": "……不知道，也可以……爱吗？"
                 },
                 {
@@ -8855,7 +8857,7 @@
                 },
                 {
                   "t": "say",
-                  "who": "heras",
+                  "who": "heras_white",
                   "text": "……不知道，也可以……爱吗？"
                 },
                 {
@@ -9146,7 +9148,7 @@
                     },
                     {
                       "t": "say",
-                      "who": "heras",
+                      "who": "heras_white",
                       "text": "……不知道，也可以……爱吗？"
                     },
                     {
@@ -9580,7 +9582,8 @@
                         {
                           "t": "narr",
                           "style": "picture",
-                          "text": "清册营另备的压律镣铐，扣上她的手。"
+                          "text": "清册营另备的压律镣铐，扣上她的手。",
+                          "insert": "ch28_shackles"
                         },
                         {
                           "t": "narr",

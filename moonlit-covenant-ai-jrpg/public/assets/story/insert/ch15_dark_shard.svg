@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="焦黑的龙骨上，一块黑绿色的碎片，还在很慢地跳">
+<defs><radialGradient id="siCh15Shard-g0" cx="0.5" cy="0.45" r="0.7"><stop offset="0" stop-color="#1c1a2e"/><stop offset="1" stop-color="#07060e"/></radialGradient><radialGradient id="siCh15Shard-g1" ><stop offset="0" stop-color="#3aa060" stop-opacity="0.45"/><stop offset="0.4" stop-color="#3aa060" stop-opacity="0.2025"/><stop offset="1" stop-color="#3aa060" stop-opacity="0"/></radialGradient><linearGradient id="siCh15Shard-g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2a5a3a"/><stop offset="1" stop-color="#0a140e"/></linearGradient><radialGradient id="siCh15Shard-g3" cx="0.5" cy="0.5" r="0.72"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="0.62" stop-color="#000" stop-opacity="0.15"/><stop offset="1" stop-color="#000" stop-opacity="0.6"/></radialGradient></defs>
+<rect width="800" height="600" fill="#07060e"/>
+<rect width="800" height="600" fill="url(#siCh15Shard-g0)"/>
+<path d="M0,420C200,380 600,380 800,430V600H0Z" fill="#1a120c"/><path d="M0,430C200,392 600,392 800,440" stroke="#3a2a1a" stroke-width="6"/>
+<path d="M280,360a120,120 0 1 0 240,0a120,120 0 1 0 -240,0Z" fill="url(#siCh15Shard-g1)"/>
+<path d="M360,300L420,270L470,320L452,400L380,420L340,370Z" fill="url(#siCh15Shard-g2)"/><path d="M420,270L410,340L452,400M410,340L340,370" fill="none" stroke="#6ad08a" stroke-width="2" opacity=".6"/>
+<rect width="800" height="600" fill="url(#siCh15Shard-g3)"/>
+</svg>

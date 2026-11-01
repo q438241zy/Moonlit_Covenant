@@ -8,6 +8,8 @@
  *      伊芙琳 ch017、艾拉 ch018、芙蕾娅 ch019、奥菲利亚 ch020、莉莉丝 ch021），已经抽到的按重复补偿表折成钻石。
  *      入队章一定晚于她的登场章（unlockChapter），所以自动入队的女主在卡池里已经揭开封存卡。
  *   3. 卡牌对战（实验模式）获胜：每胜 40 钻石，每天前 5 胜有奖励，之后照常可以打，只是不再发钻石。
+ * 主线首通另发技能书的剧情材料与秘技召唤券（game/skills.mjs 的 syncSkillRewards；技能稿 3.1：每章白 6、绿 3、蓝 1，
+ * 幕界章与个人章蓝各 +5；券：幕界 08/15/21/25 各 5 张、正式 30 通关 10 张）。
  * 价格参照：召唤（只收钻石）单抽 80 / 十连 720，卡牌单包 80 / 十连 800；商店的演示充值仍是免费补充，不受影响。
  *
  * 「一天」按服务器本地日期计算（和会员每日 Credit 相同），nextAt 是下一个本地零点的时间戳（毫秒）。
@@ -15,6 +17,7 @@
  */
 
 import { CHARACTER_POOL, duplicateCompensation } from './gacha.mjs';
+import { ensureSkillbook, syncSkillRewards } from './skills.mjs';
 
 export const REWARD_RULES = Object.freeze({
   daily: Object.freeze({ base: 50, streakStep: 10, streakBonusCap: 40 }),
@@ -194,6 +197,7 @@ export function recordChapterClear(account, chapterId, now = Date.now()) {
   const id = String(chapterId || '');
   if (!CHAPTER_ID_PATTERN.test(id)) throw Object.assign(new Error('章节 ID 无效。'), { status: 400, code: 'UNKNOWN_CHAPTER' });
   const rewards = ensureRewards(account);
+  ensureSkillbook(account, now); // 先补齐以前的章节，下面的 syncSkillRewards 只算这一章
   const alreadyCleared = rewards.chaptersCleared.includes(id);
   let chapterReward = 0;
   if (!alreadyCleared) {
@@ -201,14 +205,18 @@ export function recordChapterClear(account, chapterId, now = Date.now()) {
     chapterReward = addDiamonds(account, rewards, REWARD_RULES.chapterFirstClear, 'chapter_first_clear', id, now);
   }
   const heroines = syncHeroineJoins(account, rewards, now);
+  const skill = syncSkillRewards(account, now);
   const compensation = heroines.compensated.reduce((sum, item) => sum + item.diamonds, 0);
   const diamonds = chapterReward + compensation;
   return {
-    granted: diamonds > 0 || heroines.granted.length > 0,
+    granted: diamonds > 0 || heroines.granted.length > 0 || skill.chapters.length > 0,
     diamonds,
     chapterReward,
     heroinesGranted: heroines.granted,
     heroinesCompensated: heroines.compensated,
+    // 技能书：这一次新发的剧情材料（白、绿、蓝）与秘技召唤券
+    skillMaterials: { white: skill.white, green: skill.green, blue: skill.blue },
+    skillTickets: skill.tickets,
     alreadyCleared,
     chaptersCleared: [...rewards.chaptersCleared],
     balance: diamondsOf(account)

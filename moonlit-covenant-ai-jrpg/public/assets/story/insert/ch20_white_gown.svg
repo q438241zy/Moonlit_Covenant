@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="远远地，一件白色的礼服被捧着穿过外庭">
+<defs><radialGradient id="siCh20Gown-g0" cx="0.5" cy="0.4" r="0.7"><stop offset="0" stop-color="#4a4a58"/><stop offset="1" stop-color="#1a1a24"/></radialGradient><radialGradient id="siCh20Gown-g1" cx="0.5" cy="0.5" r="0.72"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="0.62" stop-color="#000" stop-opacity="0.1125"/><stop offset="1" stop-color="#000" stop-opacity="0.45"/></radialGradient></defs>
+<rect width="800" height="600" fill="#1a1a24"/>
+<rect width="800" height="600" fill="url(#siCh20Gown-g0)"/>
+<path d="M0,420H800V600H0Z" fill="#8a8478"/><path d="M0,420H800" stroke="#c8c0b0" stroke-width="3"/>
+<path d="M40,420v-300h30v300M160,420v-300h30v300M280,420v-300h30v300M400,420v-300h30v300M520,420v-300h30v300M640,420v-300h30v300M760,420v-300h30v300" fill="none" stroke="#b8b0a4" stroke-width="18" opacity=".5"/>
+<path d="M380,200C392,190 408,190 420,200L436,250C470,300 492,360 500,420C460,432 340,432 300,420C308,360 330,300 364,250Z" fill="#f6f4f0"/><path d="M364,250C390,262 410,262 436,250" fill="none" stroke="#d8d0c4" stroke-width="3"/>
+<path d="M340,320C370,360 360,400 350,424M440,310C430,360 440,400 452,426" fill="none" stroke="#d8d0c8" stroke-width="3"/>
+<rect width="800" height="600" fill="url(#siCh20Gown-g1)"/>
+</svg>

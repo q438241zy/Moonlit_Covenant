@@ -114,6 +114,17 @@ function wordingErrors(chapter) {
   return errs;
 }
 
+// 叠图（台词或叙述的 insert 字段）要有对应的图：public/assets/story/insert/<id>.svg（tools/art/story/inserts.mjs 生成）
+function insertErrors(chapter) {
+  const errs = [];
+  eachBeat(chapter, (beat) => {
+    if (beat.insert == null) return;
+    if (!['narr', 'say', 'think'].includes(beat.t)) errs.push(`${beat.t} 节拍不能带叠图 ${beat.insert}`);
+    else if (!/^[\w-]+$/.test(beat.insert) || !fs.existsSync(path.join(root, 'public/assets/story/insert', `${beat.insert}.svg`))) errs.push(`未知叠图 ${beat.insert}`);
+  });
+  return errs;
+}
+
 // 高信赖路线：只有信赖累积够了才出现的节点（例如第六章的同行者营地，要第五章末 LEAH_TRUST ≥ 20）靠轮换策略走不到。
 // 每个输入都试遍意图、本章其余沉默走完，取章末该变量最高的意图；逐章接续，章末存档并入下一章的接续试玩。
 const MAXIMIZE = ['LEAH_TRUST', 'MIA_TRUST'];
@@ -143,7 +154,66 @@ function promiseSignature(run) {
   return Object.keys(run.vars || {}).filter((k) => k.startsWith('promise_')).sort().map((k) => `${k}=${run.vars[k]}`).join('|');
 }
 
+// 技能数据（game/skills.json，技能稿第二、五节）：五色与来源一致、赤月只从白名单选一条规则改写、紫以上的机制不出现在
+// 白绿蓝、命名不撞禁用词（签名武器、誓约技、结局与外传名）、主线描述只给剧情技能且每人最多 3 句、剧情技能最晚正式28解锁、
+// 转蛋技能在主人入队后才进池；另外离线判定的关键词不能是转蛋技能名（输入「烬火城垣！」不该命中任何正向意图）。
+const skillData = readJson('game/skills.json');
+// 组织名、剧透词与罪律名（技能稿 5.4）：这几个词本身就是剧透，不写进 game/ 下的数据文件（canon-guard 会查），只放在校验器里
+const SPOILER_NAMES = ['蚀宴会', '莫尔坎', '索拉恩', '黯冠'];
+function skillErrors() {
+  const errs = [];
+  const tiers = skillData.tiers;
+  const banned = new Set(skillData.banned);
+  const chNo = (id) => Number(String(id).slice(2));
+  const perOwner = {};
+  const ids = new Set();
+  for (const s of skillData.skills) {
+    const where = `技能 ${s.id}`;
+    if (ids.has(s.id)) errs.push(`${where} 重复`);
+    ids.add(s.id);
+    const owner = skillData.owners[s.owner];
+    if (!owner) { errs.push(`${where} 没有这个角色 ${s.owner}`); continue; }
+    if (!tiers[s.tier]) { errs.push(`${where} 颜色 ${s.tier} 不存在`); continue; }
+    if (tiers[s.tier].source !== s.source) errs.push(`${where} 来源 ${s.source} 与颜色 ${s.tier} 不符（白绿蓝只由剧情给，暮紫赤月只从转蛋）`);
+    const nameLen = [...s.name.replace(/·/g, '')].length;
+    if (nameLen < 2 || nameLen > 6) errs.push(`${where} 名字「${s.name}」不是二到六字`);
+    for (const w of [...skillData.nameBlocklist, ...SPOILER_NAMES]) if (s.name.includes(w)) errs.push(`${where} 名字含禁用词「${w}」`);
+    for (const t of s.tags || []) {
+      if (banned.has(t)) errs.push(`${where} 用了禁区机制 ${t}`);
+      if (skillData.purpleMechanics.includes(t) && !['purple', 'red'].includes(s.tier)) errs.push(`${where} 的机制 ${t} 只有暮紫以上能用`);
+    }
+    if (s.tier === 'red' && !skillData.ruleBends[s.ruleBend]) errs.push(`${where} 赤月要从白名单 R1–R7 选一条规则改写`);
+    if (s.tier !== 'red' && s.ruleBend) errs.push(`${where} 只有赤月能改写规则`);
+    if (!skillData.enhance.plus10Kinds.includes(s.plus10)) errs.push(`${where} 的 +10 效果只能是附带1回合、持续+1或目标+1`);
+    if (s.mainline && s.source !== 'story') errs.push(`${where} 转蛋技能不能有主线描述`);
+    if (s.mainline) perOwner[s.owner] = (perOwner[s.owner] || 0) + 1;
+    if (s.source === 'story' && chNo(s.unlock) > 28) errs.push(`${where} 剧情技能最晚在正式28解锁`);
+    if (s.source === 'gacha' && s.unlock !== owner.join) errs.push(`${where} 转蛋技能在主人入队章（${owner.join}）进池`);
+    if (/[你您]/.test(s.mainline || '')) errs.push(`${where} 主线描述用了「你」，改用 {PLAYER_NAME}`);
+  }
+  for (const [o, n] of Object.entries(perOwner)) if (n > 3) errs.push(`${o} 的主线技能描述有 ${n} 句，最多 3 句`);
+  const gachaNames = new Set(skillData.skills.filter((s) => s.source === 'gacha').map((s) => s.name));
+  for (const entry of index) {
+    const chapter = loadChapter(entry.id);
+    if (!chapter) continue;
+    eachBeat(chapter, (beat) => {
+      if (beat.t !== 'input') return;
+      for (const intent of beat.intents || []) for (const k of intent.keywords || []) {
+        // 排除词（!…）可以写；正向关键词不能是转蛋技能名
+        if (String(k).startsWith('!') || intent.id === beat.silent) continue;
+        if (gachaNames.has(String(k).replace(/^=/, ''))) errs.push(`${beat.id}:${intent.id} 的关键词「${k}」是转蛋技能名`);
+      }
+    });
+  }
+  return errs;
+}
+
 let failed = false;
+if (!only.length && !transcript && playArg === undefined) {
+  const errs = skillErrors();
+  if (errs.length) { failed = true; console.log(`✗ game/skills.json 校验失败 ${errs.length} 处：`); errs.slice(0, 40).forEach((e) => console.log('   ' + e)); }
+  else console.log(`✓ game/skills.json：${skillData.skills.length} 张技能（剧情 ${skillData.skills.filter((s) => s.source === 'story').length}、暮紫 ${skillData.skills.filter((s) => s.tier === 'purple').length}、赤月 ${skillData.skills.filter((s) => s.tier === 'red').length}）`);
+}
 let prevRuns = [];
 let greedyRuns = MAXIMIZE.map(() => null);
 for (const entry of index) {
@@ -166,7 +236,7 @@ for (const entry of index) {
     console.log(`✗ ${entry.id} 与 index.json 不一致：`);
     indexErrors.forEach((e) => console.log('   ' + e));
   }
-  const errors = [...validateChapter(chapter, { speakers, locations }), ...wordingErrors(chapter)];
+  const errors = [...validateChapter(chapter, { speakers, locations }), ...wordingErrors(chapter), ...insertErrors(chapter)];
   if (errors.length) {
     failed = true;
     console.log(`✗ ${entry.id} 校验失败 ${errors.length} 处：`);

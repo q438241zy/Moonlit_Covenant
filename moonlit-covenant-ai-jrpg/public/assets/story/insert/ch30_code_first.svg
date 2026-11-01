@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="《帝国法典》翻在第一条：整页只有一行字，底下一枚印">
+<defs><radialGradient id="siCh30Code-g0" cx="0.5" cy="0.45" r="0.7"><stop offset="0" stop-color="#3a3a42"/><stop offset="1" stop-color="#141418"/></radialGradient><radialGradient id="siCh30Code-g1" cx="0.38" cy="0.35" r="0.8"><stop offset="0" stop-color="#d17875"/><stop offset="0.7" stop-color="#b8302a"/><stop offset="1" stop-color="#651a17"/></radialGradient><radialGradient id="siCh30Code-g2" cx="0.5" cy="0.5" r="0.72"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="0.62" stop-color="#000" stop-opacity="0.125"/><stop offset="1" stop-color="#000" stop-opacity="0.5"/></radialGradient></defs>
+<rect width="800" height="600" fill="#141418"/>
+<rect width="800" height="600" fill="url(#siCh30Code-g0)"/>
+<path d="M100,110C220,90 320,100 400,130C480,100 580,90 700,110L690,500C580,484 480,490 400,520C320,490 220,484 110,500Z" fill="#3a2a1a"/>
+<path d="M120,120C230,104 320,112 400,140C480,112 570,104 680,120L670,486C570,472 480,478 400,506C320,478 230,472 130,486Z" fill="#f2ead6"/><path d="M400,140V506" stroke="#b8a888" stroke-width="3"/>
+<path d="M450,200h180" stroke="#2a2018" stroke-width="10" stroke-linecap="round"/>
+<path d="M587.1,380L591.1,398.6L578.9,412.7L564.5,422.5L549.5,433.8L530.9,431.8L512.7,427.3L502.6,411.3L493,397.1L484.8,380L491.3,362.3L501.5,347.7L513.7,334.4L531.4,331.2L549.6,325.8L567.7,332L578.5,347.7L585,363.6Z" fill="url(#siCh30Code-g1)"/><path d="M504,380a36,36 0 1 0 72,0a36,36 0 1 0 -72,0Z" fill="none" stroke="#651a17" stroke-width="4" opacity=".8"/><path d="M514,363a11,6 0 1 0 22,0a11,6 0 1 0 -22,0Z" fill="#fff" opacity=".22"/>
+<path d="M520,370h40M540,350v40" stroke="#5a1410" stroke-width="5"/>
+<rect width="800" height="600" fill="url(#siCh30Code-g2)"/>
+</svg>

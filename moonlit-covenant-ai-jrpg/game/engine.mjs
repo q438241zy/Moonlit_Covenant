@@ -396,7 +396,7 @@ function finishBattleIfNeeded(state) {
   return false;
 }
 
-export function battleAction(state, actionId) {
+export function battleAction(state, actionId, { skillBonus = 0 } = {}) {
   if (state.scene !== 'battle') {
     throw new Error('当前不在战斗中。');
   }
@@ -439,6 +439,13 @@ export function battleAction(state, actionId) {
       state.partyHp = clamp(state.partyHp + 8, 0, state.partyMaxHp);
       damage -= 5;
       pushEvent(state, event('battle', `塞雷娜展开「静月封界」，造成 ${damage} 点伤害并形成护盾。`, { speakerId: 'serena' }));
+    }
+    // 技能书的封顶加成（技能稿 6.2：最多 +20%，只加伤害，不碰结局与回卷）
+    const bonus = Math.max(0, Math.min(0.2, Number(skillBonus) || 0));
+    if (bonus > 0) {
+      const extra = Math.round(damage * bonus);
+      damage += extra;
+      pushEvent(state, event('battle', `技能书加成：多造成 ${extra} 点伤害（+${Math.round(bonus * 100)}%）。`));
     }
     state.enemy.hp = clamp(state.enemy.hp - damage, 0, state.enemy.maxHp);
   }

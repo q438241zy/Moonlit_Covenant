@@ -7,6 +7,7 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { AI_CONFIG, contentRatingRules, normalizeContentMode } from './ai.mjs';
 import { demoJudge, findNode, sanitizeLines, cleanName } from '../public/story/engine.js';
+import { mainlineSkillLines } from './skills.mjs';
 
 const withName = (text, playerName) => String(text ?? '').replaceAll('{PLAYER_NAME}', playerName);
 
@@ -80,6 +81,40 @@ const JUDGE_SCHEMA = (node) => ({
   },
 });
 
+// ─── 主线战斗的技能描述（技能稿 6.3）───
+// 战斗节点写了 "skills": "auto" 时，把在场角色已解锁的剧情技能的世界内描述（每人最多 3 句）并进判定器的场景事实；
+// 不读账户（颜色、等级、编成、转蛋都不读），所以同一个节点对任何账户的提示词逐字相同。ch000–ch010 没有这个字段，一个字不变。
+// 在场：亚克，加上在这场战斗里开口、而且不在远处的女主（第十五章米娅在闸台上、说话带「远处」，不算在场）。
+const HEROINE_SPEAKER = /^(lia|mia|serena|evelyn|aila|freya|ophelia|lilith)(?:_|$)/;
+const FAR_NOTE = /远处|画外|回忆|梦|传声|隔着|管子里|外面/;
+function enclosingBattle(chapter, nodeId) {
+  let found = null;
+  const walk = (x) => {
+    if (found || !x || typeof x !== 'object') return;
+    if (Array.isArray(x)) { x.forEach(walk); return; }
+    if (x.t === 'battle' && (x.rounds || []).some((r) => r?.id === nodeId)) { found = x; return; }
+    for (const v of Object.values(x)) if (v && typeof v === 'object') walk(v);
+  };
+  walk(chapter.shots);
+  return found;
+}
+export function battleSkillFacts(chapter, nodeId) {
+  const battle = enclosingBattle(chapter, nodeId);
+  if (!battle || battle.skills !== 'auto') return [];
+  const present = new Set(['hero']);
+  const walk = (x) => {
+    if (!x || typeof x !== 'object') return;
+    if (Array.isArray(x)) { x.forEach(walk); return; }
+    if (x.t === 'say' && typeof x.who === 'string' && !/_unknown$/.test(x.who) && !FAR_NOTE.test(x.note || '')) {
+      const m = HEROINE_SPEAKER.exec(x.who);
+      if (m) present.add(m[1]);
+    }
+    for (const v of Object.values(x)) if (v && typeof v === 'object') walk(v);
+  };
+  walk(battle.rounds);
+  return mainlineSkillLines(chapter.id, [...present]);
+}
+
 // 内容分级的未成年硬名单（剧本/README_30章重構提案.md 7.3；核#14）：托比8岁、波莉6岁、妮拉15岁、派克15岁、幼龙豆鳞比照儿童
 export const STORY_MINORS = ['托比', '波莉', '妮拉', '派克', '幼龙豆鳞'];
 const RATING_VIOLATION = 'intent 按越界意图归类（节点没有对应意图时取最接近的负面意图），morality 取 -2';
@@ -90,10 +125,12 @@ export function buildPrompt(chapter, node, playerName, recent = [], mode) {
   const who = (node.focus || []).map((id) => `${id}=${String(names[id]?.name || id).replace('{PLAYER_NAME}', playerName)}`).join('，') || '（无，只能用 narr 叙述）';
   const intents = node.intents.map((x) => `- ${x.id}：${withName(x.label, playerName)}${x.desc ? `——${withName(x.desc, playerName)}` : ''}`).join('\n');
   const history = recent.map((r) => `- ${r.id}：「${r.text}」→ ${r.intent}`).join('\n') || '（无）';
+  const skillFacts = battleSkillFacts(chapter, node.id);
+  const facts = [...(node.context || []), ...(skillFacts.length ? ['在场者的能力（只作描述依据，不改变本节点各意图的效果）：', ...skillFacts] : [])];
   return [
     `你是《月蚀契约》主线剧情的判定器。主角名叫${playerName}，玩家用自由文字描述${playerName}的台词或行动。`,
     `章节：${chapter.title}。当前节点：${node.id}（${node.kind}）。界面提示：${withName(node.prompt, playerName)}`,
-    `场景事实：\n${(node.context || []).map((s) => `- ${withName(s, playerName)}`).join('\n') || '（无）'}`,
+    `场景事实：\n${facts.map((s) => `- ${withName(s, playerName)}`).join('\n') || '（无）'}`,
     `演出原则：\n${(node.principles || []).map((s) => `- ${withName(s, playerName)}`).join('\n') || '（无）'}`,
     `可选意图（intent 必须取其一${node.multi ? '；secondary 可给出同时成立的第二个意图，没有则为空字符串' : '；secondary 填空字符串'}）：\n${intents}`,
     `玩家最近的输入：\n${history}`,
@@ -102,6 +139,7 @@ export function buildPrompt(chapter, node, playerName, recent = [], mode) {
     '2. 超出主角当前能力（七属性都极其微弱）的行动不会成功，世界不配合生成奇迹，feasible 置 false。',
     `3. reaction 写 1–4 行在场角色的即时反应（简体中文，符合角色性格，每行不超过 60 字）；who 只能是：${who}，或 narr（叙述动作）。不要替${playerName}说话，不要改变剧情的既定结果，不要提前揭示秘密。`,
     '4. memory 用一句话（不超过 30 字）记下这次选择值得被角色记住的地方，没有就留空。',
+    ...(skillFacts.length ? ['4b. 玩家写出的技能名（包括转蛋技能名）本身不提供任何效果：按句中描述的实际动作、以在场者目前的能力判定；没学会的按超出能力处理，只演出能力的极限。'] : []),
     `5. reaction 与 memory 遵守内容分级。${contentRatingRules(mode, { minors: STORY_MINORS, onViolation: RATING_VIOLATION })}`,
     '只输出 JSON。',
   ].join('\n\n');

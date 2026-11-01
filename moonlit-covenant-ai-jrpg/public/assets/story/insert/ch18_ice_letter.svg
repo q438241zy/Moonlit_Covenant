@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="一只手握着一块冰，冰里封着一封折好的信">
+<defs><radialGradient id="siCh18IceLetter-g0" cx="0.5" cy="0.45" r="0.7"><stop offset="0" stop-color="#2a4a5e"/><stop offset="1" stop-color="#0c1822"/></radialGradient><linearGradient id="siCh18IceLetter-g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d8f0fa"/><stop offset="1" stop-color="#6a9ab4"/></linearGradient><radialGradient id="siCh18IceLetter-g2" cx="0.5" cy="0.5" r="0.72"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="0.62" stop-color="#000" stop-opacity="0.125"/><stop offset="1" stop-color="#000" stop-opacity="0.5"/></radialGradient></defs>
+<rect width="800" height="600" fill="#0c1822"/>
+<rect width="800" height="600" fill="url(#siCh18IceLetter-g0)"/>
+<path d="M220,240L540,200L600,420L270,470Z" fill="url(#siCh18IceLetter-g1)" opacity=".85"/>
+<path d="M320,280L480,262L500,380L336,398Z" fill="#efe6d0" opacity=".85"/><path d="M320,280L410,330L480,262" fill="none" stroke="#b8a888" stroke-width="2"/>
+<path d="M220,240L540,200L600,420L270,470Z" fill="none" stroke="#ffffff" stroke-width="4" opacity=".6"/>
+<path d="M150,600C170,500 200,440 250,430L300,470L270,500L330,520L320,600Z" fill="#8a6a5a"/><path d="M560,600C560,500 590,430 610,420C640,430 650,470 630,510L620,600Z" fill="#7a5a4a"/>
+<rect width="800" height="600" fill="url(#siCh18IceLetter-g2)"/>
+</svg>

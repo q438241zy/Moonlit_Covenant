@@ -4943,7 +4943,8 @@
         {
           "t": "narr",
           "style": "picture",
-          "text": "她的身体，长大了。深蓝的鳞。"
+          "text": "她的身体，长大了。深蓝的鳞。",
+          "insert": "ch27_ophelia_dragon"
         },
         {
           "t": "say",
@@ -5110,7 +5111,8 @@
                       "style": "picture",
                       "text": "海面上，一条绳子漂着。",
                       "text15": "海面上，一条绳子漂着。绳子的一头，有一点红。",
-                      "intense": "gore"
+                      "intense": "gore",
+                      "insert": "ch27_sea_rope"
                     },
                     {
                       "t": "narr",
@@ -5295,7 +5297,8 @@
                       "style": "picture",
                       "text": "海面上，一条绳子漂着。",
                       "text15": "海面上，一条绳子漂着。绳子的一头，有一点红。",
-                      "intense": "gore"
+                      "intense": "gore",
+                      "insert": "ch27_sea_rope"
                     },
                     {
                       "t": "narr",
@@ -5480,7 +5483,8 @@
                       "style": "picture",
                       "text": "海面上，一条绳子漂着。",
                       "text15": "海面上，一条绳子漂着。绳子的一头，有一点红。",
-                      "intense": "gore"
+                      "intense": "gore",
+                      "insert": "ch27_sea_rope"
                     },
                     {
                       "t": "narr",
@@ -5671,7 +5675,8 @@
                       "style": "picture",
                       "text": "海面上，一条绳子漂着。",
                       "text15": "海面上，一条绳子漂着。绳子的一头，有一点红。",
-                      "intense": "gore"
+                      "intense": "gore",
+                      "insert": "ch27_sea_rope"
                     },
                     {
                       "t": "narr",
@@ -5853,7 +5858,8 @@
                       "style": "picture",
                       "text": "海面上，一条绳子漂着。",
                       "text15": "海面上，一条绳子漂着。绳子的一头，有一点红。",
-                      "intense": "gore"
+                      "intense": "gore",
+                      "insert": "ch27_sea_rope"
                     },
                     {
                       "t": "narr",
@@ -6361,7 +6367,8 @@
                       "style": "picture",
                       "text": "海面上，一条绳子漂着。",
                       "text15": "海面上，一条绳子漂着。绳子的一头，有一点红。",
-                      "intense": "gore"
+                      "intense": "gore",
+                      "insert": "ch27_sea_rope"
                     },
                     {
                       "t": "narr",
@@ -6614,7 +6621,8 @@
                       "style": "picture",
                       "text": "海面上，一条绳子漂着。",
                       "text15": "海面上，一条绳子漂着。绳子的一头，有一点红。",
-                      "intense": "gore"
+                      "intense": "gore",
+                      "insert": "ch27_sea_rope"
                     },
                     {
                       "t": "narr",
@@ -6793,7 +6801,8 @@
                       "style": "picture",
                       "text": "海面上，一条绳子漂着。",
                       "text15": "海面上，一条绳子漂着。绳子的一头，有一点红。",
-                      "intense": "gore"
+                      "intense": "gore",
+                      "insert": "ch27_sea_rope"
                     },
                     {
                       "t": "narr",
@@ -6968,7 +6977,8 @@
                       "style": "picture",
                       "text": "海面上，一条绳子漂着。",
                       "text15": "海面上，一条绳子漂着。绳子的一头，有一点红。",
-                      "intense": "gore"
+                      "intense": "gore",
+                      "insert": "ch27_sea_rope"
                     },
                     {
                       "t": "narr",
@@ -7142,12 +7152,14 @@
                     {
                       "t": "narr",
                       "style": "picture",
-                      "text": "黎月的刃口，对着一环。很轻。一毫米。"
+                      "text": "黎月的刃口，对着一环。很轻。一毫米。",
+                      "insert": "ch27_chain_blade"
                     },
                     {
                       "t": "narr",
                       "style": "picture",
-                      "text": "那一环，裂了。"
+                      "text": "那一环，裂了。",
+                      "insert": "ch27_dragon_free"
                     },
                     {
                       "t": "narr",
@@ -7554,12 +7566,14 @@
                     {
                       "t": "narr",
                       "style": "picture",
-                      "text": "黎月的刃口，对着一环。很轻。一毫米。"
+                      "text": "黎月的刃口，对着一环。很轻。一毫米。",
+                      "insert": "ch27_chain_blade"
                     },
                     {
                       "t": "narr",
                       "style": "picture",
-                      "text": "那一环，裂了。"
+                      "text": "那一环，裂了。",
+                      "insert": "ch27_dragon_free"
                     },
                     {
                       "t": "narr",
@@ -8033,7 +8047,8 @@
                     {
                       "t": "narr",
                       "style": "picture",
-                      "text": "她的爪子，扯断了那一环。"
+                      "text": "她的爪子，扯断了那一环。",
+                      "insert": "ch27_dragon_free"
                     }
                   ],
                   "reactionFixed": true,
@@ -8169,7 +8184,8 @@
                     {
                       "t": "narr",
                       "style": "picture",
-                      "text": "她的爪子，扯断了那一环。"
+                      "text": "她的爪子，扯断了那一环。",
+                      "insert": "ch27_dragon_free"
                     }
                   ],
                   "reactionFixed": true,
@@ -8231,7 +8247,8 @@
                     {
                       "t": "narr",
                       "style": "picture",
-                      "text": "她的爪子，扯断了那一环。"
+                      "text": "她的爪子，扯断了那一环。",
+                      "insert": "ch27_dragon_free"
                     }
                   ],
                   "reactionFixed": true,
@@ -8289,7 +8306,8 @@
                     {
                       "t": "narr",
                       "style": "picture",
-                      "text": "她的爪子，扯断了那一环。"
+                      "text": "她的爪子，扯断了那一环。",
+                      "insert": "ch27_dragon_free"
                     }
                   ],
                   "reactionFixed": true,
@@ -8525,7 +8543,8 @@
                         {
                           "t": "narr",
                           "style": "picture",
-                          "text": "她的爪子，扯断了那一环。"
+                          "text": "她的爪子，扯断了那一环。",
+                          "insert": "ch27_dragon_free"
                         }
                       ],
                       "reactionFixed": true,
@@ -8585,7 +8604,8 @@
                         {
                           "t": "narr",
                           "style": "picture",
-                          "text": "她的爪子，扯断了那一环。"
+                          "text": "她的爪子，扯断了那一环。",
+                          "insert": "ch27_dragon_free"
                         }
                       ],
                       "reactionFixed": true,
@@ -8641,7 +8661,8 @@
                         {
                           "t": "narr",
                           "style": "picture",
-                          "text": "她的爪子，扯断了那一环。"
+                          "text": "她的爪子，扯断了那一环。",
+                          "insert": "ch27_dragon_free"
                         }
                       ],
                       "reactionFixed": true,
@@ -8702,7 +8723,8 @@
                 {
                   "t": "narr",
                   "style": "picture",
-                  "text": "链子断了。可是黑龙的眼睛，看向雾里。"
+                  "text": "链子断了。可是黑龙的眼睛，看向雾里。",
+                  "insert": "ch27_dragon_free"
                 },
                 {
                   "t": "set",
@@ -8721,7 +8743,8 @@
                 {
                   "t": "narr",
                   "style": "picture",
-                  "text": "黑龙的颈上，一片鳞掉下来。奥菲莉亚接住。读。"
+                  "text": "黑龙的颈上，一片鳞掉下来。奥菲莉亚接住。读。",
+                  "insert": "ch27_erased_scale"
                 },
                 {
                   "t": "say",
@@ -20029,7 +20052,8 @@
                 {
                   "t": "narr",
                   "style": "picture",
-                  "text": "她变成小小的幼龙形，停在他的头顶上方一寸。"
+                  "text": "她变成小小的幼龙形，停在他的头顶上方一寸。",
+                  "insert": "ch27_young_dragon"
                 },
                 {
                   "t": "say",
@@ -33211,7 +33235,8 @@
         {
           "t": "narr",
           "style": "picture",
-          "text": "是一张议桌。七张椅子。"
+          "text": "是一张议桌。七张椅子。",
+          "insert": "ch27_seven_chairs"
         },
         {
           "t": "narr",

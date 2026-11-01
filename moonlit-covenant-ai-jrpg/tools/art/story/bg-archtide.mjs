@@ -3,6 +3,13 @@
 //                              reading lectern with a thick register in the middle aisle, on the far wall a relief of an arch
 //                              pressing on a wave; cold grey and candle yellow. The people on the beds only as low outlines
 //                              under blankets; the last bed covered with a cloth.
+//   arch-tide-gate-sanctuary-cells — the same room as the tower's prison (天牢, 29-14 and 30's tyrant versions): iron bars
+//                              close every bed off from the aisle, the cots bare (whoever is held there is drawn as a bust),
+//                              the lectern gone, one torch at each side, colder (sanctuary(true)).
+//   arch-tide-waterway-mouth — the mouth of the arch-tide water channel at the foot of the white stair (29-09): a low arched
+//                              outlet in the white stone, its iron grating hauled half up, black water sliding out into a
+//                              stone basin, the long white stair rising away to the right, a grey dusk; a thin sweet black
+//                              smoke curling out of the arch.
 //   arch-tide-gate-channel   — the water channel: black and long, a narrow walkway along dark water, at the far end an iron
 //                              grating with daylight beyond it.
 //   canal-bank-dawn          — the canal bank outside the city at dawn: a long grassy embankment above a still canal, the sky
@@ -17,8 +24,8 @@ const circ = (cx, cy, r) => ell(cx, cy, r, r);
 const archWave = (cx, cy, r) => `M${f1(cx - r)},${f1(cy + r * 0.2)}V${f1(cy - r * 0.15)}A${f1(r)},${f1(r)} 0 0 1 ${f1(cx + r)},${f1(cy - r * 0.15)}V${f1(cy + r * 0.2)}`
   + `M${f1(cx - r)},${f1(cy + r * 0.55)}q${f1(r * 0.25)},${f1(-r * 0.3)} ${f1(r * 0.5)},0t${f1(r * 0.5)},0t${f1(r * 0.5)},0t${f1(r * 0.5)},0`;
 
-function sanctuary() {
-  const S = new Scene('sbAtSanctuary', '拱潮门下·护界院：一间很长的石室，两排简单的床一直排到深处，中间走道上一座读经台，台上一本很厚的簿子；尽头的墙上一道拱压着浪的浮雕；冷灰和烛黄；床上的人只画盖着毯子的轮廓，最里面那张床盖着布', 21101);
+function sanctuary(cells = false) {
+  const S = cells ? new Scene('sbAtCells', '天牢——拱潮门下的护界院：同一间长长的石室，每张床前都隔着铁栏，床上空着，读经台撤了，两侧各一支火把，冷灰', 21101) : new Scene('sbAtSanctuary', '拱潮门下·护界院：一间很长的石室，两排简单的床一直排到深处，中间走道上一座读经台，台上一本很厚的簿子；尽头的墙上一道拱压着浪的浮雕；冷灰和烛黄；床上的人只画盖着毯子的轮廓，最里面那张床盖着布', 21101);
   const R = rng(21102);
   const P = persp({ vp: [800, 400], F: 760, eye: 1.7 });
   const C = { stone: '#6a6a70', stoneDeep: '#3a3a42', floor: '#4e4c50', bed: '#6a5a4a', sheet: '#b8b0a2', blanket: '#5a5e6a', candle: '#ffcf80' };
@@ -45,26 +52,63 @@ function sanctuary() {
     const inner = side < 0 ? [[x1, 0, za], [x1, 0, zb], [x1, y, zb], [x1, y, za]] : [[x0, 0, za], [x0, 0, zb], [x0, y, zb], [x0, y, za]];
     const fog = Math.min(0.7, z / 22);
     S.add(`<path d="${P.quad(inner)}" fill="${mix(C.bed, '#1c1c22', fog)}"/><path d="${P.quad(front)}" fill="${mix('#8a7a66', '#1c1c22', fog)}"/>`);
-    const last = side > 0 && z > 15;
-    S.add(`<path d="${P.quad(top)}" fill="${mix(last ? '#d8d2c4' : C.sheet, '#1c1c22', fog)}"/>`);
+    const last = side > 0 && z > 15 && !cells;
+    S.add(`<path d="${P.quad(top)}" fill="${mix(last ? '#d8d2c4' : cells ? '#7a7468' : C.sheet, '#1c1c22', fog)}"/>`);
+    if (cells) continue;
     // a body under the blanket: a long low hump and the head at the far end (or the whole covered by the cloth)
     const hb = [[x0 + 0.2, y + 0.18, za + 0.1], [x1 - 0.2, y + 0.18, za + 0.1], [x1 - 0.2, y + 0.18, zb - 0.3], [x0 + 0.2, y + 0.18, zb - 0.3]];
     S.add(`<path d="${P.quad(hb)}" fill="${mix(last ? '#e8e2d4' : C.blanket, '#1c1c22', fog)}"/>`);
     if (!last) { const hd = P((x0 + x1) / 2, y + 0.2, zb - 0.15); S.add(`<path d="${ell(hd[0], hd[1], 22 * 3 / z, 14 * 3 / z)}" fill="${mix('#8a7a70', '#1c1c22', fog)}"/>`); }
   }
+  // the cells: a line of iron bars in front of each row of beds, with a top and a bottom rail
+  if (cells) {
+    for (const side of [-1, 1]) {
+      const x = side < 0 ? -X + 1.45 : X - 1.45;
+      let d = '';
+      for (let z = 2.2; z < 17; z += 0.32) { const a = P(x, 0, z), b = P(x, 2.3, z); d += `M${f1(a[0])},${f1(a[1])}L${f1(b[0])},${f1(b[1])}`; }
+      for (const y of [0.15, 2.3]) { const a = P(x, y, 2.2), b = P(x, y, 17); d += `M${f1(a[0])},${f1(a[1])}L${f1(b[0])},${f1(b[1])}`; }
+      S.add(`<path d="${d}" stroke="#141418" stroke-width="5" stroke-linecap="round"/>`);
+      let hi = '';
+      for (let z = 2.2; z < 17; z += 0.32) { const a = P(x, 0.2, z), b = P(x, 2.2, z); hi += `M${f1(a[0] - 1.5)},${f1(a[1])}L${f1(b[0] - 1.5)},${f1(b[1])}`; }
+      S.add(`<path d="${hi}" stroke="#5a5a64" stroke-width="1.2" opacity=".6"/>`);
+    }
+  }
   // the reading lectern and the thick register in the aisle
-  {
+  if (!cells) {
     const z = 6.5, b = P(0, 0, z), t = P(0, 1.2, z);
     S.add(`<path d="M${f1(b[0] - 14)},${f1(b[1])}h28l-6,${f1(t[1] - b[1])}h-16z" fill="#4a3a2e"/>`);
     S.add(`<path d="M${f1(t[0] - 60)},${f1(t[1] + 10)}l120,0l-14,-26l-92,0z" fill="#5a4636"/><path d="M${f1(t[0] - 48)},${f1(t[1] + 2)}l96,0l-10,-20l-76,0z" fill="#e8dcc0"/><path d="M${f1(t[0])},${f1(t[1] + 2)}l-4,-20" stroke="#8a7a5a" stroke-width="1.5"/>`);
     S.add(`<path d="${circ(t[0] + 30, t[1] - 10, 6)}" fill="none" stroke="#a83030" stroke-width="2"/>`);
   }
   // candles on the side walls and their glow
-  for (const [x, z] of [[-X, 4.5], [X, 4.5], [-X, 9], [X, 9], [-X, 14], [X, 14]]) {
+  for (const [x, z] of cells ? [[-X, 6], [X, 6]] : [[-X, 4.5], [X, 4.5], [-X, 9], [X, 9], [-X, 14], [X, 14]]) {
     const c = P(x, 2.2, z), s = 4 / z;
     S.add(`<ellipse cx="${f1(c[0])}" cy="${f1(c[1])}" rx="${f1(150 * s)}" ry="${f1(200 * s)}" fill="${S.rad([[0, C.candle, 0.4], [1, C.candle, 0]])}"/><path d="M${f1(c[0])},${f1(c[1] - 6 * s)}q${f1(-4 * s)},${f1(-8 * s)} 0,${f1(-16 * s)}q${f1(4 * s)},${f1(8 * s)} 0,${f1(16 * s)}z" fill="#fff0c0"/>`);
   }
+  if (cells) S.add(`<rect width="${W}" height="${H}" fill="#0a1420" opacity=".3"/>`);
   S.add(`<rect width="${W}" height="${H}" fill="${S.rad([[0, '#000', 0], [0.6, '#000', 0.2], [1, '#000', 0.7]], 'cx="0.5" cy="0.5" r="0.75"')}"/>`);
+  return S.out();
+}
+
+function waterwayMouth() {
+  const S = new Scene('sbAtMouth', '白石阶底下，拱潮门的水道口：白色石墙下一道低矮的拱形出水口，铁栅拉起了一半，黑水从里面滑出来流进石砌的水池，长长的白石阶往右上方升去，灰色的黄昏；一缕甜的黑烟从拱里飘出来', 29091);
+  const R = rng(29092);
+  S.add(`<rect width="${W}" height="${H}" fill="${S.lin([[0, '#4a4a58'], [0.55, '#8a8494'], [1, '#6a6470']])}"/>`);
+  // the white wall
+  S.add(`<path d="M0,120H1100L1180,170V700H0Z" fill="${S.lin([[0, '#d8d4cc'], [1, '#a8a49c']])}"/>`);
+  { let d = ''; for (let y = 160; y < 700; y += 48) { d += `M0,${y}H1120`; for (let x = (y / 48) % 2 ? 0 : 60; x < 1120; x += 120) d += `M${x},${y}v48`; } S.add(`<path d="${d}" stroke="#8a867e" stroke-width="2" opacity=".45"/>`); }
+  // the long white stair rising to the right
+  for (let k = 0; k < 18; k++) { const x = 900 + k * 40, y = 760 - k * 34; S.add(`<path d="M${x},${y}h${W - x}v34H${x}z" fill="${mix('#f0ece4', '#b8b4ac', k / 18)}"/><path d="M${x},${y}h${W - x}" stroke="#ffffff" stroke-width="2" opacity=".6"/>`); }
+  // the arched outlet, black inside, the grating hauled half up
+  S.add(`<path d="M300,700V470A200,200 0 0 1 700,470V700Z" fill="#7a766e"/><path d="M330,700V480A170,170 0 0 1 670,480V700Z" fill="#08080c"/>`);
+  { let g = ''; for (let x = 346; x < 660; x += 26) g += `M${x},360V560`; g += 'M330,420H670M330,560H670'; S.add(`<path d="${g}" stroke="#2a2a30" stroke-width="7"/><path d="M500,300V360M470,300h60" stroke="#3a3a40" stroke-width="5"/>`); }
+  // the black water sliding out into the basin
+  S.add(`<path d="M330,700C360,660 640,660 670,700L760,900H240Z" fill="#0c0c12"/><path d="M0,760H${W}V${H}H0Z" fill="#2a2a32"/><path d="M0,760H${W}" stroke="#c8c4bc" stroke-width="6"/>`);
+  S.add(`<path d="M0,800C400,780 1200,790 ${W},810V${H}H0Z" fill="#101016"/>`);
+  { let d = ''; for (let k = 0; k < 22; k++) { const x = R.range(260, 760), y = R.range(700, 880); d += `M${f1(x)},${f1(y)}q24,-6 48,0`; } S.add(`<path d="${d}" fill="none" stroke="#5a5a68" stroke-width="2" opacity=".5"/>`); }
+  // the sweet black smoke curling out of the arch
+  S.add(`<path d="M480,560C440,500 520,460 480,400S540,320 500,260S560,200 540,140" fill="none" stroke="#141018" stroke-width="40" stroke-linecap="round" opacity=".55" filter="${S.blur(2)}"/>`);
+  S.add(`<rect width="${W}" height="${H}" fill="${S.rad([[0, '#000', 0], [0.6, '#000', 0.2], [1, '#000', 0.65]], 'cx="0.45" cy="0.55" r="0.8"')}"/>`);
   return S.out();
 }
 
@@ -136,6 +180,8 @@ function canalBank() {
 
 export const archTideBgs = {
   'arch-tide-gate-sanctuary': () => sanctuary(),
+  'arch-tide-gate-sanctuary-cells': () => sanctuary(true),
+  'arch-tide-waterway-mouth': () => waterwayMouth(),
   'arch-tide-gate-channel': () => channel(),
   'canal-bank-dawn': () => canalBank(),
 };

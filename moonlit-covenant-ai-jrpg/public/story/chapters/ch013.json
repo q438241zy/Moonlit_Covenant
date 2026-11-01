@@ -17117,7 +17117,8 @@
         {
           "t": "narr",
           "style": "picture",
-          "text": "短披风的扣子，跟着断了。半枚黑金色的家纹，掉进檐沟里。"
+          "text": "短披风的扣子，跟着断了。半枚黑金色的家纹，掉进檐沟里。",
+          "insert": "ch13_half_crest"
         },
         {
           "t": "narr",
@@ -20641,7 +20642,8 @@
         {
           "t": "narr",
           "style": "picture",
-          "text": "檐沟里，只剩那半枚家纹。"
+          "text": "檐沟里，只剩那半枚家纹。",
+          "insert": "ch13_half_crest"
         },
         {
           "t": "narr",
@@ -21145,7 +21147,8 @@
         {
           "t": "narr",
           "style": "caption",
-          "text": "巡礼通行证"
+          "text": "巡礼通行证",
+          "insert": "ch13_pilgrim_pass"
         },
         {
           "t": "narr",
@@ -25964,7 +25967,8 @@
         {
           "t": "narr",
           "style": "caption",
-          "text": "通行证：御印。底下，拱。往：拱潮门。"
+          "text": "通行证：御印。底下，拱。往：拱潮门。",
+          "insert": "ch13_pilgrim_pass"
         },
         {
           "t": "narr",

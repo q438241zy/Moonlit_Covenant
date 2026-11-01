@@ -57,9 +57,9 @@
 
 | t | 字段 | 说明 |
 |---|---|---|
-| `narr` | `text`, `text15?`, `style?`, `intel?` | 叙述。`style`：`picture`（画面描写，默认）/ `voice`（旁白引用）/ `caption`（系统字幕，如「遭遇战开始」）。`text15` 为 15+ 模式（默认）的替换文本，`text` 是 12+ 基底，缺 `text15` 时两种模式都显示 `text`（见第 10 节）。`intel: true`：照常演出，但轮到玩家输入时一并列进输入框上方的「情报」栏（如 00-14 的三件紧急情况） |
-| `say` | `who`, `text`, `note?`, `text15?` | 对白。`who` 为说话人 id；`note` 如「画外」「更大声」 |
-| `think` | `text` | 主角内心独白 |
+| `narr` | `text`, `text15?`, `style?`, `intel?`, `insert?` | 叙述。`style`：`picture`（画面描写，默认）/ `voice`（旁白引用）/ `caption`（系统字幕，如「遭遇战开始」）。`text15` 为 15+ 模式（默认）的替换文本，`text` 是 12+ 基底，缺 `text15` 时两种模式都显示 `text`（见第 10 节）。`intel: true`：照常演出，但轮到玩家输入时一并列进输入框上方的「情报」栏（如 00-14 的三件紧急情况）。`insert`：叠图 id，见下 |
+| `say` | `who`, `text`, `note?`, `text15?`, `insert?` | 对白。`who` 为说话人 id；`note` 如「画外」「更大声」 |
+| `think` | `text`, `insert?` | 主角内心独白 |
 | `bg` | `bg`, `fx?` | 切换背景（`fx`: `fade` / `cut`） |
 | `fx` | `fx`, `ms?` | 演出：`shake` `flash` `fade-black` `fade-in` `desaturate`（黑焰「吞色」）`restore` `blackout` |
 | `title` | `lines[]`, `title`, `subtitle` | 片名演出 |
@@ -67,6 +67,8 @@
 | `if` | `when`, `then[]`, `else?[]` | 条件分支（条件见第 5 节） |
 | `input` | 见第 4 节 | 自由输入节点：引擎停下等待玩家输入 |
 | `battle` | 见第 6 节 | 自由战术战斗 |
+
+**叠图（`insert`）**：`narr` / `say` / `think` 可带 `insert: "<id>"`，这一句显示时，道具特写（帐页、信、封蜡、铜哨……）以一张卡片浮在场景上方，图在 `public/assets/story/insert/<id>.svg`（800×600，`tools/art/story/inserts.mjs` 生成，不含文字——字仍由这一句的 `text` 交代）。连续几句带同一个 id 时卡片不动；下一句不带、换分镜、换场景、打开输入框或开战时收起。`check.mjs` 校验图存在。
 
 ## 4. 自由输入节点
 
@@ -165,6 +167,7 @@
 
 - 不显示「攻击/防御/道具」菜单，界面只显示情报、双方状态与输入框。
 - 战斗结束写入 `vars[<id>_RESULT]`：`collateral`（波及路人/住宅）> `hurt`（主角 HP ≤ 一半）> `clean`。教学战不会失败。
+- `"skills": "auto"`（正式11以后的新章才写；ch000–ch010 没有）：判定器的场景事实里加上在场角色已解锁的剧情技能的世界内描述（`game/skills.json` 的 `mainline`，每人最多 3 句，亚克是七律、报数、逆月破），句首注明「只作描述依据，不改变本节点各意图的效果」，并加一条「技能名本身不提供任何效果」。在场＝亚克，加上这场战斗里开口、不在远处的女主。不读账户的颜色、等级、编成与转蛋，所以同一个节点对任何账户的提示词逐字相同；界面照旧只显示章节自己写的情报（`game/story-judge.mjs` 的 `battleSkillFacts`；技能稿 6.3）。
 
 ## 7. 引擎 API（`public/story/engine.js`）
 

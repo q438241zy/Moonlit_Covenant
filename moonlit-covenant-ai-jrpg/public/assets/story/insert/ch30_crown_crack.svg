@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="帝冠的内侧，第一道细细的裂">
+<defs><radialGradient id="siCh30CrownCrack-g0" cx="0.5" cy="0.45" r="0.7"><stop offset="0" stop-color="#1c1a2e"/><stop offset="1" stop-color="#07060e"/></radialGradient><linearGradient id="siCh30CrownCrack-g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e8e4f0"/><stop offset="1" stop-color="#8a84a0"/></linearGradient><radialGradient id="siCh30CrownCrack-g2" ><stop offset="0" stop-color="#ffffff" stop-opacity="0.5"/><stop offset="0.4" stop-color="#ffffff" stop-opacity="0.225"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></radialGradient><radialGradient id="siCh30CrownCrack-g3" cx="0.5" cy="0.5" r="0.72"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="0.62" stop-color="#000" stop-opacity="0.15"/><stop offset="1" stop-color="#000" stop-opacity="0.6"/></radialGradient></defs>
+<rect width="800" height="600" fill="#07060e"/>
+<rect width="800" height="600" fill="url(#siCh30CrownCrack-g0)"/>
+<path d="M100,330a300,170 0 1 0 600,0a300,170 0 1 0 -600,0Z" fill="url(#siCh30CrownCrack-g1)"/><path d="M140,350a260,130 0 1 0 520,0a260,130 0 1 0 -520,0Z" fill="#141220"/>
+<path d="M120,330L150,170L210,280L280,140L340,270L400,120L460,270L520,140L590,280L650,170L680,330" fill="none" stroke="#e8e4f0" stroke-width="14" stroke-linejoin="round"/>
+<path d="M400,220L408,260L396,290L410,330L402,360" fill="none" stroke="#ffffff" stroke-width="2.4"/>
+<path d="M374,290a30,30 0 1 0 60,0a30,30 0 1 0 -60,0Z" fill="url(#siCh30CrownCrack-g2)"/>
+<rect width="800" height="600" fill="url(#siCh30CrownCrack-g3)"/>
+</svg>

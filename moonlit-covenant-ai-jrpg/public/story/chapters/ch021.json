@@ -7429,7 +7429,8 @@
         {
           "t": "narr",
           "style": "picture",
-          "text": "很深的井底。一个白面的女人，站在一个铁轮前。"
+          "text": "很深的井底。一个白面的女人，站在一个铁轮前。",
+          "insert": "ch21_dragon_well"
         },
         {
           "t": "narr",
@@ -7439,7 +7440,8 @@
         {
           "t": "narr",
           "style": "picture",
-          "text": "井底的锁链，一节一节亮了起来。"
+          "text": "井底的锁链，一节一节亮了起来。",
+          "insert": "ch21_dragon_well"
         },
         {
           "t": "narr",

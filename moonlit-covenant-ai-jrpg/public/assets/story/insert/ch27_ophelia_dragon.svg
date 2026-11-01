@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="奥菲莉亚的龙形：深蓝的鳞，银色的翼膜">
+<defs><radialGradient id="siCh27OpheliaDragon-g0" cx="0.5" cy="0.35" r="0.7"><stop offset="0" stop-color="#1a3040"/><stop offset="1" stop-color="#06101a"/></radialGradient><linearGradient id="siCh27OpheliaDragon-g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a4a8a"/><stop offset="1" stop-color="#0c1a3a"/></linearGradient><radialGradient id="siCh27OpheliaDragon-g2" cx="0.5" cy="0.5" r="0.72"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="0.62" stop-color="#000" stop-opacity="0.125"/><stop offset="1" stop-color="#000" stop-opacity="0.5"/></radialGradient></defs>
+<rect width="800" height="600" fill="#06101a"/>
+<rect width="800" height="600" fill="url(#siCh27OpheliaDragon-g0)"/>
+<path d="M380,300C300,180 160,120 40,140C120,190 160,240 170,300C220,280 300,290 380,320Z" fill="#c8d0e0" opacity=".85"/><path d="M420,300C500,180 640,120 760,140C680,190 640,240 630,300C580,280 500,290 420,320Z" fill="#c8d0e0" opacity=".85"/>
+<path d="M80,150L170,300M200,150L250,290M300,170L320,300M720,150L630,300M600,150L550,290M500,170L480,300" stroke="#8a94a8" stroke-width="3"/>
+<path d="M400,230C440,230 460,270 460,320C460,380 440,430 420,480L400,560L380,480C360,430 340,380 340,320C340,270 360,230 400,230Z" fill="url(#siCh27OpheliaDragon-g1)"/>
+<path d="M400,150C430,150 448,180 446,214C444,240 424,250 400,250C376,250 356,240 354,214C352,180 370,150 400,150Z" fill="#1e3a74"/><path d="M372,160l-20,-40l30,30M428,160l20,-40l-30,30" fill="#e8d8b0"/>
+<path d="M380,206l10,4M410,210l10,-4" stroke="#ffd060" stroke-width="4" stroke-linecap="round"/>
+<rect width="800" height="600" fill="url(#siCh27OpheliaDragon-g2)"/>
+</svg>

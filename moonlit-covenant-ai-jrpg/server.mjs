@@ -25,6 +25,9 @@ import { COSTUME_LABELS, equipCostume, getEquippedCostumes, BRANCH_SCENES } from
 import { createAnalyticsStore, trackSession, trackDailyActive, getDashboardData, getRealtimeStats, pruneAnalytics } from './game/analytics.mjs';
 import { AI_MODELS, PER_PLAYER_ROUTING, getActiveModel, switchModel, createDefaultSettings } from './game/settings.mjs';
 import { REWARD_RULES, HEROINE_JOIN_CHAPTERS, CHAPTER_ID_PATTERN, claimDaily, getRewardStatus, recordChapterClear, grantCardWin } from './game/rewards.mjs';
+import { publicSkillbook, enhanceSkill, equipSkills, setParty, convertMaterials, exchangeSkill, gaidenSkillBonus } from './game/skills.mjs';
+import { publicSkillPool, pullSkills, setSkillTarget } from './game/skill-gacha.mjs';
+import { listCommissions, startCommission, actCommission, fleeCommission } from './game/skill-battle.mjs';
 import { loadChapterIndex, loadChapter, getTotalChapters } from './scenario/index.mjs';
 import { judgeStoryInput, readJsonCached } from './game/story-judge.mjs';
 import { SAVE_VERSION, createSaveStore, rekeyBattleUids, resolvePersistConfig } from './game/persist.mjs';
@@ -115,7 +118,8 @@ function securityHeaders(contentType = 'application/json; charset=utf-8') {
 }
 
 // 内部字段（_meter 计量器、_rng 随机数函数、_cardInit 标记）一律不出现在任何响应里（契约 K-6）
-const INTERNAL_KEYS = new Set(['_meter', '_rng', '_cardInit']);
+// skillBattle：进行中的委托战斗（含随机数种子），只经 /api/commission/* 的 publicBattle 视图对外
+const INTERNAL_KEYS = new Set(['_meter', '_rng', '_cardInit', 'skillBattle']);
 const hideInternal = (key, value) => (INTERNAL_KEYS.has(key) ? undefined : value);
 
 function sendJson(res, status, payload) {
@@ -496,7 +500,9 @@ const API_ROUTES = new Set([
   '/api/scenario/index', '/api/story/judge', '/api/cards/meta', '/api/cards/all', '/api/cards/collection',
   '/api/cards/summary', '/api/cards/pack', '/api/cards/craft', '/api/cards/decks', '/api/cards/deck/starter',
   '/api/cards/deck/save', '/api/battle/start', '/api/battle/state', '/api/battle/action', '/api/battle/end-turn',
-  '/api/battle/concede', '/api/session', '/api/rewards/daily', '/api/rewards/status', '/api/story/progress'
+  '/api/battle/concede', '/api/session', '/api/rewards/daily', '/api/rewards/status', '/api/story/progress',
+  '/api/skills', '/api/skills/enhance', '/api/skills/equip', '/api/skills/party', '/api/skills/convert', '/api/skills/exchange',
+  '/api/gacha/target', '/api/commissions', '/api/commission/start', '/api/commission/act', '/api/commission/flee'
 ]);
 // 需要 sessionId 的外传动作（POST）
 const SESSION_ACTIONS = new Set([
@@ -615,7 +621,9 @@ async function handleApi(req, res, url) {
       duplicateCompensation: DUPLICATE_COMPENSATION,
       // 主线正式入队的章节：通关该章自动获得这位女主（POST /api/story/progress）
       heroineJoins: HEROINE_JOIN_CHAPTERS,
-      progress: { highestCleared: highestClearedChapter(cleared) }
+      progress: { highestCleared: highestClearedChapter(cleared) },
+      // 秘技召唤（技能稿 3.2）：只出已入队角色的暮紫、赤月；概率表与保底就是实际抽取用的（game/skill-gacha.mjs）
+      skill: publicSkillPool(account)
     });
   }
 
@@ -627,10 +635,78 @@ async function handleApi(req, res, url) {
     // 只收钻石：currency 省略或为 'diamonds'，旧前端传来的 'credit' 返回 400 DIAMONDS_ONLY。结果按本账户进度给封存卡视图
     // 池名只认字符串（其余按角色池，与 normalizePool 一致）：对象 / 数组会撞上 pullGacha 的旧签名检查（TypeError → 500）
     const pool = typeof body.pool === 'string' ? body.pool : 'character';
+    if (pool === 'skill') {
+      // 秘技召唤：钻石或秘技召唤券（payWith: 'tickets'）；重复的技能当场转成秘页
+      if (body.currency !== undefined && body.currency !== null && body.currency !== '' && body.currency !== GACHA_CURRENCY) {
+        return sendJson(res, 400, { ok: false, code: 'DIAMONDS_ONLY', message: '召唤只收钻石；Credit 只用于 AI 对话。' });
+      }
+      const result = pullSkills(account, body.count || 1, { payWith: body.payWith });
+      if (!result.ok) return sendJson(res, 400, result);
+      trackSession(analyticsStore, account.id, 'gacha_pull');
+      return sendJson(res, 200, { ...result, account: publicAccount(account) });
+    }
     const result = pullGacha(account, pool, body.count || 1, { currency: body.currency });
     if (!result.ok) return sendJson(res, 400, result);
     trackSession(analyticsStore, account.id, 'gacha_pull');
     return sendJson(res, 200, { ...result, account: publicAccount(account) });
+  }
+
+  if (req.method === 'POST' && url.pathname === '/api/gacha/target') {
+    const body = await readJson(req);
+    const account = getAccount(body.playerId);
+    if (!account) return sendError(res, 404, '账户不存在。', 'NO_ACCOUNT');
+    const result = setSkillTarget(account, typeof body.skillId === 'string' || body.skillId === null ? body.skillId : '');
+    return sendJson(res, result.ok ? 200 : 400, result);
+  }
+
+  // ═══ 技能书与委托板（game/skills.mjs、game/skill-battle.mjs；技能稿第五、六节）═══
+  if (req.method === 'GET' && url.pathname === '/api/skills') {
+    const account = getAccount(url.searchParams.get('playerId'));
+    if (!account) return sendError(res, 404, '账户不存在。', 'NO_ACCOUNT');
+    return sendJson(res, 200, { ok: true, ...publicSkillbook(account) });
+  }
+  const SKILL_POSTS = {
+    '/api/skills/enhance': (account, body) => enhanceSkill(account, String(body.skillId || '')),
+    '/api/skills/equip': (account, body) => equipSkills(account, String(body.owner || ''), Array.isArray(body.slots) ? body.slots : []),
+    '/api/skills/party': (account, body) => setParty(account, body.party, body.oath),
+    '/api/skills/convert': (account, body) => convertMaterials(account, String(body.from || ''), String(body.to || ''), body.times),
+    '/api/skills/exchange': (account, body) => exchangeSkill(account, String(body.kind || ''), body.skillId),
+  };
+  if (req.method === 'POST' && SKILL_POSTS[url.pathname]) {
+    const body = await readJson(req);
+    const account = getAccount(body.playerId);
+    if (!account) return sendError(res, 404, '账户不存在。', 'NO_ACCOUNT');
+    const result = SKILL_POSTS[url.pathname](account, body);
+    return sendJson(res, result.ok ? 200 : 400, result.ok ? { ...result, skillbook: publicSkillbook(account) } : result);
+  }
+  if (req.method === 'GET' && url.pathname === '/api/commissions') {
+    const account = getAccount(url.searchParams.get('playerId'));
+    if (!account) return sendError(res, 404, '账户不存在。', 'NO_ACCOUNT');
+    return sendJson(res, 200, { ok: true, ...listCommissions(account) });
+  }
+  if (req.method === 'POST' && url.pathname === '/api/commission/start') {
+    const body = await readJson(req);
+    const account = getAccount(body.playerId);
+    if (!account) return sendError(res, 404, '账户不存在。', 'NO_ACCOUNT');
+    const result = startCommission(account, String(body.commissionId || ''));
+    return sendJson(res, result.ok ? 200 : 400, result);
+  }
+  if (req.method === 'POST' && url.pathname === '/api/commission/act') {
+    const body = await readJson(req);
+    const account = getAccount(body.playerId);
+    if (!account) return sendError(res, 404, '账户不存在。', 'NO_ACCOUNT');
+    const action = body.action && typeof body.action === 'object' && !Array.isArray(body.action) ? body.action : {};
+    const result = actCommission(account, {
+      type: String(action.type || ''), slot: Number(action.slot) || 0,
+      target: typeof action.target === 'string' ? action.target : undefined, with: typeof action.with === 'string' ? action.with : undefined,
+    });
+    return sendJson(res, result.ok ? 200 : 400, result);
+  }
+  if (req.method === 'POST' && url.pathname === '/api/commission/flee') {
+    const body = await readJson(req);
+    const account = getAccount(body.playerId);
+    if (!account) return sendError(res, 404, '账户不存在。', 'NO_ACCOUNT');
+    return sendJson(res, 200, fleeCommission(account));
   }
 
   // ═══ 换衣系统 ═══
@@ -1007,7 +1083,7 @@ async function handleApi(req, res, url) {
     }
 
     if (url.pathname === '/api/battle') {
-      battleAction(state, body.actionId);
+      battleAction(state, body.actionId, { skillBonus: gaidenSkillBonus(typeof body.playerId === 'string' ? getAccount(body.playerId) : null, state.chosenStrategyId) });
       return sendJson(res, 200, { ok: true, state: sanitizeState(state) });
     }
 
