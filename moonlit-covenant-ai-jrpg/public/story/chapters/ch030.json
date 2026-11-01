@@ -10903,9 +10903,25 @@
                   },
                   "then": [
                     {
-                      "t": "say",
-                      "who": "lia",
-                      "text": "我们不是为你坐的。"
+                      "t": "if",
+                      "when": {
+                        "var": "LEAH_STANCE_FINAL",
+                        "eq": "CELL"
+                      },
+                      "then": [
+                        {
+                          "t": "say",
+                          "who": "lia_cell",
+                          "text": "我们不是为你坐的。"
+                        }
+                      ],
+                      "else": [
+                        {
+                          "t": "say",
+                          "who": "lia_consort",
+                          "text": "我们不是为你坐的。"
+                        }
+                      ]
                     }
                   ],
                   "else": [
@@ -10919,9 +10935,25 @@
                       },
                       "then": [
                         {
-                          "t": "say",
-                          "who": "mia",
-                          "text": "我们不是为你坐的。"
+                          "t": "if",
+                          "when": {
+                            "var": "MIA_STANCE_FINAL",
+                            "eq": "CELL"
+                          },
+                          "then": [
+                            {
+                              "t": "say",
+                              "who": "mia_cell",
+                              "text": "我们不是为你坐的。"
+                            }
+                          ],
+                          "else": [
+                            {
+                              "t": "say",
+                              "who": "mia_consort",
+                              "text": "我们不是为你坐的。"
+                            }
+                          ]
                         }
                       ],
                       "else": [
@@ -10935,9 +10967,25 @@
                           },
                           "then": [
                             {
-                              "t": "say",
-                              "who": "serena",
-                              "text": "我们不是为你坐的。"
+                              "t": "if",
+                              "when": {
+                                "var": "SERENA_STANCE_FINAL",
+                                "eq": "CELL"
+                              },
+                              "then": [
+                                {
+                                  "t": "say",
+                                  "who": "serena_cell",
+                                  "text": "我们不是为你坐的。"
+                                }
+                              ],
+                              "else": [
+                                {
+                                  "t": "say",
+                                  "who": "serena_consort",
+                                  "text": "我们不是为你坐的。"
+                                }
+                              ]
                             }
                           ],
                           "else": [
@@ -10951,9 +10999,25 @@
                               },
                               "then": [
                                 {
-                                  "t": "say",
-                                  "who": "evelyn",
-                                  "text": "我们不是为你坐的。"
+                                  "t": "if",
+                                  "when": {
+                                    "var": "EVELYN_STANCE_FINAL",
+                                    "eq": "CELL"
+                                  },
+                                  "then": [
+                                    {
+                                      "t": "say",
+                                      "who": "evelyn_cell",
+                                      "text": "我们不是为你坐的。"
+                                    }
+                                  ],
+                                  "else": [
+                                    {
+                                      "t": "say",
+                                      "who": "evelyn_consort",
+                                      "text": "我们不是为你坐的。"
+                                    }
+                                  ]
                                 }
                               ],
                               "else": [
@@ -10967,9 +11031,25 @@
                                   },
                                   "then": [
                                     {
-                                      "t": "say",
-                                      "who": "aila",
-                                      "text": "我们不是为你坐的。"
+                                      "t": "if",
+                                      "when": {
+                                        "var": "AILA_STANCE_FINAL",
+                                        "eq": "CELL"
+                                      },
+                                      "then": [
+                                        {
+                                          "t": "say",
+                                          "who": "aila_cell",
+                                          "text": "我们不是为你坐的。"
+                                        }
+                                      ],
+                                      "else": [
+                                        {
+                                          "t": "say",
+                                          "who": "aila_consort",
+                                          "text": "我们不是为你坐的。"
+                                        }
+                                      ]
                                     }
                                   ],
                                   "else": [
@@ -10983,9 +11063,25 @@
                                       },
                                       "then": [
                                         {
-                                          "t": "say",
-                                          "who": "freya",
-                                          "text": "我们不是为你坐的。"
+                                          "t": "if",
+                                          "when": {
+                                            "var": "FREYA_STANCE_FINAL",
+                                            "eq": "CELL"
+                                          },
+                                          "then": [
+                                            {
+                                              "t": "say",
+                                              "who": "freya_cell",
+                                              "text": "我们不是为你坐的。"
+                                            }
+                                          ],
+                                          "else": [
+                                            {
+                                              "t": "say",
+                                              "who": "freya_consort",
+                                              "text": "我们不是为你坐的。"
+                                            }
+                                          ]
                                         }
                                       ],
                                       "else": [
@@ -10999,9 +11095,25 @@
                                           },
                                           "then": [
                                             {
-                                              "t": "say",
-                                              "who": "ophelia",
-                                              "text": "我们不是为你坐的。"
+                                              "t": "if",
+                                              "when": {
+                                                "var": "OPHELIA_STANCE_FINAL",
+                                                "eq": "CELL"
+                                              },
+                                              "then": [
+                                                {
+                                                  "t": "say",
+                                                  "who": "ophelia_cell",
+                                                  "text": "我们不是为你坐的。"
+                                                }
+                                              ],
+                                              "else": [
+                                                {
+                                                  "t": "say",
+                                                  "who": "ophelia_consort",
+                                                  "text": "我们不是为你坐的。"
+                                                }
+                                              ]
                                             }
                                           ],
                                           "else": [
@@ -11015,9 +11127,25 @@
                                               },
                                               "then": [
                                                 {
-                                                  "t": "say",
-                                                  "who": "lilith",
-                                                  "text": "我们不是为你坐的。"
+                                                  "t": "if",
+                                                  "when": {
+                                                    "var": "LILITH_STANCE_FINAL",
+                                                    "eq": "CELL"
+                                                  },
+                                                  "then": [
+                                                    {
+                                                      "t": "say",
+                                                      "who": "lilith_cell",
+                                                      "text": "我们不是为你坐的。"
+                                                    }
+                                                  ],
+                                                  "else": [
+                                                    {
+                                                      "t": "say",
+                                                      "who": "lilith_consort",
+                                                      "text": "我们不是为你坐的。"
+                                                    }
+                                                  ]
                                                 }
                                               ]
                                             }
@@ -18453,9 +18581,25 @@
                   },
                   "then": [
                     {
-                      "t": "say",
-                      "who": "lilith",
-                      "text": "她坐过那里。……她没有跪。"
+                      "t": "if",
+                      "when": {
+                        "var": "LILITH_STANCE_FINAL",
+                        "eq": "CELL"
+                      },
+                      "then": [
+                        {
+                          "t": "say",
+                          "who": "lilith_cell",
+                          "text": "她坐过那里。……她没有跪。"
+                        }
+                      ],
+                      "else": [
+                        {
+                          "t": "say",
+                          "who": "lilith_consort",
+                          "text": "她坐过那里。……她没有跪。"
+                        }
+                      ]
                     }
                   ],
                   "else": [
@@ -18477,9 +18621,25 @@
                       },
                       "then": [
                         {
-                          "t": "say",
-                          "who": "aila",
-                          "text": "姐姐的座，空着。……我记得每一个数字。"
+                          "t": "if",
+                          "when": {
+                            "var": "AILA_STANCE_FINAL",
+                            "eq": "CELL"
+                          },
+                          "then": [
+                            {
+                              "t": "say",
+                              "who": "aila_cell",
+                              "text": "姐姐的座，空着。……我记得每一个数字。"
+                            }
+                          ],
+                          "else": [
+                            {
+                              "t": "say",
+                              "who": "aila_consort",
+                              "text": "姐姐的座，空着。……我记得每一个数字。"
+                            }
+                          ]
                         }
                       ],
                       "else": [
@@ -18501,9 +18661,25 @@
                           },
                           "then": [
                             {
-                              "t": "say",
-                              "who": "mia",
-                              "text": "莉亚姐姐，说要报数的。……谁来报？"
+                              "t": "if",
+                              "when": {
+                                "var": "MIA_STANCE_FINAL",
+                                "eq": "CELL"
+                              },
+                              "then": [
+                                {
+                                  "t": "say",
+                                  "who": "mia_cell",
+                                  "text": "莉亚姐姐，说要报数的。……谁来报？"
+                                }
+                              ],
+                              "else": [
+                                {
+                                  "t": "say",
+                                  "who": "mia_consort",
+                                  "text": "莉亚姐姐，说要报数的。……谁来报？"
+                                }
+                              ]
                             }
                           ],
                           "else": [
@@ -18525,9 +18701,25 @@
                               },
                               "then": [
                                 {
-                                  "t": "say",
-                                  "who": "lia",
-                                  "text": "……零号的灯，没有了。"
+                                  "t": "if",
+                                  "when": {
+                                    "var": "LEAH_STANCE_FINAL",
+                                    "eq": "CELL"
+                                  },
+                                  "then": [
+                                    {
+                                      "t": "say",
+                                      "who": "lia_cell",
+                                      "text": "……零号的灯，没有了。"
+                                    }
+                                  ],
+                                  "else": [
+                                    {
+                                      "t": "say",
+                                      "who": "lia_consort",
+                                      "text": "……零号的灯，没有了。"
+                                    }
+                                  ]
                                 }
                               ],
                               "else": [
@@ -18581,7 +18773,7 @@
                     },
                     {
                       "t": "say",
-                      "who": "lia",
+                      "who": "lia_consort",
                       "text": "陛下今天也很安全。……我查过三遍。"
                     },
                     {
@@ -18606,7 +18798,7 @@
                     },
                     {
                       "t": "say",
-                      "who": "mia",
+                      "who": "mia_consort",
                       "text": "这盏也叫‘陛下’！……第一百零三号。"
                     },
                     {
@@ -18631,7 +18823,7 @@
                     },
                     {
                       "t": "say",
-                      "who": "serena",
+                      "who": "serena_consort",
                       "text": "镜子里只有你。……我只看你。"
                     },
                     {
@@ -18656,7 +18848,7 @@
                     },
                     {
                       "t": "say",
-                      "who": "evelyn",
+                      "who": "evelyn_consort",
                       "text": "陛下想要的，就是大家想要的。"
                     },
                     {
@@ -18681,7 +18873,7 @@
                     },
                     {
                       "t": "say",
-                      "who": "aila",
+                      "who": "aila_consort",
                       "text": "陛下的裁决，从来没有错。"
                     },
                     {
@@ -18706,7 +18898,7 @@
                     },
                     {
                       "t": "say",
-                      "who": "freya",
+                      "who": "freya_consort",
                       "text": "我们的陛下累了。今天不见人，好不好？"
                     },
                     {
@@ -18731,7 +18923,7 @@
                     },
                     {
                       "t": "say",
-                      "who": "ophelia",
+                      "who": "ophelia_consort",
                       "text": "你的名字是我吃过最好吃的。……再说一次。"
                     },
                     {
@@ -18756,7 +18948,7 @@
                     },
                     {
                       "t": "say",
-                      "who": "lilith",
+                      "who": "lilith_consort",
                       "text": "她们会的，我也会。……陛下要哪一种？"
                     },
                     {

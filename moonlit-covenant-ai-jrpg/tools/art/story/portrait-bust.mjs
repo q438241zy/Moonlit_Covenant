@@ -2,12 +2,13 @@
 // hair and clothes, composed with { background: false } — no backdrop, no full-frame lighting, only the figure
 // and its rim light — so the bust sits on day and night scenes like the NPC busts. The 832×1216 portrait is
 // scaled to the 600×800 bust frame (fit to height, centred) and faded out at the bottom like the NPC busts.
+// `outfit` swaps her clothes for a story outfit (same contract as tools/art/portrait/outfits, e.g. ch30-busts.mjs).
 import { compose } from '../portrait/base.mjs';
 
 const PW = 832, PH = 1216, BW = 600, BH = 800;
 
-export function portraitBust(heroine, { prefix, label, extras = [] }) {
-  const svg = compose(heroine, { background: false, extras, prefix });
+export function portraitBust(heroine, { prefix, label, extras = [], outfit }) {
+  const svg = compose(heroine, { background: false, extras, prefix, outfit });
   const open = svg.match(/^<svg[^>]*>/);
   if (!open || !svg.endsWith('</svg>')) throw new Error(`${prefix}: unexpected compose() output`);
   const inner = svg.slice(open[0].length, -'</svg>'.length);

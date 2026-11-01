@@ -673,5 +673,85 @@
     "name": "近卫",
     "color": "#9a9aa8",
     "art": null
+  },
+  "lia_consort": {
+    "name": "莉亚",
+    "color": "#ff6b7c",
+    "art": "/assets/story/npc/lia_consort.svg"
+  },
+  "lia_cell": {
+    "name": "莉亚",
+    "color": "#ff6b7c",
+    "art": "/assets/story/npc/lia_cell.svg"
+  },
+  "mia_consort": {
+    "name": "米娅",
+    "color": "#3fd0e0",
+    "art": "/assets/story/npc/mia_consort.svg"
+  },
+  "mia_cell": {
+    "name": "米娅",
+    "color": "#3fd0e0",
+    "art": "/assets/story/npc/mia_cell.svg"
+  },
+  "serena_consort": {
+    "name": "塞雷娜",
+    "color": "#b58cff",
+    "art": "/assets/story/npc/serena_consort.svg"
+  },
+  "serena_cell": {
+    "name": "塞雷娜",
+    "color": "#b58cff",
+    "art": "/assets/story/npc/serena_cell.svg"
+  },
+  "freya_consort": {
+    "name": "芙蕾娅",
+    "color": "#9fd4e4",
+    "art": "/assets/story/npc/freya_consort.svg"
+  },
+  "freya_cell": {
+    "name": "芙蕾娅",
+    "color": "#9fd4e4",
+    "art": "/assets/story/npc/freya_cell.svg"
+  },
+  "lilith_consort": {
+    "name": "莉莉丝",
+    "color": "#e8c860",
+    "art": "/assets/story/npc/lilith_consort.svg"
+  },
+  "lilith_cell": {
+    "name": "莉莉丝",
+    "color": "#e8c860",
+    "art": "/assets/story/npc/lilith_cell.svg"
+  },
+  "evelyn_consort": {
+    "name": "伊芙琳",
+    "color": "#f4e2b2",
+    "art": "/assets/story/npc/evelyn_consort.svg"
+  },
+  "evelyn_cell": {
+    "name": "伊芙琳",
+    "color": "#f4e2b2",
+    "art": "/assets/story/npc/evelyn_cell.svg"
+  },
+  "ophelia_consort": {
+    "name": "奥菲莉亚",
+    "color": "#e0905a",
+    "art": "/assets/story/npc/ophelia_consort.svg"
+  },
+  "ophelia_cell": {
+    "name": "奥菲莉亚",
+    "color": "#e0905a",
+    "art": "/assets/story/npc/ophelia_cell.svg"
+  },
+  "aila_consort": {
+    "name": "艾拉",
+    "color": "#f0d070",
+    "art": "/assets/story/npc/aila_consort.svg"
+  },
+  "aila_cell": {
+    "name": "艾拉",
+    "color": "#f0d070",
+    "art": "/assets/story/npc/aila_cell.svg"
   }
 }
