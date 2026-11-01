@@ -753,5 +753,125 @@
     "name": "艾拉",
     "color": "#f0d070",
     "art": "/assets/story/npc/aila_cell.svg"
+  },
+  "lia_y3_beside": {
+    "name": "莉亚",
+    "color": "#ff6b7c",
+    "art": "/assets/story/npc/lia_y3_beside.svg"
+  },
+  "lia_y3_apart": {
+    "name": "莉亚",
+    "color": "#ff6b7c",
+    "art": "/assets/story/npc/lia_y3_apart.svg"
+  },
+  "lia_y3_away": {
+    "name": "莉亚",
+    "color": "#ff6b7c",
+    "art": "/assets/story/npc/lia_y3_away.svg"
+  },
+  "mia_y3_beside": {
+    "name": "米娅",
+    "color": "#3fd0e0",
+    "art": "/assets/story/npc/mia_y3_beside.svg"
+  },
+  "mia_y3_apart": {
+    "name": "米娅",
+    "color": "#3fd0e0",
+    "art": "/assets/story/npc/mia_y3_apart.svg"
+  },
+  "mia_y3_away": {
+    "name": "米娅",
+    "color": "#3fd0e0",
+    "art": "/assets/story/npc/mia_y3_away.svg"
+  },
+  "serena_y3_beside": {
+    "name": "塞雷娜",
+    "color": "#b58cff",
+    "art": "/assets/story/npc/serena_y3_beside.svg"
+  },
+  "serena_y3_apart": {
+    "name": "塞雷娜",
+    "color": "#b58cff",
+    "art": "/assets/story/npc/serena_y3_apart.svg"
+  },
+  "serena_y3_away": {
+    "name": "塞雷娜",
+    "color": "#b58cff",
+    "art": "/assets/story/npc/serena_y3_away.svg"
+  },
+  "freya_y3_beside": {
+    "name": "芙蕾娅",
+    "color": "#9fd4e4",
+    "art": "/assets/story/npc/freya_y3_beside.svg"
+  },
+  "freya_y3_apart": {
+    "name": "芙蕾娅",
+    "color": "#9fd4e4",
+    "art": "/assets/story/npc/freya_y3_apart.svg"
+  },
+  "freya_y3_away": {
+    "name": "芙蕾娅",
+    "color": "#9fd4e4",
+    "art": "/assets/story/npc/freya_y3_away.svg"
+  },
+  "lilith_y3_beside": {
+    "name": "莉莉丝",
+    "color": "#e8c860",
+    "art": "/assets/story/npc/lilith_y3_beside.svg"
+  },
+  "lilith_y3_apart": {
+    "name": "莉莉丝",
+    "color": "#e8c860",
+    "art": "/assets/story/npc/lilith_y3_apart.svg"
+  },
+  "lilith_y3_away": {
+    "name": "莉莉丝",
+    "color": "#e8c860",
+    "art": "/assets/story/npc/lilith_y3_away.svg"
+  },
+  "evelyn_y3_beside": {
+    "name": "伊芙琳",
+    "color": "#f4e2b2",
+    "art": "/assets/story/npc/evelyn_y3_beside.svg"
+  },
+  "evelyn_y3_apart": {
+    "name": "伊芙琳",
+    "color": "#f4e2b2",
+    "art": "/assets/story/npc/evelyn_y3_apart.svg"
+  },
+  "evelyn_y3_away": {
+    "name": "伊芙琳",
+    "color": "#f4e2b2",
+    "art": "/assets/story/npc/evelyn_y3_away.svg"
+  },
+  "ophelia_y3_beside": {
+    "name": "奥菲莉亚",
+    "color": "#e0905a",
+    "art": "/assets/story/npc/ophelia_y3_beside.svg"
+  },
+  "ophelia_y3_apart": {
+    "name": "奥菲莉亚",
+    "color": "#e0905a",
+    "art": "/assets/story/npc/ophelia_y3_apart.svg"
+  },
+  "ophelia_y3_away": {
+    "name": "奥菲莉亚",
+    "color": "#e0905a",
+    "art": "/assets/story/npc/ophelia_y3_away.svg"
+  },
+  "aila_y3_beside": {
+    "name": "艾拉",
+    "color": "#f0d070",
+    "art": "/assets/story/npc/aila_y3_beside.svg"
+  },
+  "aila_y3_apart": {
+    "name": "艾拉",
+    "color": "#f0d070",
+    "art": "/assets/story/npc/aila_y3_apart.svg"
+  },
+  "aila_y3_away": {
+    "name": "艾拉",
+    "color": "#f0d070",
+    "art": "/assets/story/npc/aila_y3_away.svg"
   }
 }
