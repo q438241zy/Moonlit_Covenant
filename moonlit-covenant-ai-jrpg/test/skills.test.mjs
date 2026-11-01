@@ -248,3 +248,25 @@ test('技能稿 6.2: the side-story bonus needs a purple/red in her ③ slot and
   assert.equal(gaidenSkillBonus(acc, 'mia'), 0);
   assert.equal(gaidenSkillBonus(null, 'lia'), 0);
 });
+
+test('誓约技: 春回霜华 freezes damage without freezing turns; 零号机·无限工坊 waits for a skill to copy', () => {
+  const acc = accountUpTo(30);
+  acc.skillbook.party = ['freya', 'mia'];
+  acc.skillbook.oath = 'freya';
+  startCommission(acc, 'chief_hollow', { seed: 4 });
+  const B = acc.skillBattle;
+  while (availableActions(B).actor !== 'hero') actCommission(acc, { type: 'defend' });
+  B.resonance = 100;
+  assert.equal(actCommission(acc, { type: 'oath' }).ok, true);
+  assert.ok(!B.log.some((l) => /芙蕾娅在冰里|米娅在冰里/.test(l.text)), 'nobody skips a turn');
+  const acc2 = accountUpTo(30);
+  acc2.skillbook.party = ['mia', 'lia'];
+  acc2.skillbook.oath = 'mia';
+  startCommission(acc2, 'chief_hollow', { seed: 4 });
+  const B2 = acc2.skillBattle;
+  while (availableActions(B2).actor !== 'hero') actCommission(acc2, { type: 'defend' });
+  B2.resonance = 100;
+  assert.equal(availableActions(B2).oath.usable, false);
+  assert.equal(actCommission(acc2, { type: 'oath' }).ok, false);
+  assert.equal(B2.resonance, 100);
+});
