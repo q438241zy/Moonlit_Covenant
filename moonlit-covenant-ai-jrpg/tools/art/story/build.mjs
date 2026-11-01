@@ -62,6 +62,7 @@ import { ch17Busts } from './ch17-busts.mjs';
 import { ch18Busts } from './ch18-busts.mjs';
 import { ch19Busts } from './ch19-busts.mjs';
 import { ch20Busts } from './ch20-busts.mjs';
+import { ch30Busts } from './ch30-busts.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const locations = JSON.parse(fs.readFileSync(path.join(root, 'public/story/locations.json'), 'utf8'));
@@ -69,7 +70,7 @@ const speakers = JSON.parse(fs.readFileSync(path.join(root, 'public/story/speake
 
 const bgs = { ...villageBgs, ...nightBgs, ...dawnBgs, ...townBgs, ...millBgs, ...oldMillBgs, ...marshBgs, ...tideBgs, ...harborBgs, ...sewerBgs, ...innBgs, ...lighthouseBgs, ...alleyBgs, ...roofBgs, ...tideCaveBgs, ...tideNestBgs, ...guildDockBgs, ...whiteTowerBgs, ...holyCityBgs, ...archiveBgs, ...archTideBgs, ...northHillBgs, ...verdantBgs, ...ashPassBgs, ...frostbellBgs, ...furnaceBgs, ...dragonsleepBgs, ...ravenfeatherBgs, ...siegeBgs, ...moonringBgs };
 // bust id -> generator; the file is public/assets/story/npc/<id>.svg (several speakers may share one file)
-const npcBusts = { ...silhouetteBusts, lia: () => liaBust(), mia: () => miaBust(), serena: () => serenaBust(), ...ch12Busts, golden_assassin: () => goldenAssassinBust(), ...ch15Busts, ...ch16Busts, ...ch17Busts, ...ch18Busts, ...ch19Busts, ...ch20Busts };
+const npcBusts = { ...silhouetteBusts, lia: () => liaBust(), mia: () => miaBust(), serena: () => serenaBust(), ...ch12Busts, golden_assassin: () => goldenAssassinBust(), ...ch15Busts, ...ch16Busts, ...ch17Busts, ...ch18Busts, ...ch19Busts, ...ch20Busts, ...ch30Busts };
 const BG_BUDGET = 90 * 1024, NPC_BUDGET = 70 * 1024;
 
 function validate(rel, svg, { w, h, budget }) {
