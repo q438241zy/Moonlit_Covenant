@@ -323,13 +323,24 @@ test.after(() => {
   for (const child of children) if (child.exitCode === null) child.kill('SIGKILL');
 });
 
+// Windows 没有 POSIX 信号：child.kill('SIGTERM') 等于 TerminateProcess，server.mjs 的 shutdown() 不会跑，也就不写盘。
+// 所以 Windows 上多开一条 IPC，预载模块把收到的信号名 process.emit 出来，走的仍是 server.mjs 自己的信号处理。
+const SIGNAL_BRIDGE = process.platform === 'win32'
+  ? { args: ['--import', "data:text/javascript,process.on('message',(m)=>m?.signal&&process.emit(m.signal,m.signal));process.channel.unref();"], stdio: ['ipc'] }
+  : { args: [], stdio: [] };
+/** 给子进程发信号；有 IPC 桥时经桥转发（SIGKILL 例外：本来就是要强杀）。 */
+function sendSignal(child, signal) {
+  if (child.connected && signal !== 'SIGKILL') child.send({ signal });
+  else child.kill(signal);
+}
+
 async function startServer(env = {}) {
   const port = await freePort();
   const fullEnv = { ...process.env, AI_MODE: 'demo', HOST: '127.0.0.1', PORT: String(port), NODE_ENV: 'test', PERSIST: '0', ...env };
   delete fullEnv.ADMIN_KEY;
   delete fullEnv.DEMO_TOOLS;
   if (!env.SAVE_FILE) delete fullEnv.SAVE_FILE;
-  const child = spawn(process.execPath, ['server.mjs'], { cwd: projectDir, env: fullEnv, stdio: ['ignore', 'pipe', 'pipe'] });
+  const child = spawn(process.execPath, [...SIGNAL_BRIDGE.args, 'server.mjs'], { cwd: projectDir, env: fullEnv, stdio: ['ignore', 'pipe', 'pipe', ...SIGNAL_BRIDGE.stdio] });
   children.add(child);
   let logs = '';
   child.stdout.on('data', (chunk) => { logs += chunk; });
@@ -348,7 +359,7 @@ async function startServer(env = {}) {
   return {
     base,
     async stop(signal = 'SIGTERM') {
-      if (child.exitCode === null && child.signalCode === null) child.kill(signal);
+      if (child.exitCode === null && child.signalCode === null) sendSignal(child, signal);
       await Promise.race([exited, new Promise((resolve) => setTimeout(resolve, 4000))]);
       children.delete(child);
     }
