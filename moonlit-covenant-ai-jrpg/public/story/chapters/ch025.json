@@ -1078,7 +1078,8 @@
         {
           "t": "narr",
           "style": "picture",
-          "text": "霜上，一个字，一个字，长出来。"
+          "text": "霜上，一个字，一个字，长出来。",
+          "insert": "ch25_frost_words"
         },
         {
           "t": "narr",
@@ -7514,7 +7515,7 @@
                 },
                 {
                   "t": "say",
-                  "who": "ilvo",
+                  "who": "ilvo_open",
                   "text": "……有人，叫我醒。"
                 },
                 {
@@ -9265,7 +9266,8 @@
         {
           "t": "narr",
           "style": "picture",
-          "text": "母本，摊开在石台上。"
+          "text": "母本，摊开在石台上。",
+          "insert": "ch25_mother_book"
         },
         {
           "t": "narr",
@@ -12268,7 +12270,8 @@
             {
               "t": "say",
               "who": "freya",
-              "text": "……冰之心。睡着的。"
+              "text": "……冰之心。睡着的。",
+              "insert": "ch25_ice_heart"
             },
             {
               "t": "set",

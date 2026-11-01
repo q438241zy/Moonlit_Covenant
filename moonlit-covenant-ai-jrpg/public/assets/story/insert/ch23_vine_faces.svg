@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="藤的尖端长出一张张脸，没有影子">
+<defs><radialGradient id="siCh23Vines-g0" cx="0.5" cy="0.35" r="0.7"><stop offset="0" stop-color="#1c1a2e"/><stop offset="1" stop-color="#07060e"/></radialGradient><radialGradient id="siCh23Vines-g1" cx="0.5" cy="0.5" r="0.72"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="0.62" stop-color="#000" stop-opacity="0.15"/><stop offset="1" stop-color="#000" stop-opacity="0.6"/></radialGradient></defs>
+<rect width="800" height="600" fill="#07060e"/>
+<rect width="800" height="600" fill="url(#siCh23Vines-g0)"/>
+<path d="M0,0H800V600H0Z" fill="#14201a"/>
+<path d="M142.6,600C120,400 240,320 180,230M385.3,600C270,340 390,260 330,170M408.9,600C420,380 540,300 480,210M694.5,600C560,430 680,350 620,260M185.3,600C200,530 320,450 260,360M487.3,600C480,540 600,460 540,370" fill="none" stroke="#2a4a2a" stroke-width="14" stroke-linecap="round"/>
+<path d="M146,200a34,42 0 1 0 68,0a34,42 0 1 0 -68,0Z" fill="#a8b4a0" opacity=".85"/><path d="M166,194h8M186,194h8M174,216q6,3 12,0" stroke="#1a2a1a" stroke-width="3" stroke-linecap="round"/>
+<path d="M296,140a34,42 0 1 0 68,0a34,42 0 1 0 -68,0Z" fill="#a8b4a0" opacity=".85"/><path d="M316,134h8M336,134h8M324,156q6,3 12,0" stroke="#1a2a1a" stroke-width="3" stroke-linecap="round"/>
+<path d="M446,180a34,42 0 1 0 68,0a34,42 0 1 0 -68,0Z" fill="#a8b4a0" opacity=".85"/><path d="M466,174h8M486,174h8M474,196q6,3 12,0" stroke="#1a2a1a" stroke-width="3" stroke-linecap="round"/>
+<path d="M586,230a34,42 0 1 0 68,0a34,42 0 1 0 -68,0Z" fill="#a8b4a0" opacity=".85"/><path d="M606,224h8M626,224h8M614,246q6,3 12,0" stroke="#1a2a1a" stroke-width="3" stroke-linecap="round"/>
+<path d="M226,330a34,42 0 1 0 68,0a34,42 0 1 0 -68,0Z" fill="#a8b4a0" opacity=".85"/><path d="M246,324h8M266,324h8M254,346q6,3 12,0" stroke="#1a2a1a" stroke-width="3" stroke-linecap="round"/>
+<path d="M506,340a34,42 0 1 0 68,0a34,42 0 1 0 -68,0Z" fill="#a8b4a0" opacity=".85"/><path d="M526,334h8M546,334h8M534,356q6,3 12,0" stroke="#1a2a1a" stroke-width="3" stroke-linecap="round"/>
+<rect width="800" height="600" fill="url(#siCh23Vines-g1)"/>
+</svg>

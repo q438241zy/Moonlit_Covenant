@@ -4795,7 +4795,8 @@
         {
           "t": "narr",
           "style": "picture",
-          "text": "每一根藤的尖端，长出一张脸。"
+          "text": "每一根藤的尖端，长出一张脸。",
+          "insert": "ch23_vine_faces"
         },
         {
           "t": "narr",
@@ -7480,7 +7481,8 @@
         {
           "t": "narr",
           "style": "picture",
-          "text": "他打开匣子。一叠地契。每一张的背面，盖着三家的章。"
+          "text": "他打开匣子。一叠地契。每一张的背面，盖着三家的章。",
+          "insert": "ch23_deeds"
         },
         {
           "t": "narr",
@@ -9088,7 +9090,8 @@
         {
           "t": "narr",
           "style": "picture",
-          "text": "石台上，是那个木环。谁伸手，根就往回缩的那一个。"
+          "text": "石台上，是那个木环。谁伸手，根就往回缩的那一个。",
+          "insert": "ch23_wood_ring"
         },
         {
           "t": "say",
@@ -9174,12 +9177,12 @@
         },
         {
           "t": "say",
-          "who": "veldra",
+          "who": "veldra_plain",
           "text": "……七席，没有了。"
         },
         {
           "t": "say",
-          "who": "veldra",
+          "who": "veldra_plain",
           "text": "印，交给谁？"
         },
         {

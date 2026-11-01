@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="石台上的木环：根往回缩，叶子很细，七种颜色">
+<defs><radialGradient id="siCh23Ring-g0" cx="0.5" cy="0.45" r="0.7"><stop offset="0" stop-color="#3a3a42"/><stop offset="1" stop-color="#141418"/></radialGradient><radialGradient id="siCh23Ring-g1" cx="0.5" cy="0.5" r="0.72"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="0.62" stop-color="#000" stop-opacity="0.1375"/><stop offset="1" stop-color="#000" stop-opacity="0.55"/></radialGradient></defs>
+<rect width="800" height="600" fill="#141418"/>
+<rect width="800" height="600" fill="url(#siCh23Ring-g0)"/>
+<path d="M120,360L680,360L720,460H80Z" fill="#5a5a5e"/><path d="M80,460H720V520H80Z" fill="#3a3a3e"/>
+<path d="M290,320a110,60 0 1 0 220,0a110,60 0 1 0 -220,0Z" fill="none" stroke="#5a7a3a" stroke-width="22"/><path d="M290,316a110,60 0 1 0 220,0a110,60 0 1 0 -220,0Z" fill="none" stroke="#8aaa5a" stroke-width="6"/>
+<path d="M300,350C260,380 220,370 200,400M500,350C540,380 580,372 600,400M340,372C330,400 300,410 290,430M460,372C470,400 500,410 510,430" fill="none" stroke="#4a3a20" stroke-width="7" stroke-linecap="round"/>
+<path d="M282,302a8,14 0 1 0 16,0a8,14 0 1 0 -16,0Z" fill="#e05050"/>
+<path d="M296.7,272a8,14 0 1 0 16,0a8,14 0 1 0 -16,0Z" fill="#e09040"/>
+<path d="M337,250a8,14 0 1 0 16,0a8,14 0 1 0 -16,0Z" fill="#e0d050"/>
+<path d="M392,242a8,14 0 1 0 16,0a8,14 0 1 0 -16,0Z" fill="#50b060"/>
+<path d="M447,250a8,14 0 1 0 16,0a8,14 0 1 0 -16,0Z" fill="#4a8ae0"/>
+<path d="M487.3,272a8,14 0 1 0 16,0a8,14 0 1 0 -16,0Z" fill="#8a5ae0"/>
+<path d="M502,302a8,14 0 1 0 16,0a8,14 0 1 0 -16,0Z" fill="#e8e8f0"/>
+<rect width="800" height="600" fill="url(#siCh23Ring-g1)"/>
+</svg>

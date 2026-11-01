@@ -10121,7 +10121,7 @@
                         },
                         {
                           "t": "say",
-                          "who": "morcan",
+                          "who": "morcan_closed",
                           "text": "……我。"
                         },
                         {
@@ -12466,22 +12466,26 @@
             {
               "t": "narr",
               "style": "picture",
-              "text": "塞弗林写账："
+              "text": "塞弗林写账：",
+              "insert": "ch30_ledger_last"
             },
             {
               "t": "narr",
               "style": "caption",
-              "text": "月环：上锁。"
+              "text": "月环：上锁。",
+              "insert": "ch30_ledger_last"
             },
             {
               "t": "narr",
               "style": "caption",
-              "text": "件。"
+              "text": "件。",
+              "insert": "ch30_ledger_last"
             },
             {
               "t": "narr",
               "style": "caption",
-              "text": "本月，往拱潮门：〇。（往：晨阶）"
+              "text": "本月，往拱潮门：〇。（往：晨阶）",
+              "insert": "ch30_ledger_last"
             },
             {
               "t": "set",
@@ -12505,22 +12509,26 @@
                 {
                   "t": "narr",
                   "style": "picture",
-                  "text": "塞弗林写账："
+                  "text": "塞弗林写账：",
+                  "insert": "ch30_ledger_last"
                 },
                 {
                   "t": "narr",
                   "style": "caption",
-                  "text": "月环：上锁。"
+                  "text": "月环：上锁。",
+                  "insert": "ch30_ledger_last"
                 },
                 {
                   "t": "narr",
                   "style": "caption",
-                  "text": "往：冠。往：冠。……"
+                  "text": "往：冠。往：冠。……",
+                  "insert": "ch30_ledger_last"
                 },
                 {
                   "t": "narr",
                   "style": "caption",
-                  "text": "其余：件。"
+                  "text": "其余：件。",
+                  "insert": "ch30_ledger_last"
                 },
                 {
                   "t": "set",
@@ -12544,17 +12552,20 @@
                     {
                       "t": "narr",
                       "style": "picture",
-                      "text": "塞弗林写账："
+                      "text": "塞弗林写账：",
+                      "insert": "ch30_ledger_last"
                     },
                     {
                       "t": "narr",
                       "style": "caption",
-                      "text": "来处｜件｜往"
+                      "text": "来处｜件｜往",
+                      "insert": "ch30_ledger_last"
                     },
                     {
                       "t": "narr",
                       "style": "caption",
-                      "text": "往：冠。往：冠。往：冠。往：冠。往：冠。往：冠。往：冠。往：冠。"
+                      "text": "往：冠。往：冠。往：冠。往：冠。往：冠。往：冠。往：冠。往：冠。",
+                      "insert": "ch30_ledger_last"
                     },
                     {
                       "t": "set",
@@ -12599,26 +12610,30 @@
                             {
                               "t": "narr",
                               "style": "picture",
-                              "text": "莉亚写账："
+                              "text": "莉亚写账：",
+                              "insert": "ch30_ledger_last"
                             }
                           ],
                           "else": [
                             {
                               "t": "narr",
                               "style": "picture",
-                              "text": "米娅写账："
+                              "text": "米娅写账：",
+                              "insert": "ch30_ledger_last"
                             }
                           ]
                         },
                         {
                           "t": "narr",
                           "style": "caption",
-                          "text": "进贡簿"
+                          "text": "进贡簿",
+                          "insert": "ch30_ledger_last"
                         },
                         {
                           "t": "narr",
                           "style": "caption",
-                          "text": "来处：赤焰。铸金。夜鸦。霜潮。翠影。龙脊。晨光。"
+                          "text": "来处：赤焰。铸金。夜鸦。霜潮。翠影。龙脊。晨光。",
+                          "insert": "ch30_ledger_last"
                         },
                         {
                           "t": "if",
@@ -12644,17 +12659,20 @@
                             {
                               "t": "narr",
                               "style": "picture",
-                              "text": "莉亚的笔，停了一拍。"
+                              "text": "莉亚的笔，停了一拍。",
+                              "insert": "ch30_ledger_last"
                             },
                             {
                               "t": "narr",
                               "style": "picture",
-                              "text": "她写："
+                              "text": "她写：",
+                              "insert": "ch30_ledger_last"
                             },
                             {
                               "t": "narr",
                               "style": "caption",
-                              "text": "（宫里，不记‘往’。）"
+                              "text": "（宫里，不记‘往’。）",
+                              "insert": "ch30_ledger_last"
                             }
                           ]
                         },
@@ -12690,51 +12708,60 @@
                             {
                               "t": "narr",
                               "style": "picture",
-                              "text": "莉亚写账："
+                              "text": "莉亚写账：",
+                              "insert": "ch30_ledger_last"
                             }
                           ],
                           "else": [
                             {
                               "t": "narr",
                               "style": "picture",
-                              "text": "伊芙琳写账："
+                              "text": "伊芙琳写账：",
+                              "insert": "ch30_ledger_last"
                             }
                           ]
                         },
                         {
                           "t": "narr",
                           "style": "caption",
-                          "text": "月环：上锁。"
+                          "text": "月环：上锁。",
+                          "insert": "ch30_ledger_last"
                         },
                         {
                           "t": "narr",
                           "style": "caption",
-                          "text": "救回：归名册。"
+                          "text": "救回：归名册。",
+                          "insert": "ch30_ledger_last"
                         },
                         {
                           "t": "narr",
                           "style": "caption",
-                          "text": "没回来：三十六页。——都念了。"
+                          "text": "没回来：三十六页。——都念了。",
+                          "insert": "ch30_ledger_last"
                         },
                         {
                           "t": "narr",
                           "style": "caption",
-                          "text": "对面：名字。"
+                          "text": "对面：名字。",
+                          "insert": "ch30_ledger_last"
                         },
                         {
                           "t": "narr",
                           "style": "caption",
-                          "text": "监督意见：等得住。"
+                          "text": "监督意见：等得住。",
+                          "insert": "ch30_ledger_last"
                         },
                         {
                           "t": "narr",
                           "style": "caption",
-                          "text": "本月，往拱潮门：〇。"
+                          "text": "本月，往拱潮门：〇。",
+                          "insert": "ch30_ledger_last"
                         },
                         {
                           "t": "narr",
                           "style": "caption",
-                          "text": "下个月，往拱潮门："
+                          "text": "下个月，往拱潮门：",
+                          "insert": "ch30_ledger_last"
                         },
                         {
                           "t": "if",
@@ -12760,12 +12787,14 @@
                             {
                               "t": "narr",
                               "style": "picture",
-                              "text": "莉亚的笔，停了一拍。"
+                              "text": "莉亚的笔，停了一拍。",
+                              "insert": "ch30_ledger_last"
                             },
                             {
                               "t": "narr",
                               "style": "picture",
-                              "text": "她没有写数字。她在那一行下面，画了一条线。"
+                              "text": "她没有写数字。她在那一行下面，画了一条线。",
+                              "insert": "ch30_ledger_last"
                             }
                           ]
                         },
@@ -18588,12 +18617,22 @@
                       },
                       "then": [
                         {
+                          "t": "bg",
+                          "bg": "arch-tide-gate-sanctuary-cells",
+                          "fx": "fade"
+                        },
+                        {
                           "t": "say",
                           "who": "lilith_cell",
                           "text": "她坐过那里。……她没有跪。"
                         }
                       ],
                       "else": [
+                        {
+                          "t": "bg",
+                          "bg": "gilded-cage",
+                          "fx": "fade"
+                        },
                         {
                           "t": "say",
                           "who": "lilith_consort",
@@ -18628,12 +18667,22 @@
                           },
                           "then": [
                             {
+                              "t": "bg",
+                              "bg": "arch-tide-gate-sanctuary-cells",
+                              "fx": "fade"
+                            },
+                            {
                               "t": "say",
                               "who": "aila_cell",
                               "text": "姐姐的座，空着。……我记得每一个数字。"
                             }
                           ],
                           "else": [
+                            {
+                              "t": "bg",
+                              "bg": "gilded-cage",
+                              "fx": "fade"
+                            },
                             {
                               "t": "say",
                               "who": "aila_consort",
@@ -18668,12 +18717,22 @@
                               },
                               "then": [
                                 {
+                                  "t": "bg",
+                                  "bg": "arch-tide-gate-sanctuary-cells",
+                                  "fx": "fade"
+                                },
+                                {
                                   "t": "say",
                                   "who": "mia_cell",
                                   "text": "莉亚姐姐，说要报数的。……谁来报？"
                                 }
                               ],
                               "else": [
+                                {
+                                  "t": "bg",
+                                  "bg": "gilded-cage",
+                                  "fx": "fade"
+                                },
                                 {
                                   "t": "say",
                                   "who": "mia_consort",
@@ -18708,12 +18767,22 @@
                                   },
                                   "then": [
                                     {
+                                      "t": "bg",
+                                      "bg": "arch-tide-gate-sanctuary-cells",
+                                      "fx": "fade"
+                                    },
+                                    {
                                       "t": "say",
                                       "who": "lia_cell",
                                       "text": "……零号的灯，没有了。"
                                     }
                                   ],
                                   "else": [
+                                    {
+                                      "t": "bg",
+                                      "bg": "gilded-cage",
+                                      "fx": "fade"
+                                    },
                                     {
                                       "t": "say",
                                       "who": "lia_consort",
@@ -19034,7 +19103,8 @@
                         {
                           "t": "narr",
                           "style": "caption",
-                          "text": "《帝国法典》第一条：人不凭洗礼簿为人。"
+                          "text": "《帝国法典》第一条：人不凭洗礼簿为人。",
+                          "insert": "ch30_code_first"
                         },
                         {
                           "t": "narr",
@@ -19481,12 +19551,22 @@
                       },
                       "then": [
                         {
+                          "t": "bg",
+                          "bg": "arch-tide-gate-sanctuary-cells",
+                          "fx": "fade"
+                        },
+                        {
                           "t": "narr",
                           "style": "picture",
                           "text": "莉亚从牢里答。"
                         }
                       ],
                       "else": [
+                        {
+                          "t": "bg",
+                          "bg": "gilded-cage",
+                          "fx": "fade"
+                        },
                         {
                           "t": "narr",
                           "style": "picture",
@@ -19513,12 +19593,22 @@
                           },
                           "then": [
                             {
+                              "t": "bg",
+                              "bg": "arch-tide-gate-sanctuary-cells",
+                              "fx": "fade"
+                            },
+                            {
                               "t": "narr",
                               "style": "picture",
                               "text": "米娅从牢里答。"
                             }
                           ],
                           "else": [
+                            {
+                              "t": "bg",
+                              "bg": "gilded-cage",
+                              "fx": "fade"
+                            },
                             {
                               "t": "narr",
                               "style": "picture",
@@ -19545,12 +19635,22 @@
                               },
                               "then": [
                                 {
+                                  "t": "bg",
+                                  "bg": "arch-tide-gate-sanctuary-cells",
+                                  "fx": "fade"
+                                },
+                                {
                                   "t": "narr",
                                   "style": "picture",
                                   "text": "塞雷娜从牢里答。"
                                 }
                               ],
                               "else": [
+                                {
+                                  "t": "bg",
+                                  "bg": "gilded-cage",
+                                  "fx": "fade"
+                                },
                                 {
                                   "t": "narr",
                                   "style": "picture",
@@ -19577,12 +19677,22 @@
                                   },
                                   "then": [
                                     {
+                                      "t": "bg",
+                                      "bg": "arch-tide-gate-sanctuary-cells",
+                                      "fx": "fade"
+                                    },
+                                    {
                                       "t": "narr",
                                       "style": "picture",
                                       "text": "伊芙琳从牢里答。"
                                     }
                                   ],
                                   "else": [
+                                    {
+                                      "t": "bg",
+                                      "bg": "gilded-cage",
+                                      "fx": "fade"
+                                    },
                                     {
                                       "t": "narr",
                                       "style": "picture",
@@ -19609,12 +19719,22 @@
                                       },
                                       "then": [
                                         {
+                                          "t": "bg",
+                                          "bg": "arch-tide-gate-sanctuary-cells",
+                                          "fx": "fade"
+                                        },
+                                        {
                                           "t": "narr",
                                           "style": "picture",
                                           "text": "艾拉从牢里答。"
                                         }
                                       ],
                                       "else": [
+                                        {
+                                          "t": "bg",
+                                          "bg": "gilded-cage",
+                                          "fx": "fade"
+                                        },
                                         {
                                           "t": "narr",
                                           "style": "picture",
@@ -19641,12 +19761,22 @@
                                           },
                                           "then": [
                                             {
+                                              "t": "bg",
+                                              "bg": "arch-tide-gate-sanctuary-cells",
+                                              "fx": "fade"
+                                            },
+                                            {
                                               "t": "narr",
                                               "style": "picture",
                                               "text": "芙蕾娅从牢里答。"
                                             }
                                           ],
                                           "else": [
+                                            {
+                                              "t": "bg",
+                                              "bg": "gilded-cage",
+                                              "fx": "fade"
+                                            },
                                             {
                                               "t": "narr",
                                               "style": "picture",
@@ -19673,12 +19803,22 @@
                                               },
                                               "then": [
                                                 {
+                                                  "t": "bg",
+                                                  "bg": "arch-tide-gate-sanctuary-cells",
+                                                  "fx": "fade"
+                                                },
+                                                {
                                                   "t": "narr",
                                                   "style": "picture",
                                                   "text": "奥菲莉亚从牢里答。"
                                                 }
                                               ],
                                               "else": [
+                                                {
+                                                  "t": "bg",
+                                                  "bg": "gilded-cage",
+                                                  "fx": "fade"
+                                                },
                                                 {
                                                   "t": "narr",
                                                   "style": "picture",
@@ -19705,12 +19845,22 @@
                                                   },
                                                   "then": [
                                                     {
+                                                      "t": "bg",
+                                                      "bg": "arch-tide-gate-sanctuary-cells",
+                                                      "fx": "fade"
+                                                    },
+                                                    {
                                                       "t": "narr",
                                                       "style": "picture",
                                                       "text": "莉莉丝从牢里答。"
                                                     }
                                                   ],
                                                   "else": [
+                                                    {
+                                                      "t": "bg",
+                                                      "bg": "gilded-cage",
+                                                      "fx": "fade"
+                                                    },
                                                     {
                                                       "t": "narr",
                                                       "style": "picture",
@@ -19847,6 +19997,11 @@
                   ]
                 },
                 {
+                  "t": "bg",
+                  "bg": "white-tower-throne",
+                  "fx": "fade"
+                },
+                {
                   "t": "narr",
                   "style": "picture",
                   "text": "三年后的忌日。晨钟，一下一下地敲。"
@@ -19975,12 +20130,14 @@
                         {
                           "t": "narr",
                           "style": "picture",
-                          "text": "一个信差，走过跪着的人。手上，一枚牧羊的铜哨。没有附信。"
+                          "text": "一个信差，走过跪着的人。手上，一枚牧羊的铜哨。没有附信。",
+                          "insert": "ch30_whistle"
                         },
                         {
                           "t": "narr",
                           "style": "picture",
-                          "text": "最后一格：帝冠的内侧，第一道细细的裂。"
+                          "text": "最后一格：帝冠的内侧，第一道细细的裂。",
+                          "insert": "ch30_crown_crack"
                         },
                         {
                           "t": "set",
@@ -21003,7 +21160,8 @@
                         {
                           "t": "narr",
                           "style": "picture",
-                          "text": "一个男孩跑过麦田。十一岁。脖子上，一枚牧羊的铜哨。"
+                          "text": "一个男孩跑过麦田。十一岁。脖子上，一枚牧羊的铜哨。",
+                          "insert": "ch30_whistle"
                         },
                         {
                           "t": "say",
@@ -21013,7 +21171,8 @@
                         {
                           "t": "narr",
                           "style": "picture",
-                          "text": "他吹响了铜哨。"
+                          "text": "他吹响了铜哨。",
+                          "insert": "ch30_whistle"
                         },
                         {
                           "t": "set",

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="白石阶底下，拱潮门的水道口：白色石墙下一道低矮的拱形出水口，铁栅拉起了一半，黑水从里面滑出来流进石砌的水池，长长的白石阶往右上方升去，灰色的黄昏；一缕甜的黑烟从拱里飘出来">
+<defs><linearGradient id="sbAtMouth-g0" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a4a58"/><stop offset="0.55" stop-color="#8a8494"/><stop offset="1" stop-color="#6a6470"/></linearGradient><linearGradient id="sbAtMouth-g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d8d4cc"/><stop offset="1" stop-color="#a8a49c"/></linearGradient><filter id="sbAtMouth-b2" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="9"/></filter><radialGradient id="sbAtMouth-g2" cx="0.45" cy="0.55" r="0.8"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="0.6" stop-color="#000" stop-opacity="0.2"/><stop offset="1" stop-color="#000" stop-opacity="0.65"/></radialGradient></defs>
+<rect width="1600" height="900" fill="url(#sbAtMouth-g0)"/>
+<path d="M0,120H1100L1180,170V700H0Z" fill="url(#sbAtMouth-g1)"/>
+<path d="M0,160H1120M0,160v48M120,160v48M240,160v48M360,160v48M480,160v48M600,160v48M720,160v48M840,160v48M960,160v48M1080,160v48M0,208H1120M0,208v48M120,208v48M240,208v48M360,208v48M480,208v48M600,208v48M720,208v48M840,208v48M960,208v48M1080,208v48M0,256H1120M0,256v48M120,256v48M240,256v48M360,256v48M480,256v48M600,256v48M720,256v48M840,256v48M960,256v48M1080,256v48M0,304H1120M0,304v48M120,304v48M240,304v48M360,304v48M480,304v48M600,304v48M720,304v48M840,304v48M960,304v48M1080,304v48M0,352H1120M0,352v48M120,352v48M240,352v48M360,352v48M480,352v48M600,352v48M720,352v48M840,352v48M960,352v48M1080,352v48M0,400H1120M0,400v48M120,400v48M240,400v48M360,400v48M480,400v48M600,400v48M720,400v48M840,400v48M960,400v48M1080,400v48M0,448H1120M0,448v48M120,448v48M240,448v48M360,448v48M480,448v48M600,448v48M720,448v48M840,448v48M960,448v48M1080,448v48M0,496H1120M0,496v48M120,496v48M240,496v48M360,496v48M480,496v48M600,496v48M720,496v48M840,496v48M960,496v48M1080,496v48M0,544H1120M0,544v48M120,544v48M240,544v48M360,544v48M480,544v48M600,544v48M720,544v48M840,544v48M960,544v48M1080,544v48M0,592H1120M0,592v48M120,592v48M240,592v48M360,592v48M480,592v48M600,592v48M720,592v48M840,592v48M960,592v48M1080,592v48M0,640H1120M0,640v48M120,640v48M240,640v48M360,640v48M480,640v48M600,640v48M720,640v48M840,640v48M960,640v48M1080,640v48M0,688H1120M0,688v48M120,688v48M240,688v48M360,688v48M480,688v48M600,688v48M720,688v48M840,688v48M960,688v48M1080,688v48" stroke="#8a867e" stroke-width="2" opacity=".45"/>
+<path d="M900,760h700v34H900z" fill="#f0ece4"/><path d="M900,760h700" stroke="#ffffff" stroke-width="2" opacity=".6"/>
+<path d="M940,726h660v34H940z" fill="#ede9e1"/><path d="M940,726h660" stroke="#ffffff" stroke-width="2" opacity=".6"/>
+<path d="M980,692h620v34H980z" fill="#eae6de"/><path d="M980,692h620" stroke="#ffffff" stroke-width="2" opacity=".6"/>
+<path d="M1020,658h580v34H1020z" fill="#e7e3db"/><path d="M1020,658h580" stroke="#ffffff" stroke-width="2" opacity=".6"/>
+<path d="M1060,624h540v34H1060z" fill="#e4e0d8"/><path d="M1060,624h540" stroke="#ffffff" stroke-width="2" opacity=".6"/>
+<path d="M1100,590h500v34H1100z" fill="#e0dcd4"/><path d="M1100,590h500" stroke="#ffffff" stroke-width="2" opacity=".6"/>
+<path d="M1140,556h460v34H1140z" fill="#ddd9d1"/><path d="M1140,556h460" stroke="#ffffff" stroke-width="2" opacity=".6"/>
+<path d="M1180,522h420v34H1180z" fill="#dad6ce"/><path d="M1180,522h420" stroke="#ffffff" stroke-width="2" opacity=".6"/>
+<path d="M1220,488h380v34H1220z" fill="#d7d3cb"/><path d="M1220,488h380" stroke="#ffffff" stroke-width="2" opacity=".6"/>
+<path d="M1260,454h340v34H1260z" fill="#d4d0c8"/><path d="M1260,454h340" stroke="#ffffff" stroke-width="2" opacity=".6"/>
+<path d="M1300,420h300v34H1300z" fill="#d1cdc5"/><path d="M1300,420h300" stroke="#ffffff" stroke-width="2" opacity=".6"/>
+<path d="M1340,386h260v34H1340z" fill="#cecac2"/><path d="M1340,386h260" stroke="#ffffff" stroke-width="2" opacity=".6"/>
+<path d="M1380,352h220v34H1380z" fill="#cbc7bf"/><path d="M1380,352h220" stroke="#ffffff" stroke-width="2" opacity=".6"/>
+<path d="M1420,318h180v34H1420z" fill="#c8c4bc"/><path d="M1420,318h180" stroke="#ffffff" stroke-width="2" opacity=".6"/>
+<path d="M1460,284h140v34H1460z" fill="#c4c0b8"/><path d="M1460,284h140" stroke="#ffffff" stroke-width="2" opacity=".6"/>
+<path d="M1500,250h100v34H1500z" fill="#c1bdb5"/><path d="M1500,250h100" stroke="#ffffff" stroke-width="2" opacity=".6"/>
+<path d="M1540,216h60v34H1540z" fill="#bebab2"/><path d="M1540,216h60" stroke="#ffffff" stroke-width="2" opacity=".6"/>
+<path d="M1580,182h20v34H1580z" fill="#bbb7af"/><path d="M1580,182h20" stroke="#ffffff" stroke-width="2" opacity=".6"/>
+<path d="M300,700V470A200,200 0 0 1 700,470V700Z" fill="#7a766e"/><path d="M330,700V480A170,170 0 0 1 670,480V700Z" fill="#08080c"/>
+<path d="M346,360V560M372,360V560M398,360V560M424,360V560M450,360V560M476,360V560M502,360V560M528,360V560M554,360V560M580,360V560M606,360V560M632,360V560M658,360V560M330,420H670M330,560H670" stroke="#2a2a30" stroke-width="7"/><path d="M500,300V360M470,300h60" stroke="#3a3a40" stroke-width="5"/>
+<path d="M330,700C360,660 640,660 670,700L760,900H240Z" fill="#0c0c12"/><path d="M0,760H1600V900H0Z" fill="#2a2a32"/><path d="M0,760H1600" stroke="#c8c4bc" stroke-width="6"/>
+<path d="M0,800C400,780 1200,790 1600,810V900H0Z" fill="#101016"/>
+<path d="M576.1,819.9q24,-6 48,0M381.4,741.4q24,-6 48,0M679.6,733.3q24,-6 48,0M544.4,861.3q24,-6 48,0M550.4,799.1q24,-6 48,0M636.4,783.1q24,-6 48,0M290.5,849.8q24,-6 48,0M316,803q24,-6 48,0M527.3,769.7q24,-6 48,0M424.1,834q24,-6 48,0M559.4,702.6q24,-6 48,0M662.6,711.6q24,-6 48,0M494.3,737.5q24,-6 48,0M721.9,713.4q24,-6 48,0M715.1,706.4q24,-6 48,0M510.5,732.5q24,-6 48,0M385.7,757.9q24,-6 48,0M567.6,790.5q24,-6 48,0M678.5,704.4q24,-6 48,0M594.4,818.5q24,-6 48,0M433,782q24,-6 48,0M582.8,791.7q24,-6 48,0" fill="none" stroke="#5a5a68" stroke-width="2" opacity=".5"/>
+<path d="M480,560C440,500 520,460 480,400S540,320 500,260S560,200 540,140" fill="none" stroke="#141018" stroke-width="40" stroke-linecap="round" opacity=".55" filter="url(#sbAtMouth-b2)"/>
+<rect width="1600" height="900" fill="url(#sbAtMouth-g2)"/>
+</svg>

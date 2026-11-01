@@ -2309,4 +2309,74 @@ CAST.gold_scale = {
     + `<path d="M110,402h6M124,402h6M470,402h6M484,402h6" stroke="#5a5050" stroke-width="2.4"/><circle cx="300" cy="134" r="18" fill="#f0d070"/>`,
 };
 
+// ---------------------------------------------------------------------------------------------
+// story variants (scripts 23, 25, 28, 29, 30 美術需求「差分」)
+// ---------------------------------------------------------------------------------------------
+
+// 神帝莫尔坎·最后 (30〔仁〕) — the crown has slid off his head; his eye is closed (神帝「最后闭眼」差分)
+CAST.morcan_closed = {
+  ...CAST.morcan, id: 'morcan_closed', label: '神帝莫尔坎·最后：冠已经从头上滑落，眼睛闭着', rim: '#b8b0d8',
+  front: () => `<path d="M224,262q10,6 20,0" fill="none" stroke="#2a2a30" stroke-width="2.4" stroke-linecap="round"/><path d="M228,330h10" stroke="#4a4048" stroke-width="2"/>`,
+};
+
+// 雷蒙德·剑落 (29) — after Aila's stroke: the sword lies on the white stair, the scabbard at his hip is empty, his hand hangs
+CAST.raymond_disarmed = {
+  ...CAST.raymond, id: 'raymond_disarmed', label: '雷蒙德·剑落：同一身银甲，腰间的剑鞘空了，手垂着，神情平静',
+  sil: CAST.raymond.sil.slice(0, -1),
+  lines: CAST.raymond.lines.slice(0, -1),
+  front: () => `<path d="M224,264h20" stroke="#4a4e58" stroke-width="2.6" stroke-linecap="round"/><path d="M222,252q12,-2 26,1" fill="none" stroke="#6a6e78" stroke-width="2"/><path d="M226,324h12" stroke="#5a5660" stroke-width="2"/>`
+    + `<path d="M150,690h30l-4,40h-22z" fill="#3a3e46"/><path d="M150,690h30" stroke="#c8d0dc" stroke-width="2" opacity=".7"/>`,
+};
+
+// 洛温娜·素色宫装 (29〔C〕) — the same face and bun, a plain grey-white court gown with no gold panel and no brooch, the
+// rolled marriage contract in her hand
+CAST.rowena_plain = {
+  ...CAST.rowena, id: 'rowena_plain', label: '洛温娜·素色宫装：同样盘起的深金发，素色无纹的灰白宫装，高领长袖，手里一卷婚约',
+  tones: [CAST.rowena.tones[0], [CAST.rowena.tones[1][0], '#8e8a84', 0.9], [CAST.rowena.tones[3][0], '#a8a49c', 0.95]],
+  lines: [CAST.rowena.lines[0], CAST.rowena.lines[1], CAST.rowena.lines[2], CAST.rowena.lines[5]],
+  front: ({ rim }) => `<path d="M396,120L452,170" stroke="#c8c0b0" stroke-width="3" stroke-linecap="round"/>`
+    + `<path d="M222,250q14,-6 28,-2" fill="none" stroke="${rim}" stroke-width="2.4" stroke-linecap="round" opacity=".9"/><path d="M226,264q10,-4 20,0" fill="none" stroke="${rim}" stroke-width="2" opacity=".85"/><circle cx="236" cy="265" r="2.4" fill="${rim}" opacity=".8"/><path d="M226,322h12" fill="none" stroke="${rim}" stroke-width="1.6" opacity=".55"/>`
+    + `<path d="M160,660l120,-34l10,30l-120,34z" fill="#e8e0c8"/><ellipse cx="166" cy="677" rx="8" ry="16" transform="rotate(-16 166 677)" fill="#c8bea4"/><path d="M220,644l6,28" stroke="#a83a3a" stroke-width="5"/>`,
+};
+
+// 塞莱斯汀·钥匙 (29〔A〕) — the same robe and star; in place of the pen, a ring of keys
+CAST.celestine_keys = {
+  ...CAST.celestine, id: 'celestine_keys', label: '塞莱斯汀·钥匙：同一身白色主教长袍与七角星，手里一串钥匙',
+  front: ({ rim }) => {
+    let s = `<path d="${star7(300, 520, 30)}" fill="#e2c46a"/><path d="${star7(300, 520, 14)}" fill="#fff4cc"/>`;
+    s += `<path d="M222,260q12,-4 24,0" fill="none" stroke="${rim}" stroke-width="2.2" stroke-linecap="round" opacity=".85"/><path d="M226,270q8,3 16,0" fill="none" stroke="${rim}" stroke-width="1.6" opacity=".7"/><path d="M216,262l-6,-3M216,268l-7,1" stroke="${rim}" stroke-width="1.2" opacity=".5"/><path d="M228,326q6,2 12,0" fill="none" stroke="${rim}" stroke-width="1.6" opacity=".55"/>`;
+    s += `<path d="M196,600q18,-12 40,-6q8,12 0,24q-22,8 -40,2z" fill="#4e4a58"/><path d="M196,600q18,-12 40,-6" fill="none" stroke="${rim}" stroke-width="1.6" opacity=".6"/>`;
+    s += `<circle cx="230" cy="640" r="16" fill="none" stroke="#c8a860" stroke-width="4"/><path d="M222,654l-10,40m4,-14h-8M238,654l6,44m-2,-14h8M230,656v42m0,-12h6" stroke="#c8a860" stroke-width="4" stroke-linecap="round"/>`;
+    return s;
+  },
+};
+
+// 七席的使者 (23) — Veldra's first face of the chapter: today's face is very young (smooth jaw, long light hair)
+const VD_YOUNG_HAIR = [[222, 214], [232, 160], [270, 128], [326, 120], [376, 140], [404, 184], [410, 260], [420, 380], [390, 400], [392, 290], [360, 210], [300, 196], [256, 206], [236, 250], [226, 360], [200, 380], [208, 280]];
+CAST.veldra_young = {
+  ...CAST.veldra, id: 'veldra_young', label: '七席的使者：今天的脸很年轻，长长的浅色头发，绿与灰的长袍',
+  sil: [head(0, 4, 0.94, true), S(VD_YOUNG_HAIR), neck(0, 4, 0.84), torso(196, 486, 1.0)],
+  tones: [[S(VD_YOUNG_HAIR), '#a8946a', 0.9], CAST.veldra.tones[1], CAST.veldra.tones[2]],
+  front: () => `<path d="M222,262q10,-5 20,0" fill="none" stroke="#3a4a40" stroke-width="2.4" stroke-linecap="round"/><circle cx="232" cy="263" r="2.2" fill="#3a4a40"/><path d="M226,324q6,3 12,0" fill="none" stroke="#7a5a5a" stroke-width="1.8"/>`,
+};
+// 维尔德拉·普通的脸 (23) — the last face: it stops on a very ordinary one; no second outline any more, a tired eye
+CAST.veldra_plain = {
+  ...CAST.veldra, id: 'veldra_plain', label: '维尔德拉·普通的脸：脸停在一张很普通的脸上，不再滑开，眼神有些累',
+  front: () => `<path d="M222,266h20" stroke="#3a4a40" stroke-width="2.4" stroke-linecap="round"/><path d="M222,272q10,3 20,0" fill="none" stroke="#5a6a60" stroke-width="1.4" opacity=".7"/><path d="M226,326h10" stroke="#5a5a5a" stroke-width="1.8"/>`,
+};
+
+// 赫拉斯·白羽 (28) — purified: the same griffin, its feathers turned white
+CAST.heras_white = {
+  ...CAST.heras, id: 'heras_white', label: '赫拉斯·白羽：净化后的格里芬，羽毛全白了，一只安静的深色眼睛', rim: '#fff0c8',
+  tones: [[CAST.heras.tones[0][0], '#ece8f4', 0.95], [CAST.heras.tones[1][0], '#dcd8e6', 0.95], [CAST.heras.tones[2][0], '#c8b890', 0.95], [CAST.heras.sil[2], '#d0ccdc', 0.95], [CAST.heras.sil[3], '#c4c0d2', 0.95]],
+  lines: CAST.heras.lines.map(([d, w, op]) => [d, w, op, '#a8a0b8']),
+  front: () => `<circle cx="340" cy="220" r="11" fill="#3a3448"/><circle cx="337" cy="217" r="3" fill="#ffffff"/>`,
+};
+
+// 伊尔沃·睁眼 (25) — awake: the eyes open, the colour of a lake in spring
+CAST.ilvo_open = {
+  ...CAST.ilvo, id: 'ilvo_open', label: '伊尔沃·睁眼：冰霜巨人睁开了眼睛，眼里是春天湖水的颜色',
+  front: () => `<path d="M206,300q30,-24 60,0q-30,18 -60,0zM334,300q30,-24 60,0q-30,18 -60,0z" fill="#e8f8ff"/><circle cx="236" cy="298" r="11" fill="#5ac8b0"/><circle cx="364" cy="298" r="11" fill="#5ac8b0"/><circle cx="233" cy="295" r="3" fill="#ffffff"/><circle cx="361" cy="295" r="3" fill="#ffffff"/>`,
+};
+
 export const npcBusts = Object.fromEntries(Object.entries(CAST).map(([id, spec]) => [id, (rim) => render(spec, rim)]));

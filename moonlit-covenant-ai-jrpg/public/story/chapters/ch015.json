@@ -560,7 +560,7 @@
     {
       "id": "15-02",
       "title": "自由输入：怎么认自己人",
-      "bg": "fog-harbor-tide-cave",
+      "bg": "fog-harbor-tide-cave-empty",
       "music": "drip_then_silence_after_you_decide",
       "ambience": [
         "water_drip"
@@ -23278,7 +23278,8 @@
         {
           "t": "narr",
           "style": "picture",
-          "text": "木环底下，压着一片铜。刻着七个环。"
+          "text": "木环底下，压着一片铜。刻着七个环。",
+          "insert": "ch15_seven_ring_plate"
         },
         {
           "t": "narr",
@@ -23288,7 +23289,8 @@
         {
           "t": "narr",
           "style": "picture",
-          "text": "裂缝里，滚出一块黑绿色的碎片。还在跳。很慢。"
+          "text": "裂缝里，滚出一块黑绿色的碎片。还在跳。很慢。",
+          "insert": "ch15_dark_shard"
         },
         {
           "t": "narr",
@@ -26013,7 +26015,8 @@
         {
           "t": "narr",
           "style": "picture",
-          "text": "一封信。火漆是金色的，压成一顶冠。"
+          "text": "一封信。火漆是金色的，压成一顶冠。",
+          "insert": "ch15_summons_seal"
         },
         {
           "t": "narr",
@@ -26028,7 +26031,8 @@
         {
           "t": "narr",
           "style": "picture",
-          "text": "赫麦村的火里。黑龙的左眼旁边。"
+          "text": "赫麦村的火里。黑龙的左眼旁边。",
+          "insert": "ch15_dragon_eye"
         },
         {
           "t": "narr",

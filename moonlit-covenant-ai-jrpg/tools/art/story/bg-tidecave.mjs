@@ -18,6 +18,9 @@
 //   fog-harbor-tide-cave-flood       — the same cave with the water risen to waist height and rippling, the stone door
 //                                      pushed half open by it (black behind), only three cocoons left on the wall
 //                                      (tideCave(true)).
+//   fog-harbor-tide-cave-empty       — 潮穴·退潮 (15-02): the same cave at low water the next day, every cocoon gone from
+//                                      the wall, only the iron hooks left (and the three tagged ones at its end); the
+//                                      stone door shut, its seam wet (tideCave(false, true)).
 // Variants are parameters of one generator each, all geometry from fixed seeds, so the pairs line up exactly.
 // No reflections in the water (flat colour and ripple lines only), no text on the tags (an ink stroke only).
 import { Scene, W, H, f, pz, pl, persp, mix, rng, fbm } from './lib.mjs';
@@ -354,8 +357,10 @@ const CV = {
   door: { lit: '#6e746c', mid: '#4a504a', shade: '#2c302c' },
 };
 
-function tideCave(flood) {
-  const S = new Scene(flood ? 'sbTideCaveFlood' : 'sbTideCave', flood
+function tideCave(flood, empty = false) {
+  const S = new Scene(flood ? 'sbTideCaveFlood' : empty ? 'sbTideCaveEmpty' : 'sbTideCave', empty
+    ? '雾港·潮穴·退潮：同一个水洞，水退了，左边墙上的白色长茧都不在了，只剩一排一排空着的铁钩；墙尽头三个空铁钩上垂着小木牌；最里面两开的石门合着，门缝是湿的；只有左下一点冷白的光'
+    : flood
     ? '雾港·潮穴·涨水：同一个水洞，水涨到齐腰高，水面起着波纹；最里面的两扇石门被水推开了一半，门后一片黑；墙上的铁钩大多空了，只剩三个白色长茧还挂着；墙尽头三个空铁钩上垂着小木牌；冷白的一点光从左下照进来'
     : '雾港·潮穴·茧壁：天然岩洞与旧石砌混在一起的水洞，左边的墙上一排一排挂着比人还长的白色长茧，半透明，隐约看得出人形，看不清脸；最低的一排离水面一个手掌；墙尽头三个空铁钩，钩上垂着小木牌；最里面一扇两开的石门，门缝在渗水；水面是平的；只有左下一点冷白的光', flood ? 7712 : 7711);
   const C = CV;
@@ -604,7 +609,7 @@ function tideCave(flood) {
   // --- hooks, cocoons, tags (far to near) ----------------------------------------------------------------------------
   {
     const items = [];
-    const keep = flood ? new Set(['hi3', 'hi4', 'hi5']) : null; // the three left hanging in the flood
+    const keep = empty ? new Set() : flood ? new Set(['hi3', 'hi4', 'hi5']) : null; // the three left hanging in the flood; none the next day
     SLOTS_LO.forEach((s, i) => items.push({ s, row: LO, id: `lo${i}` }));
     SLOTS_HI.forEach((s, i) => items.push({ s, row: HI, id: `hi${i}` }));
     EMPTY.forEach((s, i) => items.push({ s, row: LO, id: `e${i}`, tag: true }));
@@ -668,4 +673,5 @@ export const tideCaveBgs = {
   'fog-harbor-tide-cave-sluice-shut': () => sluice(true),
   'fog-harbor-tide-cave': () => tideCave(false),
   'fog-harbor-tide-cave-flood': () => tideCave(true),
+  'fog-harbor-tide-cave-empty': () => tideCave(false, true),
 };

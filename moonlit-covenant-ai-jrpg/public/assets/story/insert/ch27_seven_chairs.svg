@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="镜子里是一张议桌，七张椅子">
+<defs><radialGradient id="siCh27Chairs-g0" cx="0.5" cy="0.45" r="0.7"><stop offset="0" stop-color="#1c1a2e"/><stop offset="1" stop-color="#07060e"/></radialGradient><linearGradient id="siCh27Chairs-g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a4048"/><stop offset="1" stop-color="#14181e"/></linearGradient><radialGradient id="siCh27Chairs-g2" cx="0.5" cy="0.5" r="0.72"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="0.62" stop-color="#000" stop-opacity="0.1375"/><stop offset="1" stop-color="#000" stop-opacity="0.55"/></radialGradient></defs>
+<rect width="800" height="600" fill="#07060e"/>
+<rect width="800" height="600" fill="url(#siCh27Chairs-g0)"/>
+<path d="M200,300a200,230 0 1 0 400,0a200,230 0 1 0 -400,0Z" fill="#6a5a4a"/><path d="M216,300a184,214 0 1 0 368,0a184,214 0 1 0 -368,0Z" fill="url(#siCh27Chairs-g1)"/>
+<path d="M288,320a112,48 0 1 0 224,0a112,48 0 1 0 -224,0Z" fill="#5a4630"/><path d="M380.8,201.6h38.4v54.4h-38.4z" fill="#2a2018"/><path d="M500.9,228.1h38.4v54.4h-38.4z" fill="#2a2018"/><path d="M530.5,287.7h38.4v54.4h-38.4z" fill="#2a2018"/><path d="M447.4,335.4h38.4v54.4h-38.4z" fill="#2a2018"/><path d="M314.2,335.4h38.4v54.4h-38.4z" fill="#2a2018"/><path d="M231.1,287.7h38.4v54.4h-38.4z" fill="#2a2018"/><path d="M260.7,228.1h38.4v54.4h-38.4z" fill="#2a2018"/>
+<rect width="800" height="600" fill="url(#siCh27Chairs-g2)"/>
+</svg>

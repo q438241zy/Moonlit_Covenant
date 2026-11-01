@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="冰里的人，只到胸口：眼睛睁着，很平静">
+<defs><radialGradient id="siCh18IcePerson-g0" cx="0.5" cy="0.45" r="0.7"><stop offset="0" stop-color="#2a4a5e"/><stop offset="1" stop-color="#0c1822"/></radialGradient><linearGradient id="siCh18IcePerson-g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a8d8ec"/><stop offset="1" stop-color="#3a6a88"/></linearGradient><radialGradient id="siCh18IcePerson-g2" cx="0.5" cy="0.5" r="0.72"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="0.62" stop-color="#000" stop-opacity="0.125"/><stop offset="1" stop-color="#000" stop-opacity="0.5"/></radialGradient></defs>
+<rect width="800" height="600" fill="#0c1822"/>
+<rect width="800" height="600" fill="url(#siCh18IcePerson-g0)"/>
+<path d="M140,40L680,60L700,560L120,580Z" fill="url(#siCh18IcePerson-g1)" opacity=".85"/>
+<path d="M400,160C450,160 480,200 480,250C480,300 450,330 400,330C350,330 320,300 320,250C320,200 350,160 400,160ZM260,580C260,450 320,390 400,390C480,390 540,450 540,580Z" fill="#2a4a5e" opacity=".55"/>
+<path d="M360,250q14,-8 28,0M412,250q14,-8 28,0" fill="none" stroke="#e8f6ff" stroke-width="3"/><path d="M369,252a5,5 0 1 0 10,0a5,5 0 1 0 -10,0ZM421,252a5,5 0 1 0 10,0a5,5 0 1 0 -10,0Z" fill="#0c1822"/>
+<path d="M160,120L300,300L250,520M600,90L520,260L640,460" fill="none" stroke="#e8f6ff" stroke-width="3" opacity=".5"/>
+<path d="M140,40L680,60L700,560L120,580Z" fill="none" stroke="#e8f6ff" stroke-width="5" opacity=".6"/>
+<rect width="800" height="600" fill="url(#siCh18IcePerson-g2)"/>
+</svg>

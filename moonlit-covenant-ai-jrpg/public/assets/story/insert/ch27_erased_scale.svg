@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="黑龙颈上掉下的一片鳞，刻着龙文，有几行被刮掉了">
+<defs><radialGradient id="siCh27Scale-g0" cx="0.5" cy="0.45" r="0.7"><stop offset="0" stop-color="#1c1a2e"/><stop offset="1" stop-color="#07060e"/></radialGradient><linearGradient id="siCh27Scale-g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3a3248"/><stop offset="1" stop-color="#0e0a14"/></linearGradient><radialGradient id="siCh27Scale-g2" cx="0.5" cy="0.5" r="0.72"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="0.62" stop-color="#000" stop-opacity="0.1375"/><stop offset="1" stop-color="#000" stop-opacity="0.55"/></radialGradient></defs>
+<rect width="800" height="600" fill="#07060e"/>
+<rect width="800" height="600" fill="url(#siCh27Scale-g0)"/>
+<path d="M400,90C520,120 600,220 590,340C580,450 490,520 400,520C310,520 220,450 210,340C200,220 280,120 400,90Z" fill="url(#siCh27Scale-g1)"/>
+<path d="M290,190l-6,14l16,-3M330,190l-7,16l15,-8M370,190l-9,16l11,3M410,190l9,15l6,-6M450,190l-4,17l16,-4M490,190l9,21l7,-4M290,232l0,18l6,-6M330,232l10,16l10,-5M370,232l-8,15l14,-8M410,232l9,14l7,8M450,232l3,15l15,-2M490,232l-8,18l16,2M290,274l-3,17l6,-6M330,274l-6,10l8,-2M370,274l0,22l6,1M410,274l10,16l6,4M450,274l1,11l12,-6M490,274l3,16l7,4M290,316l9,12l8,-3M330,316l1,14l15,5M370,316l-10,21l6,1M410,316l6,10l14,-8M450,316l1,14l14,5M490,316l-4,17l13,7M290,358l-3,19l9,-4M330,358l0,18l12,8M370,358l2,16l7,5M410,358l1,14l15,0M450,358l-10,21l15,5M490,358l-2,15l9,-6M290,400l4,11l6,-5M330,400l-3,11l11,-7M370,400l-6,15l9,-3M410,400l-1,16l7,6M450,400l2,12l11,3M490,400l3,10l15,-2M290,442l1,22l11,1M330,442l-2,18l11,3M370,442l-2,22l14,8M410,442l-1,13l13,-8M450,442l2,21l10,6M490,442l-5,18l16,-7" fill="none" stroke="#c8b8e0" stroke-width="3" opacity=".75"/>
+<path d="M280,276h250M280,286h250M280,360h250M280,370h250" stroke="#0e0a14" stroke-width="10" opacity=".9"/>
+<path d="M140,600C170,520 230,480 280,500L300,560Z" fill="#c09a7a"/>
+<rect width="800" height="600" fill="url(#siCh27Scale-g2)"/>
+</svg>

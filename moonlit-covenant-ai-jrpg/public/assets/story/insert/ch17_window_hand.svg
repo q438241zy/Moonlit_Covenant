@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="白石墙上二楼的窗，黑烟里一只手在拍玻璃">
+<defs><radialGradient id="siCh17Window-g0" cx="0.5" cy="0.45" r="0.7"><stop offset="0" stop-color="#1c1a2e"/><stop offset="1" stop-color="#07060e"/></radialGradient><filter id="siCh17Window-b2" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="9"/></filter><radialGradient id="siCh17Window-g1" cx="0.5" cy="0.5" r="0.72"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="0.62" stop-color="#000" stop-opacity="0.1375"/><stop offset="1" stop-color="#000" stop-opacity="0.55"/></radialGradient></defs>
+<rect width="800" height="600" fill="#07060e"/>
+<rect width="800" height="600" fill="url(#siCh17Window-g0)"/>
+<path d="M0,0H800V600H0Z" fill="#cac4b8"/><path d="M0,0H800V600H0Z" fill="#000" opacity=".45"/>
+<path d="M240,100h320v400H240z" fill="#3a3430"/><path d="M260,120h280v360H260z" fill="#1a1414"/>
+<path d="M270,300C300,240 360,260 380,200S480,150 530,180V470H270Z" fill="#0a0808" opacity=".9" filter="url(#siCh17Window-b2)"/>
+<path d="M400,120V480M260,300H540" stroke="#3a3430" stroke-width="12"/>
+<path d="M330,330c-6,-30 -2,-60 8,-62c10,-2 12,24 12,40c2,-26 6,-50 18,-50c12,0 10,30 8,50c4,-22 10,-40 22,-38c12,4 6,32 2,50c6,-14 14,-24 22,-18c8,8 -4,34 -16,54c-14,24 -40,32 -60,22c-12,-6 -14,-26 -16,-48z" fill="#e8d0c0" opacity=".85"/>
+<path d="M440,110C470,60 520,80 540,30S620,10 650,0" fill="none" stroke="#0a0808" stroke-width="40" opacity=".6" filter="url(#siCh17Window-b2)"/>
+<rect width="800" height="600" fill="url(#siCh17Window-g1)"/>
+</svg>

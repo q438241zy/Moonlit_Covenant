@@ -24863,7 +24863,8 @@
         {
           "t": "narr",
           "style": "picture",
-          "text": "紫色的。"
+          "text": "紫色的。",
+          "insert": "ch10_purple_eyes"
         },
         {
           "t": "narr",

@@ -15835,7 +15835,8 @@
                 {
                   "t": "narr",
                   "style": "picture",
-                  "text": "桌布上，绣着一个黑色的月亮，吞着一个白色的月亮。"
+                  "text": "桌布上，绣着一个黑色的月亮，吞着一个白色的月亮。",
+                  "insert": "ch29_eclipse_cloth"
                 },
                 {
                   "t": "narr",
@@ -15844,12 +15845,12 @@
                 },
                 {
                   "t": "say",
-                  "who": "rowena",
+                  "who": "rowena_plain",
                   "text": "婚约，换正统。"
                 },
                 {
                   "t": "say",
-                  "who": "rowena",
+                  "who": "rowena_plain",
                   "text": "……冠，由我递。"
                 },
                 {
@@ -15995,26 +15996,26 @@
                   "then": [
                     {
                       "t": "say",
-                      "who": "celestine",
+                      "who": "celestine_keys",
                       "text": "我已经没有职位了。钥匙，还在我身上。"
                     }
                   ],
                   "else": [
                     {
                       "t": "say",
-                      "who": "celestine",
+                      "who": "celestine_keys",
                       "text": "……等了二十年。最安全的时机。"
                     }
                   ]
                 },
                 {
                   "t": "say",
-                  "who": "celestine",
+                  "who": "celestine_keys",
                   "text": "今天，不安全。"
                 },
                 {
                   "t": "say",
-                  "who": "celestine",
+                  "who": "celestine_keys",
                   "text": "——开门。"
                 },
                 {
@@ -16158,7 +16159,8 @@
             {
               "t": "narr",
               "style": "picture",
-              "text": "巨人跪下。石头的胸口，打开。里面，一团光。"
+              "text": "巨人跪下。石头的胸口，打开。里面，一团光。",
+              "insert": "ch29_arkan_heart"
             },
             {
               "t": "say",
@@ -16188,7 +16190,8 @@
         {
           "t": "narr",
           "style": "picture",
-          "text": "光的背面，刻着字。很旧的字。"
+          "text": "光的背面，刻着字。很旧的字。",
+          "insert": "ch29_heart_back"
         },
         {
           "t": "if",
@@ -16587,7 +16590,7 @@
     {
       "id": "29-09",
       "title": "握链的人",
-      "bg": "arch-tide-gate-channel",
+      "bg": "arch-tide-waterway-mouth",
       "music": "sweet_smoke_low_then_nothing",
       "ambience": [
         "water"
@@ -18152,7 +18155,7 @@
                     },
                     {
                       "t": "say",
-                      "who": "raymond",
+                      "who": "raymond_disarmed",
                       "text": "……你长大了。"
                     },
                     {
@@ -18271,7 +18274,7 @@
                     },
                     {
                       "t": "say",
-                      "who": "raymond",
+                      "who": "raymond_disarmed",
                       "text": "……你长大了。"
                     },
                     {
@@ -18386,7 +18389,7 @@
                     },
                     {
                       "t": "say",
-                      "who": "raymond",
+                      "who": "raymond_disarmed",
                       "text": "……你长大了。"
                     },
                     {
@@ -18829,7 +18832,7 @@
                         },
                         {
                           "t": "say",
-                          "who": "raymond",
+                          "who": "raymond_disarmed",
                           "text": "……你长大了。"
                         },
                         {
@@ -18957,7 +18960,7 @@
                         },
                         {
                           "t": "say",
-                          "who": "raymond",
+                          "who": "raymond_disarmed",
                           "text": "……你长大了。"
                         },
                         {
@@ -19076,7 +19079,7 @@
                         },
                         {
                           "t": "say",
-                          "who": "raymond",
+                          "who": "raymond_disarmed",
                           "text": "……你长大了。"
                         },
                         {
@@ -19191,7 +19194,7 @@
                         },
                         {
                           "t": "say",
-                          "who": "raymond",
+                          "who": "raymond_disarmed",
                           "text": "……你长大了。"
                         },
                         {
@@ -19287,7 +19290,7 @@
             },
             {
               "t": "say",
-              "who": "raymond",
+              "who": "raymond_disarmed",
               "text": "……你长大了。"
             },
             {
@@ -30465,7 +30468,7 @@
     {
       "id": "29-14",
       "title": "探监、托比的信",
-      "bg": "arch-tide-gate-sanctuary",
+      "bg": "arch-tide-gate-sanctuary-cells",
       "music": "cells_quiet",
       "ambience": [],
       "beats": [

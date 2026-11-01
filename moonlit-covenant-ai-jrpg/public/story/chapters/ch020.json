@@ -13411,7 +13411,8 @@
         {
           "t": "narr",
           "style": "picture",
-          "text": "一个侍女，捧着一件白色的礼服，穿过外庭。"
+          "text": "一个侍女，捧着一件白色的礼服，穿过外庭。",
+          "insert": "ch20_white_gown"
         },
         {
           "t": "narr",

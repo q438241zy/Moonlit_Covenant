@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="债契烧了一整夜">
+<defs><radialGradient id="siCh26Burn-g0" cx="0.5" cy="0.7" r="0.7"><stop offset="0" stop-color="#4a2014"/><stop offset="1" stop-color="#140806"/></radialGradient><linearGradient id="siCh26Burn-g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#eee2c4"/><stop offset="1" stop-color="#d7c59d"/></linearGradient><filter id="siCh26Burn-b1" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.5"/></filter><linearGradient id="siCh26Burn-g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#eee2c4"/><stop offset="1" stop-color="#d7c59d"/></linearGradient><linearGradient id="siCh26Burn-g3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#eee2c4"/><stop offset="1" stop-color="#d7c59d"/></linearGradient><linearGradient id="siCh26Burn-g4" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#eee2c4"/><stop offset="1" stop-color="#d7c59d"/></linearGradient><linearGradient id="siCh26Burn-g5" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#eee2c4"/><stop offset="1" stop-color="#d7c59d"/></linearGradient><linearGradient id="siCh26Burn-g6" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#eee2c4"/><stop offset="1" stop-color="#d7c59d"/></linearGradient><radialGradient id="siCh26Burn-g7" cx="0.5" cy="0.5" r="0.72"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="0.62" stop-color="#000" stop-opacity="0.1375"/><stop offset="1" stop-color="#000" stop-opacity="0.55"/></radialGradient></defs>
+<rect width="800" height="600" fill="#140806"/>
+<rect width="800" height="600" fill="url(#siCh26Burn-g0)"/>
+<path d="M200,440L340,420L350,500L210,520Z" fill="url(#siCh26Burn-g1)"/>
+<path d="M200,440L340,420L350,500L210,520Z" fill="none" stroke="#b8a27a" stroke-width="3" opacity=".7"/>
+<path d="M200,440L340,420L350,500L210,520Z" fill="none" stroke="#2a160a" stroke-width="16" opacity=".55" filter="url(#siCh26Burn-b1)"/>
+<path d="M270,420L410,400L420,480L280,500Z" fill="url(#siCh26Burn-g2)"/>
+<path d="M270,420L410,400L420,480L280,500Z" fill="none" stroke="#b8a27a" stroke-width="3" opacity=".7"/>
+<path d="M270,420L410,400L420,480L280,500Z" fill="none" stroke="#2a160a" stroke-width="16" opacity=".55" filter="url(#siCh26Burn-b1)"/>
+<path d="M340,400L480,380L490,460L350,480Z" fill="url(#siCh26Burn-g3)"/>
+<path d="M340,400L480,380L490,460L350,480Z" fill="none" stroke="#b8a27a" stroke-width="3" opacity=".7"/>
+<path d="M340,400L480,380L490,460L350,480Z" fill="none" stroke="#2a160a" stroke-width="16" opacity=".55" filter="url(#siCh26Burn-b1)"/>
+<path d="M410,440L550,420L560,500L420,520Z" fill="url(#siCh26Burn-g4)"/>
+<path d="M410,440L550,420L560,500L420,520Z" fill="none" stroke="#b8a27a" stroke-width="3" opacity=".7"/>
+<path d="M410,440L550,420L560,500L420,520Z" fill="none" stroke="#2a160a" stroke-width="16" opacity=".55" filter="url(#siCh26Burn-b1)"/>
+<path d="M480,420L620,400L630,480L490,500Z" fill="url(#siCh26Burn-g5)"/>
+<path d="M480,420L620,400L630,480L490,500Z" fill="none" stroke="#b8a27a" stroke-width="3" opacity=".7"/>
+<path d="M480,420L620,400L630,480L490,500Z" fill="none" stroke="#2a160a" stroke-width="16" opacity=".55" filter="url(#siCh26Burn-b1)"/>
+<path d="M550,400L690,380L700,460L560,480Z" fill="url(#siCh26Burn-g6)"/>
+<path d="M550,400L690,380L700,460L560,480Z" fill="none" stroke="#b8a27a" stroke-width="3" opacity=".7"/>
+<path d="M550,400L690,380L700,460L560,480Z" fill="none" stroke="#2a160a" stroke-width="16" opacity=".55" filter="url(#siCh26Burn-b1)"/>
+<path d="M220,460C240,360 300,340 290,240C340,300 360,260 380,180C410,260 440,280 470,220C480,300 540,320 560,250C600,330 600,400 590,460Z" fill="#ff8a2a" opacity=".85" filter="url(#siCh26Burn-b1)"/><path d="M300,460C320,400 350,380 360,320C390,370 420,360 440,300C460,380 500,390 510,460Z" fill="#ffd070"/>
+<path d="M541,101.7h3M484.5,223.7h3M362.1,289.7h3M249.9,91.9h3M337.8,287.1h3M299.7,88.2h3M395.6,120.9h3M517.6,97.9h3M430.7,174.2h3M291.8,143.3h3M359.9,72.4h3M572.5,103.3h3M436.7,127.7h3M347.5,215h3M574.3,272.4h3M284,44.7h3M297.3,125.4h3M357.9,158.7h3M468.9,58.7h3M284.8,153.7h3M488.9,162.4h3M264.3,267.6h3M524.2,61h3M428.9,200.3h3M358.9,247.1h3M555.4,194h3M203.6,292.6h3M493.4,64.4h3M467.8,213.8h3M489.3,66h3M394.3,120.5h3M406.2,282.5h3M554.3,239.1h3M350.8,221.3h3M522.4,127.7h3M481.1,159h3M525.9,138.3h3M584.2,213.8h3M408.5,133.1h3M273.6,229h3" stroke="#ffb060" stroke-width="3"/>
+<rect width="800" height="600" fill="url(#siCh26Burn-g7)"/>
+</svg>

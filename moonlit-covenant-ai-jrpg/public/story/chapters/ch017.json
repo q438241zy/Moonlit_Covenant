@@ -4595,7 +4595,8 @@
         {
           "t": "narr",
           "style": "picture",
-          "text": "二楼的窗里，一只手，在拍玻璃。"
+          "text": "二楼的窗里，一只手，在拍玻璃。",
+          "insert": "ch17_window_hand"
         },
         {
           "t": "narr",
@@ -9528,7 +9529,8 @@
         {
           "t": "narr",
           "style": "picture",
-          "text": "莉亚从米娅手里，抽出那张拓本。放在石凳上。"
+          "text": "莉亚从米娅手里，抽出那张拓本。放在石凳上。",
+          "insert": "ch17_rubbing"
         },
         {
           "t": "say",
@@ -9845,7 +9847,8 @@
                     {
                       "t": "narr",
                       "style": "picture",
-                      "text": "内侧，一枚黑金的家纹。"
+                      "text": "内侧，一枚黑金的家纹。",
+                      "insert": "ch17_full_crest"
                     },
                     {
                       "t": "narr",
@@ -10078,7 +10081,8 @@
                     {
                       "t": "narr",
                       "style": "picture",
-                      "text": "内侧，一枚黑金的家纹。"
+                      "text": "内侧，一枚黑金的家纹。",
+                      "insert": "ch17_full_crest"
                     },
                     {
                       "t": "narr",
@@ -10309,7 +10313,8 @@
                     {
                       "t": "narr",
                       "style": "picture",
-                      "text": "内侧，一枚黑金的家纹。"
+                      "text": "内侧，一枚黑金的家纹。",
+                      "insert": "ch17_full_crest"
                     },
                     {
                       "t": "narr",
@@ -10476,7 +10481,8 @@
                     {
                       "t": "narr",
                       "style": "picture",
-                      "text": "内侧，一枚黑金的家纹。"
+                      "text": "内侧，一枚黑金的家纹。",
+                      "insert": "ch17_full_crest"
                     },
                     {
                       "t": "narr",
@@ -10645,7 +10651,8 @@
                     {
                       "t": "narr",
                       "style": "picture",
-                      "text": "内侧，一枚黑金的家纹。"
+                      "text": "内侧，一枚黑金的家纹。",
+                      "insert": "ch17_full_crest"
                     },
                     {
                       "t": "narr",
@@ -10810,7 +10817,8 @@
                     {
                       "t": "narr",
                       "style": "picture",
-                      "text": "内侧，一枚黑金的家纹。"
+                      "text": "内侧，一枚黑金的家纹。",
+                      "insert": "ch17_full_crest"
                     },
                     {
                       "t": "narr",
@@ -10966,7 +10974,8 @@
                     {
                       "t": "narr",
                       "style": "picture",
-                      "text": "内侧，一枚黑金的家纹。"
+                      "text": "内侧，一枚黑金的家纹。",
+                      "insert": "ch17_full_crest"
                     },
                     {
                       "t": "narr",
@@ -11129,7 +11138,8 @@
                     {
                       "t": "narr",
                       "style": "picture",
-                      "text": "内侧，一枚黑金的家纹。"
+                      "text": "内侧，一枚黑金的家纹。",
+                      "insert": "ch17_full_crest"
                     },
                     {
                       "t": "narr",
@@ -11290,7 +11300,8 @@
                     {
                       "t": "narr",
                       "style": "picture",
-                      "text": "内侧，一枚黑金的家纹。"
+                      "text": "内侧，一枚黑金的家纹。",
+                      "insert": "ch17_full_crest"
                     },
                     {
                       "t": "narr",
@@ -11444,7 +11455,8 @@
                     {
                       "t": "narr",
                       "style": "picture",
-                      "text": "内侧，一枚黑金的家纹。"
+                      "text": "内侧，一枚黑金的家纹。",
+                      "insert": "ch17_full_crest"
                     },
                     {
                       "t": "narr",
@@ -11597,7 +11609,8 @@
                     {
                       "t": "narr",
                       "style": "picture",
-                      "text": "内侧，一枚黑金的家纹。"
+                      "text": "内侧，一枚黑金的家纹。",
+                      "insert": "ch17_full_crest"
                     },
                     {
                       "t": "narr",
@@ -11924,7 +11937,8 @@
                     {
                       "t": "narr",
                       "style": "picture",
-                      "text": "内侧，一枚黑金的家纹。"
+                      "text": "内侧，一枚黑金的家纹。",
+                      "insert": "ch17_full_crest"
                     },
                     {
                       "t": "narr",
@@ -12163,7 +12177,8 @@
                     {
                       "t": "narr",
                       "style": "picture",
-                      "text": "内侧，一枚黑金的家纹。"
+                      "text": "内侧，一枚黑金的家纹。",
+                      "insert": "ch17_full_crest"
                     },
                     {
                       "t": "narr",
@@ -12417,7 +12432,8 @@
                     {
                       "t": "narr",
                       "style": "picture",
-                      "text": "内侧，一枚黑金的家纹。"
+                      "text": "内侧，一枚黑金的家纹。",
+                      "insert": "ch17_full_crest"
                     },
                     {
                       "t": "narr",
@@ -12852,7 +12868,8 @@
                     {
                       "t": "narr",
                       "style": "picture",
-                      "text": "内侧，一枚黑金的家纹。"
+                      "text": "内侧，一枚黑金的家纹。",
+                      "insert": "ch17_full_crest"
                     },
                     {
                       "t": "narr",
@@ -13011,7 +13028,8 @@
                     {
                       "t": "narr",
                       "style": "picture",
-                      "text": "内侧，一枚黑金的家纹。"
+                      "text": "内侧，一枚黑金的家纹。",
+                      "insert": "ch17_full_crest"
                     },
                     {
                       "t": "narr",
@@ -13234,7 +13252,8 @@
                     {
                       "t": "narr",
                       "style": "picture",
-                      "text": "内侧，一枚黑金的家纹。"
+                      "text": "内侧，一枚黑金的家纹。",
+                      "insert": "ch17_full_crest"
                     },
                     {
                       "t": "narr",
@@ -13467,7 +13486,8 @@
                     {
                       "t": "narr",
                       "style": "picture",
-                      "text": "内侧，一枚黑金的家纹。"
+                      "text": "内侧，一枚黑金的家纹。",
+                      "insert": "ch17_full_crest"
                     },
                     {
                       "t": "narr",
@@ -13625,7 +13645,8 @@
                     {
                       "t": "narr",
                       "style": "picture",
-                      "text": "内侧，一枚黑金的家纹。"
+                      "text": "内侧，一枚黑金的家纹。",
+                      "insert": "ch17_full_crest"
                     },
                     {
                       "t": "narr",
@@ -13779,7 +13800,8 @@
                     {
                       "t": "narr",
                       "style": "picture",
-                      "text": "内侧，一枚黑金的家纹。"
+                      "text": "内侧，一枚黑金的家纹。",
+                      "insert": "ch17_full_crest"
                     },
                     {
                       "t": "narr",

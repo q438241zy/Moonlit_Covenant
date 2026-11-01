@@ -114,6 +114,17 @@ function wordingErrors(chapter) {
   return errs;
 }
 
+// 叠图（台词或叙述的 insert 字段）要有对应的图：public/assets/story/insert/<id>.svg（tools/art/story/inserts.mjs 生成）
+function insertErrors(chapter) {
+  const errs = [];
+  eachBeat(chapter, (beat) => {
+    if (beat.insert == null) return;
+    if (!['narr', 'say', 'think'].includes(beat.t)) errs.push(`${beat.t} 节拍不能带叠图 ${beat.insert}`);
+    else if (!/^[\w-]+$/.test(beat.insert) || !fs.existsSync(path.join(root, 'public/assets/story/insert', `${beat.insert}.svg`))) errs.push(`未知叠图 ${beat.insert}`);
+  });
+  return errs;
+}
+
 // 高信赖路线：只有信赖累积够了才出现的节点（例如第六章的同行者营地，要第五章末 LEAH_TRUST ≥ 20）靠轮换策略走不到。
 // 每个输入都试遍意图、本章其余沉默走完，取章末该变量最高的意图；逐章接续，章末存档并入下一章的接续试玩。
 const MAXIMIZE = ['LEAH_TRUST', 'MIA_TRUST'];
@@ -166,7 +177,7 @@ for (const entry of index) {
     console.log(`✗ ${entry.id} 与 index.json 不一致：`);
     indexErrors.forEach((e) => console.log('   ' + e));
   }
-  const errors = [...validateChapter(chapter, { speakers, locations }), ...wordingErrors(chapter)];
+  const errors = [...validateChapter(chapter, { speakers, locations }), ...wordingErrors(chapter), ...insertErrors(chapter)];
   if (errors.length) {
     failed = true;
     console.log(`✗ ${entry.id} 校验失败 ${errors.length} 处：`);

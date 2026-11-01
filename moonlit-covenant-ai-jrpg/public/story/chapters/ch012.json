@@ -15119,7 +15119,8 @@
                     {
                       "t": "narr",
                       "style": "picture",
-                      "text": "她的影子，贴着石板，缠了上去。"
+                      "text": "她的影子，贴着石板，缠了上去。",
+                      "insert": "ch12_shadow_bind"
                     },
                     {
                       "t": "set",
@@ -16883,7 +16884,8 @@
                     {
                       "t": "narr",
                       "style": "picture",
-                      "text": "她的影子，贴着石板，缠了上去。"
+                      "text": "她的影子，贴着石板，缠了上去。",
+                      "insert": "ch12_shadow_bind"
                     },
                     {
                       "t": "set",
@@ -18667,7 +18669,8 @@
                     {
                       "t": "narr",
                       "style": "picture",
-                      "text": "她的影子，贴着石板，缠了上去。"
+                      "text": "她的影子，贴着石板，缠了上去。",
+                      "insert": "ch12_shadow_bind"
                     },
                     {
                       "t": "set",
@@ -19093,7 +19096,8 @@
                     {
                       "t": "narr",
                       "style": "picture",
-                      "text": "她的影子，贴着石板，缠了上去。"
+                      "text": "她的影子，贴着石板，缠了上去。",
+                      "insert": "ch12_shadow_bind"
                     },
                     {
                       "t": "set",
@@ -19963,7 +19967,8 @@
                     {
                       "t": "narr",
                       "style": "picture",
-                      "text": "她的影子，贴着石板，缠了上去。"
+                      "text": "她的影子，贴着石板，缠了上去。",
+                      "insert": "ch12_shadow_bind"
                     },
                     {
                       "t": "set",
@@ -20448,7 +20453,8 @@
                     {
                       "t": "narr",
                       "style": "picture",
-                      "text": "她的影子，贴着石板，缠了上去。"
+                      "text": "她的影子，贴着石板，缠了上去。",
+                      "insert": "ch12_shadow_bind"
                     },
                     {
                       "t": "set",
@@ -20721,7 +20727,8 @@
                     {
                       "t": "narr",
                       "style": "picture",
-                      "text": "她的影子，贴着石板，缠了上去。"
+                      "text": "她的影子，贴着石板，缠了上去。",
+                      "insert": "ch12_shadow_bind"
                     },
                     {
                       "t": "set",
@@ -20988,7 +20995,8 @@
                     {
                       "t": "narr",
                       "style": "picture",
-                      "text": "她的影子，贴着石板，缠了上去。"
+                      "text": "她的影子，贴着石板，缠了上去。",
+                      "insert": "ch12_shadow_bind"
                     },
                     {
                       "t": "set",
@@ -21189,7 +21197,8 @@
                     {
                       "t": "narr",
                       "style": "picture",
-                      "text": "她的影子，贴着石板，缠了上去。"
+                      "text": "她的影子，贴着石板，缠了上去。",
+                      "insert": "ch12_shadow_bind"
                     },
                     {
                       "t": "set",
@@ -21381,7 +21390,8 @@
                     {
                       "t": "narr",
                       "style": "picture",
-                      "text": "她的影子，贴着石板，缠了上去。"
+                      "text": "她的影子，贴着石板，缠了上去。",
+                      "insert": "ch12_shadow_bind"
                     },
                     {
                       "t": "set",
@@ -25428,7 +25438,8 @@
         {
           "t": "narr",
           "style": "picture",
-          "text": "手套背面，一颗倒过来的七角星，亮了一下。"
+          "text": "手套背面，一颗倒过来的七角星，亮了一下。",
+          "insert": "ch12_inverted_star"
         },
         {
           "t": "fx",
@@ -31302,7 +31313,8 @@
         {
           "t": "narr",
           "style": "picture",
-          "text": "对岸的屋顶上，雨声里，多了一个脚步。"
+          "text": "对岸的屋顶上，雨声里，多了一个脚步。",
+          "insert": "ch12_roof_watcher"
         },
         {
           "t": "narr",

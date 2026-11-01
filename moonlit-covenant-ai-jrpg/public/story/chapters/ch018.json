@@ -794,7 +794,8 @@
         {
           "t": "say",
           "who": "mia",
-          "text": "这个霜……有刻号！一圈一圈的！"
+          "text": "这个霜……有刻号！一圈一圈的！",
+          "insert": "ch18_frost_rings"
         },
         {
           "t": "narr",
@@ -4725,7 +4726,8 @@
         {
           "t": "narr",
           "style": "picture",
-          "text": "冰里，一双眼睛。"
+          "text": "冰里，一双眼睛。",
+          "insert": "ch18_ice_person"
         },
         {
           "t": "say",
@@ -4760,7 +4762,8 @@
         {
           "t": "narr",
           "style": "picture",
-          "text": "最前面那个人，手里握着一块冰。冰里，有一封信。"
+          "text": "最前面那个人，手里握着一块冰。冰里，有一封信。",
+          "insert": "ch18_ice_letter"
         },
         {
           "t": "say",
@@ -8253,7 +8256,8 @@
         {
           "t": "narr",
           "style": "picture",
-          "text": "霜灵，一个接一个站起来。"
+          "text": "霜灵，一个接一个站起来。",
+          "insert": "ch18_frost_spirit"
         },
         {
           "t": "narr",

@@ -987,7 +987,8 @@
         {
           "t": "narr",
           "style": "picture",
-          "text": "七角晨星的封蜡。已经裂开了。"
+          "text": "七角晨星的封蜡。已经裂开了。",
+          "insert": "ch22_lena_letter"
         },
         {
           "t": "if",

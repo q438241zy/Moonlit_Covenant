@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="石巨人跪下，石头的胸口打开，里面一团光">
+<defs><radialGradient id="siCh29Arkan-g0" cx="0.5" cy="0.5" r="0.7"><stop offset="0" stop-color="#3a3a42"/><stop offset="1" stop-color="#141418"/></radialGradient><radialGradient id="siCh29Arkan-g1" ><stop offset="0" stop-color="#fff0c0" stop-opacity="0.7"/><stop offset="0.4" stop-color="#fff0c0" stop-opacity="0.315"/><stop offset="1" stop-color="#fff0c0" stop-opacity="0"/></radialGradient><radialGradient id="siCh29Arkan-g2" cx="0.5" cy="0.5" r="0.72"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="0.62" stop-color="#000" stop-opacity="0.1375"/><stop offset="1" stop-color="#000" stop-opacity="0.55"/></radialGradient></defs>
+<rect width="800" height="600" fill="#141418"/>
+<rect width="800" height="600" fill="url(#siCh29Arkan-g0)"/>
+<path d="M120,600C130,450 180,340 260,300L300,160C320,110 480,110 500,160L540,300C620,340 670,450 680,600Z" fill="#4a4846"/>
+<path d="M330,160h140l-10,70H340z" fill="#3a3836"/><path d="M360,190h20M420,190h20" stroke="#ffe8a0" stroke-width="6"/>
+<path d="M320,330L400,300L480,330L470,470L400,500L330,470Z" fill="#141210"/><path d="M320,330L260,360L280,480L330,470ZM480,330L540,360L520,480L470,470Z" fill="#5a5856"/>
+<path d="M260,400a140,140 0 1 0 280,0a140,140 0 1 0 -280,0Z" fill="url(#siCh29Arkan-g1)"/>
+<path d="M366,400a34,34 0 1 0 68,0a34,34 0 1 0 -68,0Z" fill="#fffaf0"/>
+<rect width="800" height="600" fill="url(#siCh29Arkan-g2)"/>
+</svg>

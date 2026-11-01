@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="一圈霜从杖尖长出去，停在戟尖和她的脚之间">
+<defs><radialGradient id="siCh19FrostCircle-g0" cx="0.5" cy="0.55" r="0.7"><stop offset="0" stop-color="#3a3a42"/><stop offset="1" stop-color="#141418"/></radialGradient><filter id="siCh19FrostCircle-b2" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="9"/></filter><radialGradient id="siCh19FrostCircle-g1" cx="0.5" cy="0.5" r="0.72"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="0.62" stop-color="#000" stop-opacity="0.1375"/><stop offset="1" stop-color="#000" stop-opacity="0.55"/></radialGradient></defs>
+<rect width="800" height="600" fill="#141418"/>
+<rect width="800" height="600" fill="url(#siCh19FrostCircle-g0)"/>
+<path d="M170,330a230,120 0 1 0 460,0a230,120 0 1 0 -460,0Z" fill="none" stroke="#e8f6ff" stroke-width="14" opacity=".75"/><path d="M170,330a230,120 0 1 0 460,0a230,120 0 1 0 -460,0Z" fill="none" stroke="#9ad0ec" stroke-width="30" opacity=".25" filter="url(#siCh19FrostCircle-b2)"/>
+<path d="M178.7,297.4l-1.6,-5M200.9,269.9l11.9,-6.1M195.3,275.2l-2,-2.5M183.8,289.1l-4.9,-4M450.8,447l11.6,-15.5M456.4,446.3l-12,-9M287.5,434.7l-11.5,0.5M180.8,293.7l13.3,3.3M271.8,429.6l-3.6,0.9M428.6,210.9l-7.8,1M319.8,442.5l1.6,-9.3M253.6,237.5l-11.2,-8.5M623.5,301.7l-4.9,-13.7M454.3,446.6l-0.8,-13.6M629.8,334.9l4.4,-13.9M556.6,417.9l-7.8,-14.2M629.2,319.8l4.1,-8.6M629.9,332.9l12.9,-8M170,331.6l-10.7,1.3M185.3,373l9.7,-12.6M491,219.8l-8.9,-2.5M590.6,397.1l-4.4,-14.5M238.1,415.3l-9.4,1.5M361.3,448.3l12.9,-14.6M391.8,210.1l-5.5,0.5M539.8,425.3l-4.9,-13.1M217.2,257.1l3.8,-13M606.3,383l-9.3,-15.3M492.6,220.2l10.6,-10.6M222.2,406.1l1.2,-15.1M582.3,256.9l-5.7,-8.6M172,345.9l-2.7,-3.5M366.2,448.7l10.3,-5.3M208.8,396.7l-2.8,-11.5M627,310.8l5.2,-6.9M221.6,405.7l2.8,-7.7M601.2,388.1l3.4,0.4M235.2,413.7l-8.7,-11.8M267.6,428.1l0,2.8M210.1,262.3l13.3,-8.2" stroke="#ffffff" stroke-width="3"/>
+<path d="M400,330L380,60" stroke="#e8f0f8" stroke-width="10" stroke-linecap="round"/><path d="M386,330a14,8 0 1 0 28,0a14,8 0 1 0 -28,0Z" fill="#c8f0ff"/>
+<path d="M800,240L660,300L640,286L800,200Z" fill="#c8ccd8"/><path d="M640,286l-16,10l20,6z" fill="#e8ecf4"/>
+<path d="M150,470h60l20,30H140zM240,480h60l20,30H230z" fill="#3a3040"/>
+<rect width="800" height="600" fill="url(#siCh19FrostCircle-g1)"/>
+</svg>
