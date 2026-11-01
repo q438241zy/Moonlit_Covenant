@@ -1638,6 +1638,9 @@ body:has(.game-frame) .cg-unlock-stack { top:10px; }
   .unit-row { grid-template-columns:repeat(2, minmax(0, 1fr)); }
   .loadout-slot select, .party-oath select { min-width:0; width:100%; }
   .bar.res { width:120px; }
+  /* 手机上单位卡排得很长：指令面板贴在屏幕底部，不用滚回来找 */
+  .action-menu { position:sticky; bottom:8px; z-index:5; box-shadow:0 -8px 24px rgba(0,0,0,.45); }
+  .action-buttons .button { padding:8px 10px; font-size:.8rem; }
 }
 /* 赤月 cut-in：一条斜切的红带，左边是她当前服装的立绘，右边是招式与台词 */
 .skill-cutin { position:fixed; inset:0; z-index:90; display:grid; place-items:center; pointer-events:none; background:rgba(6,5,15,.55); animation:cutinFade 1.6s ease forwards; }

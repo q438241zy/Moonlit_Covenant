@@ -20,6 +20,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { CHARACTERS } from '../game/content.mjs';
 import { publicPools } from '../game/gacha.mjs';
+import { publicSkillbook } from '../game/skills.mjs';
+import { publicSkillPool } from '../game/skill-gacha.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SKIP_DIRS = new Set(['node_modules', '.git', 'data', 'test', 'out', '.cache']);
@@ -197,6 +199,17 @@ test('核#14: the summon pool reveals each spoiler only after its chapter is cle
 
 // 莉莉丝在正式13以无名的「金发刺客」登场，正式20才报上姓名：卡池（角色卡与她的服装名）在那之前不写她的名和匕首名。
 // 角色管理器、卡牌对战等开局可见的页面另有自己的口径，不在这张表里，所以单独检查卡池。
+// 技能书与秘技召唤（技能稿 3.2、5.4）：只显示已入队角色的技能、合击与被动，个人章通关后才显示誓约技；
+// 每一个进度点上，对外视图都不能有还没揭晓的剧透词，也不能在正式20以前写出莉莉丝的名字
+test('技能书与秘技召唤的对外视图在每个进度点都不剧透', () => {
+  for (let highest = -1; highest <= 30; highest += 1) {
+    const account = { id: 'g', diamonds: 0, rewards: { chaptersCleared: highest < 0 ? [] : chapterIds(highest) } };
+    const view = JSON.stringify([publicSkillbook(account), publicSkillPool(account)]);
+    const leaked = [...spoilersAfter(highest), ...(highest < 20 ? ['莉莉丝', '昼盲', '夜醒'] : [])].filter((term) => view.includes(term));
+    assert.deepEqual(leaked, [], `after clearing up to ch${String(highest).padStart(3, '0')}`);
+  }
+});
+
 const SUMMON_POOL_NAME_VEILS = [{ term: '莉莉丝', from: 20 }, { term: '昼盲', from: 20 }, { term: '夜醒', from: 20 }];
 
 test('核#14: the summon pool calls her 「金发刺客」 from ch013 and gives her name and weapon names only after ch020', () => {

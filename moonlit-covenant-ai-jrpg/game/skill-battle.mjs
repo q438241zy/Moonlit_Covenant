@@ -116,7 +116,7 @@ function removeSt(u, pred, count = Infinity) {
   u.st = u.st.filter((s) => { if (n < count && pred(s)) { n += 1; return false; } return true; });
   return n;
 }
-const STATUS_NAMES = { atkUp: '攻击提升', atkDown: '攻击下降', defUp: '防御提升', defDown: '防御下降', armorBreak: '破甲', dmgDown: '减伤', dmgUp: '易伤', spdUp: '加速', spdDown: '减速', critUp: '暴击提升', taunt: '嘲讽', taunted: '被嘲讽', counter: '反击', guard: '护援', mark: '影标', scanned: '弱点', dodge: '闪避', lastStand: '保命', shield: '护盾', regen: '持续回复', invuln: '冰封', stun: '麻痹', freeze: '冻结', silence: '沉默', fear: '恐惧', curse: '诅咒', burn: '燃烧', poison: '中毒', overheat: '过热', duel: '决斗', form: '半龙化', seed: '噩梦种子', reflect: '反射', intercept: '截击', backstab: '背击', breakFree: '挣脱', immune_sin: '免疫罪律', immune_stasis: '免疫停滞', trueSight: '无视闪避', hitDown: '命中下降', resistUp: '抗性提升', guarded: '加护', countBonus: '报数', rollCall: '全员报数', negateSkill: '技能无效', negateSure: '必中无效', delayPhase: '阶段推迟', hard: '硬一瞬', lightStep: '轻步', palmLight: '掌心光', charging: '蓄力' };
+const STATUS_NAMES = { atkUp: '攻击提升', atkDown: '攻击下降', defUp: '防御提升', defDown: '防御下降', armorBreak: '破甲', dmgDown: '减伤', dmgUp: '易伤', spdUp: '加速', spdDown: '减速', critUp: '暴击提升', taunt: '嘲讽', taunted: '被嘲讽', counter: '反击', guard: '护援', mark: '影标', scanned: '弱点', dodge: '闪避', lastStand: '保命', shield: '护盾', regen: '持续回复', invuln: '冰封', springGuard: '春回霜华', stun: '麻痹', freeze: '冻结', silence: '沉默', fear: '恐惧', curse: '诅咒', burn: '燃烧', poison: '中毒', overheat: '过热', duel: '决斗', form: '半龙化', seed: '噩梦种子', reflect: '反射', intercept: '截击', backstab: '背击', breakFree: '挣脱', immune_sin: '免疫罪律', immune_stasis: '免疫停滞', trueSight: '无视闪避', hitDown: '命中下降', resistUp: '抗性提升', guarded: '加护', countBonus: '报数', rollCall: '全员报数', negateSkill: '技能无效', negateSure: '必中无效', delayPhase: '阶段推迟', hard: '硬一瞬', lightStep: '轻步', palmLight: '掌心光', charging: '蓄力' };
 const statusName = (k) => STATUS_NAMES[k] || k;
 
 // ─── 战斗日志 ───
@@ -176,6 +176,7 @@ function hit(B, a, t, o = {}) {
     if (passive(B, 'serena', t)) { say(B, '塞雷娜的「我一直看着」：识破了这一击，它落空了。', 'good'); return 0; }
   }
   if (has(t, 'invuln')) { say(B, `${t.name}在冰里，伤不到。`); return 0; }
+  const spring = st(t, 'springGuard');
   const I = a.owner === 'hero' && !o.noCap ? Math.min(o.I ?? 1, HERO_CAP) : (o.I ?? 1);
   let dmg = effStat(a, o.stat || 'atk') * I * (o.coef ?? 1) * DMG;
   let mult = 1;
@@ -208,8 +209,11 @@ function hit(B, a, t, o = {}) {
     if (g.heal) heal(B, by, by, Math.round(by.maxHp * g.heal), { quiet: true });
   }
   if (t.side === 'ally' && st(t, 'echo')) st(t, 'echo').stored += Math.round(dmg * st(t, 'echo').v);
+  // 春回霜华：这一回合的伤害冻住，下一回合开始时按一半回复
+  if (spring) { spring.stored = (spring.stored || 0) + dmg; say(B, `${a.name}${o.name ? `「${o.name}」` : ''}→${t.name}：这一下冻在了霜里。`, 'good'); return 0; }
+  // 先记伤害、再结算（倒下、撑住的提示排在这一行之后）
+  say(B, `${a.name}${o.name ? `「${o.name}」` : ''}→${t.name} ${dmg}${crit ? '（暴击）' : ''}${weak ? '（弱点）' : ''}`, a.side === 'ally' ? 'hit' : 'hurt');
   const dealt = applyDamage(B, t, dmg, a, o);
-  if (dealt > 0) say(B, `${a.name}${o.name ? `「${o.name}」` : ''}→${t.name} ${dealt}${crit ? '（暴击）' : ''}${weak ? '（弱点）' : ''}`, a.side === 'ally' ? 'hit' : 'hurt');
   if (t.side === 'enemy') {
     let brk = (o.isSkill ? 12 : 8) + (o.break || 0);
     if (weak) { brk += 10; gainRes(B, 5); }
@@ -448,6 +452,7 @@ function expire(B, u, s) {
   if (s.k === 'rampartFall') { for (const e of enemyUnits(B)) { hit(B, u, e, { stat: 'atk', coef: 1, I: s.I, element: 'fire', name: '城垣崩落', isSkill: true }); addSt(B, e, 'armorBreak', 0, 2); } }
   if (s.k === 'duelMark' && s.finisher && u.hp > u.maxHp * 0.5) { const t = B.units[s.with]; if (t && !t.down) hit(B, u, t, { stat: 'atk', coef: 1, I: s.finisher, element: 'thunder', name: '圣雷斩', isSkill: true }); }
   if (s.k === 'invuln' && s.melt) heal(B, u, u, s.melt);
+  if (s.k === 'springGuard' && s.stored > 0) heal(B, u, u, s.stored * 0.5);
 }
 function seedBurst(B, u, s) {
   const src = B.units[s.by];
@@ -619,7 +624,9 @@ export function availableActions(B) {
   const combos = u.id === 'hero'
     ? Object.entries(B.combos).filter(([h]) => isAlly(B, h)).map(([h, c]) => ({ with: h, name: c.name, usable: B.resonance >= SKILL_DATA.fixed.combo.resonance, why: B.resonance >= SKILL_DATA.fixed.combo.resonance ? '' : '共鸣 30' }))
     : (B.combos[u.id] && isAlly(B, 'hero') ? [{ with: u.id, name: B.combos[u.id].name, usable: B.resonance >= SKILL_DATA.fixed.combo.resonance, why: B.resonance >= SKILL_DATA.fixed.combo.resonance ? '' : '共鸣 30' }] : []);
-  const oath = u.id === 'hero' && B.oath ? { with: B.oath, name: SKILL_DATA.oaths[B.oath].name, usable: !B.oathUsed && B.resonance >= MAX_RES && isAlly(B, B.oath), why: B.oathUsed ? '已用过' : B.resonance < MAX_RES ? '共鸣 100' : !isAlly(B, B.oath) ? '她倒地了' : '' } : null;
+  const noCopy = B.oath === 'mia' && !B.lastSkill; // 零号机·无限工坊要先有一张能复制的技能
+  const oathWhy = !B.oath ? '' : B.oathUsed ? '已用过' : B.resonance < MAX_RES ? '共鸣 100' : !isAlly(B, B.oath) ? '她倒地了' : noCopy ? '还没有能复制的技能' : '';
+  const oath = u.id === 'hero' && B.oath ? { with: B.oath, name: SKILL_DATA.oaths[B.oath].name, usable: !oathWhy, why: oathWhy } : null;
   return { actor: u.id, skills, combos, oath, potions: B.potions, canAttack: !(B.field.some((f) => f.breaths && f.by === u.id)) };
 }
 
@@ -693,6 +700,7 @@ function doAction(B, u, a) {
     if (B.oathUsed) return '誓约技一场一次。';
     if (B.resonance < MAX_RES) return '共鸣不足 100。';
     if (!isAlly(B, B.oath)) return '她倒地了。';
+    if (B.oath === 'mia' && !B.lastSkill) return '还没有能复制的技能。';
     B.oathUsed = true;
     gainRes(B, -MAX_RES);
     const o = SKILL_DATA.oaths[B.oath];
@@ -1096,7 +1104,7 @@ const OATH_LOGIC = {
     for (const x of allyUnits(B)) n += removeSt(x, (s) => CONTROL.includes(s.k) || s.k === 'silence');
     for (let k = 0; k < Math.max(1, n); k += 1) for (const e of enemyUnits(B)) hit(B, h, e, { stat: 'atk', coef: 0.3, I, element: 'thunder', name: '光雷斩击', isSkill: true });
   },
-  freya(B, hero, h) { for (const x of allyUnits(B)) { addSt(B, x, 'invuln', 0, 1); addSt(B, x, 'regen', Math.round(x.maxHp * 0.15), 2); } say(B, '这一回合的伤害都冻住了。', 'good'); },
+  freya(B, hero, h) { for (const x of allyUnits(B)) addSt(B, x, 'springGuard', 0, 1, { stored: 0 }); say(B, '这一回合的伤害都会冻住，下一回合化成回复。', 'good'); },
   ophelia(B, hero, h, I) { for (const e of enemyUnits(B)) hit(B, h, e, { stat: 'mag', coef: 1, I, element: 'earth', name: '天穹俯冲', isSkill: true }); for (const [id] of Object.entries(hero.cd)) if (id === 'hero_seven_flash') delete hero.cd[id]; },
   lilith(B, hero, h, I) {
     const marked = enemyUnits(B).filter((e) => has(e, 'mark'));
