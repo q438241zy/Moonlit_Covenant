@@ -20021,9 +20021,41 @@
                           },
                           "then": [
                             {
-                              "t": "say",
-                              "who": "lia",
-                              "text": "莉亚·赫斯特。在。"
+                              "t": "if",
+                              "when": {
+                                "var": "ENDING_COMPANION",
+                                "eq": "LEAH"
+                              },
+                              "then": [
+                                {
+                                  "t": "say",
+                                  "who": "lia_y3_beside",
+                                  "text": "莉亚·赫斯特。在。"
+                                }
+                              ],
+                              "else": [
+                                {
+                                  "t": "if",
+                                  "when": {
+                                    "var": "LEAH_STANCE_FINAL",
+                                    "eq": "AWAY"
+                                  },
+                                  "then": [
+                                    {
+                                      "t": "say",
+                                      "who": "lia_y3_away",
+                                      "text": "莉亚·赫斯特。在。"
+                                    }
+                                  ],
+                                  "else": [
+                                    {
+                                      "t": "say",
+                                      "who": "lia_y3_apart",
+                                      "text": "莉亚·赫斯特。在。"
+                                    }
+                                  ]
+                                }
+                              ]
                             },
                             {
                               "t": "if",
@@ -20108,9 +20140,41 @@
                           },
                           "then": [
                             {
-                              "t": "say",
-                              "who": "mia",
-                              "text": "米娅·玲。在。"
+                              "t": "if",
+                              "when": {
+                                "var": "ENDING_COMPANION",
+                                "eq": "MIA"
+                              },
+                              "then": [
+                                {
+                                  "t": "say",
+                                  "who": "mia_y3_beside",
+                                  "text": "米娅·玲。在。"
+                                }
+                              ],
+                              "else": [
+                                {
+                                  "t": "if",
+                                  "when": {
+                                    "var": "MIA_STANCE_FINAL",
+                                    "eq": "AWAY"
+                                  },
+                                  "then": [
+                                    {
+                                      "t": "say",
+                                      "who": "mia_y3_away",
+                                      "text": "米娅·玲。在。"
+                                    }
+                                  ],
+                                  "else": [
+                                    {
+                                      "t": "say",
+                                      "who": "mia_y3_apart",
+                                      "text": "米娅·玲。在。"
+                                    }
+                                  ]
+                                }
+                              ]
                             },
                             {
                               "t": "if",
@@ -20195,9 +20259,41 @@
                           },
                           "then": [
                             {
-                              "t": "say",
-                              "who": "serena",
-                              "text": "塞雷娜·诺克斯。在。"
+                              "t": "if",
+                              "when": {
+                                "var": "ENDING_COMPANION",
+                                "eq": "SERENA"
+                              },
+                              "then": [
+                                {
+                                  "t": "say",
+                                  "who": "serena_y3_beside",
+                                  "text": "塞雷娜·诺克斯。在。"
+                                }
+                              ],
+                              "else": [
+                                {
+                                  "t": "if",
+                                  "when": {
+                                    "var": "SERENA_STANCE_FINAL",
+                                    "eq": "AWAY"
+                                  },
+                                  "then": [
+                                    {
+                                      "t": "say",
+                                      "who": "serena_y3_away",
+                                      "text": "塞雷娜·诺克斯。在。"
+                                    }
+                                  ],
+                                  "else": [
+                                    {
+                                      "t": "say",
+                                      "who": "serena_y3_apart",
+                                      "text": "塞雷娜·诺克斯。在。"
+                                    }
+                                  ]
+                                }
+                              ]
                             },
                             {
                               "t": "if",
@@ -20282,9 +20378,41 @@
                           },
                           "then": [
                             {
-                              "t": "say",
-                              "who": "evelyn",
-                              "text": "伊芙琳。在。"
+                              "t": "if",
+                              "when": {
+                                "var": "ENDING_COMPANION",
+                                "eq": "EVELYN"
+                              },
+                              "then": [
+                                {
+                                  "t": "say",
+                                  "who": "evelyn_y3_beside",
+                                  "text": "伊芙琳。在。"
+                                }
+                              ],
+                              "else": [
+                                {
+                                  "t": "if",
+                                  "when": {
+                                    "var": "EVELYN_STANCE_FINAL",
+                                    "eq": "AWAY"
+                                  },
+                                  "then": [
+                                    {
+                                      "t": "say",
+                                      "who": "evelyn_y3_away",
+                                      "text": "伊芙琳。在。"
+                                    }
+                                  ],
+                                  "else": [
+                                    {
+                                      "t": "say",
+                                      "who": "evelyn_y3_apart",
+                                      "text": "伊芙琳。在。"
+                                    }
+                                  ]
+                                }
+                              ]
                             },
                             {
                               "t": "if",
@@ -20369,9 +20497,41 @@
                           },
                           "then": [
                             {
-                              "t": "say",
-                              "who": "aila",
-                              "text": "艾拉。在。"
+                              "t": "if",
+                              "when": {
+                                "var": "ENDING_COMPANION",
+                                "eq": "AILA"
+                              },
+                              "then": [
+                                {
+                                  "t": "say",
+                                  "who": "aila_y3_beside",
+                                  "text": "艾拉。在。"
+                                }
+                              ],
+                              "else": [
+                                {
+                                  "t": "if",
+                                  "when": {
+                                    "var": "AILA_STANCE_FINAL",
+                                    "eq": "AWAY"
+                                  },
+                                  "then": [
+                                    {
+                                      "t": "say",
+                                      "who": "aila_y3_away",
+                                      "text": "艾拉。在。"
+                                    }
+                                  ],
+                                  "else": [
+                                    {
+                                      "t": "say",
+                                      "who": "aila_y3_apart",
+                                      "text": "艾拉。在。"
+                                    }
+                                  ]
+                                }
+                              ]
                             },
                             {
                               "t": "if",
@@ -20456,9 +20616,41 @@
                           },
                           "then": [
                             {
-                              "t": "say",
-                              "who": "freya",
-                              "text": "芙蕾娅。在。"
+                              "t": "if",
+                              "when": {
+                                "var": "ENDING_COMPANION",
+                                "eq": "FREYA"
+                              },
+                              "then": [
+                                {
+                                  "t": "say",
+                                  "who": "freya_y3_beside",
+                                  "text": "芙蕾娅。在。"
+                                }
+                              ],
+                              "else": [
+                                {
+                                  "t": "if",
+                                  "when": {
+                                    "var": "FREYA_STANCE_FINAL",
+                                    "eq": "AWAY"
+                                  },
+                                  "then": [
+                                    {
+                                      "t": "say",
+                                      "who": "freya_y3_away",
+                                      "text": "芙蕾娅。在。"
+                                    }
+                                  ],
+                                  "else": [
+                                    {
+                                      "t": "say",
+                                      "who": "freya_y3_apart",
+                                      "text": "芙蕾娅。在。"
+                                    }
+                                  ]
+                                }
+                              ]
                             },
                             {
                               "t": "if",
@@ -20543,9 +20735,41 @@
                           },
                           "then": [
                             {
-                              "t": "say",
-                              "who": "ophelia",
-                              "text": "奥菲莉亚·使诺德。在。"
+                              "t": "if",
+                              "when": {
+                                "var": "ENDING_COMPANION",
+                                "eq": "OPHELIA"
+                              },
+                              "then": [
+                                {
+                                  "t": "say",
+                                  "who": "ophelia_y3_beside",
+                                  "text": "奥菲莉亚·使诺德。在。"
+                                }
+                              ],
+                              "else": [
+                                {
+                                  "t": "if",
+                                  "when": {
+                                    "var": "OPHELIA_STANCE_FINAL",
+                                    "eq": "AWAY"
+                                  },
+                                  "then": [
+                                    {
+                                      "t": "say",
+                                      "who": "ophelia_y3_away",
+                                      "text": "奥菲莉亚·使诺德。在。"
+                                    }
+                                  ],
+                                  "else": [
+                                    {
+                                      "t": "say",
+                                      "who": "ophelia_y3_apart",
+                                      "text": "奥菲莉亚·使诺德。在。"
+                                    }
+                                  ]
+                                }
+                              ]
                             },
                             {
                               "t": "if",
@@ -20630,9 +20854,41 @@
                           },
                           "then": [
                             {
-                              "t": "say",
-                              "who": "lilith",
-                              "text": "莉莉丝·瓦尔哈拉。在。"
+                              "t": "if",
+                              "when": {
+                                "var": "ENDING_COMPANION",
+                                "eq": "LILITH"
+                              },
+                              "then": [
+                                {
+                                  "t": "say",
+                                  "who": "lilith_y3_beside",
+                                  "text": "莉莉丝·瓦尔哈拉。在。"
+                                }
+                              ],
+                              "else": [
+                                {
+                                  "t": "if",
+                                  "when": {
+                                    "var": "LILITH_STANCE_FINAL",
+                                    "eq": "AWAY"
+                                  },
+                                  "then": [
+                                    {
+                                      "t": "say",
+                                      "who": "lilith_y3_away",
+                                      "text": "莉莉丝·瓦尔哈拉。在。"
+                                    }
+                                  ],
+                                  "else": [
+                                    {
+                                      "t": "say",
+                                      "who": "lilith_y3_apart",
+                                      "text": "莉莉丝·瓦尔哈拉。在。"
+                                    }
+                                  ]
+                                }
+                              ]
                             },
                             {
                               "t": "if",
