@@ -865,6 +865,13 @@ function renderView() {
     ensureAccount().then(refreshCredit).catch(() => {});
     return;
   }
+  if (screen === 'skills') {
+    app.innerHTML = skillsPage();
+    bindNavEvents();
+    bindSkillsEvents();
+    ensureAccount().then(() => Promise.all([refreshCredit(), loadSkillsView()])).catch((e) => showToast(e.message, 'error'));
+    return;
+  }
   if (screen === 'costume') {
     app.innerHTML = costumePage();
     bindNavEvents();
@@ -927,6 +934,8 @@ function bindGachaEvents() {
       currentGachaPool = tab.dataset.pool;
       document.querySelectorAll('.gacha-tab').forEach((t) => t.classList.remove('active'));
       tab.classList.add('active');
+      const tickets = document.querySelector('#gachaTicketActions');
+      if (tickets) tickets.hidden = currentGachaPool !== 'skill';
       // 切换卡池时清掉上一个卡池的召唤结果，避免角色结果显示在服饰池下面
       const result = document.querySelector('#gachaResult');
       if (result) { result.style.display = 'none'; result.innerHTML = ''; }
@@ -935,6 +944,8 @@ function bindGachaEvents() {
   });
   document.querySelector('#gachaSingle')?.addEventListener('click', () => doGachaPull(1));
   document.querySelector('#gachaTen')?.addEventListener('click', () => doGachaPull(10));
+  document.querySelector('#gachaTicket1')?.addEventListener('click', () => doGachaPull(1, 'tickets'));
+  document.querySelector('#gachaTicket10')?.addEventListener('click', () => doGachaPull(10, 'tickets'));
   document.querySelector('#gachaRatesJump')?.addEventListener('click', () => {
     document.querySelector('#gachaRates')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
@@ -1047,7 +1058,8 @@ function bindEvents() {
     button.addEventListener('click', async () => {
       const actionId = button.dataset.battle;
       const beforeScene = state.scene;
-      await runMutation('/api/battle', { actionId }, actionId === 'skill' ? 'skill' : actionId === 'attack' ? 'hit' : 'click');
+      // 带上 playerId：技能书③绝技格里她的暮紫／赤月给外传的「技能」一点封顶加成（技能稿 6.2）
+      await runMutation('/api/battle', { actionId, playerId }, actionId === 'skill' ? 'skill' : actionId === 'attack' ? 'hit' : 'click');
       if (beforeScene === 'battle' && state.scene === 'aftermath') beep('win');
     });
   });
@@ -1324,6 +1336,7 @@ const NAV_ITEMS = [
   { id: 'map', label: '地图', icon: 'map' },
   { id: 'chapters', label: '章节', icon: 'book' },
   { id: 'gacha', label: '召唤', icon: 'sparkle' },
+  { id: 'skills', label: '技能', icon: 'scroll' },
   { id: 'costume', label: '换衣', icon: 'dress' },
   { id: 'shop', label: '商店', icon: 'cart' },
   { id: 'settings', label: '设置', icon: 'settings' }
@@ -1835,6 +1848,7 @@ function gachaPage() {
       <div class="gacha-tabs">
         <button class="gacha-tab ${currentGachaPool === 'character' ? 'active' : ''}" data-pool="character">角色池</button>
         <button class="gacha-tab ${currentGachaPool === 'costume' ? 'active' : ''}" data-pool="costume">服饰池</button>
+        <button class="gacha-tab ${currentGachaPool === 'skill' ? 'active' : ''}" data-pool="skill">秘技召唤</button>
       </div>
       <section class="gacha-pool" id="gachaPool"><div class="loader">加载中…</div></section>
       <div class="gacha-pay">
@@ -1843,6 +1857,10 @@ function gachaPage() {
       <section class="gacha-actions">
         <button class="button primary large" id="gachaSingle">${gachaCostText(1)}</button>
         <button class="button secondary large" id="gachaTen">${gachaCostText(10)}</button>
+      </section>
+      <section class="gacha-actions gacha-ticket-actions" id="gachaTicketActions" ${currentGachaPool === 'skill' ? '' : 'hidden'}>
+        <button class="button secondary" id="gachaTicket1" type="button">${icon('scroll', { size: 15 })}用券单抽</button>
+        <button class="button secondary" id="gachaTicket10" type="button">${icon('scroll', { size: 15 })}用券十连</button>
       </section>
       <p class="gacha-rates-link"><button class="button ghost small" id="gachaRatesJump" type="button">${icon('chart', { size: 15 })}查看概率公示</button></p>
       <section class="gacha-result" id="gachaResult" style="display:none"></section>
@@ -1974,6 +1992,12 @@ async function loadGachaPool() {
     const pool = document.querySelector('#gachaPool');
     if (!pool) return;
     const ratesBox = document.querySelector('#gachaRates');
+    if (currentGachaPool === 'skill') {
+      if (ratesBox) ratesBox.innerHTML = skillRatesHtml(data.skill);
+      pool.innerHTML = skillPoolHtml(data.skill);
+      bindSkillPoolEvents();
+      return;
+    }
     if (ratesBox) ratesBox.innerHTML = gachaRatesHtml(currentGachaPool, data);
     if (currentGachaPool === 'character') {
       pool.innerHTML = `<div class="gacha-grid">${data.characters.map((c) => `
@@ -2020,12 +2044,23 @@ async function reloadAccount() {
 
 let gachaPulling = false;
 
-async function doGachaPull(count) {
+async function doGachaPull(count, payWith = 'diamonds') {
   if (gachaPulling) return;
   gachaPulling = true;
   try {
     await ensureAccount();
-    const r = await apiPost('/api/gacha/pull', { playerId, pool: currentGachaPool, count });
+    // 秘技召唤可以用券（payWith: 'tickets'）；角色池、服饰池只收钻石
+    const r = currentGachaPool === 'skill'
+      ? await apiPost('/api/gacha/pull', { playerId, pool: 'skill', count, payWith })
+      : await apiPost('/api/gacha/pull', { playerId, pool: currentGachaPool, count });
+    if (r.pool === 'skill') {
+      if (rewardStatus && Number.isFinite(r.balance?.diamonds)) rewardStatus.diamonds = r.balance.diamonds;
+      showSkillPullResult(r);
+      refreshRewardWidgets();
+      updateGachaButtons();
+      loadGachaPool();
+      return;
+    }
     const [chapters] = await Promise.all([loadMainlineIndex(), reloadAccount()]);
     if (rewardStatus && Number.isFinite(r.balance?.diamonds)) rewardStatus.diamonds = r.balance.diamonds;
     const ownedCharacters = new Set(playerAccount?.ownedCharacters || []);
@@ -2610,6 +2645,319 @@ async function boot() {
   }
   render();
   if (sessionLost) showToast('服务器重启后旧存档已失效，请重新开始外传。', 'error');
+}
+
+/* ═══ 秘技召唤（池 skill；game/skill-gacha.mjs，技能稿 3.2）═══ */
+const TIER_META = { white: { label: '白', color: '#dfe3ec' }, green: { label: '绿', color: '#5fcf8f' }, blue: { label: '蓝', color: '#5b8cff' }, purple: { label: '暮紫', color: '#a46bff' }, red: { label: '赤月', color: '#e23a4e' } };
+const TIER_PIPS = { white: 1, green: 2, blue: 3, purple: 4, red: 5 };
+const MATERIAL_NAMES = { white: '练习手记', green: '实战手记', blue: '源律残章', purple: '暮紫秘页', red: '赤月秘页' };
+const OWNER_ICON = { hero: 'sword', lia: 'shield', mia: 'wrench', serena: 'moon', evelyn: 'feather', aila: 'bolt', freya: 'frost', ophelia: 'dragon', lilith: 'dagger' };
+
+function tierBadge(tier) {
+  const m = TIER_META[tier] || TIER_META.white;
+  return `<span class="sk-tier tier-${tier}" style="--tier:${m.color}">${'◆'.repeat(TIER_PIPS[tier] || 1)}<b>${m.label}</b></span>`;
+}
+function skillCardHtml(s, { compact = false, extra = '' } = {}) {
+  if (s.sealed) return `<div class="skill-card tier-${s.tier} is-sealed" style="--tier:${TIER_META[s.tier].color}">${tierBadge(s.tier)}<div class="skill-name">${escapeHtml(SEALED_NAME)}</div><div class="skill-desc muted">${icon('lock', { size: 12 })}她入队后揭晓</div></div>`;
+  return `<div class="skill-card tier-${s.tier}${s.owned === false ? ' is-locked' : ''}" style="--tier:${TIER_META[s.tier].color}">
+    <div class="skill-head">${tierBadge(s.tier)}<span class="skill-owner">${icon(OWNER_ICON[s.owner] || 'star4', { size: 13 })}</span>${s.level ? `<span class="skill-level">+${s.level}</span>` : ''}</div>
+    <div class="skill-name">${escapeHtml(s.name)}</div>
+    ${compact ? '' : `<div class="skill-meta">I ${s.index}${s.nextIndex ? ` → ${s.nextIndex}` : ''} · MP ${s.mp}${s.cd === 'battle' ? ' · 一场一次' : s.cd ? ` · 冷却 ${s.cd}` : ''}${s.resonance ? ` · 共鸣 ${s.resonance}` : ''}${s.ruleBend ? ` · 规则改写 ${escapeHtml(s.ruleBend)}` : ''}</div>
+    <div class="skill-desc">${escapeHtml(s.text?.desc || '')}</div>
+    <div class="skill-plus10"><b>+10</b> ${escapeHtml(s.text?.plus10 || '')}</div>`}
+    ${extra}
+  </div>`;
+}
+
+function skillRatesHtml(sk) {
+  if (!sk) return '';
+  const rows = sk.rates.map((r) => `<div class="rates-row" role="row"><span role="cell"><b>${escapeHtml(r.label)}</b></span><span role="cell">${formatRate(r.p)}</span><span role="cell">${r.items ? `${r.items.length ? formatRate(r.p / r.items.length) : '—'} <small>× ${r.items.length}</small>` : '—'}</span><span role="cell" class="rates-items">${(r.items || []).map((i) => `<span>${escapeHtml(i.name)}</span>`).join('')}</span></div>`).join('');
+  return `<h2 class="section-title" id="gachaRatesTitle">概率公示 · 秘技召唤</h2>
+    <p class="muted gacha-rates-note">只出已经入队的角色的暮紫、赤月技能（还没入队的角色不在池里）。赤月：基础 ${formatRate(sk.rates[0].p)}；距上一张赤月的第 ${sk.pity.softFrom} 抽起每抽 +${formatRate(sk.pity.softStep)}，第 ${sk.pity.hard} 抽必出。每 ${sk.pity.epicEvery} 抽至少一个暮紫或赤月。定轨：出赤月时 ${formatRate(sk.pity.targetShare)} 是目标，没中则下一张赤月必为目标。抽到已经拥有的技能当场转成秘页：暮紫×${sk.duplicate.purple}、赤月×${sk.duplicate.red}。</p>
+    <div class="rates-table" role="table" aria-label="秘技召唤概率"><div class="rates-row rates-head" role="row"><span role="columnheader">结果</span><span role="columnheader">合计</span><span role="columnheader">单个条目</span><span role="columnheader">条目</span></div>${rows}</div>`;
+}
+
+function skillPoolHtml(sk) {
+  if (!sk) return '<div class="loader">加载中…</div>';
+  const st = sk.state || {};
+  const reds = sk.rates[0].items || [];
+  const purples = sk.rates[1].items || [];
+  return `<div class="skill-pool-state">
+      <span>${icon('scroll', { size: 15 })}秘技召唤券 <b>${st.tickets ?? 0}</b></span>
+      <span>距保底 <b>${Math.max(0, sk.pity.hard - (st.sinceRed || 0))}</b> 抽</span>
+      <span>十抽保底 <b>${st.sinceEpic || 0}/${sk.pity.epicEvery}</b></span>
+      <span>${st.guaranteed ? '下一张赤月必为目标' : '定轨 50%'}</span>
+    </div>
+    <h3 class="skill-pool-title">${tierBadge('red')} 定轨目标</h3>
+    <div class="skill-grid">${reds.map((s) => skillCardHtml(s, { compact: true, extra: `<button class="button small ${st.target === s.id ? 'primary' : 'ghost'}" data-target-skill="${escapeHtml(s.id)}" type="button">${st.target === s.id ? '已定轨' : '设为目标'}</button>${s.owned ? '<div class="skill-owned">已拥有</div>' : ''}` })).join('') || '<p class="muted">还没有赤月。</p>'}</div>
+    <h3 class="skill-pool-title">${tierBadge('purple')} 暮紫</h3>
+    <div class="skill-grid">${purples.map((s) => skillCardHtml(s, { compact: true, extra: s.owned ? '<div class="skill-owned">已拥有</div>' : '' })).join('')}</div>`;
+}
+
+function bindSkillPoolEvents() {
+  document.querySelectorAll('[data-target-skill]').forEach((btn) => btn.addEventListener('click', async () => {
+    try {
+      await ensureAccount();
+      const id = btn.dataset.targetSkill;
+      const r = await apiPost('/api/gacha/target', { playerId, skillId: gachaPoolsCache?.skill?.state?.target === id ? null : id });
+      showToast(r.target ? '定轨目标已设定。' : '已取消定轨。', 'success');
+      await fetchGachaPools();
+      loadGachaPool();
+    } catch (e) { showToast(e.message, 'error'); }
+  }));
+}
+
+function showSkillPullResult(r) {
+  const el = document.querySelector('#gachaResult');
+  if (!el) return;
+  el.style.display = 'block';
+  el.innerHTML = `<h3>召唤结果</h3><div class="skill-grid result">${r.results.map((x, i) => (x.kind === 'skill'
+    ? `<div class="skill-result" style="--delay:${i * 70}ms">${skillCardHtml(x, { compact: true, extra: `${x.isNew ? '<span class="result-new">NEW</span>' : ''}${x.converted ? `<div class="skill-owned">已拥有：转为${MATERIAL_NAMES[x.converted.tier]}×${x.converted.qty}</div>` : ''}` })}</div>`
+    : `<div class="skill-result material tier-${x.tier}" style="--delay:${i * 70}ms;--tier:${TIER_META[x.tier].color}">${icon('scroll', { size: 22 })}<b>${MATERIAL_NAMES[x.tier]}</b><span>×${x.qty}</span></div>`)).join('')}</div>
+    <p class="muted">${r.payWith === 'tickets' ? `用了 ${r.results.length} 张秘技召唤券` : `消耗 ${r.cost} 钻石`} · 距赤月保底 ${Math.max(0, 80 - (r.state?.sinceRed || 0))} 抽${r.converted?.purple || r.converted?.red ? ` · 重复转秘页：暮紫+${r.converted.purple} 赤月+${r.converted.red}` : ''}</p>`;
+  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  beep(r.results.some((x) => x.kind === 'skill' && x.tier === 'red') ? 'win' : 'skill');
+}
+
+/* ═══ 技能页：技能书 + 委托板（game/skills.mjs、game/skill-battle.mjs，技能稿第五、六节）═══ */
+let skillsTab = 'book';
+let skillsOwner = 'hero';
+let skillsData = null;
+let commissionsData = null;
+let battleView = null;
+let battleTarget = null;
+let battleBusy = false;
+
+function skillsPage() {
+  return `${navBar()}
+    <main class="page-content skills-page">
+      <div class="page-header"><div class="eyebrow">SKILLS · 技能书与委托板</div><h1>技能</h1>
+        <p class="muted">白、绿、蓝随主线解锁，暮紫、赤月从「秘技召唤」抽到；每张都能强化到 +10。①本命格只装剧情技能，②战技格可装暮紫，③绝技格什么颜色都能装（赤月只能装这里）。委托板是时间不定的公会委托：结果不写回主线，奖励是强化材料。</p>
+      </div>
+      <div class="gacha-tabs" role="tablist">
+        <button class="gacha-tab skills-tab ${skillsTab === 'book' ? 'active' : ''}" data-skills-tab="book" type="button">${icon('book', { size: 15 })}技能书</button>
+        <button class="gacha-tab skills-tab ${skillsTab === 'board' ? 'active' : ''}" data-skills-tab="board" type="button">${icon('flag', { size: 15 })}委托板</button>
+      </div>
+      <section id="skillsBody"><div class="loader">加载中…</div></section>
+    </main>`;
+}
+
+function bindSkillsEvents() {
+  document.querySelectorAll('[data-skills-tab]').forEach((btn) => btn.addEventListener('click', () => {
+    skillsTab = btn.dataset.skillsTab;
+    document.querySelectorAll('[data-skills-tab]').forEach((b) => b.classList.toggle('active', b === btn));
+    loadSkillsView();
+  }));
+}
+
+async function loadSkillsView() {
+  const body = document.querySelector('#skillsBody');
+  if (!body || !playerId) return;
+  try {
+    if (skillsTab === 'book') {
+      skillsData = await apiGet(`/api/skills?playerId=${encodeURIComponent(playerId)}`);
+      renderSkillBook();
+    } else {
+      commissionsData = await apiGet(`/api/commissions?playerId=${encodeURIComponent(playerId)}`);
+      battleView = commissionsData.active || (battleView?.result ? battleView : null);
+      renderBoard();
+    }
+  } catch (e) { body.innerHTML = `<p class="muted">${escapeHtml(e.message)}</p>`; }
+}
+
+function materialBarHtml(d) {
+  return `<div class="material-bar">${Object.keys(TIER_META).map((t) => `<span class="material-chip tier-${t}" style="--tier:${TIER_META[t].color}" title="${MATERIAL_NAMES[t]}">${'◆'.repeat(TIER_PIPS[t])}<b>${MATERIAL_NAMES[t]}</b>${d.materials[t]}</span>`).join('')}<span class="material-chip">${icon('scroll', { size: 13 })}<b>召唤券</b>${d.tickets}</span></div>`;
+}
+
+function renderSkillBook() {
+  const body = document.querySelector('#skillsBody');
+  const d = skillsData;
+  if (!body || !d) return;
+  const owners = d.owners;
+  if (!owners.find((o) => o.id === skillsOwner && !o.sealed)) skillsOwner = 'hero';
+  const mine = d.skills.filter((s) => s.owner === skillsOwner);
+  const slots = d.loadout[skillsOwner] || [null, null, null];
+  const owned = mine.filter((s) => !s.sealed && s.owned);
+  const slotRule = (i, s) => (i === 0 ? s.source === 'story' : i === 1 ? s.tier !== 'red' : true);
+  const owner = owners.find((o) => o.id === skillsOwner);
+  const combo = d.combos[skillsOwner];
+  const oath = d.oaths[skillsOwner];
+  const passive = d.passives[skillsOwner];
+  const joined = owners.filter((o) => !o.sealed && o.id !== 'hero');
+  body.innerHTML = `${materialBarHtml(d)}
+    <div class="owner-tabs" role="tablist">${owners.map((o) => `<button type="button" class="owner-tab ${o.id === skillsOwner ? 'active' : ''}" data-owner="${o.id}" ${o.sealed ? 'disabled' : ''}>${icon(o.sealed ? 'lock' : OWNER_ICON[o.id], { size: 15 })}<span>${escapeHtml(o.sealed ? SEALED_NAME : o.name)}</span></button>`).join('')}</div>
+    <section class="loadout-box">
+      <h3>${escapeHtml(owner.name)} · ${escapeHtml(owner.role)} · 编成</h3>
+      <div class="loadout-slots">${[0, 1, 2].map((i) => `<label class="loadout-slot"><span>${['①本命格', '②战技格', '③绝技格'][i]}</span>
+        <select data-slot="${i}">${i ? '<option value="">（空）</option>' : ''}${owned.filter((s) => slotRule(i, s)).map((s) => `<option value="${escapeHtml(s.id)}" ${slots[i] === s.id ? 'selected' : ''}>[${TIER_META[s.tier].label}] ${escapeHtml(s.name)}${s.level ? ` +${s.level}` : ''}</option>`).join('')}</select></label>`).join('')}
+        <button class="button primary small" id="saveLoadout" type="button">${icon('save', { size: 14 })}保存编成</button></div>
+      ${passive ? `<p class="muted">信赖被动「${escapeHtml(passive.name)}」：${escapeHtml(passive.desc)}（技能战里固定 ${Math.round(d.passiveRule.chance * 100)}% 触发，冷却 ${d.passiveRule.cooldownActions} 个行动）</p>` : ''}
+      ${combo ? `<p class="muted">合击「${escapeHtml(combo.name)}」${combo.unlocked ? '' : `（${escapeHtml(combo.unlock)} 通关后解锁）`}：${escapeHtml(combo.desc)}（I＝${d.fixed.combo.index}，共鸣 ${d.fixed.combo.resonance}）</p>` : ''}
+      ${oath ? `<p class="muted">誓约技${oath.available ? `「${escapeHtml(oath.name)}」——「${escapeHtml(oath.line)}」：${escapeHtml(oath.desc)}（I＝${d.fixed.oath.index}，共鸣 ${d.fixed.oath.resonance}，一场一次）` : `：她的个人章（${escapeHtml(oath.personal)}）通关后解锁`}</p>` : ''}
+    </section>
+    <div class="skill-grid book">${mine.map((s) => skillCardHtml(s, { extra: s.sealed ? '' : skillCardActions(s, d) })).join('')}</div>
+    <section class="party-box">
+      <h3>委托板编成 · 亚克固定在场${d.partySize ? `，另选 ${d.partySize} 位` : ''}</h3>
+      ${d.partySize ? `<div class="party-picks">${joined.map((o) => `<label class="party-pick"><input type="checkbox" value="${o.id}" ${d.party.includes(o.id) ? 'checked' : ''}>${icon(OWNER_ICON[o.id], { size: 14 })}${escapeHtml(o.name)}</label>`).join('')}</div>
+        <label class="party-oath">誓约槽 <select id="oathPick"><option value="">（空）</option>${joined.filter((o) => o.personalCleared).map((o) => `<option value="${o.id}" ${d.oath === o.id ? 'selected' : ''}>${escapeHtml(o.name)}</option>`).join('')}</select></label>
+        <button class="button secondary small" id="saveParty" type="button">${icon('users', { size: 14 })}保存</button>` : '<p class="muted">通关正式第五章后开放委托板。</p>'}
+    </section>
+    <section class="convert-box">
+      <h3>转换与兑换（只能上转，没有向下转换）</h3>
+      <div class="convert-actions">
+        <button class="button ghost small" data-convert="white>green" type="button">${d.convert['white>green']} 练习手记 → 1 实战手记</button>
+        <button class="button ghost small" data-convert="green>blue" type="button">${d.convert['green>blue']} 实战手记 → 1 源律残章</button>
+        <button class="button ghost small" data-convert="purple>red" type="button">${d.convert['purple>red']} 暮紫秘页 → 1 赤月秘页</button>
+        <button class="button ghost small" data-exchange="ticketFromPurple" type="button">${d.exchange.ticketFromPurple.purple} 暮紫秘页 → 1 召唤券</button>
+        <button class="button ghost small" data-exchange="ticketFromRed" type="button">${d.exchange.ticketFromRed.red} 赤月秘页 → 1 召唤券</button>
+      </div>
+    </section>`;
+  bindSkillBook();
+}
+
+function skillCardActions(s, d) {
+  if (s.source === 'story' && !s.unlocked) return `<div class="skill-owned">${icon('lock', { size: 12 })}主线 ${escapeHtml(s.unlock)} 解锁</div>`;
+  if (!s.owned) {
+    if (s.tier === 'purple') return `<button class="button ghost small" data-pick="${escapeHtml(s.id)}" type="button">${d.exchange.pickPurple.purple} 暮紫秘页兑换</button>`;
+    return `<div class="skill-owned">${icon('sparkle', { size: 12 })}秘技召唤获得</div>`;
+  }
+  if (s.nextCost == null) return '<div class="skill-owned">已满级</div>';
+  const enough = d.materials[s.tier] >= s.nextCost;
+  return `<button class="button ${enough ? 'primary' : 'ghost'} small" data-enhance="${escapeHtml(s.id)}" type="button" ${enough ? '' : 'disabled'}>强化 +${s.level + 1}（${MATERIAL_NAMES[s.tier]} ${s.nextCost}）</button>`;
+}
+
+async function skillPost(path, body, okText) {
+  try {
+    const r = await apiPost(path, { playerId, ...body });
+    skillsData = { ok: true, ...r.skillbook };
+    if (okText) showToast(okText, 'success');
+    beep('click');
+    renderSkillBook();
+  } catch (e) { showToast(e.message, 'error'); beep('error'); }
+}
+
+function bindSkillBook() {
+  document.querySelectorAll('[data-owner]').forEach((b) => b.addEventListener('click', () => { skillsOwner = b.dataset.owner; renderSkillBook(); }));
+  document.querySelector('#saveLoadout')?.addEventListener('click', () => {
+    const slots = [...document.querySelectorAll('[data-slot]')].map((sel) => sel.value || null);
+    skillPost('/api/skills/equip', { owner: skillsOwner, slots }, '编成已保存。');
+  });
+  document.querySelectorAll('[data-enhance]').forEach((b) => b.addEventListener('click', () => skillPost('/api/skills/enhance', { skillId: b.dataset.enhance }, '强化成功。')));
+  document.querySelectorAll('[data-pick]').forEach((b) => b.addEventListener('click', () => skillPost('/api/skills/exchange', { kind: 'pickPurple', skillId: b.dataset.pick }, '已兑换。')));
+  document.querySelectorAll('[data-convert]').forEach((b) => b.addEventListener('click', () => { const [from, to] = b.dataset.convert.split('>'); skillPost('/api/skills/convert', { from, to, times: 1 }, '已转换。'); }));
+  document.querySelectorAll('[data-exchange]').forEach((b) => b.addEventListener('click', () => skillPost('/api/skills/exchange', { kind: b.dataset.exchange }, '换到一张召唤券。')));
+  document.querySelector('#saveParty')?.addEventListener('click', () => {
+    const party = [...document.querySelectorAll('.party-pick input:checked')].map((i) => i.value);
+    skillPost('/api/skills/party', { party, oath: document.querySelector('#oathPick')?.value || null }, '委托板编成已保存。');
+  });
+}
+
+// ─── 委托板 ───
+function contentMode() { return store.json('moonlit:story:settings', {})?.mode === '12+' ? '12+' : '15+'; }
+
+function renderBoard() {
+  const body = document.querySelector('#skillsBody');
+  const d = commissionsData;
+  if (!body || !d) return;
+  if (battleView) { renderBattle(); return; }
+  if (!d.open) { body.innerHTML = '<p class="muted">通关正式第五章后开放委托板。</p>'; return; }
+  body.innerHTML = `<div class="board-head">
+      <span>${icon('calendar', { size: 15 })}今日有奖胜场 <b>${Math.min(d.daily.wins, d.daily.rewarded)}/${d.daily.rewarded}</b>（每胜 练习手记×${d.daily.reward.white}、实战手记×${d.daily.reward.green}；之后每胜 练习手记×${d.daily.repeat.white}）</span>
+      <span>${icon('trophy', { size: 15 })}本周挑战 <b>${Math.min(d.weekly.wins, d.weekly.rewarded)}/${d.weekly.rewarded}</b>（每场 实战手记×${d.weekly.reward.green}、源律残章×${d.weekly.reward.blue}）</span>
+    </div>
+    <div class="commission-grid">${d.list.map((c) => `<article class="commission-card${c.challenge ? ' is-challenge' : ''}">
+      <h3>${c.challenge ? icon('trophy', { size: 15 }) : icon('flag', { size: 15 })}${escapeHtml(c.title)}</h3>
+      <p class="muted">${escapeHtml(c.desc)}</p>
+      <p class="commission-enemies">${c.enemies.map((n) => `<span>${escapeHtml(n)}</span>`).join('')}</p>
+      <button class="button primary small" data-commission="${escapeHtml(c.id)}" type="button">${icon('battle', { size: 14 })}出发</button>
+    </article>`).join('')}</div>`;
+  body.querySelectorAll('[data-commission]').forEach((b) => b.addEventListener('click', async () => {
+    try {
+      const r = await apiPost('/api/commission/start', { playerId, commissionId: b.dataset.commission });
+      battleView = r.battle; battleTarget = null; beep('skill');
+      renderBattle();
+    } catch (e) { showToast(e.message, 'error'); }
+  }));
+}
+
+function unitCardHtml(u, b) {
+  const isCur = b.current === u.id;
+  const pct = Math.max(0, Math.round((u.hp / u.maxHp) * 100));
+  return `<button type="button" class="unit-card side-${u.side}${u.down ? ' is-down' : ''}${isCur ? ' is-current' : ''}${battleTarget === u.id ? ' is-target' : ''}${u.broken ? ' is-broken' : ''}" data-unit="${u.id}" ${u.down ? 'disabled' : ''}>
+    <div class="unit-name">${u.side === 'ally' ? icon(OWNER_ICON[u.owner] || 'user', { size: 14 }) : ''}${escapeHtml(u.name)}${u.charging ? `<span class="unit-charge">蓄力：${escapeHtml(u.charging)}</span>` : ''}${u.broken ? '<span class="unit-charge">破防</span>' : ''}</div>
+    <div class="bar hp"><i style="width:${pct}%"></i><span>${u.hp}/${u.maxHp}</span></div>
+    ${u.side === 'ally' ? `<div class="bar mp"><i style="width:${Math.round((u.mp / u.maxMp) * 100)}%"></i><span>MP ${u.mp}</span></div>` : `<div class="bar brk"><i style="width:${u.brk}%"></i><span>破防 ${u.brk}</span></div>`}
+    ${u.weak ? `<div class="unit-weak">弱点：${u.weak.map(escapeHtml).join('、')}</div>` : ''}
+    <div class="unit-st">${u.st.slice(0, 6).map((s) => `<span>${escapeHtml(s.name)}${s.t ? s.t : ''}</span>`).join('')}</div>
+  </button>`;
+}
+
+function renderBattle() {
+  const body = document.querySelector('#skillsBody');
+  const b = battleView;
+  if (!body || !b) return;
+  const units = Object.fromEntries(b.units.map((u) => [u.id, u]));
+  const a = b.actions;
+  const cur = units[b.current];
+  body.innerHTML = `<section class="battle-board mode-${contentMode() === '12+' ? 'spark' : 'blood'}">
+    <div class="battle-top"><h3>${b.challenge ? icon('trophy', { size: 16 }) : icon('flag', { size: 16 })}${escapeHtml(b.title)} · 第 ${b.round} 回合</h3>
+      <div class="bar res"><i style="width:${b.resonance}%"></i><span>共鸣 ${b.resonance}</span></div>
+      <span>${icon('potion', { size: 14 })}药剂 ${b.potions}</span>${b.turret ? `<span>${icon('mech', { size: 14 })}零号炮台 ${b.turret.t}</span>` : ''}${b.field.map((f) => `<span>${escapeHtml(f.kind)} ${f.t}</span>`).join('')}
+      ${b.result ? '' : '<button class="button ghost small" id="battleFlee" type="button">撤退</button>'}</div>
+    <div class="turn-order">${icon('clock', { size: 14 })}${b.order.map((id) => `<span class="side-${units[id]?.side}">${escapeHtml(units[id]?.name || id)}</span>`).join('')}</div>
+    <div class="unit-row enemies">${b.enemies.map((id) => unitCardHtml(units[id], b)).join('')}</div>
+    <div class="unit-row allies">${b.allies.map((id) => unitCardHtml(units[id], b)).join('')}</div>
+    ${b.result ? `<div class="battle-result ${b.result}"><h3>${b.result === 'won' ? '委托完成' : '撤退了'}</h3>${b.reward ? `<p>${Object.entries(b.reward.materials).filter(([, n]) => n).map(([t, n]) => `${MATERIAL_NAMES[t]}×${n}`).join('、') || '这一场没有材料奖励'}</p>` : ''}<button class="button primary" id="battleBack" type="button">回委托板</button></div>`
+      : a ? `<div class="action-menu"><p class="muted">轮到 <b>${escapeHtml(cur?.name || '')}</b>${battleTarget ? ` · 目标：${escapeHtml(units[battleTarget]?.name || '')}` : ' · 点一张卡选目标（不选就自动）'}</p>
+        <div class="action-buttons">
+          <button class="button secondary" data-act="attack" type="button" ${a.canAttack ? '' : 'disabled'}>${icon('sword', { size: 14 })}普攻</button>
+          ${a.skills.map((s) => (s ? `<button class="button skill-btn tier-${s.tier}" style="--tier:${TIER_META[s.tier].color}" data-act="skill" data-slot="${s.slot}" type="button" ${s.usable ? '' : 'disabled'} title="${escapeHtml(s.why || '')}">${['①', '②', '③'][s.slot - 1]}${escapeHtml(s.name)}${s.level ? ` +${s.level}` : ''}<small>${s.usable ? `MP ${s.mp}${s.resonance ? ` · 共鸣 ${s.resonance}` : ''}` : escapeHtml(s.why)}</small></button>` : '')).join('')}
+          <button class="button ghost" data-act="defend" type="button">${icon('shield', { size: 14 })}防御</button>
+          <button class="button ghost" data-act="item" type="button" ${a.potions > 0 ? '' : 'disabled'}>${icon('potion', { size: 14 })}药剂</button>
+          ${a.combos.map((c) => `<button class="button combo-btn" data-act="combo" data-with="${c.with}" type="button" ${c.usable ? '' : 'disabled'} title="${escapeHtml(c.why)}">${icon('star4', { size: 14 })}合击·${escapeHtml(c.name)}</button>`).join('')}
+          ${a.oath ? `<button class="button oath-btn" data-act="oath" type="button" ${a.oath.usable ? '' : 'disabled'} title="${escapeHtml(a.oath.why)}">${icon('ring', { size: 14 })}誓约·${escapeHtml(a.oath.name)}</button>` : ''}
+        </div></div>` : ''}
+    <ol class="battle-log">${b.log.slice(-14).map((l) => `<li class="log-${l.kind}">${escapeHtml(l.text)}</li>`).join('')}</ol>
+  </section>`;
+  body.querySelectorAll('[data-unit]').forEach((el) => el.addEventListener('click', () => { battleTarget = battleTarget === el.dataset.unit ? null : el.dataset.unit; renderBattle(); }));
+  body.querySelectorAll('[data-act]').forEach((el) => el.addEventListener('click', () => battleAct({ type: el.dataset.act, slot: Number(el.dataset.slot) || 0, with: el.dataset.with, target: battleTarget || undefined })));
+  document.querySelector('#battleFlee')?.addEventListener('click', async () => { try { await apiPost('/api/commission/flee', { playerId }); battleView = null; loadSkillsView(); } catch (e) { showToast(e.message, 'error'); } });
+  document.querySelector('#battleBack')?.addEventListener('click', () => { battleView = null; loadSkillsView(); });
+  const log = body.querySelector('.battle-log');
+  if (log) log.scrollTop = log.scrollHeight;
+}
+
+function showCutIn(unit, text) {
+  if (!unit) return;
+  const costume = playerAccount?.equippedCostumes?.[unit.owner];
+  const src = unit.owner === 'hero' ? '/assets/story/npc/aku.svg' : costume ? `/assets/costumes/${costume}.svg` : ART.portrait(unit.owner);
+  const el = document.createElement('div');
+  el.className = 'skill-cutin';
+  el.setAttribute('aria-hidden', 'true');
+  el.innerHTML = `<div class="cutin-band"><img src="${escapeHtml(paint(src))}" alt=""><p>${escapeHtml(text)}</p></div>`;
+  document.body.append(el);
+  setTimeout(() => el.remove(), 1600);
+}
+
+async function battleAct(action) {
+  if (battleBusy) return;
+  battleBusy = true;
+  try {
+    const before = Object.fromEntries((battleView?.units || []).map((u) => [u.id, u.hp]));
+    const seenLog = new Set((battleView?.log || []).map((l) => `${l.round}|${l.text}`));
+    const r = await apiPost('/api/commission/act', { playerId, action });
+    battleView = r.battle;
+    // 赤月：全屏 cut-in，显示她当前的服装（技能稿 2.2、6.1）
+    const red = battleView.log.find((l) => l.kind === 'red' && !seenLog.has(`${l.round}|${l.text}`));
+    if (red) showCutIn(battleView.units.find((u) => u.side === 'ally' && red.text.startsWith(u.name)), red.text);
+    if (battleTarget && battleView.units.find((u) => u.id === battleTarget)?.down) battleTarget = null;
+    renderBattle();
+    // 受击的单位闪一下：15+ 是血花，12+ 换成火花（技能稿 6.1；女主胸像永不带伤，这里只是卡片泛红）
+    for (const u of battleView.units) if (before[u.id] != null && u.hp < before[u.id]) document.querySelector(`[data-unit="${u.id}"]`)?.classList.add('was-hit');
+    if (battleView.result) beep(battleView.result === 'won' ? 'win' : 'error');
+    else beep('click');
+  } catch (e) { showToast(e.message, 'error'); beep('error'); }
+  finally { battleBusy = false; }
 }
 
 function showGallery(gallery, unlockedCount, total) {

@@ -172,6 +172,10 @@ function rewardHtml(r) {
   for (const c of Array.isArray(r.heroinesCompensated) ? r.heroinesCompensated : []) {
     if (n(c?.diamonds)) rows.push([icon('diamond', { size: 16 }), `${name(c.id)}已在角色收藏里：折算钻石 +${n(c.diamonds)}`]);
   }
+  // 技能书（主菜单 · 技能）：首通的强化材料，幕界章另有秘技召唤券
+  if (n(r.skillTickets)) rows.push([icon('scroll', { size: 16 }), `秘技召唤券 +${n(r.skillTickets)}（主菜单 · 召唤 · 秘技召唤）`]);
+  const mats = r.skillMaterials || {};
+  if (n(mats.white) || n(mats.green) || n(mats.blue)) rows.push([icon('book', { size: 16 }), `技能强化材料：练习手记 +${n(mats.white)}、实战手记 +${n(mats.green)}、源律残章 +${n(mats.blue)}`]);
   if (!rows.length) return r.alreadyCleared ? `<p class="end-reward-note">${icon('check', { size: 14 })}本章首通奖励已领取</p>` : '';
   const balance = Number.isFinite(r.balance) ? `现有钻石 ${Math.floor(r.balance)} · ` : '';
   return `<ul class="end-reward-list">${rows.map(([ico, t]) => `<li>${ico}<span>${esc(t)}</span></li>`).join('')}</ul>
