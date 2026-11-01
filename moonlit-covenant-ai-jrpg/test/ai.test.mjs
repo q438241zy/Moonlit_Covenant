@@ -5,7 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import http from 'node:http';
 import { spawnSync } from 'node:child_process';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { createInitialState, advanceScene, applyChatOutcome } from '../game/engine.mjs';
 import { AI_CONFIG, generateCharacterReply, resolveDotEnvPath } from '../game/ai.mjs';
 
@@ -39,7 +39,7 @@ test('D6: .env resolves from the project root first, then the working directory'
     const env = Object.fromEntries(Object.entries(process.env).filter(([key]) => !key.startsWith('AI_')));
     const probe = () => {
       const out = spawnSync(process.execPath, ['--input-type=module', '-e',
-        `const m = await import(${JSON.stringify(path.join(root, 'game', 'ai.mjs'))}); console.log(JSON.stringify({ mode: m.AI_CONFIG.mode, model: m.AI_CONFIG.model }));`],
+        `const m = await import(${JSON.stringify(pathToFileURL(path.join(root, 'game', 'ai.mjs')).href)}); console.log(JSON.stringify({ mode: m.AI_CONFIG.mode, model: m.AI_CONFIG.model }));`],
       { cwd: elsewhere, env, encoding: 'utf8' });
       assert.equal(out.status, 0, out.stderr);
       return JSON.parse(out.stdout.trim());

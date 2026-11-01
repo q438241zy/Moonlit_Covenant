@@ -5,7 +5,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { jpegAigc, readAigc, insertApp1, aigcExif } from '../tools/art/raster/aigc.mjs';
 
 const projectDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -124,7 +124,7 @@ test('raster job list covers every story background and bust', async () => {
 const portraitDir = path.join(projectDir, 'tools/art/portrait');
 const loadModules = async (dir) => {
   const files = fs.readdirSync(path.join(portraitDir, dir)).filter((f) => f.endsWith('.mjs')).sort();
-  return Promise.all(files.map(async (f) => (await import(path.join(portraitDir, dir, f))).default));
+  return Promise.all(files.map(async (f) => (await import(pathToFileURL(path.join(portraitDir, dir, f)).href)).default));
 };
 
 test('B10/B11: portraits and costumes are built with Lia\'s shield and every heroine\'s own accents', async () => {
