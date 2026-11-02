@@ -394,6 +394,22 @@ button, input, textarea { font: inherit; color: inherit; }
 .toast.memory { color: var(--gold); border-color: rgba(255, 210, 125, .45); box-shadow: 0 10px 30px rgba(0, 0, 0, .45), 0 0 24px rgba(255, 210, 125, .18); }
 .toast.warn { color: #ffd0d6; border-color: rgba(255, 113, 132, .45); }
 
+/* ═══ 委托板（章节选择页右上角进入；编成、委托与战斗的样式在 /skill-board.css，和主菜单「技能」页共用）═══ */
+.board-view {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: calc(14px + var(--safe-top)) clamp(16px, 4vw, 64px) calc(36px + var(--safe-bottom));
+  isolation: isolate;
+  overflow-x: clip; /* 不用 hidden：手机上指令面板要贴着视口底部（sticky） */
+}
+.board-view .start-bg { position: fixed; }
+button.ghost-link { border: 0; background: none; cursor: pointer; }
+.board-main { max-width: 1100px; margin: 14px auto 0; }
+.board-title { margin: 8px 0 6px; font-size: clamp(1.5rem, 3.2vw, 2rem); letter-spacing: .04em; }
+.board-intro { max-width: 720px; margin: 0 0 16px; color: var(--muted); font-size: .86rem; line-height: 1.75; }
+.start-top-actions .btn.small { min-height: 40px; }
+
 /* ═══ 播放界面 ═══ */
 .play {
   position: fixed;

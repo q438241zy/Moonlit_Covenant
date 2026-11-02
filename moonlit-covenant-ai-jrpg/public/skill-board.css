@@ -1,0 +1,102 @@
+/* 委托板（技能战）：主菜单「技能」页（styles.css）与主线播放页（story/story.css）共用，界面在 /skill-board.js。
+   全部挂在 .cboard 下：外传战斗也有 .battle-top、.bar 之类的类名，不能互相盖到。
+   两边的变量大多同名；story.css 没有的几个（--panel-soft、--radius-sm、--violet）写了退路。 */
+.cboard { --cb-soft: var(--panel-soft, rgba(255,255,255,.06)); --cb-radius: var(--radius-sm, 12px); }
+.cboard .cb-loading { margin: 18px 0; }
+.cboard .board-head { display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center; margin:4px 0 14px; color:var(--muted); font-size:.82rem; }
+.cboard .board-head b { color:var(--text); }
+
+/* 编成 */
+.cboard .party-box { padding:14px 16px; border-radius:var(--cb-radius); background:var(--panel); border:1px solid var(--line); margin:10px 0 16px; }
+.cboard .party-box h3 { margin:0 0 10px; font-size:.95rem; }
+.cboard .party-picks, .cboard .party-row { display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
+.cboard .party-row { margin-top:10px; }
+.cboard .party-pick, .cboard .party-oath { display:inline-flex; gap:6px; align-items:center; font-size:.85rem; }
+.cboard .party-oath select { min-width:190px; padding:6px 8px; border-radius:8px; border:1px solid var(--line); background:var(--panel-strong); color:var(--text); font:inherit; font-size:.82rem; }
+.cboard .party-lineup { list-style:none; display:flex; flex-direction:column; gap:6px; margin:12px 0 0; padding:10px 0 0; border-top:1px solid var(--line); }
+.cboard .party-lineup li { display:flex; flex-wrap:wrap; gap:6px; align-items:center; font-size:.78rem; color:var(--muted); }
+.cboard .party-lineup b { display:inline-flex; gap:5px; align-items:center; min-width:5.5em; color:var(--text); font-weight:700; }
+.cboard .lineup-skill { padding:1px 8px; border-radius:99px; border:1px solid color-mix(in srgb, var(--tier) 50%, transparent); color:var(--text); background:color-mix(in srgb, var(--tier) 10%, transparent); }
+
+/* 委托列表 */
+.cboard .commission-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); gap:12px; }
+.cboard .commission-card { padding:14px; border-radius:var(--cb-radius); background:var(--panel); border:1px solid var(--line); display:flex; flex-direction:column; gap:8px; }
+.cboard .commission-card.is-challenge { border-color:rgba(255,210,125,.45); }
+.cboard .commission-card h3 { display:flex; gap:6px; align-items:center; margin:0; font-size:.95rem; }
+.cboard .commission-card p { margin:0; font-size:.8rem; }
+.cboard .commission-card button { align-self:flex-start; }
+.cboard .commission-enemies { display:flex; flex-wrap:wrap; gap:6px; }
+.cboard .commission-enemies span { padding:1px 8px; border-radius:99px; background:var(--cb-soft); font-size:.72rem; color:var(--muted); }
+
+/* 战斗 */
+.cboard .battle-board { display:flex; flex-direction:column; gap:12px; }
+.cboard .battle-top { display:flex; flex-wrap:wrap; gap:10px 16px; align-items:center; font-size:.82rem; color:var(--muted); }
+.cboard .battle-top h3 { display:flex; gap:6px; align-items:center; margin:0 auto 0 0; color:var(--text); font-size:1rem; }
+.cboard .turn-order { display:flex; flex-wrap:wrap; gap:6px; align-items:center; font-size:.75rem; color:var(--muted); }
+.cboard .turn-order span { padding:2px 8px; border-radius:99px; border:1px solid var(--line); }
+.cboard .turn-order span.side-ally { color:var(--blue); }
+.cboard .turn-order span.side-enemy { color:var(--danger); }
+.cboard .turn-order span:first-of-type { border-color:var(--line-hot); color:var(--text); }
+.cboard .unit-row { display:grid; grid-template-columns:repeat(auto-fit, minmax(170px, 1fr)); gap:10px; }
+.cboard .unit-card { position:relative; display:flex; flex-direction:column; gap:5px; padding:10px 12px; border-radius:var(--cb-radius); background:var(--panel); border:1px solid var(--line); color:var(--text); text-align:left; font:inherit; cursor:pointer; }
+.cboard .unit-card.side-enemy { border-color:rgba(255,113,132,.28); }
+.cboard .unit-card.is-current { border-color:var(--line-hot); box-shadow:var(--shadow-glow); }
+.cboard .unit-card.is-target { outline:2px solid var(--gold); outline-offset:2px; }
+.cboard .unit-card.is-down { opacity:.35; cursor:default; }
+.cboard .unit-card.is-broken { border-color:var(--gold); }
+.cboard .unit-name { display:flex; flex-wrap:wrap; gap:6px; align-items:center; font-weight:700; font-size:.88rem; }
+.cboard .unit-charge { padding:0 6px; border-radius:6px; background:rgba(255,113,132,.18); color:var(--danger); font-size:.68rem; font-weight:600; }
+.cboard .unit-weak { font-size:.7rem; color:var(--gold); }
+.cboard .unit-st { display:flex; flex-wrap:wrap; gap:4px; min-height:14px; }
+.cboard .unit-st span { padding:0 5px; border-radius:5px; background:var(--cb-soft); font-size:.64rem; color:var(--muted); }
+.cboard .bar { position:relative; height:14px; border-radius:7px; background:rgba(255,255,255,.07); overflow:hidden; min-width:120px; }
+.cboard .bar i { position:absolute; inset:0 auto 0 0; border-radius:7px; transition:width .35s ease; }
+.cboard .bar span { position:relative; display:block; padding:0 6px; font-size:.62rem; line-height:14px; color:#fff; text-shadow:0 1px 2px #000; }
+.cboard .bar.hp i { background:linear-gradient(90deg, #ff7184, #ffb37a); }
+.cboard .unit-card.side-ally .bar.hp i { background:linear-gradient(90deg, #5fcf8f, #8cf0c9); }
+.cboard .bar.mp i { background:linear-gradient(90deg, #5b8cff, #6edcff); }
+.cboard .bar.brk i { background:linear-gradient(90deg, #ffd27d, #fff2c8); }
+.cboard .bar.res { width:180px; }
+.cboard .bar.res i { background:linear-gradient(90deg, #a46bff, #e23a4e); }
+.cboard .action-menu { padding:12px 14px; border-radius:var(--cb-radius); background:var(--panel-strong); border:1px solid var(--line-hot); }
+.cboard .action-menu p { margin:0 0 10px; font-size:.8rem; }
+.cboard .action-buttons { display:flex; flex-wrap:wrap; gap:8px; }
+.cboard .action-buttons small { display:block; font-size:.62rem; opacity:.8; font-weight:500; }
+.cboard .skill-btn { flex-direction:column; align-items:flex-start; gap:1px; border:1px solid color-mix(in srgb, var(--tier) 60%, transparent); background:color-mix(in srgb, var(--tier) 14%, var(--panel)); color:var(--text); }
+.cboard .combo-btn { border:1px solid rgba(110,220,255,.5); background:rgba(110,220,255,.1); color:var(--text); }
+.cboard .oath-btn { border:1px solid rgba(255,210,125,.6); background:rgba(255,210,125,.12); color:var(--gold); }
+.cboard .battle-log { margin:0; padding:10px 14px 10px 30px; max-height:220px; overflow:auto; border-radius:var(--cb-radius); background:var(--panel); border:1px solid var(--line); font-size:.78rem; color:var(--muted); }
+.cboard .battle-log li { margin:2px 0; }
+.cboard .battle-log .log-good, .cboard .battle-log .log-heal { color:var(--success); }
+.cboard .battle-log .log-bad, .cboard .battle-log .log-hurt, .cboard .battle-log .log-warn { color:var(--danger); }
+.cboard .battle-log .log-red { color:#ff8090; font-weight:700; }
+.cboard .battle-log .log-purple { color:var(--violet, #b996ff); font-weight:600; }
+.cboard .battle-log .log-combo, .cboard .battle-log .log-oath { color:var(--gold); font-weight:700; }
+.cboard .battle-log .log-sys { color:var(--text); }
+.cboard .battle-result { padding:16px; border-radius:var(--cb-radius); text-align:center; background:var(--panel-strong); border:1px solid var(--line-hot); }
+.cboard .battle-result h3 { margin:0 0 6px; }
+.cboard .battle-result p { margin:0 0 12px; }
+/* 受击：15+ 是血花（只对敌人），12+ 换成火花；女主卡片只泛红、不带伤 */
+.cboard .unit-card.was-hit { animation:unitHit .5s ease; }
+.cboard .unit-card.was-hit::after { content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none; animation:unitHitFade .6s ease forwards; background:radial-gradient(circle at 60% 40%, rgba(255,220,120,.45), transparent 60%); }
+.cboard .battle-board.mode-blood .unit-card.side-enemy.was-hit::after { background:radial-gradient(circle at 60% 40%, rgba(200,20,40,.55), transparent 60%); }
+@keyframes unitHit { 0%, 100% { transform:none; } 30% { transform:translateX(-3px); } 60% { transform:translateX(3px); } }
+@keyframes unitHitFade { from { opacity:1; } to { opacity:0; } }
+@media (max-width: 640px) {
+  .cboard .unit-row { grid-template-columns:repeat(2, minmax(0, 1fr)); }
+  .cboard .party-oath select { min-width:0; width:100%; }
+  .cboard .bar.res { width:120px; }
+  /* 手机上单位卡排得很长：指令面板贴在屏幕底部，不用滚回来找 */
+  .cboard .action-menu { position:sticky; bottom:8px; z-index:5; box-shadow:0 -8px 24px rgba(0,0,0,.45); }
+  .cboard .action-buttons button { min-height:40px; padding:8px 10px; font-size:.8rem; }
+}
+@media (prefers-reduced-motion: reduce) { .cboard .unit-card.was-hit, .cboard .unit-card.was-hit::after { animation:none; } }
+
+/* 赤月 cut-in（挂在 body 上）：一条斜切的红带，左边是她当前服装的立绘，右边是招式与台词 */
+.skill-cutin { position:fixed; inset:0; z-index:90; display:grid; place-items:center; pointer-events:none; background:rgba(6,5,15,.55); animation:cutinFade 1.6s ease forwards; }
+.cutin-band { display:flex; align-items:center; gap:18px; width:min(900px, 96vw); height:min(260px, 36vh); padding:0 24px; overflow:hidden; background:linear-gradient(100deg, rgba(226,58,78,.92), rgba(120,20,40,.92) 60%, rgba(30,8,16,.9)); transform:skewY(-4deg); box-shadow:0 0 60px rgba(226,58,78,.45); animation:cutinSlide 1.6s cubic-bezier(.2,.7,.2,1) forwards; }
+.cutin-band img { height:150%; align-self:flex-start; margin-top:-4%; object-fit:cover; object-position:top; transform:skewY(4deg); }
+.cutin-band p { margin:0; font-size:clamp(1.1rem, 3vw, 1.8rem); font-weight:800; color:#fff; text-shadow:0 2px 12px rgba(0,0,0,.6); transform:skewY(4deg); }
+@keyframes cutinFade { 0% { opacity:0; } 12% { opacity:1; } 80% { opacity:1; } 100% { opacity:0; } }
+@keyframes cutinSlide { 0% { transform:skewY(-4deg) translateX(-30%); } 18% { transform:skewY(-4deg) translateX(0); } 100% { transform:skewY(-4deg) translateX(4%); } }
+@media (prefers-reduced-motion: reduce) { .skill-cutin, .cutin-band { animation:none; } }
