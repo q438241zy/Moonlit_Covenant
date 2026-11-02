@@ -169,3 +169,19 @@ test('核#14（提案第八节#43）：未登场女主是封存卡——剪影 +
   assert.match(css, /\.face-crop\.is-silhouette \{/);
   assert.match(css, /\.silhouette-figure::before/);
 });
+
+test('委托板：主菜单与主线播放页共用 skill-board.js；样式挂在 .cboard 下，不盖到外传战斗的 .battle-top', () => {
+  assert.match(app, /from '\.\/skill-board\.js'/);
+  assert.match(read('public/story/player.js'), /from '\.\.\/skill-board\.js'/);
+  for (const page of ['public/index.html', 'public/story.html']) assert.match(read(page), /href="\/skill-board\.css"/, `${page} 要载入委托板样式`);
+  const board = read('public/skill-board.js');
+  assert.doesNotMatch(board, /\son[a-z]+\s*=\s*["']/i, '严格 CSP：不写内联事件属性');
+  const css = read('public/skill-board.css').replace(/\/\*[\s\S]*?\*\//g, '');
+  for (const line of css.split('\n').map((l) => l.trim())) {
+    if (!line.includes('{') || line.startsWith('@')) continue;
+    for (const sel of line.slice(0, line.indexOf('{')).split(',').map((s) => s.trim())) {
+      assert.ok(/^\.cboard\b/.test(sel) || /^\.(skill-cutin|cutin-band)\b/.test(sel), `skill-board.css 的「${sel}」要挂在 .cboard 下`);
+    }
+  }
+  assert.equal((read('public/styles.css').match(/^\.battle-top\b/gm) || []).length, 1, 'styles.css 只剩外传的 .battle-top');
+});

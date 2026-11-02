@@ -206,6 +206,7 @@ evalCond(run, cond)  interpolate(text, run)  publicSummary(run)
 - 首通奖励（契约 R-2 / R-4）：完成页弹出后，播放器在后台调用 `POST /api/story/progress { playerId, chapterId }`（服务端对照 `chapters/index.json` 校验章节，幂等）。账户与主游戏共用：`localStorage` 的 `moonlit:playerId`（原样字符串，不是 JSON）；没有或已失效（`GET /api/account` 返回 404 / 400）时像主游戏一样 `POST /api/account/create` 建号并写回；网络或服务器错误、离线都静默跳过，不影响完成页。返回 `chapterReward > 0` 时显示「首次通关奖励：钻石 +N」，`heroinesGranted` 里的女主显示「正式成为同伴：已加入角色收藏」（30 章入队表，核#14：莉亚 = ch005、米娅 = ch010、塞雷娜 = ch012、伊芙琳 = ch017、艾拉 = ch018、芙蕾娅 = ch019、奥菲利亚 = ch020、莉莉丝 = ch021，表在 `game/gacha.mjs` 的 `joinChapter`；同一份首通记录也决定召唤卡池的登场闸门 `unlockChapter`——没通关登场章的女主在卡池里是剪影），`heroinesCompensated` 显示折算的钻石；重玩已通关的章节只显示「本章首通奖励已领取」。数额见 README「钻石与奖励」。
 - 厚涂位图的「AI 生成」标（B17）：`paint()` 把背景或立绘换成位图（`.jpg/.png/.webp`）时，播放栏章节名旁亮出统一的「AI 生成」小标（`.ai-badge`，纯 CSS，不碰 CSP）；全是矢量 SVG 时不显示。
 - 标题页注明「这里是正史主线」，主菜单里的「银轨号」是 IF 外传（B1）；左上角「返回主菜单」。
+- 委托板（技能战，`docs/SKILLS.md`）：本机进度里正式05 已通关时，标题页右上角多一个「委托板」，进去是编成、委托列表与战斗，界面与主菜单「技能」页共用 `public/skill-board.js`／`skill-board.css`；开不开放以服务器的账户为准。正式05 首通的奖励列表多一行「委托板开放了」。委托板不碰剧情存档，结果也不写回主线。
 - 设置：内容模式 15+ 戏剧模式（默认）/ 12+ 柔和模式、文字速度、自动播放节奏。设置存在 `localStorage` 的 `moonlit:story:settings`（`{ mode, speed, pace, ratingAck }`），改模式立即作用于当前进度（`run.mode`）。
 - 内容模式的首次选择与一次性提示（`public/story/rating.js`，纯函数，`test/rating.test.mjs`）：
   - 首次启动（没有存过设置）：标题页弹出「选择内容模式」，两张选项卡——「15+ 戏剧模式（默认）：擦边与流血可以出现，但不露骨。」「12+ 柔和模式：以剪影、遮挡与结果带过。」——焦点预先落在 15+，`Esc` 等于选默认。选完才写入设置（`ratingAck: 1`），没选就刷新会再问一次。

@@ -1,5 +1,6 @@
 import { icon } from './icons.js';
 import { loadPaint, paint, aiBadge as paintBadge, aiPaintedClass } from './paint.js';
+import { TIER_META, TIER_PIPS, MATERIAL_NAMES, OWNER_ICON, mountCommissionBoard } from './skill-board.js';
 
 const app = document.querySelector('#app');
 const toast = document.querySelector('#toast');
@@ -2647,11 +2648,7 @@ async function boot() {
   if (sessionLost) showToast('服务器重启后旧存档已失效，请重新开始外传。', 'error');
 }
 
-/* ═══ 秘技召唤（池 skill；game/skill-gacha.mjs，技能稿 3.2）═══ */
-const TIER_META = { white: { label: '白', color: '#dfe3ec' }, green: { label: '绿', color: '#5fcf8f' }, blue: { label: '蓝', color: '#5b8cff' }, purple: { label: '暮紫', color: '#a46bff' }, red: { label: '赤月', color: '#e23a4e' } };
-const TIER_PIPS = { white: 1, green: 2, blue: 3, purple: 4, red: 5 };
-const MATERIAL_NAMES = { white: '练习手记', green: '实战手记', blue: '源律残章', purple: '暮紫秘页', red: '赤月秘页' };
-const OWNER_ICON = { hero: 'sword', lia: 'shield', mia: 'wrench', serena: 'moon', evelyn: 'feather', aila: 'bolt', freya: 'frost', ophelia: 'dragon', lilith: 'dagger' };
+/* ═══ 秘技召唤（池 skill；game/skill-gacha.mjs，技能稿 3.2）；五色、材料名、角色图标在 skill-board.js ═══ */
 
 function tierBadge(tier) {
   const m = TIER_META[tier] || TIER_META.white;
@@ -2723,16 +2720,12 @@ function showSkillPullResult(r) {
 let skillsTab = 'book';
 let skillsOwner = 'hero';
 let skillsData = null;
-let commissionsData = null;
-let battleView = null;
-let battleTarget = null;
-let battleBusy = false;
 
 function skillsPage() {
   return `${navBar()}
     <main class="page-content skills-page">
       <div class="page-header"><div class="eyebrow">SKILLS · 技能书与委托板</div><h1>技能</h1>
-        <p class="muted">白、绿、蓝随主线解锁，暮紫、赤月从「秘技召唤」抽到；每张都能强化到 +10。①本命格只装剧情技能，②战技格可装暮紫，③绝技格什么颜色都能装（赤月只能装这里）。委托板是时间不定的公会委托：结果不写回主线，奖励是强化材料。</p>
+        <p class="muted">白、绿、蓝随主线解锁，暮紫、赤月从「秘技召唤」抽到；每张都能强化到 +10。①本命格只装剧情技能，②战技格可装暮紫，③绝技格什么颜色都能装（赤月只能装这里）。委托板是时间不定的公会委托：结果不写回主线，奖励是强化材料；主线的章节选择页也能打开委托板。</p>
       </div>
       <div class="gacha-tabs" role="tablist">
         <button class="gacha-tab skills-tab ${skillsTab === 'book' ? 'active' : ''}" data-skills-tab="book" type="button">${icon('book', { size: 15 })}技能书</button>
@@ -2758,9 +2751,9 @@ async function loadSkillsView() {
       skillsData = await apiGet(`/api/skills?playerId=${encodeURIComponent(playerId)}`);
       renderSkillBook();
     } else {
-      commissionsData = await apiGet(`/api/commissions?playerId=${encodeURIComponent(playerId)}`);
-      battleView = commissionsData.active || (battleView?.result ? battleView : null);
-      renderBoard();
+      // 委托板画在自己的一层里：切回技能书时这一层被换掉，晚到的回应不会盖掉技能书
+      body.innerHTML = '<div class="commission-board"></div>';
+      await commissionBoard(body.firstElementChild).load();
     }
   } catch (e) { body.innerHTML = `<p class="muted">${escapeHtml(e.message)}</p>`; }
 }
@@ -2783,7 +2776,6 @@ function renderSkillBook() {
   const combo = d.combos[skillsOwner];
   const oath = d.oaths[skillsOwner];
   const passive = d.passives[skillsOwner];
-  const joined = owners.filter((o) => !o.sealed && o.id !== 'hero');
   body.innerHTML = `${materialBarHtml(d)}
     <div class="owner-tabs" role="tablist">${owners.map((o) => `<button type="button" class="owner-tab ${o.id === skillsOwner ? 'active' : ''}" data-owner="${o.id}" ${o.sealed ? 'disabled' : ''}>${icon(o.sealed ? 'lock' : OWNER_ICON[o.id], { size: 15 })}<span>${escapeHtml(o.sealed ? SEALED_NAME : o.name)}</span></button>`).join('')}</div>
     <section class="loadout-box">
@@ -2796,12 +2788,6 @@ function renderSkillBook() {
       ${oath ? `<p class="muted">誓约技${oath.available ? `「${escapeHtml(oath.name)}」——「${escapeHtml(oath.line)}」：${escapeHtml(oath.desc)}（I＝${d.fixed.oath.index}，共鸣 ${d.fixed.oath.resonance}，一场一次）` : `：她的个人章（${escapeHtml(oath.personal)}）通关后解锁`}</p>` : ''}
     </section>
     <div class="skill-grid book">${mine.map((s) => skillCardHtml(s, { extra: s.sealed ? '' : skillCardActions(s, d) })).join('')}</div>
-    <section class="party-box">
-      <h3>委托板编成 · 亚克固定在场${d.partySize ? `，另选 ${d.partySize} 位` : ''}</h3>
-      ${d.partySize ? `<div class="party-picks">${joined.map((o) => `<label class="party-pick"><input type="checkbox" value="${o.id}" ${d.party.includes(o.id) ? 'checked' : ''}>${icon(OWNER_ICON[o.id], { size: 14 })}${escapeHtml(o.name)}</label>`).join('')}</div>
-        <label class="party-oath">誓约槽 <select id="oathPick"><option value="">（空）</option>${joined.filter((o) => o.personalCleared).map((o) => `<option value="${o.id}" ${d.oath === o.id ? 'selected' : ''}>${escapeHtml(o.name)}</option>`).join('')}</select></label>
-        <button class="button secondary small" id="saveParty" type="button">${icon('users', { size: 14 })}保存</button>` : '<p class="muted">通关正式第五章后开放委托板。</p>'}
-    </section>
     <section class="convert-box">
       <h3>转换与兑换（只能上转，没有向下转换）</h3>
       <div class="convert-actions">
@@ -2846,118 +2832,21 @@ function bindSkillBook() {
   document.querySelectorAll('[data-pick]').forEach((b) => b.addEventListener('click', () => skillPost('/api/skills/exchange', { kind: 'pickPurple', skillId: b.dataset.pick }, '已兑换。')));
   document.querySelectorAll('[data-convert]').forEach((b) => b.addEventListener('click', () => { const [from, to] = b.dataset.convert.split('>'); skillPost('/api/skills/convert', { from, to, times: 1 }, '已转换。'); }));
   document.querySelectorAll('[data-exchange]').forEach((b) => b.addEventListener('click', () => skillPost('/api/skills/exchange', { kind: b.dataset.exchange }, '换到一张召唤券。')));
-  document.querySelector('#saveParty')?.addEventListener('click', () => {
-    const party = [...document.querySelectorAll('.party-pick input:checked')].map((i) => i.value);
-    skillPost('/api/skills/party', { party, oath: document.querySelector('#oathPick')?.value || null }, '委托板编成已保存。');
-  });
 }
 
-// ─── 委托板 ───
+// ─── 委托板（界面在 skill-board.js，主线播放页也用；委托板编成与誓约槽也在那里）───
 function contentMode() { return store.json('moonlit:story:settings', {})?.mode === '12+' ? '12+' : '15+'; }
 
-function renderBoard() {
-  const body = document.querySelector('#skillsBody');
-  const d = commissionsData;
-  if (!body || !d) return;
-  if (battleView) { renderBattle(); return; }
-  if (!d.open) { body.innerHTML = '<p class="muted">通关正式第五章后开放委托板。</p>'; return; }
-  body.innerHTML = `<div class="board-head">
-      <span>${icon('calendar', { size: 15 })}今日有奖胜场 <b>${Math.min(d.daily.wins, d.daily.rewarded)}/${d.daily.rewarded}</b>（每胜 练习手记×${d.daily.reward.white}、实战手记×${d.daily.reward.green}；之后每胜 练习手记×${d.daily.repeat.white}）</span>
-      <span>${icon('trophy', { size: 15 })}本周挑战 <b>${Math.min(d.weekly.wins, d.weekly.rewarded)}/${d.weekly.rewarded}</b>（每场 实战手记×${d.weekly.reward.green}、源律残章×${d.weekly.reward.blue}）</span>
-    </div>
-    <div class="commission-grid">${d.list.map((c) => `<article class="commission-card${c.challenge ? ' is-challenge' : ''}">
-      <h3>${c.challenge ? icon('trophy', { size: 15 }) : icon('flag', { size: 15 })}${escapeHtml(c.title)}</h3>
-      <p class="muted">${escapeHtml(c.desc)}</p>
-      <p class="commission-enemies">${c.enemies.map((n) => `<span>${escapeHtml(n)}</span>`).join('')}</p>
-      <button class="button primary small" data-commission="${escapeHtml(c.id)}" type="button">${icon('battle', { size: 14 })}出发</button>
-    </article>`).join('')}</div>`;
-  body.querySelectorAll('[data-commission]').forEach((b) => b.addEventListener('click', async () => {
-    try {
-      const r = await apiPost('/api/commission/start', { playerId, commissionId: b.dataset.commission });
-      battleView = r.battle; battleTarget = null; beep('skill');
-      renderBattle();
-    } catch (e) { showToast(e.message, 'error'); }
-  }));
-}
-
-function unitCardHtml(u, b) {
-  const isCur = b.current === u.id;
-  const pct = Math.max(0, Math.round((u.hp / u.maxHp) * 100));
-  return `<button type="button" class="unit-card side-${u.side}${u.down ? ' is-down' : ''}${isCur ? ' is-current' : ''}${battleTarget === u.id ? ' is-target' : ''}${u.broken ? ' is-broken' : ''}" data-unit="${u.id}" ${u.down ? 'disabled' : ''}>
-    <div class="unit-name">${u.side === 'ally' ? icon(OWNER_ICON[u.owner] || 'user', { size: 14 }) : ''}${escapeHtml(u.name)}${u.charging ? `<span class="unit-charge">蓄力：${escapeHtml(u.charging)}</span>` : ''}${u.broken ? '<span class="unit-charge">破防</span>' : ''}</div>
-    <div class="bar hp"><i style="width:${pct}%"></i><span>${u.hp}/${u.maxHp}</span></div>
-    ${u.side === 'ally' ? `<div class="bar mp"><i style="width:${Math.round((u.mp / u.maxMp) * 100)}%"></i><span>MP ${u.mp}</span></div>` : `<div class="bar brk"><i style="width:${u.brk}%"></i><span>破防 ${u.brk}</span></div>`}
-    ${u.weak ? `<div class="unit-weak">弱点：${u.weak.map(escapeHtml).join('、')}</div>` : ''}
-    <div class="unit-st">${u.st.slice(0, 6).map((s) => `<span>${escapeHtml(s.name)}${s.t ? s.t : ''}</span>`).join('')}</div>
-  </button>`;
-}
-
-function renderBattle() {
-  const body = document.querySelector('#skillsBody');
-  const b = battleView;
-  if (!body || !b) return;
-  const units = Object.fromEntries(b.units.map((u) => [u.id, u]));
-  const a = b.actions;
-  const cur = units[b.current];
-  body.innerHTML = `<section class="battle-board mode-${contentMode() === '12+' ? 'spark' : 'blood'}">
-    <div class="battle-top"><h3>${b.challenge ? icon('trophy', { size: 16 }) : icon('flag', { size: 16 })}${escapeHtml(b.title)} · 第 ${b.round} 回合</h3>
-      <div class="bar res"><i style="width:${b.resonance}%"></i><span>共鸣 ${b.resonance}</span></div>
-      <span>${icon('potion', { size: 14 })}药剂 ${b.potions}</span>${b.turret ? `<span>${icon('mech', { size: 14 })}零号炮台 ${b.turret.t}</span>` : ''}${b.field.map((f) => `<span>${escapeHtml(f.kind)} ${f.t}</span>`).join('')}
-      ${b.result ? '' : '<button class="button ghost small" id="battleFlee" type="button">撤退</button>'}</div>
-    <div class="turn-order">${icon('clock', { size: 14 })}${b.order.map((id) => `<span class="side-${units[id]?.side}">${escapeHtml(units[id]?.name || id)}</span>`).join('')}</div>
-    <div class="unit-row enemies">${b.enemies.map((id) => unitCardHtml(units[id], b)).join('')}</div>
-    <div class="unit-row allies">${b.allies.map((id) => unitCardHtml(units[id], b)).join('')}</div>
-    ${b.result ? `<div class="battle-result ${b.result}"><h3>${b.result === 'won' ? '委托完成' : '撤退了'}</h3>${b.reward ? `<p>${Object.entries(b.reward.materials).filter(([, n]) => n).map(([t, n]) => `${MATERIAL_NAMES[t]}×${n}`).join('、') || '这一场没有材料奖励'}</p>` : ''}<button class="button primary" id="battleBack" type="button">回委托板</button></div>`
-      : a ? `<div class="action-menu"><p class="muted">轮到 <b>${escapeHtml(cur?.name || '')}</b>${battleTarget ? ` · 目标：${escapeHtml(units[battleTarget]?.name || '')}` : ' · 点一张卡选目标（不选就自动）'}</p>
-        <div class="action-buttons">
-          <button class="button secondary" data-act="attack" type="button" ${a.canAttack ? '' : 'disabled'}>${icon('sword', { size: 14 })}普攻</button>
-          ${a.skills.map((s) => (s ? `<button class="button skill-btn tier-${s.tier}" style="--tier:${TIER_META[s.tier].color}" data-act="skill" data-slot="${s.slot}" type="button" ${s.usable ? '' : 'disabled'} title="${escapeHtml(s.why || '')}">${['①', '②', '③'][s.slot - 1]}${escapeHtml(s.name)}${s.level ? ` +${s.level}` : ''}<small>${s.usable ? `MP ${s.mp}${s.resonance ? ` · 共鸣 ${s.resonance}` : ''}` : escapeHtml(s.why)}</small></button>` : '')).join('')}
-          <button class="button ghost" data-act="defend" type="button">${icon('shield', { size: 14 })}防御</button>
-          <button class="button ghost" data-act="item" type="button" ${a.potions > 0 ? '' : 'disabled'}>${icon('potion', { size: 14 })}药剂</button>
-          ${a.combos.map((c) => `<button class="button combo-btn" data-act="combo" data-with="${c.with}" type="button" ${c.usable ? '' : 'disabled'} title="${escapeHtml(c.why)}">${icon('star4', { size: 14 })}合击·${escapeHtml(c.name)}</button>`).join('')}
-          ${a.oath ? `<button class="button oath-btn" data-act="oath" type="button" ${a.oath.usable ? '' : 'disabled'} title="${escapeHtml(a.oath.why)}">${icon('ring', { size: 14 })}誓约·${escapeHtml(a.oath.name)}</button>` : ''}
-        </div></div>` : ''}
-    <ol class="battle-log">${b.log.slice(-14).map((l) => `<li class="log-${l.kind}">${escapeHtml(l.text)}</li>`).join('')}</ol>
-  </section>`;
-  body.querySelectorAll('[data-unit]').forEach((el) => el.addEventListener('click', () => { battleTarget = battleTarget === el.dataset.unit ? null : el.dataset.unit; renderBattle(); }));
-  body.querySelectorAll('[data-act]').forEach((el) => el.addEventListener('click', () => battleAct({ type: el.dataset.act, slot: Number(el.dataset.slot) || 0, with: el.dataset.with, target: battleTarget || undefined })));
-  document.querySelector('#battleFlee')?.addEventListener('click', async () => { try { await apiPost('/api/commission/flee', { playerId }); battleView = null; loadSkillsView(); } catch (e) { showToast(e.message, 'error'); } });
-  document.querySelector('#battleBack')?.addEventListener('click', () => { battleView = null; loadSkillsView(); });
-  const log = body.querySelector('.battle-log');
-  if (log) log.scrollTop = log.scrollHeight;
-}
-
-function showCutIn(unit, text) {
-  if (!unit) return;
-  const costume = playerAccount?.equippedCostumes?.[unit.owner];
-  const src = unit.owner === 'hero' ? '/assets/story/npc/aku.svg' : costume ? `/assets/costumes/${costume}.svg` : ART.portrait(unit.owner);
-  const el = document.createElement('div');
-  el.className = 'skill-cutin';
-  el.setAttribute('aria-hidden', 'true');
-  el.innerHTML = `<div class="cutin-band"><img src="${escapeHtml(paint(src))}" alt=""><p>${escapeHtml(text)}</p></div>`;
-  document.body.append(el);
-  setTimeout(() => el.remove(), 1600);
-}
-
-async function battleAct(action) {
-  if (battleBusy) return;
-  battleBusy = true;
-  try {
-    const before = Object.fromEntries((battleView?.units || []).map((u) => [u.id, u.hp]));
-    const seenLog = new Set((battleView?.log || []).map((l) => `${l.round}|${l.text}`));
-    const r = await apiPost('/api/commission/act', { playerId, action });
-    battleView = r.battle;
-    // 赤月：全屏 cut-in，显示她当前的服装（技能稿 2.2、6.1）
-    const red = battleView.log.find((l) => l.kind === 'red' && !seenLog.has(`${l.round}|${l.text}`));
-    if (red) showCutIn(battleView.units.find((u) => u.side === 'ally' && red.text.startsWith(u.name)), red.text);
-    if (battleTarget && battleView.units.find((u) => u.id === battleTarget)?.down) battleTarget = null;
-    renderBattle();
-    // 受击的单位闪一下：15+ 是血花，12+ 换成火花（技能稿 6.1；女主胸像永不带伤，这里只是卡片泛红）
-    for (const u of battleView.units) if (before[u.id] != null && u.hp < before[u.id]) document.querySelector(`[data-unit="${u.id}"]`)?.classList.add('was-hit');
-    if (battleView.result) beep(battleView.result === 'won' ? 'win' : 'error');
-    else beep('click');
-  } catch (e) { showToast(e.message, 'error'); beep('error'); }
-  finally { battleBusy = false; }
+function commissionBoard(host) {
+  return mountCommissionBoard(host, {
+    playerId: () => playerId,
+    get: apiGet,
+    post: apiPost,
+    toast: showToast,
+    beep,
+    mode: contentMode,
+    costumes: () => playerAccount?.equippedCostumes || {},
+  });
 }
 
 function showGallery(gallery, unlockedCount, total) {

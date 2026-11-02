@@ -11,6 +11,7 @@ import {
 } from './rating.js';
 import { icon } from '../icons.js';
 import { loadPaint, paint } from '../paint.js';
+import { mountCommissionBoard } from '../skill-board.js';
 
 const root = document.getElementById('story');
 const toastRoot = document.getElementById('toasts');
@@ -127,6 +128,7 @@ function toast(message, kind = '') {
 // 与主游戏共用同一个本机账户：localStorage「moonlit:playerId」里是原样字符串（public/app.js 的 store.set），不是 JSON。
 // 没有账户就像主游戏那样建一个（POST /api/account/create）；任何一步失败都静默跳过——奖励不该打断读完一章。
 const ACCOUNT_KEY = 'moonlit:playerId';
+const BOARD_OPENS = 'ch005'; // 委托板（技能战）在正式05 通关后开放（game/skills.mjs 的 partySize）
 const HEROINE_NAMES = { lia: '莉亚', mia: '米娅', serena: '塞雷娜', freya: '芙蕾娅', lilith: '莉莉丝', evelyn: '伊芙琳', ophelia: '奥菲利亚', aila: '艾拉' };
 function storedPlayerId() {
   try { return (localStorage.getItem(ACCOUNT_KEY) || '').trim() || null; } catch { return null; }
@@ -163,7 +165,7 @@ async function claimChapterReward(chapterId, playerName) {
   const r = await apiJson('/api/story/progress', { playerId, chapterId });
   return r.ok ? r.data : null;
 }
-function rewardHtml(r) {
+function rewardHtml(r, chapterId) {
   const n = (v) => (Number.isFinite(v) && v > 0 ? Math.floor(v) : 0);
   const name = (id) => HEROINE_NAMES[id] || String(id);
   const rows = [];
@@ -176,6 +178,7 @@ function rewardHtml(r) {
   if (n(r.skillTickets)) rows.push([icon('scroll', { size: 16 }), `秘技召唤券 +${n(r.skillTickets)}（主菜单 · 召唤 · 秘技召唤）`]);
   const mats = r.skillMaterials || {};
   if (n(mats.white) || n(mats.green) || n(mats.blue)) rows.push([icon('book', { size: 16 }), `技能强化材料：练习手记 +${n(mats.white)}、实战手记 +${n(mats.green)}、源律残章 +${n(mats.blue)}`]);
+  if (chapterId === BOARD_OPENS && !r.alreadyCleared) rows.push([icon('flag', { size: 16 }), '委托板开放了：章节选择页右上角的「委托板」']);
   if (!rows.length) return r.alreadyCleared ? `<p class="end-reward-note">${icon('check', { size: 14 })}本章首通奖励已领取</p>` : '';
   const balance = Number.isFinite(r.balance) ? `现有钻石 ${Math.floor(r.balance)} · ` : '';
   return `<ul class="end-reward-list">${rows.map(([ico, t]) => `<li>${ico}<span>${esc(t)}</span></li>`).join('')}</ul>
@@ -186,7 +189,7 @@ async function showChapterReward(scr, ch, playerName) {
   if (!box) return;
   const r = await claimChapterReward(ch.id, playerName);
   if (!r || !box.isConnected || S.chapter !== ch) return;
-  const html = rewardHtml(r);
+  const html = rewardHtml(r, ch.id);
   if (!html) return;
   box.innerHTML = html;
   box.hidden = false;
@@ -332,6 +335,7 @@ async function renderStart() {
       <header class="start-top">
         <a class="ghost-link" href="/">${icon('chevron-left', { size: 16 })}<span>返回主菜单</span></a>
         <div class="start-top-actions">
+          ${isCompleted(BOARD_OPENS) ? `<button class="btn ghost small" type="button" data-act="board">${icon('flag', { size: 16 })}<span>委托板</span></button>` : ''}
           <button class="icon-btn" type="button" data-act="settings" aria-haspopup="dialog" aria-expanded="false" aria-label="设置">${icon('settings', { size: 19 })}</button>
         </div>
         ${settingsHtml()}
@@ -369,6 +373,7 @@ async function renderStart() {
   $('[data-act="continue"]')?.addEventListener('click', continueSave);
   $('[data-act="next-chapter"]')?.addEventListener('click', () => startNextFromSave(save, nextId));
   $('[data-act="revisit"]')?.addEventListener('click', () => startChapter(save.chapterId, { canon: false }));
+  $('[data-act="board"]')?.addEventListener('click', renderBoardView);
   bindSettings($('#start'));
   $('#chList').querySelectorAll('[data-start]').forEach((btn) => btn.addEventListener('click', () => startChapter(btn.dataset.start, { canon: btn.dataset.canon === '1' })));
 
@@ -390,6 +395,56 @@ async function renderStart() {
   }
   if (S.focus && !isAvailable(S.focus)) toast(`「${entryFor(S.focus).label}」尚未开放`, 'warn');
   showRatingPrompt();
+}
+
+// ─── 委托板（技能战）：章节选择页右上角进入，界面与主菜单「技能」页共用 /skill-board.js ───
+// 公会委托：结果不写回主线，奖励是技能强化材料（技能稿第六节）。账户与主游戏共用；强化与三格编成在主菜单「技能」页。
+// 入口按本机进度显示（BOARD_OPENS 通关），开不开放以服务器的账户为准。
+let boardEquipped = {}; // 赤月 cut-in 用她当前穿的服装
+async function boardCall(path, body) {
+  const r = await apiJson(path, body);
+  if (!r.ok) throw new Error(r.data?.error?.message || r.data?.message || (r.status ? `请求失败（${r.status}）` : '连不上服务器，稍后再试。'));
+  return r.data;
+}
+async function boardPlayerId() {
+  const id = await ensurePlayerAccount(loadStoredName());
+  if (id) {
+    const r = await apiJson(`/api/account?playerId=${encodeURIComponent(id)}`);
+    boardEquipped = (r.ok && r.data.account?.equippedCostumes) || {};
+  }
+  return id;
+}
+function renderBoardView() {
+  cancelPlay();
+  closeOverlays();
+  S.view = 'board';
+  S.chapter = null;
+  S.run = null;
+  root.innerHTML = `
+    <main class="board-view" id="boardView">
+      <div class="start-bg" aria-hidden="true"></div>
+      <header class="start-top">
+        <button class="ghost-link" type="button" data-act="board-back">${icon('chevron-left', { size: 16 })}<span>返回章节</span></button>
+        <a class="ghost-link" href="/">${icon('home', { size: 16 })}<span>主菜单</span></a>
+      </header>
+      <section class="board-main" aria-labelledby="boardTitle">
+        <p class="eyebrow">COMMISSIONS · 公会委托</p>
+        <h1 class="board-title" id="boardTitle">委托板</h1>
+        <p class="board-intro">时间不定的公会委托：亚克带着同伴出去打一场技能战。结果不写回主线，奖励是技能强化材料；技能的强化与三格编成在主菜单的「技能」页。</p>
+        <div id="commissionBoard"></div>
+      </section>
+    </main>`;
+  window.scrollTo(0, 0);
+  $('[data-act="board-back"]').addEventListener('click', () => renderStart());
+  mountCommissionBoard($('#commissionBoard'), {
+    playerId: boardPlayerId,
+    get: (path) => boardCall(path),
+    post: boardCall,
+    btn: (variant, size) => `btn ${variant}${size ? ` ${size}` : ''}`,
+    toast: (message, kind) => toast(message, kind === 'error' ? 'warn' : ''),
+    mode: () => S.settings.mode,
+    costumes: () => boardEquipped,
+  }).load();
 }
 
 // ─── 内容分级：首次启动的模式选择 / 老玩家的一次性提示（rating.js；提案第七节）───
