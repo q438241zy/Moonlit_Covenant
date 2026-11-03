@@ -1,6 +1,7 @@
 // 决定#31（剧本/README_轉蛋服裝設計.md §4、§5.1、§5.2；作者核#14「同意，按建议执行」）：
 //   - 新年、圣诞、端午、周年庆四类改为「典藏」：id 不变，已拥有的照样能穿，退出常驻抽取表，显示名改成世界内的节庆；
-//   - 泳装、女仆暂时原样留在常驻池（重画与新增三类随美术阶段一起做，这里还不能出现）；
+//   - 美术阶段（服装稿第一套）：常驻池是泳装、婚礼礼服、OL装、女仆装、运动短袖（40 件，★5/★4/★3 = 16/8/16），
+//     原来的度假便装改为赠品「度假装」（resort）；新三类的检查在 test/costume-wave1.test.mjs；
 //   - BRANCH_SCENES 拿掉银轨号列车 / 骑士联盟 / 月蚀神社这些外传用语，改成将来的番外入口，仍是 available:false；
 //   - 换衣间给典藏单列一组；旧存档（data/saves.json 的 ownedCostumes / equippedCostumes）不用迁移。
 import test from 'node:test';
@@ -23,9 +24,10 @@ const projectDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '.
 const read = (file) => fs.readFileSync(path.join(projectDir, file), 'utf8');
 
 const ARCHIVE = { christmas: '冬灯节服', newyear: '新历祭服', anniversary: '纪念日礼服', duanwu: '龙舟祭服' };
-const STANDING = { swimsuit: '夏日度假服', maid: '女仆服' };
-// 旧稀有度保留（服装稿 §5.1）
-const RARITY = { swimsuit: 5, maid: 3, christmas: 4, newyear: 4, anniversary: 5, duanwu: 3 };
+const STANDING = { swimsuit: '泳装', wedding: '婚礼礼服', office: 'OL装', maid: '女仆装', sportwear: '运动短袖' };
+const GIFT = { resort: '度假装' };
+// 旧稀有度保留，新三类按服装稿 §1.2（★5 泳装、婚礼；★4 OL；★3 女仆、运动短袖）
+const RARITY = { swimsuit: 5, wedding: 5, office: 4, maid: 3, sportwear: 3, christmas: 4, newyear: 4, anniversary: 5, duanwu: 3, resort: 3 };
 
 function mulberry32(seed) {
   let a = seed >>> 0;
@@ -40,26 +42,26 @@ function mulberry32(seed) {
 
 // ─── 数据 ───
 
-test('四类改为典藏、用世界内节庆名；泳装与女仆原样留在常驻池；不提前加入新三类', () => {
-  assert.deepEqual(Object.keys(COSTUME_TYPE_META), ['swimsuit', 'maid', 'christmas', 'newyear', 'anniversary', 'duanwu']);
+test('四类改为典藏、用世界内节庆名；常驻是服装稿第一套的五类，度假装是赠品', () => {
+  assert.deepEqual(Object.keys(COSTUME_TYPE_META), ['swimsuit', 'wedding', 'office', 'maid', 'sportwear', 'christmas', 'newyear', 'anniversary', 'duanwu', 'resort']);
   for (const [type, label] of Object.entries(ARCHIVE)) {
     assert.deepEqual(COSTUME_TYPE_META[type], { label, rarity: RARITY[type], status: 'archive' }, type);
   }
   for (const [type, label] of Object.entries(STANDING)) {
-    assert.deepEqual(COSTUME_TYPE_META[type], { label, rarity: RARITY[type], status: 'current' }, type);
+    const { soft, if: isIf, ...meta } = COSTUME_TYPE_META[type];
+    assert.deepEqual(meta, { label, rarity: RARITY[type], status: 'current' }, type);
+    assert.equal(Boolean(soft), type === 'swimsuit', `${type}: only the swimsuit has a 12+ cover-up version`);
+    assert.equal(Boolean(isIf), type === 'office', `${type}: only the OL suit is 异界IF`);
   }
-  for (const later of ['wedding', 'sportwear', 'office', 'resort']) {
-    assert.equal(COSTUME_TYPE_META[later], undefined, `${later} comes with the art phase`);
-    assert.equal(BRANCH_SCENES[later], undefined, `${later} 番外 entry comes with the art phase`);
-  }
+  assert.deepEqual(COSTUME_TYPE_META.resort, { label: '度假装', rarity: 3, status: 'gift' });
   // costume.mjs 的类型与标签都来自同一张表
   assert.deepEqual(COSTUME_TYPES, Object.keys(COSTUME_TYPE_META));
-  assert.deepEqual(COSTUME_LABELS, { ...STANDING, ...ARCHIVE });
+  assert.deepEqual(COSTUME_LABELS, { ...STANDING, ...ARCHIVE, ...GIFT });
 });
 
-test('服装目录保留全部旧 id（8 人 × 6 类）；抽取表只剩常驻的 16 件', () => {
+test('服装目录保留全部旧 id（8 人 × 10 类）；抽取表是常驻的 40 件', () => {
   assert.equal(COSTUME_POOL, COSTUME_CATALOG, 'COSTUME_POOL stays the full catalog (server grant-all uses it)');
-  assert.equal(COSTUME_CATALOG.length, CHARACTER_POOL.length * 6);
+  assert.equal(COSTUME_CATALOG.length, CHARACTER_POOL.length * 10);
   for (const heroine of CHARACTER_POOL) {
     for (const type of Object.keys(RARITY)) {
       const entry = COSTUME_CATALOG.find((c) => c.id === `${heroine.id}_${type}`);
@@ -69,8 +71,9 @@ test('服装目录保留全部旧 id（8 人 × 6 类）；抽取表只剩常驻
       assert.equal(entry.name, `${heroine.name.split('·')[0]}·${COSTUME_TYPE_META[type].label}`);
     }
   }
-  assert.equal(COSTUME_PULL_TABLE.length, CHARACTER_POOL.length * 2);
-  assert.deepEqual([...new Set(COSTUME_PULL_TABLE.map((c) => c.type))].sort(), ['maid', 'swimsuit']);
+  assert.equal(COSTUME_PULL_TABLE.length, CHARACTER_POOL.length * 5);
+  assert.deepEqual([...new Set(COSTUME_PULL_TABLE.map((c) => c.type))].sort(), ['maid', 'office', 'sportwear', 'swimsuit', 'wedding']);
+  assert.deepEqual([5, 4, 3].map((r) => COSTUME_PULL_TABLE.filter((c) => c.rarity === r).length), [16, 8, 16]);
   assert.ok(COSTUME_PULL_TABLE.every((c) => c.status === 'current'));
   // 旧名不再出现在任何服装文本里
   const text = JSON.stringify(COSTUME_CATALOG);
@@ -93,7 +96,7 @@ test('召唤抽不到典藏；公示的服饰池就是抽取表，概率表只�
 
   const published = publicPools([]).costumes;
   assert.deepEqual(published.map((c) => c.id), COSTUME_PULL_TABLE.map((c) => c.id));
-  assert.deepEqual(GACHA_RATES.costume, { 5: 0.03, 3: 0.97 });
+  assert.deepEqual(GACHA_RATES.costume, { 5: 0.03, 4: 0.17, 3: 0.8 });
   const rarities = new Set(published.map((c) => c.rarity));
   assert.deepEqual([...rarities].sort(), Object.keys(GACHA_RATES.costume).map(Number).sort());
 });
@@ -130,7 +133,11 @@ test('BRANCH_SCENES 改成将来的番外入口：没有外传用语、没有女
   assert.deepEqual(Object.keys(BRANCH_SCENES).sort(), [...COSTUME_TYPES].sort());
   const expected = {
     swimsuit: { extras: ['ex002', 'ex009'], unlockAfter: 'ch015', title: '退潮的沙洲' },
+    wedding: { extras: ['ex003'], unlockAfter: 'ch017', title: '礼服橱窗' },
+    office: { extras: ['ex010'], unlockAfter: 'ch022', title: '如果在另一个世界上班' },
     maid: { extras: ['ex001'], unlockAfter: 'ch010', title: '桥头旅店的帮工日' },
+    sportwear: { extras: ['ex004'], unlockAfter: 'ch019', title: '演武场的操练日' },
+    resort: { extras: ['ex002', 'ex009'], unlockAfter: undefined, title: '海边的便装' },
     christmas: { extras: ['ex005'], unlockAfter: 'ch020', title: '冬灯夜' },
     newyear: { extras: ['ex006'], unlockAfter: 'ch022', title: '新历祭' },
     anniversary: { extras: ['ex008'], unlockAfter: 'ch023', title: '一路走来的纪念日' },
@@ -156,8 +163,9 @@ test('BRANCH_SCENES 改成将来的番外入口：没有外传用语、没有女
 
 test('换衣间：典藏单列一组，只列已拥有的；番外入口写「番外 · 敬请期待」', () => {
   const app = read('public/app.js');
-  assert.match(app, /function archiveCostumeTypes\(types, costumePool\)/);
-  assert.match(app, /const archived = archiveCostumeTypes\(types, data\.costumePool\);/);
+  assert.match(app, /function archiveCostumeTypes\(types, costumePool, typeMeta\)/);
+  assert.match(app, /const archived = archiveCostumeTypes\(types, data\.costumePool, data\.typeMeta\);/);
+  assert.match(app, /class="costume-archive"[^>]*aria-label="赠品"/, 'gifts get their own group');
   assert.match(app, /class="costume-archive"[^>]*aria-label="典藏"/);
   assert.match(app, /archived\.has\(type\) && ownedCostumes\.includes\(`\$\{charId\}_\$\{type\}`\)/, 'only owned archive costumes get a slot');
   assert.match(app, /番外「\$\{escapeHtml\(branches\[equippedType\]\.title\)\}」· 敬请期待/);
@@ -251,9 +259,11 @@ test('HTTP: an old save that owns and wears 典藏 costumes still works after a 
   const wardrobe = (await api(srv.base, `/api/costume?playerId=${playerId}`)).json;
   assert.deepEqual(wardrobe.ownedCostumes, ['lia_newyear', 'lia_christmas', 'lia_maid', 'mia_duanwu']);
   assert.deepEqual(wardrobe.equipped, { lia: 'lia_christmas' });
-  assert.deepEqual(wardrobe.types, { ...STANDING, ...ARCHIVE });
-  // 常驻池里没有典藏：前端靠这一点把典藏单列一组
-  assert.deepEqual([...new Set(wardrobe.costumePool.map((c) => c.type))].sort(), ['maid', 'swimsuit']);
+  assert.deepEqual(wardrobe.types, { ...STANDING, ...ARCHIVE, ...GIFT });
+  assert.equal(wardrobe.typeMeta.christmas.status, 'archive');
+  assert.equal(wardrobe.typeMeta.resort.status, 'gift');
+  // 常驻池里没有典藏与赠品
+  assert.deepEqual([...new Set(wardrobe.costumePool.map((c) => c.type))].sort(), ['maid', 'office', 'sportwear', 'swimsuit', 'wedding']);
   assert.equal(wardrobe.branches.christmas.title, '冬灯夜');
   assert.ok(!JSON.stringify(wardrobe).includes('米娅'), 'no pre-debut name leaks through the 番外 entries');
 
@@ -268,7 +278,8 @@ test('HTTP: an old save that owns and wears 典藏 costumes still works after a 
 
   const pools = (await api(srv.base, `/api/gacha/pools?playerId=${playerId}`)).json;
   assert.deepEqual(pools.costumes.map((c) => c.id), COSTUME_PULL_TABLE.map((c) => c.id));
-  assert.deepEqual(pools.rates.costume, { 3: 0.97, 5: 0.03 });
+  assert.deepEqual(pools.rates.costume, { 3: 0.8, 4: 0.17, 5: 0.03 });
+  assert.deepEqual({ points: pools.wardrobe.points, tickets: pools.wardrobe.tickets, per: pools.wardrobe.pointsPerTicket }, { points: 0, tickets: 0, per: 90 });
 
   // 演示工具「一键解锁全部服装」仍然发放完整目录（含典藏）
   const granted = (await api(srv.base, '/api/costume/grant-all', { playerId })).json;

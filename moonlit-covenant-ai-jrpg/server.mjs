@@ -20,7 +20,7 @@ import { generateCharacterReply, fallbackReply, AI_CONFIG } from './game/ai.mjs'
 import { CHARACTERS, STRATEGIES, DECISIONS, GAME_TITLE, GAME_SUBTITLE, CG_GALLERY } from './game/content.mjs';
 import { MEMBERSHIP_TIERS, DIAMOND_PACKS, createPlayerAccount, purchaseMembership, purchaseDiamonds, grantDailyCredits, getMembershipInfo } from './game/membership.mjs';
 import { CREDIT_COSTS, createCreditMeter, addCredit, getMeterStatus } from './game/credit.mjs';
-import { CHARACTER_POOL, COSTUME_POOL, GACHA_RATES, GACHA_COSTS, GACHA_CURRENCY, DUPLICATE_COMPENSATION, pullGacha, PITY_THRESHOLD, publicPools, clearedChaptersOf, highestClearedChapter } from './game/gacha.mjs';
+import { CHARACTER_POOL, COSTUME_POOL, COSTUME_TYPE_META, GACHA_RATES, GACHA_COSTS, GACHA_CURRENCY, DUPLICATE_COMPENSATION, pullGacha, PITY_THRESHOLD, publicPools, clearedChaptersOf, highestClearedChapter, viewCostume, WARDROBE_TICKET, wardrobeStatus, wardrobeTicketChoices, redeemWardrobeTicket } from './game/gacha.mjs';
 import { COSTUME_LABELS, equipCostume, getEquippedCostumes, BRANCH_SCENES } from './game/costume.mjs';
 import { createAnalyticsStore, trackSession, trackDailyActive, getDashboardData, getRealtimeStats, pruneAnalytics } from './game/analytics.mjs';
 import { AI_MODELS, PER_PLAYER_ROUTING, getActiveModel, switchModel, createDefaultSettings } from './game/settings.mjs';
@@ -502,7 +502,8 @@ const API_ROUTES = new Set([
   '/api/cards/deck/save', '/api/battle/start', '/api/battle/state', '/api/battle/action', '/api/battle/end-turn',
   '/api/battle/concede', '/api/session', '/api/rewards/daily', '/api/rewards/status', '/api/story/progress',
   '/api/skills', '/api/skills/enhance', '/api/skills/equip', '/api/skills/party', '/api/skills/convert', '/api/skills/exchange',
-  '/api/gacha/target', '/api/commissions', '/api/commission/start', '/api/commission/act', '/api/commission/flee'
+  '/api/gacha/target', '/api/commissions', '/api/commission/start', '/api/commission/act', '/api/commission/flee',
+  '/api/gacha/wardrobe-ticket'
 ]);
 // 需要 sessionId 的外传动作（POST）
 const SESSION_ACTIONS = new Set([
@@ -623,8 +624,23 @@ async function handleApi(req, res, url) {
       heroineJoins: HEROINE_JOIN_CHAPTERS,
       progress: { highestCleared: highestClearedChapter(cleared) },
       // 秘技召唤（技能稿 3.2）：只出已入队角色的暮紫、赤月；概率表与保底就是实际抽取用的（game/skill-gacha.mjs）
-      skill: publicSkillPool(account)
+      skill: publicSkillPool(account),
+      // 衣橱券（服装稿 1.2）：服饰池每抽 1 点、满 90 点一张，一张换一件已登场女主的常驻 5★ 服装；第 90 抽的 5★ 保底照旧
+      wardrobe: {
+        ...wardrobeStatus(account),
+        pointsPerPull: WARDROBE_TICKET.pointsPerPull,
+        choices: account ? wardrobeTicketChoices(account).map((c) => viewCostume(c, cleared)) : []
+      }
     });
+  }
+
+  if (req.method === 'POST' && url.pathname === '/api/gacha/wardrobe-ticket') {
+    const body = await readJson(req);
+    const account = getAccount(body.playerId);
+    if (!account) return sendError(res, 404, '账户不存在。', 'NO_ACCOUNT');
+    const result = redeemWardrobeTicket(account, String(body.costumeId || ''));
+    if (!result.ok) return sendJson(res, 400, result);
+    return sendJson(res, 200, { ...result, account: publicAccount(account) });
   }
 
   if (req.method === 'POST' && url.pathname === '/api/gacha/pull') {
@@ -719,6 +735,8 @@ async function handleApi(req, res, url) {
       ownedCostumes: account.ownedCostumes || [],
       ownedCharacters: account.ownedCharacters || [],
       types: COSTUME_LABELS,
+      // 每类服装的稀有度与归属（常驻 current / 典藏 archive / 赠品 gift）、12+ 罩衫版（soft）与异界IF（if）
+      typeMeta: COSTUME_TYPE_META,
       branches: BRANCH_SCENES,
       // 与 /api/gacha/pools 同一个登场闸门：未登场女主的服装是封存卡
       costumePool: publicPools(clearedChaptersOf(account)).costumes

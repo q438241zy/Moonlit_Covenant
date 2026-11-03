@@ -85,7 +85,7 @@ let playerPos = { x: START_TOWN.x + MARKER_OFFSET.x, y: START_TOWN.y + MARKER_OF
 /* ═══ 美术资源路径（原创矢量美术，见 docs/ART-DIRECTION.md） ═══ */
 const ART = {
   portrait: (id) => `/assets/portraits/${id}.svg`,
-  costume: (id, type) => `/assets/costumes/${id}_${type}.svg`,
+  costume: (id, type) => softCostume(`/assets/costumes/${id}_${type}.svg`),
   boss: (phase) => `/assets/boss/dream-eater-${phase}.svg`,
   cg: (name) => `/assets/cg/${name}.svg`,
   scene: (name) => `/assets/scenes/${name}.svg`,
@@ -122,14 +122,32 @@ const BOSS_PHASES = [
 // 结局抉择 -> 结局 CG
 const ENDING_CG = { seal: 'ending-seal', share: 'ending-share', destroy: 'ending-destroy' };
 
+// 服装类型的图标与边框（稀有度、常驻 / 典藏 / 赠品由服务器的 /api/costume typeMeta 给出，见 game/gacha.mjs COSTUME_TYPE_META）。
+// soft：12+ 内容模式换成罩衫版的图（public/assets/costumes/soft/，服装稿 §1.3）
 const COSTUME_TYPE_META = {
-  newyear: { icon: 'newyear', frame: 'frame-newyear' },
+  swimsuit: { icon: 'swimsuit', frame: 'frame-swimsuit', soft: true },
+  wedding: { icon: 'wedding', frame: 'frame-wedding' },
+  office: { icon: 'office', frame: 'frame-office' },
   maid: { icon: 'maid', frame: 'frame-maid' },
+  sportwear: { icon: 'sportwear', frame: 'frame-sportwear' },
+  newyear: { icon: 'newyear', frame: 'frame-newyear' },
   christmas: { icon: 'christmas', frame: 'frame-christmas' },
   duanwu: { icon: 'duanwu', frame: 'frame-duanwu' },
   anniversary: { icon: 'anniversary', frame: 'frame-anniversary' },
-  swimsuit: { icon: 'summer', frame: 'frame-swimsuit' }
+  resort: { icon: 'summer', frame: 'frame-resort' }
 };
+
+// 12+ 柔和模式下，泳装的图换成罩衫版（同一件泳装加一层她自己的罩衫）；其余服装两档同图
+function softCostume(src) {
+  const m = /^\/assets\/costumes\/([a-z]+)_([a-z]+)\.svg$/.exec(String(src || ''));
+  return m && COSTUME_TYPE_META[m[2]]?.soft && contentMode() === '12+' ? `/assets/costumes/soft/${m[1]}_${m[2]}.svg` : src;
+}
+
+// 异界IF 的服装（OL装）在卡面和换衣间带一个 IF 角标（服装稿 §2.5）
+const IF_COSTUME_TYPES = new Set(['office']);
+function ifTagHtml(type) {
+  return IF_COSTUME_TYPES.has(type) ? '<span class="costume-if-tag" title="异界IF：与正史无关的平行现代">IF</span>' : '';
+}
 
 const TIER_ICON = { silver: 'medal', gold: 'crown', diamond: 'diamond' };
 
@@ -473,6 +491,12 @@ function renderHeader() {
     </header>`;
 }
 
+// 外传战斗与营地的队伍头像：穿着换衣间里装备的服装（服装稿 §4.1）
+function rosterArt(characterId) {
+  const equipped = playerAccount?.equippedCostumes?.[characterId];
+  return equipped ? ART.costume(characterId, costumeTypeOfId(equipped)) : ART.portrait(characterId);
+}
+
 function rosterHtml({ selectable = true, showBars = true } = {}) {
   return `
     <h3 class="panel-heading">Party / 队伍</h3>
@@ -482,7 +506,7 @@ function rosterHtml({ selectable = true, showBars = true } = {}) {
         const active = selectedCharacterId === character.id;
         return `
           <button class="roster-card ${active ? 'active' : ''}" data-character="${character.id}" ${selectable ? '' : 'disabled'} style="--char-accent:${character.accent}">
-            ${faceThumb(ART.portrait(character.id), { cls: 'roster-avatar' })}
+            ${faceThumb(rosterArt(character.id), { cls: 'roster-avatar', fallback: ART.portrait(character.id) })}
             <div>
               <div class="roster-name">${escapeHtml(character.shortName)}</div>
               <div class="roster-role">${escapeHtml(character.role)}</div>
@@ -1844,7 +1868,7 @@ function gachaPage() {
   return `${navBar()}
     <main class="page-content">
       <div class="page-header"><div class="eyebrow">SUMMON · 星轨召唤</div><h1>召唤系统</h1>
-        <p class="muted">角色池：8 位女主 · 服饰池：常驻服饰 × 8 位女主（四类节庆服装已转为典藏，不在池中）· 第 90 抽必出 5★。召唤只收钻石。还没在主线登场的女主和她的服装显示为剪影，通关她登场的那一章后揭晓；女主在主线正式入队时会自动加入，重复抽到的会折成钻石。</p>
+        <p class="muted">角色池：8 位女主 · 服饰池：泳装、婚礼礼服、OL装（异界IF）、女仆装、运动短袖 × 8 位女主（四类节庆服装已转为典藏，不在池中）· 第 90 抽必出 5★，服饰池另有衣橱券。召唤只收钻石。还没在主线登场的女主和她的服装显示为剪影，通关她登场的那一章后揭晓；女主在主线正式入队时会自动加入，重复抽到的会折成钻石。</p>
       </div>
       <div class="gacha-tabs">
         <button class="gacha-tab ${currentGachaPool === 'character' ? 'active' : ''}" data-pool="character">角色池</button>
@@ -2014,24 +2038,57 @@ async function loadGachaPool() {
     } else {
       const characters = Object.fromEntries(data.characters.map((c) => [c.id, c]));
       const types = [...new Set(data.costumes.map(costumeTypeOf))];
-      pool.innerHTML = types.map((type) => {
+      pool.innerHTML = wardrobeTicketHtml(data.wardrobe) + types.map((type) => {
         const items = data.costumes.filter((c) => costumeTypeOf(c) === type);
         const typeLabel = items[0]?.name?.split('·')[1] || type;
-        return `<div class="costume-type-group"><h3>${icon(COSTUME_TYPE_META[type]?.icon || 'dress', { size: 18 })}${escapeHtml(typeLabel)}<span class="gacha-stars">${starsHtml(items[0]?.rarity || 3)}</span></h3>
+        return `<div class="costume-type-group"><h3>${icon(COSTUME_TYPE_META[type]?.icon || 'dress', { size: 18 })}${escapeHtml(typeLabel)}${ifTagHtml(type)}<span class="gacha-stars">${starsHtml(items[0]?.rarity || 3)}</span></h3>
           <div class="gacha-grid small">${items.map((c) => c.sealed ? `
             <div class="gacha-costume-card rarity-${c.rarity} is-sealed" title="${escapeHtml(`${c.name}（${debutText(c, index)}）`)}">
               ${silhouetteThumb('costume-thumb', `${c.name} · ${debutText(c, index)}`)}
               <div class="gacha-char-name">${escapeHtml(SEALED_NAME)}</div>
               <div class="gacha-char-title">${escapeHtml(debutText(c, index))}</div>
             </div>` : `
-            <div class="gacha-costume-card rarity-${c.rarity}" title="${escapeHtml(c.description || c.name)}">
-              ${faceThumb(c.file || ART.costume(c.characterId, type), { cls: 'costume-thumb', alt: c.name, fallback: ART.portrait(c.characterId), lazy: true })}
+            <div class="gacha-costume-card rarity-${c.rarity}" title="${escapeHtml([c.description, c.line].filter(Boolean).join(' — ') || c.name)}">
+              ${faceThumb(softCostume(c.file) || ART.costume(c.characterId, type), { cls: 'costume-thumb', alt: c.name, fallback: ART.portrait(c.characterId), lazy: true })}
               <div class="gacha-char-name">${escapeHtml(String(characters[c.characterId]?.name || c.characterId).split('·')[0])}</div>
-              <div class="gacha-char-title">${escapeHtml(typeLabel)}</div>
+              <div class="gacha-char-title">${escapeHtml(c.description || typeLabel)}</div>
             </div>`).join('')}</div></div>`;
       }).join('');
+      bindWardrobeTicket();
     }
   } catch (e) { showToast(e.message, 'error'); }
+}
+
+/* 衣橱券（服装稿 1.2）：服饰池每抽 1 点、满 90 点自动换一张，一张换一件指定的常驻 5★ 服装（只能选已登场女主的、还没拥有的）。
+   第 90 抽必出 5★ 的保底照旧。 */
+function wardrobeTicketHtml(w) {
+  if (!w) return '';
+  const per = Number(w.pointsPerTicket) || 90;
+  const choices = Array.isArray(w.choices) ? w.choices : [];
+  const pick = w.tickets > 0 && choices.length
+    ? `<select id="wardrobeTicketPick" aria-label="选择要兑换的 5★ 服装">${choices.map((c) => `<option value="${escapeHtml(c.id)}">${escapeHtml(`${c.name}（${c.description || ''}）`)}</option>`).join('')}</select>
+       <button class="button small primary" id="wardrobeTicketRedeem" type="button">兑换</button>`
+    : `<span class="muted">${w.tickets > 0 ? '可兑换的 5★ 服装都已经拥有了。' : '有券之后，可以在这里选一件 5★ 服装。'}</span>`;
+  return `<div class="wardrobe-ticket">
+    <span class="wardrobe-ticket-count">${icon('ticket', { size: 16 })}衣橱券 <b>${Number(w.tickets) || 0}</b> 张</span>
+    <span class="wardrobe-ticket-progress" title="服饰召唤每抽 1 点，满 ${per} 点换一张">进度 ${Number(w.points) || 0}/${per}<i style="--p:${Math.round(((Number(w.points) || 0) / per) * 100)}%"></i></span>
+    ${pick}
+  </div>`;
+}
+
+function bindWardrobeTicket() {
+  document.querySelector('#wardrobeTicketRedeem')?.addEventListener('click', async () => {
+    const costumeId = document.querySelector('#wardrobeTicketPick')?.value;
+    if (!costumeId) return;
+    try {
+      await ensureAccount();
+      const r = await apiPost('/api/gacha/wardrobe-ticket', { playerId, costumeId });
+      if (r.account) playerAccount = r.account;
+      showToast(`已兑换「${r.costume?.name || costumeId}」，可以去换衣间穿上了。`, 'success');
+      beep('win');
+      loadGachaPool();
+    } catch (e) { showToast(e.message, 'error'); }
+  });
 }
 
 // 抽卡后重新读取账户（拥有的角色），用来标注「需先拥有角色」的服装
@@ -2071,7 +2128,7 @@ async function doGachaPull(count, payWith = 'diamonds') {
       resultEl.innerHTML = `<h3>召唤结果</h3><div class="gacha-results-grid">${r.results.map((item, index) => {
         const rarity = item.rarity || 3;
         const isCostume = Boolean(item.characterId);
-        const src = isCostume ? (item.file || ART.costume(item.characterId, costumeTypeOf(item))) : (item.portrait || ART.portrait(item.id));
+        const src = isCostume ? (softCostume(item.file) || ART.costume(item.characterId, costumeTypeOf(item))) : (item.portrait || ART.portrait(item.id));
         const needsCharacter = isCostume && !item.sealed && !ownedCharacters.has(item.characterId);
         return `
         <div class="gacha-result-card rarity-${rarity}${item.sealed ? ' is-sealed' : ''}" style="--delay:${index * 70}ms">
@@ -2094,8 +2151,8 @@ async function doGachaPull(count, payWith = 'diamonds') {
     }
     refreshRewardWidgets();
     updateGachaButtons();
-    // 角色卡片上的「已拥有」随这次召唤更新（只重绘卡池，不动结果区）
-    if (currentGachaPool === 'character') loadGachaPool();
+    // 角色卡片上的「已拥有」、服饰池的衣橱券进度随这次召唤更新（只重绘卡池，不动结果区）
+    loadGachaPool();
   } catch (e) {
     showToast(e.message, 'error');
     beep('error');
@@ -2109,7 +2166,7 @@ function costumePage() {
   return `${navBar()}
     <main class="page-content">
       <div class="page-header"><div class="eyebrow">WARDROBE · 换衣间</div><h1>服饰更换</h1>
-        <p class="muted">为已拥有的女主更换皮肤（主线入队或召唤获得）。服装通过「召唤 · 服饰池」获取；抽到了服装但还没有该角色时，服装会先收进「待解锁角色」；还没在主线登场的女主先收在「尚未登场」里，以剪影显示。「典藏」是已退出常驻服饰池的节庆服装：已经拥有的照样能穿，对应番外上线时会限时复刻。服装对应的番外 · 敬请期待。</p>
+        <p class="muted">为已拥有的女主更换皮肤（主线入队或召唤获得）。服装通过「召唤 · 服饰池」获取；抽到了服装但还没有该角色时，服装会先收进「待解锁角色」；还没在主线登场的女主先收在「尚未登场」里，以剪影显示。「典藏」是已退出常驻服饰池的节庆服装：已经拥有的照样能穿，对应番外上线时会限时复刻；「赠品」是海边番外首通送的度假装。带 IF 角标的 OL装是「异界IF」，与正史无关。内容模式为 12+ 时，泳装显示加罩衫的版本。服装对应的番外 · 敬请期待。</p>
       </div>
       <section class="costume-section" id="costumeSection"><div class="loader">加载中…</div></section>
     </main>`;
@@ -2127,10 +2184,16 @@ function costumeTypeOfId(costumeId) {
 /* 典藏（决定#31）：退出常驻抽取表的服装类型——已经拥有的照样能穿，对应番外上线时限时复刻。
    /api/costume 的 types 是完整目录，costumePool 是常驻服饰池（抽得到的条目，按登场闸门给视图，sealed 的也带 type）：
    在 types 里、却不在常驻池里的类型就是典藏。服务器没给常驻池时不分组。 */
-function archiveCostumeTypes(types, costumePool) {
+function archiveCostumeTypes(types, costumePool, typeMeta) {
+  if (typeMeta) return new Set(Object.keys(types).filter((type) => typeMeta[type]?.status === 'archive'));
   const standing = new Set((costumePool || []).filter((c) => c.status !== 'archive').map(costumeTypeOf));
   if (!standing.size) return new Set();
   return new Set(Object.keys(types).filter((type) => !standing.has(type)));
+}
+
+// 赠品（度假装）：不在任何抽取表里，只列已经拥有的
+function giftCostumeTypes(types, typeMeta) {
+  return new Set(Object.keys(types).filter((type) => typeMeta?.[type]?.status === 'gift'));
 }
 
 function archiveTagHtml(type, archived) {
@@ -2208,7 +2271,10 @@ async function loadCostumes() {
     const equipped = data.equipped || {};
     const types = data.types || {};
     const branches = data.branches || {};
-    const archived = archiveCostumeTypes(types, data.costumePool);
+    const archived = archiveCostumeTypes(types, data.costumePool, data.typeMeta);
+    const gifts = giftCostumeTypes(types, data.typeMeta);
+    // 常驻服装的款名与台词（服装稿 §三），只有已登场的条目带着
+    const styleOf = Object.fromEntries((data.costumePool || []).filter((c) => !c.sealed).map((c) => [c.id, c]));
     const charInfoMap = Object.fromEntries((pools.characters || []).map((c) => [c.id, c]));
     const isSealed = (charId) => Boolean(charInfoMap[charId]?.sealed);
     // 拥有的角色（有角色资料的）；能在这里换装的只有已经登场的
@@ -2281,13 +2347,18 @@ async function loadCostumes() {
           ${owned
             ? faceThumb(ART.costume(charId, type), { cls: 'slot-thumb', fallback: ART.portrait(charId), lazy: true })
             : `<span class="slot-thumb slot-thumb-locked">${icon('lock', { size: 20 })}</span>`}
-          <span class="slot-label">${icon(typeIcon, { size: 14 })}${escapeHtml(types[type])}</span>
+          <span class="slot-label">${icon(typeIcon, { size: 14 })}${escapeHtml(types[type])}${ifTagHtml(type)}</span>
           ${isActive ? '<span class="slot-wearing">穿着中</span>' : ''}
         </button>`;
       };
       // 常驻：默认服装 + 抽得到的类型（没拥有的显示锁）；典藏只列已经拥有的（抽不到，不摆锁着的空位），一套都没有就不显示这一组
       const typeIds = Object.keys(types);
-      const slots = ['default', ...typeIds.filter((type) => !archived.has(type))].map(slot).join('');
+      const slots = ['default', ...typeIds.filter((type) => !archived.has(type) && !gifts.has(type))].map(slot).join('');
+      const giftOwned = typeIds.filter((type) => gifts.has(type) && ownedCostumes.includes(`${charId}_${type}`));
+      const giftGroup = giftOwned.length ? `<div class="costume-archive" role="group" aria-label="赠品">
+          <h4 class="costume-group-title">${icon('gift', { size: 15 })}赠品<small>海边番外首通赠送 · 不在服饰池里</small></h4>
+          <div class="costume-grid">${giftOwned.map(slot).join('')}</div>
+        </div>` : '';
       const archiveOwned = typeIds.filter((type) => archived.has(type) && ownedCostumes.includes(`${charId}_${type}`));
       const archiveGroup = archiveOwned.length ? `<div class="costume-archive" role="group" aria-label="典藏">
           <h4 class="costume-group-title">${icon('box', { size: 15 })}典藏<small>已退出常驻服饰池 · 已经拥有的照样能穿</small></h4>
@@ -2306,11 +2377,13 @@ async function loadCostumes() {
             <h3>${escapeHtml(ch.name)}</h3>
             <p class="muted">${escapeHtml(ch.title || '')}</p>
             <p class="wardrobe-current">${equippedLabel ? `当前皮肤：<strong>${icon(COSTUME_TYPE_META[equippedType]?.icon || 'dress', { size: 16 })} ${escapeHtml(equippedLabel)}</strong>${archiveTagHtml(equippedType, archived)}` : `当前皮肤：<strong class="is-default">${icon('outfit-default', { size: 16 })} 默认服装</strong>`}</p>
+            ${equippedId && styleOf[equippedId] ? `<p class="wardrobe-style">「${escapeHtml(styleOf[equippedId].description)}」${ifTagHtml(equippedType)}${styleOf[equippedId].line ? `<span class="muted">${escapeHtml(styleOf[equippedId].line)}</span>` : ''}</p>` : ''}
             ${equippedType && branches[equippedType] ? `<p class="wardrobe-branch muted">${icon('scroll', { size: 14 })}<span>番外「${escapeHtml(branches[equippedType].title)}」· 敬请期待</span></p>` : ''}
           </div>
         </div>
         <div class="costume-grid">${slots}</div>
         ${archiveGroup}
+        ${giftGroup}
       </div>`;
     }).join('');
 
@@ -2340,6 +2413,13 @@ async function equipCostumeAction(characterId, costumeId) {
   try {
     await ensureAccount();
     await apiPost('/api/costume/equip', { playerId, characterId, costumeId });
+    // 委托板的胸像和外传队伍头像读 playerAccount 里装备的服装：换装后就地更新，不用等重新读取账户
+    if (playerAccount) {
+      const worn = { ...(playerAccount.equippedCostumes || {}) };
+      if (costumeId === 'default') delete worn[characterId];
+      else worn[characterId] = costumeId;
+      playerAccount.equippedCostumes = worn;
+    }
     showToast(costumeId === 'default' ? '已恢复默认服装' : '已换装');
     beep('skill');
     loadCostumes();

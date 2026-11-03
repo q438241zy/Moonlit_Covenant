@@ -108,16 +108,16 @@ test('G4/G6: 20,000 character pulls give only 4★/5★ with ~2% base 5★ rate'
   assert.ok(share > 0.018 && share < 0.03, `5★ share ${share}`);
 });
 
-test('G4: costume pool follows its published split (典藏退出后暂时没有 4★：5★ 3%，3★ 97%)', (t) => {
+test('G4: costume pool follows its published split (5★ 3%，4★ 17%，3★ 80%；服装稿 1.2)', (t) => {
   t.mock.method(Math, 'random', mulberry32(7));
   const account = gachaAccount(10 ** 9);
   const counts = { 3: 0, 4: 0, 5: 0 };
   for (let i = 0; i < 2000; i += 1) {
     for (const item of pullGacha(account, 'costume', 10).results) counts[item.rarity] += 1;
   }
-  assert.deepEqual(GACHA_RATES.costume, { 5: 0.03, 3: 0.97 });
-  assert.ok(Math.abs(counts[3] / 20000 - 0.97) < 0.02, `3★ ${counts[3]}`);
-  assert.equal(counts[4], 0, 'no 4★ left in the standing table');
+  assert.deepEqual(GACHA_RATES.costume, { 5: 0.03, 4: 0.17, 3: 0.8 });
+  assert.ok(Math.abs(counts[3] / 20000 - 0.8) < 0.02, `3★ ${counts[3]}`);
+  assert.ok(Math.abs(counts[4] / 20000 - 0.17) < 0.02, `4★ ${counts[4]}`);
   assert.ok(counts[5] / 20000 > 0.025 && counts[5] / 20000 < 0.045, `5★ ${counts[5]}`);
 });
 
@@ -375,6 +375,6 @@ test('B1/B15: the pool uses canon identities and weapon names, never the side-st
 // B11（作者核#12）+ 决定#31：服装对应的番外还没有制作，数据上也明确标为不可用（界面显示「敬请期待」）
 test('B11: costume 番外 entries are all marked unavailable', () => {
   const scenes = Object.values(BRANCH_SCENES);
-  assert.equal(scenes.length, 6);
+  assert.equal(scenes.length, 10);
   for (const scene of scenes) assert.equal(scene.available, false, scene.sceneId);
 });

@@ -1,8 +1,8 @@
 /**
  * 抽卡系统
- * 角色池 8 位女主（只有 4★ 和 5★）；服装目录每角色 6 套（3★～5★），其中常驻服饰池抽得到的是泳装、女仆两类，
- * 另外四类是「典藏」（决定#31：退出常驻抽取表，已拥有的照样能穿，见 COSTUME_TYPE_META）
- * 保底机制：连续 89 次未出 5★ 时，第 90 次必出 5★（出 5★ 后计数重置）
+ * 角色池 8 位女主（只有 4★ 和 5★）；服装目录每角色 10 套：常驻服饰池抽得到的是泳装、婚礼礼服、OL装、女仆装、运动短袖五类
+ * （服装稿第一套，40 件），另外四类是「典藏」（决定#31：退出常驻抽取表，已拥有的照样能穿），度假装是海边番外的赠品（见 COSTUME_TYPE_META）
+ * 保底机制：连续 89 次未出 5★ 时，第 90 次必出 5★（出 5★ 后计数重置）；服饰池另有衣橱券（WARDROBE_TICKET）
  *
  * GACHA_RATES 就是实际抽取用的概率表，/api/gacha/pools 原样公示（契约 K-11）：
  * rates[池][稀有度] 是该稀有度的总概率，同一稀有度内的条目等概率。
@@ -52,27 +52,97 @@ export const CHARACTER_POOL = [
 
 const CHARACTER_BY_ID = new Map(CHARACTER_POOL.map((c) => [c.id, c]));
 
-// 服装类型（决定#31，剧本/README_轉蛋服裝設計.md §4、§5.1）。稀有度由类型决定，status 决定它在不在常驻抽取表里：
-//   current：常驻服饰池（泳装、女仆暂时原样保留——真泳装重画、女仆改版，以及新增的婚礼 / 运动短袖 / OL 三类，都随美术阶段一起做）；
-//   archive：「典藏」——退出常驻抽取表，id 不变，已拥有的照样能穿；显示名改成世界内的节庆；对应番外上线时以限时池复刻。
-// 顺序就是换衣间的排列：先常驻，后典藏（典藏按对应番外的时间先后）。
+// 服装类型（服装稿 §1.2、§5.1；决定#31）。稀有度由类型决定，只用★（不用技能的五色），status 决定它在哪里：
+//   current：常驻服饰池——★5 泳装、婚礼礼服，★4 OL装（异界IF），★3 女仆装、运动短袖（5 类 × 8 人 = 40 件，各★ 16／8／16）；
+//   archive：「典藏」——退出常驻抽取表，id 不变，已拥有的照样能穿；显示名是世界内的节庆；对应番外上线时以限时池复刻；
+//   gift：非卖品——度假装（原来的夏日度假服）由两篇海边番外首通赠送，不进任何抽取表。
+// soft：12+ 内容模式换成罩衫版的图（public/assets/costumes/soft/，只有泳装）；if：异界IF（卡面带 IF 角标）。
+// 服装一律不带数值，也不影响任何判定（服装稿 §〇-1）。顺序就是换衣间的排列：常驻、典藏（按对应番外的时间先后）、赠品。
 export const COSTUME_TYPE_META = {
-  swimsuit: { label: '夏日度假服', rarity: 5, status: 'current' },
-  maid: { label: '女仆服', rarity: 3, status: 'current' },
+  swimsuit: { label: '泳装', rarity: 5, status: 'current', soft: true },
+  wedding: { label: '婚礼礼服', rarity: 5, status: 'current' },
+  office: { label: 'OL装', rarity: 4, status: 'current', if: true },
+  maid: { label: '女仆装', rarity: 3, status: 'current' },
+  sportwear: { label: '运动短袖', rarity: 3, status: 'current' },
   christmas: { label: '冬灯节服', rarity: 4, status: 'archive' },
   newyear: { label: '新历祭服', rarity: 4, status: 'archive' },
   anniversary: { label: '纪念日礼服', rarity: 5, status: 'archive' },
-  duanwu: { label: '龙舟祭服', rarity: 3, status: 'archive' }
+  duanwu: { label: '龙舟祭服', rarity: 3, status: 'archive' },
+  resort: { label: '度假装', rarity: 3, status: 'gift' }
+};
+
+// 常驻 40 件的款名与代表台词（服装稿 §三，原样转成简体）。款名就是正式服装名，写进 description；台词是简介的第二行。
+// 文案守则（服装稿 §1.3 第10条、§2.2、§2.3）：不带签名武器名、组织名与剧透词；婚礼服不用誓约、婚约、新郎、妃之类的词；
+// 女仆装不用主人、侍奉、侍从；莉莉丝与艾拉的服装不带姓、国名与家纹；亚克在 OL 的 IF 里是同期入职的新人，不是谁的上司。
+// test/canon-guard.test.mjs 检查这张表。
+export const COSTUME_STYLES = {
+  swimsuit: {
+    lia: ['晨泳·救生员款', '这是训练用的。……不准盯着看。'],
+    mia: ['零号防水测试服', '这次是计划内喷水！'],
+    serena: ['新月夜泳', '阳光太吵了。站到我的伞下——只是为了遮阳。'],
+    freya: ['冰湖晨泳·暖茶款', '上岸先喝点热的。嘴唇都紫了，还逞强？'],
+    lilith: ['暗绿·竞速款', '看什么。……这样游得比较快。'],
+    evelyn: ['星铃小荷叶', '海、海水原来是咸的……'],
+    ophelia: ['浅湾·鳞光款', '这些亮晶晶的都可以带走吧？'],
+    aila: ['晨光·沙滩决斗款', '沙滩球，三局两胜。输的人请吃冰。']
+  },
+  wedding: {
+    lia: ['红蔷薇与草莓塔', '我只是来试吃的。蛋糕才是重点。'],
+    mia: ['齿轮蕾丝', '这蕾丝是织机程序织的！能拆开看看吗？'],
+    serena: ['月白镜纱', '试穿流程第三项：微笑。……这样可以吗？'],
+    freya: ['冬雪长裾', '看大家穿得这么漂亮，我就很满足了。'],
+    lilith: ['叶影长纱', '……衣服是借来的。别一直看。'],
+    evelyn: ['星蓝花冠', '这是……我自己选的花。'],
+    ophelia: ['祖鳞银纱', '人类会为这种布料排队？……花的味道不错。'],
+    aila: ['晨光礼装', '穿成这样也能赢你。要比一场吗？']
+  },
+  office: {
+    lia: ['安全管理部·赫斯特主任', '迟到三分钟。检讨书明天交。'],
+    mia: ['研发部·新人工程师', '这个原型今天就能上线！……大概。'],
+    serena: ['情报室·首席秘书', '会议纪要写好了。包括你等一下会说的话。'],
+    freya: ['总务部·温柔前辈', '要加班的话，先吃点东西。'],
+    lilith: ['外勤调查科', '下班？外勤没有下班。'],
+    evelyn: ['公关部·实习生', '这、这份资料我整理好了！'],
+    ophelia: ['古籍档案部·馆员', '这间档案室的旧纸味道……我很喜欢。'],
+    aila: ['营业部王牌', '本月第一还是我。不服就来抢。']
+  },
+  maid: {
+    lia: ['点心值班', '点单。三秒内决定。'],
+    mia: ['零号送餐协议', '零号送餐！洒了算非计划拆解。'],
+    serena: ['午夜茶会', '要喝茶，还是先让我把你今天的日程排好？'],
+    freya: ['暖炉管家', '先喝点热的，再说累不累。'],
+    lilith: ['影之店员', '……打扫而已。别站在我背后。'],
+    evelyn: ['小铃店员', '欢、欢迎光临……要草莓蛋糕吗？'],
+    ophelia: ['龙族不懂的礼仪', '这些叉子会发光！我先帮你保管。'],
+    aila: ['骑士式上菜', '上菜速度，我不会输给任何人。']
+  },
+  sportwear: {
+    lia: ['赤焰长跑队·领跑员', '再一圈。掉队的我用盾推回来。'],
+    mia: ['零号计时组', '零号计时！误差……正负三秒？'],
+    serena: ['记分员', '我负责计分。运动是你们的事。'],
+    freya: ['伸展指导', '拉伸做完再跑，受伤可不划算。'],
+    lilith: ['叶影短跑', '终点线见。别让我等。'],
+    evelyn: ['应援团', '加、加油……！大家都要平安跑完！'],
+    ophelia: ['投掷项目', '这颗球像龙蛋！扔多远都行吗？'],
+    aila: ['网球社王牌', '一局定胜负。我发球。']
+  }
+};
+// 典藏与赠品没有逐件款名，简介按类型写
+const TYPE_BLURBS = {
+  christmas: '冬灯节的节日服装', newyear: '新历祭的节日服装', anniversary: '纪念日的礼服', duanwu: '龙舟祭的节日服装',
+  resort: '海边番外首通赠送的度假装'
 };
 
 /**
- * 服装目录：8 位女主 × 全部类型（常驻 + 典藏）。拥有、穿戴校验（game/costume.mjs）和演示发放都查这份完整目录，
- * 所以存档里的旧 id（<女主>_<类型>）全都继续有效，不需要迁移。名称只用名、不带姓；veils 遮住了名的女主（莉莉丝在正式20以前），
+ * 服装目录：8 位女主 × 全部类型（常驻 40 + 典藏 32 + 赠品 8 = 80 件）。拥有、穿戴校验（game/costume.mjs）和演示发放都查这份完整目录，
+ * 所以存档里的旧 id（<女主>_<类型>）全都继续有效，不需要迁移——原来的「夏日度假服」<女主>_swimsuit 现在就是新泳装，
+ * 旧的度假便装另以 <女主>_resort 存在。名称只用名、不带姓；veils 遮住了名的女主（莉莉丝在正式20以前），
  * 对外视图里服装名跟着换成遮挡后的叫法（viewCostume）。
  */
 export const COSTUME_CATALOG = [];
 for (const char of CHARACTER_POOL) {
   for (const [type, meta] of Object.entries(COSTUME_TYPE_META)) {
+    const [style, line] = COSTUME_STYLES[type]?.[char.id] || [];
     COSTUME_CATALOG.push({
       id: `${char.id}_${type}`,
       characterId: char.id,
@@ -80,7 +150,9 @@ for (const char of CHARACTER_POOL) {
       type,
       rarity: meta.rarity,
       status: meta.status,
-      description: `${char.title}的${meta.label}造型`,
+      description: style || TYPE_BLURBS[type] || `${meta.label}造型`,
+      ...(line ? { line } : {}),
+      ...(meta.if ? { if: true } : {}),
       file: `/assets/costumes/${char.id}_${type}.svg`,
       branchScene: `branch_${char.id}_${type}`
     });
@@ -163,13 +235,13 @@ export function viewCharacter(heroine, cleared) {
 }
 
 /**
- * 服饰池条目的对外视图：主人还没登场时是封存卡——「？？？·女仆服」、没有立绘与介绍；登场后原样，只有服装名里的名按 veils 遮挡。
+ * 服饰池条目的对外视图：主人还没登场时是封存卡——「？？？·女仆装」、没有立绘与介绍；登场后原样，只有服装名里的名按 veils 遮挡。
  */
 export function viewCostume(costume, cleared) {
   const owner = CHARACTER_BY_ID.get(costume.characterId);
   if (!owner) return { ...costume, sealed: false };
   if (isHeroineRevealed(owner, cleared)) {
-    // 服装名里的名跟着角色卡的遮挡走：正式20以前是「金发刺客·女仆服」，不是「莉莉丝·女仆服」
+    // 服装名里的名跟着角色卡的遮挡走：正式20以前是「金发刺客·女仆装」，不是「莉莉丝·女仆装」
     const shownName = viewCharacter(owner, cleared).name.split('·')[0];
     const label = COSTUME_TYPE_META[costume.type]?.label || costume.type;
     return { ...costume, name: `${shownName}·${label}`, sealed: false };
@@ -194,12 +266,58 @@ export function publicPools(cleared) {
 }
 
 // 抽卡概率（与实际抽取完全一致；表里只列池内存在的稀有度——角色池没有 3★，所以表里也没有 3★）。
-// 服饰池的标准是 5★ 3% / 4★ 17% / 3★ 80%（服装稿 1.2，不改）。典藏退出后常驻表暂时没有 4★（4★ 的冬灯节服、新历祭服都进了典藏），
-// 4★ 那 17% 暂时并进 3★；5★ 仍是 3%，保底不变。4★ 的 OL 装随美术阶段上线时恢复 3/17/80。
+// 服饰池 5★ 3% / 4★ 17% / 3★ 80%（服装稿 1.2）：5★ 是泳装、婚礼礼服 16 件（单件约 0.19%），4★ 是 OL装 8 件（约 2.1%），
+// 3★ 是女仆装、运动短袖 16 件（5%）。
 export const GACHA_RATES = {
   character: { 5: 0.02, 4: 0.98 },
-  costume: { 5: 0.03, 3: 0.97 }
+  costume: { 5: 0.03, 4: 0.17, 3: 0.8 }
 };
+
+/**
+ * 衣橱券（服装稿 §1.2，提案第八节#42）：服饰池每抽累积 1 点，出 5★ 也不归零；满 90 点自动换成一张衣橱券，
+ * 一张券换一件指定的 5★ 服装——只限常驻池（泳装、婚礼礼服）、而且她已经在主线登场（封存卡不能指定）。
+ * 原本第 90 抽必出 5★ 的保底照旧，两者互不影响。点数与券存在 account.wardrobe，公示在 /api/gacha/pools。
+ */
+export const WARDROBE_TICKET = { pointsPerPull: 1, pointsPerTicket: 90 };
+
+function wardrobeOf(account) {
+  const w = account.wardrobe && typeof account.wardrobe === 'object' ? account.wardrobe : {};
+  account.wardrobe = {
+    points: Number.isFinite(w.points) && w.points > 0 ? Math.floor(w.points) : 0,
+    tickets: Number.isFinite(w.tickets) && w.tickets > 0 ? Math.floor(w.tickets) : 0
+  };
+  return account.wardrobe;
+}
+
+/** 衣橱券的对外状态：{ points, tickets, pointsPerTicket } */
+export function wardrobeStatus(account) {
+  const w = account ? wardrobeOf(account) : { points: 0, tickets: 0 };
+  return { points: w.points, tickets: w.tickets, pointsPerTicket: WARDROBE_TICKET.pointsPerTicket };
+}
+
+/** 这个账户现在能用衣橱券换的服装：常驻 5★、主人已登场、还没拥有 */
+export function wardrobeTicketChoices(account) {
+  const cleared = clearedChaptersOf(account);
+  const owned = new Set(Array.isArray(account?.ownedCostumes) ? account.ownedCostumes : []);
+  return COSTUME_PULL_TABLE.filter((c) => c.rarity === 5 && !owned.has(c.id) && isHeroineRevealed(c.characterId, cleared));
+}
+
+/**
+ * 用一张衣橱券换一件 5★ 服装。
+ * @returns {{ok: true, costume: object, wardrobe: object}|{ok: false, code: string, message: string}}
+ */
+export function redeemWardrobeTicket(account, costumeId) {
+  const w = wardrobeOf(account);
+  if (w.tickets < 1) return { ok: false, code: 'NO_WARDROBE_TICKET', message: `还没有衣橱券：服饰召唤每抽累积 1 点，满 ${WARDROBE_TICKET.pointsPerTicket} 点换一张。` };
+  const costume = COSTUME_PULL_TABLE.find((c) => c.id === costumeId);
+  if (!costume || costume.rarity !== 5) return { ok: false, code: 'NOT_EXCHANGEABLE', message: '衣橱券只能换常驻服饰池里的 5★ 服装。' };
+  if (!isHeroineRevealed(costume.characterId, clearedChaptersOf(account))) return { ok: false, code: 'SEALED', message: '她还没在主线登场，这件服装暂时不能指定。' };
+  if (!Array.isArray(account.ownedCostumes)) account.ownedCostumes = [];
+  if (account.ownedCostumes.includes(costume.id)) return { ok: false, code: 'ALREADY_OWNED', message: '已经拥有这件服装了。' };
+  w.tickets -= 1;
+  account.ownedCostumes.push(costume.id);
+  return { ok: true, costume: viewCostume(costume, clearedChaptersOf(account)), wardrobe: wardrobeStatus(account) };
+}
 
 export const GACHA_POOLS = ['character', 'costume'];
 
@@ -218,7 +336,7 @@ export const GACHA_COSTS = {
  * 重复补偿（钻石）：以钻石单抽价 80 为基准——
  *   3★ 8（单抽的 10%）、4★ 16（20%）、5★ 160（两次单抽）。
  * 全部拥有后每抽的期望返还：角色池约 19（0.976×16 + 0.024×160，5★ 概率按含保底的综合 2.4% 计），
- * 服饰池约 13（0.97×8 + 0.032×160；4★ 回到常驻表后约 14：0.80×8 + 0.17×16 + 0.032×160），都远低于单抽 80，不会形成刷钻循环。
+ * 服饰池约 14（0.80×8 + 0.17×16 + 0.032×160），都远低于单抽 80，不会形成刷钻循环。
  * 主线自动入队的女主若已经抽到，也按同一张表补偿（game/rewards.mjs）。
  */
 export const DUPLICATE_COMPENSATION = { 3: 8, 4: 16, 5: 160 };
@@ -327,6 +445,18 @@ export function pullGacha(account, pool, count, options = {}) {
     account.diamonds = (Number.isFinite(account.diamonds) ? account.diamonds : 0) + compensationTotal;
   }
 
+  // 衣橱券：服饰池每抽 1 点，满 90 点换一张（5★ 不清零）
+  let wardrobe;
+  if (poolKey === 'costume') {
+    const w = wardrobeOf(account);
+    w.points += pullCount * WARDROBE_TICKET.pointsPerPull;
+    while (w.points >= WARDROBE_TICKET.pointsPerTicket) {
+      w.points -= WARDROBE_TICKET.pointsPerTicket;
+      w.tickets += 1;
+    }
+    wardrobe = wardrobeStatus(account);
+  }
+
   return {
     ok: true,
     pool: poolKey,
@@ -335,7 +465,8 @@ export function pullGacha(account, pool, count, options = {}) {
     cost,
     pity: account.pityCounters[poolKey],
     compensation: { diamonds: compensationTotal },
-    balance: { diamonds: Number.isFinite(account.diamonds) ? account.diamonds : 0 }
+    balance: { diamonds: Number.isFinite(account.diamonds) ? account.diamonds : 0 },
+    ...(wardrobe ? { wardrobe } : {})
   };
 }
 

@@ -1,7 +1,8 @@
 /**
  * 换衣系统
- * 管理角色服装的装备、查询。服装类型、稀有度与「常驻 / 典藏」状态的唯一来源是 game/gacha.mjs 的 COSTUME_TYPE_META（决定#31）：
- * 典藏（冬灯节服、新历祭服、纪念日礼服、龙舟祭服）退出了常驻抽取表，但 id 不变、已拥有的照样能穿。
+ * 管理角色服装的装备、查询。服装类型、稀有度与「常驻 / 典藏 / 赠品」状态的唯一来源是 game/gacha.mjs 的 COSTUME_TYPE_META
+ * （服装稿 §1.2、§5.1；决定#31）：常驻是泳装、婚礼礼服、OL装、女仆装、运动短袖；典藏（冬灯节服、新历祭服、纪念日礼服、
+ * 龙舟祭服）退出了常驻抽取表，但 id 不变、已拥有的照样能穿；度假装是海边番外的赠品。
  * BRANCH_SCENES 是每类服装将来对应的番外入口（番外系统还没上线：每条都是 available:false，界面标注「敬请期待」）。
  */
 
@@ -28,12 +29,38 @@ export const BRANCH_SCENES = {
     description: '雾港外海的沙洲退潮了。难得的休息日，换上泳装去拾贝、游泳——记得涂翠影药草防晒膏。',
     available: false
   },
+  wedding: {
+    sceneId: 'branch_wedding',
+    extras: ['ex003'],
+    unlockAfter: 'ch017',
+    title: '礼服橱窗',
+    description: '拱廊街的礼服店缺试衣模特，请大家试穿婚礼主题的新季样衣。只是试穿——蛋糕倒是真的。',
+    available: false
+  },
+  // 异界IF：与正史无关的平行现代，只在 IF 番外 ex010 里穿（服装稿 §2.5）
+  office: {
+    sceneId: 'branch_office',
+    extras: ['ex010'],
+    unlockAfter: 'ch022',
+    if: true,
+    title: '如果在另一个世界上班',
+    description: 'IF番外：平行的现代城市里，大家成了同一家公司的同事。与正史无关。',
+    available: false
+  },
   maid: {
     sceneId: 'branch_maid',
     extras: ['ex001'],
     unlockAfter: 'ch010',
     title: '桥头旅店的帮工日',
     description: '雾港桥头旅店人手不够，大家换上女侍制服帮一天忙。',
+    available: false
+  },
+  sportwear: {
+    sceneId: 'branch_sportwear',
+    extras: ['ex004'],
+    unlockAfter: 'ch019',
+    title: '演武场的操练日',
+    description: '圣都骑士团的演武场对外开放一天。有人想拿第一，也有人只想当计分员。',
     available: false
   },
   christmas: {
@@ -66,6 +93,15 @@ export const BRANCH_SCENES = {
     unlockAfter: 'ch025',
     title: '龙舟祭',
     description: '南岸的河口办起了龙舟祭。大家换上节日的衣服，有人上船划桨，有人在岸边擂鼓助威。',
+    available: false
+  },
+  // 非卖品：两篇海边番外首通赠送，也是海边番外的默认服（服装稿 §5.1）
+  resort: {
+    sceneId: 'branch_resort',
+    extras: ['ex002', 'ex009'],
+    gift: true,
+    title: '海边的便装',
+    description: '海边番外首通时赠送的度假装，也是海边番外的默认服装。',
     available: false
   }
 };
