@@ -548,9 +548,15 @@ const HEAD = {
       + (p.accent ? p.accent.emblem(x, y, 0.42) : '') + `</g>`;
   },
   evelyn(p) {
+    // the prayer bell at the end of her braid (heroines/evelyn.mjs: braid end 314,952, bell 30,34 below-right of it)
+    // becomes a little scallop-shell bell for the beach (服装稿 §3.1)
+    const bx = 344, by = 986;
+    const ridges = [-12, -6, 0, 6, 12].map((dx) => `M${bx},${by + 12}L${bx + dx},${by - 12}`).join('');
     return `<g stroke-linejoin="round"><path d="${star(300, 300, 22)}" fill="#ffd98c" stroke="#7a5a1e" stroke-width="2.2"/><circle cx="300" cy="301" r="5" fill="#7fb2ff"/>`
       + `<path d="M268,338Q262,322 276,316Q290,312 296,326Q300,342 286,350Q272,352 268,338Z" fill="#fde4dc" stroke="#a0646c" stroke-width="2"/>`
-      + `<path d="M276,320L282,346M284,318L288,344M270,328L280,348" stroke="#d8a09a" stroke-width="1.4"/></g>`;
+      + `<path d="M276,320L282,346M284,318L288,344M270,328L280,348" stroke="#d8a09a" stroke-width="1.4"/>`
+      + `<path d="M${bx - 17},${by + 4}Q${bx - 16},${by - 16} ${bx},${by - 17}Q${bx + 16},${by - 16} ${bx + 17},${by + 4}Q${bx + 8},${by + 13} ${bx},${by + 14}Q${bx - 8},${by + 13} ${bx - 17},${by + 4}Z" fill="#fde4dc" stroke="#a0646c" stroke-width="2"/>`
+      + `<path d="${ridges}" stroke="#d8a09a" stroke-width="1.4"/><circle cx="${bx}" cy="${by + 17}" r="3.6" fill="#fff8f0" stroke="#a0646c" stroke-width="1.2"/></g>`;
   },
   ophelia(p) {
     const shells = (pts) => pts.map(([x, y], i) => i % 2
