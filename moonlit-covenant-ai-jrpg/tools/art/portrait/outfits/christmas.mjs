@@ -213,7 +213,7 @@ function hairOrnament(p) {
 
 export default {
   type: 'christmas',
-  label: '圣诞服',
+  label: '冬灯节服',
   render,
   bgMotif,
   hairOrnament,

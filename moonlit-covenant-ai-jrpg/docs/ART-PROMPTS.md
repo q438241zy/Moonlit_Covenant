@@ -2,7 +2,7 @@
 
 > 用途：在矢量版资产（见 `docs/ART-DIRECTION.md`）之上，为正式版生成/外包**高完成度位图立绘**时使用。
 > 外观以正典 `设定集/03_主角与八位女主角.md`（八人全部）为准。外传《银轨号》是 IF 外传，`docs/CHARACTER-DESIGN.md` 只用于外传，不作为出图依据（audit B1/B15）；外传专用的称号（「赤誓骑士」「猫耳机关师」「月蚀观测者」）不进提示词。实际批量出图用的提示词在 `tools/art/raster/manifest.mjs`，与本文件同步。
-> **硬性尺度**：所有女主均为成年女性（18–19 岁），非性化；服装变体中不含泳装/内衣感服装。v1 版本中低龄+挑逗向的描述已全部移除——这类内容会直接触发平台审核（Steam、国内应用商店、版号）与法律风险，也不符合本项目自己的商业美术 Brief。
+> **硬性尺度**：所有女主均为成年女性（18–19 岁）。服装按 `docs/ART-DIRECTION.md` §3 的两档尺度：泳装可以出真泳装（不透、焦点在脸，另出 12+ 罩衫版），负面提示词按类型分开——泳装只拿掉 swimsuit 与 revealing，裸露、透视、特写与低龄相关的词保留并加强（`manifest.mjs` 的 `NEGATIVE_SWIMSUIT`）；其余服装不出泳装或内衣感的样子。v1 版本中低龄+挑逗向的描述已全部移除——这类内容会直接触发平台审核（Steam、国内应用商店、版号）与法律风险，也不符合本项目自己的商业美术 Brief。
 
 ## 0. 出图管线建议（比单条 Prompt 更重要）
 
@@ -76,12 +76,16 @@ adult woman holy knight, 18 years old, golden shoulder-length hair, bright blue 
 
 | 服装 | 追加描述 |
 |---|---|
-| 新年服 | `red and gold qipao-inspired jacket with mandarin collar, frog buttons, gold cloud embroidery, small fur collar, plum blossom hairpin, lanterns in background` |
-| 女仆服 | `modest classic black dress with white high collar, white apron with lace edge, frilled headband, café interior background` |
-| 圣诞服 | `red velvet hooded capelet with white fur trim and gold clasp over a dark dress, holly sprig, snowy night with bokeh lights` |
-| 端午服 | `hanfu-inspired cross-collar outfit in jade green and white, dragon-boat wave pattern trim, five-colour silk cord bracelet, riverside background` |
-| 周年庆服 | `elegant white and gold gala gown with modest high neckline, gold embroidery, star sash, small tiara, grand ballroom background` |
-| 夏日度假服 | `light summer sundress with a thin cardigan, straw-hat pin, seaside train window background, bright summer light` |
+| 泳装 | `tasteful opaque swimsuit in her own cut (one-piece racer, tankini, ruffled off-shoulder one-piece or a sporty high-neck bikini top), a few water drops on hair tips and shoulders, her own beach prop, moonlit seaside with glowing surf, face is the focus`（负面词用 `NEGATIVE_SWIMSUIT`；每人同时出 12+ 罩衫版） |
+| 婚礼礼服 | `sample wedding-themed gown at a dress-shop fitting, modest high or bateau neckline, opaque lace, veil pinned at the back never over the face, small bouquet, glass-arched dress shop at night, no ring, no groom, no altar` |
+| OL装（异界IF） | `parallel-world modern office look, blazer over a shirt with tie or bow, staff ID card on a lanyard without readable text, office item in hand, city skyline at night` |
+| 女仆装 | `stylised inn or café waitress uniform (long-sleeved classic, short puff-sleeved café or rolled-sleeve work cut), white apron, frilled headband, high collar, tea-service item, warm inn interior` |
+| 运动短袖 | `cotton crew-neck short-sleeved training tee, race bib showing her emblem instead of a number, headband or towel, training prop, knights' training ground at night` |
+| 新历祭服（典藏） | `red and gold qipao-inspired jacket with mandarin collar, frog buttons, gold cloud embroidery, small fur collar, plum blossom hairpin, lanterns in background` |
+| 冬灯节服（典藏） | `red velvet hooded capelet with white fur trim and gold clasp over a dark dress, holly sprig, snowy night with bokeh lights` |
+| 龙舟祭服（典藏） | `hanfu-inspired cross-collar outfit in jade green and white, dragon-boat wave pattern trim, five-colour silk cord bracelet, riverside background` |
+| 纪念日礼服（典藏） | `elegant white and gold gala gown with modest high neckline, gold embroidery, star sash, small tiara, grand ballroom background` |
+| 度假装（赠品） | `light summer sundress with a thin cardigan and a flower clip, palm fronds and a night sea` |
 
 ## 4. 规格与命名
 

@@ -183,7 +183,7 @@ function hairOrnament(p) {
 
 export default {
   type: 'anniversary',
-  label: '周年庆服',
+  label: '纪念日礼服',
   render,
   bgMotif,
   hairOrnament,

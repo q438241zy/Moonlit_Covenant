@@ -55,7 +55,7 @@ const PROVIDERS = {
     body: (job, model, refs) => ({
       model,
       prompt: job.prompt,
-      negative_prompt: NEGATIVE,
+      negative_prompt: job.negative || NEGATIVE,
       image_size: job.size,
       seed: job.seed,
       batch_size: 1,

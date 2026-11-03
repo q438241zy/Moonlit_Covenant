@@ -38,6 +38,8 @@ export const STYLE = [
 ].join(', ');
 
 export const NEGATIVE = 'text, watermark, signature, logo, chibi, child, loli, nsfw, cleavage, revealing clothes, swimsuit, lingerie, lowres, blurry, extra fingers, deformed hands, bad anatomy';
+// 泳装（服装稿 §4.3）：只拿掉 swimsuit 与 revealing，裸露、透视、特写与低龄相关的词保留并加强
+export const NEGATIVE_SWIMSUIT = 'text, watermark, signature, logo, chibi, child, loli, minor, teen, nsfw, nude, nipples, see-through, transparent fabric, wet see-through, cleavage, underboob, lingerie, close-up on chest, close-up on body, low angle, high angle, suggestive pose, lowres, blurry, extra fingers, deformed hands, bad anatomy';
 
 // 旧的四张厚涂 PNG（带 AIGC 标识）：集成步骤 I1 已把它们从 public/assets/ 移到 tools/art/raster/ref/（只作出图参考，
 // 不随站点发布；站点用 compress-legacy.mjs 压出的 public/assets/*.jpg）
@@ -58,13 +60,18 @@ export const HEROINES = {
   aila: { ref: null, look: '18-year-old young adult woman holy knight, golden shoulder-length bob hair, bright blue eyes, open confident cheerful smile, blue and gold light knight armor, short cape lined with a black-gold family crest, radiant longsword hilt over the shoulder, facial resemblance to her older sister Lilith', bg: 'golden holy light rays in a white stone hall', rim: 'warm golden rim light' },
 };
 
+// 服装稿第一套（剧本/README_轉蛋服裝設計.md §2–§3）+ 典藏四类 + 赠品度假装；每人的剪裁与道具见 tools/art/portrait/outfits/*.mjs
 const OUTFITS = {
+  swimsuit: 'wearing a tasteful opaque swimsuit in her own cut (one-piece racer, tankini, ruffled off-shoulder one-piece or a sporty high-neck bikini top with a modest high front), a few water drops on the hair tips and shoulders, holding her own beach prop, moonlit seaside with glowing surf and a far lighthouse, the face is the focus',
+  wedding: 'wearing a sample wedding-themed gown at a fitting in a dress shop, modest high or bateau neckline, opaque lace, the veil pinned at the back and never over the face, a small bouquet, glass-arched dress shop with a floor mirror frame and bolts of cloth at night, no ring, no groom, no altar',
+  office: 'parallel-world modern office look: blazer over a shirt with a tie or bow, a staff ID card on a lanyard (no readable text), holding an office item, city skyline at night with lit window grids',
+  maid: 'wearing a stylised inn or café waitress uniform (long-sleeved classic, short puff-sleeved café or rolled-sleeve work cut), white apron, frilled headband, high collar, holding a tea-service item, warm inn interior at night',
+  sportwear: 'wearing a cotton crew-neck short-sleeved training tee with a race bib showing her emblem instead of a number, a headband or towel, holding a training prop, a knights\' training ground at night with torches and pennants',
   newyear: 'wearing a red and gold qipao-inspired jacket with mandarin collar, frog buttons, gold cloud embroidery and a small fur collar, plum-blossom hairpin, red lanterns and fireworks in the background',
-  maid: 'wearing a modest classic black dress with a white high collar, white apron with lace edge and puff shoulders, frilled headband, warm café interior background',
   christmas: 'wearing a red velvet hooded capelet with white fur trim and a gold clasp over a dark dress, holly sprig in the hair, snowy night with bokeh lights background',
   duanwu: 'wearing a hanfu-inspired cross-collar outfit in jade green and white with dragon-boat wave pattern trim and a five-colour silk cord bracelet, riverside with dragon boats background',
   anniversary: 'wearing an elegant white and gold gala gown with a modest high neckline, gold embroidery, star sash and a small tiara, grand ballroom with chandeliers background',
-  swimsuit: 'wearing a light summer sundress with a thin cardigan and a small straw-hat pin, seaside train window and bright summer light background',
+  resort: 'wearing a light summer sundress with a thin cardigan and a flower clip, palm fronds and a night sea in the background',
 };
 
 const portraitRef = (id) => HEROINES[id].ref || `tools/art/raster/out/portraits/${id}.png`;
@@ -81,7 +88,7 @@ for (const [id, h] of Object.entries(HEROINES)) {
   });
 }
 
-// 2) 48 套服装立绘：参考该女主的立绘保持同一张脸
+// 2) 80 套服装立绘：参考该女主的立绘保持同一张脸（泳装另用 NEGATIVE_SWIMSUIT，并同时出 12+ 罩衫版）
 for (const id of Object.keys(HEROINES)) {
   for (const [type, outfit] of Object.entries(OUTFITS)) {
     jobs.push({
@@ -89,6 +96,7 @@ for (const id of Object.keys(HEROINES)) {
       out: `tools/art/raster/out/costumes/${id}_${type}.png`, size: '1024x1536', seed: 2000 + jobs.length,
       prompt: `${STYLE}. The same character as the second reference image (same face, eyes, hair and head accessories), upper body portrait in 3/4 view, ${outfit}. ${HEROINES[id].rim}.`,
       refs: [STYLE_REF, portraitRef(id)],
+      ...(type === 'swimsuit' ? { negative: NEGATIVE_SWIMSUIT } : {}),
     });
   }
 }

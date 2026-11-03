@@ -836,7 +836,8 @@ function safeLayer(fn, p, label) {
 /**
  * Compose a full portrait SVG.
  * @param heroine heroine module (see README)
- * @param opts.outfit optional outfit module { type, label, render(p), hairOrnament?(p), bodyBack?(p), neckAccessory?(p), headBack?(p), headFront?(p), foreground?(p), bgMotif?(p), hide?: string[] }
+ * @param opts.outfit optional outfit module { type, label, render(p), hairOrnament?(p), bodyBack?(p), neckAccessory?(p), headBack?(p), headFront?(p), foreground?(p), bgMotif?(p), hide?: string[],
+ *        hideFor?: { <heroineId>: string[] }, expression?: { default?, <heroineId>? }, extrasOverlay?(p, extraName), variants?: string[] }
  * @param opts.prefix id prefix override (default heroine.id or `${heroine.id}-${outfit.type}`)
  * @param opts.lenient when true a throwing layer is skipped with a console warning; by default
  *        compose() throws so the build never writes a half-drawn portrait (e.g. a costume without clothes)
@@ -848,12 +849,15 @@ function safeLayer(fn, p, label) {
  * @param opts.accent the heroine's costume-accent kit (tools/art/portrait/accents.mjs), handed to the
  *        outfit's layers as p.accent so every costume carries her own emblem and motif (B11). Null =
  *        the plain template.
+ * @param opts.variant an outfit variant handed to the outfit's layers as p.variant, e.g. 'soft' (the 12+
+ *        cover-up layer of the swimsuits, 服装稿 §2.1). Null = the main image. The prefix does not change, so
+ *        everything the variant does not touch is byte-identical to the main image.
  */
-export function compose(heroine, { outfit, prefix, lenient = false, background = true, extras = [], accent = null } = {}) {
+export function compose(heroine, { outfit, prefix, lenient = false, background = true, extras = [], accent = null, variant = null } = {}) {
   if (!heroine || !heroine.id) throw new Error('compose: heroine.id required');
   layerErrors = [];
   try {
-    const svg = composeInner(heroine, outfit, prefix, { background: background !== false, extras, accent });
+    const svg = composeInner(heroine, outfit, prefix, { background: background !== false, extras, accent, variant });
     if (layerErrors.length) {
       if (!lenient) throw new Error(`layer error(s): ${layerErrors.join('; ')}`);
       for (const e of layerErrors) console.warn(`[portrait] layer ${e}`);
@@ -864,13 +868,15 @@ export function compose(heroine, { outfit, prefix, lenient = false, background =
   }
 }
 
-function composeInner(heroine, outfit, prefix, { background = true, extras = [], accent = null } = {}) {
+function composeInner(heroine, outfit, prefix, { background = true, extras = [], accent = null, variant = null } = {}) {
   const pre = prefix || (outfit ? `${heroine.id}-${outfit.type}` : heroine.id);
   const ctx = makeContext(pre);
   const palette = { ...DEFAULT_PALETTE, ...(heroine.palette || {}) };
   if (!palette.brow) palette.brow = mix(palette.hairLine, palette.hairShadow, 0.35);
   if (!palette.lash) palette.lash = palette.eyeLine;
-  const ex = { ...DEFAULT_EXPRESSION, ...(heroine.expression || {}) };
+  // an outfit may set the pose of the face (服装稿 §4.3): outfit.expression = { default?, <heroineId>? },
+  // merged over the heroine's own expression (e.g. Lia's blush in the swimsuit, Aila's raised brow)
+  const ex = { ...DEFAULT_EXPRESSION, ...(heroine.expression || {}), ...(outfit?.expression?.default || {}), ...(outfit?.expression?.[heroine.id] || {}) };
   const preset = EYE_SHAPES[ex.eyeShape] || EYE_SHAPES.almond;
   for (const k of Object.keys(preset)) if (ex[k] === undefined) ex[k] = preset[k];
   const layers = heroine.layers || {};
@@ -879,9 +885,14 @@ function composeInner(heroine, outfit, prefix, { background = true, extras = [],
   G.shapes = Object.freeze({ ...SHAPES, face: smooth(G.outline, { closed: true }) });
   const p = makeP(ctx, heroine, palette, ex, '', outfit, G);
   const po = outfit ? makeP(ctx, heroine, palette, ex, 'o', outfit, G) : null;
-  if (po) po.accent = accent || null; // heroine emblem + motif kit for the outfit layers (null = plain template)
+  if (po) {
+    po.accent = accent || null; // heroine emblem + motif kit for the outfit layers (null = plain template)
+    po.variant = variant || null; // 'soft' = the 12+ cover-up version (swimsuits), null = the main image
+  }
   const costumeLayers = new Set(heroine.costumeLayers || ['bodyBack', 'neckAccessory']);
-  const hidden = new Set(outfit?.hide || []);
+  // outfit.hide drops heroine layers for everyone, outfit.hideFor = { <heroineId>: [...] } for one heroine
+  // (e.g. Evelyn's winged circlet is put away in the swimsuit)
+  const hidden = new Set([...(outfit?.hide || []), ...(outfit?.hideFor?.[heroine.id] || [])]);
   // Layer resolution (see README "Outfits"):
   //  - no outfit: the heroine's layer
   //  - 'outfit': outfit.render(po) replaces heroine.layers.outfit
@@ -920,11 +931,15 @@ function composeInner(heroine, outfit, prefix, { background = true, extras = [],
   const browsGhost = ex.browsOverHair > 0
     ? `<path d="${browPath('L', ex, G)}${browPath('R', ex, G)}" fill="${palette.brow}" opacity="${n(ex.browsOverHair)}"/>` : '';
 
-  // optional layers (heroine.extras) sit behind everything else in the figure, e.g. a shield on the back
+  // optional layers (heroine.extras) sit behind everything else in the figure, e.g. a shield on the back;
+  // outfit.extrasOverlay(p, name) dresses one up instead of removing it (a towel or a garland on Lia's
+  // shield, which she keeps in every costume - audit B10)
   const back = extras.map((name) => {
     const fn = heroine.extras?.[name];
     if (typeof fn !== 'function') throw new Error(`compose: ${heroine.id} has no extra layer "${name}"`);
-    return safeLayer(fn, p, `${heroine.id}.extras.${name}`);
+    const overlay = outfit && typeof outfit.extrasOverlay === 'function'
+      ? safeLayer((q) => outfit.extrasOverlay(q, name), po, `${outfit.type}.extrasOverlay`) : '';
+    return safeLayer(fn, p, `${heroine.id}.extras.${name}`) + overlay;
   }).join('');
   const figure = back
     + L('hairBack')
