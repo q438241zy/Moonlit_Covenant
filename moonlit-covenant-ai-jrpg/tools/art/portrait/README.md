@@ -10,6 +10,9 @@ npm run art:portraits                                   # build everything
 node tools/art/portrait/build.mjs --only lia,mia        # some heroines
 node tools/art/portrait/build.mjs --outfits maid        # some outfits
 node tools/art/portrait/build.mjs --no-costumes         # portraits only
+node tools/art/portrait/build.mjs --no-busts            # skip the 600×800 transparent costume busts
+node tools/art/portrait/build.mjs --variants none       # skip outfit variants (the 12+ swimsuits)
+node tools/art/portrait/build.mjs --soft-only           # 12+-only build: the soft variant becomes the main image (never commit)
 node tools/art/portrait/build.mjs --lenient --verbose   # keep going past a throwing layer, print stacks
 ```
 
@@ -17,12 +20,15 @@ node tools/art/portrait/build.mjs --lenient --verbose   # keep going past a thro
 |---|---|---|
 | portrait | `public/assets/portraits/<heroineId>.svg` | ≤ 70 KB |
 | costume portrait | `public/assets/costumes/<heroineId>_<outfitType>.svg` | ≤ 80 KB |
+| 12+ version (outfits with `variants: ['soft']`) | `public/assets/costumes/soft/<heroineId>_<outfitType>.svg` | ≤ 80 KB |
+| transparent bust (skill battles, the 番外 later) | `public/assets/costumes/bust/[soft/]<heroineId>_<outfitType>.svg` (600×800) | ≤ 70 KB |
 
 Rules for everything drawn here: `docs/ART-DIRECTION.md` (mandatory) and the character canon
 `设定集/03_主角与八位女主角.md` (all eight heroines; `docs/CHARACTER-DESIGN.md` only covers the
 Silver Rail IF side story and never overrides the canon). All heroines are drawn as clearly
 **adult women (aged 18–19), non-sexualised and modestly dressed** – this overrides any
-younger ages or suggestive wording in game data. "Summer" outfits are resort clothes, not swimwear.
+younger ages or suggestive wording in game data. The swimsuits are real swimwear drawn to the two content modes
+of `docs/ART-DIRECTION.md` §3 (15+ default, a 12+ cover-up version); the old summer resort clothes live on as `resort`.
 
 ---
 
@@ -83,7 +89,7 @@ Modules may also `import { ANCHORS, SHAPES, taper, lock, mix, ... } from '../bas
 outside layer functions (read-only – never modify `base.mjs`). `compose(heroine, { outfit, lenient })`
 throws if any layer throws, unless `lenient: true` (then the layer is skipped with a warning).
 
-Three more `compose()` options (all off by default; `build.mjs` turns on the last two):
+Four more `compose()` options (all off by default; `build.mjs` turns on `extras` and `accent`, and `variant` for outfits that declare variants):
 
 - `background: false` – a transparent figure: no background (step 1, incl. `bgMotif`) and no full-frame
   lighting (step 4); the figure and its rim light (steps 2–3) are kept. Used by the story-mode bust
@@ -104,12 +110,19 @@ Three more `compose()` options (all off by default; `build.mjs` turns on the las
   | christmas | pendant under the clasp chain | the dress buttons |
   | duanwu | on the white sash, right of the knot | white-thread embroidery on the under collar band |
   | anniversary | set in the centre of the star medal | the sash charges |
-  | swimsuit (summer) | the necklace pendant | the dress print (Lia: strawberries) |
+  | swimsuit | the clasp ring or pendant on the front (Mia: hem band, Freya: flounce centre) | side-seam piping or the prop |
+  | wedding | sash knot, collar brooch or under the stole | woven into the lace |
+  | office | the staff ID card | the tie / scarf print |
+  | sportwear | the race bib (no number, no `<text>`) | along the sleeve cuffs |
+  | resort | the necklace pendant | the dress print (Lia: strawberries) |
 
   Kits (canon look, 设定集/03): Lia tower-shield crest + flame · Mia copper gear + gear · Serena
   closed-eyelid pendant + crescent · Freya ice crystal + snowflake · Lilith crescent-and-dagger sigil +
   leaf · Evelyn winged star + prayer bell · Ophelia dragon claw + horn · Aila sun rosette + sun.
   A new outfit should give both a spot (and keep a plain fallback when `p.accent` is null).
+- `variant: 'soft'` – handed to the outfit's layers as `p.variant`. The swimsuits declare `variants: ['soft']` and
+  draw each heroine's 12+ cover-up over the swimsuit when it is set; the id prefix stays the same, so everything
+  under the cover is byte-identical to the main image. `build.mjs` writes it to `costumes/soft/` (and `costumes/bust/soft/`).
 
 ---
 
@@ -334,6 +347,10 @@ export default {
   headBack(p) {}, headFront(p) {}, foreground(p) {},
   bgMotif(p) {},         // optional: replaces the heroine's background motif (e.g. festival lanterns)
   hide: ['foreground'],  // optional: extra heroine layers to drop while this outfit is worn
+  hideFor: { evelyn: ['headFront'] },        // optional: drop layers for one heroine only (her circlet put away)
+  expression: { default: {}, lia: { blush: 0.5 } }, // optional: the pose of the face, merged over the heroine's own
+  extrasOverlay(p, name) {},                 // optional: dress up an extra instead of removing it (Lia's shield, B10)
+  variants: ['soft'],                        // optional: extra versions; p.variant is the name while one is drawn
 };
 ```
 
@@ -357,8 +374,10 @@ Drawing an outfit:
   to the bottom edge – anything not covered shows bare skin. The simplest base is
   `<g clip-path="${p.refs.bodyClip}"><rect y="690" width="832" height="530" fill="…"/></g>`,
   then panels, collars, sleeves seams (`p.shapes.armSeamL/R`), trims on top.
-- Necklines start at `p.anchors.sternum` or higher; nothing low-cut, no lingerie/swimwear cuts,
-  no emphasis on the chest (`bustY` area stays flat-shaded).
+- Necklines start at `p.anchors.sternum` or higher; nothing low-cut, no lingerie cuts, no emphasis on the
+  chest (`bustY` area stays flat-shaded). The swimsuits are the one exception to the sternum rule: their top
+  edge stays at y ≈ 800 or higher at the centre, the chest is one flat colour with a single fabric highlight,
+  the belly one flat skin tone with one ambient shadow (no navel), and a `soft` variant adds her cover-up.
 - Long side locks from `hairFront` fall *over* the outfit – keep important details out of
   x ≈ 240–300 and 532–600 between y 600–850 or accept that hair partly covers them.
 - Same art rules as heroines: coloured line art (outer 3–3.4 px, inner 1.5–2.4 px), base + one

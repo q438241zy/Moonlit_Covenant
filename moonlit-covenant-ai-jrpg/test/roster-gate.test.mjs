@@ -66,7 +66,7 @@ test('each heroine is revealed by clearing her debut chapter (or any later one),
     const maid = COSTUME_POOL.find((c) => c.id === `${heroine.id}_maid`);
     assert.equal(viewCostume(maid, upTo(debut - 1)).sealed, true);
     const shown = viewCharacter(heroine, upTo(debut)).name.split('·')[0];
-    assert.deepEqual(viewCostume(maid, upTo(debut)), { ...maid, name: `${shown}·女仆服`, sealed: false });
+    assert.deepEqual(viewCostume(maid, upTo(debut)), { ...maid, name: `${shown}·女仆装`, sealed: false });
     assert.deepEqual(viewCostume(maid, upTo(20)), { ...maid, sealed: false }, 'after ch020 the costume is shown as catalogued');
   }
   assert.equal(isHeroineRevealed('nobody', upTo(30)), false);
@@ -99,12 +99,12 @@ test('莉莉丝 is 「金发刺客」 from ch013 to ch019 — no given name, sur
   assert.equal(named.nation, '翠影公国');
   assert.equal(named.weapon, lilith.weapon);
   assert.equal(named.desc, lilith.desc);
-  assert.equal(viewCostume(COSTUME_POOL.find((c) => c.id === 'lilith_maid'), upTo(20)).name, '莉莉丝·女仆服');
+  assert.equal(viewCostume(COSTUME_POOL.find((c) => c.id === 'lilith_maid'), upTo(20)).name, '莉莉丝·女仆装');
 
   assert.equal(viewCharacter(byId.aila, upTo(17)).name, '艾拉');
   assert.equal(viewCharacter(byId.aila, upTo(19)).name, '艾拉');
   assert.equal(viewCharacter(byId.aila, upTo(20)).name, '艾拉·瓦尔哈拉');
-  assert.equal(viewCostume(COSTUME_POOL.find((c) => c.id === 'aila_maid'), upTo(17)).name, '艾拉·女仆服');
+  assert.equal(viewCostume(COSTUME_POOL.find((c) => c.id === 'aila_maid'), upTo(17)).name, '艾拉·女仆装');
   // 服装名本来就只用名
   for (const c of COSTUME_POOL) assert.ok(!c.name.includes('瓦尔哈拉'), c.id);
 });

@@ -1025,6 +1025,21 @@ button:focus-visible, input:focus-visible, textarea:focus-visible {
 .frame-duanwu { border-color:#2dd4bf; box-shadow:0 0 18px rgba(45,212,191,.45), inset 0 0 12px rgba(45,212,191,.15); }
 .frame-anniversary { border-color:#c084fc; box-shadow:0 0 18px rgba(192,132,252,.5), inset 0 0 12px rgba(192,132,252,.18); }
 .frame-swimsuit { border-color:#38bdf8; box-shadow:0 0 18px rgba(56,189,248,.5), inset 0 0 12px rgba(56,189,248,.18); }
+.frame-wedding { border-color:#f5e6c8; box-shadow:0 0 18px rgba(245,230,200,.5), inset 0 0 12px rgba(245,230,200,.18); }
+.frame-office { border-color:#9aa6c8; box-shadow:0 0 18px rgba(154,166,200,.45), inset 0 0 12px rgba(154,166,200,.15); }
+.frame-sportwear { border-color:#fb923c; box-shadow:0 0 18px rgba(251,146,60,.45), inset 0 0 12px rgba(251,146,60,.15); }
+.frame-resort { border-color:#fcd34d; box-shadow:0 0 18px rgba(252,211,77,.4), inset 0 0 12px rgba(252,211,77,.14); }
+/* 异界IF 角标（OL装）与常驻服装的款名 */
+.costume-if-tag { display:inline-block; margin-left:6px; padding:0 6px; border:1px solid rgba(154,166,200,.6); border-radius:4px; color:#c8d2f0; font-size:.58rem; font-weight:800; letter-spacing:.04em; line-height:1.6; vertical-align:middle; }
+.wardrobe-style { display:flex; flex-wrap:wrap; align-items:center; gap:4px 8px; margin:6px 0 0; font-size:.84rem; }
+.wardrobe-style .muted { flex-basis:100%; font-size:.76rem; }
+/* 衣橱券（服饰池上方） */
+.wardrobe-ticket { display:flex; flex-wrap:wrap; align-items:center; gap:10px 14px; margin:0 0 14px; padding:10px 14px; border-radius:12px; background:var(--panel); border:1px solid var(--line); font-size:.84rem; }
+.wardrobe-ticket-count b { color:var(--gold); font-size:1rem; }
+.wardrobe-ticket-progress { display:inline-flex; align-items:center; gap:8px; color:var(--muted); }
+.wardrobe-ticket-progress i { position:relative; display:inline-block; width:90px; height:6px; border-radius:3px; background:rgba(255,255,255,.08); overflow:hidden; }
+.wardrobe-ticket-progress i::after { content:""; position:absolute; inset:0 auto 0 0; width:var(--p); background:linear-gradient(90deg, #c084fc, #ffd27d); }
+.wardrobe-ticket select { max-width:100%; padding:6px 8px; border-radius:8px; border:1px solid var(--line); background:var(--panel-strong); color:var(--text); font:inherit; font-size:.8rem; }
 
 /* ═══ Settings Page ═══ */
 .settings-section { margin-bottom:32px; }
@@ -1178,6 +1193,10 @@ button:focus-visible, input:focus-visible, textarea:focus-visible {
 .frame-duanwu .skin-badge { color:#4fe0cc; }
 .frame-anniversary .skin-badge { color:#d3a6ff; }
 .frame-swimsuit .skin-badge { color:#6fd0ff; }
+.frame-wedding .skin-badge { color:#fff2d8; }
+.frame-office .skin-badge { color:#c8d2f0; }
+.frame-sportwear .skin-badge { color:#fdba74; }
+.frame-resort .skin-badge { color:#fde68a; }
 .wardrobe-empty-icon { display:grid; place-items:center; width:84px; height:84px; border-radius:50%; color:var(--accent); background:rgba(180,140,255,.08); border:1px solid var(--line); }
 .ev-choice, .ev-cg { display:flex; align-items:center; gap:6px; }
 

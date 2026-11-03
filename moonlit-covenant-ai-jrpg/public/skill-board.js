@@ -10,6 +10,20 @@ export const TIER_PIPS = { white: 1, green: 2, blue: 3, purple: 4, red: 5 };
 export const MATERIAL_NAMES = { white: '练习手记', green: '实战手记', blue: '源律残章', purple: '暮紫秘页', red: '赤月秘页' };
 export const OWNER_ICON = { hero: 'sword', lia: 'shield', mia: 'wrench', serena: 'moon', evelyn: 'feather', aila: 'bolt', freya: 'frost', ophelia: 'dragon', lilith: 'dagger' };
 const SLOT_MARK = ['①', '②', '③'];
+// 上场者胸像卡的底色：她的标准色（docs/ART-DIRECTION.md §2）
+const OWNER_COLOR = { hero: '#8a9bb8', lia: '#ff6b7c', mia: '#5ed7ff', serena: '#b58cff', freya: '#8fd4f5', lilith: '#c084fc', evelyn: '#ffd98c', ophelia: '#f472b6', aila: '#f5c84c' };
+// 擦边类服装（服装稿 §1.3 第6条）：她们在场时，整场的血花改成火花
+const TEASE_TYPES = new Set(['swimsuit', 'wedding']);
+// 12+ 内容模式换成罩衫版的服装类型（public/assets/costumes/soft/）
+const SOFT_TYPES = new Set(['swimsuit']);
+// 「战斗中显示服装」开关（服装稿 §4.1）：存在这台设备上，两页共用；读写失败时按开
+const SHOW_COSTUMES_KEY = 'moonlit:battleCostumes';
+function costumesShown() {
+  try { return localStorage.getItem(SHOW_COSTUMES_KEY) !== 'off'; } catch { return true; }
+}
+function setCostumesShown(on) {
+  try { localStorage.setItem(SHOW_COSTUMES_KEY, on ? 'on' : 'off'); } catch { /* 存不下就只在这一页生效 */ }
+}
 
 const esc = (value) => String(value ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
@@ -36,6 +50,22 @@ export function mountCommissionBoard(host, opts) {
   let target = null;
   let busy = false;
   let seq = 0;
+
+  // 她现在穿的服装（开关关掉时一律当作默认服装）；costumeId 形如 lia_swimsuit
+  function wornCostume(owner) {
+    if (owner === 'hero' || !costumesShown()) return null;
+    const id = costumes()?.[owner];
+    return typeof id === 'string' && /^[a-z]+_[a-z]+$/.test(id) ? id : null;
+  }
+  // 服装图：立绘（832×1216，cut-in 用）或透明胸像（600×800，单位卡用）；12+ 时泳装换成罩衫版
+  function costumeArt(costumeId, bust) {
+    const soft = SOFT_TYPES.has(costumeId.split('_').pop()) && mode() === '12+' ? 'soft/' : '';
+    return `/assets/costumes/${bust ? 'bust/' : ''}${soft}${costumeId}.svg`;
+  }
+  function bustSrc(owner) {
+    const costume = wornCostume(owner);
+    return costume ? costumeArt(costume, true) : `/assets/story/npc/${owner === 'hero' ? 'aku' : owner}.svg`;
+  }
 
   async function load() {
     const my = (seq += 1);
@@ -97,6 +127,7 @@ export function mountCommissionBoard(host, opts) {
       <div class="party-row">
         <label class="party-oath">誓约槽 <select data-oath><option value="">（空）</option>${joined.filter((o) => o.personalCleared).map((o) => `<option value="${esc(o.id)}" ${book.oath === o.id ? 'selected' : ''}>${esc(o.name)}</option>`).join('')}</select></label>
         <button class="${btn('secondary', 'small')}" data-save-party type="button">${icon('users', { size: 14 })}保存编成</button>
+        <label class="party-costumes" title="换衣间里装备的服装会出现在战斗的单位卡和赤月 cut-in 上"><input type="checkbox" data-show-costumes ${costumesShown() ? 'checked' : ''}>战斗中显示服装</label>
       </div>
       <ul class="party-lineup">${lineup.map((id) => `<li><b>${icon(OWNER_ICON[id] || 'user', { size: 13 })}${esc(owners[id]?.name || id)}</b>${(book.loadout[id] || []).map((sid, i) => {
         const s = skillOf[sid];
@@ -106,6 +137,10 @@ export function mountCommissionBoard(host, opts) {
   }
 
   function bindParty() {
+    host.querySelector('[data-show-costumes]')?.addEventListener('change', (e) => {
+      setCostumesShown(e.currentTarget.checked);
+      beep('click');
+    });
     host.querySelector('[data-save-party]')?.addEventListener('click', async () => {
       if (busy) return;
       busy = true;
@@ -122,8 +157,10 @@ export function mountCommissionBoard(host, opts) {
 
   function unitCardHtml(u, b) {
     const pct = Math.max(0, Math.round((u.hp / u.maxHp) * 100));
+    // 我方：她的胸像（穿着换衣间里的服装），底色是她的标准色；受击只晃动、泛红，胸像永远不带伤（服装稿 §1.3 第5条）
+    const bust = u.side === 'ally' ? `<span class="unit-bust" style="--owner:${OWNER_COLOR[u.owner] || '#8a9bb8'}"><img src="${esc(paint(bustSrc(u.owner)))}" alt="" loading="lazy"></span>` : '';
     return `<button type="button" class="unit-card side-${u.side}${u.down ? ' is-down' : ''}${b.current === u.id ? ' is-current' : ''}${target === u.id ? ' is-target' : ''}${u.broken ? ' is-broken' : ''}" data-unit="${esc(u.id)}" ${u.down ? 'disabled' : ''}>
-      <div class="unit-name">${u.side === 'ally' ? icon(OWNER_ICON[u.owner] || 'user', { size: 14 }) : ''}${esc(u.name)}${u.charging ? `<span class="unit-charge">蓄力：${esc(u.charging)}</span>` : ''}${u.broken ? '<span class="unit-charge">破防</span>' : ''}</div>
+      ${bust}<div class="unit-name">${u.side === 'ally' ? icon(OWNER_ICON[u.owner] || 'user', { size: 14 }) : ''}${esc(u.name)}${u.charging ? `<span class="unit-charge">蓄力：${esc(u.charging)}</span>` : ''}${u.broken ? '<span class="unit-charge">破防</span>' : ''}</div>
       <div class="bar hp"><i style="width:${pct}%"></i><span>${u.hp}/${u.maxHp}</span></div>
       ${u.side === 'ally' ? `<div class="bar mp"><i style="width:${Math.round((u.mp / u.maxMp) * 100)}%"></i><span>MP ${u.mp}</span></div>` : `<div class="bar brk"><i style="width:${u.brk}%"></i><span>破防 ${u.brk}</span></div>`}
       ${u.weak ? `<div class="unit-weak">弱点：${u.weak.map(esc).join('、')}</div>` : ''}
@@ -136,7 +173,9 @@ export function mountCommissionBoard(host, opts) {
     const units = Object.fromEntries(b.units.map((u) => [u.id, u]));
     const a = b.actions;
     const cur = units[b.current];
-    host.innerHTML = `<section class="battle-board mode-${mode() === '12+' ? 'spark' : 'blood'}">
+    // 15+ 才有血花（只对敌人）；12+，或者上场者有人穿着泳装、婚礼礼服时，整场改成火花（血与擦边不同框）
+    const tease = b.allies.some((id) => TEASE_TYPES.has(String(wornCostume(units[id]?.owner) || '').split('_').pop()));
+    host.innerHTML = `<section class="battle-board mode-${mode() === '12+' || tease ? 'spark' : 'blood'}">
       <div class="battle-top"><h3>${b.challenge ? icon('trophy', { size: 16 }) : icon('flag', { size: 16 })}${esc(b.title)} · 第 ${b.round} 回合</h3>
         <div class="bar res"><i style="width:${b.resonance}%"></i><span>共鸣 ${b.resonance}</span></div>
         <span>${icon('potion', { size: 14 })}药剂 ${b.potions}</span>${b.turret ? `<span>${icon('mech', { size: 14 })}零号炮台 ${b.turret.t}</span>` : ''}${b.field.map((f) => `<span>${esc(f.kind)} ${f.t}</span>`).join('')}
@@ -166,11 +205,11 @@ export function mountCommissionBoard(host, opts) {
     if (log) log.scrollTop = log.scrollHeight;
   }
 
-  // 赤月：全屏 cut-in，用她当前穿的服装立绘（技能稿 2.2、6.1）
+  // 赤月：全屏 cut-in，用她当前穿的服装立绘（技能稿 2.2、6.1；开关关掉时用默认立绘）
   function showCutIn(unit, text) {
     if (!unit) return;
-    const costume = costumes()?.[unit.owner];
-    const src = unit.owner === 'hero' ? '/assets/story/npc/aku.svg' : costume ? `/assets/costumes/${costume}.svg` : `/assets/portraits/${unit.owner}.svg`;
+    const costume = wornCostume(unit.owner);
+    const src = unit.owner === 'hero' ? '/assets/story/npc/aku.svg' : costume ? costumeArt(costume, false) : `/assets/portraits/${unit.owner}.svg`;
     const el = document.createElement('div');
     el.className = 'skill-cutin';
     el.setAttribute('aria-hidden', 'true');

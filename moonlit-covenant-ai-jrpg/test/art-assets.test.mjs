@@ -133,7 +133,9 @@ test('B10/B11: portraits and costumes are built with Lia\'s shield and every her
   const heroines = await loadModules('heroines');
   const outfits = await loadModules('outfits');
   assert.equal(heroines.length, 8);
-  assert.equal(outfits.length, 6);
+  // 服装稿第一套（泳装、婚礼礼服、OL装、女仆装、运动短袖）+ 四类典藏 + 赠品度假装
+  assert.deepEqual(outfits.map((o) => o.type).sort(), ['anniversary', 'christmas', 'duanwu', 'maid', 'newyear', 'office', 'resort', 'sportwear', 'swimsuit', 'wedding']);
+  const { portraitBust } = await import('../tools/art/story/portrait-bust.mjs');
   const emblems = new Set();
   for (const h of heroines) {
     const kit = ACCENTS[h.id];
@@ -149,6 +151,21 @@ test('B10/B11: portraits and costumes are built with Lia\'s shield and every her
       assert.ok(Buffer.byteLength(file) <= 80 * 1024, `costumes/${h.id}_${o.type}.svg over the 80KB budget`);
       // the tower shield is Lia's alone, and she wears it in every costume
       assert.equal(/-shieldFace"/.test(file), h.id === 'lia', `${h.id}_${o.type}: shield layer ${h.id === 'lia' ? 'missing' : 'unexpected'}`);
+      // the transparent 600x800 bust (skill battles; the 番外 later) and, for the swimsuits, the 12+ cover-up version
+      const label = `${h.name || h.id} - ${o.label || o.type}`.replace(/"/g, '');
+      for (const variant of [null, ...(o.variants || [])]) {
+        const dir = variant ? `${variant}/` : '';
+        if (variant) {
+          const soft = fs.readFileSync(pub(`assets/costumes/${dir}${h.id}_${o.type}.svg`), 'utf8');
+          assert.equal(soft, compose(h, { outfit: o, extras, accent: kit, variant }), `costumes/${dir}${h.id}_${o.type}.svg is stale (npm run art)`);
+          assert.notEqual(soft, file, `${o.type}: the ${variant} version of ${h.id} draws nothing different`);
+          assert.ok(Buffer.byteLength(soft) <= 80 * 1024, `costumes/${dir}${h.id}_${o.type}.svg over the 80KB budget`);
+        }
+        const bust = fs.readFileSync(pub(`assets/costumes/bust/${dir}${h.id}_${o.type}.svg`), 'utf8');
+        assert.equal(bust, portraitBust(h, { prefix: `${h.id}-${o.type}`, label, extras, outfit: o, accent: kit, variant }), `costumes/bust/${dir}${h.id}_${o.type}.svg is stale (npm run art)`);
+        assert.ok(Buffer.byteLength(bust) <= 70 * 1024, `costumes/bust/${dir}${h.id}_${o.type}.svg over the 70KB budget`);
+        assert.doesNotMatch(bust, /<rect width="832" height="1216"/, 'busts are transparent (no backdrop)');
+      }
     }
     assert.ok(Buffer.byteLength(portrait) <= 70 * 1024, `portraits/${h.id}.svg over the 70KB budget`);
     assert.equal(/-shieldFace"/.test(portrait), h.id === 'lia');

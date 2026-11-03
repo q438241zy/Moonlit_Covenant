@@ -175,7 +175,7 @@ function hairOrnament(p) {
 
 export default {
   type: 'duanwu',
-  label: '端午服',
+  label: '龙舟祭服',
   render,
   bgMotif,
   bodyBack,

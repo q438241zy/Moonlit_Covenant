@@ -235,7 +235,7 @@ function hairOrnament(p) {
 
 export default {
   type: 'newyear',
-  label: '新年服',
+  label: '新历祭服',
   render,
   bgMotif,
   hairOrnament,

@@ -22,8 +22,33 @@
 | ch003 | 第三章｜临时契约 |
 | ch004 | 第四章｜旧磨坊 |
 | ch005 | 第五章｜大车之夜 |
+| ch006 | 第六章｜草莓蛋糕停战 |
+| ch007 | 第七章｜爆炸来自林边 |
+| ch008 | 第八章｜金律只有一毫米 |
+| ch009 | 第九章｜雾港失踪者 |
+| ch010 | 第十章｜下水道的潮声 |
+| ch011 | 第十一章｜镜中紫影 |
+| ch012 | 第十二章｜暗法师的条件 |
+| ch013 | 第十三章｜雨中的金色刺客 |
+| ch014 | 第十四章｜潮穴开门 |
+| ch015 | 第十五章｜潮虫王·涅洛萨 |
+| ch016 | 第十六章｜册厅 |
+| ch017 | 第十七章｜光明骑士的拦截 |
+| ch018 | 第十八章｜温柔的北境来客 |
+| ch019 | 第十九章｜御前听证 |
+| ch020 | 第二十章｜姐姐还活着 |
+| ch021 | 第二十一章｜谁都不是祭品 |
+| ch022 | 第二十二章｜回到麦田 |
+| ch023 | 第二十三章｜雾港起义 |
+| ch024 | 第二十四章｜灰烬关 |
+| ch025 | 第二十五章｜冰库的名册 |
+| ch026 | 第二十六章｜衡炉城的账 |
+| ch027 | 第二十七章｜龙脊的锁链 |
+| ch028 | 第二十八章｜鸦羽城的镜子 |
+| ch029 | 第二十九章｜白塔之围 |
+| ch030 | 第三十章｜月蚀加冕 |
 
-第五章已由审阅稿升为**正式稿**（核#11）。每章约 11–24 分钟，预计时长见章节选择页（`public/story/chapters/index.json` 的 `estimatedMinutes`）。章节数据在 `public/story/chapters/`，格式与引擎见 [`docs/STORY-ENGINE.md`](docs/STORY-ENGINE.md)；校验与自动试玩：`npm run story:check`。
+序章到第三十章共 31 章都已转写成可玩版，全部是正式稿（各章的稿次与作者核可见 `剧本/README_章節對照表.md`）；第二十六章起路线可见，第二十九、三十章按君主路线分版，第三十章是终章。每章约 11–24 分钟，预计时长见章节选择页（`public/story/chapters/index.json` 的 `estimatedMinutes`）。章节数据在 `public/story/chapters/`，格式与引擎见 [`docs/STORY-ENGINE.md`](docs/STORY-ENGINE.md)；校验与自动试玩：`npm run story:check`。
 
 内容分级（作者核#13 第8条、核#14）：主线默认 **15+ 戏剧模式**（擦边与流血可以出现，但不露骨），设置里可随时切换 **12+ 柔和模式**（以剪影、遮挡与结果带过），两种模式的剧情、选择与结局完全相同。第一次进入主线时选择一次；已经存过设置的玩家沿用原来的模式，只看到一次「默认已改为 15+」的提示。两档共同禁区：裸露与性行为、性暴力、虐杀与肢解特写，未满 18 岁的角色永远不进擦边或血腥描写；主线判定器与外传聊天的模型提示词带同一份规则（外传还没有模式设置，按 12+）。细则见 `docs/STORY-ENGINE.md` §10。
 
@@ -47,8 +72,10 @@
 - **登场闸门（封存卡）**：8 位女主从一开始就都在池里、照常能抽到，但在玩家通关她的**登场章**之前，卡池、召唤结果、换衣间与钻石页只显示剪影和「第N章登场」——名字、称号、立绘、介绍都不出现，她的服装同样封存。登场章：莉亚 04、米娅 07、塞雷娜 11、莉莉丝 13（敌对登场）、伊芙琳 16、艾拉 17、芙蕾娅 18、奥菲利亚 19；莉莉丝与艾拉的姓（以及莉莉丝的故国）到通关第 20 章才显示。进度取服务器记录的主线首通（`POST /api/story/progress`），通关登场章或之后任何一章都算。
 - 女主在主线**正式入队时自动获得**（30 章入队表，`剧本/README_30章重構提案.md` §4.5）：莉亚 05、米娅 10、塞雷娜 12、伊芙琳 17、艾拉 18、芙蕾娅 19、奥菲利亚 20、莉莉丝 21（登记在卡池数据的 `joinChapter`，还没写出来的章节上线后自动生效）；之前已经抽到的按重复补偿折成钻石。角色池照常保留。
 - **技能（技能书 + 委托板，`game/skills.mjs`、`game/skill-gacha.mjs`、`game/skill-battle.mjs`；`docs/SKILLS.md`）**：五色技能白 < 绿 < 蓝（随主线解锁）< 暮紫 < 赤月（只从召唤页的「秘技召唤」抽到，只出已入队角色的技能），每张 +0～+10，材料只靠玩（白绿蓝）或来自秘技召唤（暮紫、赤月秘页）；三格编成（①本命格只装剧情技能、③绝技格唯一能装赤月）。委托板是指令选单的回合制技能战（亚克加一两位女主），结果不写回主线，奖励是强化材料；主菜单「技能」页和主线章节选择页（正式05 通关后右上角）都能打开，界面共用 `public/skill-board.js`。主线自由输入战只读剧情技能的一句世界内描述，抽卡永远不改变主线结果。
-- 换衣：8 位女主 × 6 类服装；抽到的服装都会出现在换衣间（还没拥有对应女主的，列在「待解锁角色」里；女主还没登场的，以剪影列在「尚未登场」里，通关她的登场章后才能换装）。
-- **典藏**（决定#31，`剧本/README_轉蛋服裝設計.md` §5.1）：原来的新年、圣诞、端午、周年庆四类改为典藏，显示名换成世界内的节庆——新历祭服、冬灯节服、龙舟祭服、纪念日礼服（稀有度不变）。它们退出常驻服饰池（抽不到），但服装 id 不变，已经拥有的照样能穿，换衣间在每位女主下面单列「典藏」一组（只列已拥有的）；对应番外上线时以限时池复刻。常驻服饰池暂时只有夏日度假服（5★）和女仆服（3★）两类，原样保留——真泳装重画、女仆改版和新增的婚礼 / 运动短袖 / OL 三类随美术阶段一起做。存档不需要迁移。
+- **服装第一套**（`剧本/README_轉蛋服裝設計.md`，核#14）：常驻服饰池是 ★5 泳装、婚礼礼服，★4 OL装（异界IF，卡面与换衣间带 IF 角标），★3 女仆装、运动短袖——5 类 × 8 人 = 40 件，每件有自己的款名与一句台词（例如莉亚的泳装「晨泳·救生员款」）。服装不带任何数值，主线、主线战斗与所有结局永远不显示。泳装是真泳装，按内容模式分两档：15+ 默认，12+ 换成加了她自己罩衫的版本（换衣间、召唤、委托板都跟着换）；婚礼礼服是礼服店的试穿样衣，不是婚礼。原来的夏日度假服改为非卖品「度假装」，由两篇海边番外首通赠送。美术规则见 `docs/ART-DIRECTION.md` §3、§5.2。
+- 换衣：8 位女主 × 10 类服装（常驻 5 类、典藏 4 类、赠品 1 类）；抽到的服装都会出现在换衣间（还没拥有对应女主的，列在「待解锁角色」里；女主还没登场的，以剪影列在「尚未登场」里，通关她的登场章后才能换装）。外传队伍头像、委托板的单位卡与赤月 cut-in 都穿着换衣间里装备的服装。
+- **典藏**（决定#31，`剧本/README_轉蛋服裝設計.md` §5.1）：原来的新年、圣诞、端午、周年庆四类改为典藏，显示名换成世界内的节庆——新历祭服、冬灯节服、龙舟祭服、纪念日礼服（稀有度不变）。它们退出常驻服饰池（抽不到），但服装 id 不变，已经拥有的照样能穿，换衣间在每位女主下面单列「典藏」一组（只列已拥有的）；对应番外上线时以限时池复刻。度假装同样只在已拥有时单列「赠品」一组。存档不需要迁移：原来的 `<女主>_swimsuit` 现在就是新泳装。
+- **衣橱券**（服装稿 1.2）：服饰池每抽累积 1 点，出 5★ 也不清零；满 90 点自动换成一张衣橱券，一张券换一件指定的常驻 5★ 服装（只限已在主线登场的女主、还没拥有的）。第 90 抽必出 5★ 的保底照旧。召唤页的服饰池上方显示进度与兑换。
 - 每类服装对应一篇将来的番外（`game/costume.mjs` 的 `BRANCH_SCENES`：番外 id、开放章节与入口文案），番外系统还没上线，界面显示「番外 · 敬请期待」。服装不是番外的解锁条件。
 - 商店：会员、钻石充值保留为**演示用的免费补充**（没有真实支付，标价仅作展示）；由「演示工具」开关控制（见下文），本地运行默认开启。
 - 设置：AI 模式说明、音效开关、后台管理入口。按玩家切换模型尚未实现，设置页不再展示模型预设（所有玩家共用服务器配置的 AI）。
@@ -77,9 +104,9 @@
 | 秘技召唤 | 单抽 80；十连 720 钻石，或一张秘技召唤券一抽 |
 | 卡牌开包 | 单包 80 钻石；十连 800 钻石 |
 
-重复补偿（召唤抽到已拥有的条目，含同一次十连里的第二份；主线入队时已经抽到的女主同样适用）：3★ 8 钻石（单抽的 10%）、4★ 16（20%）、5★ 160（两次单抽）。全部拥有后每抽的期望返还约为角色池 19、服饰池 13 钻石，远低于单抽价格，不会形成刷钻循环。
+重复补偿（召唤抽到已拥有的条目，含同一次十连里的第二份；主线入队时已经抽到的女主同样适用）：3★ 8 钻石（单抽的 10%）、4★ 16（20%）、5★ 160（两次单抽）。全部拥有后每抽的期望返还约为角色池 19、服饰池 14 钻石，远低于单抽价格，不会形成刷钻循环。
 
-服饰池的标准概率是 5★ 3% / 4★ 17% / 3★ 80%。典藏退出后常驻表暂时没有 4★，那 17% 并进 3★，所以现在公示的是 5★ 3% / 3★ 97%（保底不变）；4★ 的 OL 装随美术阶段上线时恢复。
+服饰池的概率是 5★ 3% / 4★ 17% / 3★ 80%：5★ 是泳装与婚礼礼服 16 件（单件约 0.19%），4★ 是 OL装 8 件（约 2.1%），3★ 是女仆装与运动短袖 16 件（5%）。
 
 签到、首通与胜场记录存在服务器账户里（`account.rewards`），随存档一起保存。主线（`/story.html`）和卡牌页与主游戏共用浏览器里的同一个账户（`localStorage` 的 `moonlit:playerId`）。
 
@@ -360,9 +387,10 @@ Dockerfile, docker-compose.yml
 
 - `POST /api/account/create`、`GET /api/account?playerId=`：创建 / 读取账户。
 - `GET /api/credit?playerId=`：Credit 余额。
-- `GET /api/gacha/pools?playerId=`：卡池、概率与保底，以及 `currency: 'diamonds'`、`costs`（`{ diamonds: { single, ten } }`）、`duplicateCompensation`（`{ 3: 8, 4: 16, 5: 160 }`）、`heroineJoins`（女主 id → 入队章节）、`progress: { highestCleared }`。`characters` / `costumes` 是按这个玩家主线进度的对外视图：还没登场的女主是 `{ id, rarity, sealed: true, name: '？？？', title: '？？？', unlockChapter, joinChapter, debutLabel }`（`debutLabel` 形如「第13章登场」），她的服装是 `{ id, characterId, type, rarity, sealed: true, name: '？？？·女仆服', unlockChapter, debutLabel }`（没有立绘路径）；已登场的带完整资料与 `sealed: false`。不带 `playerId`（或账户不存在）按零进度。
-- `POST /api/gacha/pull`：`{ playerId, pool, count }` 召唤，只收钻石；`currency` 可以省略或写 `'diamonds'`，旧前端传来的 `'credit'` 返回 400 `DIAMONDS_ONLY`、不扣任何东西。返回 `{ pool, currency: 'diamonds', results, cost, pity, compensation: { diamonds }, balance: { diamonds }, account }`，`results[i]` 是同一个登场闸门下的视图，另带 `isNew`、`duplicate`、`compensation`；钻石不足返回 400 `INSUFFICIENT_DIAMONDS`。
-- `GET /api/costume?playerId=`、`POST /api/costume/equip`：服装列表（`costumePool` 同样按登场闸门给视图）、穿戴。
+- `GET /api/gacha/pools?playerId=`：卡池、概率与保底，以及 `currency: 'diamonds'`、`costs`（`{ diamonds: { single, ten } }`）、`duplicateCompensation`（`{ 3: 8, 4: 16, 5: 160 }`）、`heroineJoins`（女主 id → 入队章节）、`progress: { highestCleared }`。`characters` / `costumes` 是按这个玩家主线进度的对外视图：还没登场的女主是 `{ id, rarity, sealed: true, name: '？？？', title: '？？？', unlockChapter, joinChapter, debutLabel }`（`debutLabel` 形如「第13章登场」），她的服装是 `{ id, characterId, type, rarity, sealed: true, name: '？？？·女仆装', unlockChapter, debutLabel }`（没有立绘路径）；已登场的带完整资料与 `sealed: false`。不带 `playerId`（或账户不存在）按零进度。
+- `POST /api/gacha/pull`：`{ playerId, pool, count }` 召唤，只收钻石；`currency` 可以省略或写 `'diamonds'`，旧前端传来的 `'credit'` 返回 400 `DIAMONDS_ONLY`、不扣任何东西。返回 `{ pool, currency: 'diamonds', results, cost, pity, compensation: { diamonds }, balance: { diamonds }, account }`，`results[i]` 是同一个登场闸门下的视图，另带 `isNew`、`duplicate`、`compensation`；服饰池另带 `wardrobe: { points, tickets, pointsPerTicket }`（衣橱券）；钻石不足返回 400 `INSUFFICIENT_DIAMONDS`。
+- `POST /api/gacha/wardrobe-ticket`：`{ playerId, costumeId }` 用一张衣橱券换一件常驻 5★ 服装；没有券 `NO_WARDROBE_TICKET`、不是常驻 5★ `NOT_EXCHANGEABLE`、她还没登场 `SEALED`、已经拥有 `ALREADY_OWNED`（都是 400）。`GET /api/gacha/pools` 的 `wardrobe` 给出本账户的点数、券与可以换的服装（`choices`）。
+- `GET /api/costume?playerId=`、`POST /api/costume/equip`：服装列表（`costumePool` 同样按登场闸门给视图，常驻条目带款名 `description` 与台词 `line`）、穿戴。`typeMeta` 是每类服装的稀有度与归属（`status`：`current` 常驻 / `archive` 典藏 / `gift` 赠品）、`soft`（有 12+ 罩衫版）与 `if`（异界IF）。
 - `GET /api/membership/tiers`：会员档位与钻石包。
 - 演示工具（`DEMO_TOOLS`，关闭时 403）：`POST /api/membership/purchase`、`POST /api/diamonds/purchase`、`POST /api/costume/grant-all`。
 - `GET /api/settings/ai?playerId=`：`{ perPlayerRouting: false, current, models: [], settings }`，`current` 是所有玩家共用的 AI（同 `/api/meta` 的 `ai`）；按玩家路由实现前不下发模型预设。`POST /api/settings/ai` 对存在的账户返回 409 `PER_PLAYER_ROUTING_UNAVAILABLE`。

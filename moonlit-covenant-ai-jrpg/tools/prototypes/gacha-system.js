@@ -167,11 +167,11 @@ const CONSUMABLES = [
 // id 保持旧值，已有的本地存档（ownedCostumes）继续有效。
 const COSTUME_ART = {
   newyear: { label: '新历祭服', icon: 'newyear' },
-  maid: { label: '女仆服', icon: 'maid' },
+  maid: { label: '女仆装', icon: 'maid' },
   christmas: { label: '冬灯节服', icon: 'christmas' },
   duanwu: { label: '龙舟祭服', icon: 'duanwu' },
   anniversary: { label: '纪念日礼服', icon: 'anniversary' },
-  swimsuit: { label: '夏日度假服', icon: 'summer' },
+  swimsuit: { label: '泳装', icon: 'swimsuit' },
 };
 const SHORT_NAME = Object.fromEntries(CHARACTERS.map((c) => [c.id, c.name.split('·')[0]]));
 const costume = (id, owner, art, rarity) => ({
