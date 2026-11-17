@@ -251,5 +251,237 @@
     },
     "if": true,
     "blurb": "IF番外：平行的现代城市里，大家成了同一家公司的同事。与正史无关。"
+  },
+  {
+    "id": "ex011",
+    "number": 11,
+    "title": "支线一｜失踪名单不是数字",
+    "estimatedMinutes": 10,
+    "file": "/story/extras/ex011.json",
+    "source": "剧本/番外/ex011失蹤名單不是數字.md",
+    "kind": "sidequest",
+    "unlockAfter": "ch015",
+    "window": "正式15–16之间",
+    "cast": [
+      "lia",
+      "mia",
+      "serena"
+    ],
+    "costumeTypes": [],
+    "gifts": {
+      "costumes": []
+    },
+    "blurb": "潮声停了以后，雾港分会的名单上还有几行没有划掉。一户一户去敲门，把名字和家人对上。"
+  },
+  {
+    "id": "ex012",
+    "number": 12,
+    "title": "支线二｜浴场镜面守则",
+    "estimatedMinutes": 10,
+    "file": "/story/extras/ex012.json",
+    "source": "剧本/番外/ex012浴場鏡面守則.md",
+    "kind": "sidequest",
+    "unlockAfter": "ch015",
+    "window": "正式15–16之间",
+    "cast": [
+      "serena",
+      "lia",
+      "mia"
+    ],
+    "costumeTypes": [],
+    "gifts": {
+      "costumes": []
+    },
+    "blurb": "旧浴场的镜子要修，规矩也要重新立。动手修、动笔写规矩的，是曾经透过镜子看过人的那一位。"
+  },
+  {
+    "id": "ex013",
+    "number": 13,
+    "title": "支线三｜没有名字的孩子",
+    "estimatedMinutes": 10,
+    "file": "/story/extras/ex013.json",
+    "source": "剧本/番外/ex013沒有名字的孩子.md",
+    "kind": "sidequest",
+    "unlockAfter": "ch023",
+    "window": "正式23–25之间",
+    "cast": [
+      "lilith",
+      "serena",
+      "mia"
+    ],
+    "costumeTypes": [],
+    "gifts": {
+      "costumes": []
+    },
+    "blurb": "影市的孩子没有名字，也就没有面包配给。要让商会、教区和公会都在同一张纸上签字。"
+  },
+  {
+    "id": "ex014",
+    "number": 14,
+    "title": "支线四｜我也想成为她",
+    "estimatedMinutes": 9,
+    "file": "/story/extras/ex014.json",
+    "source": "剧本/番外/ex014我也想成為她.md",
+    "kind": "sidequest",
+    "unlockAfter": "ch023",
+    "window": "正式23–25之间",
+    "cast": [
+      "lilith",
+      "evelyn"
+    ],
+    "costumeTypes": [],
+    "gifts": {
+      "costumes": []
+    },
+    "blurb": "一位木律少女长年拟态成好朋友的样子。揭穿很容易，难的是帮她找到她自己。"
+  },
+  {
+    "id": "ex015",
+    "number": 15,
+    "title": "支线五｜圣女的一天假",
+    "estimatedMinutes": 9,
+    "file": "/story/extras/ex015.json",
+    "source": "剧本/番外/ex015聖女的一天假.md",
+    "kind": "sidequest",
+    "unlockAfter": "ch018",
+    "window": "正式18–19之间",
+    "cast": [
+      "evelyn",
+      "aila",
+      "lia"
+    ],
+    "costumeTypes": [],
+    "gifts": {
+      "costumes": []
+    },
+    "blurb": "换上普通的衣服，混进圣都的早市。今天吃什么、走哪条路、别人怎么称呼她，都由她自己选。"
+  },
+  {
+    "id": "ex016",
+    "number": 16,
+    "title": "支线六｜无名病房",
+    "estimatedMinutes": 9,
+    "file": "/story/extras/ex016.json",
+    "source": "剧本/番外/ex016無名病房.md",
+    "kind": "sidequest",
+    "unlockAfter": "ch020",
+    "window": "正式20–21之间",
+    "cast": [
+      "evelyn",
+      "aila",
+      "ophelia"
+    ],
+    "costumeTypes": [],
+    "gifts": {
+      "costumes": []
+    },
+    "blurb": "圣都最深处有一间病房，床头的名牌全被刮掉了。把名字一个一个找回来。"
+  },
+  {
+    "id": "ex017",
+    "number": 17,
+    "title": "支线七｜请先敲门",
+    "estimatedMinutes": 9,
+    "file": "/story/extras/ex017.json",
+    "source": "剧本/番外/ex017請先敲門.md",
+    "kind": "sidequest",
+    "unlockAfter": "ch012",
+    "window": "正式12–15之间",
+    "cast": [
+      "serena",
+      "lia",
+      "mia"
+    ],
+    "costumeTypes": [],
+    "gifts": {
+      "costumes": []
+    },
+    "blurb": "旅店与营地里的几件小事。道歉说过了，这一次，她要练习的是「先问」。"
+  },
+  {
+    "id": "ex018",
+    "number": 18,
+    "title": "支线八｜我只告诉你一个人",
+    "estimatedMinutes": 9,
+    "file": "/story/extras/ex018.json",
+    "source": "剧本/番外/ex018我只告訴你一個人.md",
+    "kind": "sidequest",
+    "unlockAfter": "ch022",
+    "window": "正式22–25之间",
+    "cast": [
+      "mia",
+      "lia"
+    ],
+    "costumeTypes": [],
+    "gifts": {
+      "costumes": []
+    },
+    "blurb": "有人只把一个秘密告诉了他。守住它之前，要先想清楚：这个秘密会不会伤到别人。"
+  },
+  {
+    "id": "ex019",
+    "number": 19,
+    "title": "支线九｜怕冷的冰法学徒",
+    "estimatedMinutes": 9,
+    "file": "/story/extras/ex019.json",
+    "source": "剧本/番外/ex019怕冷的冰法學徒.md",
+    "kind": "sidequest",
+    "unlockAfter": "ch019",
+    "window": "正式19–21之间",
+    "cast": [
+      "freya",
+      "mia"
+    ],
+    "costumeTypes": [],
+    "gifts": {
+      "costumes": []
+    },
+    "blurb": "霜潮使团里有个怕冷的冰法学徒。给她做一副施法也不冻手的手套。"
+  },
+  {
+    "id": "ex020",
+    "number": 20,
+    "title": "支线十｜今天不开门",
+    "estimatedMinutes": 9,
+    "file": "/story/extras/ex020.json",
+    "source": "剧本/番外/ex020今天不開門.md",
+    "kind": "sidequest",
+    "unlockAfter": "ch025",
+    "window": "正式25之后（路线区之前）",
+    "cast": [
+      "freya",
+      "lia"
+    ],
+    "costumeTypes": [],
+    "gifts": {
+      "costumes": []
+    },
+    "blurb": "「我想休息一天。」这一次，是真的休息。门上挂着牌子：今天不开门。"
+  },
+  {
+    "id": "ex021",
+    "number": 21,
+    "title": "支线十一｜八封没有寄出的信",
+    "estimatedMinutes": 10,
+    "file": "/story/extras/ex021.json",
+    "source": "剧本/番外/ex021八封沒有寄出的信.md",
+    "kind": "sidequest",
+    "unlockAfter": "ch025",
+    "window": "正式25之后（路线区之前）",
+    "cast": [
+      "lia",
+      "mia",
+      "serena",
+      "evelyn",
+      "aila",
+      "freya",
+      "ophelia",
+      "lilith"
+    ],
+    "costumeTypes": [],
+    "gifts": {
+      "costumes": []
+    },
+    "blurb": "八个人各写了一封没有寄出的信。信是她们的，读不读、给不给看，也由她们决定。"
   }
 ]

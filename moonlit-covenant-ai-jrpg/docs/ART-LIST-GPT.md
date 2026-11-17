@@ -2,7 +2,7 @@
 
 <!-- 本文件由 tools/art/raster/list.mjs 根据 tools/art/raster/manifest.mjs 生成（npm run art:list），请勿手改。 -->
 
-游戏里现在所有画面都是原创矢量美术（SVG）。这份清单列出要交给 GPT 重新绘制的全部 **618 张**位图：女主立绘、服装、胸像、主线 / 番外 / 外传的场景背景、剧情胸像、道具特写、外传 CG 与卡面。出好的图按下面的规则放进去，游戏会自动用位图替换对应的矢量图，没出的继续显示矢量图，可以分批上线。
+游戏里现在所有画面都是原创矢量美术（SVG）。这份清单列出要交给 GPT 重新绘制的全部 **626 张**位图：女主立绘、服装、胸像、主线 / 番外 / 外传的场景背景、剧情胸像、道具特写、外传 CG 与卡面。出好的图按下面的规则放进去，游戏会自动用位图替换对应的矢量图，没出的继续显示矢量图，可以分批上线。
 
 - 逐张的完整提示词、参考图与尺寸：[`docs/art-list/gpt-art-list.csv`](art-list/gpt-art-list.csv)（Excel 可直接打开）。用 API 批量出图时脚本直接读 `manifest.mjs`，不读 CSV。
 - 提示词的源头是 `tools/art/raster/manifest.mjs`：改描述就改那里，再跑 `npm run art:list` 重新导出本清单。
@@ -47,7 +47,7 @@ npm run art:paint:finalize                                                      
 | 1 | `portraits` | 女主立绘 | 8 | 1024×1536 → 832×1216 |
 | 2 | `costumes` | 服装立绘 | 80 | 1024×1536 → 832×1216 |
 | 2 | `costumes-soft` | 泳装 12+ 罩衫版立绘 | 8 | 1024×1536 → 832×1216 |
-| 3 | `story-bg` | 剧情场景背景（主线、番外、外传正篇） | 198 | 1536×1024 → 1600×900 |
+| 3 | `story-bg` | 剧情场景背景（主线、番外、外传正篇） | 204 | 1536×1024 → 1600×900 |
 | 3 | `story-npc` | 剧情胸像（透明底） | 128 | 1024×1536 → 600×800 |
 | 3 | `story-insert` | 道具特写叠图 | 54 | 1536×1024 → 800×600 |
 | 4 | `costumes-bust` | 服装透明胸像（透明底） | 80 | 1024×1536 → 600×800 |
@@ -56,7 +56,7 @@ npm run art:paint:finalize                                                      
 | 5 | `boss` | 食梦兽三阶段 | 3 | 1024×1024 → 1000×1000 |
 | 5 | `scenes` | 舞台背景 | 3 | 1536×1024 → 1600×900 |
 | 5 | `cards` | 卡面 | 38 | 1024×1024 → 512×512 |
-| | | **合计** | **618** | |
+| | | **合计** | **626** | |
 
 「出现章节」里 `chNNN` 是主线、`exNNN` 是番外、`gNNN` 是外传正篇；没有章节的场景、胸像暂时没有地方用到，可以排到最后。
 
@@ -179,7 +179,7 @@ npm run art:paint:finalize                                                      
 
 ## 第 3 批 · 剧情：场景背景、胸像、道具叠图（以莉亚立绘为画风参考）
 
-### 剧情场景背景（主线、番外、外传正篇）（`story-bg`，198 张）
+### 剧情场景背景（主线、番外、外传正篇）（`story-bg`，204 张）
 
 清单来自 public/story/locations.json；外传正篇复用的序章场景图在 scenes / cg 组。
 
@@ -197,7 +197,7 @@ npm run art:paint:finalize                                                      
 | `story-bg-cave-dawn` | 守羊洞·黎明前 | `cave-dawn.png` | ch000 ch001 |
 | `story-bg-hemai-sky-dawn` | 赫麦村上空·破晓 | `hemai-sky-dawn.png` | ch001 |
 | `story-bg-hemai-ruins-dawn` | 赫麦村废墟·黎明 | `hemai-ruins-dawn.png` | ch001 |
-| `story-bg-north-slope-camp` | 北山缓坡·灾民营地 | `north-slope-camp.png` | ch001 ch022 |
+| `story-bg-north-slope-camp` | 北山缓坡·灾民营地 | `north-slope-camp.png` | ch001 ch022 ex018 ex021 |
 | `story-bg-chime-town-gate` | 晨钟镇东门·清晨 | `chime-town-gate.png` | ch002 ch006 |
 | `story-bg-guild-hall` | 晨钟镇冒险者公会 | `guild-hall.png` | ch002 ch003 ch004 ch005 |
 | `story-bg-market` | 晨钟镇中央市集 | `market.png` | ch002 ch003 |
@@ -220,25 +220,25 @@ npm run art:paint:finalize                                                      
 | `story-bg-tide-station-dawn` | 量潮老站·站顶·天亮 | `tide-station-dawn.png` | ch008 |
 | `story-bg-tide-station-predawn` | 量潮老站·站顶·天亮前 | `tide-station-predawn.png` | ch008 |
 | `story-bg-tide-station-room` | 量潮老站·潮室·拂晓 | `tide-station-room.png` | ch008 |
-| `story-bg-fog-harbor-bridge-noon` | 雾港·第一座木桥·近午退潮 | `fog-harbor-bridge-noon.png` | ch009 ch023 |
-| `story-bg-fog-harbor-guild` | 冒险者公会雾港分会 | `fog-harbor-guild.png` | ch009 ch010 ch012 ch023 |
-| `story-bg-fog-harbor-drain-dusk` | 旧浴场后沟与排水区东口·黄昏 | `fog-harbor-drain-dusk.png` | ch009 ch012 ch014 |
+| `story-bg-fog-harbor-bridge-noon` | 雾港·第一座木桥·近午退潮 | `fog-harbor-bridge-noon.png` | ch009 ch023 ex011 ex013 |
+| `story-bg-fog-harbor-guild` | 冒险者公会雾港分会 | `fog-harbor-guild.png` | ch009 ch010 ch012 ch023 ex011 ex013 |
+| `story-bg-fog-harbor-drain-dusk` | 旧浴场后沟与排水区东口·黄昏 | `fog-harbor-drain-dusk.png` | ch009 ch012 ch014 ex012 |
 | `story-bg-fog-harbor-drain-night` | 旧浴场后沟与排水区东口·入夜 | `fog-harbor-drain-night.png` | ch009 ch014 |
 | `story-bg-fog-harbor-sewer-pump` | 雾港·东口以下·砖拱水道与三号泵房 | `fog-harbor-sewer-pump.png` | ch010 |
 | `story-bg-fog-harbor-tide-cavity` | 雾港·潮腔·旧蓄水池 | `fog-harbor-tide-cavity.png` | ch010 |
 | `story-bg-fog-harbor-tide-cavity-ebb` | 雾港·潮腔·排水后 | `fog-harbor-tide-cavity-ebb.png` | ch010 ch014 |
-| `story-bg-fog-harbor-drain-dawn` | 旧浴场后沟与排水区东口·破晓 | `fog-harbor-drain-dawn.png` | ch010 ch015 |
-| `story-bg-fog-harbor-bridge-dusk` | 雾港·第一座木桥·黄昏 | `fog-harbor-bridge-dusk.png` | ch010 |
+| `story-bg-fog-harbor-drain-dawn` | 旧浴场后沟与排水区东口·破晓 | `fog-harbor-drain-dawn.png` | ch010 ch015 ex012 |
+| `story-bg-fog-harbor-bridge-dusk` | 雾港·第一座木桥·黄昏 | `fog-harbor-bridge-dusk.png` | ch010 ex011 ex013 |
 | `story-bg-fog-harbor-bridge-inn-night` | 雾港·桥头旅店·入夜 | `fog-harbor-bridge-inn-night.png` | ch010 ch011 |
 | `story-bg-fog-harbor-bridge-inn-eyes` | 雾港·桥头旅店·镜中紫眼 | `fog-harbor-bridge-inn-eyes.png` | ch010 ch011 |
-| `story-bg-fog-harbor-bridge-inn-room` | 雾港·桥头旅店·亚克的房间 | `fog-harbor-bridge-inn-room.png` | ch011 |
+| `story-bg-fog-harbor-bridge-inn-room` | 雾港·桥头旅店·亚克的房间 | `fog-harbor-bridge-inn-room.png` | ch011 ex017 |
 | `story-bg-fog-harbor-bridge-inn-mirror` | 雾港·桥头旅店·镜子的那一边 | `fog-harbor-bridge-inn-mirror.png` | ch011 |
-| `story-bg-fog-harbor-bridge-inn-covered` | 雾港·桥头旅店·镜子蒙上毛巾 | `fog-harbor-bridge-inn-covered.png` | ch011 ch012 |
-| `story-bg-fog-harbor-old-lighthouse` | 雾港·旧灯塔 | `fog-harbor-old-lighthouse.png` | ch012 |
+| `story-bg-fog-harbor-bridge-inn-covered` | 雾港·桥头旅店·镜子蒙上毛巾 | `fog-harbor-bridge-inn-covered.png` | ch011 ch012 ex017 |
+| `story-bg-fog-harbor-old-lighthouse` | 雾港·旧灯塔 | `fog-harbor-old-lighthouse.png` | ch012 ex017 |
 | `story-bg-fog-harbor-old-lighthouse-rain` | 雾港·旧灯塔·雨夜灯室 | `fog-harbor-old-lighthouse-rain.png` | ch012 |
 | `story-bg-fog-harbor-old-lighthouse-night` | 雾港·旧灯塔·塔底夜雨 | `fog-harbor-old-lighthouse-night.png` | ch013 |
 | `story-bg-fog-harbor-old-lighthouse-night-broken` | 雾港·旧灯塔·塔底夜雨·破窗 | `fog-harbor-old-lighthouse-night-broken.png` | ch013 |
-| `story-bg-fog-harbor-old-lighthouse-dawn` | 雾港·旧灯塔·清晨 | `fog-harbor-old-lighthouse-dawn.png` | ch013 |
+| `story-bg-fog-harbor-old-lighthouse-dawn` | 雾港·旧灯塔·清晨 | `fog-harbor-old-lighthouse-dawn.png` | ch013 ex012 |
 | `story-bg-fog-harbor-mirror-alley` | 雾港·镜巷 | `fog-harbor-mirror-alley.png` | ch012 |
 | `story-bg-fog-harbor-fish-market-roofs-rain` | 雾港·鱼市屋顶·雨夜 | `fog-harbor-fish-market-roofs-rain.png` | ch013 |
 | `story-bg-fog-harbor-tide-cave-sluice` | 雾港·老涵洞尽头·潮穴老闸 | `fog-harbor-tide-cave-sluice.png` | ch014 |
@@ -249,7 +249,7 @@ npm run art:paint:finalize                                                      
 | `story-bg-fog-harbor-tide-nest-ruin` | 雾港·沉船残巢·战后 | `fog-harbor-tide-nest-ruin.png` | ch015 |
 | `story-bg-fog-harbor-tide-nest-burned` | 雾港·沉船残巢·烧巢 | `fog-harbor-tide-nest-burned.png` | ch015 |
 | `story-bg-fog-harbor-guild-dock` | 雾港·分会门前的码头·午后 | `fog-harbor-guild-dock.png` | ch015 ch023 ex007 |
-| `story-bg-fog-harbor-guild-shed` | 雾港·分会的仓内 | `fog-harbor-guild-shed.png` | ch015 |
+| `story-bg-fog-harbor-guild-shed` | 雾港·分会的仓内 | `fog-harbor-guild-shed.png` | ch015 ex011 |
 | `story-bg-white-tower-morning-gate` | 白塔圣都·晨门·上午 | `white-tower-morning-gate.png` | ch016 |
 | `story-bg-white-tower-morning-gate-dusk` | 白塔圣都·晨门·黄昏 | `white-tower-morning-gate-dusk.png` | ch016 |
 | `story-bg-white-tower-registry-hall` | 白塔·册厅 | `white-tower-registry-hall.png` | ch016 ch029 |
@@ -260,23 +260,23 @@ npm run art:paint:finalize                                                      
 | `story-bg-starsong-garden-predawn` | 星歌花园·天未亮 | `starsong-garden-predawn.png` | ch017 |
 | `story-bg-starsong-garden-dawn` | 星歌花园·黎明 | `starsong-garden-dawn.png` | ch017 |
 | `story-bg-white-tower-outer-court-frost` | 白塔·外庭·霜 | `white-tower-outer-court-frost.png` | ch017 ch018 |
-| `story-bg-holy-city-pilgrim-hostel-day` | 白塔圣都·朝圣者旅舍·白天 | `holy-city-pilgrim-hostel-day.png` | ch018 |
+| `story-bg-holy-city-pilgrim-hostel-day` | 白塔圣都·朝圣者旅舍·白天 | `holy-city-pilgrim-hostel-day.png` | ch018 ex015 |
 | `story-bg-white-tower-outer-court-thawed` | 白塔·外庭·正午 | `white-tower-outer-court-thawed.png` | ch018 |
 | `story-bg-white-tower-seven-angle-hall` | 白塔·七角殿 | `white-tower-seven-angle-hall.png` | ch019 ch029 |
-| `story-bg-white-tower-outer-court-dusk` | 白塔·外庭·黄昏 | `white-tower-outer-court-dusk.png` | ch019 ch020 ex005 |
-| `story-bg-white-tower-outer-court-night` | 白塔·外庭·夜 | `white-tower-outer-court-night.png` | ch019 ch020 |
+| `story-bg-white-tower-outer-court-dusk` | 白塔·外庭·黄昏 | `white-tower-outer-court-dusk.png` | ch019 ch020 ex005 ex019 |
+| `story-bg-white-tower-outer-court-night` | 白塔·外庭·夜 | `white-tower-outer-court-night.png` | ch019 ch020 ex019 |
 | `story-bg-white-tower-underground-archive` | 册厅底下·地下档案库 | `white-tower-underground-archive.png` | ch020 |
-| `story-bg-white-tower-outer-court-day` | 白塔·外庭·白天 | `white-tower-outer-court-day.png` | ch021 ex004 |
+| `story-bg-white-tower-outer-court-day` | 白塔·外庭·白天 | `white-tower-outer-court-day.png` | ch021 ex004 ex016 ex019 |
 | `story-bg-arch-tide-gate-sanctuary` | 拱潮门下·护界院 | `arch-tide-gate-sanctuary.png` | ch021 |
 | `story-bg-arch-tide-gate-channel` | 拱潮门·水道 | `arch-tide-gate-channel.png` | ch021 |
 | `story-bg-canal-bank-dawn` | 城外运河的堤岸·黎明 | `canal-bank-dawn.png` | ch021 |
-| `story-bg-north-slope-camp-night` | 北山缓坡·营地·夜 | `north-slope-camp-night.png` | ch022 |
+| `story-bg-north-slope-camp-night` | 北山缓坡·营地·夜 | `north-slope-camp-night.png` | ch022 ex018 ex021 |
 | `story-bg-north-hill-cave` | 守羊洞里·北山营地 | `north-hill-cave.png` | ch022 |
 | `story-bg-verdant-waterway-night` | 往绿镜城的水路·夜 | `verdant-waterway-night.png` | ch023 |
 | `story-bg-verdant-mirror-vine-gate` | 绿镜城水门·镜藤 | `verdant-mirror-vine-gate.png` | ch023 |
 | `story-bg-verdant-council-hall` | 绿镜城议会厅 | `verdant-council-hall.png` | ch023 |
 | `story-bg-fog-marsh-edge` | 沼林边·石台 | `fog-marsh-edge.png` | ch023 |
-| `story-bg-verdant-camp-night` | 绿镜城外的营地·夜 | `verdant-camp-night.png` | ch023 |
+| `story-bg-verdant-camp-night` | 绿镜城外的营地·夜 | `verdant-camp-night.png` | ch023 ex014 |
 | `story-bg-ash-pass-far` | 灰烬关·远景 | `ash-pass-far.png` | ch024 |
 | `story-bg-ash-pass-camp-night` | 灰烬关下·营地·夜 | `ash-pass-camp-night.png` | ch024 |
 | `story-bg-ash-pass-camp-day` | 灰烬关下·营地·白天 | `ash-pass-camp-day.png` | ch024 |
@@ -284,7 +284,7 @@ npm run art:paint:finalize                                                      
 | `story-bg-ash-pass-throat` | 灰烬关·山口里 | `ash-pass-throat.png` | ch024 |
 | `story-bg-frostbell-far` | 霜铃城·远景 | `frostbell-far.png` | ch025 |
 | `story-bg-frostbell-gate` | 霜铃城·城门 | `frostbell-gate.png` | ch025 |
-| `story-bg-frostbell-camp-night` | 霜铃城外·营地·夜 | `frostbell-camp-night.png` | ch025 |
+| `story-bg-frostbell-camp-night` | 霜铃城外·营地·夜 | `frostbell-camp-night.png` | ch025 ex020 |
 | `story-bg-ice-archive` | 冰库 | `ice-archive.png` | ch025 |
 | `story-bg-ice-archive-deep` | 冰库·最深处 | `ice-archive-deep.png` | ch025 |
 | `story-bg-furnace-city-far` | 衡炉城·远景 | `furnace-city-far.png` | ch026 |
@@ -343,11 +343,11 @@ npm run art:paint:finalize                                                      
 | `story-bg-fog-harbor-tide-cave-empty` | 雾港·潮穴·退潮 | `fog-harbor-tide-cave-empty.png` | ch015 |
 | `story-bg-arch-tide-gate-sanctuary-cells` | 天牢·拱潮门下的护界院 | `arch-tide-gate-sanctuary-cells.png` | ch029 ch030 |
 | `story-bg-arch-tide-waterway-mouth` | 拱潮门·水道口 | `arch-tide-waterway-mouth.png` | ch029 |
-| `story-bg-fog-harbor-bridge-inn-hall` | 雾港·桥头旅店·一楼食堂 | `fog-harbor-bridge-inn-hall.png` | ex001 |
-| `story-bg-fog-harbor-bridge-inn-hall-night` | 雾港·桥头旅店·一楼食堂·打烊 | `fog-harbor-bridge-inn-hall-night.png` | ex001 |
+| `story-bg-fog-harbor-bridge-inn-hall` | 雾港·桥头旅店·一楼食堂 | `fog-harbor-bridge-inn-hall.png` | ex001 ex017 |
+| `story-bg-fog-harbor-bridge-inn-hall-night` | 雾港·桥头旅店·一楼食堂·打烊 | `fog-harbor-bridge-inn-hall-night.png` | ex001 ex017 |
 | `story-bg-fog-harbor-sandbar` | 雾港外海·沙洲·退潮 | `fog-harbor-sandbar.png` | ex002 |
 | `story-bg-fog-harbor-sandbar-dusk` | 雾港外海·沙洲·黄昏涨潮 | `fog-harbor-sandbar-dusk.png` | ex002 |
-| `story-bg-white-tower-arcade-street` | 白塔圣都·朝圣者拱廊街 | `white-tower-arcade-street.png` | ex003 |
+| `story-bg-white-tower-arcade-street` | 白塔圣都·朝圣者拱廊街 | `white-tower-arcade-street.png` | ex003 ex015 |
 | `story-bg-white-tower-arcade-dress-shop` | 白塔·拱廊街·铸金商会礼服店 | `white-tower-arcade-dress-shop.png` | ex003 |
 | `story-bg-holy-city-knights-drill-ground` | 白塔圣都·骑士团演武场·白天 | `holy-city-knights-drill-ground.png` | ex004 |
 | `story-bg-holy-city-knights-drill-ground-dusk` | 白塔圣都·骑士团演武场·黄昏 | `holy-city-knights-drill-ground-dusk.png` | ex004 |
@@ -355,10 +355,10 @@ npm run art:paint:finalize                                                      
 | `story-bg-white-tower-outer-court-bathhouse` | 白塔·外庭浴场·蒸汽 | `white-tower-outer-court-bathhouse.png` | ex005 |
 | `story-bg-north-slope-camp-festival` | 北山缓坡·营地·新历祭 | `north-slope-camp-festival.png` | ex006 |
 | `story-bg-north-slope-camp-festival-night` | 北山缓坡·营地·新历祭之夜 | `north-slope-camp-festival-night.png` | ex006 |
-| `story-bg-fog-harbor-market-day` | 雾港·市集·白天 | `fog-harbor-market-day.png` | ex007 |
-| `story-bg-fog-harbor-shadow-market` | 雾港·影市 | `fog-harbor-shadow-market.png` | ex007 |
+| `story-bg-fog-harbor-market-day` | 雾港·市集·白天 | `fog-harbor-market-day.png` | ex007 ex013 |
+| `story-bg-fog-harbor-shadow-market` | 雾港·影市 | `fog-harbor-shadow-market.png` | ex007 ex013 |
 | `story-bg-north-slope-camp-anniversary-dusk` | 北山缓坡·营地·黄昏的长桌 | `north-slope-camp-anniversary-dusk.png` | ex008 |
-| `story-bg-north-slope-camp-anniversary-night` | 北山缓坡·营地·灯下的长桌 | `north-slope-camp-anniversary-night.png` | ex008 |
+| `story-bg-north-slope-camp-anniversary-night` | 北山缓坡·营地·灯下的长桌 | `north-slope-camp-anniversary-night.png` | ex008 ex021 |
 | `story-bg-verdant-south-beach` | 翠影南岸·海滩 | `verdant-south-beach.png` | ex009 |
 | `story-bg-verdant-river-mouth-dragonboat` | 翠影南岸·河口·龙舟祭 | `verdant-river-mouth-dragonboat.png` | ex009 |
 | `story-bg-if-modern-office` | IF·平行现代·办公室 | `if-modern-office.png` | ex010 |
@@ -383,6 +383,12 @@ npm run art:paint:finalize                                                      
 | `story-bg-memory-space` | 记忆空间·共鸣 | `memory-space.png` | g013 |
 | `story-bg-nox-observatory-dawn` | 诺克斯观测所·黎明 | `nox-observatory-dawn.png` | g014 |
 | `story-bg-silver-rail-window-dusk` | 银轨号·车窗旁·黄昏 | `silver-rail-window-dusk.png` | g015 |
+| `story-bg-fog-harbor-old-bathhouse` | 雾港·旧浴场·镜厅 | `fog-harbor-old-bathhouse.png` | ex012 |
+| `story-bg-fog-harbor-backstreet-day` | 雾港·排水区的后街·白天 | `fog-harbor-backstreet-day.png` | ex011 |
+| `story-bg-holy-city-morning-market` | 白塔圣都·晨市 | `holy-city-morning-market.png` | ex015 |
+| `story-bg-white-tower-nameless-ward` | 白塔·无名病房 | `white-tower-nameless-ward.png` | ex016 |
+| `story-bg-verdant-mirror-street-day` | 绿镜城·活藤街·白天 | `verdant-mirror-street-day.png` | ex014 |
+| `story-bg-frostbell-camp-day` | 霜铃城外·营地·白天 | `frostbell-camp-day.png` | ex020 |
 
 ### 剧情胸像（`story-npc`，128 张）
 
@@ -390,15 +396,15 @@ npm run art:paint:finalize                                                      
 
 | 任务ID | 名称 | 交付文件 | 用途 / 出现章节 |
 |---|---|---|---|
-| `story-npc-aku` | 亚克 | `aku.png` | ch000 ch001 ch002 ch003 ch004 ch005 ch006 ch012 ch015 ch016 ch017 ch029 ch030 ex001 ex003 ex005 ex006 ex007 ex009 g001 g006 |
+| `story-npc-aku` | 亚克 | `aku.png` | ch000 ch001 ch002 ch003 ch004 ch005 ch006 ch012 ch015 ch016 ch017 ch029 ch030 ex001 ex003 ex005 ex006 ex007 ex009 ex011 g001 g006 |
 | `story-npc-erin` | 艾琳 | `erin.png` | ch000 |
 | `story-npc-toby` | 托比 | `toby.png` | ch000 ch001 ch022 ex006 |
 | `story-npc-mara` | 玛拉 | `mara.png` | ch000 ch004 ch005 ch022 ch030 ex006 ex008 |
 | `story-npc-borin` | 伯伦 | `borin.png` | ch000 ch003 |
-| `story-npc-horn` | 霍恩 | `horn.png` | ch000 ch001 ch022 ch030 ex006 |
+| `story-npc-horn` | 霍恩 | `horn.png` | ch000 ch001 ch022 ch030 ex006 ex018 |
 | `story-npc-kern` | 白·可恩 | `kern.png` | ch001 ch022 ch023 ch024 ch025 ch026 ch027 ch028 ch029 ch030 ex006 |
 | `story-npc-maeve` | 梅芙 | `maeve.png` | ch002 ch003 ch004 ch005 |
-| `story-npc-lia` | 莉亚 | `lia.png` | ch002 ch003 ch004 ch005 ch006 ch007 ch008 ch009 ch010 ch011 ch012 ch013 ch014 ch015 ch016 ch017 ch018 ch019 ch020 ch021 ch022 ch023 ch024 ch025 ch026 ch027 ch028 ch029 ch030 ex001 ex002 ex003 ex006 ex008 ex009 ex010 g001 g002 g003 g004 g005 g006 g007 g008 g009 g010 g011 g012 g013 g014 g015 |
+| `story-npc-lia` | 莉亚 | `lia.png` | ch002 ch003 ch004 ch005 ch006 ch007 ch008 ch009 ch010 ch011 ch012 ch013 ch014 ch015 ch016 ch017 ch018 ch019 ch020 ch021 ch022 ch023 ch024 ch025 ch026 ch027 ch028 ch029 ch030 ex001 ex002 ex003 ex006 ex008 ex009 ex010 ex011 ex012 ex015 ex017 ex018 ex020 ex021 g001 g002 g003 g004 g005 g006 g007 g008 g009 g010 g011 g012 g013 g014 g015 |
 | `story-npc-rocky` | 罗奇 | `rocky.png` | ch002 ch003 |
 | `story-npc-blackrobe` | 黑袍人 | `blackrobe.png` | ch000 |
 | `story-npc-dragon` | 黑龙 | `dragon.png` | （暂无章节使用） |
@@ -409,11 +415,11 @@ npm run art:paint:finalize                                                      
 | `story-npc-goblin_chief` | 哥布林咒徒长 | `goblin_chief.png` | ch005 |
 | `story-npc-marsh_ogre` | 沼地食人魔 | `marsh_ogre.png` | ch006 |
 | `story-npc-caravan_leader` | 领队 | `caravan_leader.png` | ch006 ch007 ch008 |
-| `story-npc-mia` | 米娅 | `mia.png` | ch007 ch008 ch009 ch010 ch011 ch012 ch013 ch014 ch015 ch016 ch017 ch018 ch019 ch020 ch021 ch022 ch023 ch024 ch025 ch026 ch027 ch028 ch029 ch030 ex001 ex002 ex003 ex004 ex006 ex008 ex009 ex010 g001 g002 g003 g004 g005 g006 g007 g008 g009 g010 g011 g012 g013 g014 g015 |
+| `story-npc-mia` | 米娅 | `mia.png` | ch007 ch008 ch009 ch010 ch011 ch012 ch013 ch014 ch015 ch016 ch017 ch018 ch019 ch020 ch021 ch022 ch023 ch024 ch025 ch026 ch027 ch028 ch029 ch030 ex001 ex002 ex003 ex004 ex006 ex008 ex009 ex010 ex011 ex012 ex013 ex017 ex018 ex019 ex021 g001 g002 g003 g004 g005 g006 g007 g008 g009 g010 g011 g012 g013 g014 g015 |
 | `story-npc-scrap_picker` | 拾铁机 | `scrap_picker.png` | ch007 |
-| `story-npc-ines` | 伊涅丝 | `ines.png` | ch009 ch010 ch012 ch013 ch014 ch015 ch023 ch027 ex007 |
+| `story-npc-ines` | 伊涅丝 | `ines.png` | ch009 ch010 ch012 ch013 ch014 ch015 ch023 ch027 ex007 ex011 ex013 |
 | `story-npc-tide_cavity_mother` | 潮腔母虫 | `tide_cavity_mother.png` | ch010 |
-| `story-npc-serena` | 塞雷娜 | `serena.png` | ch011 ch012 ch028 ch029 ch030 ex002 ex003 ex006 ex007 ex008 ex009 ex010 g001 g002 g003 g004 g005 g006 g007 g008 g009 g010 g011 g012 g013 g014 g015 |
+| `story-npc-serena` | 塞雷娜 | `serena.png` | ch011 ch012 ch028 ch029 ch030 ex002 ex003 ex006 ex007 ex008 ex009 ex010 ex011 ex012 ex013 ex017 ex021 g001 g002 g003 g004 g005 g006 g007 g008 g009 g010 g011 g012 g013 g014 g015 |
 | `story-npc-scar_echo` | 蚀痕残响 | `scar_echo.png` | ch011 |
 | `story-npc-scar_echo_15` | 蚀痕残响 | `scar_echo_15.png` | ch011 |
 | `story-npc-mirror_apprentice` | 镜咒学徒 | `mirror_apprentice.png` | ch012 |
@@ -422,25 +428,25 @@ npm run art:paint:finalize                                                      
 | `story-npc-serena_staff_wrapped` | 塞雷娜 | `serena_staff_wrapped.png` | ch012 ch013 ch014 ch015 ch016 ch017 ch018 ch019 ch020 ch021 ch022 ch023 ch024 ch025 ch026 ch027 ch028 ch029 |
 | `story-npc-golden_assassin` | 金发刺客 | `golden_assassin.png` | ch013 ch015 ch020 |
 | `story-npc-plains_woman` | 晨祷平原来的女人 | `plains_woman.png` | ch014 |
-| `story-npc-oda` | 欧妲 | `oda.png` | ch014 ch015 |
+| `story-npc-oda` | 欧妲 | `oda.png` | ch014 ch015 ex011 |
 | `story-npc-tide_king` | 潮虫王 | `tide_king.png` | ch015 |
 | `story-npc-tide_king_split` | 潮虫王 | `tide_king_split.png` | （暂无章节使用） |
 | `story-npc-serena_copy` | 塞雷娜 | `serena_copy.png` | ch015 |
 | `story-npc-relief_officer` | 赈灾司的官 | `relief_officer.png` | ch015 |
-| `story-npc-evelyn` | 伊芙琳 | `evelyn.png` | ch017 ch018 ch019 ch020 ch021 ch022 ch023 ch024 ch025 ch027 ch028 ch029 ch030 ex003 ex004 ex005 ex006 ex009 ex010 |
+| `story-npc-evelyn` | 伊芙琳 | `evelyn.png` | ch017 ch018 ch019 ch020 ch021 ch022 ch023 ch024 ch025 ch027 ch028 ch029 ch030 ex003 ex004 ex005 ex006 ex009 ex010 ex014 ex015 ex016 ex021 |
 | `story-npc-emperor` | 皇帝 | `emperor.png` | ch016 ch019 ch021 ch029 |
 | `story-npc-rowena` | 洛温娜 | `rowena.png` | ch016 ch019 ch029 |
 | `story-npc-celestine` | 塞莱斯汀 | `celestine.png` | ch016 ch019 ch021 ch029 ch030 |
 | `story-npc-severin` | 塞弗林 | `severin.png` | ch016 ch019 ch021 ch029 ch030 |
 | `story-npc-ceremony_officer` | 白面的礼仪官 | `ceremony_officer.png` | ch016 ch017 ch021 |
 | `story-npc-archivist` | 典册官 | `archivist.png` | ch016 ch019 ch020 |
-| `story-npc-aila` | 艾拉 | `aila.png` | ch017 ch018 ch019 ch020 ch021 ch023 ch027 ch029 ch030 ex004 ex006 ex009 ex010 |
-| `story-npc-freya` | 芙蕾娅 | `freya.png` | ch018 ch019 ch020 ch021 ch023 ch024 ch025 ch027 ch028 ch029 ch030 ex004 ex005 ex006 ex009 ex010 |
-| `story-npc-nila` | 妮拉 | `nila.png` | （暂无章节使用） |
-| `story-npc-envoy_chief` | 使团长 | `envoy_chief.png` | ch018 ex005 |
-| `story-npc-ophelia` | 奥菲莉亚 | `ophelia.png` | ch019 ch020 ch021 ch023 ch024 ch026 ch027 ch028 ch029 ch030 ex005 ex006 ex007 ex009 ex010 |
+| `story-npc-aila` | 艾拉 | `aila.png` | ch017 ch018 ch019 ch020 ch021 ch023 ch027 ch029 ch030 ex004 ex006 ex009 ex010 ex015 ex016 ex021 |
+| `story-npc-freya` | 芙蕾娅 | `freya.png` | ch018 ch019 ch020 ch021 ch023 ch024 ch025 ch027 ch028 ch029 ch030 ex004 ex005 ex006 ex009 ex010 ex019 ex020 ex021 |
+| `story-npc-nila` | 妮拉 | `nila.png` | ex019 |
+| `story-npc-envoy_chief` | 使团长 | `envoy_chief.png` | ch018 ex005 ex019 |
+| `story-npc-ophelia` | 奥菲莉亚 | `ophelia.png` | ch019 ch020 ch021 ch023 ch024 ch026 ch027 ch028 ch029 ch030 ex005 ex006 ex007 ex009 ex010 ex016 ex021 |
 | `story-npc-raymond` | 雷蒙德 | `raymond.png` | ch019 ch029 |
-| `story-npc-lilith` | 莉莉丝 | `lilith.png` | ch020 ch021 ch022 ch023 ch025 ch027 ch028 ch029 ch030 ex006 ex007 ex009 ex010 |
+| `story-npc-lilith` | 莉莉丝 | `lilith.png` | ch020 ch021 ch022 ch023 ch025 ch027 ch028 ch029 ch030 ex006 ex007 ex009 ex010 ex013 ex014 ex021 |
 | `story-npc-inge` | 茵格 | `inge.png` | ch021 ch022 |
 | `story-npc-grave` | 格雷夫 | `grave.png` | ch022 ch024 ch028 ch029 ch030 |
 | `story-npc-pike` | 派克 | `pike.png` | ch022 |

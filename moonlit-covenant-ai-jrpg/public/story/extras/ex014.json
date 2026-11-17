@@ -1,0 +1,3107 @@
+{
+  "id": "ex014",
+  "number": 14,
+  "kind": "sidequest",
+  "scriptId": "EX014_I_WANT_TO_BE_HER",
+  "title": "支线四｜我也想成为她",
+  "shortTitle": "我也想成为她",
+  "estimatedMinutes": 9,
+  "source": "剧本/番外/ex014我也想成為她.md",
+  "unlockAfter": "ch023",
+  "window": "正式23–25之间",
+  "cast": [
+    "lilith",
+    "evelyn"
+  ],
+  "costumeTypes": [],
+  "canon": {
+    "flags": {
+      "FLAG_CH000_HEMAI_DESTROYED": true,
+      "FLAG_CH000_BLACK_DRAGON_SEEN": true,
+      "FLAG_CH000_MOTHER_STATUS_UNKNOWN": true,
+      "FLAG_CH000_TOBY_SURVIVED_CAVE": true,
+      "FLAG_CH000_DRAGON_VOW": true,
+      "FLAG_CH000_DRAGON_REMAINS_OVER_HEMAI": true,
+      "FLAG_CH001_BLACK_DRAGON_REPELLED_BY_KERN": true,
+      "FLAG_CH001_BLACK_DRAGON_ABDOMEN_WOUNDED": true,
+      "FLAG_CH001_MOTHER_DEATH_CONFIRMED": true,
+      "FLAG_CH001_TOBY_UNDER_KERN_GUARDIANSHIP": true,
+      "FLAG_CH001_ARK_RECEIVED_GUILD_LETTER": true,
+      "FLAG_CH001_KERN_MENTOR_IDEAL": true,
+      "FLAG_CH002_GUILD_REGISTERED": true,
+      "FLAG_CH002_LEAH_FIRST_SEEN": true,
+      "FLAG_CH002_THIEF_CAPTURED": true,
+      "FLAG_CH002_BLACK_CRYSTAL_EVIDENCE_RECOVERED": true,
+      "FLAG_CH002_FIRE_RESONANCE_FLICKER": true,
+      "FLAG_CH003_TEMP_PARTY_FORMED": true,
+      "FLAG_CH003_LEAH_SIGNED_SUPERVISION": true,
+      "FLAG_CH003_THIRD_ACCOMPLICE_CAPTURED": true,
+      "FLAG_CH003_SEVEN_RING_MARK_SEEN": true,
+      "FLAG_CH003_BLACK_CRYSTAL_CRATE_SEIZED": true,
+      "FLAG_CH003_HEMAI_SURVIVORS_TARGETED": true,
+      "FLAG_CH003_OLD_MILL_LEAD": true,
+      "FLAG_CH003_MILL_ASSAULT_POSTPONED": true,
+      "FLAG_CH003_FIRST_JOINT_MISSION_COMPLETE": true,
+      "FLAG_CH003_FIRE_RESONANCE_WARMTH": true,
+      "FLAG_CH003_GUILD_COLLAB_STAMPED": true,
+      "FLAG_CH003_LEAH_KNOWS_PLAYER_NAME": true,
+      "FLAG_CH003_RELIEF_CART_PASSED_WEST_GATE": true,
+      "FLAG_CH003_DRIVER_DESCRIBED": true,
+      "FLAG_CH003_SHIELD_SIGNALS_LEARNED": true,
+      "FLAG_CH003_SOUP_POT_SETTLED": true,
+      "FLAG_CH003_BARREL_DEDUCTED": true,
+      "FLAG_CH004_CORD_SIGNALS_LEARNED": true,
+      "FLAG_CH004_FENN_CONFIRMED_CHAIN_SWAP": true,
+      "FLAG_CH004_WEST_GATE_COSIGNED": true,
+      "FLAG_CH004_SENTRY_REPORT_HEARD": true,
+      "FLAG_CH004_MILL_INFILTRATED": true,
+      "FLAG_CH004_CHARGING_RACK_SEEN": true,
+      "FLAG_CH004_LEDGER_READ": true,
+      "FLAG_CH004_MARA_AND_DAUGHTER_FOUND": true,
+      "FLAG_CH004_KEY_ON_ACOLYTE": true,
+      "FLAG_CH004_TEARS_LIGHT_CRYSTALS": true,
+      "FLAG_CH004_CAPTIVES_REMAIN_IN_MILL": true,
+      "FLAG_CH004_ACOLYTE_SEEN": true,
+      "FLAG_CH004_RESCUE_WINDOW_CRATE_SWAP": true,
+      "FLAG_CH004_LEAH_LEARNED_HEMAI": true,
+      "FLAG_CH004_GUARDS_COMMITTED": true,
+      "FLAG_CH004_RESCUE_COMMISSION_POSTED": true,
+      "FLAG_CH005_WEST_GATE_COSIGNED": true,
+      "FLAG_CH005_PLAN_BRIEFED_AT_MILESTONE": true,
+      "FLAG_CH005_COLLAR_OWNER_REVEALED": true,
+      "FLAG_CH005_PEACE_STONES_NAMED": true,
+      "FLAG_CH005_CHAIN_SWAP_COMPLETED": true,
+      "FLAG_CH005_LEAH_PRESSED_CRATE": true,
+      "FLAG_CH005_CHIEF_COLLAR_DISABLED": true,
+      "FLAG_CH005_ACOLYTE_CAPTURED": true,
+      "FLAG_CH005_ROLL_CALL_ANSWERED": true,
+      "FLAG_CH005_MARA_AND_POLLY_RESCUED": true,
+      "FLAG_CH005_LEAD_MISTTIDE_MARSH": true,
+      "FLAG_CH005_EVIDENCE_TO_GUARD": true,
+      "FLAG_CH005_RESCUE_COMMISSION_COMPLETE": true,
+      "FLAG_CH005_FORMAL_PARTY_FORMED": true,
+      "FLAG_CH005_ESCORT_COMMISSION_POSTED": true,
+      "FLAG_CH005_MARA_POLLY_TO_NORTH_CAMP": true,
+      "FLAG_CH006_ESCORT_COMMISSION_ACCEPTED": true,
+      "FLAG_CH006_SUPPLY_TUTORIAL_DONE": true,
+      "FLAG_CH006_RUBBING_COPY_CARRIED": true,
+      "FLAG_CH006_MARSH_OGRE_UNCOLLARED": true,
+      "FLAG_CH006_SHIELD_UNDER_WHEEL": true,
+      "FLAG_CH006_UNSPOKEN_SYNC": true,
+      "FLAG_CH006_SALT_MARSH_BRIDGE_COLLAPSED": true,
+      "FLAG_CH006_LEAH_BOUNDARY_STATED": true,
+      "FLAG_CH006_ESCORT_COMMISSION_COMPLETE": true,
+      "FLAG_CH006_LEAH_CAKE_SEEN": true,
+      "FLAG_CH006_PARTY_CAMP_OPENED": true,
+      "FLAG_CH006_BLUE_EXPLOSION_SEEN": true,
+      "FLAG_CH006_GEAR_IN_CAKE": true,
+      "FLAG_CH007_FOREST_EDGE_ENTERED": true,
+      "FLAG_CH007_MIA_FIRST_SEEN": true,
+      "FLAG_CH007_UNPLANNED_DISASSEMBLY_NAMED": true,
+      "FLAG_CH007_MIA_NOTED_SEVEN_LAWS": true,
+      "FLAG_CH007_SAFETY_RULES_CLASHED": true,
+      "FLAG_CH007_RETREAT_TO_STAKE": true,
+      "FLAG_CH007_CATCH_IT_WHOLE": true,
+      "FLAG_CH007_THREE_PERSON_FORMATION": true,
+      "FLAG_CH007_TAUNT_INTRODUCED": true,
+      "FLAG_CH007_SCRAP_PICKER_STOPPED": true,
+      "FLAG_CH007_INCIDENT_LOGGED": true,
+      "FLAG_CH007_GEAR_NUMBER_SEEN": true,
+      "FLAG_CH007_GEAR_CRACKED": true,
+      "FLAG_CH007_ERODED_TIDE_CRYSTAL_FOUND": true,
+      "FLAG_CH007_CORE_UNNUMBERED": true,
+      "FLAG_CH007_SEVEN_RING_MATCH_SEEN": true,
+      "FLAG_CH008_RECORDS_REQUESTED": true,
+      "FLAG_CH008_MIA_AS_WITNESS": true,
+      "FLAG_CH008_EAVE_REPAIRED": true,
+      "FLAG_CH008_MIA_MADE_AMENDS": true,
+      "FLAG_CH008_TIDE_STATION_REACHED": true,
+      "FLAG_CH008_GEAR_RETURNED_TO_WINCH": true,
+      "FLAG_CH008_PLANNED_DISASSEMBLY": true,
+      "FLAG_CH008_ONE_MILLIMETER": true,
+      "FLAG_CH008_TIDE_DOOR_LOCKED": true,
+      "FLAG_CH008_RECORDS_RETRIEVED": true,
+      "FLAG_CH008_CORE_SWAP_PROVEN": true,
+      "FLAG_CH008_RINGS_GROWN_NOT_CARVED": true,
+      "FLAG_CH008_MIA_SELF_REPORTED": true,
+      "FLAG_CH008_INCIDENT_SETTLED": true,
+      "FLAG_CH008_NAMES_EXCHANGED": true,
+      "FLAG_CH008_LEAH_SHARED_CASE_FACTS": true,
+      "FLAG_CH008_BLACK_CRYSTAL_APPRAISED": true,
+      "FLAG_CH008_PEACE_STONE_EXPLAINED": true,
+      "FLAG_CH008_CRYSTAL_TO_MIA": true,
+      "FLAG_CH008_MIA_GUEST_TO_HARBOR": true,
+      "FLAG_CH008_THREE_NAMES_LOGGED": true,
+      "FLAG_CH008_SHARED_HEARTBEAT_DETECTED": true,
+      "FLAG_CH008_ACT1_CLOSED": true,
+      "FLAG_CH009_ENTERED_FOG_HARBOR": true,
+      "FLAG_CH009_ESCORT_PAID": true,
+      "FLAG_CH009_INES_MET": true,
+      "FLAG_CH009_RESCUE_RULE_TOLD": true,
+      "FLAG_CH009_GUEST_UNDER_LEAH": true,
+      "FLAG_CH009_WITNESS_NAMES_KEPT": true,
+      "FLAG_CH009_MISSING_CASE_TAKEN": true,
+      "FLAG_CH009_DIVISION_OF_LABOR": true,
+      "FLAG_CH009_CRYSTAL_LAYERS_READ": true,
+      "FLAG_CH009_GREY_CORE_DOWNSTREAM": true,
+      "FLAG_CH009_PEOPLE_FIRST": true,
+      "FLAG_CH009_TESTIMONY_LINKED": true,
+      "FLAG_CH009_SENT_TO_WITNESS": true,
+      "FLAG_CH009_BATH_TESTIMONY": true,
+      "FLAG_CH009_MIRROR_TESTIMONY_LOGGED": true,
+      "FLAG_CH009_DOCK_WORKER_TAKEN": true,
+      "FLAG_CH009_GAFF_WITH_LEAH": true,
+      "FLAG_CH009_DRAIN_NOT_ENTERED": true,
+      "FLAG_CH009_LEDGER_LINE_FINISHED": true,
+      "FLAG_CH009_BELOW_TIDE_OFFBEAT": true,
+      "FLAG_CH010_LEGAL_ENTRY": true,
+      "FLAG_CH010_PUMP_REVERSED_FOUND": true,
+      "FLAG_CH010_FEED_EVIDENCE_FOUND": true,
+      "FLAG_CH010_OUTBOUND_MARK_SEEN": true,
+      "FLAG_CH010_SEVENTEEN_FOUND": true,
+      "FLAG_CH010_GREY_OUTFLOW_TRACED": true,
+      "FLAG_CH010_MIA_SENT_TO_PUMP": true,
+      "FLAG_CH010_FOUR_RESCUED": true,
+      "FLAG_CH010_GAFF_RETURNED": true,
+      "FLAG_CH010_BLACK_STONES_TAKEN": true,
+      "FLAG_CH010_PUMP_STOPPED": true,
+      "FLAG_CH010_SEVENTEEN_CRACKED": true,
+      "FLAG_CH010_MIA_PEOPLE_FIRST": true,
+      "FLAG_CH010_MIA_RESCUE_MISSION_COMPLETE": true,
+      "FLAG_CH010_MOTHER_RETREATED": true,
+      "FLAG_CH010_HEARTBEAT_STILL_BELOW": true,
+      "FLAG_CH010_BELOW_TIDE_STILL": true,
+      "FLAG_CH010_RESCUE_COLUMN_FILLED": true,
+      "FLAG_CH010_ECLIPSE_FEAST_NAMED": true,
+      "FLAG_CH010_SAME_LEDGER": true,
+      "FLAG_CH010_MIA_JOINED": true,
+      "FLAG_CH010_MIA_CONDITION_LOGGED": true,
+      "FLAG_CH010_CASE_SHARED_WITH_MIA": true,
+      "FLAG_CH010_LODGED_BRIDGEHEAD_INN": true,
+      "FLAG_CH010_MIRROR_EYES": true,
+      "FLAG_CH010_OUTSIDER_NAMED": true,
+      "FLAG_CH009_PIPE_TIDE_HEARD": true,
+      "FLAG_CH011_SEEDS_SETTLED": true,
+      "FLAG_CH011_SCAR_FLARE": true,
+      "FLAG_CH011_SEVEN_HOLES_SHOWN": true,
+      "FLAG_CH011_DREAM_ENTERED": true,
+      "FLAG_CH011_THREADS_CUT": true,
+      "FLAG_CH011_LEAH_KNOCKED_THREE": true,
+      "FLAG_CH011_LEAH_DREW_ON_PERSON": true,
+      "FLAG_CH011_SERENA_MET": true,
+      "FLAG_CH011_SERENA_NAMED": true,
+      "FLAG_CH011_SERENA_LOOKED": true,
+      "FLAG_CH011_NOT_HER_TONIGHT": true,
+      "FLAG_CH011_SEVEN_DOORS_SPOKEN": true,
+      "FLAG_CH011_REGISTRAR_LINE": true,
+      "FLAG_CH011_NO_PEEK_DEMANDED": true,
+      "FLAG_CH011_SERENA_VANISHED": true,
+      "FLAG_CH011_BLACK_FEATHER_MAP": true,
+      "FLAG_CH011_TIDE_CAVE_MARKED": true,
+      "FLAG_CH011_MIRRORS_COVERED": true,
+      "FLAG_CH012_SERENA_WALKED_DOOR": true,
+      "FLAG_CH012_BATH_CONFESSED": true,
+      "FLAG_CH012_MIRROR_PURPLE_MATCHED": true,
+      "FLAG_CH012_MORKAN_NAMED": true,
+      "FLAG_CH012_SERENA_JOINED": true,
+      "FLAG_CH012_SERENA_TERMS_LOGGED": true,
+      "FLAG_CH012_LATCH_SOLVED": true,
+      "FLAG_CH012_MIRROR_MEMORY_RULE": true,
+      "FLAG_CH012_SHADOW_BIND_UNLOCKED": true,
+      "FLAG_CH012_ROLL_CALL_VERIFIED": true,
+      "FLAG_CH012_APPRENTICE_CAUGHT": true,
+      "FLAG_CH012_TIDE_CAVE_TOMORROW_NIGHT": true,
+      "FLAG_CH012_INVERTED_STAR_SHOWN": true,
+      "FLAG_CH012_FIRST_COUNT_FOUR": true,
+      "FLAG_CH012_PASS_UNREAD": true,
+      "FLAG_CH012_LODGING_LIGHTHOUSE": true,
+      "FLAG_CH013_SERENA_ASKED_DREAM": true,
+      "FLAG_CH013_WINDOW_ATTACK": true,
+      "FLAG_CH013_GOLDEN_ASSASSIN_SEEN": true,
+      "FLAG_CH013_ASSASSIN_MOTIVE_HEARD": true,
+      "FLAG_CH013_THREE_WENT_OUT": true,
+      "FLAG_CH013_BOTH_FORBIDDEN": true,
+      "FLAG_CH013_HALF_CREST_DROPPED": true,
+      "FLAG_CH013_HALF_CREST_FOUND": true,
+      "FLAG_CH013_PASS_RETURNED": true,
+      "FLAG_CH013_ORDER_WARNING": true,
+      "FLAG_CH013_PASS_READ": true,
+      "FLAG_CH013_IMPERIAL_SEAL_SEEN": true,
+      "FLAG_CH013_ARCH_WAVE_IS_OFFICIAL_SEAL": true,
+      "FLAG_CH013_DEST_ARCH_TIDE_GATE": true,
+      "FLAG_CH013_WITNESS_NAME_LISTED": true,
+      "FLAG_CH014_WENT_DOWN_AT_EBB": true,
+      "FLAG_CH014_THREE_DOWN_ONE_GATE": true,
+      "FLAG_CH014_SLUICE_HELD": true,
+      "FLAG_CH014_TIDE_CAVE_ENTERED": true,
+      "FLAG_CH014_COCOONS_FOUND": true,
+      "FLAG_CH014_HEARTBEAT_IS_PEOPLE": true,
+      "FLAG_CH014_EMPTY_HOOKS_SEEN": true,
+      "FLAG_CH014_STONE_DOOR_SEEN": true,
+      "FLAG_CH014_NINE_RESCUED": true,
+      "FLAG_CH014_ACOLYTE_CAPTURED": true,
+      "FLAG_CH014_STONE_DOOR_CLOSED": true,
+      "FLAG_CH014_QUICK_PATCH_SHOWN": true,
+      "FLAG_CH014_SLUICE_DROPPED_BEHIND": true,
+      "FLAG_CH014_COUNT_FOUR_AT_GATE": true,
+      "FLAG_CH014_GRADE_TAGS_SEEN": true,
+      "FLAG_CH014_TAGS_CUT_WITH_CONSENT": true,
+      "FLAG_CH014_BIG_THREE_ONE_FOUND": true,
+      "FLAG_CH014_ODA_NAMED": true,
+      "FLAG_CH014_INES_COUNTED": true,
+      "FLAG_CH014_VOICE_FROM_BELOW": true,
+      "FLAG_CH014_SLOW_HEARTBEAT_BELOW": true,
+      "FLAG_CH015_WENT_DOWN_AT_DAWN": true,
+      "FLAG_CH015_STONE_DOOR_OPENED": true,
+      "FLAG_CH015_NEST_ENTERED": true,
+      "FLAG_CH015_THREE_COCOONS_FOUND": true,
+      "FLAG_CH015_TIDE_KING_SEEN": true,
+      "FLAG_CH015_TIDE_KING_STOPPED": true,
+      "FLAG_CH015_COCOONS_RESCUED": true,
+      "FLAG_CH015_REVERSE_MOON_SHOWN": true,
+      "FLAG_CH015_MIRROR_STEP_SHOWN": true,
+      "FLAG_CH015_ASSASSIN_GUEST": true,
+      "FLAG_CH015_NELOSA_NAMED": true,
+      "FLAG_CH015_ROOT_RING_REFUSED_ONE_HAND": true,
+      "FLAG_CH015_SIN_SHARD_TAKEN": true,
+      "FLAG_CH015_CHART_SHARD_FOUND": true,
+      "FLAG_CH015_INES_COUNTED": true,
+      "FLAG_CH015_RELIEF_OFFICE_CAME": true,
+      "FLAG_CH015_RELIEF_SEAL_MATCHED_PASS": true,
+      "FLAG_CH015_DOCK_PEOPLE_STOOD": true,
+      "FLAG_CH015_WHITE_TOWER_SUMMONS": true,
+      "FLAG_CH015_CROWN_SEAL_LIKE_DRAGON_SCAR": true,
+      "FLAG_CH015_ACT2_CLOSED": true,
+      "FLAG_CH015_BROOD_SAVED": true,
+      "FLAG_CH015_RETURNED_HOME_PROMISED": true,
+      "FLAG_CH016_ARRIVED_HOLY_CITY": true,
+      "FLAG_CH016_WEAPONS_LEFT_AT_GATE": true,
+      "FLAG_CH016_GATE_CLERK_SAW_COPPER": true,
+      "FLAG_CH016_DRAGON_NOTICE_SEEN": true,
+      "FLAG_CH016_REGISTRY_HALL_ENTERED": true,
+      "FLAG_CH016_GRADE_COLUMN_MATCHED": true,
+      "FLAG_CH016_MONITOR_SEAL_SEEN": true,
+      "FLAG_CH016_PAGE_PREMARKED": true,
+      "FLAG_CH016_COURT_MET": true,
+      "FLAG_CH016_EVELYN_SEEN": true,
+      "FLAG_CH016_TITLE_READ": true,
+      "FLAG_CH016_VESSEL_PAGE_SEEN": true,
+      "FLAG_CH016_CELESTINE_PAUSED": true,
+      "FLAG_CH016_EVELYN_ASKED_NAMES": true,
+      "FLAG_CH016_TERMS_OFFERED": true,
+      "FLAG_CH016_REGISTER_NOT_HANDED": true,
+      "FLAG_CH016_EMPEROR_WILL_SEND": true,
+      "FLAG_CH016_GATE_TALLY_SEEN": true,
+      "FLAG_CH016_SEVEN_CRACKS_HEARD": true,
+      "FLAG_CH016_EVELYN_NAMED": true,
+      "FLAG_CH016_VESSEL_LOGGED": true,
+      "FLAG_CH016_CONFISCATION_ORDERED": true,
+      "FLAG_CH016_LEDGER_GATE_LINE_STARTED": true,
+      "FLAG_CH016_RETURNED_HOME_KEPT_AT_COURT": true,
+      "FLAG_CH017_RUBBING_MADE": true,
+      "FLAG_CH017_NAMES_MEMORIZED": true,
+      "FLAG_CH017_AILA_MET": true,
+      "FLAG_CH017_CONFISCATION_SERVED": true,
+      "FLAG_CH017_STAR_CHART_NAMED": true,
+      "FLAG_CH017_KNIGHT_COMMANDER_NAMED": true,
+      "FLAG_CH017_RESIDENCE_ATTACKED": true,
+      "FLAG_CH017_DOCS_FIRST_ORDER_HEARD": true,
+      "FLAG_CH017_BLACK_CRYSTAL_SMOKE": true,
+      "FLAG_CH017_FIVE_OUT": true,
+      "FLAG_CH017_EVELYN_LAST_OUT": true,
+      "FLAG_CH017_STARSONG_HEAL_SHOWN": true,
+      "FLAG_CH017_ARCHIVE_BOX_TAKEN": true,
+      "FLAG_CH017_AILA_FIRST_CRACK": true,
+      "FLAG_CH017_DUEL_CHALLENGED": true,
+      "FLAG_CH017_RUBBING_STAKED": true,
+      "FLAG_CH017_CREST_SEEN": true,
+      "FLAG_CH017_DUEL_FOUGHT": true,
+      "FLAG_CH017_NAMES_RECITED": true,
+      "FLAG_CH017_ORDER_UNFINISHED": true,
+      "FLAG_CH017_EVELYN_JOINED": true,
+      "FLAG_CH017_SURVEILLANCE_DISCLOSED": true,
+      "FLAG_CH017_OUTER_COURT_FROST_SEEN": true,
+      "FLAG_CH017_RETURNED_HOME_KEPT": true,
+      "FLAG_CH017_EVELYN_PROMISE_SIGNED": true,
+      "FLAG_CH018_ENVOY_FROZEN_SEEN": true,
+      "FLAG_CH018_FREYA_MET": true,
+      "FLAG_CH018_FROST_FROM_VAULT": true,
+      "FLAG_CH018_DECREE_PASSED": true,
+      "FLAG_CH018_AILA_ARRIVED": true,
+      "FLAG_CH018_FROZEN_CAN_ANSWER": true,
+      "FLAG_CH018_ENVOY_THAWED": true,
+      "FLAG_CH018_LIGHT_LEAP_SHOWN": true,
+      "FLAG_CH018_ICE_LETTER_READ": true,
+      "FLAG_CH018_CRACK_HEARD_AGAIN": true,
+      "FLAG_CH018_FREYA_HID_HANDS": true,
+      "FLAG_CH018_AILA_JOINED": true,
+      "FLAG_CH018_NILA_NAMED": true,
+      "FLAG_CH018_ENVOY_STAYS": true,
+      "FLAG_CH018_HEARING_SUMMONED": true,
+      "FLAG_CH018_FREYA_PROMISE_SIGNED": true,
+      "FLAG_CH018_AILA_PROMISE_SIGNED": true,
+      "FLAG_CH018_EVELYN_PROMISE_KEPT": true,
+      "FLAG_CH019_HALL_ENTERED": true,
+      "FLAG_CH019_OPHELIA_MET": true,
+      "FLAG_CH019_SEVEN_ECHOES": true,
+      "FLAG_CH019_TESTIMONY_DEMANDED": true,
+      "FLAG_CH019_TESTIFIED": true,
+      "FLAG_CH019_FROST_RING_SHOWN": true,
+      "FLAG_CH019_AILA_DEFIED": true,
+      "FLAG_CH019_RAYMOND_SPOKE": true,
+      "FLAG_CH019_REVERSE_STANCE_SHOWN": true,
+      "FLAG_CH019_VESSEL_CONFINED": true,
+      "FLAG_CH019_TEARLIGHT_SHOWN": true,
+      "FLAG_CH019_SEVEN_LOCKS_READ": true,
+      "FLAG_CH019_NOAH_NAMED": true,
+      "FLAG_CH019_NOT_YET_SPOKEN": true,
+      "FLAG_CH019_FREYA_JOINED": true,
+      "FLAG_CH019_ROOFTOP_WATCHER": true,
+      "FLAG_CH019_AILA_QUESTION_SIGNED": true,
+      "FLAG_CH020_DRAGON_SMELLED_BELOW": true,
+      "FLAG_CH020_OPHELIA_JOINED": true,
+      "FLAG_CH020_ARCHIVE_ENTERED": true,
+      "FLAG_CH020_VALHALLA_NAMED": true,
+      "FLAG_CH020_TWO_LINES": true,
+      "FLAG_CH020_HOOD_FELL": true,
+      "FLAG_CH020_HOLY_DUEL_SHOWN": true,
+      "FLAG_CH020_DRAGON_BREATH_SHOWN": true,
+      "FLAG_CH020_LILITH_NAMED": true,
+      "FLAG_CH020_MASSACRE_ORDER_FOUND": true,
+      "FLAG_CH020_CLOSURE_FOUND": true,
+      "FLAG_CH020_LILITH_LEFT": true,
+      "FLAG_CH020_AILA_SAID_SISTER": true,
+      "FLAG_CH020_SIGN_OUT_SEEN": true,
+      "FLAG_CH020_ADELA_NAMED": true,
+      "FLAG_CH020_RETREAT_ORDER_FOUND": true,
+      "FLAG_CH020_MONITOR_LINE_SEEN": true,
+      "FLAG_CH020_LEAH_READ_FATHER": true,
+      "FLAG_CH020_NAMES_PENDING": true,
+      "FLAG_CH020_SUMMONS_BELL": true,
+      "FLAG_CH020_LILITH_PROMISE_SIGNED": true,
+      "FLAG_CH020_OPHELIA_ASK_SIGNED": true,
+      "FLAG_CH021_OFFERING_DECREE_SEEN": true,
+      "FLAG_CH021_EVELYN_REFUSED": true,
+      "FLAG_CH021_EIGHT_REFUSED": true,
+      "FLAG_CH021_LILITH_JOINED": true,
+      "FLAG_CH021_CELESTINE_KEY": true,
+      "FLAG_CH021_TEAMS_SET": true,
+      "FLAG_CH021_SANCTUARY_ENTERED": true,
+      "FLAG_CH021_CONSECRATION_BOOK_SEEN": true,
+      "FLAG_CH021_INGA_FOUND": true,
+      "FLAG_CH021_SPARK_LIGHT": true,
+      "FLAG_CH021_BREAKOUT_DONE": true,
+      "FLAG_CH021_PRAYER_BARRIER_SHOWN": true,
+      "FLAG_CH021_WING_GUARD_SHOWN": true,
+      "FLAG_CH021_CROWN_BIND_SEEN": true,
+      "FLAG_CH021_FIRST_NOT_RETURNED": true,
+      "FLAG_CH021_INGA_SAVED": true,
+      "FLAG_CH021_REBELLION_DECREE": true,
+      "FLAG_CH021_PLAINS_DELISTED": true,
+      "FLAG_CH021_HOMECOMING_REGISTER_BEGUN": true,
+      "FLAG_CH021_ACT3_CLOSED": true,
+      "FLAG_CH021_GATE_TALLY_ZEROED": true,
+      "FLAG_CH021_EVELYN_NO_OFFERING_SIGNED": true,
+      "FLAG_CH022_FIRST_WAR_LEDGER": true,
+      "FLAG_CH022_NORTH_HILL_REACHED": true,
+      "FLAG_CH022_TOBY_REUNITED": true,
+      "FLAG_CH022_LENA_LETTER_READ": true,
+      "FLAG_CH022_LENA_IS_BIRTH_MOTHER": true,
+      "FLAG_CH022_ARTICLES_POSTED": true,
+      "FLAG_CH022_NIGHT_HELD": true,
+      "FLAG_CH022_GRAVE_MET": true,
+      "FLAG_CH022_KOHN_PAST": true,
+      "FLAG_CH022_TWO_SETS_EXPLAINED": true,
+      "FLAG_CH022_DRAGON_SOUGHT_VESSEL": true,
+      "FLAG_CH022_KOHN_MARSHAL": true,
+      "FLAG_CH022_TOBY_WITH_MARA": true,
+      "FLAG_CH022_CAMP_ANSWERED": true,
+      "FLAG_CH022_WAR_CAUSE_WRITTEN": true,
+      "FLAG_CH022_FOG_HARBOR_SUMMONS": true,
+      "FLAG_CH023_INES_REFUSED_SEVEN_SEATS": true,
+      "FLAG_CH023_CALLED_FIRST": true,
+      "FLAG_CH023_GATE_OPENED": true,
+      "FLAG_CH023_TWIN_MOON_SHOWN": true,
+      "FLAG_CH023_COUNCIL_HALL_TAKEN": true,
+      "FLAG_CH023_DEEDS_SHOWN": true,
+      "FLAG_CH023_PUBLIC_TRIAL": true,
+      "FLAG_CH023_SIN_SHARD_RETURNED": true,
+      "FLAG_CH023_ROOT_SEAL_SHARED": true,
+      "FLAG_CH023_TOBY_LETTER_1": true,
+      "FLAG_CH023_ASH_PASS_NEWS": true,
+      "FLAG_CH023_LILITH_VERDICT_SIGNED": true,
+      "FLAG_CH023_LILITH_OATH_SIGNED": true
+    },
+    "items": {
+      "ITEM_FAMILY_SHEPHERD_WHISTLE": 1,
+      "ITEM_MOTHER_WHEAT_HAIRPIN": 1,
+      "ITEM_GUILD_IRON_BADGE": 1,
+      "ITEM_BASIC_BANDAGE": 2,
+      "ITEM_MARSH_SHOE_COVERS": true,
+      "ITEM_FOREST_EDGE_GEAR": false,
+      "ITEM_FOG_HARBOR_CLEAR_CRYSTAL": false,
+      "ITEM_SEVEN_RING_CHART_SHARD": 1,
+      "ITEM_WHITE_TOWER_SUMMONS": 1,
+      "ITEM_SEVEN_RING_RUBBING": 1
+    },
+    "vars": {
+      "PLAYER_VOW_PRIMARY": "VOW_REVENGE",
+      "PLAYER_GUILT_TOTAL": 0,
+      "ITEM_FAMILY_SHEPHERD_WHISTLE_OWNER": "TOBY",
+      "PLAYER_PROMISE_RETURN_TO_TOBY": true,
+      "PLAYER_GUILD_RANK": "IRON",
+      "PLAYER_FIRST_IMPRESSION_OF_LEAH": "STRONG_POSITIVE_DEFAULT",
+      "LEAH_FIRST_IMPRESSION_OF_PLAYER": "EAGER_BUT_UNDISCIPLINED",
+      "LEAH_TRUST": 3,
+      "LEAH_INTIMACY": 0,
+      "LEAH_SACRIFICE": 0,
+      "PLAYER_GUILT_LEAH": 0,
+      "BATTLE_CH002_STREET_AMBUSH_RESULT": "clean",
+      "FENN_TREATMENT": "FIRM",
+      "PLAYER_PROMISE_OBEY_LEAH_SIGNAL": false,
+      "BATTLE_CH003_MILL_ROAD_CHAINS_RESULT": "clean",
+      "PLAYER_LODGING": "GUILD_BUNK",
+      "MILL_ALERT": 0,
+      "MILL_EXIT": "LATE",
+      "MILL_CAPTIVES_STATE": "QUIET",
+      "PLAYER_RESCUE_ROLE": "CAGE",
+      "MARA_DAUGHTER_CONDITION": "SMOKE_COUGH_BURNED_ARM",
+      "PLAYER_PROMISE_MARA_RETURN": false,
+      "CART_WAIT": "HELD",
+      "SUPERVISOR_NOTE": "STEADY",
+      "PARTY_CONSENT": "UNANSWERED",
+      "PARTY_STANDING": "MEMBER",
+      "LEAH_RELATIONSHIP_STAGE": "STRANGER",
+      "BATTLE_CH005_BULL_COLLAR_RESULT": "clean",
+      "CH006_CLIENT_CONFIDENCE": "NORMAL",
+      "CH006_OGRE_STATE": "TOOK_PLANK",
+      "CH006_SYNC_CHANNEL": "WAIST",
+      "HAZARD_CH006_SALT_BRIDGE_RESULT": "CLEAN",
+      "CONSENT_LEAH_WAIST_STEADY_BASIS": "offered",
+      "CONSENT_LEAH_WAIST_STEADY_STATUS": "granted_once",
+      "CAKE_TRUCE": "SEALED",
+      "MIA_TRUST": 0,
+      "MIA_INTIMACY": 0,
+      "MIA_SACRIFICE": 0,
+      "PLAYER_GUILT_MIA": 0,
+      "PAIR_LEAH_MIA_TRUST": 0,
+      "PARTY_GUEST_MIA": false,
+      "MIA_RELATIONSHIP_STAGE": "STRANGER",
+      "BATTLE_CH007_SCRAP_PICKER_RESULT": "clean",
+      "CONSENT_PLAYER_MIA_SCAN_STATUS": "none",
+      "CH007_GEAR_CUSTODY": "MIA_LOGGED",
+      "CH007_CAKE_SECRET_RESULT": "LEAH_ANSWERED",
+      "MIA_FIRST_IMPRESSION_OF_PLAYER": "QUIET",
+      "CH008_CRYSTAL_CUSTODY": "MIA_LOGGED",
+      "HAZARD_CH008_TIDE_DOOR_RESULT": "CLEAN",
+      "CH008_BLAME_RESPONSE": "SILENT",
+      "CH008_TESTIMONY": "NONE",
+      "INES_FIRST_IMPRESSION_OF_PLAYER": "QUIET",
+      "CH009_PICKER_RESULT": "BASE",
+      "CH009_TESTIMONY_ORDER": "LEAH_LINKED",
+      "CH009_BATH_WITNESS_RESULT": "FULL",
+      "CH009_CRISIS_ACTION": "SILENT",
+      "HAZARD_CH009_DRAIN_GRATE_RESULT": "CLEAN",
+      "CH010_STONES_CUSTODY": "MIA_LOGGED",
+      "CH010_FEED_EVIDENCE_CUSTODY": "GUILD",
+      "PARTY_MEMBER_MIA": true,
+      "CH010_PUMP_READ": "QUIET",
+      "CH010_RESCUE_ORDER": "LEAH_ORDERED",
+      "CH010_MIA_JOIN_REPLY": "SILENT",
+      "BATTLE_CH010_TIDE_CAVITY_MOTHER_RESULT": "clean",
+      "CH011_MAP_CUSTODY": "LEAH",
+      "SERENA_INTIMACY": 0,
+      "SERENA_SACRIFICE": 0,
+      "SERENA_RELATIONSHIP_STAGE": "STRANGER",
+      "PAIR_LEAH_SERENA_TRUST": 0,
+      "PAIR_MIA_SERENA_TRUST": 1,
+      "SERENA_TRUST": 0,
+      "PLAYER_GUILT_SERENA": 0,
+      "PROMISE_BROKEN_NET_LEAH": 0,
+      "PROMISE_BROKEN_NET_MIA": 0,
+      "PROMISE_N_LEAH": 0,
+      "PROMISE_KEPT_LEAH": 0,
+      "PROMISE_N_MIA": 0,
+      "MONARCH_MERCY": 4,
+      "MONARCH_TERROR": 0,
+      "MONARCH_LUST": 0,
+      "MONARCH_COLD": 0,
+      "TERROR_BLAST": 0,
+      "FLIRT_AFTER_REFUSAL": 0,
+      "CH011_HAND_RESPONSE": "ENDURED",
+      "CH011_SCAR_SEEN_BY": "ALONE",
+      "CH011_KNOCKS_RESPONSE": "DEFAULT",
+      "BATTLE_CH011_SCAR_ECHO_RESULT": "clean",
+      "CH011_SERENA_TREATMENT": "QUIET",
+      "SERENA_FIRST_IMPRESSION_OF_PLAYER": "QUIET",
+      "CH011_VANISH_ANSWER": "SILENT",
+      "CH011_DREAM_TOLD": "KEPT",
+      "PARTY_MEMBER_SERENA": true,
+      "BOUNDARY_SERENA_PRIVATE_OBSERVATION": {
+        "owner": "SERENA",
+        "rule": "未经允许不得以镜术观察私人空间",
+        "status": "acknowledged",
+        "violation_count": 1,
+        "repair_state": "active",
+        "allowed_exceptions": [
+          "emergency_life_threat"
+        ]
+      },
+      "CH012_APPRENTICE_CUSTODY": "TEAM_LIGHTHOUSE",
+      "PROMISE_KEPT_SERENA": 0,
+      "PROMISE_N_SERENA": 2,
+      "PROMISE_BROKEN_NET_SERENA": 0,
+      "CH012_BATH_RESPONSE": "QUIET",
+      "CH012_TERMS_RESULT": "QUIET",
+      "CH012_CHASE_TACTIC": "QUIET",
+      "CH012_DOUBLE_CHECK": "QUIET",
+      "CH012_ROLL_CALL_BY": "LEAH",
+      "BATTLE_CH012_MIRROR_ALLEY_CHASE_RESULT": "clean",
+      "CH012_APPRENTICE_TREATMENT": "QUIET",
+      "LILITH_TRUST": 0,
+      "PLAYER_GUILT_LILITH": 0,
+      "CH013_CREST_CUSTODY": "LEAH",
+      "CH013_PASS_CUSTODY": "LEAH",
+      "CH013_WITNESS_CUSTODY": "GUILD",
+      "CH013_DREAM_QUESTION": "QUIET",
+      "CH013_ROOF_TACTIC": "QUIET",
+      "CH013_ROOF_RESOLUTION": "QUIET",
+      "CH013_ORDER_QUESTION": "QUIET",
+      "LILITH_FIRST_IMPRESSION_OF_PLAYER": "QUIET",
+      "CH013_WITNESS_DECISION": "QUIET",
+      "BATTLE_CH013_RAIN_ROOFTOP_CHASE_RESULT": "clean",
+      "promise_serena_no_vanish_001": "pending",
+      "promise_serena_no_vanish_001_consent": "SILENT",
+      "promise_serena_no_peek_others_001": "pending",
+      "promise_serena_no_peek_others_001_consent": "SILENT",
+      "CH014_SPLIT": "QUIET",
+      "CH014_SLUICE_GUARD": "MIA",
+      "CH014_CAVE_TACTIC": "QUIET",
+      "CH014_FLOOD_RESOLUTION": "QUIET",
+      "BATTLE_CH014_TIDE_CAVE_RESCUE_RESULT": "clean",
+      "BATTLE_CH014_TIDE_CAVE_RESCUE_ENEMIES_DOWN": 2,
+      "CH014_TAG_DECISION": "QUIET",
+      "CH014_TAGS_CUSTODY": "LEAH",
+      "CH014_ACOLYTE_DECISION": "QUIET",
+      "CH014_ACOLYTE_CUSTODY": "GUILD",
+      "CH014_RESCUED_CUSTODY": "GUILD",
+      "CH015_COUNTERSIGN": "QUIET",
+      "CH015_SHELL_TACTIC": "QUIET",
+      "CH015_COPY_TACTIC": "QUIET",
+      "CH015_NEST_ORDER": "QUIET",
+      "CH015_NEST_FATE": "SAVED",
+      "SIN_ENVY": 1,
+      "BATTLE_CH015_TIDE_KING_NELOSA_RESULT": "clean",
+      "BATTLE_CH015_TIDE_KING_NELOSA_ENEMIES_DOWN": 3,
+      "CH015_CHART_SHARD_CUSTODY": "LEAH",
+      "CH015_SIN_SHARD_CUSTODY": "LEAH",
+      "CH015_ROOT_RING_STATE": "SHARED_SEVEN",
+      "CH015_RESCUED_CUSTODY": "GUILD",
+      "CH015_HANDOVER_ANSWER": "QUIET",
+      "promise_returned_home_001": "pending",
+      "promise_returned_home_001_consent": "SILENT",
+      "CH015_SUMMONS_CUSTODY": "LEAH",
+      "CH015_SUMMONS_DEADLINE": "THREE_DAYS",
+      "EVELYN_TRUST": 0,
+      "PLAYER_GUILT_EVELYN": 0,
+      "EVELYN_INTIMACY": 0,
+      "EVELYN_SACRIFICE": 0,
+      "EVELYN_RELATIONSHIP_STAGE": "STRANGER",
+      "CH016_NOTICE_RESPONSE": "QUIET",
+      "CH016_ORIGIN_ANSWER": "QUIET",
+      "CH016_TITLE_STATE": "CONFERRED",
+      "CH016_NAMES_ANSWER": "QUIET",
+      "EVELYN_FIRST_IMPRESSION_OF_PLAYER": "QUIET",
+      "CH016_RESCUE_REGISTER_CUSTODY": "LEAH",
+      "CH016_TERMS_ANSWER": "QUIET",
+      "CH016_COURT_NOTE": "PENDING_REGISTRY",
+      "LEDGER_TO_GATE": 41,
+      "CH016_VESSEL_ANSWER": "QUIET",
+      "CH016_LODGING": "PILGRIM_HOSTEL",
+      "CH017_RUBBING_CUSTODY": "LEAH",
+      "CH017_NAMES_METHOD": "QUIET",
+      "AILA_TRUST": 0,
+      "PLAYER_GUILT_AILA": 0,
+      "AILA_INTIMACY": 0,
+      "AILA_SACRIFICE": 0,
+      "AILA_RELATIONSHIP_STAGE": "STRANGER",
+      "CH017_RESCUE_ORDER": "QUIET",
+      "CH017_DUEL_HITS": 2,
+      "CH017_DUEL_R1": "QUIET",
+      "CH017_DUEL_R2": "QUIET",
+      "AILA_FIRST_IMPRESSION_OF_PLAYER": "QUIET",
+      "CH017_DUEL_RESULT": "LOST",
+      "BATTLE_CH017_KNIGHT_DUEL_RESULT": "clean",
+      "BATTLE_CH017_KNIGHT_DUEL_ENEMIES_DOWN": 0,
+      "PROMISE_N_EVELYN": 2,
+      "PROMISE_KEPT_EVELYN": 0,
+      "PROMISE_BROKEN_NET_EVELYN": 0,
+      "CH017_ESCORT_ANSWER": "QUIET",
+      "promise_evelyn_no_answer_001": "pending",
+      "promise_evelyn_no_answer_001_consent": "SILENT",
+      "PARTY_MEMBER_EVELYN": true,
+      "FREYA_TRUST": 0,
+      "PLAYER_GUILT_FREYA": 0,
+      "FREYA_INTIMACY": 0,
+      "FREYA_SACRIFICE": 0,
+      "FREYA_RELATIONSHIP_STAGE": "STRANGER",
+      "CH018_DECREE_ANSWER": "QUIET",
+      "PROMISE_N_FREYA": 1,
+      "PROMISE_KEPT_FREYA": 0,
+      "PROMISE_BROKEN_NET_FREYA": 0,
+      "CH018_ASK_FIRST_ANSWER": "QUIET",
+      "FREYA_FIRST_IMPRESSION_OF_PLAYER": "QUIET",
+      "promise_freya_thaw_ask_001": "pending",
+      "promise_freya_thaw_ask_001_consent": "SILENT",
+      "CH018_ORDERED_AILA": 0,
+      "CH018_THAW_R1": "QUIET",
+      "CH018_THAW_R2": "QUIET",
+      "BATTLE_CH018_OUTER_COURT_THAW_RESULT": "clean",
+      "BATTLE_CH018_OUTER_COURT_THAW_ENEMIES_DOWN": 2,
+      "CH018_LETTER_CUSTODY": "EVELYN",
+      "PROMISE_N_AILA": 2,
+      "PROMISE_KEPT_AILA": 0,
+      "PROMISE_BROKEN_NET_AILA": 0,
+      "CH018_ORDER_ANSWER": "QUIET",
+      "promise_aila_no_order_001": "pending",
+      "promise_aila_no_order_001_consent": "SILENT",
+      "PARTY_MEMBER_AILA": true,
+      "OPHELIA_TRUST": 0,
+      "PLAYER_GUILT_OPHELIA": 0,
+      "OPHELIA_INTIMACY": 0,
+      "OPHELIA_SACRIFICE": 0,
+      "OPHELIA_RELATIONSHIP_STAGE": "STRANGER",
+      "CH019_SCENT_ANSWER": "QUIET",
+      "CH019_TESTIMONY": "QUIET",
+      "OPHELIA_FIRST_IMPRESSION_OF_PLAYER": "QUIET",
+      "CH019_WAR_PRETEXT": "SILENCE",
+      "CH019_QUESTION_ANSWER": "QUIET",
+      "promise_aila_question_001": "pending",
+      "promise_aila_question_001_consent": "SILENT",
+      "CH019_CONFINEMENT": "OUTER_COURT",
+      "CH019_SHOW_ANSWER": "QUIET",
+      "CH019_FREYA_JOIN_ANSWER": "QUIET",
+      "PARTY_MEMBER_FREYA": true,
+      "PROMISE_N_OPHELIA": 1,
+      "PROMISE_KEPT_OPHELIA": 0,
+      "PROMISE_BROKEN_NET_OPHELIA": 0,
+      "CH020_HORNS_ANSWER": "QUIET",
+      "promise_ophelia_ask_first_001": "pending",
+      "promise_ophelia_ask_first_001_consent": "SILENT",
+      "PARTY_MEMBER_OPHELIA": true,
+      "CH020_ALARM": 1,
+      "CH020_ARCHIVE_R1": "QUIET",
+      "CH020_ARCHIVE_R2": "QUIET",
+      "BATTLE_CH020_ARCHIVE_INFILTRATION_RESULT": "clean",
+      "BATTLE_CH020_ARCHIVE_INFILTRATION_ENEMIES_DOWN": 2,
+      "CH020_MASSACRE_ORDER_CUSTODY": "LILITH",
+      "CH020_CLOSURE_CUSTODY": "AILA",
+      "PROMISE_N_LILITH": 3,
+      "PROMISE_KEPT_LILITH": 0,
+      "PROMISE_BROKEN_NET_LILITH": 0,
+      "CH020_COMPARE_ANSWER": "QUIET",
+      "promise_lilith_no_compare_001": "pending",
+      "promise_lilith_no_compare_001_consent": "SILENT",
+      "CH020_RETREAT_ORDER_CUSTODY": "LEAH",
+      "CH020_NAMES_ANSWER": "QUIET",
+      "LILITH_RELATIONSHIP_STAGE": "STRANGER",
+      "PARTY_MEMBER_LILITH": true,
+      "CH021_TRADE_ANSWER": "QUIET",
+      "promise_evelyn_no_offering_001": "pending",
+      "promise_evelyn_no_offering_001_consent": "SILENT",
+      "CH021_TEAM_THIRD": "OPHELIA",
+      "CH021_TEAMS_ANSWER": "QUIET",
+      "CH021_BREAKOUT_R1": "QUIET",
+      "LIGHT_RANK": "SPARK",
+      "CH021_BREAKOUT_R2": "QUIET",
+      "BATTLE_CH021_ARCH_TIDE_BREAKOUT_RESULT": "clean",
+      "BATTLE_CH021_ARCH_TIDE_BREAKOUT_ENEMIES_DOWN": 2,
+      "CH021_RESCUED_COUNT": 120,
+      "LEDGER_NOT_RETURNED": 1,
+      "CELESTINE_STATE": "REFORMER",
+      "CH021_WHO_ANSWER": "QUIET",
+      "promise_mara_tell_erin_002": "fulfilled",
+      "CH022_COUNCIL": "QUIET",
+      "CH022_RETURNEE_SIZE": 80,
+      "CH022_ARTICLES": "QUIET",
+      "GRAVE_STATE": "ESCAPED",
+      "CH022_NIGHT_R1": "QUIET",
+      "CH022_NIGHT_R2": "QUIET",
+      "BATTLE_CH022_NORTH_HILL_NIGHT_RESULT": "clean",
+      "BATTLE_CH022_NORTH_HILL_NIGHT_ENEMIES_DOWN": 2,
+      "LEDGER_ENEMY_DEAD_UNNAMED": 0,
+      "CH022_TOBY_ANSWER": "QUIET",
+      "CH023_COUNCIL": "QUIET",
+      "CH023_VINE_R1": "QUIET",
+      "CH023_VINE_R2": "QUIET",
+      "BATTLE_CH023_WATERWAY_GATE_RESULT": "clean",
+      "BATTLE_CH023_WATERWAY_GATE_ENEMIES_DOWN": 2,
+      "CH023_VERDICT_ANSWER": "QUIET",
+      "promise_lilith_verdict_001": "pending",
+      "promise_lilith_verdict_001_consent": "SILENT",
+      "WOOD_RANK": "SPARK",
+      "CH023_CHAIR_ANSWER": "QUIET",
+      "promise_lilith_oath_001": "pending",
+      "promise_lilith_oath_001_consent": "SILENT",
+      "CONQUEST_VERDANT": "TAKEN"
+    },
+    "memories": {
+      "MEMORY_MOTHER_WORDS_FIND_WAY_HOME": "艾琳：“我吹这个，你就知道该往哪边回。”",
+      "MEMORY_FAMILY_ROLL_CALL": "艾琳：“报数！”——“我在！”“我、我也在！”",
+      "MEMORY_BORIN_LAST_WORDS": "先看清该砍谁",
+      "MEMORY_CH001_PROMISE_RETURN_TO_TOBY": "托比：“你一定要回来拿。”——“一定。”",
+      "MEMORY_CH004_MARA_AT_THE_CAGE": "旧磨坊的笼边，玛拉认出了他。她和女儿波莉的手腕被细链锁在晶架上；钥匙在念经的人腰上。",
+      "MEMORY_CH004_TWO_PULLS": "旧磨坊里，绳子拉了两下，他慢了半拍才退。玛拉在他身后说：“……你还欠我一根烟囱。”",
+      "MEMORY_CH004_LEAH_ANGER": "第二座里程石旁，莉亚收完绳子，看着磨坊那点灯说：“我在生气。……所以我先问。”",
+      "MEMORY_CH005_WAIT": "大车之夜，链子全上了箱，莉亚回了一下“停”。他没有动，等到了盾落。",
+      "MEMORY_CH005_ROLL_CALL": "大车之夜，灯灭以后，他在黑暗里说出娘的口令“报数”。这一次，答“在”的是玛拉和波莉。",
+      "MEMORY_CH005_TEAM_REGISTER": "公会柜台，莉亚先在队长栏签了“赫斯特”。他没有答复；她写上他的名字，旁注“未答复”。",
+      "MEMORY_CH006_UNSPOKEN_SYNC": "盐沼桥上，他扣着她左侧的腰带。她的肩一沉，他就推了。谁都没出声。",
+      "MEMORY_CH006_BOUNDARY": "她说“腰带。左边。扶稳。”桥过了，她说准的只是那一次。",
+      "MEMORY_CH006_CAKE": "林边旅店的窗口，他撞见了她的字条“高效率糖分补给，一份”。她说：“你没看见。鞋套，不扣你的。……停战。”",
+      "MEMORY_CH006_CAMP": "林边旅店的火盆旁，她把明天的事说完：“守夜，我前半。你后半。”蛋糕盘就在她手边，她没有动叉子。",
+      "MEMORY_CH007_MIA_FIRST_MEETING": "她问能不能量。他没说好，她就没量；刚才那一眼，她也说不记。",
+      "MEMORY_CH007_TWO_RULES": "盾后面是雷最先到的地方。她规矩不改，只把今晚的退路改到桩后。",
+      "MEMORY_CH007_ONE_KNOCK": "林边，莉亚敲了一声盾，米娅没有停，卡住了那条腿。莉亚说“……拉。”急停环才拉下。米娅说她算过，还有两息；莉亚说：“你算的是它。……我算的是你们。”",
+      "MEMORY_CH007_GEAR_AND_CREAM": "林边，米娅问起齿轮上的奶油。他没答，她自己说：“补给。”",
+      "MEMORY_CH007_UNNUMBERED_CORE": "核心是一颗没有编号的潮晶，从里面往外蚀。晶底的黑环和拓图一样，七个。她把拓图摊给米娅看，看的是米娅的脸。她只对他说：这种黑，见过。",
+      "MEMORY_CH008_PAST_MIDNIGHT": "后半夜，她修屋檐，他守院子。",
+      "MEMORY_CH008_ONE_INSTANT": "她要不带火的金。莉亚说，他有，很弱。她看他按住一根钉子，硬了一瞬。",
+      "MEMORY_CH008_ONE_MILLIMETER": "她说“硬”。那一瞬，是他的。",
+      "MEMORY_CH008_SEVENTEEN": "十七号是透的，刻了号；这颗没有刻痕，环是从里面长出来的。核心在刻号之后、装机之前被换。她装的就是这颗；底，她没翻过来看。",
+      "MEMORY_CH008_SELF_REPORT": "她把两件事都写进账里。他没笑。她报了名字。",
+      "MEMORY_CH008_WHAT_AKU_SAW": "她说了颈圈和那箱黑晶。黑石那一段，他没说，她自己说了。",
+      "MEMORY_CH008_HEARTBEAT": "潮平了，听潮针的笔尖还在抖。米娅说，是心跳，很多个叠成一个，在雾港底下。莉亚的笔停住了。",
+      "MEMORY_CH009_INES_QUESTION": "她问落水的人怎么救。他没有回答。她说，先喊，再伸，再抛，最后才是跳。",
+      "MEMORY_CH009_LAYERS": "晶一潮一层，那颗的最里层是黑的。捡晶的说，下游的口子偶尔捡到中间灰的。他没打断米娅。",
+      "MEMORY_CH009_FIVE_SLIPS": "五张证词，她让他排。他没排，她画了一条线：同一道水。下次，你排。",
+      "MEMORY_CH009_SHIELD_SCARES": "她说盾吓人，派他去问烧水的人。他等着，老妇自己说了：池底的沟通东口，外面退潮的时候管子在涨，镜子里有时候多一个紫头发的。",
+      "MEMORY_CH009_GRATE": "根把码头工人拖进栅栏。她用盾封住缺口，说后面的人，你管。米娅抛了绳，他跟渔民一起拉，鱼贩上来了。她说：退。",
+      "MEMORY_CH009_BELOW": "她写完了那一行：雾港底下，有人。四个名字。救回那一栏空着，她说明天填。外面在退，底下还在涨。",
+      "MEMORY_CH010_PUMP_HOUSE": "泵房里没有人。汤碗的麻袋，黑色的碎粒，写着拟态的空瓶，一槽小虫。粉笔画着账本上那个记号，底下写着大四。她停了一拍。",
+      "MEMORY_CH010_SEVENTEEN": "泵是反装的，外面一退就往里打水。晶座里是十七号，底下的十一划掉了。她说要完整的。莉亚派她守泵。",
+      "MEMORY_CH010_FOUR_LEDGES": "四个人，四个地方。她把先后交给他，他没排。她自己点名：达利别动，钩子伸过去，提姆走过来，绳子抛过去；最后她把盾平放在水上，他背着渔民踩了过去。没有人跳。",
+      "MEMORY_CH010_CAVITY_BATTLE": "她分了三份：人，她守；泵，米娅；根，交给他引。他用光照水，她用盾拨；水涨到石台边，他往另一头打了一个水花。她说水到石台了，米娅说，人先，撬碎了晶座。母虫活着退进涵洞。米娅说，不是它，底下还有。",
+      "MEMORY_CH010_RESCUE_COLUMN": "下去三个，上来七个。救回那一栏，她填上了四个名字。底下的水，没有再涨。",
+      "MEMORY_CH010_SAME_LEDGER": "汤碗救济会。伊涅丝说，总会的通报上，发汤的、走巡礼的、卖魔具的，是同一个名字：蚀宴会。莉亚说，是同一本账。案子还开着。",
+      "MEMORY_CH010_MIA_JOINED": "她要署泵停的那一行，就用自己的名字签了登记。条件写在名字旁边：先问，再碰，拆要她在。她问队上要不要一个会炸的。他没说话。她说，没说不要。",
+      "MEMORY_CH010_LEDGER_SHARED": "入了队，她在旅店楼上把账摊开：晨钟镇西门外的旧磨坊，汤碗救济会从营地带走过人；营地那两个救回来了，晨祷平原来的三个没有；那一行的记号，就是泵房那个拱。她说，队员可以问。米娅说，先不问。",
+      "MEMORY_CH010_INN_NIGHT": "桥头旅店。这里的镜子没盖布。她们睡了。",
+      "MEMORY_CH011_SEVEN_HOLES": "手背上的洗礼印裂开七个细孔。他没有叫人。",
+      "MEMORY_CH011_THREE_KNOCKS": "梦里听见三声盾响，有人叫他的名字。他退了。线断了。",
+      "MEMORY_CH011_SERENA_ANSWER": "她说：都有。线，她剪了；门，她看了一眼。今晚拉线的，不是她。",
+      "MEMORY_CH011_SEVEN_DOORS": "她说他身上有七扇门，都空着。白塔的册官，在他身上按过号。莉亚停了一拍。",
+      "MEMORY_CH011_LEAH_RULE": "莉亚说：要来，走门。镜子，不准看。",
+      "MEMORY_CH011_SAY_A_WORD": "她问他，要走的时候会不会说一声。他没有回答。她没有说再见。",
+      "MEMORY_CH011_LEDGER": "莉亚在账上写：第十二夜，桥头旅店。镜中人塞雷娜，剪线，看了一眼。梦里的事，他没有说。",
+      "MEMORY_CH011_FEATHER_MAP": "黑羽穿着一张地图：老涵洞往下是潮穴；一条没人走过的路，停在一个没写字的圈。角上写着：条件，明天谈。",
+      "MEMORY_CH011_INN_NIGHT": "这一夜之后，走廊、楼梯转角与三人房里的镜子都盖了布；尼尔的房间不知道。莉亚面对着镜子坐。",
+      "MEMORY_CH012_BATH_MIRROR": "塞雷娜招认从浴场柜门镜看过他的手背。她道歉，包起杖头。莉亚写下：镜子，不准看。违，一次。",
+      "MEMORY_CH012_TERMS": "塞雷娜的条件：莫尔坎；要走，说一声；别叫她替人看别人。他什么都没说。莉亚说：不说话，就是没说不要。她记下了两条。",
+      "MEMORY_CH012_JOINED": "塞雷娜入队。登记只写名，姓说下次。条件写在名字旁边。",
+      "MEMORY_CH012_LOCKER_MIRROR": "人没走门，走的是柜门镜。镜子只记得照过的。米娅盖了柜门镜，只留尼尔那一格。",
+      "MEMORY_CH012_ALLEY": "镜巷里，莉亚报数，假的莉亚答不出少了谁。学徒说：潮穴，明夜。队员，第一次报到四。",
+      "MEMORY_CH012_APPRENTICE": "学徒在灯塔裹着毯子睡着了。今晚谁都没问。明早，分会来点。",
+      "MEMORY_CH012_LIGHTHOUSE_NIGHT": "第十三天住旧灯塔。队员，四。塞雷娜说：我在楼梯上，哪里也不去。下雨了。",
+      "MEMORY_CH013_DREAM_QUESTION": "后半夜，塞雷娜想从窗走进孩子的梦里问莫尔坎。他没有说好；她说，那就是不。",
+      "MEMORY_CH013_WINDOW": "窗碎了。金发的刺客说：让开。他照过我的脸。莉亚的盾先到。纸被她挑走了。",
+      "MEMORY_CH013_ASSASSIN": "雨中屋顶，金发刺客问他是不是教团的人。他没说话。她丢下纸：我不是来帮你，只是不想欠你。看清楚上面盖的章。不要相信教团。",
+      "MEMORY_CH013_COUNT": "屋顶回来，莉亚报数。塞雷娜报四，这一次没有停。米娅守住了门和窗。",
+      "MEMORY_CH013_PASS": "巡礼通行证：最上面是晨星冕的御印，底下盖着那个像拱又像浪的记号——伊涅丝说，御印底下只盖得上官印。背面写着：往：拱潮门。",
+      "MEMORY_CH013_WITNESS": "清晨，孩子报了名字：席欧。伊涅丝说，说话的，名字她留着。她带他回分会。",
+      "MEMORY_CH013_TIDE_TONIGHT": "第十四天清晨。伊涅丝点了四个：今夜出去四个，回来也要四个。潮穴，今夜。",
+      "MEMORY_CH014_SPLIT": "老闸口，三个下去，一个守闸。守闸的是米娅。是莉亚派的。",
+      "MEMORY_CH014_COCOONS": "潮穴的墙上挂着茧，茧里是人。所有的茧同一个时候鼓起来——雾港底下的心跳，是他们。",
+      "MEMORY_CH014_PATCH": "老闸的楔子裂了。米娅把叮当三号塞进齿里：紧急修补。最后一个人出来，闸才落。报数，到四。",
+      "MEMORY_CH014_TAGS": "潮腔的石台上，九个人的手腕都绑着木牌：来处、件、成色。米娅先问了，才剪。一个叫欧妲，晨祷平原来的——04那一行的三个人，找回一个。",
+      "MEMORY_CH014_ACOLYTE": "东口，那个放下手的念祷文的人交给了分会。伊涅丝把他的名字收进袖子里。",
+      "MEMORY_CH014_COUNT": "东口，伊涅丝点完人数：出去四个，回来四个；加九个；再加一个。",
+      "MEMORY_CH014_LEDGER": "莉亚的账：救回九，还没救回三，念祷文的一名交分会，牌子九块。她写的是‘还没’。",
+      "MEMORY_CH014_BELOW": "东口的闸缝底下，有个声音照着他们的报数数了一遍。说话的人都站在上面。零号说，底下还有一个，很慢，很大。",
+      "MEMORY_CH015_COUNTERSIGN": "石门前，莉亚说底下的东西会学声音。认自己人，用绳子。",
+      "MEMORY_CH015_NEST": "石门后面是一条沉船。船肋上挂着三个茧，船舱里挂满幼体的囊。龙骨上的壳，用莉亚的声音数了一二三。",
+      "MEMORY_CH015_SHELL": "壳撞上盾，腹下裂开一道缝。他的剑进了那道缝，不深，刚好一道。",
+      "MEMORY_CH015_COPIES": "两个莉亚、两个塞雷娜。塞雷娜和莉亚换了位置，金发的刺客从死角出了一刀。",
+      "MEMORY_CH015_NEST_FATE": "人都出来了，莉亚把那一下交给他。……他没说，莉亚照第三条切了线。",
+      "MEMORY_CH015_RUIN": "那颗心停的地方长出一个活的木环，谁伸手，根就往回缩。底下压着一片刻了七个环的铜，莉亚收了。金发刺客拿走了那块还在跳的碎片，说它叫涅洛萨，以前是洗沼泽的。",
+      "MEMORY_CH015_COUNT": "分会的仓里，伊涅丝点完：出去四个，回来四个，加三个。欧妲给他们让了位置。",
+      "MEMORY_CH015_NOT_HANDED_OVER": "分会门口，赈灾司的官照册要收救回的人。他说：救回的，不交。达利站到他身后，码头的人一个一个站过来。",
+      "MEMORY_CH015_SUMMONS": "赈灾司的官交出一封白塔的召令：召雾港屠龙者，三日内赴白塔。金色的火漆是一顶冠，冠上一道裂——和黑龙左眼旁边那道一样。",
+      "MEMORY_CH015_LEDGER": "莉亚的账：救回三，它停了，幼体多数留着，碎片被拿走，白塔召三日。她把召令夹在通行证旁边。",
+      "MEMORY_CH016_NOTICE": "晨门里的通报：赫麦村一带，野龙过境。莉亚停在他旁边，没有催。",
+      "MEMORY_CH016_HALL": "册厅的表头：来处、件、成色、往。莉亚把牌子放在旁边，说：是同一本账。监察院的信，封蜡是七角的晨星——娘桌角那封，一样。",
+      "MEMORY_CH016_ORIGIN": "掌簿官问他的来处。他没等，册上有：那一页早就夹着红绳。",
+      "MEMORY_CH016_COURT": "册厅里，皇帝坐在册架旁的一张椅子上，手边摊着一本册。皇女说：辛苦了。",
+      "MEMORY_CH016_TITLE": "大主教封他‘屠龙骑士’，照礼念他那一页：来处，赫麦；件，一；成色——她停了一拍——器；往，空白。",
+      "MEMORY_CH016_NAMES": "圣女照稿祝福，念到‘愿他们的名字’停了：稿子上没有名字。她问他。最后她自己加了一句：愿他们，平安。",
+      "MEMORY_CH016_TERMS": "封号、一营兵、龙脊，换雾港救回的名册。他在皇帝面前说：救回的，不交。皇帝说：名册——朕派人去拿。",
+      "MEMORY_CH016_CRACKS": "册厅里，塞弗林照例念月册：本月，往拱潮门，三十八件。圣女走过他身边，说塔的底下有东西在裂，七种声音。她说：叫伊芙琳就好。",
+      "MEMORY_CH016_VESSEL": "晨门的长桌前，莉亚问他怎么想：他那一页写着器。她在账上，记了一个字。",
+      "MEMORY_CH016_LEDGER": "莉亚的账：授屠龙骑士，条件是救回名册——不交。他那一页：成色，器；往，空白。最后一行：本月，往拱潮门，三十八。",
+      "MEMORY_CH017_NAMES": "旅舍的夜里，莉亚说纸会被拿走。她低声念救回的十二个名字，他跟着念完。",
+      "MEMORY_CH017_AILA": "旅舍的门口，一个金色短发的骑士带着没收令来：雾港救回名册、七环星图。她说：光明骑士，艾拉。骑士不报姓。",
+      "MEMORY_CH017_SMOKE": "圣女居所的烟里，艾拉照命令守着书库。莉亚上了楼，他跟上，在楼梯口数到五。圣女最后一个下来。",
+      "MEMORY_CH017_HALF_SENTENCE": "天亮前的花园里，圣女一边掉泪一边唱，侍女的咳嗽停了。艾拉从书库出来：书库保住了，窗开着，少了一个匣子。她看着草地上的五个人说：先保文件。……不保人。命令上，没写这半句。",
+      "MEMORY_CH017_DUEL": "黎明的花园里，艾拉照她的规矩决斗。钟响三下，他没碰到她。她拿走了拓本。她问名册，他背出十二个名字。她写：名册，屠龙骑士，背得出。",
+      "MEMORY_CH017_ESCORT": "清晨，冠礼院的令要圣女随行。礼仪官说她愿意；她说，请让我自己说。她说那其实是监视。她请他以后不要替她回答。他没有说不行。",
+      "MEMORY_CH017_FROST": "第十八天早上很冷，不是圣都该有的冷。外庭的喷泉结了冰，一辆北方的车停在那里，车窗里的人一动不动。",
+      "MEMORY_CH017_LEDGER": "莉亚的账：没收令，证物不交。圣女居所上去五个，下来五个。书库少了一个匣子。决斗赌拓本，她拿走了。名册：他背得出。随行：伊芙琳——监视，她自己说的。最后一行：本月，往拱潮门，三十八。",
+      "MEMORY_CH018_DECREE": "外庭，晨星卫说暂停是御令。艾拉拍出她的命令：监护，到外庭也算。队长让到正午。",
+      "MEMORY_CH018_ASK_FIRST": "芙蕾娅说，融之前每一个都要先问本人或家人。他没说不要。",
+      "MEMORY_CH018_LETTER": "使团长手里封在冰里的信，只有一行：七心归位，主神归来。伊芙琳说，又裂了一声。她说，信她自己交。",
+      "MEMORY_CH018_HANDS": "解冻以后，芙蕾娅替使团的人整理围巾，手在抖。她收进袖子，说：冷的嘛。",
+      "MEMORY_CH018_ORDER": "艾拉坐在喷泉边问：那是请，还是命令？她说：别对我说‘这是命令’。这是条件。",
+      "MEMORY_CH018_LEDGER": "莉亚的账：霜潮使团暂停，正午以前融了七个，先问了。冰封信：七心归位，主神归来。随行：艾拉，监护，没有姓。明日，御前听证，他作证。最后一行：本月，往拱潮门，三十八。",
+      "MEMORY_CH019_SCENT": "七角殿，龙脊的使节奥菲莉亚说她来判断他该不该死。她问可以闻吗，然后说：你的名字，有七层回声。",
+      "MEMORY_CH019_TESTIMONY": "七角殿，皇帝要他作证龙脊的龙烧了赫麦。他没说，皇帝替他说；册上写：屠龙骑士，见龙。皇帝说：要救他们，只能替他们决定。",
+      "MEMORY_CH019_DEFIED": "七角殿，雷蒙德命令艾拉执行没收令。她站定说：不。命令，我质疑。没收这些，救不了任何人。雷蒙德说：退下。",
+      "MEMORY_CH019_QUESTION": "艾拉退回他身后，说：命令可以被质疑。你的也是。对吧？他没说不。",
+      "MEMORY_CH019_VERDICT": "判决：器，不出塔。暂置，住外庭，和霜潮使团比邻。他手背的印烫起来，伊芙琳先问可以吗，眼泪落在印上，烫退了。",
+      "MEMORY_CH019_LOCKS": "黄昏，册厅的典册官诺亚来外庭，说他读得懂古字。莉亚摊开拓本。米娅读出来：七个环，是七把锁，一把一把在搬家。",
+      "MEMORY_CH019_NOT_YET": "入夜，塞莱斯汀到外庭找伊芙琳。伊芙琳问：册上的名字，可以说出来吗？大主教说：还不是时候。",
+      "MEMORY_CH019_FREYA_JOIN": "入夜，芙蕾娅端热饮过来，说她想跟着他们。她写下了名字。",
+      "MEMORY_CH019_LEDGER": "莉亚的账：七角殿，御前听证。他的证词：没说，皇帝替他说见龙。皇帝说：都用得上。艾拉对骑士长说，命令，质疑。判：器，不出塔，暂置外庭。七个环是七把锁，在搬家。随行：芙蕾娅。最后一行：本月，往拱潮门，三十八。",
+      "MEMORY_CH020_HORNS": "外庭，奥菲莉亚闻到塔底下有一条龙。她要跟着下去，条件是碰她的角之前先问。他没说不要。",
+      "MEMORY_CH020_SISTERS": "地下档案库，兜帽落下。她说：莉莉丝·瓦尔哈拉。艾拉说，教团说姐姐背叛了家族。莉莉丝手里是屠杀令，晨辉的印被刮去了，副署晨星冕；艾拉手里是结案书，副署雷蒙德。两张纸并排，谁都没有动。",
+      "MEMORY_CH020_NO_COMPARE": "莉莉丝问他：我们谁是对的？他没说。她说：别拿我们比。她对艾拉说：不跟你走，也不会再从窗外看你了。艾拉很小声叫了：姐姐。",
+      "MEMORY_CH020_EVIDENCE": "最深的架子：龙井签出簿，件一，签：阿德拉，日期是赫麦那一夜。一卷撤退令：灰烬关，全员撤退，奥德·赫斯特。一本册上的一行：监察员，往拱潮门。",
+      "MEMORY_CH020_FATHER": "从档案库上来，他把撤退令交给莉亚。她说：我爸的字。记下。",
+      "MEMORY_CH020_NAMES": "天亮前，奥菲莉亚报上全名：奥菲莉亚·使诺德。他没给。她说，等他想给的时候。",
+      "MEMORY_CH020_LEDGER": "莉亚的账：档案库，三个下去，三个上来。屠杀令在莉莉丝，结案书在艾拉，副署雷蒙德。撤退令，奥德·赫斯特，在她那里。龙井签出一，签阿德拉，赫麦那一夜。一行：监察员，往拱潮门。随行：奥菲莉亚。最后一行：本月，往拱潮门，三十八。",
+      "MEMORY_CH021_REFUSAL": "天命供奉令：圣女立中央，器入册厅，本月往拱潮门的人为燃料。伊芙琳摘下圣冠：我不去，这一次是我自己说的。八个人一个一个说了不。莉莉丝从屋顶落下：我也不。塞莱斯汀把护界院的钥匙放进伊芙琳手里。",
+      "MEMORY_CH021_TRADE": "塞弗林说，器不入册厅也行，圣女立中央就够。伊芙琳说：谁都不去。她要他答应，不管谁要什么，都不把她交出去，他自己也不要。",
+      "MEMORY_CH021_TEAMS": "莉亚要他排三队。护界院：他、伊芙琳、奥菲莉亚；水闸：莉亚、米娅、芙蕾娅；冠礼院前：艾拉、莉莉丝、塞雷娜。出去九个，回来也要九个，加上底下的。",
+      "MEMORY_CH021_SANCTUARY": "护界院，两排床，每个人的眼睛半睁着。祝圣簿每一页都盖着冠礼院的章，伊芙琳认得。茵格问欧妲；欧妲活着。茵格说还有一个托伦，最里面的床盖着布。",
+      "MEMORY_CH021_NOT_RETURNED": "黎明的运河堤岸，出去九个，回来九个，底下的一百二十。托伦死在护界院。莉亚在‘没回来’那一栏，写下第一个名字。伊芙琳替他祈祷，没有稿子。",
+      "MEMORY_CH021_DECREE": "黎明，叛逆令：屠龙骑士一行，叛；晨祷平原，全境除籍。城上说：册上没有的人，就不在。",
+      "MEMORY_CH021_WHO": "堤岸上的老人问：册上没有我们了，我们是谁。伊芙琳走过去问他的名字：汉斯。她翻开新簿子，最上面写：归名册。托伦也写了进去。",
+      "MEMORY_CH021_LEDGER": "莉亚的账：天命供奉令，圣女、器、燃料，都不交。八个人说不，莉莉丝来了。护界院的祝圣簿，每一页冠礼院的章。出去九个，回来九个。救回一百二十。没回来：托伦。叛逆令，晨祷平原全境除籍。最后一行：本月，往拱潮门，三十八——这个月，一个都没到。",
+      "MEMORY_CH022_LETTER": "守羊洞里，玛拉交出艾琳在缓坡给她的信。莱娜写的：这孩子交给你；册上他是器；报告交给塞弗林，没有回音；人往拱潮门送。艾琳说：他是我的儿子，信是另一个母亲写的。",
+      "MEMORY_CH022_COUNCIL": "第一场军议：霍恩说躲，可恩说打回去，伊芙琳说对面也是人，莉亚说我们的兵还不会拿枪。他没定，可恩说：先喊。",
+      "MEMORY_CH022_ARTICLES": "莉亚把三条写成军律，伊芙琳加了第四条：归人营，自愿，不愿的送回家。他没签，莉亚盖了自己的名字。",
+      "MEMORY_CH022_LEDGER_NIGHT": "夜守北山，营地都在。",
+      "MEMORY_CH022_KOHN": "营火边，可恩说：十八年前他是清册营的猎犬，放走了一个抱着婴儿的女人。格雷夫是他教的。‘多备两副’是名单上预订的两个名字，其中一个是他。那一夜，龙找的是‘器’。",
+      "MEMORY_CH022_TOBY": "天亮，托比抱着木棍说他也要去。玛拉说：我们在这里，数人。托比交给玛拉，留在北山。",
+      "MEMORY_CH022_PRESENT": "可恩用霍恩的登记簿点名，整座北山答：在。托伦没有人答，伊芙琳说她替他记着。派克送来伊涅丝的信：七席要雾港交人。",
+      "MEMORY_CH023_COUNCIL": "军议：三家怎么办。莉亚说：照伊芙琳说的，公审。",
+      "MEMORY_CH023_VERDICT": "议会厅里，莉莉丝说：别替我下手，也别替我原谅。公审：她不杀，你们每天从翠影的人面前走过去。",
+      "MEMORY_CH023_ROOTS": "莉莉丝把潮虫那一次拿走的碎片还给他。沼林边，七双手一起拿起木环，分成七段，七个社区一人一段。他听见七段根，都是活的。",
+      "MEMORY_CH023_CHAIR": "莉莉丝问：那张椅子，你要坐吗？椅子空着。",
+      "MEMORY_CH023_CHAIR_OATH": "她告诉他她的路：绿镜城东边的排水沟，通到沼林。别封它。",
+      "MEMORY_CH023_LETTER": "托比的信：北山今天二百三十一个人。波莉会写三个字了，是‘在’。你数到几了？",
+      "MEMORY_CH023_LEDGER": "莉亚的账：翠影拿下，七席没了。没回来：无。赤焰的军团出了灰烬关，往北山。最后一行：本月，往拱潮门，四十一。"
+    }
+  },
+  "speakers": {
+    "hilda": {
+      "name": "希妲",
+      "color": "#b88a5a",
+      "art": null
+    },
+    "willow": {
+      "name": "薇洛",
+      "color": "#9ec8a0",
+      "art": null
+    },
+    "old_lady": {
+      "name": "藤墙的婆婆",
+      "color": "#8aa8c8",
+      "art": null
+    }
+  },
+  "shots": [
+    {
+      "id": "ex014-01",
+      "title": "自由输入：两个希妲",
+      "bg": "verdant-mirror-street-day",
+      "music": "vine_street_morning_flute",
+      "ambience": [
+        "canal",
+        "crowd"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "绿镜城。活藤街。"
+        },
+        {
+          "t": "narr",
+          "text": "两边的房子，外墙都爬满了藤。有人走过，藤叶就跟着变一下颜色。"
+        },
+        {
+          "t": "narr",
+          "text": "水道从街中间穿过，上面架着一座又一座木桥。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "……墙，在跟着我们变颜色。"
+        },
+        {
+          "t": "say",
+          "who": "lilith",
+          "text": "活藤。看久了，就习惯了。"
+        },
+        {
+          "t": "narr",
+          "text": "莉莉丝手里捏着一张纸条，是从议会厅门口的告示板上揭下来的。"
+        },
+        {
+          "t": "say",
+          "who": "lilith",
+          "text": "委托。“有人用我的脸。请帮我找到她。不要抓她。”"
+        },
+        {
+          "t": "say",
+          "who": "lilith",
+          "text": "署名：希妲。活藤街，调藤铺。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "那个……为什么，叫我一起来呢？"
+        },
+        {
+          "t": "say",
+          "who": "lilith",
+          "text": "拟态的事，我熟。"
+        },
+        {
+          "t": "say",
+          "who": "lilith",
+          "text": "叫你来，是因为你会说话。我不会。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "我、我也不太会……"
+        },
+        {
+          "t": "narr",
+          "text": "伊芙琳小声地，对着水道练了一句：“早安。”又练了一句：“你好。”"
+        },
+        {
+          "t": "narr",
+          "text": "街角的调藤铺前，一个女孩正在给墙上的藤浇水。棕色的辫子，围裙上沾着绿色的汁。"
+        },
+        {
+          "t": "say",
+          "who": "hilda",
+          "text": "揭委托的人？……真的来了！"
+        },
+        {
+          "t": "say",
+          "who": "hilda",
+          "text": "三年了。常有人谢我帮他搬过花、喂过桥下的猫——可那几天，我都在铺子里。"
+        },
+        {
+          "t": "say",
+          "who": "hilda",
+          "text": "我不想抓她。我只想知道，是谁。"
+        },
+        {
+          "t": "say",
+          "who": "hilda",
+          "text": "啊，还有——街尾婆婆家那面墙，我调了半年都没调好。你们要是路过……"
+        },
+        {
+          "t": "narr",
+          "text": "她的话停住了。"
+        },
+        {
+          "t": "narr",
+          "text": "对面的木桥上，走过来另一个女孩。一样的辫子，一样的围裙，怀里抱着一盆花。"
+        },
+        {
+          "t": "narr",
+          "text": "两个希妲，隔着水道，对上了眼。"
+        },
+        {
+          "t": "narr",
+          "text": "桥上那一个，转身就走。"
+        },
+        {
+          "t": "say",
+          "who": "lilith",
+          "text": "……桥上那个。脚步，是借来的。"
+        },
+        {
+          "t": "input",
+          "id": "FI_EX014_SC01_TWO_FACES_001",
+          "kind": "action",
+          "prompt": "活藤街上出现了两个一模一样的希妲；桥上那一个抱着一盆花，转身要走，莉莉丝说她的脚步是借来的。{PLAYER_NAME}可以叫住她、追上去、让莉莉丝去、请伊芙琳去打招呼、伸手拦住她、当街喊“她是假的”，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "lilith",
+            "evelyn",
+            "hilda"
+          ],
+          "context": [
+            "委托写着：请帮我找到她，不要抓她。",
+            "绿镜城的议员常用合法的拟态保护身份；拟态本身在这里不稀奇。",
+            "莉莉丝是木律拟态的行家；从背后突然靠近，是她自己的雷区。"
+          ],
+          "principles": [
+            "TWO：怎么对待桥上那个希妲。判定优先序：当街喊破 > 伸手拦住 > 叫住她 > 追上去 > 请伊芙琳去 > 让莉莉丝去 > 沉默。",
+            "重点不是揭穿与羞辱：当街喊破时，写她的颜色“褪了一半”、莉莉丝拦下，不写围观者嘲笑。",
+            "所有路线：女孩躲进一条死巷，自己放下拟态，报出名字“薇洛”。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "neg_guard",
+              "label": "否定式表态（按让莉莉丝去处理）",
+              "desc": "只说自己“不喊破／不揭穿／不抓她”，本身并不是那个动作；按让莉莉丝去处理。",
+              "keywords": [
+                "不喊",
+                "不揭穿",
+                "不抓她",
+                "不拆穿",
+                "别喊",
+                "不当街"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "lilith",
+                  "text": "……嗯。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她没有跑。只是走上桥，走得和那个女孩一模一样——连迈哪只脚都一样。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_TWO": "LILITH"
+                }
+              }
+            },
+            {
+              "id": "expose",
+              "label": "当街喊“她是假的”",
+              "desc": "大声当街喊破：她是冒牌的、是假的。",
+              "keywords": [
+                "她是假的",
+                "冒牌",
+                "假的",
+                "揭穿",
+                "拆穿",
+                "骗子",
+                "!不喊",
+                "!不揭穿",
+                "!不拆穿",
+                "!别喊"
+              ],
+              "morality": -1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "街上的人，都回过头来。"
+                },
+                {
+                  "t": "narr",
+                  "text": "桥上的女孩僵在原地。脸上的颜色，一下子褪了一半——一半是希妲，一半谁也不是。"
+                },
+                {
+                  "t": "say",
+                  "who": "lilith",
+                  "text": "……别喊。"
+                },
+                {
+                  "t": "say",
+                  "who": "lilith",
+                  "text": "拟态的人被当街喊破，会连自己的脸都想不起来。"
+                },
+                {
+                  "t": "narr",
+                  "text": "女孩抱紧那盆花，跑进了一条藤巷。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_TWO": "EXPOSED"
+                },
+                "flags": {
+                  "EX014_SHOUTED": true
+                }
+              }
+            },
+            {
+              "id": "grab",
+              "label": "伸手拦住她",
+              "desc": "冲过去伸手拦住她、抓住她。",
+              "keywords": [
+                "拦住",
+                "抓住",
+                "拉住",
+                "按住",
+                "扣住",
+                "!不抓",
+                "!别抓"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}刚要伸手，莉莉丝先一步挡在了前面。"
+                },
+                {
+                  "t": "say",
+                  "who": "lilith",
+                  "text": "……别碰。"
+                },
+                {
+                  "t": "say",
+                  "who": "lilith",
+                  "text": "伸手去抓的人，人家只会跑得更快。"
+                },
+                {
+                  "t": "narr",
+                  "text": "桥上的女孩，已经拐进了一条藤巷。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_TWO": "GRABBED"
+                }
+              }
+            },
+            {
+              "id": "call_out",
+              "label": "叫住她",
+              "desc": "冲她喊一声：等一下、喂。",
+              "keywords": [
+                "叫住",
+                "等一下",
+                "喂",
+                "站住",
+                "别走"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}叫了一声。"
+                },
+                {
+                  "t": "narr",
+                  "text": "桥上的女孩停了半步，又走了。"
+                },
+                {
+                  "t": "say",
+                  "who": "lilith",
+                  "text": "……她不会停的。被叫住的，是她借来的那张脸。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_TWO": "CALLED"
+                }
+              }
+            },
+            {
+              "id": "chase",
+              "label": "追上去",
+              "desc": "跑过桥追上去。",
+              "keywords": [
+                "追上去",
+                "追",
+                "跟上去",
+                "跑过去",
+                "跟着她"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}追上了桥。女孩拐进了一条藤巷。"
+                },
+                {
+                  "t": "narr",
+                  "text": "巷子两边的藤，一齐变成了她身上的颜色。"
+                },
+                {
+                  "t": "say",
+                  "who": "lilith",
+                  "text": "……躲得很好。是练过的。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_TWO": "CHASED"
+                }
+              }
+            },
+            {
+              "id": "evelyn_go",
+              "label": "请伊芙琳去打招呼",
+              "desc": "请伊芙琳过去，跟她打个招呼。",
+              "keywords": [
+                "伊芙琳去",
+                "让伊芙琳",
+                "请伊芙琳",
+                "打招呼",
+                "伊芙琳"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "我、我吗？"
+                },
+                {
+                  "t": "narr",
+                  "text": "伊芙琳攥紧了手，走上了桥。"
+                },
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "……早、早安！"
+                },
+                {
+                  "t": "narr",
+                  "text": "女孩愣住了。对着这张脸，街上的人只会说“希妲早”。从来没有人，对她说“早安”。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她还是走了。走得慢了一点。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_TWO": "EVELYN"
+                },
+                "flags": {
+                  "EX014_FIRST_GOOD_MORNING": true
+                }
+              }
+            },
+            {
+              "id": "lilith_go",
+              "label": "让莉莉丝去",
+              "desc": "交给莉莉丝去跟。",
+              "keywords": [
+                "莉莉丝去",
+                "交给莉莉丝",
+                "让莉莉丝",
+                "莉莉丝跟",
+                "你去吧"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "lilith",
+                  "text": "……嗯。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她没有跑。只是走上桥，走得和那个女孩一模一样——连迈哪只脚都一样。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_TWO": "LILITH"
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "谁都没有动。"
+                },
+                {
+                  "t": "narr",
+                  "text": "桥上的女孩越走越快，拐进了一条藤巷。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_TWO": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "narr",
+          "text": "莉莉丝回头，对希妲丢下一句。"
+        },
+        {
+          "t": "say",
+          "who": "lilith",
+          "text": "你在铺子里等。被两张一样的脸看着，她只会更想躲。"
+        },
+        {
+          "t": "narr",
+          "text": "藤巷的尽头，是一堵墙。死的。"
+        },
+        {
+          "t": "narr",
+          "text": "女孩背对着他们站着，怀里还抱着那盆花。肩膀，在抖。"
+        },
+        {
+          "t": "say",
+          "who": "lilith",
+          "text": "不抓你。……把脸放下来吧。累。"
+        },
+        {
+          "t": "narr",
+          "text": "女孩慢慢转过身。辫子松开了，棕色一点一点褪下去。"
+        },
+        {
+          "t": "narr",
+          "text": "是一张完全不一样的脸。很瘦，眼睛很大。"
+        },
+        {
+          "t": "say",
+          "who": "willow",
+          "text": "……对不起。我叫薇洛。"
+        }
+      ]
+    },
+    {
+      "id": "ex014-02",
+      "title": "自由输入：借来的脸",
+      "bg": "verdant-mirror-street-day",
+      "music": "alley_quiet_single_string",
+      "ambience": [
+        "canal"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "薇洛把那盆花放在脚边。是要送去南桥的。"
+        },
+        {
+          "t": "say",
+          "who": "willow",
+          "text": "我和希妲，是从小一起长大的。"
+        },
+        {
+          "t": "say",
+          "who": "willow",
+          "text": "她什么都会。会唱歌，会调藤。街上的人，都喜欢她。"
+        },
+        {
+          "t": "say",
+          "who": "willow",
+          "text": "我只会……这个。"
+        },
+        {
+          "t": "narr",
+          "text": "她抬起手。手背的颜色，变成了墙上藤叶的绿，又变了回来。"
+        },
+        {
+          "t": "say",
+          "who": "lilith",
+          "text": "木律的拟态。天生的。……没喝药。"
+        },
+        {
+          "t": "say",
+          "who": "willow",
+          "text": "后来我家搬去了城南。在城南，没有人认得我。"
+        },
+        {
+          "t": "say",
+          "who": "willow",
+          "text": "有一天，我试着变成她的样子去买菜。卖菜的阿姨，对我笑了。"
+        },
+        {
+          "t": "say",
+          "who": "willow",
+          "text": "后来……就变不回来了。三年。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "三年……"
+        },
+        {
+          "t": "say",
+          "who": "willow",
+          "text": "我用她的脸，帮人搬过花，喂过桥下的猫。我没有做坏事。"
+        },
+        {
+          "t": "say",
+          "who": "willow",
+          "text": "可是……大家谢的，都是希妲。"
+        },
+        {
+          "t": "narr",
+          "text": "她看了伊芙琳一眼，愣住了。"
+        },
+        {
+          "t": "say",
+          "who": "willow",
+          "text": "你……你是圣女大人？"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "可以不要叫我圣女吗？……叫伊芙琳就好。"
+        },
+        {
+          "t": "input",
+          "id": "FI_EX014_SC02_BORROWED_FACE_001",
+          "kind": "dialogue",
+          "prompt": "薇洛用好朋友希妲的脸过了三年：帮人搬花、喂桥下的猫，可是大家谢的都是希妲。她说自己“只会这个”。{PLAYER_NAME}可以说她做错了、说拟态也是本事、叫她去跟希妲道歉、问她真正想要什么、叫她学学莉莉丝、请伊芙琳说说话，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "willow",
+            "lilith",
+            "evelyn"
+          ],
+          "context": [
+            "薇洛十八岁，木律天生的拟态，没喝拟态药。",
+            "她用希妲的脸做的都是小事：搬花、喂猫；希妲写委托时说了“不要抓她”。",
+            "莉莉丝最讨厌被拿来和别人比；伊芙琳最讨厌别人替她回答。"
+          ],
+          "principles": [
+            "FACE：怎么回应她“只会这个”。判定优先序：叫她学学别人（比较） > 说她做错了 > 叫她去道歉 > 说拟态也是本事 > 问她想要什么 > 请伊芙琳说话 > 沉默。",
+            "比较是莉莉丝的雷区（设03）：“别拿人比”，不写成吵架；说她做错了时，她往希妲的颜色里躲，伊芙琳轻轻拦一下。",
+            "所有路线：伊芙琳说她自己也每天变成一个叫“圣女”的人；“学别人不是坏事，只是学完了，要记得回家。”",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "compare",
+              "label": "叫她学学莉莉丝",
+              "desc": "拿人比：叫她学莉莉丝、伊芙琳，或者说她跟谁很像。",
+              "keywords": [
+                "学学莉莉丝",
+                "学莉莉丝",
+                "学伊芙琳",
+                "跟莉莉丝很像",
+                "你们很像",
+                "像莉莉丝",
+                "学学别人",
+                "!不比",
+                "!别比"
+              ],
+              "morality": -1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "lilith",
+                  "text": "……别拿人比。"
+                },
+                {
+                  "t": "say",
+                  "who": "lilith",
+                  "text": "她就是她。我是我。"
+                },
+                {
+                  "t": "narr",
+                  "text": "薇洛缩了一下。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_FACE": "COMPARED"
+                }
+              }
+            },
+            {
+              "id": "blame",
+              "label": "说她做错了",
+              "desc": "说她偷了别人的脸、这样不对。",
+              "keywords": [
+                "做错了",
+                "不对",
+                "偷了",
+                "偷别人的脸",
+                "不应该",
+                "这样不好",
+                "!不怪",
+                "!不是你的错"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "willow",
+                  "text": "……我知道。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她的脸边上，又冒出了一点棕色。辫子的颜色。像要躲进去。"
+                },
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "……请、请等一下。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_FACE": "BLAMED"
+                }
+              }
+            },
+            {
+              "id": "apologize",
+              "label": "叫她去跟希妲道歉",
+              "desc": "叫她去跟希妲认错、道歉。",
+              "keywords": [
+                "道歉",
+                "认错",
+                "跟希妲说",
+                "去找希妲",
+                "赔不是"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "willow",
+                  "text": "道歉……要用哪一张脸去？"
+                },
+                {
+                  "t": "narr",
+                  "text": "她自己也被这句话吓了一跳。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_FACE": "APOLOGY"
+                }
+              }
+            },
+            {
+              "id": "skill",
+              "label": "说拟态也是本事",
+              "desc": "说她的拟态很厉害、是本事。",
+              "keywords": [
+                "本事",
+                "很厉害",
+                "了不起",
+                "是天赋",
+                "厉害",
+                "不容易",
+                "不是你的错",
+                "不怪你"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "willow",
+                  "text": "……本事？"
+                },
+                {
+                  "t": "say",
+                  "who": "lilith",
+                  "text": "他说得对。学一个人三年不露馅，眼睛要很好。"
+                },
+                {
+                  "t": "say",
+                  "who": "lilith",
+                  "text": "拟态，不是变脸。是看人。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_FACE": "SKILL"
+                }
+              }
+            },
+            {
+              "id": "ask_want",
+              "label": "问她真正想要什么",
+              "desc": "问她：你真正想要的是什么。",
+              "keywords": [
+                "想要什么",
+                "真正想要",
+                "你想要",
+                "想怎么样",
+                "你的愿望"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "willow",
+                  "text": "……我想要，有人对着我笑。"
+                },
+                {
+                  "t": "say",
+                  "who": "willow",
+                  "text": "对着我。不是对着希妲。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_FACE": "ASKED"
+                }
+              }
+            },
+            {
+              "id": "evelyn_speak",
+              "label": "请伊芙琳说说话",
+              "desc": "请伊芙琳跟她说说。",
+              "keywords": [
+                "伊芙琳你说",
+                "请伊芙琳",
+                "让伊芙琳",
+                "伊芙琳"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "我、我说？"
+                },
+                {
+                  "t": "narr",
+                  "text": "伊芙琳深吸了一口气。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_FACE": "EVELYN"
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}没有说话。"
+                },
+                {
+                  "t": "narr",
+                  "text": "薇洛低着头，等着被骂。"
+                },
+                {
+                  "t": "narr",
+                  "text": "没有人骂她。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_FACE": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "我以前……也每天变成一个人。那个人，叫“圣女”。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "穿什么、说什么、喜欢什么花，都是别人定好的。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "“早安”，也是我照着厨房的大婶学的。练了好久。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "所以……学别人，不是坏事。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "只是学完了，要记得回家。"
+        },
+        {
+          "t": "say",
+          "who": "lilith",
+          "text": "……回自己的脸。"
+        },
+        {
+          "t": "narr",
+          "text": "薇洛看着自己的手。手背是她自己的颜色，很淡。"
+        },
+        {
+          "t": "say",
+          "who": "willow",
+          "text": "我自己的脸……能做什么呢？"
+        }
+      ]
+    },
+    {
+      "id": "ex014-03",
+      "title": "自由输入：灰了的藤墙",
+      "bg": "verdant-mirror-street-day",
+      "music": "vine_wall_soft_harp",
+      "ambience": [
+        "canal",
+        "wind"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "街尾有一面墙，藤是灰的。叶子卷着，一动也不动。"
+        },
+        {
+          "t": "narr",
+          "text": "墙下坐着一个老婆婆，抱着一只空花盆。"
+        },
+        {
+          "t": "say",
+          "who": "old_lady",
+          "text": "这面墙，是我家老头子种的。他在的时候，藤会开出一片蓝色的波纹，像水。"
+        },
+        {
+          "t": "say",
+          "who": "old_lady",
+          "text": "他走了以后，藤就不变了。调藤铺的丫头来过好几回，调不回来。说没见过那种纹。"
+        },
+        {
+          "t": "say",
+          "who": "lilith",
+          "text": "没见过，就学不了。"
+        },
+        {
+          "t": "narr",
+          "text": "薇洛看着那面墙，看了很久。"
+        },
+        {
+          "t": "say",
+          "who": "willow",
+          "text": "……我见过。"
+        },
+        {
+          "t": "say",
+          "who": "willow",
+          "text": "小时候，我每天从这里走。蓝色的，一圈一圈往外走……"
+        },
+        {
+          "t": "say",
+          "who": "lilith",
+          "text": "那你学得会。"
+        },
+        {
+          "t": "say",
+          "who": "willow",
+          "text": "可是……那是别人的东西。"
+        },
+        {
+          "t": "input",
+          "id": "FI_EX014_SC03_VINE_WALL_001",
+          "kind": "tactic",
+          "prompt": "街尾老婆婆家的藤墙灰了，调藤铺调不回原来的蓝色水纹；薇洛小时候天天看，记得那个纹样，却说“那是别人的东西”。{PLAYER_NAME}可以鼓励她试试、让她照原样一点不差地学、让她加一点她自己的、请她先问过婆婆、请莉莉丝教她诀窍、催她快一点，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "willow",
+            "old_lady",
+            "lilith",
+            "evelyn"
+          ],
+          "context": [
+            "活藤会学颜色与纹理；木律的人用手按着，就能教它。",
+            "这面墙的蓝色水纹，是婆婆过世的丈夫种出来的；调藤铺的希妲调了半年也没调回来。",
+            "薇洛小时候每天从这面墙下走过。"
+          ],
+          "principles": [
+            "WALL：怎么帮她修那面墙。判定优先序：催她 > 照原样一点不差 > 加一点自己的 > 先问婆婆 > 请莉莉丝教 > 鼓励她试试 > 沉默。",
+            "拟态在这里是手艺：被催时她慌，藤上冒出希妲的棕色（急的时候人会变回最熟的那张脸）；不写成失败或受伤。",
+            "所有路线：墙变回蓝色水纹，水纹最边上多一片淡淡的叶子，是她手背的颜色；婆婆问她的名字。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "neg_guard",
+              "label": "否定式表态（按鼓励她处理）",
+              "desc": "只说自己“不催她／慢慢来”，本身并不是那个动作；按鼓励她处理。",
+              "keywords": [
+                "不催",
+                "慢慢来",
+                "不急",
+                "别着急",
+                "不用急"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "willow",
+                  "text": "……嗯。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她深吸一口气，把手按在了墙上。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_WALL": "ENCOURAGED"
+                }
+              }
+            },
+            {
+              "id": "rush",
+              "label": "催她快一点",
+              "desc": "催她：快点、别磨蹭。",
+              "keywords": [
+                "快点",
+                "快一点",
+                "别磨蹭",
+                "赶紧",
+                "动作快",
+                "!不催",
+                "!不急",
+                "!不用急"
+              ],
+              "morality": -1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "willow",
+                  "text": "对、对不起……！"
+                },
+                {
+                  "t": "narr",
+                  "text": "她的手一抖，藤上冒出了一块棕色，像辫子的颜色。"
+                },
+                {
+                  "t": "say",
+                  "who": "lilith",
+                  "text": "……急的时候，人会变回最熟的那张脸。"
+                },
+                {
+                  "t": "say",
+                  "who": "lilith",
+                  "text": "慢一点。墙不会跑。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_WALL": "RUSHED"
+                }
+              }
+            },
+            {
+              "id": "exact",
+              "label": "照原样一点不差",
+              "desc": "让她照原来的样子，一模一样地学出来。",
+              "keywords": [
+                "照原样",
+                "一模一样",
+                "一点不差",
+                "原来的样子",
+                "照着学"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "willow",
+                  "text": "一模一样……这个，我会。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她把手按在墙上，闭上了眼睛。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_WALL": "EXACT"
+                }
+              }
+            },
+            {
+              "id": "add_own",
+              "label": "加一点她自己的",
+              "desc": "让她在纹样里加一点她自己的东西。",
+              "keywords": [
+                "加一点你自己",
+                "你自己的",
+                "加一点",
+                "自己的东西",
+                "你的颜色",
+                "自己的"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "willow",
+                  "text": "我自己的……？"
+                },
+                {
+                  "t": "narr",
+                  "text": "她想了很久，在心里，先把那片叶子画好了。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_WALL": "OWN"
+                },
+                "flags": {
+                  "EX014_OWN_LEAF": true
+                }
+              }
+            },
+            {
+              "id": "ask_lady",
+              "label": "请她先问过婆婆",
+              "desc": "让她先问婆婆愿不愿意。",
+              "keywords": [
+                "问婆婆",
+                "问问婆婆",
+                "婆婆同意",
+                "先问",
+                "征得同意",
+                "问过"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "薇洛蹲下来，跟婆婆一样高。"
+                },
+                {
+                  "t": "say",
+                  "who": "willow",
+                  "text": "婆婆……我可以试试吗？"
+                },
+                {
+                  "t": "say",
+                  "who": "old_lady",
+                  "text": "你要是能让它再变蓝，我给你煮汤。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_WALL": "ASKED_LADY"
+                }
+              }
+            },
+            {
+              "id": "lilith_teach",
+              "label": "请莉莉丝教她诀窍",
+              "desc": "请莉莉丝教她拟态的诀窍。",
+              "keywords": [
+                "莉莉丝教",
+                "诀窍",
+                "请莉莉丝",
+                "莉莉丝你教",
+                "教教她"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "lilith",
+                  "text": "别看藤。看你记得的那个人。"
+                },
+                {
+                  "t": "say",
+                  "who": "lilith",
+                  "text": "他每天站在这里，看藤变蓝。你要学的，是他看的样子。"
+                },
+                {
+                  "t": "if",
+                  "when": {
+                    "flag": "LILITH_RELATIONSHIP_STAGE",
+                    "eq": "COMPANION"
+                  },
+                  "then": [
+                    {
+                      "t": "narr",
+                      "text": "莉莉丝说完，看了{PLAYER_NAME}一眼。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "lilith",
+                      "text": "……我很少教人。别说出去。"
+                    }
+                  ]
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_WALL": "LILITH_TAUGHT"
+                }
+              }
+            },
+            {
+              "id": "encourage",
+              "label": "鼓励她试试",
+              "desc": "鼓励她：试试看、你可以的。",
+              "keywords": [
+                "试试",
+                "你可以的",
+                "试一下",
+                "没关系",
+                "加油",
+                "你行的"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "willow",
+                  "text": "……嗯。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她深吸一口气，把手按在了墙上。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_WALL": "ENCOURAGED"
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "谁都没有说话。"
+                },
+                {
+                  "t": "narr",
+                  "text": "薇洛看看墙，又看看婆婆，把手按了上去。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_WALL": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "narr",
+          "text": "灰色的藤，从她的掌心开始，慢慢变蓝。"
+        },
+        {
+          "t": "narr",
+          "text": "蓝色一圈一圈地往外走。像水，像有人往水里丢了一颗石子。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "EX014_OWN_LEAF"
+          },
+          "then": [
+            {
+              "t": "narr",
+              "text": "水纹的最边上，多了一片小小的叶子。淡淡的，是她手背的颜色。"
+            }
+          ],
+          "else": [
+            {
+              "t": "narr",
+              "text": "水纹的最边上，多了一片小小的叶子。淡淡的——她自己都没发现，那是她手背的颜色。"
+            }
+          ]
+        },
+        {
+          "t": "say",
+          "who": "old_lady",
+          "text": "……是这个。是这个蓝。"
+        },
+        {
+          "t": "narr",
+          "text": "婆婆摸着墙，摸了很久。"
+        },
+        {
+          "t": "say",
+          "who": "old_lady",
+          "text": "丫头，你叫什么？"
+        },
+        {
+          "t": "narr",
+          "text": "薇洛张了张嘴。"
+        },
+        {
+          "t": "say",
+          "who": "willow",
+          "text": "……薇洛。"
+        },
+        {
+          "t": "say",
+          "who": "old_lady",
+          "text": "薇洛。我记住了。"
+        },
+        {
+          "t": "narr",
+          "text": "这是三年来，第一次有人对着她的脸，叫她的名字。"
+        }
+      ]
+    },
+    {
+      "id": "ex014-04",
+      "title": "自由输入：替她开口",
+      "bg": "verdant-mirror-street-day",
+      "music": "two_faces_held_breath_strings",
+      "ambience": [
+        "canal",
+        "crowd"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "街上的人，一个传一个：婆婆的墙，变蓝了。"
+        },
+        {
+          "t": "narr",
+          "text": "调藤铺的希妲跑了过来。围裙上的绿汁还没干。"
+        },
+        {
+          "t": "say",
+          "who": "hilda",
+          "text": "婆婆的墙……真的变蓝了？是谁调的——"
+        },
+        {
+          "t": "narr",
+          "text": "她看见了薇洛。停住了。"
+        },
+        {
+          "t": "narr",
+          "text": "薇洛的脸边上，冒出了一点棕色。像要躲进去。"
+        },
+        {
+          "t": "say",
+          "who": "lilith",
+          "text": "……别躲。"
+        },
+        {
+          "t": "narr",
+          "text": "颜色停住了。没有退，也没有长。"
+        },
+        {
+          "t": "say",
+          "who": "hilda",
+          "text": "……你是谁？"
+        },
+        {
+          "t": "narr",
+          "text": "薇洛张开嘴。一个字，也说不出来。"
+        },
+        {
+          "t": "narr",
+          "text": "伊芙琳看着{PLAYER_NAME}。"
+        },
+        {
+          "t": "input",
+          "id": "FI_EX014_SC04_SPEAK_FOR_001",
+          "kind": "dialogue",
+          "prompt": "希妲来了，问薇洛是谁。薇洛张开嘴，一个字也说不出来；脸边上冒出一点希妲的颜色，像要躲进去。{PLAYER_NAME}可以替她把事情说清楚、替她道歉、等她自己开口、走过去站在她旁边、请希妲先别生气、开个玩笑缓一缓，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "willow",
+            "hilda",
+            "evelyn",
+            "lilith"
+          ],
+          "context": [
+            "希妲写委托时说过：不要抓她，只想知道是谁。",
+            "伊芙琳最讨厌别人替她回答；她在看{PLAYER_NAME}怎么做。",
+            "薇洛急的时候，会变回最熟的那张脸——希妲的。"
+          ],
+          "principles": [
+            "SPEAK：要不要替她开口。判定优先序：替她说清楚 > 替她道歉 > 开玩笑 > 请希妲别生气 > 站在她旁边 > 等她自己开口 > 沉默。",
+            "不设标准答案：替她说时，伊芙琳只轻轻说“让她自己说，好吗？”，不说教；不碰任何承诺变数。",
+            "所有路线：薇洛自己说出“我是薇洛”；希妲说“我才想变成你”。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "neg_guard",
+              "label": "否定式表态（按等她处理）",
+              "desc": "只说自己“不替她说／让她自己说”，本身并不是那个动作；按等她处理。",
+              "keywords": [
+                "不替她",
+                "让她自己说",
+                "她自己说",
+                "不帮她说",
+                "我不说"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}没有替她开口。"
+                },
+                {
+                  "t": "narr",
+                  "text": "一。二。三。"
+                },
+                {
+                  "t": "say",
+                  "who": "willow",
+                  "text": "……是、是我。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_SPEAK": "WAITED"
+                }
+              }
+            },
+            {
+              "id": "speak_for",
+              "label": "替她把事情说清楚",
+              "desc": "{PLAYER_NAME}替她解释：她是薇洛，这三年是她。",
+              "keywords": [
+                "我来解释",
+                "替她说",
+                "她是薇洛",
+                "我来说",
+                "是这样的",
+                "解释一下",
+                "!不替",
+                "!自己说"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}开口，把事情说了一遍。"
+                },
+                {
+                  "t": "say",
+                  "who": "hilda",
+                  "text": "……所以，在南桥帮我搬花的，是她？"
+                },
+                {
+                  "t": "narr",
+                  "text": "薇洛的头，越来越低。"
+                },
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "……让她自己说，好吗？"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_SPEAK": "SPOKE_FOR"
+                }
+              }
+            },
+            {
+              "id": "apologize_for",
+              "label": "替她道歉",
+              "desc": "{PLAYER_NAME}替她跟希妲道歉。",
+              "keywords": [
+                "替她道歉",
+                "对不起",
+                "我替她",
+                "原谅她",
+                "道歉"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "hilda",
+                  "text": "你道什么歉？……你又不是她。"
+                },
+                {
+                  "t": "narr",
+                  "text": "薇洛的肩膀，抖了一下。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_SPEAK": "APOLOGIZED_FOR"
+                }
+              }
+            },
+            {
+              "id": "joke",
+              "label": "开个玩笑缓一缓",
+              "desc": "开个玩笑，缓和一下气氛。",
+              "keywords": [
+                "开玩笑",
+                "两个希妲",
+                "分不清",
+                "双胞胎",
+                "笑一笑"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "hilda",
+                  "text": "……噗。"
+                },
+                {
+                  "t": "narr",
+                  "text": "希妲没忍住，笑出了声。"
+                },
+                {
+                  "t": "narr",
+                  "text": "薇洛愣住了。脸边上那一点棕色，晃了一下。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_SPEAK": "JOKED"
+                }
+              }
+            },
+            {
+              "id": "calm_hilda",
+              "label": "请希妲先别生气",
+              "desc": "请希妲先别生气、先听她说。",
+              "keywords": [
+                "别生气",
+                "先听她说",
+                "听她说",
+                "冷静",
+                "别怪她"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "hilda",
+                  "text": "生气？……我写委托的时候，就写了不要抓她。"
+                },
+                {
+                  "t": "say",
+                  "who": "hilda",
+                  "text": "我只是想知道，是谁。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_SPEAK": "CALMED"
+                }
+              }
+            },
+            {
+              "id": "stood",
+              "label": "走过去站在她旁边",
+              "desc": "{PLAYER_NAME}走过去，站在她旁边，什么都不替她说。",
+              "keywords": [
+                "站在她旁边",
+                "站到她身边",
+                "陪着她",
+                "走过去",
+                "站她旁边"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}往前一步，站在了她旁边。没有说话。"
+                },
+                {
+                  "t": "narr",
+                  "text": "薇洛看了他一眼。手，不抖了。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_SPEAK": "STOOD"
+                }
+              }
+            },
+            {
+              "id": "wait",
+              "label": "等她自己开口",
+              "desc": "不出声，等她自己说。",
+              "keywords": [
+                "等她",
+                "等一等",
+                "等她开口",
+                "给她时间",
+                "慢慢说"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}没有替她开口。"
+                },
+                {
+                  "t": "narr",
+                  "text": "一。二。三。"
+                },
+                {
+                  "t": "say",
+                  "who": "willow",
+                  "text": "……是、是我。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_SPEAK": "WAITED"
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "谁都没有说话。活藤的叶子，沙沙地响。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_SPEAK": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "say",
+          "who": "willow",
+          "text": "我是薇洛。……城南的薇洛。"
+        },
+        {
+          "t": "say",
+          "who": "willow",
+          "text": "三年。我用你的脸……对不起。"
+        },
+        {
+          "t": "narr",
+          "text": "希妲盯着她，看了很久。"
+        },
+        {
+          "t": "say",
+          "who": "hilda",
+          "text": "……薇洛？小时候，每天从婆婆墙下走过去的那个薇洛？"
+        },
+        {
+          "t": "say",
+          "who": "hilda",
+          "text": "你搬走以后，一封信都没有。我还以为……你不想跟我玩了。"
+        },
+        {
+          "t": "say",
+          "who": "willow",
+          "text": "我想。我想……变成你。"
+        },
+        {
+          "t": "say",
+          "who": "hilda",
+          "text": "变成我？……我才想变成你。"
+        },
+        {
+          "t": "say",
+          "who": "hilda",
+          "text": "你什么都看得见。谁走路先迈哪只脚，谁笑的时候先眯哪只眼睛。"
+        },
+        {
+          "t": "say",
+          "who": "hilda",
+          "text": "调藤，最要紧的就是看。我看了半年，都没看出婆婆那面墙原来的纹。"
+        },
+        {
+          "t": "narr",
+          "text": "薇洛脸边的那一点棕色，慢慢退了下去。"
+        },
+        {
+          "t": "say",
+          "who": "lilith",
+          "text": "……羡慕，是互相的。"
+        },
+        {
+          "t": "say",
+          "who": "lilith",
+          "text": "可以羡慕一个人拥有的东西。那不代表，要变成她。"
+        },
+        {
+          "t": "narr",
+          "text": "伊芙琳悄悄看了莉莉丝一眼。没有问。"
+        }
+      ]
+    },
+    {
+      "id": "ex014-05",
+      "title": "自由输入：明天的脸",
+      "bg": "verdant-mirror-street-day",
+      "music": "vine_shop_afternoon_pluck",
+      "ambience": [
+        "canal",
+        "crowd"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "下午。调藤铺的门口，希妲搬出了两把小凳子。"
+        },
+        {
+          "t": "say",
+          "who": "hilda",
+          "text": "薇洛，来铺子里吧。我教你调藤，你教我看人。"
+        },
+        {
+          "t": "say",
+          "who": "hilda",
+          "text": "工钱嘛……先管午饭。"
+        },
+        {
+          "t": "narr",
+          "text": "薇洛看看希妲，又看看自己的手。"
+        },
+        {
+          "t": "say",
+          "who": "willow",
+          "text": "……可是，拟态呢？"
+        },
+        {
+          "t": "say",
+          "who": "willow",
+          "text": "我只会这个。这个……以后，就不能用了吗？"
+        },
+        {
+          "t": "narr",
+          "text": "她看向{PLAYER_NAME}。"
+        },
+        {
+          "t": "input",
+          "id": "FI_EX014_SC05_TOMORROW_001",
+          "kind": "dialogue",
+          "prompt": "希妲请薇洛来调藤铺帮忙。薇洛问：拟态是她唯一会的东西，以后还能不能用？{PLAYER_NAME}可以叫她再也别用、说拟态可以当手艺留着、提议她去当议员那种合法的拟态师、说只要先问过对方就行、问莉莉丝怎么看、让她自己决定，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "willow",
+            "hilda",
+            "lilith",
+            "evelyn"
+          ],
+          "context": [
+            "绿镜城的议员常用合法的拟态保护身份；正式23以后议会厅空着七张椅子。",
+            "希妲请她来调藤铺：她教调藤，薇洛教看人。",
+            "莉莉丝学拟态，是为了活下去。"
+          ],
+          "principles": [
+            "TOMORROW：拟态以后怎么办。判定优先序：叫她再也别用 > 去当议员的拟态师 > 当手艺留着 > 先问过对方 > 问莉莉丝 > 让她自己决定 > 沉默。",
+            "莉莉丝的往事只擦一下：“我学拟态，是为了不被人找到”；不提家族、年份与影市学过什么。不提七席与三家的处置。",
+            "所有路线：薇洛自己决定——明天用自己的脸去铺子；拟态留着，想变的时候先跟人说。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "forbid",
+              "label": "叫她再也别用",
+              "desc": "叫她以后再也不准拟态。",
+              "keywords": [
+                "再也别用",
+                "不准再变",
+                "别再变",
+                "再也不要",
+                "不许用",
+                "别用了"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "willow",
+                  "text": "……再也……？"
+                },
+                {
+                  "t": "narr",
+                  "text": "她把手藏到了背后。"
+                },
+                {
+                  "t": "say",
+                  "who": "lilith",
+                  "text": "刀，不会因为不用，就不是刀。"
+                },
+                {
+                  "t": "say",
+                  "who": "lilith",
+                  "text": "收好，就行了。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_TOMORROW": "FORBADE"
+                }
+              }
+            },
+            {
+              "id": "legal",
+              "label": "去当议员的拟态师",
+              "desc": "建议她去议会厅，当议员那种合法的拟态师。",
+              "keywords": [
+                "议员",
+                "议会厅",
+                "合法的拟态",
+                "当拟态师",
+                "替身"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "lilith",
+                  "text": "议会厅……现在空着七张椅子。"
+                },
+                {
+                  "t": "say",
+                  "who": "lilith",
+                  "text": "替议员换脸的活，以后会少很多。"
+                },
+                {
+                  "t": "say",
+                  "who": "willow",
+                  "text": "……那我，还是先学调藤吧。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_TOMORROW": "LEGAL"
+                }
+              }
+            },
+            {
+              "id": "craft",
+              "label": "当手艺留着",
+              "desc": "说拟态可以像手艺一样留着。",
+              "keywords": [
+                "手艺",
+                "留着",
+                "当本事",
+                "本事留着",
+                "可以用"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "willow",
+                  "text": "手艺……像调藤那样？"
+                },
+                {
+                  "t": "say",
+                  "who": "hilda",
+                  "text": "像调藤那样！"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_TOMORROW": "CRAFT"
+                }
+              }
+            },
+            {
+              "id": "consent",
+              "label": "先问过对方就行",
+              "desc": "说只要变成谁之前先问过那个人就行。",
+              "keywords": [
+                "先问过",
+                "先问",
+                "同意",
+                "答应",
+                "问一声"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "willow",
+                  "text": "先问……？"
+                },
+                {
+                  "t": "say",
+                  "who": "hilda",
+                  "text": "那我先答应！你想变成我的时候，先跟我说一声——我们一起去吓卖菜的阿姨！"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_TOMORROW": "CONSENT"
+                }
+              }
+            },
+            {
+              "id": "ask_lilith",
+              "label": "问莉莉丝怎么看",
+              "desc": "请莉莉丝说说她怎么看。",
+              "keywords": [
+                "问莉莉丝",
+                "莉莉丝你说",
+                "莉莉丝怎么看",
+                "莉莉丝觉得",
+                "莉莉丝"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "lilith",
+                  "text": "……我学的时候，没得选。"
+                },
+                {
+                  "t": "say",
+                  "who": "lilith",
+                  "text": "你有得选。……可以只是为了好玩。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_TOMORROW": "ASKED_LILITH"
+                }
+              }
+            },
+            {
+              "id": "her_choice",
+              "label": "让她自己决定",
+              "desc": "说这要她自己决定。",
+              "keywords": [
+                "你自己决定",
+                "自己决定",
+                "你决定",
+                "你想怎样",
+                "随你"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "willow",
+                  "text": "我自己……？"
+                },
+                {
+                  "t": "narr",
+                  "text": "她想了很久。久到希妲把两把凳子都擦干净了。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_TOMORROW": "HER_CHOICE"
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}没有说话。"
+                },
+                {
+                  "t": "narr",
+                  "text": "薇洛等了一会儿，低头，看着自己的手。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_TOMORROW": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "say",
+          "who": "willow",
+          "text": "……我决定了。"
+        },
+        {
+          "t": "say",
+          "who": "willow",
+          "text": "明天，我用自己的脸去铺子。"
+        },
+        {
+          "t": "say",
+          "who": "willow",
+          "text": "拟态……留着。想变的时候，先跟人说。"
+        },
+        {
+          "t": "say",
+          "who": "hilda",
+          "text": "跟我说！第一个跟我说！"
+        },
+        {
+          "t": "narr",
+          "text": "薇洛笑了。用她自己的脸。"
+        },
+        {
+          "t": "narr",
+          "text": "门口的活藤，跟着变了一下颜色——淡淡的，是她的颜色。"
+        }
+      ]
+    },
+    {
+      "id": "ex014-06",
+      "title": "回营的路",
+      "bg": "verdant-camp-night",
+      "music": "camp_night_soft_bell_on_last_line",
+      "ambience": [
+        "campfire",
+        "crickets"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "夜。从城里回营地的路上。远处，营火亮着。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "EX014_FIRST_GOOD_MORNING"
+          },
+          "then": [
+            {
+              "t": "say",
+              "who": "evelyn",
+              "text": "今天，我对两个人说了“早安”。一个是薇洛。……第一次，是对着希妲的脸。"
+            }
+          ]
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "……莉莉丝小姐。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "你今天，说了好多话。"
+        },
+        {
+          "t": "say",
+          "who": "lilith",
+          "text": "……没有。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "有。我数了。"
+        },
+        {
+          "t": "say",
+          "who": "lilith",
+          "text": "……数这个干什么。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "我会记得普通人的事。……莉莉丝小姐，也是普通人。"
+        },
+        {
+          "t": "narr",
+          "text": "莉莉丝没有回答。往前走快了一步，又慢下来，等她。"
+        },
+        {
+          "t": "say",
+          "who": "lilith",
+          "text": "……我学拟态的时候，是为了不被人找到。"
+        },
+        {
+          "t": "say",
+          "who": "lilith",
+          "text": "她不一样。她是为了被人看见。"
+        },
+        {
+          "t": "say",
+          "who": "lilith",
+          "text": "……被看见了，就够了。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "LILITH_RELATIONSHIP_STAGE",
+            "eq": "COMPANION"
+          },
+          "then": [
+            {
+              "t": "narr",
+              "text": "她回头，看了{PLAYER_NAME}一眼。"
+            },
+            {
+              "t": "say",
+              "who": "lilith",
+              "text": "……下次，这种委托，也一起来。"
+            }
+          ]
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "EVELYN_RELATIONSHIP_STAGE",
+            "eq": "COMPANION"
+          },
+          "then": [
+            {
+              "t": "say",
+              "who": "evelyn",
+              "text": "明天早上，我想对你说“早安”。……用我自己的声音。"
+            }
+          ]
+        },
+        {
+          "t": "narr",
+          "text": "城里的活藤街上，一面墙泛着蓝色的水纹。"
+        },
+        {
+          "t": "narr",
+          "text": "水纹最边上，有一片小小的、淡淡的叶子。"
+        }
+      ]
+    }
+  ],
+  "end": {
+    "save": "SAVE_EX014_END",
+    "next": null,
+    "set": {
+      "flags": {
+        "EX014_WILLOW_NAMED": true,
+        "EX014_BLUE_WALL_RESTORED": true,
+        "EX014_OWN_FACE_TOMORROW": true
+      }
+    },
+    "memory": {
+      "key": "EX014_MEMORY",
+      "text": "绿镜城活藤街：薇洛用朋友的脸过了三年；那天藤墙变回蓝色，她第一次用自己的脸，被人叫了名字。"
+    },
+    "summary": [
+      {
+        "text": "{PLAYER_NAME}和莉莉丝、伊芙琳揭了一张委托：活藤街的希妲说，有人用她的脸。"
+      },
+      {
+        "when": {
+          "flag": "EX014_SHOUTED"
+        },
+        "text": "{PLAYER_NAME}当街喊破了桥上的希妲；她的颜色褪了一半，莉莉丝说：别喊。"
+      },
+      {
+        "when": {
+          "flag": "EX014_FIRST_GOOD_MORNING"
+        },
+        "text": "伊芙琳走上桥，对着那张借来的脸，说了一句“早安”。"
+      },
+      {
+        "text": "拟态的女孩，叫薇洛。三年来，她帮人搬花、喂猫，大家谢的都是希妲。"
+      },
+      {
+        "when": {
+          "flag": "EX_FACE",
+          "eq": "COMPARED"
+        },
+        "text": "{PLAYER_NAME}叫薇洛学学别人；莉莉丝说：别拿人比。"
+      },
+      {
+        "text": "伊芙琳说：学别人不是坏事，只是学完了，要记得回家。"
+      },
+      {
+        "when": {
+          "flag": "EX014_OWN_LEAF"
+        },
+        "text": "{PLAYER_NAME}让薇洛加一点她自己的：蓝色水纹的最边上，多了一片她的叶子。"
+      },
+      {
+        "text": "街尾婆婆的藤墙变回了蓝色。婆婆问她叫什么；她说：薇洛。"
+      },
+      {
+        "when": {
+          "flag": "EX_SPEAK",
+          "eq": "SPOKE_FOR"
+        },
+        "text": "{PLAYER_NAME}替薇洛把事情说了；伊芙琳说：让她自己说，好吗？"
+      },
+      {
+        "when": {
+          "any": [
+            {
+              "flag": "EX_SPEAK",
+              "eq": "WAITED"
+            },
+            {
+              "flag": "EX_SPEAK",
+              "eq": "STOOD"
+            }
+          ]
+        },
+        "text": "{PLAYER_NAME}没有替她开口。她自己说：我是薇洛。"
+      },
+      {
+        "text": "希妲说：“我才想变成你。”莉莉丝说：“羡慕，是互相的。”"
+      },
+      {
+        "text": "明天，薇洛用自己的脸去调藤铺。拟态留着，想变的时候，先跟人说。"
+      }
+    ]
+  }
+}

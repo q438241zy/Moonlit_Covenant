@@ -198,7 +198,7 @@ button:focus-visible, input:focus-visible, textarea:focus-visible {
   background:
     linear-gradient(90deg, rgba(7,6,22,.9) 0%, rgba(7,6,22,.74) 36%, rgba(7,6,22,.28) 60%, rgba(7,6,22,.12) 100%),
     linear-gradient(180deg, rgba(7,6,22,.1) 0%, rgba(7,6,22,0) 50%, rgba(7,6,22,.7) 100%),
-    url("/assets/title-bg.svg") 62% 0 / cover no-repeat,
+    var(--title-bg, url("/assets/title-bg.svg")) 62% 0 / cover no-repeat,
     #07061a;
 }
 .title-layout {
@@ -641,7 +641,7 @@ button:focus-visible, input:focus-visible, textarea:focus-visible {
   .title-screen {
     background:
       linear-gradient(180deg, rgba(7,6,22,.35) 0, rgba(7,6,22,.62) 180px, rgba(7,6,22,.9) 420px, #07061a 560px),
-      url("/assets/title-bg.svg") 50% 0 / max(100%, 996px) auto no-repeat,
+      var(--title-bg, url("/assets/title-bg.svg")) 50% 0 / max(100%, 996px) auto no-repeat,
       #07061a;
   }
   .game-content { grid-template-columns: 190px minmax(0,1fr) 270px; }

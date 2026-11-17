@@ -21,11 +21,14 @@ const speakers = readJson('public/story/speakers.json');
 const locations = readJson('public/story/locations.json');
 const live = index.filter((e) => e.file && fs.existsSync(path.join(root, 'public', e.file)));
 
-test('番外目录：ex001–ex010 十篇，解锁章不晚于正式25，赠品只有★3 或非卖品', () => {
-  assert.deepEqual(index.map((e) => e.id), Array.from({ length: 10 }, (_, i) => `ex${String(i + 1).padStart(3, '0')}`));
+test('番外目录：ex001–ex010 十篇番外＋ex011–ex021 十一条成长支线，解锁章不晚于正式25，赠品只有★3 或非卖品', () => {
+  assert.deepEqual(index.map((e) => e.id), Array.from({ length: 21 }, (_, i) => `ex${String(i + 1).padStart(3, '0')}`));
   for (const [i, e] of index.entries()) {
     assert.equal(e.number, i + 1);
-    assert.match(e.title, new RegExp(`^番外[一二三四五六七八九十]+｜`));
+    const quest = i >= 10;
+    assert.equal(e.kind === 'sidequest', quest, `${e.id}.kind`);
+    assert.match(e.title, new RegExp(`^${quest ? '支线' : '番外'}[一二三四五六七八九十]+｜`));
+    if (quest) assert.deepEqual([e.costumeTypes, e.gifts.costumes], [[], []], `${e.id}: side quests have no costumes`);
     assert.match(e.unlockAfter, /^ch\d{3}$/);
     assert.ok(Number(e.unlockAfter.slice(2)) <= 25, `${e.id} unlocks by ch025`);
     for (const type of e.costumeTypes) assert.ok(COSTUME_TYPE_META[type], `${e.id}: ${type}`);

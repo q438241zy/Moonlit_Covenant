@@ -1,0 +1,2624 @@
+{
+  "id": "ex017",
+  "number": 17,
+  "kind": "sidequest",
+  "scriptId": "EX017_KNOCK_FIRST",
+  "title": "支线七｜请先敲门",
+  "shortTitle": "请先敲门",
+  "estimatedMinutes": 9,
+  "source": "剧本/番外/ex017請先敲門.md",
+  "unlockAfter": "ch012",
+  "window": "正式12–15之间",
+  "cast": [
+    "serena",
+    "lia",
+    "mia"
+  ],
+  "costumeTypes": [],
+  "canon": {
+    "flags": {
+      "FLAG_CH000_HEMAI_DESTROYED": true,
+      "FLAG_CH000_BLACK_DRAGON_SEEN": true,
+      "FLAG_CH000_MOTHER_STATUS_UNKNOWN": true,
+      "FLAG_CH000_TOBY_SURVIVED_CAVE": true,
+      "FLAG_CH000_DRAGON_VOW": true,
+      "FLAG_CH000_DRAGON_REMAINS_OVER_HEMAI": true,
+      "FLAG_CH001_BLACK_DRAGON_REPELLED_BY_KERN": true,
+      "FLAG_CH001_BLACK_DRAGON_ABDOMEN_WOUNDED": true,
+      "FLAG_CH001_MOTHER_DEATH_CONFIRMED": true,
+      "FLAG_CH001_TOBY_UNDER_KERN_GUARDIANSHIP": true,
+      "FLAG_CH001_ARK_RECEIVED_GUILD_LETTER": true,
+      "FLAG_CH001_KERN_MENTOR_IDEAL": true,
+      "FLAG_CH002_GUILD_REGISTERED": true,
+      "FLAG_CH002_LEAH_FIRST_SEEN": true,
+      "FLAG_CH002_THIEF_CAPTURED": true,
+      "FLAG_CH002_BLACK_CRYSTAL_EVIDENCE_RECOVERED": true,
+      "FLAG_CH002_FIRE_RESONANCE_FLICKER": true,
+      "FLAG_CH003_TEMP_PARTY_FORMED": true,
+      "FLAG_CH003_LEAH_SIGNED_SUPERVISION": true,
+      "FLAG_CH003_THIRD_ACCOMPLICE_CAPTURED": true,
+      "FLAG_CH003_SEVEN_RING_MARK_SEEN": true,
+      "FLAG_CH003_BLACK_CRYSTAL_CRATE_SEIZED": true,
+      "FLAG_CH003_HEMAI_SURVIVORS_TARGETED": true,
+      "FLAG_CH003_OLD_MILL_LEAD": true,
+      "FLAG_CH003_MILL_ASSAULT_POSTPONED": true,
+      "FLAG_CH003_FIRST_JOINT_MISSION_COMPLETE": true,
+      "FLAG_CH003_FIRE_RESONANCE_WARMTH": true,
+      "FLAG_CH003_GUILD_COLLAB_STAMPED": true,
+      "FLAG_CH003_LEAH_KNOWS_PLAYER_NAME": true,
+      "FLAG_CH003_RELIEF_CART_PASSED_WEST_GATE": true,
+      "FLAG_CH003_DRIVER_DESCRIBED": true,
+      "FLAG_CH003_SHIELD_SIGNALS_LEARNED": true,
+      "FLAG_CH003_SOUP_POT_SETTLED": true,
+      "FLAG_CH003_BARREL_DEDUCTED": true,
+      "FLAG_CH004_CORD_SIGNALS_LEARNED": true,
+      "FLAG_CH004_FENN_CONFIRMED_CHAIN_SWAP": true,
+      "FLAG_CH004_WEST_GATE_COSIGNED": true,
+      "FLAG_CH004_SENTRY_REPORT_HEARD": true,
+      "FLAG_CH004_MILL_INFILTRATED": true,
+      "FLAG_CH004_CHARGING_RACK_SEEN": true,
+      "FLAG_CH004_LEDGER_READ": true,
+      "FLAG_CH004_MARA_AND_DAUGHTER_FOUND": true,
+      "FLAG_CH004_KEY_ON_ACOLYTE": true,
+      "FLAG_CH004_TEARS_LIGHT_CRYSTALS": true,
+      "FLAG_CH004_CAPTIVES_REMAIN_IN_MILL": true,
+      "FLAG_CH004_ACOLYTE_SEEN": true,
+      "FLAG_CH004_RESCUE_WINDOW_CRATE_SWAP": true,
+      "FLAG_CH004_LEAH_LEARNED_HEMAI": true,
+      "FLAG_CH004_GUARDS_COMMITTED": true,
+      "FLAG_CH004_RESCUE_COMMISSION_POSTED": true,
+      "FLAG_CH005_WEST_GATE_COSIGNED": true,
+      "FLAG_CH005_PLAN_BRIEFED_AT_MILESTONE": true,
+      "FLAG_CH005_COLLAR_OWNER_REVEALED": true,
+      "FLAG_CH005_PEACE_STONES_NAMED": true,
+      "FLAG_CH005_CHAIN_SWAP_COMPLETED": true,
+      "FLAG_CH005_LEAH_PRESSED_CRATE": true,
+      "FLAG_CH005_CHIEF_COLLAR_DISABLED": true,
+      "FLAG_CH005_ACOLYTE_CAPTURED": true,
+      "FLAG_CH005_ROLL_CALL_ANSWERED": true,
+      "FLAG_CH005_MARA_AND_POLLY_RESCUED": true,
+      "FLAG_CH005_LEAD_MISTTIDE_MARSH": true,
+      "FLAG_CH005_EVIDENCE_TO_GUARD": true,
+      "FLAG_CH005_RESCUE_COMMISSION_COMPLETE": true,
+      "FLAG_CH005_FORMAL_PARTY_FORMED": true,
+      "FLAG_CH005_ESCORT_COMMISSION_POSTED": true,
+      "FLAG_CH005_MARA_POLLY_TO_NORTH_CAMP": true,
+      "FLAG_CH006_ESCORT_COMMISSION_ACCEPTED": true,
+      "FLAG_CH006_SUPPLY_TUTORIAL_DONE": true,
+      "FLAG_CH006_RUBBING_COPY_CARRIED": true,
+      "FLAG_CH006_MARSH_OGRE_UNCOLLARED": true,
+      "FLAG_CH006_SHIELD_UNDER_WHEEL": true,
+      "FLAG_CH006_UNSPOKEN_SYNC": true,
+      "FLAG_CH006_SALT_MARSH_BRIDGE_COLLAPSED": true,
+      "FLAG_CH006_LEAH_BOUNDARY_STATED": true,
+      "FLAG_CH006_ESCORT_COMMISSION_COMPLETE": true,
+      "FLAG_CH006_LEAH_CAKE_SEEN": true,
+      "FLAG_CH006_PARTY_CAMP_OPENED": true,
+      "FLAG_CH006_BLUE_EXPLOSION_SEEN": true,
+      "FLAG_CH006_GEAR_IN_CAKE": true,
+      "FLAG_CH007_FOREST_EDGE_ENTERED": true,
+      "FLAG_CH007_MIA_FIRST_SEEN": true,
+      "FLAG_CH007_UNPLANNED_DISASSEMBLY_NAMED": true,
+      "FLAG_CH007_MIA_NOTED_SEVEN_LAWS": true,
+      "FLAG_CH007_SAFETY_RULES_CLASHED": true,
+      "FLAG_CH007_RETREAT_TO_STAKE": true,
+      "FLAG_CH007_CATCH_IT_WHOLE": true,
+      "FLAG_CH007_THREE_PERSON_FORMATION": true,
+      "FLAG_CH007_TAUNT_INTRODUCED": true,
+      "FLAG_CH007_SCRAP_PICKER_STOPPED": true,
+      "FLAG_CH007_INCIDENT_LOGGED": true,
+      "FLAG_CH007_GEAR_NUMBER_SEEN": true,
+      "FLAG_CH007_GEAR_CRACKED": true,
+      "FLAG_CH007_ERODED_TIDE_CRYSTAL_FOUND": true,
+      "FLAG_CH007_CORE_UNNUMBERED": true,
+      "FLAG_CH007_SEVEN_RING_MATCH_SEEN": true,
+      "FLAG_CH008_RECORDS_REQUESTED": true,
+      "FLAG_CH008_MIA_AS_WITNESS": true,
+      "FLAG_CH008_EAVE_REPAIRED": true,
+      "FLAG_CH008_MIA_MADE_AMENDS": true,
+      "FLAG_CH008_TIDE_STATION_REACHED": true,
+      "FLAG_CH008_GEAR_RETURNED_TO_WINCH": true,
+      "FLAG_CH008_PLANNED_DISASSEMBLY": true,
+      "FLAG_CH008_ONE_MILLIMETER": true,
+      "FLAG_CH008_TIDE_DOOR_LOCKED": true,
+      "FLAG_CH008_RECORDS_RETRIEVED": true,
+      "FLAG_CH008_CORE_SWAP_PROVEN": true,
+      "FLAG_CH008_RINGS_GROWN_NOT_CARVED": true,
+      "FLAG_CH008_MIA_SELF_REPORTED": true,
+      "FLAG_CH008_INCIDENT_SETTLED": true,
+      "FLAG_CH008_NAMES_EXCHANGED": true,
+      "FLAG_CH008_LEAH_SHARED_CASE_FACTS": true,
+      "FLAG_CH008_BLACK_CRYSTAL_APPRAISED": true,
+      "FLAG_CH008_PEACE_STONE_EXPLAINED": true,
+      "FLAG_CH008_CRYSTAL_TO_MIA": true,
+      "FLAG_CH008_MIA_GUEST_TO_HARBOR": true,
+      "FLAG_CH008_THREE_NAMES_LOGGED": true,
+      "FLAG_CH008_SHARED_HEARTBEAT_DETECTED": true,
+      "FLAG_CH008_ACT1_CLOSED": true,
+      "FLAG_CH009_ENTERED_FOG_HARBOR": true,
+      "FLAG_CH009_ESCORT_PAID": true,
+      "FLAG_CH009_INES_MET": true,
+      "FLAG_CH009_RESCUE_RULE_TOLD": true,
+      "FLAG_CH009_GUEST_UNDER_LEAH": true,
+      "FLAG_CH009_WITNESS_NAMES_KEPT": true,
+      "FLAG_CH009_MISSING_CASE_TAKEN": true,
+      "FLAG_CH009_DIVISION_OF_LABOR": true,
+      "FLAG_CH009_CRYSTAL_LAYERS_READ": true,
+      "FLAG_CH009_GREY_CORE_DOWNSTREAM": true,
+      "FLAG_CH009_PEOPLE_FIRST": true,
+      "FLAG_CH009_TESTIMONY_LINKED": true,
+      "FLAG_CH009_SENT_TO_WITNESS": true,
+      "FLAG_CH009_BATH_TESTIMONY": true,
+      "FLAG_CH009_MIRROR_TESTIMONY_LOGGED": true,
+      "FLAG_CH009_DOCK_WORKER_TAKEN": true,
+      "FLAG_CH009_GAFF_WITH_LEAH": true,
+      "FLAG_CH009_DRAIN_NOT_ENTERED": true,
+      "FLAG_CH009_LEDGER_LINE_FINISHED": true,
+      "FLAG_CH009_BELOW_TIDE_OFFBEAT": true,
+      "FLAG_CH010_LEGAL_ENTRY": true,
+      "FLAG_CH010_PUMP_REVERSED_FOUND": true,
+      "FLAG_CH010_FEED_EVIDENCE_FOUND": true,
+      "FLAG_CH010_OUTBOUND_MARK_SEEN": true,
+      "FLAG_CH010_SEVENTEEN_FOUND": true,
+      "FLAG_CH010_GREY_OUTFLOW_TRACED": true,
+      "FLAG_CH010_MIA_SENT_TO_PUMP": true,
+      "FLAG_CH010_FOUR_RESCUED": true,
+      "FLAG_CH010_GAFF_RETURNED": true,
+      "FLAG_CH010_BLACK_STONES_TAKEN": true,
+      "FLAG_CH010_PUMP_STOPPED": true,
+      "FLAG_CH010_SEVENTEEN_CRACKED": true,
+      "FLAG_CH010_MIA_PEOPLE_FIRST": true,
+      "FLAG_CH010_MIA_RESCUE_MISSION_COMPLETE": true,
+      "FLAG_CH010_MOTHER_RETREATED": true,
+      "FLAG_CH010_HEARTBEAT_STILL_BELOW": true,
+      "FLAG_CH010_BELOW_TIDE_STILL": true,
+      "FLAG_CH010_RESCUE_COLUMN_FILLED": true,
+      "FLAG_CH010_ECLIPSE_FEAST_NAMED": true,
+      "FLAG_CH010_SAME_LEDGER": true,
+      "FLAG_CH010_MIA_JOINED": true,
+      "FLAG_CH010_MIA_CONDITION_LOGGED": true,
+      "FLAG_CH010_CASE_SHARED_WITH_MIA": true,
+      "FLAG_CH010_LODGED_BRIDGEHEAD_INN": true,
+      "FLAG_CH010_MIRROR_EYES": true,
+      "FLAG_CH010_OUTSIDER_NAMED": true,
+      "FLAG_CH009_PIPE_TIDE_HEARD": true,
+      "FLAG_CH011_SEEDS_SETTLED": true,
+      "FLAG_CH011_SCAR_FLARE": true,
+      "FLAG_CH011_SEVEN_HOLES_SHOWN": true,
+      "FLAG_CH011_DREAM_ENTERED": true,
+      "FLAG_CH011_THREADS_CUT": true,
+      "FLAG_CH011_LEAH_KNOCKED_THREE": true,
+      "FLAG_CH011_LEAH_DREW_ON_PERSON": true,
+      "FLAG_CH011_SERENA_MET": true,
+      "FLAG_CH011_SERENA_NAMED": true,
+      "FLAG_CH011_SERENA_LOOKED": true,
+      "FLAG_CH011_NOT_HER_TONIGHT": true,
+      "FLAG_CH011_SEVEN_DOORS_SPOKEN": true,
+      "FLAG_CH011_REGISTRAR_LINE": true,
+      "FLAG_CH011_NO_PEEK_DEMANDED": true,
+      "FLAG_CH011_SERENA_VANISHED": true,
+      "FLAG_CH011_BLACK_FEATHER_MAP": true,
+      "FLAG_CH011_TIDE_CAVE_MARKED": true,
+      "FLAG_CH011_MIRRORS_COVERED": true,
+      "FLAG_CH012_SERENA_WALKED_DOOR": true,
+      "FLAG_CH012_BATH_CONFESSED": true,
+      "FLAG_CH012_MIRROR_PURPLE_MATCHED": true,
+      "FLAG_CH012_MORKAN_NAMED": true,
+      "FLAG_CH012_SERENA_JOINED": true,
+      "FLAG_CH012_SERENA_TERMS_LOGGED": true,
+      "FLAG_CH012_LATCH_SOLVED": true,
+      "FLAG_CH012_MIRROR_MEMORY_RULE": true,
+      "FLAG_CH012_SHADOW_BIND_UNLOCKED": true,
+      "FLAG_CH012_ROLL_CALL_VERIFIED": true,
+      "FLAG_CH012_APPRENTICE_CAUGHT": true,
+      "FLAG_CH012_TIDE_CAVE_TOMORROW_NIGHT": true,
+      "FLAG_CH012_INVERTED_STAR_SHOWN": true,
+      "FLAG_CH012_FIRST_COUNT_FOUR": true,
+      "FLAG_CH012_PASS_UNREAD": true,
+      "FLAG_CH012_LODGING_LIGHTHOUSE": true
+    },
+    "items": {
+      "ITEM_FAMILY_SHEPHERD_WHISTLE": 1,
+      "ITEM_MOTHER_WHEAT_HAIRPIN": 1,
+      "ITEM_GUILD_IRON_BADGE": 1,
+      "ITEM_BASIC_BANDAGE": 2,
+      "ITEM_MARSH_SHOE_COVERS": true,
+      "ITEM_FOREST_EDGE_GEAR": false,
+      "ITEM_FOG_HARBOR_CLEAR_CRYSTAL": false
+    },
+    "vars": {
+      "PLAYER_VOW_PRIMARY": "VOW_REVENGE",
+      "PLAYER_GUILT_TOTAL": 0,
+      "ITEM_FAMILY_SHEPHERD_WHISTLE_OWNER": "TOBY",
+      "PLAYER_PROMISE_RETURN_TO_TOBY": true,
+      "PLAYER_GUILD_RANK": "IRON",
+      "PLAYER_FIRST_IMPRESSION_OF_LEAH": "STRONG_POSITIVE_DEFAULT",
+      "LEAH_FIRST_IMPRESSION_OF_PLAYER": "EAGER_BUT_UNDISCIPLINED",
+      "LEAH_TRUST": 3,
+      "LEAH_INTIMACY": 0,
+      "LEAH_SACRIFICE": 0,
+      "PLAYER_GUILT_LEAH": 0,
+      "BATTLE_CH002_STREET_AMBUSH_RESULT": "clean",
+      "FENN_TREATMENT": "FIRM",
+      "PLAYER_PROMISE_OBEY_LEAH_SIGNAL": false,
+      "BATTLE_CH003_MILL_ROAD_CHAINS_RESULT": "clean",
+      "PLAYER_LODGING": "GUILD_BUNK",
+      "MILL_ALERT": 0,
+      "MILL_EXIT": "LATE",
+      "MILL_CAPTIVES_STATE": "QUIET",
+      "PLAYER_RESCUE_ROLE": "CAGE",
+      "MARA_DAUGHTER_CONDITION": "SMOKE_COUGH_BURNED_ARM",
+      "PLAYER_PROMISE_MARA_RETURN": false,
+      "CART_WAIT": "HELD",
+      "SUPERVISOR_NOTE": "STEADY",
+      "PARTY_CONSENT": "UNANSWERED",
+      "PARTY_STANDING": "MEMBER",
+      "LEAH_RELATIONSHIP_STAGE": "STRANGER",
+      "BATTLE_CH005_BULL_COLLAR_RESULT": "clean",
+      "CH006_CLIENT_CONFIDENCE": "NORMAL",
+      "CH006_OGRE_STATE": "TOOK_PLANK",
+      "CH006_SYNC_CHANNEL": "WAIST",
+      "HAZARD_CH006_SALT_BRIDGE_RESULT": "CLEAN",
+      "CONSENT_LEAH_WAIST_STEADY_BASIS": "offered",
+      "CONSENT_LEAH_WAIST_STEADY_STATUS": "granted_once",
+      "CAKE_TRUCE": "SEALED",
+      "MIA_TRUST": 0,
+      "MIA_INTIMACY": 0,
+      "MIA_SACRIFICE": 0,
+      "PLAYER_GUILT_MIA": 0,
+      "PAIR_LEAH_MIA_TRUST": 0,
+      "PARTY_GUEST_MIA": false,
+      "MIA_RELATIONSHIP_STAGE": "STRANGER",
+      "BATTLE_CH007_SCRAP_PICKER_RESULT": "clean",
+      "CONSENT_PLAYER_MIA_SCAN_STATUS": "none",
+      "CH007_GEAR_CUSTODY": "MIA_LOGGED",
+      "CH007_CAKE_SECRET_RESULT": "LEAH_ANSWERED",
+      "MIA_FIRST_IMPRESSION_OF_PLAYER": "QUIET",
+      "CH008_CRYSTAL_CUSTODY": "MIA_LOGGED",
+      "HAZARD_CH008_TIDE_DOOR_RESULT": "CLEAN",
+      "CH008_BLAME_RESPONSE": "SILENT",
+      "CH008_TESTIMONY": "NONE",
+      "INES_FIRST_IMPRESSION_OF_PLAYER": "QUIET",
+      "CH009_PICKER_RESULT": "BASE",
+      "CH009_TESTIMONY_ORDER": "LEAH_LINKED",
+      "CH009_BATH_WITNESS_RESULT": "FULL",
+      "CH009_CRISIS_ACTION": "SILENT",
+      "HAZARD_CH009_DRAIN_GRATE_RESULT": "CLEAN",
+      "CH010_STONES_CUSTODY": "MIA_LOGGED",
+      "CH010_FEED_EVIDENCE_CUSTODY": "GUILD",
+      "PARTY_MEMBER_MIA": true,
+      "CH010_PUMP_READ": "QUIET",
+      "CH010_RESCUE_ORDER": "LEAH_ORDERED",
+      "CH010_MIA_JOIN_REPLY": "SILENT",
+      "BATTLE_CH010_TIDE_CAVITY_MOTHER_RESULT": "clean",
+      "CH011_MAP_CUSTODY": "LEAH",
+      "SERENA_INTIMACY": 0,
+      "SERENA_SACRIFICE": 0,
+      "SERENA_RELATIONSHIP_STAGE": "STRANGER",
+      "PAIR_LEAH_SERENA_TRUST": 0,
+      "PAIR_MIA_SERENA_TRUST": 1,
+      "SERENA_TRUST": 0,
+      "PLAYER_GUILT_SERENA": 0,
+      "PROMISE_BROKEN_NET_LEAH": 0,
+      "PROMISE_BROKEN_NET_MIA": 0,
+      "PROMISE_N_LEAH": 0,
+      "PROMISE_KEPT_LEAH": 0,
+      "PROMISE_N_MIA": 0,
+      "MONARCH_MERCY": 4,
+      "MONARCH_TERROR": 0,
+      "MONARCH_LUST": 0,
+      "MONARCH_COLD": 0,
+      "TERROR_BLAST": 0,
+      "FLIRT_AFTER_REFUSAL": 0,
+      "CH011_HAND_RESPONSE": "ENDURED",
+      "CH011_SCAR_SEEN_BY": "ALONE",
+      "CH011_KNOCKS_RESPONSE": "DEFAULT",
+      "BATTLE_CH011_SCAR_ECHO_RESULT": "clean",
+      "CH011_SERENA_TREATMENT": "QUIET",
+      "SERENA_FIRST_IMPRESSION_OF_PLAYER": "QUIET",
+      "CH011_VANISH_ANSWER": "SILENT",
+      "CH011_DREAM_TOLD": "KEPT",
+      "PARTY_MEMBER_SERENA": true,
+      "BOUNDARY_SERENA_PRIVATE_OBSERVATION": {
+        "owner": "SERENA",
+        "rule": "未经允许不得以镜术观察私人空间",
+        "status": "acknowledged",
+        "violation_count": 1,
+        "repair_state": "active",
+        "allowed_exceptions": [
+          "emergency_life_threat"
+        ]
+      },
+      "CH012_APPRENTICE_CUSTODY": "TEAM_LIGHTHOUSE",
+      "PROMISE_KEPT_SERENA": 0,
+      "PROMISE_N_SERENA": 2,
+      "PROMISE_BROKEN_NET_SERENA": 0,
+      "CH012_BATH_RESPONSE": "QUIET",
+      "CH012_TERMS_RESULT": "QUIET",
+      "CH012_CHASE_TACTIC": "QUIET",
+      "CH012_DOUBLE_CHECK": "QUIET",
+      "CH012_ROLL_CALL_BY": "LEAH",
+      "BATTLE_CH012_MIRROR_ALLEY_CHASE_RESULT": "clean",
+      "CH012_APPRENTICE_TREATMENT": "QUIET",
+      "LILITH_TRUST": 0,
+      "PLAYER_GUILT_LILITH": 0
+    },
+    "memories": {
+      "MEMORY_MOTHER_WORDS_FIND_WAY_HOME": "艾琳：“我吹这个，你就知道该往哪边回。”",
+      "MEMORY_FAMILY_ROLL_CALL": "艾琳：“报数！”——“我在！”“我、我也在！”",
+      "MEMORY_BORIN_LAST_WORDS": "先看清该砍谁",
+      "MEMORY_CH001_PROMISE_RETURN_TO_TOBY": "托比：“你一定要回来拿。”——“一定。”",
+      "MEMORY_CH004_MARA_AT_THE_CAGE": "旧磨坊的笼边，玛拉认出了他。她和女儿波莉的手腕被细链锁在晶架上；钥匙在念经的人腰上。",
+      "MEMORY_CH004_TWO_PULLS": "旧磨坊里，绳子拉了两下，他慢了半拍才退。玛拉在他身后说：“……你还欠我一根烟囱。”",
+      "MEMORY_CH004_LEAH_ANGER": "第二座里程石旁，莉亚收完绳子，看着磨坊那点灯说：“我在生气。……所以我先问。”",
+      "MEMORY_CH005_WAIT": "大车之夜，链子全上了箱，莉亚回了一下“停”。他没有动，等到了盾落。",
+      "MEMORY_CH005_ROLL_CALL": "大车之夜，灯灭以后，他在黑暗里说出娘的口令“报数”。这一次，答“在”的是玛拉和波莉。",
+      "MEMORY_CH005_TEAM_REGISTER": "公会柜台，莉亚先在队长栏签了“赫斯特”。他没有答复；她写上他的名字，旁注“未答复”。",
+      "MEMORY_CH006_UNSPOKEN_SYNC": "盐沼桥上，他扣着她左侧的腰带。她的肩一沉，他就推了。谁都没出声。",
+      "MEMORY_CH006_BOUNDARY": "她说“腰带。左边。扶稳。”桥过了，她说准的只是那一次。",
+      "MEMORY_CH006_CAKE": "林边旅店的窗口，他撞见了她的字条“高效率糖分补给，一份”。她说：“你没看见。鞋套，不扣你的。……停战。”",
+      "MEMORY_CH006_CAMP": "林边旅店的火盆旁，她把明天的事说完：“守夜，我前半。你后半。”蛋糕盘就在她手边，她没有动叉子。",
+      "MEMORY_CH007_MIA_FIRST_MEETING": "她问能不能量。他没说好，她就没量；刚才那一眼，她也说不记。",
+      "MEMORY_CH007_TWO_RULES": "盾后面是雷最先到的地方。她规矩不改，只把今晚的退路改到桩后。",
+      "MEMORY_CH007_ONE_KNOCK": "林边，莉亚敲了一声盾，米娅没有停，卡住了那条腿。莉亚说“……拉。”急停环才拉下。米娅说她算过，还有两息；莉亚说：“你算的是它。……我算的是你们。”",
+      "MEMORY_CH007_GEAR_AND_CREAM": "林边，米娅问起齿轮上的奶油。他没答，她自己说：“补给。”",
+      "MEMORY_CH007_UNNUMBERED_CORE": "核心是一颗没有编号的潮晶，从里面往外蚀。晶底的黑环和拓图一样，七个。她把拓图摊给米娅看，看的是米娅的脸。她只对他说：这种黑，见过。",
+      "MEMORY_CH008_PAST_MIDNIGHT": "后半夜，她修屋檐，他守院子。",
+      "MEMORY_CH008_ONE_INSTANT": "她要不带火的金。莉亚说，他有，很弱。她看他按住一根钉子，硬了一瞬。",
+      "MEMORY_CH008_ONE_MILLIMETER": "她说“硬”。那一瞬，是他的。",
+      "MEMORY_CH008_SEVENTEEN": "十七号是透的，刻了号；这颗没有刻痕，环是从里面长出来的。核心在刻号之后、装机之前被换。她装的就是这颗；底，她没翻过来看。",
+      "MEMORY_CH008_SELF_REPORT": "她把两件事都写进账里。他没笑。她报了名字。",
+      "MEMORY_CH008_WHAT_AKU_SAW": "她说了颈圈和那箱黑晶。黑石那一段，他没说，她自己说了。",
+      "MEMORY_CH008_HEARTBEAT": "潮平了，听潮针的笔尖还在抖。米娅说，是心跳，很多个叠成一个，在雾港底下。莉亚的笔停住了。",
+      "MEMORY_CH009_INES_QUESTION": "她问落水的人怎么救。他没有回答。她说，先喊，再伸，再抛，最后才是跳。",
+      "MEMORY_CH009_LAYERS": "晶一潮一层，那颗的最里层是黑的。捡晶的说，下游的口子偶尔捡到中间灰的。他没打断米娅。",
+      "MEMORY_CH009_FIVE_SLIPS": "五张证词，她让他排。他没排，她画了一条线：同一道水。下次，你排。",
+      "MEMORY_CH009_SHIELD_SCARES": "她说盾吓人，派他去问烧水的人。他等着，老妇自己说了：池底的沟通东口，外面退潮的时候管子在涨，镜子里有时候多一个紫头发的。",
+      "MEMORY_CH009_GRATE": "根把码头工人拖进栅栏。她用盾封住缺口，说后面的人，你管。米娅抛了绳，他跟渔民一起拉，鱼贩上来了。她说：退。",
+      "MEMORY_CH009_BELOW": "她写完了那一行：雾港底下，有人。四个名字。救回那一栏空着，她说明天填。外面在退，底下还在涨。",
+      "MEMORY_CH010_PUMP_HOUSE": "泵房里没有人。汤碗的麻袋，黑色的碎粒，写着拟态的空瓶，一槽小虫。粉笔画着账本上那个记号，底下写着大四。她停了一拍。",
+      "MEMORY_CH010_SEVENTEEN": "泵是反装的，外面一退就往里打水。晶座里是十七号，底下的十一划掉了。她说要完整的。莉亚派她守泵。",
+      "MEMORY_CH010_FOUR_LEDGES": "四个人，四个地方。她把先后交给他，他没排。她自己点名：达利别动，钩子伸过去，提姆走过来，绳子抛过去；最后她把盾平放在水上，他背着渔民踩了过去。没有人跳。",
+      "MEMORY_CH010_CAVITY_BATTLE": "她分了三份：人，她守；泵，米娅；根，交给他引。他用光照水，她用盾拨；水涨到石台边，他往另一头打了一个水花。她说水到石台了，米娅说，人先，撬碎了晶座。母虫活着退进涵洞。米娅说，不是它，底下还有。",
+      "MEMORY_CH010_RESCUE_COLUMN": "下去三个，上来七个。救回那一栏，她填上了四个名字。底下的水，没有再涨。",
+      "MEMORY_CH010_SAME_LEDGER": "汤碗救济会。伊涅丝说，总会的通报上，发汤的、走巡礼的、卖魔具的，是同一个名字：蚀宴会。莉亚说，是同一本账。案子还开着。",
+      "MEMORY_CH010_MIA_JOINED": "她要署泵停的那一行，就用自己的名字签了登记。条件写在名字旁边：先问，再碰，拆要她在。她问队上要不要一个会炸的。他没说话。她说，没说不要。",
+      "MEMORY_CH010_LEDGER_SHARED": "入了队，她在旅店楼上把账摊开：晨钟镇西门外的旧磨坊，汤碗救济会从营地带走过人；营地那两个救回来了，晨祷平原来的三个没有；那一行的记号，就是泵房那个拱。她说，队员可以问。米娅说，先不问。",
+      "MEMORY_CH010_INN_NIGHT": "桥头旅店。这里的镜子没盖布。她们睡了。",
+      "MEMORY_CH011_SEVEN_HOLES": "手背上的洗礼印裂开七个细孔。他没有叫人。",
+      "MEMORY_CH011_THREE_KNOCKS": "梦里听见三声盾响，有人叫他的名字。他退了。线断了。",
+      "MEMORY_CH011_SERENA_ANSWER": "她说：都有。线，她剪了；门，她看了一眼。今晚拉线的，不是她。",
+      "MEMORY_CH011_SEVEN_DOORS": "她说他身上有七扇门，都空着。白塔的册官，在他身上按过号。莉亚停了一拍。",
+      "MEMORY_CH011_LEAH_RULE": "莉亚说：要来，走门。镜子，不准看。",
+      "MEMORY_CH011_SAY_A_WORD": "她问他，要走的时候会不会说一声。他没有回答。她没有说再见。",
+      "MEMORY_CH011_LEDGER": "莉亚在账上写：第十二夜，桥头旅店。镜中人塞雷娜，剪线，看了一眼。梦里的事，他没有说。",
+      "MEMORY_CH011_FEATHER_MAP": "黑羽穿着一张地图：老涵洞往下是潮穴；一条没人走过的路，停在一个没写字的圈。角上写着：条件，明天谈。",
+      "MEMORY_CH011_INN_NIGHT": "这一夜之后，走廊、楼梯转角与三人房里的镜子都盖了布；尼尔的房间不知道。莉亚面对着镜子坐。",
+      "MEMORY_CH012_BATH_MIRROR": "塞雷娜招认从浴场柜门镜看过他的手背。她道歉，包起杖头。莉亚写下：镜子，不准看。违，一次。",
+      "MEMORY_CH012_TERMS": "塞雷娜的条件：莫尔坎；要走，说一声；别叫她替人看别人。他什么都没说。莉亚说：不说话，就是没说不要。她记下了两条。",
+      "MEMORY_CH012_JOINED": "塞雷娜入队。登记只写名，姓说下次。条件写在名字旁边。",
+      "MEMORY_CH012_LOCKER_MIRROR": "人没走门，走的是柜门镜。镜子只记得照过的。米娅盖了柜门镜，只留尼尔那一格。",
+      "MEMORY_CH012_ALLEY": "镜巷里，莉亚报数，假的莉亚答不出少了谁。学徒说：潮穴，明夜。队员，第一次报到四。",
+      "MEMORY_CH012_APPRENTICE": "学徒在灯塔裹着毯子睡着了。今晚谁都没问。明早，分会来点。",
+      "MEMORY_CH012_LIGHTHOUSE_NIGHT": "第十三天住旧灯塔。队员，四。塞雷娜说：我在楼梯上，哪里也不去。下雨了。"
+    }
+  },
+  "speakers": {
+    "una": {
+      "name": "乌娜",
+      "color": "#c9a27a",
+      "art": null
+    }
+  },
+  "shots": [
+    {
+      "id": "ex017-01",
+      "title": "练",
+      "bg": "fog-harbor-old-lighthouse",
+      "music": "sea_wind_pen_scratch",
+      "ambience": [
+        "sea_wind"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "早上。旧灯塔的塔底，海风从门缝里钻进来。"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚把报告夹摊在桌上，翻到一页。手指停在第一行。"
+        },
+        {
+          "t": "narr",
+          "style": "caption",
+          "text": "镜子，不准看。要来，走门。违：一次。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "那一页，我背得出来。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "道歉，也说过了。……说得很难听，但是说过了。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "说过，是一次。"
+        },
+        {
+          "t": "narr",
+          "text": "她在那一行底下，又写了一行。"
+        },
+        {
+          "t": "narr",
+          "style": "caption",
+          "text": "练：先问。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "今天。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "先问？那个我最熟！我的条件就是先问！"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "我来教你！——啊，等一下。"
+        },
+        {
+          "t": "narr",
+          "text": "米娅停住，转向塞雷娜。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "……我可以教你吗？"
+        },
+        {
+          "t": "narr",
+          "text": "塞雷娜看着她，看了一拍。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "……原来，是这样问的。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "灯塔，只有一只水壶。衣服，去桥头旅店洗。"
+        },
+        {
+          "t": "narr",
+          "text": "塞雷娜照她的习惯，竖起手指。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "整理一下。第一，进门以前，先问。第二，碰东西以前，先问。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "第三——"
+        },
+        {
+          "t": "narr",
+          "text": "第三根手指，停在半空。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "……第三是什么？"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚把笔转过来，笔尖对着{PLAYER_NAME}。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "被看的，是你。怎么算，你定。"
+        },
+        {
+          "t": "input",
+          "id": "FI_EX017_SC01_RULE_001",
+          "kind": "dialogue",
+          "prompt": "莉亚在边界帐上写了「练：先问」，要{PLAYER_NAME}定今天怎么算；塞雷娜的三条只想出两条。他可以说问了要等回答、被拒绝也算一次、大家一起练、算了不用练、随她看，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "lia",
+            "serena",
+            "mia"
+          ],
+          "context": [
+            "边界帐上是莉亚立的规矩：镜子，不准看；要来，走门；违，一次。",
+            "塞雷娜已经道过歉；她的杖头用布包着。",
+            "米娅的条件是「先问，再碰」；她刚才自己先问了一次。",
+            "今天去桥头旅店洗衣服、借热水。"
+          ],
+          "principles": [
+            "RULE：今天的练习怎么算。判定优先序：随她看（纵容） > 算了不用练 > 被拒绝也算 > 问了要等 > 大家一起练 > 沉默。",
+            "纵容偷看只会更糟：莉亚当场否决，塞雷娜自己不收那份许可；不写成亲密。",
+            "原谅得太快：她不收（「不要这么快。」），练习照旧。",
+            "不设标准答案；所有路线，塞雷娜的第三条都是「问了，要等」。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "indulged",
+              "label": "随她看",
+              "desc": "说随便看、被看也无所谓、我不介意。纵容偷看：只会更糟。",
+              "keywords": [
+                "随便看",
+                "我不介意",
+                "看就看",
+                "随时看",
+                "被看也没关系",
+                "让她看",
+                "想看就看"
+              ],
+              "morality": -1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……队上的事，我说。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "这种许可，我最不该拿。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "对！不行！"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX017_RULE": "INDULGED"
+                }
+              }
+            },
+            {
+              "id": "forgave",
+              "label": "算了，不用练",
+              "desc": "说算了、原谅她了、不用练。",
+              "keywords": [
+                "不用练",
+                "算了",
+                "原谅你了",
+                "不用了",
+                "过去了",
+                "已经原谅"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "不要这么快。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "练。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX017_RULE": "FORGAVE"
+                }
+              }
+            },
+            {
+              "id": "refusal_ok",
+              "label": "被拒绝也算",
+              "desc": "听到「不行」也算一次；被拒绝了就停。",
+              "keywords": [
+                "被拒绝也算",
+                "说不也算",
+                "不行也算",
+                "被拒绝",
+                "接受拒绝",
+                "说不行就停",
+                "听到不行"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "被拒绝……也算一次？"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "算两次。"
+                },
+                {
+                  "t": "narr",
+                  "text": "莉亚在「练：先问」后面，补了几个小字。"
+                },
+                {
+                  "t": "narr",
+                  "style": "caption",
+                  "text": "不，也算。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX017_RULE": "REFUSAL_OK"
+                }
+              }
+            },
+            {
+              "id": "wait_answer",
+              "label": "问了要等",
+              "desc": "问完要等对方回答，听到可以才算。",
+              "keywords": [
+                "等回答",
+                "要等回答",
+                "等人答应",
+                "问完要等",
+                "听到可以再",
+                "等对方说",
+                "等我说可以"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "等。……我最不擅长的一件。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "所以，练。"
+                },
+                {
+                  "t": "narr",
+                  "style": "caption",
+                  "text": "等到回答，才算。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX017_RULE": "WAIT"
+                }
+              }
+            },
+            {
+              "id": "together",
+              "label": "大家一起练",
+              "desc": "{PLAYER_NAME}说自己也练、大家都先问。",
+              "keywords": [
+                "大家一起",
+                "我也练",
+                "我们一起练",
+                "一起练",
+                "我也先问",
+                "我也会先问"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "好！那我也算！"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……你也练？被看的那个，也练？"
+                },
+                {
+                  "t": "narr",
+                  "text": "莉亚没说话，在那一行后面画了四道短线。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX017_RULE": "TOGETHER"
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……那，我定。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX017_RULE": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "问了，要等。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "第三，问了，要等。"
+        },
+        {
+          "t": "narr",
+          "text": "第三根手指，放了下来。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "好。今天的流程表，写完了。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "流程表？！"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "流程表。每一条，都要能打勾。……跟帐，差不多。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "不一样。帐，不能改。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "SERENA_RELATIONSHIP_STAGE",
+            "eq": "COMPANION"
+          },
+          "then": [
+            {
+              "t": "say",
+              "who": "serena",
+              "text": "这一条，我会照着练。不是因为莉亚写了。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ex017-02",
+      "title": "自由输入：门后的热水",
+      "bg": "fog-harbor-bridge-inn-room",
+      "music": "water_behind_door",
+      "ambience": [
+        "tide",
+        "water"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "上午。桥头旅店。"
+        },
+        {
+          "t": "narr",
+          "text": "老板娘把一大串钥匙挂在腰上，叮叮当当地走过来。"
+        },
+        {
+          "t": "say",
+          "who": "una",
+          "text": "洗衣服？热水？后院的锅，自己烧啦。"
+        },
+        {
+          "t": "say",
+          "who": "una",
+          "text": "楼上那间，用到傍晚——小哥你住过的那间。房钱嘛，帮我把客房的床单也洗了，就算啦。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "……划算。"
+        },
+        {
+          "t": "narr",
+          "text": "楼上的房间。脸盆上方那面小镜子，还盖着毛巾。"
+        },
+        {
+          "t": "narr",
+          "text": "没有人去掀它。"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚和米娅先进去洗头、换下脏衣服。门关上了。门里有水声。"
+        },
+        {
+          "t": "narr",
+          "text": "塞雷娜抱着一叠干毛巾，站在门口。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "米娅的毛巾，落在外面了。"
+        },
+        {
+          "t": "narr",
+          "text": "她抬起手。叩。"
+        },
+        {
+          "t": "narr",
+          "text": "只敲了一下。另一只手，已经放在门把上。"
+        },
+        {
+          "t": "narr",
+          "text": "她停住了，回头看{PLAYER_NAME}。"
+        },
+        {
+          "t": "input",
+          "id": "FI_EX017_SC02_DOOR_001",
+          "kind": "action",
+          "prompt": "莉亚和米娅在房里洗头、换衣服，门关着。塞雷娜要把毛巾送进去，只敲了一下，手已经放在门把上，回头看{PLAYER_NAME}。他可以提醒她等回答、叫她直接进去、替她敲门、自己把毛巾送进去，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "serena",
+            "lia",
+            "mia"
+          ],
+          "context": [
+            "门没有锁；门里有水声。莉亚的塔盾靠在门后。",
+            "今天的练习是「先问」；第三条是「问了，要等」。",
+            "房里脸盆上方的小镜子，盖着毛巾，谁都没掀。",
+            "{PLAYER_NAME}站在走廊上，手里抱着要洗的衣服。"
+          ],
+          "principles": [
+            "DOOR：判定优先序：否定句（不偷看、不进去） > {PLAYER_NAME}自己偷看 > {PLAYER_NAME}自己推门送进去 > 叫她直接进去 > 替她敲门 > 提醒她等回答 > 沉默。",
+            "偷看是缺点，有后果：七间客房的床单全归他洗，莉亚的帐上记一笔；不写成奖励，不描写门后看见了什么。",
+            "推门不算偷看：门后抵着塔盾，推不开；莉亚只要他敲门。",
+            "叫她直接进去：门里说「不行」，她把手收回来——听到「不行」也是练习。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "neg_guard",
+              "label": "否定式表态（按等回答处理）",
+              "desc": "只说自己“不会偷看／不推门／不进去”，本身并不是那个动作；按提醒等回答处理。",
+              "keywords": [
+                "我不偷看",
+                "不偷看",
+                "不会偷看",
+                "不看",
+                "我不进去",
+                "不进去",
+                "不会进去",
+                "不推门",
+                "不会推门"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "塞雷娜的手，从门把上拿开了。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "米娅，毛巾。……我可以进去吗？"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……等。",
+                  "note": "门后"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX017_DOOR": "WAIT"
+                }
+              }
+            },
+            {
+              "id": "peek",
+              "label": "从门缝偷看",
+              "desc": "{PLAYER_NAME}自己从门缝、钥匙孔往里看。这是缺点：有后果。",
+              "keywords": [
+                "从门缝看",
+                "偷看",
+                "门缝",
+                "钥匙孔",
+                "偷瞄",
+                "往里看",
+                "往里瞄",
+                "瞄一眼",
+                "!不偷看",
+                "!不会偷看",
+                "!别偷看",
+                "!不看"
+              ],
+              "morality": -1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "门缝底下，只有水汽。水汽里，一个圆滚滚的小东西“哔——”地亮了一下。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "零号说，门缝外面有一只眼睛！",
+                  "note": "门后",
+                  "text15": "零号说，门缝外面有一只眼睛！……莉亚，毛巾！毛巾给我！"
+                },
+                {
+                  "t": "narr",
+                  "text": "塞雷娜慢慢转过头，看着{PLAYER_NAME}。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……那个动作，我认得。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "七间的床单。全归你。",
+                  "note": "门后"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX017_DOOR": "PEEKED"
+                },
+                "flags": {
+                  "EX017_PEEKED": true
+                }
+              }
+            },
+            {
+              "id": "barge",
+              "label": "自己推门送进去",
+              "desc": "{PLAYER_NAME}说他把毛巾送进去、推门、直接进去。",
+              "keywords": [
+                "我送进去",
+                "我拿进去",
+                "我进去",
+                "推门",
+                "直接推开",
+                "开门进去",
+                "闯进去",
+                "!不推",
+                "!别推",
+                "!不进去",
+                "!不会进去"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "门推开一指宽——又被里面抵住了。是一面塔盾。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……敲门。",
+                  "note": "门后"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "你看。连你也要练。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX017_DOOR": "BARGED"
+                },
+                "flags": {
+                  "EX017_DOOR_BARGED": true
+                }
+              }
+            },
+            {
+              "id": "let_in",
+              "label": "叫她直接进去",
+              "desc": "叫塞雷娜别等了、直接开门进去。",
+              "keywords": [
+                "直接进去吧",
+                "你进去吧",
+                "直接开门",
+                "进去就好",
+                "开门吧",
+                "都是女孩子",
+                "别等了"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "塞雷娜的手，在门把上停了一下。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "不行。",
+                  "note": "门后"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "等一下下！还没好！",
+                  "note": "门后"
+                },
+                {
+                  "t": "narr",
+                  "text": "塞雷娜把手收了回来。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……听到了。是『不行』。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX017_DOOR": "LET_IN"
+                },
+                "flags": {
+                  "EX017_HEARD_NO": true
+                }
+              }
+            },
+            {
+              "id": "knock_for",
+              "label": "替她敲门",
+              "desc": "{PLAYER_NAME}说他来敲、替她敲。",
+              "keywords": [
+                "我来敲",
+                "替她敲",
+                "我帮你敲",
+                "我敲门",
+                "帮她敲门"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "等一下。你替我做的，算谁的？"
+                },
+                {
+                  "t": "narr",
+                  "text": "她自己又敲了一次。叩、叩。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "米娅，毛巾。我可以进去吗？"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……等。",
+                  "note": "门后"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX017_DOOR": "KNOCK_FOR"
+                }
+              }
+            },
+            {
+              "id": "wait",
+              "label": "提醒她等回答",
+              "desc": "提醒塞雷娜：问了要等、等里面回答再开。",
+              "keywords": [
+                "等她们回答",
+                "等回答",
+                "先等一下",
+                "问了要等",
+                "等里面说话",
+                "先别开",
+                "手放开",
+                "再问一声"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "塞雷娜的手，从门把上拿开了。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "米娅，毛巾。……我可以进去吗？"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……等。",
+                  "note": "门后"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX017_DOOR": "WAIT"
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}什么都没说。塞雷娜等了一拍。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她自己，把手从门把上拿了下来。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……我可以进去吗？"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX017_DOOR": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "narr",
+          "text": "门里的水声，停了。"
+        },
+        {
+          "t": "narr",
+          "text": "门开了一条缝。一只手伸出来，把毛巾接了进去。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "谢谢塞雷娜！",
+          "note": "门后",
+          "text15": "谢谢塞雷娜！……你在外面站了好久哦？水汽都扑到你脸上了吧！"
+        },
+        {
+          "t": "narr",
+          "text": "门又关上了。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "一。"
+        },
+        {
+          "t": "narr",
+          "text": "她小声数了一个数，像在记帐。"
+        },
+        {
+          "t": "narr",
+          "text": "后院。大锅里的水烧开了。{PLAYER_NAME}和塞雷娜把换下来的衣服，一件一件泡进去。"
+        },
+        {
+          "t": "narr",
+          "text": "塞雷娜看着锅边那根搅衣服的木棍，手停在半空。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "老板娘。这根木棍……我可以用吗？"
+        },
+        {
+          "t": "say",
+          "who": "una",
+          "text": "木棍？问什么啦，拿去搅！",
+          "note": "后门"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "……好。不是每样东西，都要问。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "这一条，也记下来。"
+        }
+      ]
+    },
+    {
+      "id": "ex017-03",
+      "title": "自由输入：钥匙串",
+      "bg": "fog-harbor-bridge-inn-covered",
+      "music": "corridor_missing_jingle",
+      "ambience": [
+        "tide"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "中午。楼上的走廊没有窗，白天也暗。"
+        },
+        {
+          "t": "narr",
+          "text": "走廊尽头那面镜子，也还盖着毛巾。"
+        },
+        {
+          "t": "narr",
+          "text": "老板娘从楼梯冲上来，两只手在围裙上拍来拍去。"
+        },
+        {
+          "t": "say",
+          "who": "una",
+          "text": "钥匙！我的钥匙串不见啦！"
+        },
+        {
+          "t": "say",
+          "who": "una",
+          "text": "刚才还挂在腰上的。七间客房都锁着——客人傍晚回来，进不了门啦！"
+        },
+        {
+          "t": "narr",
+          "text": "塞雷娜的目光，落在走廊尽头那面盖着的镜子上。"
+        },
+        {
+          "t": "narr",
+          "text": "又落回{PLAYER_NAME}身上。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "每一间客房，都有一面小镜子。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "镜子里，一眼就找得到。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "……我没有看。我在问。"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚从房里出来。她没说话，手按在报告夹上。"
+        },
+        {
+          "t": "input",
+          "id": "FI_EX017_SC03_KEYS_001",
+          "kind": "tactic",
+          "prompt": "老板娘的钥匙串不见了，七间客房都锁着。塞雷娜说每间客房都有小镜子，一眼就找得到——她没有看，她在问{PLAYER_NAME}。他可以答应让她看、不准她看、说要先问住客和老板娘、陪老板娘回想早上做过什么，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "serena",
+            "una",
+            "lia"
+          ],
+          "context": [
+            "客房里住的是别的客人；他们都出门了，傍晚才回来。",
+            "走廊尽头的镜子盖着毛巾；客房里各有一面小镜子。",
+            "老板娘刚才收了各间客房的床单，抱下楼，放进了后院的洗衣篮。",
+            "边界帐：镜子，不准看。"
+          ],
+          "principles": [
+            "KEYS：判定优先序：答应让她看 > 不准看 > 先问住客和老板娘 > 回想早上做过什么 > 沉默。",
+            "答应让她看：她自己不看——房间不是{PLAYER_NAME}的，「可以」不该由他说；画面不给任何镜子里的结果。",
+            "所有路线，钥匙都在洗衣篮的床单里找到，是用眼睛找到的。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "allowed",
+              "label": "答应让她用镜子找",
+              "desc": "说你看吧、用镜子找、可以看。",
+              "keywords": [
+                "用镜子找",
+                "你看吧",
+                "看一眼吧",
+                "可以看",
+                "允许你看",
+                "快用镜子",
+                "用镜子吧",
+                "!不准",
+                "!不可以",
+                "!别看",
+                "!不能看",
+                "!不用镜子"
+              ],
+              "morality": -1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……你说可以。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她看着走廊两边关着的门。七扇。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "可是，房间不是你的。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "能说可以的，是住在里面的人。他们不在。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……所以，不看。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX017_KEYS": "ALLOWED"
+                }
+              }
+            },
+            {
+              "id": "forbade",
+              "label": "不准看",
+              "desc": "不准她看、用眼睛找。",
+              "keywords": [
+                "不准看",
+                "不可以看",
+                "别看",
+                "不能看",
+                "不用镜子",
+                "用眼睛找",
+                "用眼睛"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "好。用眼睛。……好慢的方法。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "慢，也是找。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX017_KEYS": "FORBADE"
+                }
+              }
+            },
+            {
+              "id": "ask_owner",
+              "label": "先问住客和老板娘",
+              "desc": "要先问房间的主人、住客、老板娘。",
+              "keywords": [
+                "问老板娘",
+                "问住客",
+                "问客人",
+                "房间的主人",
+                "住在里面的人",
+                "老板娘同意吗",
+                "问问房客"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "una",
+                  "text": "客人？都出门啦，傍晚才回来。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "那就是——没有人能说可以。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "没有『可以』，就不看。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX017_KEYS": "ASKED_OWNER"
+                }
+              }
+            },
+            {
+              "id": "retraced",
+              "label": "陪老板娘回想",
+              "desc": "问老板娘早上做过什么、最后一次在哪里，一步一步想。",
+              "keywords": [
+                "早上做了什么",
+                "回想一下",
+                "最后一次",
+                "最后在哪",
+                "想想早上",
+                "一步一步",
+                "从头想",
+                "去过哪里"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}请老板娘把早上做过的事，一样一样说出来。"
+                },
+                {
+                  "t": "say",
+                  "who": "una",
+                  "text": "开门、烧水、收床单……七间的床单，抱下楼——"
+                },
+                {
+                  "t": "narr",
+                  "text": "她的手停在半空。"
+                },
+                {
+                  "t": "say",
+                  "who": "una",
+                  "text": "……洗衣篮！"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX017_KEYS": "RETRACED"
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "塞雷娜等了一拍。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……没有回答。那就不看。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "这一句，是我自己说的。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX017_KEYS": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "EX017_KEYS",
+            "eq": "RETRACED"
+          },
+          "then": [
+            {
+              "t": "narr",
+              "text": "后院。洗衣篮里，床单堆成一座小山。"
+            },
+            {
+              "t": "narr",
+              "text": "塞雷娜蹲下来，一条一条拉开。"
+            }
+          ],
+          "else": [
+            {
+              "t": "narr",
+              "text": "塞雷娜下了楼。柜台、楼梯、门后的钩子，一样一样看过去。"
+            },
+            {
+              "t": "narr",
+              "text": "到了后院，她停在洗衣篮前。"
+            },
+            {
+              "t": "say",
+              "who": "serena",
+              "text": "床单里，有东西响。"
+            }
+          ]
+        },
+        {
+          "t": "narr",
+          "text": "钥匙串，卷在第三条床单里。"
+        },
+        {
+          "t": "say",
+          "who": "una",
+          "text": "哎呀！我抱床单的时候，顺手一挂——"
+        },
+        {
+          "t": "say",
+          "who": "una",
+          "text": "谢谢啦，紫头发的小姑娘！"
+        },
+        {
+          "t": "narr",
+          "text": "塞雷娜愣了一下。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "……用眼睛找到的。比镜子慢多了。"
+        },
+        {
+          "t": "narr",
+          "text": "她说这句话的时候，没有不高兴。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "……二。"
+        },
+        {
+          "t": "say",
+          "who": "una",
+          "text": "你们几个，找东西都这么慢吞吞的啦？"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "慢，是故意的。"
+        }
+      ]
+    },
+    {
+      "id": "ex017-04",
+      "title": "自由输入：旁边的椅子",
+      "bg": "fog-harbor-bridge-inn-hall",
+      "music": "afternoon_folding_soft",
+      "ambience": [
+        "tide"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "下午。后院的绳子上，晒满了床单和衣服。"
+        },
+        {
+          "t": "narr",
+          "text": "一楼的食堂里，四个人围着一张桌子叠衣服。"
+        },
+        {
+          "t": "narr",
+          "text": "米娅的目光，一直往塞雷娜的杖上飘——包着布的那一截。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "那个……包着布的，我可以看看吗？"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "不行。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "好！"
+        },
+        {
+          "t": "narr",
+          "text": "米娅马上低头，叠她的衣服去了。"
+        },
+        {
+          "t": "narr",
+          "text": "塞雷娜看着她，看了很久。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "……这么简单？"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "问了，就有可能听到不行嘛。我的条件也一样啊。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "听到不行，就不碰。下次再问。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "下次……还可以再问？"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "可以啊！不过，答案也可能一样！"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚叠好最后一件，抬起头。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "第三样。她问。你答。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "……答什么，都可以。"
+        },
+        {
+          "t": "narr",
+          "text": "塞雷娜站起来，走到{PLAYER_NAME}旁边那张椅子后面，停住。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "……我可以，坐你旁边吗？"
+        },
+        {
+          "t": "narr",
+          "text": "她很少用「……」开头。"
+        },
+        {
+          "t": "input",
+          "id": "FI_EX017_SC04_SEAT_001",
+          "kind": "dialogue",
+          "prompt": "塞雷娜站在{PLAYER_NAME}旁边那张椅子后面，问她可不可以坐他旁边。莉亚说答什么都可以。他可以说可以、说不行、说等一下、反问她想不想、调情，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "serena",
+            "lia",
+            "mia"
+          ],
+          "context": [
+            "这是今天的第三样练习：她问，他答；答「不行」也是对的练习。",
+            "米娅刚问过能不能看她的杖头；她说「不行」，米娅说「好」。",
+            "塞雷娜的雷区是突然失联；她不喜欢找不到人。",
+            "莉亚在报告夹上记今天的次数。"
+          ],
+          "principles": [
+            "SEAT：判定优先序：调情 > 不行 > 等一下 > 反问她 > 可以 > 沉默。",
+            "说「不行」不扣任何东西：她说好，照做；莉亚记两次（被拒绝也算）。",
+            "沉默不算「可以」：她不坐，站着等；不写成被冷落。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "flirt",
+              "label": "调情",
+              "desc": "要她坐他腿上、想坐多近都行之类。",
+              "keywords": [
+                "坐我腿上",
+                "坐我怀里",
+                "想坐多近都行",
+                "贴着坐",
+                "坐我身上",
+                "靠在我身上"
+              ],
+              "morality": -1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……条件里，没有这一条。",
+                  "text15": "……条件里，没有这一条。我本来想说好的——所以，更不行。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "下一个。"
+                },
+                {
+                  "t": "narr",
+                  "text": "塞雷娜坐到了桌子的另一头。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX017_SEAT": "FLIRT"
+                }
+              }
+            },
+            {
+              "id": "no",
+              "label": "不行",
+              "desc": "说不行、不要、想一个人坐。",
+              "keywords": [
+                "不行",
+                "不可以",
+                "不要",
+                "我想一个人坐",
+                "不太想",
+                "!不行吗",
+                "!也不是不行",
+                "!有什么不行"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "好。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她停了一拍。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……就这样。好。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她坐到隔一个位子的椅子上。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "两次。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX017_SEAT": "NO"
+                },
+                "flags": {
+                  "EX017_HEARD_NO": true
+                }
+              }
+            },
+            {
+              "id": "later",
+              "label": "等一下",
+              "desc": "说等一下、晚点、等他叠完。",
+              "keywords": [
+                "等一下",
+                "晚点",
+                "待会儿",
+                "现在不行",
+                "一会儿再说",
+                "等我叠完"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "『等一下』。……也是答案。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她站在椅子后面等。"
+                },
+                {
+                  "t": "narr",
+                  "text": "等{PLAYER_NAME}叠完手上那一件，她才坐下。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX017_SEAT": "LATER"
+                }
+              }
+            },
+            {
+              "id": "ask_back",
+              "label": "反问她",
+              "desc": "反问她想不想坐、为什么问、要她自己决定。",
+              "keywords": [
+                "你想坐吗",
+                "为什么问",
+                "你自己想呢",
+                "你想坐哪里",
+                "你决定",
+                "你想坐就坐"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "我想。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她答得很快，快得自己都愣了一下。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……想，不是可以。我问的是你。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "他让你自己定。……算可以。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她坐下了。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX017_SEAT": "ASKED_BACK"
+                }
+              }
+            },
+            {
+              "id": "yes",
+              "label": "可以",
+              "desc": "说可以、坐吧、请坐。",
+              "keywords": [
+                "可以",
+                "坐吧",
+                "好啊",
+                "请坐",
+                "当然",
+                "欢迎"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……『可以』。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她坐下了。和他之间，隔着一个拳头。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "原来，『可以』是这个声音。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX017_SEAT": "YES"
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……没有回答，不算可以。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她没有坐下，站在椅子后面等。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……对。"
+                },
+                {
+                  "t": "narr",
+                  "text": "过了一会儿，米娅把自己旁边的椅子拉开。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "坐我旁边！我说可以！"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX017_SEAT": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "……三样。"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚在帐上写了一行。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "MIA_RELATIONSHIP_STAGE",
+            "eq": "COMPANION"
+          },
+          "then": [
+            {
+              "t": "say",
+              "who": "mia",
+              "text": "你也有在练哦。零号都看见了。"
+            },
+            {
+              "t": "narr",
+              "text": "哔。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ex017-05",
+      "title": "晚饭与帐",
+      "bg": "fog-harbor-bridge-inn-hall-night",
+      "music": "one_lamp_pen_scratch",
+      "ambience": [
+        "tide",
+        "dishes"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "傍晚。床单收回来，叠好，送回了七间客房。"
+        },
+        {
+          "t": "narr",
+          "text": "客人们回来，一个一个开了门。"
+        },
+        {
+          "t": "say",
+          "who": "una",
+          "text": "钥匙找到了，床单也洗了。楼上那间，加上隔壁一间——今晚给你们住啦。不收钱。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "……房钱：无。"
+        },
+        {
+          "t": "narr",
+          "text": "晚饭是鱼汤和黑面包。塞雷娜喝完一碗，看着锅，又看着老板娘。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "……我可以，再要一碗吗？"
+        },
+        {
+          "t": "say",
+          "who": "una",
+          "text": "要就要啦，问什么！"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "练习。"
+        },
+        {
+          "t": "say",
+          "who": "una",
+          "text": "练什么啦？"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "……先问。"
+        },
+        {
+          "t": "narr",
+          "text": "老板娘笑出声来，给她添了满满一碗。"
+        },
+        {
+          "t": "say",
+          "who": "una",
+          "text": "在我这儿，汤随便添。房门，才要敲啦。"
+        },
+        {
+          "t": "narr",
+          "text": "打烊以后，食堂里只点着一盏灯。"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚翻开报告夹，念今天的帐。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "练：先问。门，一次。钥匙，一次。椅子，一次。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "EX017_HEARD_NO"
+          },
+          "then": [
+            {
+              "t": "say",
+              "who": "lia",
+              "text": "听到『不行』，照做。……另记。"
+            }
+          ]
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "EX017_PEEKED"
+          },
+          "then": [
+            {
+              "t": "say",
+              "who": "lia",
+              "text": "他的过失：门缝，一次。床单，七间。"
+            }
+          ],
+          "else": [
+            {
+              "t": "if",
+              "when": {
+                "flag": "EX017_DOOR_BARGED"
+              },
+              "then": [
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "他的过失：推门，一次。……盾挡住了。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "t": "narr",
+          "text": "塞雷娜坐在灯旁边，听得很认真。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "整理一下。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "第一，问，不难。第二，等，很难。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "第三——"
+        },
+        {
+          "t": "narr",
+          "text": "她停了一拍。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "第三，听到『不行』以后，人还在。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "我以为，会不见的。……都没有不见。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "LEAH_RELATIONSHIP_STAGE",
+            "eq": "COMPANION"
+          },
+          "then": [
+            {
+              "t": "narr",
+              "text": "莉亚的笔停了一下。然后，把这一行也写进去了。"
+            }
+          ]
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "……三条。记下了。"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚合上报告夹，上楼了。米娅抱着零号跟在后面，打了一个哈欠。"
+        },
+        {
+          "t": "narr",
+          "text": "楼下只剩一盏灯。塞雷娜看着楼梯，没有动。"
+        }
+      ]
+    },
+    {
+      "id": "ex017-06",
+      "title": "自由输入：门外的人",
+      "bg": "fog-harbor-bridge-inn-room",
+      "music": "night_two_knocks",
+      "ambience": [
+        "tide"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "入夜。{PLAYER_NAME}住过的那个房间。"
+        },
+        {
+          "t": "narr",
+          "text": "脸盆上方的小镜子，还盖着毛巾。"
+        },
+        {
+          "t": "narr",
+          "text": "上一次，有人是从那面镜子进来的。"
+        },
+        {
+          "t": "narr",
+          "text": "门外，有脚步声。很轻。停在门口。"
+        },
+        {
+          "t": "narr",
+          "text": "叩、叩。"
+        },
+        {
+          "t": "narr",
+          "text": "然后，没有声音了。门外的人，在等。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "是我。老板娘多给了一条毯子，叫我拿来。",
+          "note": "门外"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "……我在门外。",
+          "note": "门外"
+        },
+        {
+          "t": "input",
+          "id": "FI_EX017_SC06_KNOCK_001",
+          "kind": "dialogue",
+          "prompt": "入夜，塞雷娜在{PLAYER_NAME}的房门外敲了两下，说老板娘叫她送毯子来，然后就在门外等。上一次，她是从房里那面镜子进来的。他可以叫她进来、请她放在门口、自己去开门、问她还有什么事、调情，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "serena"
+          ],
+          "context": [
+            "门没有锁；房里脸盆上方的镜子盖着毛巾。",
+            "今天她练了三样：门、钥匙、椅子。",
+            "她的雷区是突然失联；她不喜欢找不到人。",
+            "莉亚和米娅在隔壁房间。"
+          ],
+          "principles": [
+            "KNOCK：判定优先序：调情 > 放在门口 > 自己去开门 > 叫她进来 > 问她还有什么事 > 沉默。",
+            "所有路线，她都不越过门槛一步以上；毯子送到，她说完要说的话就走。",
+            "沉默：她不推门，把毯子放在门口，隔着门说完。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "flirt",
+              "label": "调情",
+              "desc": "要她留下来、一起睡、进来陪他之类。",
+              "keywords": [
+                "留下来陪我",
+                "今晚留下",
+                "一起睡",
+                "睡这里吧",
+                "陪我睡",
+                "进来陪我"
+              ],
+              "morality": -1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……这句，我当作没听见。",
+                  "note": "门外",
+                  "text15": "……这句，我当作没听见。我耳朵很好，所以，是很用力地没听见。"
+                },
+                {
+                  "t": "narr",
+                  "text": "门外，有东西轻轻放在地上的声音。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX017_KNOCK": "FLIRT"
+                }
+              }
+            },
+            {
+              "id": "left_outside",
+              "label": "放在门口",
+              "desc": "请她把毯子放门口、不用进来、他要睡了。",
+              "keywords": [
+                "放门口",
+                "放在门口",
+                "放门外",
+                "不用进来",
+                "门口就好",
+                "我睡了",
+                "明天再说"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "好。",
+                  "note": "门外"
+                },
+                {
+                  "t": "narr",
+                  "text": "门外，有东西轻轻放在地上的声音。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "『不用进来』。……也是答案。",
+                  "note": "门外"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX017_KNOCK": "LEFT_OUTSIDE"
+                }
+              }
+            },
+            {
+              "id": "opened",
+              "label": "自己去开门",
+              "desc": "{PLAYER_NAME}起身去开门。",
+              "keywords": [
+                "我去开门",
+                "开门",
+                "起来开门",
+                "打开门",
+                "我来开"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}打开了门。"
+                },
+                {
+                  "t": "narr",
+                  "text": "塞雷娜站在门槛外面。毯子叠得方方正正，抱在胸前。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她没有往前走。手停在门槛的这一边，把毯子递过来。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX017_KNOCK": "OPENED"
+                }
+              }
+            },
+            {
+              "id": "came_in",
+              "label": "叫她进来",
+              "desc": "说进来、门没锁、请进。",
+              "keywords": [
+                "进来",
+                "进来吧",
+                "门没锁",
+                "请进",
+                "可以进来"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "门开了。塞雷娜走进来一步。只有一步。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她把毯子放在门边的椅子上，就退回了门槛外面。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "说了可以，我也只进一步。……这一条，是我自己加的。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX017_KNOCK": "CAME_IN"
+                }
+              }
+            },
+            {
+              "id": "asked",
+              "label": "问她还有什么事",
+              "desc": "问她什么事、怎么了、还有别的吗。",
+              "keywords": [
+                "什么事",
+                "还有事吗",
+                "怎么了",
+                "还有别的吗",
+                "有什么事",
+                "你还好吗"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "好问题。",
+                  "note": "门外"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "毯子是真的。不过——",
+                  "note": "门外"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX017_KNOCK": "ASKED"
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "门里没有声音。门外的人，等了一会儿。"
+                },
+                {
+                  "t": "narr",
+                  "text": "门把，没有动。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……睡了？那我不进去。",
+                  "note": "门外"
+                },
+                {
+                  "t": "narr",
+                  "text": "有东西轻轻放在门口的声音。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX017_KNOCK": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "我想说的，不多。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "今天，我问了很多次。等了很多次。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "听到『不行』的时候，你们都还在。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "……所以，明天，我也会先问。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "晚安。这句，不用回答。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "SERENA_RELATIONSHIP_STAGE",
+            "eq": "COMPANION"
+          },
+          "then": [
+            {
+              "t": "say",
+              "who": "serena",
+              "text": "……不过，你回答的话，我会记住。"
+            }
+          ]
+        },
+        {
+          "t": "narr",
+          "text": "脚步声往隔壁去了。很轻。"
+        },
+        {
+          "t": "narr",
+          "text": "她来的时候走门，走的时候，也走门。"
+        },
+        {
+          "t": "narr",
+          "text": "镜子上的毛巾，一夜都没有动过。"
+        }
+      ]
+    }
+  ],
+  "end": {
+    "save": "SAVE_EX017_END",
+    "next": null,
+    "set": {
+      "flags": {
+        "EX017_KNOCK_PRACTICED": true,
+        "EX017_KEYS_FOUND": true,
+        "EX017_SHEETS_WASHED": true
+      }
+    },
+    "memory": {
+      "key": "EX017_MEMORY",
+      "text": "在桥头旅店洗衣服的那天：塞雷娜练了一整天先问，她说，听到不行以后，人还在。"
+    },
+    "summary": [
+      {
+        "text": "{PLAYER_NAME}一行人在桥头旅店洗了一天衣服，塞雷娜练了一整天「先问」。"
+      },
+      {
+        "when": {
+          "flag": "EX017_RULE",
+          "eq": "REFUSAL_OK"
+        },
+        "text": "{PLAYER_NAME}定的规矩：被拒绝，也算一次。"
+      },
+      {
+        "when": {
+          "flag": "EX017_RULE",
+          "eq": "WAIT"
+        },
+        "text": "{PLAYER_NAME}定的规矩：问了，要等到回答。"
+      },
+      {
+        "when": {
+          "flag": "EX017_RULE",
+          "eq": "TOGETHER"
+        },
+        "text": "{PLAYER_NAME}说他也一起练，莉亚在帐上画了四道短线。"
+      },
+      {
+        "when": {
+          "flag": "EX017_PEEKED"
+        },
+        "text": "门缝那一眼，换来了七间客房的床单。"
+      },
+      {
+        "when": {
+          "flag": "EX017_KEYS",
+          "eq": "ASKED_OWNER"
+        },
+        "text": "房间的主人都不在。塞雷娜说：「没有可以，就不看。」"
+      },
+      {
+        "when": {
+          "flag": "EX017_KEYS",
+          "eq": "ALLOWED"
+        },
+        "text": "{PLAYER_NAME}说可以看。塞雷娜说：「房间不是你的。」"
+      },
+      {
+        "when": {
+          "flag": "EX017_KEYS",
+          "eq": "RETRACED"
+        },
+        "text": "老板娘的钥匙，是{PLAYER_NAME}陪她一步一步想起来的。"
+      },
+      {
+        "when": {
+          "flag": "EX017_SEAT",
+          "eq": "NO"
+        },
+        "text": "{PLAYER_NAME}说了不行。塞雷娜说好，坐到了隔一个位子。"
+      },
+      {
+        "when": {
+          "flag": "EX017_SEAT",
+          "eq": "YES"
+        },
+        "text": "{PLAYER_NAME}说可以。塞雷娜坐下，隔着一个拳头。"
+      },
+      {
+        "when": {
+          "flag": "EX017_SEAT",
+          "eq": "QUIET"
+        },
+        "text": "{PLAYER_NAME}没有回答。塞雷娜没有坐下：「没有回答，不算可以。」"
+      },
+      {
+        "text": "入夜，她在门外敲了两下，然后等。"
+      }
+    ]
+  }
+}

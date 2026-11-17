@@ -1,0 +1,2759 @@
+{
+  "id": "ex012",
+  "number": 12,
+  "kind": "sidequest",
+  "scriptId": "EX012_BATHHOUSE_MIRROR_RULES",
+  "title": "支线二｜浴场镜面守则",
+  "shortTitle": "浴场镜面守则",
+  "estimatedMinutes": 10,
+  "source": "剧本/番外/ex012浴場鏡面守則.md",
+  "unlockAfter": "ch015",
+  "window": "正式15–16之间",
+  "cast": [
+    "serena",
+    "lia",
+    "mia"
+  ],
+  "costumeTypes": [],
+  "canon": {
+    "flags": {
+      "FLAG_CH000_HEMAI_DESTROYED": true,
+      "FLAG_CH000_BLACK_DRAGON_SEEN": true,
+      "FLAG_CH000_MOTHER_STATUS_UNKNOWN": true,
+      "FLAG_CH000_TOBY_SURVIVED_CAVE": true,
+      "FLAG_CH000_DRAGON_VOW": true,
+      "FLAG_CH000_DRAGON_REMAINS_OVER_HEMAI": true,
+      "FLAG_CH001_BLACK_DRAGON_REPELLED_BY_KERN": true,
+      "FLAG_CH001_BLACK_DRAGON_ABDOMEN_WOUNDED": true,
+      "FLAG_CH001_MOTHER_DEATH_CONFIRMED": true,
+      "FLAG_CH001_TOBY_UNDER_KERN_GUARDIANSHIP": true,
+      "FLAG_CH001_ARK_RECEIVED_GUILD_LETTER": true,
+      "FLAG_CH001_KERN_MENTOR_IDEAL": true,
+      "FLAG_CH002_GUILD_REGISTERED": true,
+      "FLAG_CH002_LEAH_FIRST_SEEN": true,
+      "FLAG_CH002_THIEF_CAPTURED": true,
+      "FLAG_CH002_BLACK_CRYSTAL_EVIDENCE_RECOVERED": true,
+      "FLAG_CH002_FIRE_RESONANCE_FLICKER": true,
+      "FLAG_CH003_TEMP_PARTY_FORMED": true,
+      "FLAG_CH003_LEAH_SIGNED_SUPERVISION": true,
+      "FLAG_CH003_THIRD_ACCOMPLICE_CAPTURED": true,
+      "FLAG_CH003_SEVEN_RING_MARK_SEEN": true,
+      "FLAG_CH003_BLACK_CRYSTAL_CRATE_SEIZED": true,
+      "FLAG_CH003_HEMAI_SURVIVORS_TARGETED": true,
+      "FLAG_CH003_OLD_MILL_LEAD": true,
+      "FLAG_CH003_MILL_ASSAULT_POSTPONED": true,
+      "FLAG_CH003_FIRST_JOINT_MISSION_COMPLETE": true,
+      "FLAG_CH003_FIRE_RESONANCE_WARMTH": true,
+      "FLAG_CH003_GUILD_COLLAB_STAMPED": true,
+      "FLAG_CH003_LEAH_KNOWS_PLAYER_NAME": true,
+      "FLAG_CH003_RELIEF_CART_PASSED_WEST_GATE": true,
+      "FLAG_CH003_DRIVER_DESCRIBED": true,
+      "FLAG_CH003_SHIELD_SIGNALS_LEARNED": true,
+      "FLAG_CH003_SOUP_POT_SETTLED": true,
+      "FLAG_CH003_BARREL_DEDUCTED": true,
+      "FLAG_CH004_CORD_SIGNALS_LEARNED": true,
+      "FLAG_CH004_FENN_CONFIRMED_CHAIN_SWAP": true,
+      "FLAG_CH004_WEST_GATE_COSIGNED": true,
+      "FLAG_CH004_SENTRY_REPORT_HEARD": true,
+      "FLAG_CH004_MILL_INFILTRATED": true,
+      "FLAG_CH004_CHARGING_RACK_SEEN": true,
+      "FLAG_CH004_LEDGER_READ": true,
+      "FLAG_CH004_MARA_AND_DAUGHTER_FOUND": true,
+      "FLAG_CH004_KEY_ON_ACOLYTE": true,
+      "FLAG_CH004_TEARS_LIGHT_CRYSTALS": true,
+      "FLAG_CH004_CAPTIVES_REMAIN_IN_MILL": true,
+      "FLAG_CH004_ACOLYTE_SEEN": true,
+      "FLAG_CH004_RESCUE_WINDOW_CRATE_SWAP": true,
+      "FLAG_CH004_LEAH_LEARNED_HEMAI": true,
+      "FLAG_CH004_GUARDS_COMMITTED": true,
+      "FLAG_CH004_RESCUE_COMMISSION_POSTED": true,
+      "FLAG_CH005_WEST_GATE_COSIGNED": true,
+      "FLAG_CH005_PLAN_BRIEFED_AT_MILESTONE": true,
+      "FLAG_CH005_COLLAR_OWNER_REVEALED": true,
+      "FLAG_CH005_PEACE_STONES_NAMED": true,
+      "FLAG_CH005_CHAIN_SWAP_COMPLETED": true,
+      "FLAG_CH005_LEAH_PRESSED_CRATE": true,
+      "FLAG_CH005_CHIEF_COLLAR_DISABLED": true,
+      "FLAG_CH005_ACOLYTE_CAPTURED": true,
+      "FLAG_CH005_ROLL_CALL_ANSWERED": true,
+      "FLAG_CH005_MARA_AND_POLLY_RESCUED": true,
+      "FLAG_CH005_LEAD_MISTTIDE_MARSH": true,
+      "FLAG_CH005_EVIDENCE_TO_GUARD": true,
+      "FLAG_CH005_RESCUE_COMMISSION_COMPLETE": true,
+      "FLAG_CH005_FORMAL_PARTY_FORMED": true,
+      "FLAG_CH005_ESCORT_COMMISSION_POSTED": true,
+      "FLAG_CH005_MARA_POLLY_TO_NORTH_CAMP": true,
+      "FLAG_CH006_ESCORT_COMMISSION_ACCEPTED": true,
+      "FLAG_CH006_SUPPLY_TUTORIAL_DONE": true,
+      "FLAG_CH006_RUBBING_COPY_CARRIED": true,
+      "FLAG_CH006_MARSH_OGRE_UNCOLLARED": true,
+      "FLAG_CH006_SHIELD_UNDER_WHEEL": true,
+      "FLAG_CH006_UNSPOKEN_SYNC": true,
+      "FLAG_CH006_SALT_MARSH_BRIDGE_COLLAPSED": true,
+      "FLAG_CH006_LEAH_BOUNDARY_STATED": true,
+      "FLAG_CH006_ESCORT_COMMISSION_COMPLETE": true,
+      "FLAG_CH006_LEAH_CAKE_SEEN": true,
+      "FLAG_CH006_PARTY_CAMP_OPENED": true,
+      "FLAG_CH006_BLUE_EXPLOSION_SEEN": true,
+      "FLAG_CH006_GEAR_IN_CAKE": true,
+      "FLAG_CH007_FOREST_EDGE_ENTERED": true,
+      "FLAG_CH007_MIA_FIRST_SEEN": true,
+      "FLAG_CH007_UNPLANNED_DISASSEMBLY_NAMED": true,
+      "FLAG_CH007_MIA_NOTED_SEVEN_LAWS": true,
+      "FLAG_CH007_SAFETY_RULES_CLASHED": true,
+      "FLAG_CH007_RETREAT_TO_STAKE": true,
+      "FLAG_CH007_CATCH_IT_WHOLE": true,
+      "FLAG_CH007_THREE_PERSON_FORMATION": true,
+      "FLAG_CH007_TAUNT_INTRODUCED": true,
+      "FLAG_CH007_SCRAP_PICKER_STOPPED": true,
+      "FLAG_CH007_INCIDENT_LOGGED": true,
+      "FLAG_CH007_GEAR_NUMBER_SEEN": true,
+      "FLAG_CH007_GEAR_CRACKED": true,
+      "FLAG_CH007_ERODED_TIDE_CRYSTAL_FOUND": true,
+      "FLAG_CH007_CORE_UNNUMBERED": true,
+      "FLAG_CH007_SEVEN_RING_MATCH_SEEN": true,
+      "FLAG_CH008_RECORDS_REQUESTED": true,
+      "FLAG_CH008_MIA_AS_WITNESS": true,
+      "FLAG_CH008_EAVE_REPAIRED": true,
+      "FLAG_CH008_MIA_MADE_AMENDS": true,
+      "FLAG_CH008_TIDE_STATION_REACHED": true,
+      "FLAG_CH008_GEAR_RETURNED_TO_WINCH": true,
+      "FLAG_CH008_PLANNED_DISASSEMBLY": true,
+      "FLAG_CH008_ONE_MILLIMETER": true,
+      "FLAG_CH008_TIDE_DOOR_LOCKED": true,
+      "FLAG_CH008_RECORDS_RETRIEVED": true,
+      "FLAG_CH008_CORE_SWAP_PROVEN": true,
+      "FLAG_CH008_RINGS_GROWN_NOT_CARVED": true,
+      "FLAG_CH008_MIA_SELF_REPORTED": true,
+      "FLAG_CH008_INCIDENT_SETTLED": true,
+      "FLAG_CH008_NAMES_EXCHANGED": true,
+      "FLAG_CH008_LEAH_SHARED_CASE_FACTS": true,
+      "FLAG_CH008_BLACK_CRYSTAL_APPRAISED": true,
+      "FLAG_CH008_PEACE_STONE_EXPLAINED": true,
+      "FLAG_CH008_CRYSTAL_TO_MIA": true,
+      "FLAG_CH008_MIA_GUEST_TO_HARBOR": true,
+      "FLAG_CH008_THREE_NAMES_LOGGED": true,
+      "FLAG_CH008_SHARED_HEARTBEAT_DETECTED": true,
+      "FLAG_CH008_ACT1_CLOSED": true,
+      "FLAG_CH009_ENTERED_FOG_HARBOR": true,
+      "FLAG_CH009_ESCORT_PAID": true,
+      "FLAG_CH009_INES_MET": true,
+      "FLAG_CH009_RESCUE_RULE_TOLD": true,
+      "FLAG_CH009_GUEST_UNDER_LEAH": true,
+      "FLAG_CH009_WITNESS_NAMES_KEPT": true,
+      "FLAG_CH009_MISSING_CASE_TAKEN": true,
+      "FLAG_CH009_DIVISION_OF_LABOR": true,
+      "FLAG_CH009_CRYSTAL_LAYERS_READ": true,
+      "FLAG_CH009_GREY_CORE_DOWNSTREAM": true,
+      "FLAG_CH009_PEOPLE_FIRST": true,
+      "FLAG_CH009_TESTIMONY_LINKED": true,
+      "FLAG_CH009_SENT_TO_WITNESS": true,
+      "FLAG_CH009_BATH_TESTIMONY": true,
+      "FLAG_CH009_MIRROR_TESTIMONY_LOGGED": true,
+      "FLAG_CH009_DOCK_WORKER_TAKEN": true,
+      "FLAG_CH009_GAFF_WITH_LEAH": true,
+      "FLAG_CH009_DRAIN_NOT_ENTERED": true,
+      "FLAG_CH009_LEDGER_LINE_FINISHED": true,
+      "FLAG_CH009_BELOW_TIDE_OFFBEAT": true,
+      "FLAG_CH010_LEGAL_ENTRY": true,
+      "FLAG_CH010_PUMP_REVERSED_FOUND": true,
+      "FLAG_CH010_FEED_EVIDENCE_FOUND": true,
+      "FLAG_CH010_OUTBOUND_MARK_SEEN": true,
+      "FLAG_CH010_SEVENTEEN_FOUND": true,
+      "FLAG_CH010_GREY_OUTFLOW_TRACED": true,
+      "FLAG_CH010_MIA_SENT_TO_PUMP": true,
+      "FLAG_CH010_FOUR_RESCUED": true,
+      "FLAG_CH010_GAFF_RETURNED": true,
+      "FLAG_CH010_BLACK_STONES_TAKEN": true,
+      "FLAG_CH010_PUMP_STOPPED": true,
+      "FLAG_CH010_SEVENTEEN_CRACKED": true,
+      "FLAG_CH010_MIA_PEOPLE_FIRST": true,
+      "FLAG_CH010_MIA_RESCUE_MISSION_COMPLETE": true,
+      "FLAG_CH010_MOTHER_RETREATED": true,
+      "FLAG_CH010_HEARTBEAT_STILL_BELOW": true,
+      "FLAG_CH010_BELOW_TIDE_STILL": true,
+      "FLAG_CH010_RESCUE_COLUMN_FILLED": true,
+      "FLAG_CH010_ECLIPSE_FEAST_NAMED": true,
+      "FLAG_CH010_SAME_LEDGER": true,
+      "FLAG_CH010_MIA_JOINED": true,
+      "FLAG_CH010_MIA_CONDITION_LOGGED": true,
+      "FLAG_CH010_CASE_SHARED_WITH_MIA": true,
+      "FLAG_CH010_LODGED_BRIDGEHEAD_INN": true,
+      "FLAG_CH010_MIRROR_EYES": true,
+      "FLAG_CH010_OUTSIDER_NAMED": true,
+      "FLAG_CH009_PIPE_TIDE_HEARD": true,
+      "FLAG_CH011_SEEDS_SETTLED": true,
+      "FLAG_CH011_SCAR_FLARE": true,
+      "FLAG_CH011_SEVEN_HOLES_SHOWN": true,
+      "FLAG_CH011_DREAM_ENTERED": true,
+      "FLAG_CH011_THREADS_CUT": true,
+      "FLAG_CH011_LEAH_KNOCKED_THREE": true,
+      "FLAG_CH011_LEAH_DREW_ON_PERSON": true,
+      "FLAG_CH011_SERENA_MET": true,
+      "FLAG_CH011_SERENA_NAMED": true,
+      "FLAG_CH011_SERENA_LOOKED": true,
+      "FLAG_CH011_NOT_HER_TONIGHT": true,
+      "FLAG_CH011_SEVEN_DOORS_SPOKEN": true,
+      "FLAG_CH011_REGISTRAR_LINE": true,
+      "FLAG_CH011_NO_PEEK_DEMANDED": true,
+      "FLAG_CH011_SERENA_VANISHED": true,
+      "FLAG_CH011_BLACK_FEATHER_MAP": true,
+      "FLAG_CH011_TIDE_CAVE_MARKED": true,
+      "FLAG_CH011_MIRRORS_COVERED": true,
+      "FLAG_CH012_SERENA_WALKED_DOOR": true,
+      "FLAG_CH012_BATH_CONFESSED": true,
+      "FLAG_CH012_MIRROR_PURPLE_MATCHED": true,
+      "FLAG_CH012_MORKAN_NAMED": true,
+      "FLAG_CH012_SERENA_JOINED": true,
+      "FLAG_CH012_SERENA_TERMS_LOGGED": true,
+      "FLAG_CH012_LATCH_SOLVED": true,
+      "FLAG_CH012_MIRROR_MEMORY_RULE": true,
+      "FLAG_CH012_SHADOW_BIND_UNLOCKED": true,
+      "FLAG_CH012_ROLL_CALL_VERIFIED": true,
+      "FLAG_CH012_APPRENTICE_CAUGHT": true,
+      "FLAG_CH012_TIDE_CAVE_TOMORROW_NIGHT": true,
+      "FLAG_CH012_INVERTED_STAR_SHOWN": true,
+      "FLAG_CH012_FIRST_COUNT_FOUR": true,
+      "FLAG_CH012_PASS_UNREAD": true,
+      "FLAG_CH012_LODGING_LIGHTHOUSE": true,
+      "FLAG_CH013_SERENA_ASKED_DREAM": true,
+      "FLAG_CH013_WINDOW_ATTACK": true,
+      "FLAG_CH013_GOLDEN_ASSASSIN_SEEN": true,
+      "FLAG_CH013_ASSASSIN_MOTIVE_HEARD": true,
+      "FLAG_CH013_THREE_WENT_OUT": true,
+      "FLAG_CH013_BOTH_FORBIDDEN": true,
+      "FLAG_CH013_HALF_CREST_DROPPED": true,
+      "FLAG_CH013_HALF_CREST_FOUND": true,
+      "FLAG_CH013_PASS_RETURNED": true,
+      "FLAG_CH013_ORDER_WARNING": true,
+      "FLAG_CH013_PASS_READ": true,
+      "FLAG_CH013_IMPERIAL_SEAL_SEEN": true,
+      "FLAG_CH013_ARCH_WAVE_IS_OFFICIAL_SEAL": true,
+      "FLAG_CH013_DEST_ARCH_TIDE_GATE": true,
+      "FLAG_CH013_WITNESS_NAME_LISTED": true,
+      "FLAG_CH014_WENT_DOWN_AT_EBB": true,
+      "FLAG_CH014_THREE_DOWN_ONE_GATE": true,
+      "FLAG_CH014_SLUICE_HELD": true,
+      "FLAG_CH014_TIDE_CAVE_ENTERED": true,
+      "FLAG_CH014_COCOONS_FOUND": true,
+      "FLAG_CH014_HEARTBEAT_IS_PEOPLE": true,
+      "FLAG_CH014_EMPTY_HOOKS_SEEN": true,
+      "FLAG_CH014_STONE_DOOR_SEEN": true,
+      "FLAG_CH014_NINE_RESCUED": true,
+      "FLAG_CH014_ACOLYTE_CAPTURED": true,
+      "FLAG_CH014_STONE_DOOR_CLOSED": true,
+      "FLAG_CH014_QUICK_PATCH_SHOWN": true,
+      "FLAG_CH014_SLUICE_DROPPED_BEHIND": true,
+      "FLAG_CH014_COUNT_FOUR_AT_GATE": true,
+      "FLAG_CH014_GRADE_TAGS_SEEN": true,
+      "FLAG_CH014_TAGS_CUT_WITH_CONSENT": true,
+      "FLAG_CH014_BIG_THREE_ONE_FOUND": true,
+      "FLAG_CH014_ODA_NAMED": true,
+      "FLAG_CH014_INES_COUNTED": true,
+      "FLAG_CH014_VOICE_FROM_BELOW": true,
+      "FLAG_CH014_SLOW_HEARTBEAT_BELOW": true,
+      "FLAG_CH015_WENT_DOWN_AT_DAWN": true,
+      "FLAG_CH015_STONE_DOOR_OPENED": true,
+      "FLAG_CH015_NEST_ENTERED": true,
+      "FLAG_CH015_THREE_COCOONS_FOUND": true,
+      "FLAG_CH015_TIDE_KING_SEEN": true,
+      "FLAG_CH015_TIDE_KING_STOPPED": true,
+      "FLAG_CH015_COCOONS_RESCUED": true,
+      "FLAG_CH015_REVERSE_MOON_SHOWN": true,
+      "FLAG_CH015_MIRROR_STEP_SHOWN": true,
+      "FLAG_CH015_ASSASSIN_GUEST": true,
+      "FLAG_CH015_NELOSA_NAMED": true,
+      "FLAG_CH015_ROOT_RING_REFUSED_ONE_HAND": true,
+      "FLAG_CH015_SIN_SHARD_TAKEN": true,
+      "FLAG_CH015_CHART_SHARD_FOUND": true,
+      "FLAG_CH015_INES_COUNTED": true,
+      "FLAG_CH015_RELIEF_OFFICE_CAME": true,
+      "FLAG_CH015_RELIEF_SEAL_MATCHED_PASS": true,
+      "FLAG_CH015_DOCK_PEOPLE_STOOD": true,
+      "FLAG_CH015_WHITE_TOWER_SUMMONS": true,
+      "FLAG_CH015_CROWN_SEAL_LIKE_DRAGON_SCAR": true,
+      "FLAG_CH015_ACT2_CLOSED": true,
+      "FLAG_CH015_BROOD_SAVED": true,
+      "FLAG_CH015_RETURNED_HOME_PROMISED": true
+    },
+    "items": {
+      "ITEM_FAMILY_SHEPHERD_WHISTLE": 1,
+      "ITEM_MOTHER_WHEAT_HAIRPIN": 1,
+      "ITEM_GUILD_IRON_BADGE": 1,
+      "ITEM_BASIC_BANDAGE": 2,
+      "ITEM_MARSH_SHOE_COVERS": true,
+      "ITEM_FOREST_EDGE_GEAR": false,
+      "ITEM_FOG_HARBOR_CLEAR_CRYSTAL": false,
+      "ITEM_SEVEN_RING_CHART_SHARD": 1,
+      "ITEM_WHITE_TOWER_SUMMONS": 1
+    },
+    "vars": {
+      "PLAYER_VOW_PRIMARY": "VOW_REVENGE",
+      "PLAYER_GUILT_TOTAL": 0,
+      "ITEM_FAMILY_SHEPHERD_WHISTLE_OWNER": "TOBY",
+      "PLAYER_PROMISE_RETURN_TO_TOBY": true,
+      "PLAYER_GUILD_RANK": "IRON",
+      "PLAYER_FIRST_IMPRESSION_OF_LEAH": "STRONG_POSITIVE_DEFAULT",
+      "LEAH_FIRST_IMPRESSION_OF_PLAYER": "EAGER_BUT_UNDISCIPLINED",
+      "LEAH_TRUST": 3,
+      "LEAH_INTIMACY": 0,
+      "LEAH_SACRIFICE": 0,
+      "PLAYER_GUILT_LEAH": 0,
+      "BATTLE_CH002_STREET_AMBUSH_RESULT": "clean",
+      "FENN_TREATMENT": "FIRM",
+      "PLAYER_PROMISE_OBEY_LEAH_SIGNAL": false,
+      "BATTLE_CH003_MILL_ROAD_CHAINS_RESULT": "clean",
+      "PLAYER_LODGING": "GUILD_BUNK",
+      "MILL_ALERT": 0,
+      "MILL_EXIT": "LATE",
+      "MILL_CAPTIVES_STATE": "QUIET",
+      "PLAYER_RESCUE_ROLE": "CAGE",
+      "MARA_DAUGHTER_CONDITION": "SMOKE_COUGH_BURNED_ARM",
+      "PLAYER_PROMISE_MARA_RETURN": false,
+      "CART_WAIT": "HELD",
+      "SUPERVISOR_NOTE": "STEADY",
+      "PARTY_CONSENT": "UNANSWERED",
+      "PARTY_STANDING": "MEMBER",
+      "LEAH_RELATIONSHIP_STAGE": "STRANGER",
+      "BATTLE_CH005_BULL_COLLAR_RESULT": "clean",
+      "CH006_CLIENT_CONFIDENCE": "NORMAL",
+      "CH006_OGRE_STATE": "TOOK_PLANK",
+      "CH006_SYNC_CHANNEL": "WAIST",
+      "HAZARD_CH006_SALT_BRIDGE_RESULT": "CLEAN",
+      "CONSENT_LEAH_WAIST_STEADY_BASIS": "offered",
+      "CONSENT_LEAH_WAIST_STEADY_STATUS": "granted_once",
+      "CAKE_TRUCE": "SEALED",
+      "MIA_TRUST": 0,
+      "MIA_INTIMACY": 0,
+      "MIA_SACRIFICE": 0,
+      "PLAYER_GUILT_MIA": 0,
+      "PAIR_LEAH_MIA_TRUST": 0,
+      "PARTY_GUEST_MIA": false,
+      "MIA_RELATIONSHIP_STAGE": "STRANGER",
+      "BATTLE_CH007_SCRAP_PICKER_RESULT": "clean",
+      "CONSENT_PLAYER_MIA_SCAN_STATUS": "none",
+      "CH007_GEAR_CUSTODY": "MIA_LOGGED",
+      "CH007_CAKE_SECRET_RESULT": "LEAH_ANSWERED",
+      "MIA_FIRST_IMPRESSION_OF_PLAYER": "QUIET",
+      "CH008_CRYSTAL_CUSTODY": "MIA_LOGGED",
+      "HAZARD_CH008_TIDE_DOOR_RESULT": "CLEAN",
+      "CH008_BLAME_RESPONSE": "SILENT",
+      "CH008_TESTIMONY": "NONE",
+      "INES_FIRST_IMPRESSION_OF_PLAYER": "QUIET",
+      "CH009_PICKER_RESULT": "BASE",
+      "CH009_TESTIMONY_ORDER": "LEAH_LINKED",
+      "CH009_BATH_WITNESS_RESULT": "FULL",
+      "CH009_CRISIS_ACTION": "SILENT",
+      "HAZARD_CH009_DRAIN_GRATE_RESULT": "CLEAN",
+      "CH010_STONES_CUSTODY": "MIA_LOGGED",
+      "CH010_FEED_EVIDENCE_CUSTODY": "GUILD",
+      "PARTY_MEMBER_MIA": true,
+      "CH010_PUMP_READ": "QUIET",
+      "CH010_RESCUE_ORDER": "LEAH_ORDERED",
+      "CH010_MIA_JOIN_REPLY": "SILENT",
+      "BATTLE_CH010_TIDE_CAVITY_MOTHER_RESULT": "clean",
+      "CH011_MAP_CUSTODY": "LEAH",
+      "SERENA_INTIMACY": 0,
+      "SERENA_SACRIFICE": 0,
+      "SERENA_RELATIONSHIP_STAGE": "STRANGER",
+      "PAIR_LEAH_SERENA_TRUST": 0,
+      "PAIR_MIA_SERENA_TRUST": 1,
+      "SERENA_TRUST": 0,
+      "PLAYER_GUILT_SERENA": 0,
+      "PROMISE_BROKEN_NET_LEAH": 0,
+      "PROMISE_BROKEN_NET_MIA": 0,
+      "PROMISE_N_LEAH": 0,
+      "PROMISE_KEPT_LEAH": 0,
+      "PROMISE_N_MIA": 0,
+      "MONARCH_MERCY": 4,
+      "MONARCH_TERROR": 0,
+      "MONARCH_LUST": 0,
+      "MONARCH_COLD": 0,
+      "TERROR_BLAST": 0,
+      "FLIRT_AFTER_REFUSAL": 0,
+      "CH011_HAND_RESPONSE": "ENDURED",
+      "CH011_SCAR_SEEN_BY": "ALONE",
+      "CH011_KNOCKS_RESPONSE": "DEFAULT",
+      "BATTLE_CH011_SCAR_ECHO_RESULT": "clean",
+      "CH011_SERENA_TREATMENT": "QUIET",
+      "SERENA_FIRST_IMPRESSION_OF_PLAYER": "QUIET",
+      "CH011_VANISH_ANSWER": "SILENT",
+      "CH011_DREAM_TOLD": "KEPT",
+      "PARTY_MEMBER_SERENA": true,
+      "BOUNDARY_SERENA_PRIVATE_OBSERVATION": {
+        "owner": "SERENA",
+        "rule": "未经允许不得以镜术观察私人空间",
+        "status": "acknowledged",
+        "violation_count": 1,
+        "repair_state": "active",
+        "allowed_exceptions": [
+          "emergency_life_threat"
+        ]
+      },
+      "CH012_APPRENTICE_CUSTODY": "TEAM_LIGHTHOUSE",
+      "PROMISE_KEPT_SERENA": 0,
+      "PROMISE_N_SERENA": 2,
+      "PROMISE_BROKEN_NET_SERENA": 0,
+      "CH012_BATH_RESPONSE": "QUIET",
+      "CH012_TERMS_RESULT": "QUIET",
+      "CH012_CHASE_TACTIC": "QUIET",
+      "CH012_DOUBLE_CHECK": "QUIET",
+      "CH012_ROLL_CALL_BY": "LEAH",
+      "BATTLE_CH012_MIRROR_ALLEY_CHASE_RESULT": "clean",
+      "CH012_APPRENTICE_TREATMENT": "QUIET",
+      "LILITH_TRUST": 0,
+      "PLAYER_GUILT_LILITH": 0,
+      "CH013_CREST_CUSTODY": "LEAH",
+      "CH013_PASS_CUSTODY": "LEAH",
+      "CH013_WITNESS_CUSTODY": "GUILD",
+      "CH013_DREAM_QUESTION": "QUIET",
+      "CH013_ROOF_TACTIC": "QUIET",
+      "CH013_ROOF_RESOLUTION": "QUIET",
+      "CH013_ORDER_QUESTION": "QUIET",
+      "LILITH_FIRST_IMPRESSION_OF_PLAYER": "QUIET",
+      "CH013_WITNESS_DECISION": "QUIET",
+      "BATTLE_CH013_RAIN_ROOFTOP_CHASE_RESULT": "clean",
+      "promise_serena_no_vanish_001": "pending",
+      "promise_serena_no_vanish_001_consent": "SILENT",
+      "promise_serena_no_peek_others_001": "pending",
+      "promise_serena_no_peek_others_001_consent": "SILENT",
+      "CH014_SPLIT": "QUIET",
+      "CH014_SLUICE_GUARD": "MIA",
+      "CH014_CAVE_TACTIC": "QUIET",
+      "CH014_FLOOD_RESOLUTION": "QUIET",
+      "BATTLE_CH014_TIDE_CAVE_RESCUE_RESULT": "clean",
+      "BATTLE_CH014_TIDE_CAVE_RESCUE_ENEMIES_DOWN": 2,
+      "CH014_TAG_DECISION": "QUIET",
+      "CH014_TAGS_CUSTODY": "LEAH",
+      "CH014_ACOLYTE_DECISION": "QUIET",
+      "CH014_ACOLYTE_CUSTODY": "GUILD",
+      "CH014_RESCUED_CUSTODY": "GUILD",
+      "CH015_COUNTERSIGN": "QUIET",
+      "CH015_SHELL_TACTIC": "QUIET",
+      "CH015_COPY_TACTIC": "QUIET",
+      "CH015_NEST_ORDER": "QUIET",
+      "CH015_NEST_FATE": "SAVED",
+      "SIN_ENVY": 1,
+      "BATTLE_CH015_TIDE_KING_NELOSA_RESULT": "clean",
+      "BATTLE_CH015_TIDE_KING_NELOSA_ENEMIES_DOWN": 3,
+      "CH015_CHART_SHARD_CUSTODY": "LEAH",
+      "CH015_SIN_SHARD_CUSTODY": "ASSASSIN",
+      "CH015_ROOT_RING_STATE": "ROOTED_IN_NEST",
+      "CH015_RESCUED_CUSTODY": "GUILD",
+      "CH015_HANDOVER_ANSWER": "QUIET",
+      "promise_returned_home_001": "pending",
+      "promise_returned_home_001_consent": "SILENT",
+      "CH015_SUMMONS_CUSTODY": "LEAH",
+      "CH015_SUMMONS_DEADLINE": "THREE_DAYS"
+    },
+    "memories": {
+      "MEMORY_MOTHER_WORDS_FIND_WAY_HOME": "艾琳：“我吹这个，你就知道该往哪边回。”",
+      "MEMORY_FAMILY_ROLL_CALL": "艾琳：“报数！”——“我在！”“我、我也在！”",
+      "MEMORY_BORIN_LAST_WORDS": "先看清该砍谁",
+      "MEMORY_CH001_PROMISE_RETURN_TO_TOBY": "托比：“你一定要回来拿。”——“一定。”",
+      "MEMORY_CH004_MARA_AT_THE_CAGE": "旧磨坊的笼边，玛拉认出了他。她和女儿波莉的手腕被细链锁在晶架上；钥匙在念经的人腰上。",
+      "MEMORY_CH004_TWO_PULLS": "旧磨坊里，绳子拉了两下，他慢了半拍才退。玛拉在他身后说：“……你还欠我一根烟囱。”",
+      "MEMORY_CH004_LEAH_ANGER": "第二座里程石旁，莉亚收完绳子，看着磨坊那点灯说：“我在生气。……所以我先问。”",
+      "MEMORY_CH005_WAIT": "大车之夜，链子全上了箱，莉亚回了一下“停”。他没有动，等到了盾落。",
+      "MEMORY_CH005_ROLL_CALL": "大车之夜，灯灭以后，他在黑暗里说出娘的口令“报数”。这一次，答“在”的是玛拉和波莉。",
+      "MEMORY_CH005_TEAM_REGISTER": "公会柜台，莉亚先在队长栏签了“赫斯特”。他没有答复；她写上他的名字，旁注“未答复”。",
+      "MEMORY_CH006_UNSPOKEN_SYNC": "盐沼桥上，他扣着她左侧的腰带。她的肩一沉，他就推了。谁都没出声。",
+      "MEMORY_CH006_BOUNDARY": "她说“腰带。左边。扶稳。”桥过了，她说准的只是那一次。",
+      "MEMORY_CH006_CAKE": "林边旅店的窗口，他撞见了她的字条“高效率糖分补给，一份”。她说：“你没看见。鞋套，不扣你的。……停战。”",
+      "MEMORY_CH006_CAMP": "林边旅店的火盆旁，她把明天的事说完：“守夜，我前半。你后半。”蛋糕盘就在她手边，她没有动叉子。",
+      "MEMORY_CH007_MIA_FIRST_MEETING": "她问能不能量。他没说好，她就没量；刚才那一眼，她也说不记。",
+      "MEMORY_CH007_TWO_RULES": "盾后面是雷最先到的地方。她规矩不改，只把今晚的退路改到桩后。",
+      "MEMORY_CH007_ONE_KNOCK": "林边，莉亚敲了一声盾，米娅没有停，卡住了那条腿。莉亚说“……拉。”急停环才拉下。米娅说她算过，还有两息；莉亚说：“你算的是它。……我算的是你们。”",
+      "MEMORY_CH007_GEAR_AND_CREAM": "林边，米娅问起齿轮上的奶油。他没答，她自己说：“补给。”",
+      "MEMORY_CH007_UNNUMBERED_CORE": "核心是一颗没有编号的潮晶，从里面往外蚀。晶底的黑环和拓图一样，七个。她把拓图摊给米娅看，看的是米娅的脸。她只对他说：这种黑，见过。",
+      "MEMORY_CH008_PAST_MIDNIGHT": "后半夜，她修屋檐，他守院子。",
+      "MEMORY_CH008_ONE_INSTANT": "她要不带火的金。莉亚说，他有，很弱。她看他按住一根钉子，硬了一瞬。",
+      "MEMORY_CH008_ONE_MILLIMETER": "她说“硬”。那一瞬，是他的。",
+      "MEMORY_CH008_SEVENTEEN": "十七号是透的，刻了号；这颗没有刻痕，环是从里面长出来的。核心在刻号之后、装机之前被换。她装的就是这颗；底，她没翻过来看。",
+      "MEMORY_CH008_SELF_REPORT": "她把两件事都写进账里。他没笑。她报了名字。",
+      "MEMORY_CH008_WHAT_AKU_SAW": "她说了颈圈和那箱黑晶。黑石那一段，他没说，她自己说了。",
+      "MEMORY_CH008_HEARTBEAT": "潮平了，听潮针的笔尖还在抖。米娅说，是心跳，很多个叠成一个，在雾港底下。莉亚的笔停住了。",
+      "MEMORY_CH009_INES_QUESTION": "她问落水的人怎么救。他没有回答。她说，先喊，再伸，再抛，最后才是跳。",
+      "MEMORY_CH009_LAYERS": "晶一潮一层，那颗的最里层是黑的。捡晶的说，下游的口子偶尔捡到中间灰的。他没打断米娅。",
+      "MEMORY_CH009_FIVE_SLIPS": "五张证词，她让他排。他没排，她画了一条线：同一道水。下次，你排。",
+      "MEMORY_CH009_SHIELD_SCARES": "她说盾吓人，派他去问烧水的人。他等着，老妇自己说了：池底的沟通东口，外面退潮的时候管子在涨，镜子里有时候多一个紫头发的。",
+      "MEMORY_CH009_GRATE": "根把码头工人拖进栅栏。她用盾封住缺口，说后面的人，你管。米娅抛了绳，他跟渔民一起拉，鱼贩上来了。她说：退。",
+      "MEMORY_CH009_BELOW": "她写完了那一行：雾港底下，有人。四个名字。救回那一栏空着，她说明天填。外面在退，底下还在涨。",
+      "MEMORY_CH010_PUMP_HOUSE": "泵房里没有人。汤碗的麻袋，黑色的碎粒，写着拟态的空瓶，一槽小虫。粉笔画着账本上那个记号，底下写着大四。她停了一拍。",
+      "MEMORY_CH010_SEVENTEEN": "泵是反装的，外面一退就往里打水。晶座里是十七号，底下的十一划掉了。她说要完整的。莉亚派她守泵。",
+      "MEMORY_CH010_FOUR_LEDGES": "四个人，四个地方。她把先后交给他，他没排。她自己点名：达利别动，钩子伸过去，提姆走过来，绳子抛过去；最后她把盾平放在水上，他背着渔民踩了过去。没有人跳。",
+      "MEMORY_CH010_CAVITY_BATTLE": "她分了三份：人，她守；泵，米娅；根，交给他引。他用光照水，她用盾拨；水涨到石台边，他往另一头打了一个水花。她说水到石台了，米娅说，人先，撬碎了晶座。母虫活着退进涵洞。米娅说，不是它，底下还有。",
+      "MEMORY_CH010_RESCUE_COLUMN": "下去三个，上来七个。救回那一栏，她填上了四个名字。底下的水，没有再涨。",
+      "MEMORY_CH010_SAME_LEDGER": "汤碗救济会。伊涅丝说，总会的通报上，发汤的、走巡礼的、卖魔具的，是同一个名字：蚀宴会。莉亚说，是同一本账。案子还开着。",
+      "MEMORY_CH010_MIA_JOINED": "她要署泵停的那一行，就用自己的名字签了登记。条件写在名字旁边：先问，再碰，拆要她在。她问队上要不要一个会炸的。他没说话。她说，没说不要。",
+      "MEMORY_CH010_LEDGER_SHARED": "入了队，她在旅店楼上把账摊开：晨钟镇西门外的旧磨坊，汤碗救济会从营地带走过人；营地那两个救回来了，晨祷平原来的三个没有；那一行的记号，就是泵房那个拱。她说，队员可以问。米娅说，先不问。",
+      "MEMORY_CH010_INN_NIGHT": "桥头旅店。这里的镜子没盖布。她们睡了。",
+      "MEMORY_CH011_SEVEN_HOLES": "手背上的洗礼印裂开七个细孔。他没有叫人。",
+      "MEMORY_CH011_THREE_KNOCKS": "梦里听见三声盾响，有人叫他的名字。他退了。线断了。",
+      "MEMORY_CH011_SERENA_ANSWER": "她说：都有。线，她剪了；门，她看了一眼。今晚拉线的，不是她。",
+      "MEMORY_CH011_SEVEN_DOORS": "她说他身上有七扇门，都空着。白塔的册官，在他身上按过号。莉亚停了一拍。",
+      "MEMORY_CH011_LEAH_RULE": "莉亚说：要来，走门。镜子，不准看。",
+      "MEMORY_CH011_SAY_A_WORD": "她问他，要走的时候会不会说一声。他没有回答。她没有说再见。",
+      "MEMORY_CH011_LEDGER": "莉亚在账上写：第十二夜，桥头旅店。镜中人塞雷娜，剪线，看了一眼。梦里的事，他没有说。",
+      "MEMORY_CH011_FEATHER_MAP": "黑羽穿着一张地图：老涵洞往下是潮穴；一条没人走过的路，停在一个没写字的圈。角上写着：条件，明天谈。",
+      "MEMORY_CH011_INN_NIGHT": "这一夜之后，走廊、楼梯转角与三人房里的镜子都盖了布；尼尔的房间不知道。莉亚面对着镜子坐。",
+      "MEMORY_CH012_BATH_MIRROR": "塞雷娜招认从浴场柜门镜看过他的手背。她道歉，包起杖头。莉亚写下：镜子，不准看。违，一次。",
+      "MEMORY_CH012_TERMS": "塞雷娜的条件：莫尔坎；要走，说一声；别叫她替人看别人。他什么都没说。莉亚说：不说话，就是没说不要。她记下了两条。",
+      "MEMORY_CH012_JOINED": "塞雷娜入队。登记只写名，姓说下次。条件写在名字旁边。",
+      "MEMORY_CH012_LOCKER_MIRROR": "人没走门，走的是柜门镜。镜子只记得照过的。米娅盖了柜门镜，只留尼尔那一格。",
+      "MEMORY_CH012_ALLEY": "镜巷里，莉亚报数，假的莉亚答不出少了谁。学徒说：潮穴，明夜。队员，第一次报到四。",
+      "MEMORY_CH012_APPRENTICE": "学徒在灯塔裹着毯子睡着了。今晚谁都没问。明早，分会来点。",
+      "MEMORY_CH012_LIGHTHOUSE_NIGHT": "第十三天住旧灯塔。队员，四。塞雷娜说：我在楼梯上，哪里也不去。下雨了。",
+      "MEMORY_CH013_DREAM_QUESTION": "后半夜，塞雷娜想从窗走进孩子的梦里问莫尔坎。他没有说好；她说，那就是不。",
+      "MEMORY_CH013_WINDOW": "窗碎了。金发的刺客说：让开。他照过我的脸。莉亚的盾先到。纸被她挑走了。",
+      "MEMORY_CH013_ASSASSIN": "雨中屋顶，金发刺客问他是不是教团的人。他没说话。她丢下纸：我不是来帮你，只是不想欠你。看清楚上面盖的章。不要相信教团。",
+      "MEMORY_CH013_COUNT": "屋顶回来，莉亚报数。塞雷娜报四，这一次没有停。米娅守住了门和窗。",
+      "MEMORY_CH013_PASS": "巡礼通行证：最上面是晨星冕的御印，底下盖着那个像拱又像浪的记号——伊涅丝说，御印底下只盖得上官印。背面写着：往：拱潮门。",
+      "MEMORY_CH013_WITNESS": "清晨，孩子报了名字：席欧。伊涅丝说，说话的，名字她留着。她带他回分会。",
+      "MEMORY_CH013_TIDE_TONIGHT": "第十四天清晨。伊涅丝点了四个：今夜出去四个，回来也要四个。潮穴，今夜。",
+      "MEMORY_CH014_SPLIT": "老闸口，三个下去，一个守闸。守闸的是米娅。是莉亚派的。",
+      "MEMORY_CH014_COCOONS": "潮穴的墙上挂着茧，茧里是人。所有的茧同一个时候鼓起来——雾港底下的心跳，是他们。",
+      "MEMORY_CH014_PATCH": "老闸的楔子裂了。米娅把叮当三号塞进齿里：紧急修补。最后一个人出来，闸才落。报数，到四。",
+      "MEMORY_CH014_TAGS": "潮腔的石台上，九个人的手腕都绑着木牌：来处、件、成色。米娅先问了，才剪。一个叫欧妲，晨祷平原来的——04那一行的三个人，找回一个。",
+      "MEMORY_CH014_ACOLYTE": "东口，那个放下手的念祷文的人交给了分会。伊涅丝把他的名字收进袖子里。",
+      "MEMORY_CH014_COUNT": "东口，伊涅丝点完人数：出去四个，回来四个；加九个；再加一个。",
+      "MEMORY_CH014_LEDGER": "莉亚的账：救回九，还没救回三，念祷文的一名交分会，牌子九块。她写的是‘还没’。",
+      "MEMORY_CH014_BELOW": "东口的闸缝底下，有个声音照着他们的报数数了一遍。说话的人都站在上面。零号说，底下还有一个，很慢，很大。",
+      "MEMORY_CH015_COUNTERSIGN": "石门前，莉亚说底下的东西会学声音。认自己人，用绳子。",
+      "MEMORY_CH015_NEST": "石门后面是一条沉船。船肋上挂着三个茧，船舱里挂满幼体的囊。龙骨上的壳，用莉亚的声音数了一二三。",
+      "MEMORY_CH015_SHELL": "壳撞上盾，腹下裂开一道缝。他的剑进了那道缝，不深，刚好一道。",
+      "MEMORY_CH015_COPIES": "两个莉亚、两个塞雷娜。塞雷娜和莉亚换了位置，金发的刺客从死角出了一刀。",
+      "MEMORY_CH015_NEST_FATE": "人都出来了，莉亚把那一下交给他。……他没说，莉亚照第三条切了线。",
+      "MEMORY_CH015_RUIN": "那颗心停的地方长出一个活的木环，谁伸手，根就往回缩。底下压着一片刻了七个环的铜，莉亚收了。金发刺客拿走了那块还在跳的碎片，说它叫涅洛萨，以前是洗沼泽的。",
+      "MEMORY_CH015_COUNT": "分会的仓里，伊涅丝点完：出去四个，回来四个，加三个。欧妲给他们让了位置。",
+      "MEMORY_CH015_NOT_HANDED_OVER": "分会门口，赈灾司的官照册要收救回的人。他说：救回的，不交。达利站到他身后，码头的人一个一个站过来。",
+      "MEMORY_CH015_SUMMONS": "赈灾司的官交出一封白塔的召令：召雾港屠龙者，三日内赴白塔。金色的火漆是一顶冠，冠上一道裂——和黑龙左眼旁边那道一样。",
+      "MEMORY_CH015_LEDGER": "莉亚的账：救回三，它停了，幼体多数留着，碎片被拿走，白塔召三日。她把召令夹在通行证旁边。"
+    }
+  },
+  "speakers": {},
+  "shots": [
+    {
+      "id": "ex012-01",
+      "title": "帐上那一行",
+      "bg": "fog-harbor-old-lighthouse-dawn",
+      "music": "sea_wind_kettle",
+      "ambience": [
+        "sea_wind"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "清早。旧灯塔的门开着。塞雷娜站在门外，没有进来。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "整理一下。今天的安排：第一，旧浴场。第二，旧浴场。第三，也是旧浴场。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "……三条都一样？"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "我欠它一笔。"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚翻开报告夹，翻到很前面的一页。"
+        },
+        {
+          "t": "narr",
+          "style": "caption",
+          "text": "镜子，不准看。要来，走门。"
+        },
+        {
+          "t": "narr",
+          "style": "caption",
+          "text": "违：一次（旧浴场，柜门镜）。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "帐上有的，要还。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "……我看着。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "修镜子？我去！我的工具包里有——"
+        },
+        {
+          "t": "narr",
+          "text": "她停住了。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "……先问。那是婆婆的镜子。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "MIA_RELATIONSHIP_STAGE",
+            "eq": "COMPANION"
+          },
+          "then": [
+            {
+              "t": "say",
+              "who": "mia",
+              "text": "你也来吧？修东西，你在旁边数，我比较不会手抖。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ex012-02",
+      "title": "自由输入：不让进的人",
+      "bg": "fog-harbor-drain-dawn",
+      "music": "firewood_cold",
+      "ambience": [
+        "drip"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "旧浴场的侧门。门上贴着一张纸。"
+        },
+        {
+          "t": "narr",
+          "style": "caption",
+          "text": "暂停"
+        },
+        {
+          "t": "narr",
+          "text": "烧水间的灶，是冷的。老妇人坐在门槛上，膝上放着一把没劈的柴。"
+        },
+        {
+          "t": "say",
+          "who": "bath_keeper",
+          "text": "这几天，一个客人都没有。"
+        },
+        {
+          "t": "say",
+          "who": "bath_keeper",
+          "text": "人家说，旧浴场的镜子会吃人。"
+        },
+        {
+          "t": "narr",
+          "text": "她抬起头。看见了塞雷娜。"
+        },
+        {
+          "t": "narr",
+          "text": "她站了起来，把柴横在身前。"
+        },
+        {
+          "t": "say",
+          "who": "bath_keeper",
+          "text": "紫头发的……镜子里那个。"
+        },
+        {
+          "t": "say",
+          "who": "bath_keeper",
+          "text": "她不准进。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "我是来赔的。"
+        },
+        {
+          "t": "say",
+          "who": "bath_keeper",
+          "text": "赔？客人说镜子会吃人，镜子里还有个紫头发的。你赔得了我的客人？"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚往旁边站了半步。没有挡在谁前面。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "她的帐。她自己说。"
+        },
+        {
+          "t": "input",
+          "id": "FI_EX012_SC02_KEEPER_001",
+          "kind": "dialogue",
+          "prompt": "烧水的老妇人认出塞雷娜就是她在镜子里看见过的紫头发的人，不准她进浴场。塞雷娜说她是来赔的。莉亚要塞雷娜自己说。{PLAYER_NAME}可以让塞雷娜自己说、说被看的是自己、替塞雷娜说话、站在老妇人那边、说钱由他们出、骂塞雷娜，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "bath_keeper",
+            "serena",
+            "lia"
+          ],
+          "context": [
+            "塞雷娜在这里的镜子里盯过一个用镜子绑人的人；也从柜门的小镜子里，看过{PLAYER_NAME}的手背（正12）。",
+            "老妇人怕的是封门：没有客人，就是封门。",
+            "莉亚的帐上：违，一次（旧浴场，柜门镜）。"
+          ],
+          "principles": [
+            "KEEPER：判定优先序：骂塞雷娜 > 站在老妇人那边 > 钱由我们出 > 替塞雷娜说话 > 说被看的是我 > 让她自己说 > 沉默。",
+            "老妇人是受害的一方；不让任何路线说她小气、不讲理。",
+            "塞雷娜的道歉在所有路线由她自己说；不写成被逼出来的。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "insulted",
+              "label": "骂塞雷娜",
+              "desc": "骂塞雷娜活该、偷看的人不配进。",
+              "keywords": [
+                "活该",
+                "你活该",
+                "不配",
+                "偷窥狂",
+                "变态",
+                "滚出去",
+                "!不是活该"
+              ],
+              "morality": -1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "塞雷娜笑得很温柔。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "骂得对。"
+                },
+                {
+                  "t": "say",
+                  "who": "bath_keeper",
+                  "text": "……你们自己人，也骂她？"
+                },
+                {
+                  "t": "narr",
+                  "text": "老妇人横着的柴，放低了一点。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_KEEPER": "INSULTED"
+                }
+              }
+            },
+            {
+              "id": "sided",
+              "label": "站在老妇人那边",
+              "desc": "她说得对、不让进就不进、让塞雷娜在门外。",
+              "keywords": [
+                "你说得对",
+                "不让进就不进",
+                "让她在门外",
+                "婆婆说得对",
+                "听婆婆的",
+                "在外面等",
+                "她在外面"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……好。我在门外。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她退到侧门外面，站在照不到门里的地方。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_KEEPER": "SIDED"
+                }
+              }
+            },
+            {
+              "id": "paid",
+              "label": "钱由我们出",
+              "desc": "赔钱、材料钱我们出、要多少给多少。",
+              "keywords": [
+                "我们出钱",
+                "赔钱",
+                "我付",
+                "钱我们出",
+                "要多少",
+                "材料钱",
+                "我出"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "bath_keeper",
+                  "text": "钱，我收。"
+                },
+                {
+                  "t": "say",
+                  "who": "bath_keeper",
+                  "text": "人，我还是怕。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "钱，我出。……他那一份，不收。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_KEEPER": "PAID"
+                }
+              }
+            },
+            {
+              "id": "defended",
+              "label": "替塞雷娜说话",
+              "desc": "她已经道过歉了、她是来帮忙的、她也抓了坏人。",
+              "keywords": [
+                "她道过歉了",
+                "她是来帮忙的",
+                "她不是坏人",
+                "替她说",
+                "她也抓了",
+                "她已经改了",
+                "原谅她吧"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "bath_keeper",
+                  "text": "你替她说？"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "不用替。……我自己说。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_KEEPER": "DEFENDED"
+                }
+              }
+            },
+            {
+              "id": "victim",
+              "label": "说被看的是自己",
+              "desc": "被看的人是我；我说了算一半。",
+              "keywords": [
+                "被看的是我",
+                "我是被看的",
+                "看的是我",
+                "被看的人是我",
+                "我被看了",
+                "是我被看"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "老妇人看着{PLAYER_NAME}。看了很久。"
+                },
+                {
+                  "t": "say",
+                  "who": "bath_keeper",
+                  "text": "……被看的，是你？"
+                },
+                {
+                  "t": "say",
+                  "who": "bath_keeper",
+                  "text": "那你说了算一半。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_KEEPER": "VICTIM"
+                }
+              }
+            },
+            {
+              "id": "own_words",
+              "label": "让塞雷娜自己说",
+              "desc": "让她自己跟婆婆说清楚。",
+              "keywords": [
+                "你自己说",
+                "让她自己说",
+                "你跟婆婆说",
+                "自己讲",
+                "你来说",
+                "说清楚"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "塞雷娜看了{PLAYER_NAME}一眼。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……嗯。这一句，本来就该我说。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_KEEPER": "OWN_WORDS"
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "谁都没有替她开口。"
+                },
+                {
+                  "t": "narr",
+                  "text": "塞雷娜往前走了一步。站在离老妇人一臂远的地方，停住。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_KEEPER": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "第一，镜子里那个紫头发的，是我。我在盯一个用镜子绑人的。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "第二，我用你柜门里的小镜子，看了一个客人。没有问他。那是我的错。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "第三，你的客人不来，有一半是因为我。"
+        },
+        {
+          "t": "say",
+          "who": "bath_keeper",
+          "text": "……一半？"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "另一半，是那个绑人的。他那一半，分会在算。我这一半，我来还。"
+        },
+        {
+          "t": "narr",
+          "text": "老妇人看了她很久。把柴放回了柴堆上。"
+        },
+        {
+          "t": "say",
+          "who": "bath_keeper",
+          "text": "……进来。"
+        },
+        {
+          "t": "say",
+          "who": "bath_keeper",
+          "text": "别照镜子。"
+        }
+      ]
+    },
+    {
+      "id": "ex012-03",
+      "title": "自由输入：睁着眼的镜子",
+      "bg": "fog-harbor-old-bathhouse",
+      "music": "glass_high_note_low",
+      "ambience": [
+        "drip",
+        "echo"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "镜厅。一面墙的瓷砖，一池冷了的水。"
+        },
+        {
+          "t": "narr",
+          "text": "墙上一排大镜子，全蒙着布。"
+        },
+        {
+          "t": "narr",
+          "text": "另一面墙是一排更衣柜。柜门里巴掌大的小镜子上，还搭着毛巾——米娅上次一格一格盖的。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "我盖的毛巾……还在。"
+        },
+        {
+          "t": "say",
+          "who": "bath_keeper",
+          "text": "墙上这几面，是我男人年轻的时候，从镜巷一面一面背回来的。"
+        },
+        {
+          "t": "say",
+          "who": "bath_keeper",
+          "text": "全拆了吧，我也想过。"
+        },
+        {
+          "t": "say",
+          "who": "bath_keeper",
+          "text": "可客人要梳头，要刮胡子。没有镜子的浴场，也没人来。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "镜子没有错。错在它们睁着眼。"
+        },
+        {
+          "t": "say",
+          "who": "bath_keeper",
+          "text": "镜子还有眼？"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "会用的人，就有。"
+        },
+        {
+          "t": "narr",
+          "text": "她说完，自己补了一句。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "……比如我。"
+        },
+        {
+          "t": "narr",
+          "text": "米娅已经蹲在一格柜门前。手停在毛巾上方，没有掀。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "婆婆，这个……我可以看吗？"
+        },
+        {
+          "t": "say",
+          "who": "bath_keeper",
+          "text": "看吧。都看。"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚看着{PLAYER_NAME}。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "怎么修。你说。"
+        },
+        {
+          "t": "input",
+          "id": "FI_EX012_SC03_MIRRORS_001",
+          "kind": "tactic",
+          "prompt": "旧浴场的镜子：墙上的大镜子蒙着布，柜门里的小镜子搭着毛巾；那些柜门镜被人拿来绑过人，塞雷娜也从那里看过人。老妇人说全拆了就没有客人。莉亚要{PLAYER_NAME}说怎么修。他可以全拆了砸掉、只拆柜门里的、让米娅改装、让塞雷娜给镜子下结界、问老妇人想要什么，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "bath_keeper",
+            "mia",
+            "serena",
+            "lia"
+          ],
+          "context": [
+            "墙上的大镜子，是老妇人的男人年轻时从镜巷一面一面背回来的。",
+            "米娅想到柜门镜可以改成翻板：门一关，镜面朝木头。",
+            "塞雷娜会一种“闭眼”的结界：镜子只照站在它前面的人，别的眼睛进不来。",
+            "修镜子的材料，塞雷娜说她出。"
+          ],
+          "principles": [
+            "MIRRORS：判定优先序：全砸掉 > 只拆柜门镜 > 问老妇人 > 让米娅改装 > 让塞雷娜下结界 > 沉默。",
+            "不设标准答案；所有路线最后都是三样一起做：翻板、结界、墙镜留着。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "smash",
+              "label": "全砸掉",
+              "desc": "全拆了、砸了，一面都不留。",
+              "keywords": [
+                "全砸了",
+                "砸掉",
+                "砸了",
+                "全拆了",
+                "一面都不留",
+                "都扔了",
+                "全部拆掉",
+                "!不砸",
+                "!别砸"
+              ],
+              "morality": -1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "bath_keeper",
+                  "text": "砸？我刚说了，那是他背回来的！"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "拆可以，砸不行！镜子又没做错事！"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……这句话，我刚才说过。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_MIRRORS": "SMASH"
+                }
+              }
+            },
+            {
+              "id": "lockers",
+              "label": "只拆柜门里的",
+              "desc": "墙上的留着，柜门里的小镜子拆掉。",
+              "keywords": [
+                "拆柜门镜",
+                "柜门里的拆掉",
+                "只拆小的",
+                "拆掉小镜子",
+                "柜门镜拆了",
+                "只拆柜门"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "bath_keeper",
+                  "text": "柜门里的……客人放东西的时候，会照一下帽子。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "那不拆！改！"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_MIRRORS": "LOCKERS"
+                }
+              }
+            },
+            {
+              "id": "keeper",
+              "label": "问老妇人想要什么",
+              "desc": "问婆婆要怎样、听她的。",
+              "keywords": [
+                "问婆婆",
+                "婆婆想要",
+                "你想怎样",
+                "听婆婆的",
+                "您说",
+                "您想要什么",
+                "照您的"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "bath_keeper",
+                  "text": "我想要……"
+                },
+                {
+                  "t": "narr",
+                  "text": "她看着那一排蒙着布的镜子。"
+                },
+                {
+                  "t": "say",
+                  "who": "bath_keeper",
+                  "text": "客人回来。镜子，也留着。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "两样都要。……好，记下了。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_MIRRORS": "KEEPER"
+                }
+              }
+            },
+            {
+              "id": "mia",
+              "label": "让米娅改装",
+              "desc": "让米娅想办法改柜门镜。",
+              "keywords": [
+                "米娅改",
+                "让米娅想办法",
+                "米娅来修",
+                "改装",
+                "改成翻板",
+                "翻板",
+                "米娅你来"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "柜门镜改成翻板！门开着，镜子翻出来；门一关，镜面就转向木头。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "不用拆。只要一颗轴、一片弹簧——备用件，当然有！"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_MIRRORS": "FLIP"
+                }
+              }
+            },
+            {
+              "id": "ward",
+              "label": "让塞雷娜下结界",
+              "desc": "让塞雷娜给镜子下结界，让它们闭眼。",
+              "keywords": [
+                "下结界",
+                "结界",
+                "让镜子闭眼",
+                "塞雷娜下结界",
+                "闭眼",
+                "施个术",
+                "封住镜子"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "可以。镜子还照人，只照站在它前面的那一个。别的眼睛进来，看见的只有蒸汽。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "你的术，用在你自己的帐上。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……正是这个意思。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_MIRRORS": "WARD"
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……那就都做。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_MIRRORS": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "narr",
+          "text": "最后定下来的，是三样一起做。"
+        },
+        {
+          "t": "narr",
+          "text": "柜门里的小镜子，米娅改成翻板，门一关，就转向木头。"
+        },
+        {
+          "t": "narr",
+          "text": "墙上的大镜子留着，掀掉布，擦干净。"
+        },
+        {
+          "t": "narr",
+          "text": "整间镜厅，由塞雷娜下一道“闭眼”的结界。"
+        },
+        {
+          "t": "narr",
+          "text": "塞雷娜把一个小布袋放在烧水间的桌上。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "材料，算我的。"
+        },
+        {
+          "t": "say",
+          "who": "bath_keeper",
+          "text": "……还挺沉。"
+        }
+      ]
+    },
+    {
+      "id": "ex012-04",
+      "title": "自由输入：第三条",
+      "bg": "fog-harbor-old-bathhouse",
+      "music": "work_rhythm_light",
+      "ambience": [
+        "scrub",
+        "drip"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "上午过去了一半。"
+        },
+        {
+          "t": "narr",
+          "text": "米娅蹲在更衣柜前，一格一格地上轴。拧一下，翻一下，再拧一下。"
+        },
+        {
+          "t": "narr",
+          "text": "拧到第九格，米娅把柜门一关——镜面翻了出来。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "装反了！"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "这一格，睁着眼睡觉。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "……马上改！不准笑！"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚放干了池子，一个人刷。刷子是老妇人给的，刷毛很硬。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "……池底的苔，三年的。"
+        },
+        {
+          "t": "narr",
+          "text": "塞雷娜站在大镜子前。杖头的布，没有解。"
+        },
+        {
+          "t": "narr",
+          "text": "她用指尖，沿着每一面镜框，画了一道很细的线。线画过的地方，镜面暗了一下，又亮回来。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "这道线，叫“闭眼”。杖头用不着。手就够。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "……我可以看吗？不量。只看。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "看吧。你问了，就可以看。"
+        },
+        {
+          "t": "narr",
+          "text": "中午以前，老妇人从柴房里拖出一块木板。"
+        },
+        {
+          "t": "say",
+          "who": "bath_keeper",
+          "text": "镜子修好了，客人还是不知道。要挂一块牌子。写规矩。"
+        },
+        {
+          "t": "narr",
+          "text": "塞雷娜接过炭笔，在木板上写字。写得很快，像早就想好了。"
+        },
+        {
+          "t": "narr",
+          "style": "caption",
+          "text": "浴场镜面守则"
+        },
+        {
+          "t": "narr",
+          "style": "caption",
+          "text": "一、镜子，只照站在它前面的人。"
+        },
+        {
+          "t": "narr",
+          "style": "caption",
+          "text": "二、柜门里的镜子，门一关，就闭眼。"
+        },
+        {
+          "t": "narr",
+          "text": "写到“三”，她停住了。把炭笔转过来，递给{PLAYER_NAME}。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "第三条，不是我写。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "被看的，是你。"
+        },
+        {
+          "t": "input",
+          "id": "FI_EX012_SC04_RULE_001",
+          "kind": "vow",
+          "prompt": "塞雷娜在旧浴场的守则牌上写好了前两条，把炭笔递给{PLAYER_NAME}：第三条由被看的人写。他可以写“要看先问”、写“看了的人赔”、写“这几条对谁都一样”、写“客人说了算”、说不用第三条、写“只准她看我”，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "serena",
+            "lia",
+            "mia",
+            "bath_keeper"
+          ],
+          "context": [
+            "第一条：镜子，只照站在它前面的人。第二条：柜门里的镜子，门一关，就闭眼。",
+            "莉亚的帐上，塞雷娜那一行写着：违，一次。",
+            "牌子要挂在侧门外，客人进门第一眼就看得见。"
+          ],
+          "principles": [
+            "RULE3：判定优先序：只准她看我（调情） > 不用第三条 > 看了的人赔 > 对谁都一样 > 要看先问 > 客人说了算 > 沉默。",
+            "调情不是规矩：塞雷娜不写，莉亚接一句“下一个”。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "flirt",
+              "label": "只准她看我",
+              "desc": "第三条：只准塞雷娜看我、只给她看。",
+              "keywords": [
+                "只准你看我",
+                "只准塞雷娜看",
+                "只给你看",
+                "你可以看我",
+                "只准她看",
+                "给你看"
+              ],
+              "morality": -1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……这一条，我不写。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "下一个。"
+                },
+                {
+                  "t": "say",
+                  "who": "bath_keeper",
+                  "text": "年轻人。"
+                },
+                {
+                  "t": "narr",
+                  "text": "莉亚拿过炭笔，自己写了。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_RULE3": "FLIRT"
+                }
+              }
+            },
+            {
+              "id": "forgave",
+              "label": "不用第三条",
+              "desc": "两条够了、不用写了、算了吧。",
+              "keywords": [
+                "不用第三条",
+                "两条够了",
+                "不用写了",
+                "算了",
+                "已经够了",
+                "不必了"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "不要这么快。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她没有接回炭笔。莉亚接了，自己写了。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_RULE3": "FORGAVE"
+                }
+              }
+            },
+            {
+              "id": "pay",
+              "label": "看了的人赔",
+              "desc": "第三条：看了的人，要赔。",
+              "keywords": [
+                "看了的人赔",
+                "违者赔",
+                "偷看要赔",
+                "赔偿",
+                "要赔",
+                "谁看谁赔"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}写下了。"
+                },
+                {
+                  "t": "say",
+                  "who": "bath_keeper",
+                  "text": "这条好。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……我已经在赔了。写上去，就是以后也赔。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_RULE3": "PAY"
+                }
+              }
+            },
+            {
+              "id": "all",
+              "label": "对谁都一样",
+              "desc": "第三条：这几条对谁都一样，写的人也一样。",
+              "keywords": [
+                "对谁都一样",
+                "所有人都一样",
+                "包括写的人",
+                "谁都一样",
+                "包括我",
+                "人人都要守"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}写下了。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "写的人……也一样。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她念了两遍。第二遍念得很慢。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_RULE3": "ALL"
+                }
+              }
+            },
+            {
+              "id": "ask",
+              "label": "要看先问",
+              "desc": "第三条：要看，先问；说不，就是不。",
+              "keywords": [
+                "要看先问",
+                "先问",
+                "要先问",
+                "说不就是不",
+                "问过才能看",
+                "没问不准看"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}写下了。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "先问！跟我的一样！"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……被问的人说不。我记住了。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_RULE3": "ASK"
+                }
+              }
+            },
+            {
+              "id": "guests",
+              "label": "客人说了算",
+              "desc": "第三条：客人说了算。",
+              "keywords": [
+                "客人说了算",
+                "听客人的",
+                "客人决定",
+                "让客人定",
+                "客人优先"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}写下了。"
+                },
+                {
+                  "t": "say",
+                  "who": "bath_keeper",
+                  "text": "客人说了算……那我呢？"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "你是第一个客人。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_RULE3": "GUESTS"
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}拿着炭笔，没有动。"
+                },
+                {
+                  "t": "narr",
+                  "text": "莉亚伸手拿了过去。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_RULE3": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "if",
+          "when": {
+            "any": [
+              {
+                "flag": "EX_RULE3",
+                "eq": "FLIRT"
+              },
+              {
+                "flag": "EX_RULE3",
+                "eq": "FORGAVE"
+              },
+              {
+                "flag": "EX_RULE3",
+                "eq": "QUIET"
+              }
+            ]
+          },
+          "then": [
+            {
+              "t": "narr",
+              "style": "caption",
+              "text": "三、违者，记帐。"
+            },
+            {
+              "t": "say",
+              "who": "lia",
+              "text": "我的帐。"
+            }
+          ]
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "EX_RULE3",
+            "eq": "PAY"
+          },
+          "then": [
+            {
+              "t": "narr",
+              "style": "caption",
+              "text": "三、看了的人，赔。"
+            }
+          ]
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "EX_RULE3",
+            "eq": "ALL"
+          },
+          "then": [
+            {
+              "t": "narr",
+              "style": "caption",
+              "text": "三、这几条，对谁都一样。写的人，也一样。"
+            }
+          ]
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "EX_RULE3",
+            "eq": "ASK"
+          },
+          "then": [
+            {
+              "t": "narr",
+              "style": "caption",
+              "text": "三、要看，先问。说不，就是不。"
+            }
+          ]
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "EX_RULE3",
+            "eq": "GUESTS"
+          },
+          "then": [
+            {
+              "t": "narr",
+              "style": "caption",
+              "text": "三、客人说了算。"
+            }
+          ]
+        },
+        {
+          "t": "narr",
+          "text": "老妇人把木板举起来，眯着眼看了一会儿。"
+        },
+        {
+          "t": "say",
+          "who": "bath_keeper",
+          "text": "字丑。……挂吧。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "LEAH_RELATIONSHIP_STAGE",
+            "eq": "COMPANION"
+          },
+          "then": [
+            {
+              "t": "say",
+              "who": "lia",
+              "text": "……第三条，写得对。"
+            },
+            {
+              "t": "narr",
+              "text": "她说完，又低头去刷池子。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ex012-05",
+      "title": "自由输入：隔墙那一边",
+      "bg": "fog-harbor-old-bathhouse",
+      "music": "steam_soft_pluck",
+      "ambience": [
+        "steam",
+        "water"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "下午。米娅把一只水桶裹上毛巾，用炭笔在上面画了一张脸。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "测试员一号！"
+        },
+        {
+          "t": "narr",
+          "text": "她把它摆在一格柜门的小镜子前面。"
+        },
+        {
+          "t": "narr",
+          "text": "塞雷娜走出侧门，站到外面巷子里第一面旧镜子前。老妇人跟着她，盯着她的手。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "我看着。"
+        },
+        {
+          "t": "narr",
+          "text": "塞雷娜对着那面旧镜子，看了很久。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "……只有蒸汽。"
+        },
+        {
+          "t": "say",
+          "who": "bath_keeper",
+          "text": "你真看不见？"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "看不见。我画的，我最清楚。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "第一次，看不见让我高兴。"
+        },
+        {
+          "t": "narr",
+          "text": "老妇人回到烧水间，蹲下，把灶点着了。好几天来的第一把火。"
+        },
+        {
+          "t": "say",
+          "who": "bath_keeper",
+          "text": "烧都烧了。洗吧，不收钱。"
+        },
+        {
+          "t": "say",
+          "who": "bath_keeper",
+          "text": "男汤那边，女汤这边。中间一道墙。"
+        },
+        {
+          "t": "narr",
+          "text": "男汤只有{PLAYER_NAME}一个人。水很热。"
+        },
+        {
+          "t": "narr",
+          "text": "中间那道木墙，没有顶到天花板。蒸汽从上面翻过来，带着那一边的声音。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "好热！……莉亚，你的盾为什么也带进来了？",
+          "note": "隔墙那边",
+          "text15": "好热！……塞雷娜，你的头发泡在水里，像墨水一样散开了！"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "装备，不离手。",
+          "note": "隔墙那边"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "洗澡的流程：第一，先冲；第二——",
+          "note": "隔墙那边",
+          "text15": "谢谢。……这句是夸奖吧？第二，不准往我这边泼水。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "不用整理啦！",
+          "note": "隔墙那边"
+        },
+        {
+          "t": "if",
+          "when": {
+            "mode": "15+"
+          },
+          "then": [
+            {
+              "t": "narr",
+              "text": "隔墙上方，蒸汽把那边的灯光晕成一团。木板上映着几个模糊的影子，一晃，就被蒸汽抹掉了。"
+            }
+          ]
+        },
+        {
+          "t": "narr",
+          "text": "木墙上，齐眼高的地方，有一个掉了的木节，留下一个圆洞。"
+        },
+        {
+          "t": "narr",
+          "text": "男汤这边的墙上，也有一面大镜子。早上刚擦干净。"
+        },
+        {
+          "t": "input",
+          "id": "FI_EX012_SC05_WALL_001",
+          "kind": "action",
+          "prompt": "{PLAYER_NAME}一个人在男汤。中间的木墙没有顶到天花板，那边是莉亚、米娅、塞雷娜的声音；木墙齐眼高的地方有一个木节掉了的洞，这边墙上有一面刚擦干净的镜子。守则牌刚写好。他可以隔着墙说话、背对着墙泡着、出去帮老妇人烧火、喊她们过来、从洞里看、用镜子照过去，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "lia",
+            "mia",
+            "serena",
+            "bath_keeper"
+          ],
+          "context": [
+            "莉亚把盾带进了女汤，靠在木墙边。",
+            "镜厅里所有镜子都下了“闭眼”：只照站在它前面的人。",
+            "守则刚写好，挂在侧门外。",
+            "老妇人在烧水间，听得见这边。"
+          ],
+          "principles": [
+            "WALL：判定优先序：从洞里看 > 用镜子照过去 > 喊她们过来 > 隔着墙说话 > 出去帮烧火 > 背对着墙 > 沉默。",
+            "偷看是缺点，有后果：守则上第一个“违”记他，明天的池子归他刷；不写成奖励，不描写那一边任何人的样子。",
+            "镜子已经闭眼：照过去，只照出他自己和蒸汽。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "neg_guard",
+              "label": "否定式表态（按背对处理）",
+              "desc": "只说自己“不会偷看／不看”，本身不是那个动作；按背对着墙处理。",
+              "keywords": [
+                "我不偷看",
+                "不偷看",
+                "不会偷看",
+                "不看",
+                "绝不偷看",
+                "不会看",
+                "没偷看"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}背对着木墙，把肩膀沉进水里。"
+                },
+                {
+                  "t": "narr",
+                  "text": "那一边的说话声，变成了水声。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_WALL": "BACK"
+                }
+              }
+            },
+            {
+              "id": "peek",
+              "label": "从洞里看",
+              "desc": "凑到木节的洞前面往那边看、爬上墙看。偷看：有后果。",
+              "keywords": [
+                "从洞里看",
+                "偷看",
+                "凑过去看",
+                "木节的洞",
+                "往那边看",
+                "爬上去看",
+                "踩上去",
+                "瞄一眼",
+                "!不偷看",
+                "!不会偷看",
+                "!没偷看",
+                "!不看"
+              ],
+              "morality": -1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "洞的那一边，是一面塔盾的背面。"
+                },
+                {
+                  "t": "narr",
+                  "text": "盾很稳，一动也不动。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……守则。",
+                  "note": "隔墙那边"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "挂上去，还不到一个时辰。",
+                  "note": "隔墙那边"
+                },
+                {
+                  "t": "say",
+                  "who": "bath_keeper",
+                  "text": "明天的池子，你刷！",
+                  "note": "烧水间"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_WALL": "PEEKED"
+                },
+                "flags": {
+                  "EX_PEEKED": true
+                }
+              }
+            },
+            {
+              "id": "mirror",
+              "label": "用镜子照过去",
+              "desc": "拿镜子、对着镜子调角度，想照到那一边。偷看：有后果。",
+              "keywords": [
+                "用镜子照",
+                "镜子照过去",
+                "对着镜子看",
+                "调镜子角度",
+                "镜子反射",
+                "!不照"
+              ],
+              "morality": -1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "镜子里，只有{PLAYER_NAME}自己。还有蒸汽。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "镜子，闭眼了。我做的。",
+                  "note": "隔墙那边"
+                },
+                {
+                  "t": "say",
+                  "who": "bath_keeper",
+                  "text": "明天的池子，你刷！",
+                  "note": "烧水间"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_WALL": "MIRROR"
+                },
+                "flags": {
+                  "EX_PEEKED": true
+                }
+              }
+            },
+            {
+              "id": "called",
+              "label": "喊她们过来",
+              "desc": "喊她们要不要过来、要不要一起泡。",
+              "keywords": [
+                "要不要过来",
+                "一起泡",
+                "过来这边",
+                "一起洗",
+                "要不要一起",
+                "来这边"
+              ],
+              "morality": -1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……盾，在这边。",
+                  "note": "隔墙那边"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "不、不要！……不要啦！",
+                  "note": "隔墙那边"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "这一条，守则里没有。……我现在加。",
+                  "note": "隔墙那边"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_WALL": "CALLED"
+                }
+              }
+            },
+            {
+              "id": "talked",
+              "label": "隔着墙说话",
+              "desc": "隔着墙跟她们聊天、问水热不热。",
+              "keywords": [
+                "隔着墙说话",
+                "水热吗",
+                "聊天",
+                "隔墙聊",
+                "问她们",
+                "你们那边怎么样",
+                "说说话"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "热！你那边呢？",
+                  "note": "隔墙那边"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……别大声。",
+                  "note": "隔墙那边"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "他问的是水。我答：水，是今天唯一不用赔的东西。",
+                  "note": "隔墙那边"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_WALL": "TALKED"
+                }
+              }
+            },
+            {
+              "id": "helped",
+              "label": "出去帮老妇人烧火",
+              "desc": "起来，出去烧水间帮老妇人添柴。",
+              "keywords": [
+                "帮婆婆烧火",
+                "去烧水间",
+                "帮忙添柴",
+                "出去帮忙",
+                "去帮婆婆",
+                "添柴",
+                "先出去"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}擦干，去了烧水间。老妇人把一捆柴推给他。"
+                },
+                {
+                  "t": "say",
+                  "who": "bath_keeper",
+                  "text": "我男人背镜子回来那年，也是这样，一身汗，先来添柴。"
+                },
+                {
+                  "t": "say",
+                  "who": "bath_keeper",
+                  "text": "……镜子修好了。他会高兴的。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_WALL": "HELPED"
+                }
+              }
+            },
+            {
+              "id": "back",
+              "label": "背对着墙泡着",
+              "desc": "背对着木墙，闭上眼睛泡着。",
+              "keywords": [
+                "背对着墙",
+                "背过身",
+                "闭眼泡着",
+                "闭上眼睛",
+                "转过去",
+                "面朝这边"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}背对着木墙，把肩膀沉进水里。"
+                },
+                {
+                  "t": "narr",
+                  "text": "那一边的说话声，变成了水声。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_WALL": "BACK"
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}泡在水里，听着墙那边的水声。"
+                },
+                {
+                  "t": "narr",
+                  "text": "灶里的柴，噼啪响了一下。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_WALL": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "narr",
+          "text": "水凉下来以前，大家都出来了。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "mode": "15+"
+          },
+          "then": [
+            {
+              "t": "narr",
+              "text": "米娅的头发还滴着水，用浴巾胡乱擦着。莉亚的耳朵红了一格，说是水太热。"
+            }
+          ]
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "测试员一号，也洗干净了！"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "它的脸，掉了一半。"
+        }
+      ]
+    },
+    {
+      "id": "ex012-06",
+      "title": "自由输入：算清了吗",
+      "bg": "fog-harbor-drain-dusk",
+      "music": "dusk_warm_pluck",
+      "ambience": [
+        "drip",
+        "distant_voices"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "黄昏。守则牌挂在侧门外。门上那张“暂停”，撕掉了。"
+        },
+        {
+          "t": "narr",
+          "text": "巷口来了两个人，胳膊下夹着毛巾。"
+        },
+        {
+          "t": "say",
+          "who": "bath_keeper",
+          "text": "……来了。"
+        },
+        {
+          "t": "narr",
+          "text": "她没有站起来迎，只是把灶门又拉开了一点。"
+        },
+        {
+          "t": "narr",
+          "text": "塞雷娜站在守则牌前面，看了一会儿。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "整理一下。赔偿：第一，材料，我出了。第二，结界，我画了。第三条——你写的。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "any": [
+              {
+                "flag": "EX_RULE3",
+                "eq": "FLIRT"
+              },
+              {
+                "flag": "EX_RULE3",
+                "eq": "FORGAVE"
+              },
+              {
+                "flag": "EX_RULE3",
+                "eq": "QUIET"
+              }
+            ]
+          },
+          "then": [
+            {
+              "t": "say",
+              "who": "serena",
+              "text": "……好吧，是莉亚写的。"
+            }
+          ]
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "这一笔，算清了吗？"
+        },
+        {
+          "t": "input",
+          "id": "FI_EX012_SC06_SETTLED_001",
+          "kind": "dialogue",
+          "prompt": "黄昏，守则牌挂上了，浴场来了两个客人。塞雷娜数完她的赔偿：材料、结界、第三条，问{PLAYER_NAME}：这一笔算清了吗？他可以说清了、说还没、说本来就不用赔他、让老妇人说、开玩笑说用别的还，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "serena",
+            "lia",
+            "mia",
+            "bath_keeper"
+          ],
+          "context": [
+            "莉亚的帐上，塞雷娜那一行：违，一次（旧浴场，柜门镜）。",
+            "老妇人的客人，今天回来了两个。",
+            "塞雷娜在正12说过：原谅得太快，她不收。"
+          ],
+          "principles": [
+            "SETTLED：判定优先序：用别的还（调情） > 本来就不用赔 > 清了 > 还没 > 让老妇人说 > 沉默。",
+            "帐上的“违”不划掉，只在下面加一行“还”；任何路线都一样。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "flirt",
+              "label": "用别的还",
+              "desc": "开玩笑：用别的还、陪我洗一次就清了。",
+              "keywords": [
+                "用别的还",
+                "陪我洗",
+                "陪我泡一次",
+                "陪我一次",
+                "换个方式还",
+                "拿你来还"
+              ],
+              "morality": -1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……守则。第三条。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "你看，连莉亚都背下来了。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "那我也背！"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_SETTLED": "FLIRT"
+                }
+              }
+            },
+            {
+              "id": "never",
+              "label": "本来就不用赔",
+              "desc": "本来就不用赔我、我不在意。",
+              "keywords": [
+                "不用赔我",
+                "我不在意",
+                "本来就不用",
+                "我没放在心上",
+                "没关系",
+                "不介意"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "你不在意。帐，还是在。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……在。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_SETTLED": "NEVER"
+                }
+              }
+            },
+            {
+              "id": "cleared",
+              "label": "清了",
+              "desc": "算清了。",
+              "keywords": [
+                "清了",
+                "算清了",
+                "两清",
+                "还清了",
+                "扯平了",
+                "不欠了"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "你说清了。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……那一行，我还是留着。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "帐上的，不划。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_SETTLED": "CLEARED"
+                }
+              }
+            },
+            {
+              "id": "not_yet",
+              "label": "还没",
+              "desc": "还没清、还差一点。",
+              "keywords": [
+                "还没",
+                "还差一点",
+                "没清",
+                "还早",
+                "还欠着",
+                "慢慢还"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "好。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "我喜欢欠着一点。……这句话，听起来更糟。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_SETTLED": "NOT_YET"
+                }
+              }
+            },
+            {
+              "id": "keeper",
+              "label": "让老妇人说",
+              "desc": "问婆婆：清没清，她说了算。",
+              "keywords": [
+                "问婆婆",
+                "婆婆说",
+                "让婆婆决定",
+                "您说清了没",
+                "听婆婆的",
+                "问老板娘"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "老妇人从灶门后面探出头。"
+                },
+                {
+                  "t": "say",
+                  "who": "bath_keeper",
+                  "text": "客人回来了，就清了。"
+                },
+                {
+                  "t": "say",
+                  "who": "bath_keeper",
+                  "text": "……明天来了几个，再说。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_SETTLED": "KEEPER"
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "不答。……那我自己记：还了一点。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_SETTLED": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚翻开报告夹，在塞雷娜那一行底下，加了一行。"
+        },
+        {
+          "t": "narr",
+          "style": "caption",
+          "text": "还：旧浴场——镜子，闭眼；守则，一块。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "EX_PEEKED"
+          },
+          "then": [
+            {
+              "t": "narr",
+              "style": "caption",
+              "text": "违：一次（男汤，{PLAYER_NAME}）。明天，刷池子。"
+            },
+            {
+              "t": "say",
+              "who": "mia",
+              "text": "……你也上帐了。"
+            }
+          ]
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "SERENA_RELATIONSHIP_STAGE",
+            "eq": "COMPANION"
+          },
+          "then": [
+            {
+              "t": "say",
+              "who": "serena",
+              "text": "帐上有我，也有你。……这一页，我想多留一会儿。"
+            }
+          ]
+        },
+        {
+          "t": "say",
+          "who": "bath_keeper",
+          "text": "紫头发的。"
+        },
+        {
+          "t": "narr",
+          "text": "塞雷娜回过头。"
+        },
+        {
+          "t": "say",
+          "who": "bath_keeper",
+          "text": "明天，也来洗吧。……走门。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "走门。"
+        },
+        {
+          "t": "narr",
+          "text": "侧门里，第一个客人在大镜子前梳头。"
+        },
+        {
+          "t": "narr",
+          "text": "镜子里，只有他自己。"
+        }
+      ]
+    }
+  ],
+  "end": {
+    "save": "SAVE_EX012_END",
+    "next": null,
+    "set": {
+      "flags": {
+        "EX012_BATHHOUSE_REOPENED": true,
+        "EX012_MIRRORS_CLOSED_EYES": true,
+        "EX012_RULES_BOARD_HUNG": true
+      }
+    },
+    "memory": {
+      "key": "EX012_MEMORY",
+      "text": "旧浴场修镜子那天：塞雷娜出了材料、画了“闭眼”的结界；守则前两条是她写的，第三条留给被看的人。"
+    },
+    "summary": [
+      {
+        "text": "旧浴场的镜子学会了闭眼：只照站在它前面的人。"
+      },
+      {
+        "when": {
+          "flag": "EX_KEEPER",
+          "eq": "VICTIM"
+        },
+        "text": "{PLAYER_NAME}对老妇人说，被看的是他。老妇人说：那他说了算一半。"
+      },
+      {
+        "when": {
+          "flag": "EX_MIRRORS",
+          "eq": "SMASH"
+        },
+        "text": "{PLAYER_NAME}说全砸了。老妇人说，那是她男人从镜巷背回来的。"
+      },
+      {
+        "when": {
+          "flag": "EX_RULE3",
+          "eq": "ALL"
+        },
+        "text": "第三条是{PLAYER_NAME}写的：这几条对谁都一样，写的人也一样。"
+      },
+      {
+        "when": {
+          "flag": "EX_RULE3",
+          "eq": "ASK"
+        },
+        "text": "第三条是{PLAYER_NAME}写的：要看，先问；说不，就是不。"
+      },
+      {
+        "when": {
+          "flag": "EX_RULE3",
+          "eq": "PAY"
+        },
+        "text": "第三条是{PLAYER_NAME}写的：看了的人，赔。"
+      },
+      {
+        "when": {
+          "flag": "EX_RULE3",
+          "eq": "GUESTS"
+        },
+        "text": "第三条是{PLAYER_NAME}写的：客人说了算。"
+      },
+      {
+        "when": {
+          "flag": "EX_WALL",
+          "eq": "HELPED"
+        },
+        "text": "{PLAYER_NAME}去烧水间添柴，听老妇人讲她男人背镜子回来那年。"
+      },
+      {
+        "when": {
+          "flag": "EX_PEEKED"
+        },
+        "text": "守则挂上去不到一个时辰，第一个“违”记在了{PLAYER_NAME}名下：明天刷池子。"
+      },
+      {
+        "when": {
+          "flag": "EX_SETTLED",
+          "eq": "KEEPER"
+        },
+        "text": "算没算清，老妇人说：客人回来了，就清了。"
+      },
+      {
+        "text": "黄昏，侧门外挂上了守则牌，浴场来了两个客人。"
+      }
+    ]
+  }
+}

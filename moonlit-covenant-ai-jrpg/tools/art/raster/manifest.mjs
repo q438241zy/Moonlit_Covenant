@@ -21,7 +21,7 @@ const readJson = (rel) => JSON.parse(fs.readFileSync(path.join(root, rel), 'utf8
 // 游戏内尺寸（finalize.mjs 按此裁切压缩，与对应矢量资产同尺寸，CSS 无需改动比例）与分组说明
 export const SIZE = {
   portraits: '832x1216', costumes: '832x1216', 'costumes-soft': '832x1216', 'costumes-bust': '600x800', 'costumes-bust-soft': '600x800',
-  cg: '1600x900', scenes: '1600x900', cards: '512x512', boss: '1000x1000', 'story-bg': '1600x900', 'story-npc': '600x800', 'story-insert': '800x600',
+  cg: '1600x900', scenes: '1600x900', cards: '512x512', boss: '1000x1000', 'story-bg': '1600x900', 'story-npc': '600x800', 'story-insert': '800x600', ui: '1600x900',
 };
 // 要透明底的组（finalize 输出 PNG，public/paint.js 换图时用 .png）
 export const ALPHA_GROUPS = new Set(['story-npc', 'costumes-bust', 'costumes-bust-soft']);
@@ -38,6 +38,7 @@ export const GROUPS = {
   'story-bg': { title: '剧情场景背景（主线、番外、外传正篇）', note: '清单来自 public/story/locations.json；外传正篇复用的序章场景图在 scenes / cg 组。' },
   'story-npc': { title: '剧情胸像', note: '清单来自 public/story/speakers.json（同一文件只列一次）。透明底 PNG。' },
   'story-insert': { title: '道具特写叠图', note: '台词或叙述出现某件道具时浮在场景上的卡片；不画任何文字。' },
+  ui: { title: '标题背景与世界地图', note: '构图要和现在的矢量版一致（参考图 tools/art/raster/ref/layout-*.png）：标题页右侧要留给角色卡，地图上的铁路站点位置不能动。' },
 };
 
 export const STYLE = [
@@ -326,6 +327,20 @@ for (const f of fs.existsSync(insertDir) ? fs.readdirSync(insertDir).filter((n) 
     usage: usageText(usageIndex.bg.get(`insert:${name}`)),
   });
 }
+
+// 9) 标题背景与世界地图：附上现在矢量版的截图当构图参考（tools/art/raster/ref/layout-*.png），布局不能变
+jobs.push({
+  id: 'ui-title-bg', group: 'ui', out: 'tools/art/raster/out/ui/title-bg.png', size: '1920x1080', target: '1600x900', seed: 9900,
+  prompt: `${STYLE}. Wide 16:9 title-screen background painting, ${STORY_WORLD}, no characters: a dusk sky under a lunar eclipse; on the left hillside a small medieval wheat-farming village with thatched roofs and a bell tower; on the right an armoured silver train crossing the open plain on silver rails; keep the exact layout of the second reference image (village left, train right, eclipse upper middle, calm open sky on the right half for the title UI and character cards).`,
+  refs: [HEROINE_STYLE, 'tools/art/raster/ref/layout-title-bg.png'], after: ['portrait-lia'],
+  usage: '主菜单标题页的全屏背景',
+});
+jobs.push({
+  id: 'ui-world-map', group: 'ui', out: 'tools/art/raster/out/ui/world-map.png', size: '1920x1080', target: '1000x560', seed: 9901,
+  prompt: `${STYLE}. Illustrated fantasy world map seen from above, painted like an old parchment-and-ink JRPG map with soft watercolor terrain: mountains, forests, a lake, a river, coastlines and a silver railway line winding across the land; small settlements drawn as tiny buildings; absolutely no text, no labels, no compass letters; keep the exact positions of the railway stations, towns, mountains, lake and coast from the second reference image so the in-game town markers still line up.`,
+  refs: [HEROINE_STYLE, 'tools/art/raster/ref/layout-world-map.png'], after: ['portrait-lia'],
+  usage: '外传路线图（城镇标记叠在上面，站点位置必须对齐）',
+});
 
 export const JOBS = jobs;
 

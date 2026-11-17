@@ -268,3 +268,5 @@ evalCond(run, cond)  interpolate(text, run)  publicSummary(run)
 - **变量**：外传自成一条时间线，跨章只用 `GD_BOND_LIA` / `GD_BOND_MIA` / `GD_BOND_SERENA`（原稿选项里的 `bond_*`、`trust_mia`），各章内部的旗标用 `GD_CHNN_*`；主线 AI 不读外传的任何东西。
 - **判定**：`loadStoryChapter` 读 `public/gaiden/`；提示词第一句写明「IF 外传《银轨号》（与正史无关的平行故事，人物身份照外传设定）」，口吻照 `docs/CHARACTER-DESIGN.md`。
 - **校验**：`npm run story:check` 在主线之后另起一条链，逐章接续试玩外传；`node tools/story/check.mjs g001` 单章校验。外传禁用改掉的旧名（见 `docs/CHARACTER-DESIGN.md` 的改名表）与主线剧透词（`test/story-gaiden.test.mjs`）。
+
+**成长支线（ex011–ex021）**：`设定集/08` 的 11 条「成长支线候选」也用番外系统承载——目录里 `kind: "sidequest"`、标题「支线N｜…」、`costumeTypes` 为空、没有服装赠品；「番外・休息日」分页里排在十篇番外后面，另起「成长支线」小标题。规则与番外完全相同（只写 `EX_*` 变量、只读解锁章存档、首读 80 钻与技能材料）；每条的时间窗都排在同题的主线章之后（例如「今天不开门」在正式25「我想休息一天」之后），设定集里冻结的旧奖励一律不做。
