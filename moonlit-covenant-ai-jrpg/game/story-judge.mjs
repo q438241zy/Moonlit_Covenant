@@ -6,7 +6,7 @@ import { readFileSync, statSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { AI_CONFIG, contentRatingRules, normalizeContentMode } from './ai.mjs';
-import { demoJudge, findNode, sanitizeLines, cleanName, CHAPTER_ID, EXTRA_ID } from '../public/story/engine.js';
+import { demoJudge, findNode, sanitizeLines, cleanName, CHAPTER_ID, EXTRA_ID, GAIDEN_ID } from '../public/story/engine.js';
 import { mainlineSkillLines } from './skills.mjs';
 import { COSTUME_TYPE_META } from './gacha.mjs';
 
@@ -38,10 +38,13 @@ export function readJsonCached(file) {
 // 主线章节在 chapters/，番外（ex001–ex010，剧本规格§七）在 extras/；两者节点格式相同
 export function loadStoryChapter(chapterId) {
   const id = String(chapterId);
-  const dir = CHAPTER_ID.test(id) ? 'chapters' : EXTRA_ID.test(id) ? 'extras' : null;
-  if (!dir) return null;
+  // 外传正篇（g001–g015）在 public/gaiden/：外传称号只在外传里成立，不进 public/story/ 这个正典目录
+  const file = CHAPTER_ID.test(id) ? join(storyDir, 'chapters', `${id}.json`)
+    : EXTRA_ID.test(id) ? join(storyDir, 'extras', `${id}.json`)
+      : GAIDEN_ID.test(id) ? join(storyDir, '..', 'gaiden', `${id}.json`) : null;
+  if (!file) return null;
   try {
-    return readJsonCached(join(storyDir, dir, `${id}.json`));
+    return readJsonCached(file);
   } catch {
     return null;
   }
@@ -165,7 +168,7 @@ export function buildPrompt(chapter, node, playerName, recent = [], mode, { wear
   const facts = [...(node.context || []), ...(skillFacts.length ? ['在场者的能力（只作描述依据，不改变本节点各意图的效果）：', ...skillFacts] : []),
     ...wearingFacts(chapter, wearing, names), ...extraMemoryFacts(chapter, extraMemories)];
   return [
-    `你是《月蚀契约》${EXTRA_ID.test(String(chapter.id)) ? '番外（正典日常的休息日，零后果）' : '主线剧情'}的判定器。主角名叫${playerName}，玩家用自由文字描述${playerName}的台词或行动。`,
+    `你是《月蚀契约》${EXTRA_ID.test(String(chapter.id)) ? '番外（正典日常的休息日，零后果）' : GAIDEN_ID.test(String(chapter.id)) ? 'IF 外传《银轨号》（与正史无关的平行故事，人物身份照外传设定）' : '主线剧情'}的判定器。主角名叫${playerName}，玩家用自由文字描述${playerName}的台词或行动。`,
     `章节：${chapter.title}。当前节点：${node.id}（${node.kind}）。界面提示：${withName(node.prompt, playerName)}`,
     `场景事实：\n${facts.map((s) => `- ${withName(s, playerName)}`).join('\n') || '（无）'}`,
     `演出原则：\n${(node.principles || []).map((s) => `- ${withName(s, playerName)}`).join('\n') || '（无）'}`,

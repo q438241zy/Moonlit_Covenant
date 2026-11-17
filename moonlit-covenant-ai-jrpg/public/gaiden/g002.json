@@ -1,0 +1,1301 @@
+{
+  "id": "g002",
+  "number": 2,
+  "scriptId": "GD_02_THE_CRIMSON_OATH",
+  "title": "第二章｜赤色誓约",
+  "shortTitle": "赤色誓约",
+  "estimatedMinutes": 7,
+  "source": "scenario/chapter-02.json",
+  "canon": {
+    "vars": {
+      "GD_BOND_LIA": 1,
+      "GD_BOND_MIA": 1,
+      "GD_BOND_SERENA": 1,
+      "GD_CH01_HAND": "QUIET"
+    }
+  },
+  "speakers": {
+    "hilda": {
+      "name": "希尔达",
+      "color": "#d9876a",
+      "art": null
+    },
+    "karl": {
+      "name": "卡尔",
+      "color": "#a8927a",
+      "art": null
+    },
+    "petra": {
+      "name": "佩特拉",
+      "color": "#c9a86a",
+      "art": null
+    }
+  },
+  "shots": [
+    {
+      "id": "g002-01",
+      "title": "自由输入：第七道刻痕",
+      "bg": "silver-rail-dining-car",
+      "music": "dining_night",
+      "ambience": [
+        "rails",
+        "cups"
+      ],
+      "beats": [
+        {
+          "t": "title",
+          "lines": [],
+          "title": "第二章｜赤色誓约",
+          "subtitle": "七道刻痕"
+        },
+        {
+          "t": "narr",
+          "text": "食梦兽退去之后，列车安静了下来。它还在开，没有人知道开往哪里。"
+        },
+        {
+          "t": "narr",
+          "text": "{PLAYER_NAME}来到餐车找点吃的。长桌上摆着冷掉的茶点，方糖滚了一桌。"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚已经先到了。她一个人坐在最里面的角落，面前一杯黑咖啡，一口没动。"
+        },
+        {
+          "t": "narr",
+          "text": "她的拇指慢慢划过剑柄。那柄细身长剑的剑镡，是一个断成两半又重新铆起来的圆环；剑柄上刻着几道痕，深浅不一。"
+        },
+        {
+          "t": "narr",
+          "text": "{PLAYER_NAME}数了数。七道。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "……第七道。",
+          "note": "低声"
+        },
+        {
+          "t": "narr",
+          "text": "拇指停在最后那一道上，很久没有动。然后她抬起头。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "你站在那里多久了？"
+        },
+        {
+          "t": "input",
+          "id": "FI_GD02_SC01_NOTICED_001",
+          "kind": "dialogue",
+          "prompt": "莉亚一个人在餐车角落摩挲剑柄上的七道刻痕，发现{PLAYER_NAME}站在门口。他可以道歉并问那些刻痕、假装没看见坐到她对面、说自己刚到、转身离开，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "lia"
+          ],
+          "context": [
+            "餐车里只有他们两个人；长桌上是冷掉的茶点。",
+            "莉亚面前那杯黑咖啡一口没动；剑柄上有七道刻痕，深浅不一。",
+            "不久前，{PLAYER_NAME}被大家推成了队长；莉亚说过“队长我不当”。"
+          ],
+          "principles": [
+            "NOTICED：判定优先序：说谎（刚到、什么都没看见） > 离开 > 道歉并问刻痕 > 假装没看见坐下 > 沉默。",
+            "莉亚讨厌被同情；直接、坦白的人，她反而肯说。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "lie",
+              "label": "说自己刚到",
+              "desc": "说自己刚到、什么都没看见、没听到。",
+              "keywords": [
+                "刚到",
+                "我刚来",
+                "刚来",
+                "刚进来",
+                "什么都没看见",
+                "没看见",
+                "没听到",
+                "什么也没听"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "说谎。你在门口站了快一分钟。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她把咖啡杯往旁边推了推。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……算了。坐。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "GD_CH02_NOTICED": "LIE"
+                }
+              }
+            },
+            {
+              "id": "leave",
+              "label": "转身离开",
+              "desc": "说打扰了、转身离开。",
+              "keywords": [
+                "打扰了",
+                "转身离开",
+                "离开",
+                "先走了",
+                "我走了",
+                "不打扰",
+                "告辞",
+                "退出去"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}刚转过身。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "站住。……来都来了。坐。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "GD_CH02_NOTICED": "LEAVE"
+                }
+              }
+            },
+            {
+              "id": "ask",
+              "label": "道歉并问刻痕",
+              "desc": "为偷看道歉，问那些刻痕是不是战友。",
+              "keywords": [
+                "刻痕",
+                "战友",
+                "抱歉",
+                "对不起",
+                "不是故意",
+                "偷听",
+                "偷看",
+                "是谁",
+                "七道",
+                "纪念"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……你观察力不错。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她没有否认，用下巴指了指对面的椅子。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "GD_CH02_NOTICED": "ASK"
+                },
+                "add": {
+                  "GD_BOND_LIA": 1
+                }
+              }
+            },
+            {
+              "id": "sit",
+              "label": "假装没看见，坐到对面",
+              "desc": "装作没注意，自然地坐到她对面，聊咖啡。",
+              "keywords": [
+                "坐到对面",
+                "坐下",
+                "坐这儿",
+                "介意我坐",
+                "这咖啡",
+                "咖啡",
+                "对面",
+                "!不坐",
+                "!别坐"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}像什么都没看见，在她对面坐下，问这咖啡怎么样。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……装得挺像。凉的。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "GD_CH02_NOTICED": "SIT"
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}没有回答。莉亚看了他一会儿，用下巴指了指对面的椅子。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "GD_CH02_NOTICED": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "GD_CH01_HAND",
+            "eq": "LIA"
+          },
+          "then": [
+            {
+              "t": "say",
+              "who": "lia",
+              "text": "接下命令的时候，你答应得倒是轻巧。"
+            }
+          ]
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "GD_CH01_HAND",
+            "eq": "REFUSE"
+          },
+          "then": [
+            {
+              "t": "say",
+              "who": "lia",
+              "text": "连手都不肯握的人，现在倒肯过来。"
+            }
+          ]
+        },
+        {
+          "t": "narr",
+          "text": "她盯着杯子里那一圈黑，沉默了很久。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "赤誓骑士团，北境第七小队。我是队长。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "七个人。——不，曾经是七个人。"
+        }
+      ]
+    },
+    {
+      "id": "g002-02",
+      "title": "自由输入：北境的雪",
+      "bg": "north-snowfield-memory",
+      "music": "memory_snow",
+      "ambience": [
+        "blizzard",
+        "campfire"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "莉亚的声音变得很远，像从很深的地方一点一点浮上来。"
+        },
+        {
+          "t": "narr",
+          "text": "风雪。一望无际的白。远处一面赤色的旗被风扯得笔直，旗下是一圈帐篷，一堆篝火。"
+        },
+        {
+          "t": "narr",
+          "text": "七个穿赤红铠甲的骑士围着火。铠甲上刻着同一枚誓言纹章，火光照着一张张年轻的脸。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "入团誓言是——“以血为契，以命为盾，吾之剑，永远挡在你身前。”那天，我们七个人在各自的剑柄上，一起刻下了第一道痕。"
+        },
+        {
+          "t": "narr",
+          "text": "火堆边，年轻的莉亚比现在更瘦小，眼睛却一样锐利。她举着缺了口的铁杯，和身边的人碰在一起。"
+        },
+        {
+          "t": "say",
+          "who": "hilda",
+          "text": "队长，你又只喝了一口。",
+          "note": "回忆"
+        },
+        {
+          "t": "say",
+          "who": "karl",
+          "text": "让她去。队长一喝多，就要给我们排夜哨。",
+          "note": "回忆"
+        },
+        {
+          "t": "say",
+          "who": "petra",
+          "text": "那我替队长喝！我站夜哨从来不困——",
+          "note": "回忆"
+        },
+        {
+          "t": "narr",
+          "text": "笑声被风吹散了。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "那是第一年。后面的，不好听。……你还要听？"
+        },
+        {
+          "t": "input",
+          "id": "FI_GD02_SC02_LISTEN_001",
+          "kind": "dialogue",
+          "prompt": "莉亚讲到北境第七小队的第一年就停了下来，问{PLAYER_NAME}后面的还要不要听。他可以说他在听、告诉她不想说可以不说、追问后来发生了什么，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "lia"
+          ],
+          "context": [
+            "回忆里是北境的雪原、赤色的旗与营地。",
+            "七个人里有副队长希尔达、枪兵卡尔、弓手佩特拉。",
+            "莉亚极度害怕被安慰：替她“着想”，在她听来像同情。"
+          ],
+          "principles": [
+            "LISTEN：判定优先序：替她决定（不想说就别说） > 追问 > 我在听 > 沉默。",
+            "不管怎么回答，她都会讲完；回应只改变她开口前的那一句。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "spare",
+              "label": "不想说可以不说",
+              "desc": "告诉她不用勉强、不想说就别说。",
+              "keywords": [
+                "不想说",
+                "不用说",
+                "可以不说",
+                "别勉强",
+                "不用勉强",
+                "不勉强",
+                "不说也行",
+                "没关系"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "少替我决定。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她的语气冲了一下，又压了回去。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……说了要讲，就讲完。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "GD_CH02_LISTEN": "SPARE"
+                }
+              }
+            },
+            {
+              "id": "ask_more",
+              "label": "追问后来",
+              "desc": "问后来怎么了、发生了什么。",
+              "keywords": [
+                "后来呢",
+                "后来",
+                "发生了什么",
+                "怎么了",
+                "然后呢",
+                "出了什么事",
+                "为什么"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "后来？"
+                },
+                {
+                  "t": "narr",
+                  "text": "她笑了一下。笑得很难看。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "GD_CH02_LISTEN": "ASK"
+                }
+              }
+            },
+            {
+              "id": "listen",
+              "label": "我在听",
+              "desc": "说他在听、想听、请她说下去。",
+              "keywords": [
+                "我在听",
+                "在听",
+                "想听",
+                "说下去",
+                "继续",
+                "你说吧",
+                "=要",
+                "=听"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……嗯。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她把杯子转了半圈。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "GD_CH02_LISTEN": "LISTEN"
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}没说话，只是等着。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……行。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "GD_CH02_LISTEN": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "第三年，北境裂隙爆发。上面命令我们守住霜牙关，七十二小时，等增援。我们守了。"
+        },
+        {
+          "t": "narr",
+          "text": "风雪更大了。篝火矮了下去，帐篷一顶一顶被雪埋住。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "第七十二小时，增援没有来。第七十三小时，第二波来了。"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚的声音没有抖。可她握着咖啡杯的手指，指节一根一根地白了。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "副队长希尔达，替我挡了那一下。枪兵卡尔留下来断后，让我们撤。弓手佩特拉……到最后都在射。箭壶空了，就拔匕首。"
+        },
+        {
+          "t": "narr",
+          "text": "雪原上，赤色的旗倒了。",
+          "text15": "雪原上，赤色的旗倒了。旗下的雪，一片一片地红了。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "希尔达最后跟我说的是……活下去。"
+        },
+        {
+          "t": "narr",
+          "text": "说这句话之前，她停了一下。很短的一下。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "剑柄上的第一道，是入团那天七个人一起刻的。后面六道，是我一个人刻的。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "七个人进去，一个人出来。而我——是那个活着出来的人。"
+        },
+        {
+          "t": "narr",
+          "text": "风雪吞掉了最后一点火光。白茫茫的雪原上，只剩一个人站着，手里攥着七柄剑。"
+        }
+      ]
+    },
+    {
+      "id": "g002-03",
+      "title": "自由输入：凉掉的咖啡",
+      "bg": "silver-rail-dining-car",
+      "music": "dining_night",
+      "ambience": [
+        "rails"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "回到餐车。灯还是昏黄的，咖啡彻底凉了。"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚的眼眶有一点红，没有眼泪。她的表情像一块反复锻打过的铁——很硬，裂纹却清清楚楚。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "之后我退了团。不是被开除——是我自己走的。我没资格再戴那个纹章。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "所以别用那种眼神看我。我不需要同情。我只是……不想再让任何人替我死。"
+        },
+        {
+          "t": "input",
+          "id": "FI_GD02_SC03_OATH_001",
+          "kind": "dialogue",
+          "prompt": "莉亚讲完了北境第七小队：七个人进去，只有她活着出来，之后她自己退了团。她说她不需要同情，只是不想再让任何人替她死。{PLAYER_NAME}想对她说什么？",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "lia"
+          ],
+          "context": [
+            "剑柄上七道刻痕：第一道是入团那天七个人一起刻的，后面六道是她一个人刻的。",
+            "莉亚极度害怕被安慰；她尊敬有担当的人，讨厌空话。",
+            "{PLAYER_NAME}手里还拿着她抛来的那柄备用短剑。"
+          ],
+          "principles": [
+            "OATH：判定优先序：同情可怜她 > 逞强（我不会死） > 我挡在你前面 > 活下来不是罪 > 问第八道 > 沉默。",
+            "同情会被她本能地顶回去；逞强会让她想起说过同样话的那些人。",
+            "不管说什么，她最后都会说出“第八道刻痕”那段话（写在节点之后）。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "pity",
+              "label": "同情她",
+              "desc": "说她好可怜、心疼她、一定很难受。",
+              "keywords": [
+                "可怜",
+                "心疼",
+                "好难受",
+                "一定很痛苦",
+                "我很同情",
+                "同情",
+                "抱抱",
+                "辛苦你了",
+                "!不需要同情",
+                "!不同情",
+                "!不是同情"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "我说了，不需要。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她的声音一下子冷了。过了一会儿，她自己先移开了视线。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "GD_CH02_OATH": "PITY"
+                }
+              }
+            },
+            {
+              "id": "boast",
+              "label": "逞强：我不会死",
+              "desc": "说自己不会死、命硬、比他们强。",
+              "keywords": [
+                "我不会死",
+                "不会死",
+                "死不了",
+                "命硬",
+                "比他们强",
+                "我很强"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……他们每个人都这么说过。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "希尔达说过。卡尔说过。佩特拉说得最大声。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "GD_CH02_OATH": "BOAST"
+                },
+                "add": {
+                  "GD_BOND_LIA": -1
+                }
+              }
+            },
+            {
+              "id": "shield",
+              "label": "我挡在你前面",
+              "desc": "说不会让她一个人扛，这次换他挡在她前面。",
+              "keywords": [
+                "挡在你前面",
+                "我挡",
+                "一个人扛",
+                "不让你一个人",
+                "换我",
+                "我来挡",
+                "保护你",
+                "这次我"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "莉亚愣了一下。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……你？挡在我前面？剑都握不稳的人，口气倒不小。"
+                },
+                {
+                  "t": "narr",
+                  "text": "嘴上这么说，她没有笑他。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "GD_CH02_OATH": "SHIELD"
+                },
+                "add": {
+                  "GD_BOND_LIA": 1
+                }
+              }
+            },
+            {
+              "id": "absolve",
+              "label": "活下来不是罪",
+              "desc": "说活下来不是罪，她带着他们的份在战斗。",
+              "keywords": [
+                "活下来不是罪",
+                "不是罪",
+                "不是你的错",
+                "他们的份",
+                "带着他们",
+                "纪念",
+                "没有错",
+                "他们会希望"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "莉亚没有说话。她的拇指从第一道痕，慢慢划到第七道。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……说得轻松。"
+                },
+                {
+                  "t": "narr",
+                  "text": "可她的手指，松开了一点。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "GD_CH02_OATH": "ABSOLVE"
+                },
+                "add": {
+                  "GD_BOND_LIA": 1
+                }
+              }
+            },
+            {
+              "id": "eighth",
+              "label": "问第八道",
+              "desc": "问她打不打算刻第八道。",
+              "keywords": [
+                "第八道",
+                "第八",
+                "还要刻",
+                "再刻",
+                "下一道"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "莉亚抬起眼睛。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……你这个人，说话倒是挺直接的。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "GD_CH02_OATH": "EIGHTH"
+                },
+                "add": {
+                  "GD_BOND_LIA": 1
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}什么都没说。他只是坐在对面，没有走。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……你倒是安静。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "GD_CH02_OATH": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "……哼。"
+        },
+        {
+          "t": "narr",
+          "text": "她别过脸去。可{PLAYER_NAME}看见，她的嘴角往上动了一下——小得几乎看不出来。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "行。那从今天起，你就是我的第八道刻痕。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "别误会，这不是什么好听的话。意思是——如果你倒下了，我会把你的名字刻在剑上。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "所以，笨蛋队长。别让我刻。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "var": "GD_BOND_LIA",
+            "gte": 3
+          },
+          "then": [
+            {
+              "t": "narr",
+              "text": "她把那杯凉掉的咖啡推到他面前。"
+            },
+            {
+              "t": "say",
+              "who": "lia",
+              "text": "……请你的。凉了，别嫌弃。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "g002-04",
+      "title": "自由输入：走廊里的秘密",
+      "bg": "silver-rail-corridor",
+      "music": "corridor_night",
+      "ambience": [
+        "rails",
+        "lamp_sway"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "餐车外的走廊很窄，两侧是一扇扇关着的包厢门，壁灯随车身轻轻摇晃。"
+        },
+        {
+          "t": "narr",
+          "text": "米娅趴在墙边，拿细螺丝刀拆一块墙板。走廊尽头，塞雷娜站在窗前，月光把她的影子拉得很长。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "啊，莉亚姐！我刚才偷听——不是，“不小心”听到了一点点。你以前的小队，一定很厉害吧？"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "……你那对猫耳朵，是装饰品，还是真能听见十米外的话？"
+        },
+        {
+          "t": "narr",
+          "text": "米娅的手一下子摸向左耳。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "是、是接收器啦！增强型的！……好吧，确实听得见，喵。但我保证不告诉别人！这是我、莉亚姐，还有——"
+        },
+        {
+          "t": "narr",
+          "text": "她看向{PLAYER_NAME}。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "——还有队长的秘密！"
+        },
+        {
+          "t": "input",
+          "id": "FI_GD02_SC04_SECRET_001",
+          "kind": "dialogue",
+          "prompt": "米娅用她的猫耳接收器听见了莉亚的往事，急着保证会守住秘密，看向{PLAYER_NAME}。塞雷娜站在走廊尽头的窗前。他可以和米娅约好守住秘密、说偷听不对、问起她的耳朵、问塞雷娜看见了什么，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "mia",
+            "serena",
+            "lia"
+          ],
+          "context": [
+            "米娅的猫耳是金属的接收器，耳缘亮着青蓝色的光；她不安的时候会去摸左耳。",
+            "莉亚刚讲完北境第七小队的事。",
+            "塞雷娜一直望着走廊尽头那扇关着的车门。"
+          ],
+          "principles": [
+            "SECRET：判定优先序：责备偷听 > 问塞雷娜 > 问耳朵 > 约好守秘密 > 沉默。",
+            "米娅的耳朵另有来历（外传的姐姐线），这一章只点到为止：她会摸左耳、话说得更快，但不说出原因。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "scold",
+              "label": "说偷听不对",
+              "desc": "责备米娅偷听、说这样不好。",
+              "keywords": [
+                "偷听不对",
+                "不该偷听",
+                "偷听",
+                "不礼貌",
+                "这样不好",
+                "别偷听",
+                "下次别",
+                "!不怪",
+                "!没关系"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "……对不起。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她的两只耳朵一起往后贴了下去。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……算了。迟早要说。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "GD_CH02_SECRET": "SCOLD"
+                }
+              }
+            },
+            {
+              "id": "serena",
+              "label": "问塞雷娜",
+              "desc": "转向塞雷娜，问她看见了什么、有什么想说的。",
+              "keywords": [
+                "问塞雷娜",
+                "塞雷娜",
+                "看见了什么",
+                "看见什么",
+                "你怎么看",
+                "你呢"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}看向走廊尽头。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……你在问我？"
+                },
+                {
+                  "t": "narr",
+                  "text": "她似乎没想到，会有人问她。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "GD_CH02_SECRET": "SERENA"
+                },
+                "add": {
+                  "GD_BOND_SERENA": 1
+                }
+              }
+            },
+            {
+              "id": "ears",
+              "label": "问起她的耳朵",
+              "desc": "问猫耳接收器的事、夸它厉害。",
+              "keywords": [
+                "耳朵",
+                "接收器",
+                "猫耳",
+                "十米",
+                "好厉害"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "米娅的左耳轻轻转了一下，朝着空无一人的方向。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "这个说来话长！我自己改的，能收很多频道，大部分是杂音，偶尔有——"
+                },
+                {
+                  "t": "narr",
+                  "text": "她忽然停住。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "……偶尔有别的。下次再讲！"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "GD_CH02_SECRET": "EARS"
+                }
+              }
+            },
+            {
+              "id": "keep",
+              "label": "约好守住秘密",
+              "desc": "答应一起守住这个秘密、和她拉钩。",
+              "keywords": [
+                "守住秘密",
+                "我不会说",
+                "不会告诉",
+                "不告诉",
+                "不说出去",
+                "拉钩",
+                "保密",
+                "秘密",
+                "约好",
+                "=好"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}说他也不会说出去。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "那就拉钩！"
+                },
+                {
+                  "t": "narr",
+                  "text": "她伸出小指，非要他勾上。两只猫耳一齐往前倾了一下。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "GD_CH02_SECRET": "KEEP"
+                },
+                "add": {
+                  "GD_BOND_MIA": 1
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "沉默就是同意！我就当你答应了！"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "GD_CH02_SECRET": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "秘密……吗。在我看见的所有未来里，没有什么是真正藏得住的。但是——"
+        },
+        {
+          "t": "narr",
+          "text": "塞雷娜转过身，紫色的眼瞳里映着走廊尽头那扇关着的车门。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "有些伤疤，确实只适合在月光下给人看。莉亚·赫斯特，你的七道刻痕，我在星图里见过它们的回响。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "它们没有消失。只是换了一种方式，在守着你。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "……你这人说话，真让人火大。"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚别过脸，整了整肩甲。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "但……谢了。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "好了好了，感伤时间结束！"
+        },
+        {
+          "t": "narr",
+          "text": "米娅“咔”地掀开墙板，里面一排排管线发着微光。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "银轨号的动力系统不对劲——列车不是在减速，是在加速！而且轨道在分叉！可这一段的线路图上，根本没有岔道！"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "是的，我看见了。前方的轨道，通向一个不存在于任何地图上的地方。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "……那就更不能松懈。所有人，检查装备。下一波随时会来。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "var": "GD_BOND_MIA",
+            "gte": 3
+          },
+          "then": [
+            {
+              "t": "say",
+              "who": "mia",
+              "text": "……队长，刚才谢谢你。",
+              "note": "小声"
+            }
+          ]
+        },
+        {
+          "t": "if",
+          "when": {
+            "var": "GD_BOND_SERENA",
+            "gte": 3
+          },
+          "then": [
+            {
+              "t": "narr",
+              "text": "塞雷娜经过{PLAYER_NAME}身边时，脚步慢了半拍，却什么也没说。"
+            }
+          ]
+        },
+        {
+          "t": "narr",
+          "text": "列车在黑暗里越开越快。窗外的月亮，又暗了几分。"
+        },
+        {
+          "t": "narr",
+          "text": "{PLAYER_NAME}低头看手里那柄短剑。剑柄上，不知什么时候多了一道浅浅的、崭新的刻痕。"
+        }
+      ]
+    }
+  ],
+  "end": {
+    "save": "SAVE_G002_END",
+    "next": "g003",
+    "set": {
+      "flags": {
+        "GD_CH02_CLEARED": true,
+        "GD_CH02_EIGHTH_NOTCH": true
+      }
+    },
+    "summary": [
+      {
+        "text": "莉亚讲了赤誓骑士团北境第七小队的事：七个人进去，只有她一个人活着出来。"
+      },
+      {
+        "text": "她剑柄上的七道刻痕，第一道是七个人一起刻的，后面六道是她一个人刻的。"
+      },
+      {
+        "when": {
+          "flag": "GD_CH02_OATH",
+          "eq": "ABSOLVE"
+        },
+        "text": "{PLAYER_NAME}对莉亚说，活下来不是罪。她的手指松开了一点。"
+      },
+      {
+        "when": {
+          "flag": "GD_CH02_OATH",
+          "eq": "SHIELD"
+        },
+        "text": "{PLAYER_NAME}说这次换他挡在莉亚前面；她嫌他口气大，却没有笑他。"
+      },
+      {
+        "when": {
+          "flag": "GD_CH02_OATH",
+          "eq": "EIGHTH"
+        },
+        "text": "{PLAYER_NAME}问莉亚，打不打算刻第八道。"
+      },
+      {
+        "when": {
+          "flag": "GD_CH02_OATH",
+          "eq": "PITY"
+        },
+        "text": "{PLAYER_NAME}的同情，被莉亚当场顶了回去。"
+      },
+      {
+        "when": {
+          "flag": "GD_CH02_OATH",
+          "eq": "BOAST"
+        },
+        "text": "{PLAYER_NAME}说他不会死；莉亚说，那些人每个都这么说过。"
+      },
+      {
+        "text": "莉亚说：{PLAYER_NAME}是她的第八道刻痕——所以，别让她刻。"
+      },
+      {
+        "when": {
+          "flag": "GD_CH02_SECRET",
+          "eq": "KEEP"
+        },
+        "text": "米娅和{PLAYER_NAME}拉了钩：走廊里听到的事，是队长的秘密。"
+      },
+      {
+        "when": {
+          "flag": "GD_CH02_SECRET",
+          "eq": "SERENA"
+        },
+        "text": "{PLAYER_NAME}问塞雷娜看见了什么；她没想到会有人问她。"
+      },
+      {
+        "text": "银轨号在加速，前方的轨道通向地图上没有的地方。"
+      }
+    ]
+  }
+}

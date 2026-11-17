@@ -1,0 +1,1392 @@
+{
+  "id": "g010",
+  "number": 10,
+  "scriptId": "GD_10_DAWN_SEED",
+  "title": "第十章｜黎明种",
+  "shortTitle": "黎明种",
+  "estimatedMinutes": 7,
+  "source": "scenario/chapter-10.json",
+  "canon": {
+    "vars": {
+      "GD_BOND_LIA": 9,
+      "GD_BOND_MIA": 9,
+      "GD_BOND_SERENA": 9
+    },
+    "flags": {
+      "GD_CH09_SCARS": "QUIET"
+    }
+  },
+  "speakers": {
+    "hooded": {
+      "name": "兜帽里的人",
+      "color": "#d8d0c0",
+      "art": null
+    },
+    "dawn_lord": {
+      "name": "黎明卿",
+      "color": "#f0c878",
+      "art": null
+    }
+  },
+  "shots": [
+    {
+      "id": "10-01",
+      "title": "观测所的心脏",
+      "bg": "nox-observatory-core",
+      "music": "gaiden_dawn_seed",
+      "ambience": [
+        "ring_hum",
+        "wind_high"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "螺旋阶梯一圈一圈往下。金色的光在脚下一明一暗，像在引路。"
+        },
+        {
+          "t": "narr",
+          "text": "阶梯的尽头，是观测所的最深处。"
+        },
+        {
+          "t": "narr",
+          "text": "一个圆的空间——圆得像一只倒扣的碗，又像一个完整的球。"
+        },
+        {
+          "t": "narr",
+          "text": "头顶的穹顶开着一道口子。月亮正挂在口子中央，已经被蚀去了一大半。"
+        },
+        {
+          "t": "narr",
+          "text": "巨大的黄铜圆环一层套着一层，围着房间缓缓转动，像一架放大了一千倍的观测仪。"
+        },
+        {
+          "t": "narr",
+          "text": "圆环的中心，悬着一颗种子。"
+        },
+        {
+          "t": "narr",
+          "text": "黎明种。它静静地浮在半空，散发着金色的光——温暖，也危险。"
+        },
+        {
+          "t": "narr",
+          "text": "它的四周飘着无数金色的碎片，细细的，亮亮的，像一片缩小了的星空。"
+        },
+        {
+          "t": "narr",
+          "text": "地上刻着一圈复杂的阵纹。阵纹的四个方位，各立着一个基座，大小刚好够一个人站上去。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "这个阵……四个基座……"
+        },
+        {
+          "t": "narr",
+          "text": "米娅蹲下来，用指尖顺着阵纹描了一小段，又飞快地缩回了手。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "是“四重共鸣”结构。要四个人同时站上基座，才能把黎明种的完全形态激活。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "四个人。我们正好四个。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "不。不是“正好”。是“被设计好的”。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "这个计划从一开始，就需要四个S级样本。我们不是碰巧走到这里——我们是被一步一步引过来的棋子。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "棋子也有掀桌子的权利。"
+        },
+        {
+          "t": "narr",
+          "text": "就在这时，入口处传来了脚步声。"
+        }
+      ]
+    },
+    {
+      "id": "10-02",
+      "title": "自由输入：兜帽",
+      "bg": "nox-observatory-core",
+      "music": "gaiden_dawn_seed",
+      "ambience": [
+        "ring_hum",
+        "footsteps"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "一个人从阴影里走了出来。白色的实验服，兜帽压得很低，看不见脸。"
+        },
+        {
+          "t": "say",
+          "who": "hooded",
+          "text": "欢迎来到终焉之站，四位旅人。"
+        },
+        {
+          "t": "say",
+          "who": "hooded",
+          "text": "我等了你们很久了。"
+        },
+        {
+          "t": "narr",
+          "text": "“终焉之站”——塞雷娜的预言里，有这四个字。"
+        },
+        {
+          "t": "input",
+          "id": "FI_G010_SC02_HOOD_001",
+          "kind": "action",
+          "prompt": "核心室的入口处，一个穿白色实验服、兜帽遮住脸的人走了出来，说欢迎来到终焉之站，她等了他们很久。{PLAYER_NAME}可以挡到塞雷娜前面、拔出武器戒备、问她是谁、先听她说，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "hooded",
+            "lia",
+            "serena",
+            "mia"
+          ],
+          "context": [
+            "来人手里没有武器，站在入口的阴影里，没有靠近。",
+            "名单上写着计划负责人的代号“黎明卿”。",
+            "塞雷娜的预言说：月蚀完成之时，银轨将抵达终焉之站。"
+          ],
+          "principles": [
+            "HOOD：判定优先序：挡到塞雷娜前面 > 拔出武器戒备 > 问她是谁 > 先听她说 > 沉默。",
+            "来人不会出手，也不会被激怒；兜帽要等莉亚叫出“黎明卿”之后才落下。"
+          ],
+          "intents": [
+            {
+              "id": "neg_guard",
+              "label": "否定式表态（按先听处理）",
+              "desc": "只说“我不动／先不动手／不拔剑”这类否定句；按先听她说处理。",
+              "keywords": [
+                "我不动",
+                "先不动手",
+                "不动手",
+                "不拔剑",
+                "不出手",
+                "不急着动手"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}抬起手，示意大家先别动。"
+                },
+                {
+                  "t": "say",
+                  "who": "hooded",
+                  "text": "……谢谢。很少有人愿意先听。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "flags": {
+                  "GD_CH10_HOOD": "LISTEN"
+                }
+              }
+            },
+            {
+              "id": "guard",
+              "label": "挡到塞雷娜前面",
+              "desc": "往前一步挡在塞雷娜身前，或者把她拉到身后护住。",
+              "keywords": [
+                "挡在塞雷娜前面",
+                "挡在她前面",
+                "挡住塞雷娜",
+                "护住塞雷娜",
+                "站到塞雷娜前面",
+                "挡在前面",
+                "护住她",
+                "把塞雷娜拉到身后",
+                "拉到身后",
+                "护着"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}往前一步，挡在了塞雷娜身前。"
+                },
+                {
+                  "t": "narr",
+                  "text": "塞雷娜愣了一下。她没有说“不必”。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "站位不错。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "add": {
+                  "GD_BOND_SERENA": 1
+                },
+                "flags": {
+                  "GD_CH10_HOOD": "GUARD"
+                }
+              }
+            },
+            {
+              "id": "draw",
+              "label": "拔出武器戒备",
+              "desc": "手按武器、拔剑、摆出架势戒备。",
+              "keywords": [
+                "拔剑",
+                "拔出武器",
+                "握紧武器",
+                "戒备",
+                "举起武器",
+                "准备战斗",
+                "亮出武器",
+                "拔刀",
+                "!不拔"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}的手按上了武器。"
+                },
+                {
+                  "t": "narr",
+                  "text": "莉亚的剑，比他还快半拍出了鞘。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……反应还行。左边归我。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "add": {
+                  "GD_BOND_LIA": 1
+                },
+                "flags": {
+                  "GD_CH10_HOOD": "DRAW"
+                }
+              }
+            },
+            {
+              "id": "ask",
+              "label": "问她是谁",
+              "desc": "你是谁、为什么等我们、你想干什么。",
+              "keywords": [
+                "你是谁",
+                "是谁",
+                "什么人",
+                "报上名来",
+                "为什么等",
+                "你想干什么",
+                "你要什么",
+                "等我们做什么"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "hooded",
+                  "text": "你们已经知道我的名字了。就在那块水晶板上。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "flags": {
+                  "GD_CH10_HOOD": "ASK"
+                }
+              }
+            },
+            {
+              "id": "listen",
+              "label": "先听她说",
+              "desc": "先不动手，听她说下去，看她想说什么。",
+              "keywords": [
+                "听她说",
+                "先听",
+                "让她说",
+                "听听看",
+                "别动手",
+                "看她想说什么",
+                "等等"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}抬起手，示意大家先别动。"
+                },
+                {
+                  "t": "say",
+                  "who": "hooded",
+                  "text": "……谢谢。很少有人愿意先听。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "flags": {
+                  "GD_CH10_HOOD": "LISTEN"
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}没有动。"
+                },
+                {
+                  "t": "narr",
+                  "text": "那个人也没有动。她站在入口的阴影里，像在等谁先开口。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "flags": {
+                  "GD_CH10_HOOD": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "黎明卿。"
+        },
+        {
+          "t": "say",
+          "who": "dawn_lord",
+          "text": "是的。"
+        },
+        {
+          "t": "say",
+          "who": "dawn_lord",
+          "text": "也可以叫我……欧若拉·诺克斯。"
+        },
+        {
+          "t": "narr",
+          "text": "兜帽落下。"
+        },
+        {
+          "t": "narr",
+          "text": "那张脸，和玻璃舱里那位中年女性有七分相似——只是更年轻。眼睛里，带着一种很疲惫的温柔。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "……不可能。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "母亲在休眠舱里。我亲眼看见的。你是——"
+        },
+        {
+          "t": "say",
+          "who": "dawn_lord",
+          "text": "我是她的记忆。"
+        },
+        {
+          "t": "say",
+          "who": "dawn_lord",
+          "text": "被黎明种提取出来以后，生出了自己意识的那一部分。你可以把我当成……你母亲留在这个计划里的影子。"
+        },
+        {
+          "t": "narr",
+          "text": "塞雷娜发辫上的月相盘，又倒退了一格。"
+        }
+      ]
+    },
+    {
+      "id": "10-03",
+      "title": "自由输入：一剂药",
+      "bg": "nox-observatory-core",
+      "music": "gaiden_dawn_lord",
+      "ambience": [
+        "ring_hum"
+      ],
+      "beats": [
+        {
+          "t": "say",
+          "who": "dawn_lord",
+          "text": "我知道你们恨我。恨这个计划。但请听我说完。"
+        },
+        {
+          "t": "say",
+          "who": "dawn_lord",
+          "text": "真正的欧若拉·诺克斯，十七年前失去了丈夫——塞雷娜的父亲。他死于一场本可以避免的事故。"
+        },
+        {
+          "t": "say",
+          "who": "dawn_lord",
+          "text": "从那以后，她一直在想一个问题：如果记忆可以被改写，痛苦，是不是就可以被消除？"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "……父亲。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "我甚至不记得他的脸了。不是预言拿走的——是我那时太小了。"
+        },
+        {
+          "t": "say",
+          "who": "dawn_lord",
+          "text": "诺克斯家世代观测月蚀，也世代看守着一样东西。"
+        },
+        {
+          "t": "say",
+          "who": "dawn_lord",
+          "text": "很久以前，一次月蚀最深的夜里，天上落下来一粒种子。一段古老的指令——能把许多人的记忆，一起改写。"
+        },
+        {
+          "t": "say",
+          "who": "dawn_lord",
+          "text": "家族的规矩是：看守它，永远不要用它。欧若拉，是第一个打破规矩的人。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "……观测所里，从来没有人告诉过我。"
+        },
+        {
+          "t": "say",
+          "who": "dawn_lord",
+          "text": "黎明种不是武器。它是……一剂药。"
+        },
+        {
+          "t": "say",
+          "who": "dawn_lord",
+          "text": "它能改写创伤的记忆。让失去亲人的人不再痛，让经历过战争的人不再怕。"
+        },
+        {
+          "t": "narr",
+          "text": "她转向莉亚。"
+        },
+        {
+          "t": "say",
+          "who": "dawn_lord",
+          "text": "莉亚·赫斯特。你的七道刻痕，可以被改写成七段平静的回忆。霜牙关的那七十三个小时，会变成一次普通的换防。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "……"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "GD_CH09_SCARS",
+            "eq": "REMEMBER"
+          },
+          "then": [
+            {
+              "t": "narr",
+              "text": "莉亚没有回答。她的眼睛往{PLAYER_NAME}那边偏了一下——那个说要陪她一起记着的人。"
+            }
+          ],
+          "else": [
+            {
+              "t": "if",
+              "when": {
+                "flag": "GD_CH09_SCARS",
+                "eq": "DENY"
+              },
+              "then": [
+                {
+                  "t": "narr",
+                  "text": "莉亚没有回答。拇指压着剑柄上的刻痕——那是她的。疼也是她的。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "t": "say",
+          "who": "dawn_lord",
+          "text": "米娅·玲。被学院退学的那一天，没有人愿意看你的设计图。还有之后的每一个晚上，你把耳朵调到同一个频率，等一个一直没有回音的讯号。"
+        },
+        {
+          "t": "say",
+          "who": "dawn_lord",
+          "text": "这些，都可以变成一段普通的求学经历。你不必再证明自己。也不必再等了。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "我……"
+        },
+        {
+          "t": "narr",
+          "text": "米娅的左耳，转向了别处。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "……你怎么会知道。"
+        },
+        {
+          "t": "say",
+          "who": "dawn_lord",
+          "text": "塞雷娜·诺克斯。"
+        },
+        {
+          "t": "narr",
+          "text": "她的声音轻了下来。"
+        },
+        {
+          "t": "say",
+          "who": "dawn_lord",
+          "text": "预言的诅咒，失去记忆的恐惧——都可以被彻底抹去。你将不再看见未来。也不再失去过去。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "……"
+        },
+        {
+          "t": "narr",
+          "text": "塞雷娜在发抖。"
+        },
+        {
+          "t": "narr",
+          "text": "那些话像毒药一样甜。有一瞬间，连{PLAYER_NAME}都动摇了——然后，他看向了身边的人。"
+        },
+        {
+          "t": "input",
+          "id": "FI_G010_SC03_REMEDY_001",
+          "kind": "dialogue",
+          "prompt": "黎明卿说黎明种不是武器，是一剂药：莉亚的七道刻痕、米娅的委屈与等待、塞雷娜的预言之苦，都可以被改写成平静。三个人都没有说话。{PLAYER_NAME}可以说她给的平静是假的、说她没有权利替所有人选择、问真正的欧若拉会不会想要这样、承认她说得有道理、对她动手，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "dawn_lord",
+            "lia",
+            "mia",
+            "serena"
+          ],
+          "context": [
+            "黎明卿是欧若拉·诺克斯被提取出来的记忆体，没有实体，兵器碰不到她。",
+            "黎明种是诺克斯家世代看守的古老指令，能改写许多人的记忆；欧若拉在丈夫死后，开始想用它消除痛苦。",
+            "真正的欧若拉躺在上一层实验室的休眠舱里，睡着。",
+            "{PLAYER_NAME}自己也失去过记忆。"
+          ],
+          "principles": [
+            "REMEDY：判定优先序：动手 > 认同她 > 问真正的欧若拉 > 没有权利替人选择 > 平静是假的 > 沉默。",
+            "“你说得对，但是……”这类先认后驳的话，按后半句归类，不算认同。",
+            "黎明卿不会被说服，也不会被激怒；她最多承认“也许”。认同她不算错，但莉亚会顶回去。"
+          ],
+          "intents": [
+            {
+              "id": "attack",
+              "label": "对她动手",
+              "desc": "冲上去砍她、刺她、抓住她。",
+              "keywords": [
+                "砍她",
+                "动手",
+                "攻击她",
+                "一剑",
+                "打她",
+                "冲上去",
+                "抓住她",
+                "刺她",
+                "!别动手",
+                "!不动手"
+              ],
+              "morality": -1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}冲了上去。"
+                },
+                {
+                  "t": "narr",
+                  "text": "武器穿过她的身体，像穿过一束光。什么都没有碰到。"
+                },
+                {
+                  "t": "say",
+                  "who": "dawn_lord",
+                  "text": "我只是一段记忆。你伤不到一段记忆——就像你也伤不到自己忘掉的东西。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……切。打不到的东西，最麻烦。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "flags": {
+                  "GD_CH10_REMEDY": "ATTACK"
+                }
+              }
+            },
+            {
+              "id": "tempted",
+              "label": "认同她",
+              "desc": "你说得对、有道理、这样也好、我同意。",
+              "keywords": [
+                "你说得对",
+                "有道理",
+                "说得没错",
+                "也许你是对的",
+                "这样也好",
+                "我同意",
+                "确实",
+                "!但是",
+                "!可是",
+                "!不过",
+                "!不同意",
+                "!没道理"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "黎明卿看着{PLAYER_NAME}，眼里亮了一点。"
+                },
+                {
+                  "t": "say",
+                  "who": "dawn_lord",
+                  "text": "……你明白。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "别听她的。她的药，是拿别人的记忆熬出来的。"
+                },
+                {
+                  "t": "narr",
+                  "text": "莉亚往前一步，挡在了{PLAYER_NAME}和那团金光之间。"
+                },
+                {
+                  "t": "say",
+                  "who": "dawn_lord",
+                  "text": "……也许吧。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "add": {
+                  "GD_BOND_LIA": -1
+                },
+                "flags": {
+                  "GD_CH10_REMEDY": "TEMPTED"
+                }
+              }
+            },
+            {
+              "id": "mother",
+              "label": "问真正的欧若拉",
+              "desc": "真正的欧若拉会想要这样吗？这是她的意思，还是你的？",
+              "keywords": [
+                "真正的欧若拉",
+                "她会想要",
+                "她本人",
+                "她同意了吗",
+                "她知道吗",
+                "是她的意思",
+                "你是她吗",
+                "欧若拉会",
+                "你母亲会"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "黎明卿沉默了。这是她第一次没有立刻回答。"
+                },
+                {
+                  "t": "say",
+                  "who": "dawn_lord",
+                  "text": "……我是她在最痛的那一年，留下来的念头。"
+                },
+                {
+                  "t": "say",
+                  "who": "dawn_lord",
+                  "text": "她后来怎么想，我不知道。她睡着了。"
+                },
+                {
+                  "t": "narr",
+                  "text": "塞雷娜抬起头，看着那张比母亲年轻的脸。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "add": {
+                  "GD_BOND_SERENA": 1
+                },
+                "flags": {
+                  "GD_CH10_REMEDY": "MOTHER"
+                }
+              }
+            },
+            {
+              "id": "no_right",
+              "label": "没有权利替所有人选择",
+              "desc": "就算痛苦是真的，你也没有权利替所有人做选择。",
+              "keywords": [
+                "没有权利",
+                "替所有人",
+                "替别人选",
+                "凭什么",
+                "不是你决定",
+                "轮不到你",
+                "问过他们吗",
+                "替我们选"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "莉亚的手，在剑柄上停住了。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……这句话，说给她听正好。"
+                },
+                {
+                  "t": "say",
+                  "who": "dawn_lord",
+                  "text": "……是的。也许我没有权利。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "add": {
+                  "GD_BOND_LIA": 1,
+                  "GD_BOND_SERENA": 1
+                },
+                "flags": {
+                  "GD_CH10_REMEDY": "NO_RIGHT"
+                }
+              }
+            },
+            {
+              "id": "false_peace",
+              "label": "你给的平静是假的",
+              "desc": "你说的平静是虚假的；真正的平静不是遗忘，是接受。",
+              "keywords": [
+                "假的",
+                "虚假",
+                "真正的平静",
+                "不是遗忘",
+                "是接受",
+                "接受它",
+                "骗人",
+                "遗忘不是"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "米娅抬起了头。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "……对。忘掉的东西，不叫修好了。叫拆掉了。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……接受。"
+                },
+                {
+                  "t": "say",
+                  "who": "dawn_lord",
+                  "text": "……也许吧。可虚假的平静，也是平静。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "add": {
+                  "GD_BOND_LIA": 1,
+                  "GD_BOND_MIA": 1,
+                  "GD_BOND_SERENA": 1
+                },
+                "flags": {
+                  "GD_CH10_REMEDY": "FALSE_PEACE"
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}什么也没说。"
+                },
+                {
+                  "t": "narr",
+                  "text": "黎明种的光，在每个人脸上停了一会儿。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……说完了？"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "flags": {
+                  "GD_CH10_REMEDY": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "say",
+          "who": "dawn_lord",
+          "text": "但月蚀不会停。月亮被完全吞掉的那一刻，黎明种会自己醒来。无论你们同不同意。"
+        }
+      ]
+    },
+    {
+      "id": "10-04",
+      "title": "自由输入：燃料",
+      "bg": "nox-observatory-core",
+      "music": "gaiden_dawn_lord",
+      "ambience": [
+        "ring_hum"
+      ],
+      "beats": [
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "我接到的命令，是销毁它。"
+        },
+        {
+          "t": "say",
+          "who": "dawn_lord",
+          "text": "那就毁掉吧——如果你做得到。"
+        },
+        {
+          "t": "say",
+          "who": "dawn_lord",
+          "text": "但它收下的每一段记忆，都会跟着它一起碎掉。银轨号上的乘客，舱里的人，你的母亲……永远都不会醒了。"
+        },
+        {
+          "t": "narr",
+          "text": "塞雷娜张了张嘴，没有说出话。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "那、那就先把记忆倒出来，再——"
+        },
+        {
+          "t": "say",
+          "who": "dawn_lord",
+          "text": "倒不出来。没有钥匙，谁也打不开它。"
+        },
+        {
+          "t": "say",
+          "who": "dawn_lord",
+          "text": "唯一能让它停下的办法，是在月蚀完成之前，完成“封印仪式”。"
+        },
+        {
+          "t": "say",
+          "who": "dawn_lord",
+          "text": "四个人站上四个基座，把记忆一起交给它。四个人的记忆，合成一把钥匙。"
+        },
+        {
+          "t": "say",
+          "who": "dawn_lord",
+          "text": "但钥匙要有芯。四个人里，必须有一个人，把自己全部的记忆注入黎明种，当作封印的燃料。"
+        },
+        {
+          "t": "say",
+          "who": "dawn_lord",
+          "text": "那个人，会失去所有的记忆。"
+        },
+        {
+          "t": "say",
+          "who": "dawn_lord",
+          "text": "包括自己是谁。"
+        },
+        {
+          "t": "narr",
+          "text": "球形的房间里，一片死寂。"
+        },
+        {
+          "t": "narr",
+          "text": "黎明种的光还是那么暖。可此刻，那份暖里，带着一种残忍的温柔。"
+        },
+        {
+          "t": "input",
+          "id": "FI_G010_SC04_FUEL_001",
+          "kind": "dialogue",
+          "prompt": "黎明卿说，封印要四个人站上基座，其中一人交出全部记忆当作燃料，那个人会连自己是谁都忘掉；毁掉黎明种，被收走的记忆就永远回不来。核心室里一片死寂。{PLAYER_NAME}可以说一定有别的办法、说要自己来、问塞雷娜有没有预见过这一刻、质问黎明卿为什么要告诉他们、把账算到诺克斯家头上，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "lia",
+            "mia",
+            "serena",
+            "dawn_lord"
+          ],
+          "context": [
+            "四个基座就在脚下；月亮还没有被完全吞掉。",
+            "塞雷娜奉命销毁黎明种；可毁掉它，银轨号的乘客和她的母亲都醒不过来。",
+            "{PLAYER_NAME}本来就失去过记忆。",
+            "谁来当燃料，这一刻不会有结论。"
+          ],
+          "principles": [
+            "FUEL：判定优先序：把账算到诺克斯家头上 > 说要自己来 > 问塞雷娜 > 质问黎明卿 > 一定有别的办法 > 沉默。",
+            "这里不决定谁牺牲：说“我来”的人会被莉亚当场拦下，留到回去再吵。",
+            "塞雷娜被问到预言时，只承认看见过这一刻，说后面看不清。"
+          ],
+          "intents": [
+            {
+              "id": "blame",
+              "label": "把账算到诺克斯家头上",
+              "desc": "都怪你们、诺克斯家的错、都是你母亲害的。",
+              "keywords": [
+                "都怪你们",
+                "你们诺克斯",
+                "诺克斯家的错",
+                "你们家",
+                "怪塞雷娜",
+                "你母亲害的",
+                "都是你母亲"
+              ],
+              "morality": -1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "塞雷娜垂下了眼睛。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……观测结果显示，你说的是事实。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "嘴巴放干净。她跟我们一样，是被摆上棋盘的。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "add": {
+                  "GD_BOND_SERENA": -1
+                },
+                "flags": {
+                  "GD_CH10_FUEL": "BLAME"
+                }
+              }
+            },
+            {
+              "id": "volunteer",
+              "label": "说要自己来",
+              "desc": "我来、让我来、用我的记忆、反正我已经失忆过一次。",
+              "keywords": [
+                "我来",
+                "让我来",
+                "用我的",
+                "我当燃料",
+                "我的记忆",
+                "反正我",
+                "我已经失忆",
+                "我去当",
+                "!不让",
+                "!别让我"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "话还没说完，莉亚的剑鞘就横到了{PLAYER_NAME}胸前。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "闭嘴。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "这种话，不准在这里说。……回去再吵。"
+                },
+                {
+                  "t": "narr",
+                  "text": "米娅抓住了{PLAYER_NAME}的袖子，抓得很紧。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "flags": {
+                  "GD_CH10_FUEL": "VOLUNTEER"
+                }
+              }
+            },
+            {
+              "id": "ask_serena",
+              "label": "问塞雷娜有没有预见过",
+              "desc": "塞雷娜，你看见过这一刻吗？你早就知道吗？",
+              "keywords": [
+                "塞雷娜你看见",
+                "你看见过",
+                "预见过",
+                "你早就知道",
+                "预言里",
+                "看见了吗",
+                "有没有看见",
+                "你预见"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "塞雷娜没有立刻回答。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……看见过。这个房间，这句话。在所有的时间线里，它都会被说出来。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "再往后的……我还看不清。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她说“看不清”的时候，发辫上的月相盘，悄悄倒退了一格。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "flags": {
+                  "GD_CH10_FUEL": "ASK_SERENA"
+                }
+              }
+            },
+            {
+              "id": "why_tell",
+              "label": "质问黎明卿为什么告诉他们",
+              "desc": "为什么要告诉我们、你到底想要什么、你图什么。",
+              "keywords": [
+                "为什么告诉我们",
+                "为什么要说",
+                "你想要什么",
+                "你到底想",
+                "你图什么",
+                "目的是什么",
+                "你为什么"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "dawn_lord",
+                  "text": "因为你们有权利知道。"
+                },
+                {
+                  "t": "say",
+                  "who": "dawn_lord",
+                  "text": "……这一点，是她教我的。"
+                },
+                {
+                  "t": "narr",
+                  "text": "塞雷娜的手指，在手套里蜷了一下。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "flags": {
+                  "GD_CH10_FUEL": "WHY"
+                }
+              }
+            },
+            {
+              "id": "other_way",
+              "label": "一定有别的办法",
+              "desc": "一定有别的办法、不信只有这一条路、总有办法。",
+              "keywords": [
+                "别的办法",
+                "其他办法",
+                "一定有办法",
+                "另一条路",
+                "不信只有",
+                "总有办法",
+                "找别的路",
+                "第四条路",
+                "办法不止"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "米娅的耳朵，一下子竖了起来。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "……对。对！只要是机关，就一定有第二套回路。四重共鸣、燃料、钥匙——给我时间，我一定拆得开。"
+                },
+                {
+                  "t": "say",
+                  "who": "dawn_lord",
+                  "text": "……很多年里，我也是这么想的。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "add": {
+                  "GD_BOND_MIA": 1
+                },
+                "flags": {
+                  "GD_CH10_FUEL": "OTHER_WAY"
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "没有人说话。"
+                },
+                {
+                  "t": "narr",
+                  "text": "米娅的手摸向了左耳。莉亚的拇指压在剑柄的刻痕上。塞雷娜看着地上那四个基座，一动不动。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "flags": {
+                  "GD_CH10_FUEL": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        }
+      ]
+    },
+    {
+      "id": "10-05",
+      "title": "光的边缘",
+      "bg": "nox-observatory-core",
+      "music": "gaiden_dawn_seed",
+      "ambience": [
+        "ring_hum",
+        "wind_high"
+      ],
+      "beats": [
+        {
+          "t": "say",
+          "who": "dawn_lord",
+          "text": "不必现在回答。"
+        },
+        {
+          "t": "say",
+          "who": "dawn_lord",
+          "text": "月蚀完成之前，你们有的是时间考虑。"
+        },
+        {
+          "t": "narr",
+          "text": "她退回金色的光里。光把她的轮廓描得像一尊圣像——没有恶意，只有一种深的、近乎偏执的悲悯。"
+        },
+        {
+          "t": "narr",
+          "text": "黎明种悬在球形空间的正中，金光像日出一样往外漫。地上的四个基座，一个接一个亮起了微光。"
+        },
+        {
+          "t": "narr",
+          "text": "四个人站在光的边缘。脸的一边是金色的黎明，另一边，是身后的黑暗。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "……退。先退回去。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "四个人，一个都不许少。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "var": "GD_BOND_LIA",
+            "gte": 11
+          },
+          "then": [
+            {
+              "t": "narr",
+              "text": "她退的时候，走在{PLAYER_NAME}和那团光之间。"
+            },
+            {
+              "t": "say",
+              "who": "lia",
+              "text": "……别误会。站位而已。"
+            }
+          ]
+        },
+        {
+          "t": "if",
+          "when": {
+            "var": "GD_BOND_MIA",
+            "gte": 11
+          },
+          "then": [
+            {
+              "t": "narr",
+              "text": "米娅拽了一下{PLAYER_NAME}的衣角，又松开。"
+            },
+            {
+              "t": "say",
+              "who": "mia",
+              "text": "没事。就是……确认一下你还在。"
+            }
+          ]
+        },
+        {
+          "t": "if",
+          "when": {
+            "var": "GD_BOND_SERENA",
+            "gte": 11
+          },
+          "then": [
+            {
+              "t": "narr",
+              "text": "塞雷娜走在最后。她停了很久，才开口。"
+            },
+            {
+              "t": "say",
+              "who": "serena",
+              "text": "……她说，我可以不再失去过去。可是我现在的过去里，有你们。"
+            }
+          ]
+        },
+        {
+          "t": "narr",
+          "text": "头顶的口子里，月亮又被吞掉了一块。"
+        }
+      ]
+    }
+  ],
+  "end": {
+    "save": "SAVE_G010_END",
+    "next": "g011",
+    "set": {
+      "flags": {
+        "GD_CH10_DAWN_LORD_MET": true,
+        "GD_CH10_SEAL_COST_KNOWN": true
+      }
+    },
+    "summary": [
+      {
+        "text": "{PLAYER_NAME}和她们走进观测所的核心室：黎明种悬在正中，地上有四个基座。"
+      },
+      {
+        "text": "黎明卿现身——她是欧若拉·诺克斯被提取出来的记忆，塞雷娜的母亲留在计划里的影子。"
+      },
+      {
+        "when": {
+          "flag": "GD_CH10_REMEDY",
+          "eq": "FALSE_PEACE"
+        },
+        "text": "黎明卿把黎明种说成一剂药；{PLAYER_NAME}回答：真正的平静不是遗忘，是接受。"
+      },
+      {
+        "when": {
+          "flag": "GD_CH10_REMEDY",
+          "eq": "NO_RIGHT"
+        },
+        "text": "黎明卿把黎明种说成一剂药；{PLAYER_NAME}说她没有权利替所有人选择，她承认“也许”。"
+      },
+      {
+        "when": {
+          "flag": "GD_CH10_REMEDY",
+          "eq": "MOTHER"
+        },
+        "text": "{PLAYER_NAME}问黎明卿，真正的欧若拉会不会想要这样。她第一次没有立刻回答。"
+      },
+      {
+        "when": {
+          "flag": "GD_CH10_REMEDY",
+          "eq": "TEMPTED"
+        },
+        "text": "{PLAYER_NAME}觉得黎明卿说得有道理；莉亚挡在了他和那团金光之间。"
+      },
+      {
+        "when": {
+          "flag": "GD_CH10_REMEDY",
+          "eq": "ATTACK"
+        },
+        "text": "{PLAYER_NAME}对黎明卿出手，武器穿过了她，像穿过一束光。"
+      },
+      {
+        "text": "封印要有一个人交出全部记忆当作燃料，那个人会连自己是谁都忘掉；毁掉黎明种，被收走的记忆就再也回不来。"
+      },
+      {
+        "when": {
+          "flag": "GD_CH10_FUEL",
+          "eq": "VOLUNTEER"
+        },
+        "text": "{PLAYER_NAME}刚说出“我来”，就被莉亚的剑鞘拦住：回去再吵。"
+      },
+      {
+        "when": {
+          "flag": "GD_CH10_FUEL",
+          "eq": "OTHER_WAY"
+        },
+        "text": "{PLAYER_NAME}说一定有别的办法，米娅的耳朵竖了起来。"
+      },
+      {
+        "when": {
+          "flag": "GD_CH10_FUEL",
+          "eq": "ASK_SERENA"
+        },
+        "text": "塞雷娜说她预见过这一刻；说“后面看不清”的时候，月相盘倒退了一格。"
+      },
+      {
+        "when": {
+          "flag": "GD_CH10_FUEL",
+          "eq": "BLAME"
+        },
+        "text": "{PLAYER_NAME}把账算到诺克斯家头上，塞雷娜没有反驳。"
+      },
+      {
+        "text": "四个人退出了核心室。头顶的月亮，又被吞掉了一块。"
+      }
+    ]
+  }
+}

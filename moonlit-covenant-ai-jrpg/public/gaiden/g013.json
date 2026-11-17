@@ -1,0 +1,608 @@
+{
+  "id": "g013",
+  "number": 13,
+  "scriptId": "GD_13_FINAL_SEAL",
+  "title": "第十三章｜最终封印",
+  "shortTitle": "最终封印",
+  "estimatedMinutes": 9,
+  "source": "scenario/chapter-13.json",
+  "canon": {"vars":{"GD_BOND_LIA":12,"GD_BOND_MIA":12,"GD_BOND_SERENA":12}},
+  "speakers": {"dawn_lord":{"name":"黎明卿","color":"#f0d890","art":null}},
+  "shots": [
+    {
+      "id": "g013-01",
+      "title": "光的里面",
+      "bg": "memory-space",
+      "music": "memory_choir_soft",
+      "ambience": ["hum","chime"],
+      "beats": [
+        {"t":"narr","text":"白光里没有声音，也没有重量。{PLAYER_NAME}最后记得的，是叠在一起的四只手。"},
+        {"t":"title","lines":[],"title":"第十三章｜最终封印","subtitle":"四个人的光"},
+        {"t":"narr","text":"视野一点一点回来。脚下没有地面，头顶也没有天空，四面八方是明亮的白，白里透着淡紫。"},
+        {"t":"narr","text":"无数光点浮在四周，每一粒里都闪着一个画面。"},
+        {"t":"say","who":"lia","text":"……这是哪里。黎明种的里面？"},
+        {"t":"say","who":"mia","text":"意识层。身体还站在基座上，被拉进来的只有“我们”这一部分。"},
+        {"t":"narr","text":"米娅下意识去摸工具包，摸了个空，又去摸左耳。"},
+        {"t":"say","who":"mia","text":"好消息，耳朵还在。坏消息，扳手不在。"},
+        {"t":"say","who":"serena","text":"封印开始了。我们的记忆正在被读取。……不要抗拒。越抗拒，越疼。"},
+        {"t":"narr","text":"光点涌了过来。不是攻击——像有人把四本书同时翻开，摊在所有人面前。"}
+      ]
+    },
+    {
+      "id": "g013-02",
+      "title": "自由输入：被翻开的书页",
+      "bg": "memory-space",
+      "music": "memory_choir_soft",
+      "ambience": ["hum"],
+      "beats": [
+        {"t":"narr","text":"先是雪。一面赤红的旗倒在北境的雪里，旗下躺着希尔达。","text15":"先是雪。一面赤红的旗倒在北境的雪里，旗下躺着希尔达，身下的雪洇开了一大片暗红。"},
+        {"t":"narr","text":"她握着莉亚的手。莉亚在餐车里讲这件事的时候，说她最后说的是“活下去”——说之前，停顿了一下。"},
+        {"t":"narr","text":"其实，希尔达说的是：“不要恨自己。”"},
+        {"t":"narr","text":"这三年，莉亚一天也没有做到。"},
+        {"t":"say","who":"lia","text":"……！别看——"},
+        {"t":"narr","text":"她伸手去挡，手从光里穿了过去。"},
+        {"t":"narr","text":"然后是一扇门。机关学院的铁门前，十二岁的米娅抱着一卷零号的设计图。那天她被退学了，答应来接她的，是她的姐姐。"},
+        {"t":"narr","text":"她在门口站了三个小时，最后对自己说：“没关系。有零号就够了。”"},
+        {"t":"narr","text":"姐姐再也没有来。后来，她把耳朵改成了接收器——万一哪天，姐姐的讯号会从什么地方传过来。"},
+        {"t":"say","who":"mia","text":"那、那段不重要！可以跳过，快进，下一个——"},
+        {"t":"narr","text":"她的左耳转向了一边。"},
+        {"t":"narr","text":"最后是一条走廊。七岁的塞雷娜站在观测所门口，一个发间别着月相盘的女人蹲下来，替她理好领子：“妈妈很快就来接你。”然后走了，没有回头。"},
+        {"t":"narr","text":"塞雷娜说过，她已经不记得母亲的脸。在这里，那张脸清清楚楚——和休眠舱里沉睡的那张，是同一张。"},
+        {"t":"narr","text":"她没有出声。发辫上的月相盘，悄悄退了一格。"},
+        {"t":"narr","text":"然后，轮到{PLAYER_NAME}了。"},
+        {"t":"narr","text":"有什么从他身上被轻轻抽走，摊开在光里。他看不清是哪一段，只看见三个人同时转过头来——看他的眼神，变得更软了。"},
+        {
+          "t": "input",
+          "id": "FI_G013_SC02_EXPOSED_001",
+          "kind": "dialogue",
+          "prompt": "记忆空间里，四个人的伤疤全都摊开了：莉亚的雪，米娅的门，塞雷娜的走廊，还有{PLAYER_NAME}自己的那一段。所有的伪装都被剥去，三个人都看着他。他可以说点什么、走过去拥抱她们、对莉亚说那句话、假装什么都没看见，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": ["lia","mia","serena"],
+          "context": [
+            "希尔达临终说的是“不要恨自己”，莉亚三年都没有做到。",
+            "米娅退学那天在学院门口等了三个小时，等的是没有来的姐姐；她的猫耳是为了接收姐姐的讯号改造的。",
+            "塞雷娜七岁被母亲送进观测所，母亲说很快来接她，再也没有回来；母亲现在躺在诺克斯观测所的休眠舱里。",
+            "这里没有身体，只有意识；说出口的话，三个人都听得见。"
+          ],
+          "principles": [
+            "EXPOSED：判定优先序：否定式安慰（不丢人、不会说出去） > 嘲笑 > 假装没看见 > 拥抱 > 对莉亚说“不要恨自己” > 说“原来我们都一样” > 沉默。",
+            "不比较谁的伤疤更重；不替她们说完她们自己的话。",
+            "莉亚被安慰会本能地反击，但不会推开；米娅紧张时语速变快；塞雷娜罕见动情时会停顿很久。",
+            "本节点的非固定反应，最多一行、不超过20字。"
+          ],
+          "intents": [
+            {
+              "id": "neg_guard",
+              "label": "否定式安慰（按温和的话处理）",
+              "desc": "“不丢人”“不可怜”“不会说出去”这类否定句，本身是安慰，不是嘲笑。",
+              "keywords": ["不丢人","不可怜","不会说出去","不说出去","不会笑","不笑你们","没什么丢人"],
+              "morality": 1,
+              "reaction": [
+                {"t":"narr","text":"那句话说得很轻。可在这里，三个人都听见了。"},
+                {"t":"say","who":"mia","text":"……嗯。"},
+                {"t":"narr","text":"莉亚别过脸，没有反驳。"}
+              ],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH13_EXPOSED":"KIND"},"add":{"GD_BOND_LIA":1,"GD_BOND_MIA":1,"GD_BOND_SERENA":1}}
+            },
+            {
+              "id": "mock",
+              "label": "嘲笑或冷言",
+              "desc": "笑她们丢人、可怜、活该。",
+              "keywords": ["真丢人","丢人","可怜","真惨","活该","好笑","笑死","没出息","!不丢人","!不可怜","!不笑"],
+              "morality": -1,
+              "reaction": [
+                {"t":"narr","text":"光点暗了一下。"},
+                {"t":"say","who":"serena","text":"……在这里，每一个字，我们都听得见。"},
+                {"t":"narr","text":"没有人再看他。"}
+              ],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH13_EXPOSED":"MOCK"},"add":{"GD_BOND_LIA":-1,"GD_BOND_MIA":-1,"GD_BOND_SERENA":-1}}
+            },
+            {
+              "id": "pretend",
+              "label": "假装没看见",
+              "desc": "说自己什么都没看见，想替她们藏起来。",
+              "keywords": ["我什么都没看见","没看见","没看到","什么都没看见","我没看","装作没看见","假装没看见","看不清"],
+              "morality": 0,
+              "reaction": [
+                {"t":"say","who":"lia","text":"……说谎。"},
+                {"t":"say","who":"serena","text":"在这里，谎话也会被看见。"},
+                {"t":"narr","text":"她顿了顿。"},
+                {"t":"say","who":"serena","text":"……不过，谢谢你想替我们藏起来。"}
+              ],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH13_EXPOSED":"PRETEND"}}
+            },
+            {
+              "id": "hug",
+              "label": "一个一个拥抱她们",
+              "desc": "走向莉亚、米娅、塞雷娜，一个一个抱住她们。",
+              "keywords": ["一个一个抱","拥抱","抱住","抱","张开手","走向她们","走过去","搂","!不抱","!别抱","!不会抱","!不想抱"],
+              "morality": 1,
+              "reaction": [
+                {"t":"narr","text":"{PLAYER_NAME}先走向莉亚。"},
+                {"t":"narr","text":"莉亚往后退了半步——在没有地面的地方，退也退不到哪里去。他抱住了她。"},
+                {"t":"say","who":"lia","text":"……放手。谁准你——"},
+                {"t":"narr","text":"话没说完。她的肩膀抖了一下，没有推开。"},
+                {"t":"narr","text":"然后是米娅。她“哇”了一声，整个人撞进他怀里，又飞快地弹开，假装在整理袖子。"},
+                {"t":"narr","text":"最后是塞雷娜。她站得笔直，等他走近，才很慢很慢地，把额头靠在他肩上。"},
+                {"t":"say","who":"serena","text":"……谢谢。"}
+              ],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH13_EXPOSED":"HUG"},"add":{"GD_BOND_LIA":1,"GD_BOND_MIA":1,"GD_BOND_SERENA":1}}
+            },
+            {
+              "id": "to_lia",
+              "label": "对莉亚说“不要恨自己”",
+              "desc": "把希尔达那句话说给莉亚听：不要恨自己、不是你的错。",
+              "keywords": ["不要恨自己","别恨自己","恨自己","不是你的错","希尔达","莉亚"],
+              "morality": 1,
+              "reaction": [
+                {"t":"narr","text":"那句话一出口，四周的光点安静了一瞬。"},
+                {"t":"say","who":"lia","text":"……谁准你替她说的。"},
+                {"t":"narr","text":"她的声音很硬，眼眶却红了。"},
+                {"t":"say","who":"lia","text":"……再说一遍。"},
+                {"t":"narr","text":"她又立刻别过脸去。"},
+                {"t":"say","who":"lia","text":"算了。别说了。……切。"}
+              ],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH13_EXPOSED":"TO_LIA"},"add":{"GD_BOND_LIA":1,"GD_BOND_MIA":1,"GD_BOND_SERENA":1}}
+            },
+            {
+              "id": "together",
+              "label": "原来我们都一样",
+              "desc": "说原来大家都一样：带着伤疤，假装没事。",
+              "keywords": ["原来我们都一样","我们都一样","都一样","伤疤","假装没事","都是这样","谁都有","原来大家","没关系","我也是"],
+              "morality": 1,
+              "reaction": [
+                {"t":"say","who":"mia","text":"……都是这样吗。原来大家都在假装啊。"},
+                {"t":"say","who":"serena","text":"观测结果显示……是的。四个人，都是。"},
+                {"t":"narr","text":"莉亚别过脸，伸手去整理肩甲——肩甲不在这里。她的手停在半空，慢慢放下了。"}
+              ],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH13_EXPOSED":"TOGETHER"},"add":{"GD_BOND_LIA":1,"GD_BOND_MIA":1,"GD_BOND_SERENA":1}}
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {"t":"narr","text":"{PLAYER_NAME}没有说话。他只是待在那里，让她们看——就像她们让他看一样。"},
+                {"t":"say","who":"mia","text":"……嗯。这样也行。"}
+              ],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH13_EXPOSED":"QUIET"}}
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {"t":"say","who":"lia","text":"……希尔达说“不要恨自己”。我花了三年，一天都没做到。"},
+        {"t":"say","who":"lia","text":"但也许……现在可以试试了。"},
+        {"t":"say","who":"mia","text":"我不用再站在门口等了。因为这一次，有人来了。还一下子来了三个。"},
+        {"t":"narr","text":"她笑了一下，眼睛是湿的。左耳慢慢转了回来。"},
+        {"t":"say","who":"serena","text":"母亲没有回来。"},
+        {"t":"narr","text":"她停了很久。"},
+        {"t":"say","who":"serena","text":"可是，你们在这里。……这就够了。"},
+        {
+          "t": "if",
+          "when": {"var":"GD_BOND_LIA","gte":14},
+          "then": [{"t":"narr","text":"莉亚飘过他身边的时候，用肩膀很轻地撞了他一下。"},{"t":"say","who":"lia","text":"……出去以后，这里的事不准提。笨蛋队长。"}]
+        }
+      ]
+    },
+    {
+      "id": "g013-03",
+      "title": "自由输入：最后的锚点",
+      "bg": "memory-space",
+      "music": "seal_rising",
+      "ambience": ["hum","chime"],
+      "beats": [
+        {"t":"narr","text":"四团光从四个人身上浮起来——赤色、青蓝、紫色，还有一团说不出颜色的，从{PLAYER_NAME}的胸口升起。"},
+        {"t":"narr","text":"它们越转越近，拧成一股往上流的河。颜色混在一起，不是白，是谁都没见过的颜色，像黎明前天边最先亮起的那一线。"},
+        {"t":"say","who":"dawn_lord","text":"……这不在我的计算里。","note":"从四面八方传来"},
+        {"t":"say","who":"dawn_lord","text":"四重共鸣。不是一个人烧尽，而是四个人分担……能量，够了。"},
+        {"t":"say","who":"serena","text":"这就是第四条路。不是牺牲——是信任。"},
+        {"t":"narr","text":"光河涌进黎明种的核心。刺眼的白一点点收拢，变成柔和的金。"},
+        {"t":"say","who":"mia","text":"记忆在流走……像图纸被水洇过，线还在，边上晕开了。"},
+        {"t":"say","who":"lia","text":"北境的雪……没有那么冷了。希尔达的脸还在。可是那种痛，在变轻。"},
+        {"t":"say","who":"serena","text":"预言安静下来了。那些潮水一样的未来，在往后退。"},
+        {"t":"narr","text":"每个人都只失去一部分。最尖的棱角被磨平了，伤疤还在，只是不再流血。"},
+        {"t":"say","who":"dawn_lord","text":"封印完成度九成。还差一个“锚点”——一段足够强的、不属于痛苦的记忆。一段纯粹的连接。"},
+        {"t":"narr","text":"四个人对视了一眼，不约而同地想到了同一个画面。"},
+        {"t":"narr","text":"篝火。银轨号停在荒原上，米娅枕着零号打盹，莉亚抱着剑假装睡着，塞雷娜仰头看星星。没有人说话。"},
+        {"t":"say","who":"lia","text":"……那一夜。"},
+        {"t":"say","who":"serena","text":"在所有的时间线里，都会出现的那一幕。"},
+        {"t":"narr","text":"三段一模一样的记忆从她们身上浮起来。轮到{PLAYER_NAME}的那一份了——那是他最珍贵的东西。"},
+        {
+          "t": "input",
+          "id": "FI_G013_SC03_ANCHOR_001",
+          "kind": "vow",
+          "prompt": "封印还差最后一个锚点：篝火旁的那一夜。三个人的那一份已经交了出去，现在轮到{PLAYER_NAME}把自己的那一份推出去——交出去会失去一部分，但这一夜会成为封印的锚。他可以说出来、闭上眼睛让它流出去、犹豫着想留住它，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": ["lia","mia","serena","dawn_lord"],
+          "context": ["篝火那一夜：列车停在荒原，四个人围着火，谁都没有说话。","交出去的只是一部分；这一夜本身不会被忘掉。","黎明卿的声音从四面八方传来，在等最后的锚点。"],
+          "principles": [
+            "ANCHOR：判定优先序：否定式（不犹豫、不用留） > 舍不得、想留住 > 说出来 > 闭上眼睛放手 > 沉默。",
+            "无论哪一种，锚点最后都会交出去（剧本硬事件）；犹豫不算错，只是让她们开口劝他。",
+            "本节点的非固定反应，最多一行、不超过20字。"
+          ],
+          "intents": [
+            {
+              "id": "neg_guard",
+              "label": "否定式表态（按放手处理）",
+              "desc": "“不犹豫”“不用留”这类否定句，意思是放手交出去。",
+              "keywords": ["不犹豫","没犹豫","不留着","不用留","不想留","不必留"],
+              "morality": 0,
+              "reaction": [{"t":"narr","text":"{PLAYER_NAME}松开了手。"},{"t":"narr","text":"那一夜从他身上浮起来，像是早就知道该去哪里。"}],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH13_ANCHOR":"CLOSED"}}
+            },
+            {
+              "id": "hold",
+              "label": "舍不得、想留住",
+              "desc": "犹豫，想把这一夜留在自己身上。",
+              "keywords": ["舍不得","不舍得","想留着","留着","不想交","不交","不给","犹豫","能不能不","!不犹豫","!不留着","!不用留"],
+              "morality": 0,
+              "reaction": [
+                {"t":"say","who":"serena","text":"……我也舍不得。"},
+                {"t":"say","who":"lia","text":"交出去的不是那一夜。是那一夜的一部分。"},
+                {"t":"say","who":"lia","text":"剩下的，够你记一辈子。"},
+                {"t":"narr","text":"{PLAYER_NAME}慢慢松开了手。"}
+              ],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH13_ANCHOR":"HELD"}}
+            },
+            {
+              "id": "spoken",
+              "label": "说出来：这一夜永远不会忘",
+              "desc": "“拿去吧，这一夜我永远不会忘。”",
+              "keywords": ["拿去吧","拿去","永远不会忘","不会忘","忘不了","这一夜","那一夜","我记得","记住"],
+              "morality": 0,
+              "reaction": [
+                {"t":"narr","text":"他说出口的那一句，也跟着光一起流了进去。"},
+                {"t":"say","who":"mia","text":"……我也不会忘。我记性很好的，图纸看一遍就能背。"},
+                {"t":"say","who":"lia","text":"……嗯。"}
+              ],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH13_ANCHOR":"SPOKEN"}}
+            },
+            {
+              "id": "closed",
+              "label": "闭上眼睛，让它流出去",
+              "desc": "不需要语言，闭上眼睛放手。",
+              "keywords": ["闭上眼睛","闭眼","闭上眼","放手","松开手","让它流","交出去","推出去","推过去"],
+              "morality": 0,
+              "reaction": [
+                {"t":"narr","text":"{PLAYER_NAME}闭上眼睛。"},
+                {"t":"narr","text":"火的噼啪声，零号的咕噜声，莉亚放下剑时那一声轻响……一点一点，从他身上流了出去。"},
+                {"t":"narr","text":"不需要说什么。"}
+              ],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH13_ANCHOR":"CLOSED"}}
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [{"t":"narr","text":"他没有说话。那一夜自己从他身上浮了起来，像是知道该去哪里。"}],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH13_ANCHOR":"QUIET"}}
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {"t":"narr","text":"四道光合成一道。黎明种发出一声清亮的鸣响——像钟，像风铃，又像四个人同时笑出声来。"},
+        {"t":"say","who":"dawn_lord","text":"封印……完成。记忆改写程序，终止。"},
+        {"t":"narr","text":"种子表面浮现出四道交织的纹路：赤色，青蓝，紫色，还有一道没有颜色的光。漫天光点像流星雨一样落下，各自飞回主人身边。"}
+      ]
+    },
+    {
+      "id": "g013-04",
+      "title": "自由输入：三条预言",
+      "bg": "nox-observatory-core",
+      "music": "after_the_seal",
+      "ambience": ["hum_low"],
+      "beats": [
+        {"t":"narr","text":"{PLAYER_NAME}睁开眼睛。他还站在基座上，仪式阵一圈一圈熄灭。黎明种静静悬在半空，像一颗睡着了的星星。"},
+        {"t":"say","who":"mia","text":"我们……成功了？"},
+        {"t":"say","who":"lia","text":"……成功了。"},
+        {"t":"narr","text":"话音刚落，莉亚的腿一软。{PLAYER_NAME}一把扶住了她。她的胸甲爬满细纹，“断章”的剑身上多了一道新的裂痕。"},
+        {"t":"say","who":"lia","text":"……别扶。"},
+        {"t":"narr","text":"她没有松开他的手臂。"},
+        {"t":"say","who":"lia","text":"……算了。扶着。"},
+        {"t":"say","who":"serena","text":"“赤色之剑将断裂”……剑裂了，可是没有断。"},
+        {"t":"narr","text":"她转向米娅。"},
+        {"t":"say","who":"serena","text":"“九命之猫将失去最后一命”……"},
+        {"t":"narr","text":"米娅怀里的零号，没有声音。蓝宝石眼睛暗着，齿轮一颗也不转了，共感齿轮的裂纹爬满了整个表面。"},
+        {"t":"say","who":"mia","text":"零号……零号？"},
+        {"t":"narr","text":"米娅跪下来，手指发抖地拧开面板。碎齿轮叮叮当当落了一地。"},
+        {"t":"say","who":"mia","text":"不……你答应过我的，你说好要一直咕噜咕噜的……喵……"},
+        {"t":"narr","text":"她的声音越来越小，最后只剩下拧螺丝的声音。拧上，又拧开。"},
+        {
+          "t": "input",
+          "id": "FI_G013_SC04_ZERO_001",
+          "kind": "action",
+          "prompt": "零号的眼睛暗了，齿轮全停。米娅跪在地上，一遍遍拧着它的面板，声音越来越小。{PLAYER_NAME}可以蹲下来陪着她、帮她一起修、安慰她、叫零号的名字，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": ["mia","lia","serena"],
+          "context": ["零号在束缚阵里替大家挡过一次，那时共感齿轮就裂了。","米娅最怕的是安静；她最想要的，是她安静下来时还有人留在身边。","零号的共感齿轮会回应人的情感。"],
+          "principles": [
+            "ZERO：判定优先序：否定式（不只是机器、别放弃） > 说它只是机器、劝她放弃 > 叫零号的名字 > 帮她修 > 安慰 > 陪着她 > 沉默。",
+            "零号会不会醒由剧本决定（会醒），不由这一句决定；不写成玩家把它修好了。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "neg_guard",
+              "label": "否定式表态（按安慰处理）",
+              "desc": "“它不只是机器”“别放弃”这类否定句，是安慰。",
+              "keywords": ["不只是机器","不是机器","不只是个机器","别放弃","不要放弃","不会放弃","没有放弃","修得好"],
+              "morality": 1,
+              "reaction": [
+                {"t":"say","who":"mia","text":"……你又不懂机关。"},
+                {"t":"narr","text":"她吸了吸鼻子，手却稳了一点。"},
+                {"t":"say","who":"mia","text":"……可是，谢谢。"}
+              ],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH13_ZERO":"REASSURE"}}
+            },
+            {
+              "id": "dismiss",
+              "label": "说它只是机器",
+              "desc": "它只是机器、再做一个、修不好了、放弃吧。",
+              "keywords": ["只是机器","只是个机器","再做一个","放弃吧","修不好了","没救了","算了吧","!不只是","!不是机器","!别放弃","!不要放弃"],
+              "morality": -1,
+              "reaction": [
+                {"t":"narr","text":"米娅的手停住了。"},
+                {"t":"say","who":"mia","text":"……它不是“只是”。"},
+                {"t":"narr","text":"她没有抬头，接着拧。"}
+              ],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH13_ZERO":"DISMISS"},"add":{"GD_BOND_MIA":-1}}
+            },
+            {
+              "id": "name",
+              "label": "叫零号的名字",
+              "desc": "对着零号喊它的名字，叫它醒醒。",
+              "keywords": ["零号醒醒","零号","醒醒","叫它的名字","喊它","叫零号","你好零号"],
+              "morality": 1,
+              "reaction": [
+                {"t":"narr","text":"{PLAYER_NAME}叫了一声它的名字。"},
+                {"t":"narr","text":"米娅拧螺丝的手停了一下。"},
+                {"t":"say","who":"mia","text":"……对。叫它。它听得见的。它一直都听得见。"}
+              ],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH13_ZERO":"NAME"}}
+            },
+            {
+              "id": "help",
+              "label": "帮她一起修",
+              "desc": "蹲下来按住面板、递工具，跟她一起修。",
+              "keywords": ["我帮你修","帮你修","一起修","我帮你","递工具","按住面板","帮忙","修"],
+              "morality": 1,
+              "reaction": [
+                {"t":"narr","text":"{PLAYER_NAME}蹲下来，替她按住面板。"},
+                {"t":"say","who":"mia","text":"……左边。那颗小的。别碰共感齿轮——好，就这样。"},
+                {"t":"narr","text":"她的手不抖了。"}
+              ],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH13_ZERO":"HELP"}}
+            },
+            {
+              "id": "reassure",
+              "label": "安慰她",
+              "desc": "别怕、会好的、它会醒的。",
+              "keywords": ["别怕","没事的","会好的","它会醒","相信它","不会有事","别哭","没事"],
+              "morality": 1,
+              "reaction": [
+                {"t":"say","who":"mia","text":"……你又不懂机关。"},
+                {"t":"narr","text":"她吸了吸鼻子，手却稳了一点。"},
+                {"t":"say","who":"mia","text":"……可是，谢谢。"}
+              ],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH13_ZERO":"REASSURE"}}
+            },
+            {
+              "id": "stay",
+              "label": "陪着她",
+              "desc": "在她身边蹲下来，什么也不说，就在那里。",
+              "keywords": ["陪着她","陪着你","陪她","蹲下来","坐在她旁边","在她身边","我在这里","我在"],
+              "morality": 1,
+              "reaction": [{"t":"narr","text":"{PLAYER_NAME}在她身边蹲下来，什么也没说。"},{"t":"narr","text":"米娅拧螺丝的手慢了下来。她没有抬头，肩膀轻轻靠了过来。"}],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH13_ZERO":"STAY"}}
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [{"t":"narr","text":"{PLAYER_NAME}没有出声。米娅也没有赶他走。"}],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH13_ZERO":"QUIET"}}
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {"t":"narr","text":"然后——很轻很轻的，一声“咕噜”。零号的眼睛闪了一下，弱得像快熄灭的烛火。冰凉的前爪，轻轻勾住了米娅的手指。"},
+        {"t":"say","who":"mia","text":"……！笨蛋零号！你吓死我了！"},
+        {"t":"narr","text":"她把零号整个抱进怀里，哭得一塌糊涂，又笑出声来。"},
+        {"t":"say","who":"mia","text":"十条命，用掉一条……还剩九条。够用的。"},
+        {
+          "t": "if",
+          "when": {"var":"GD_BOND_MIA","gte":14},
+          "then": [{"t":"narr","text":"她抬起头，看了{PLAYER_NAME}一眼。"},{"t":"say","who":"mia","text":"……刚才，谢谢你在。我说的就是“在”。"}]
+        },
+        {"t":"say","who":"serena","text":"“紫月之眼将永远闭合”……"},
+        {"t":"narr","text":"塞雷娜闭上眼睛。再睁开时，瞳孔里缓缓旋转的星轨刻线不见了，只剩一双普通的、深紫色的眼睛。"},
+        {"t":"say","who":"serena","text":"……看不见了。未来，全部看不见了。"},
+        {"t":"narr","text":"她站在原地，很久没有动。"},
+        {
+          "t": "input",
+          "id": "FI_G013_SC04_EYES_001",
+          "kind": "dialogue",
+          "prompt": "塞雷娜的预言之眼闭合了，她再也看不见未来，站在原地很久没有动。{PLAYER_NAME}可以问她还好吗、告诉她以后可以只看现在、走到她身边、问她以后怎么办，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": ["serena","lia","mia"],
+          "context": ["塞雷娜最怕的不是死，是全知：如果一切都能预见，活着还有什么意义。","她七岁第一次“看见”，从此每一秒都在看见。","每一次预言都会夺走她一部分记忆。"],
+          "principles": [
+            "EYES：判定优先序：否定式（不可惜） > 说她没用了 > 可惜 > 问以后怎么办 > 告诉她只看现在 > 问她还好吗 > 走到她身边 > 沉默。",
+            "这一刻对她既是失去也是解脱；不让她崩溃，也不替她说出“解脱”。",
+            "本节点的非固定反应，最多一行、不超过20字。"
+          ],
+          "intents": [
+            {
+              "id": "neg_guard",
+              "label": "否定式表态（按“只看现在”处理）",
+              "desc": "“不可惜”“不是没用”这类否定句，是宽慰。",
+              "keywords": ["不可惜","没什么可惜","不是没用","不会没用","一点也不可惜"],
+              "morality": 1,
+              "reaction": [{"t":"say","who":"serena","text":"……不可惜吗。"},{"t":"narr","text":"她重复了一遍，像第一次学会一个词。"}],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH13_EYES":"PRESENT"}}
+            },
+            {
+              "id": "cruel",
+              "label": "说她没用了",
+              "desc": "看不见未来的观测者没用了、废了。",
+              "keywords": ["你没用了","没用了","废了","派不上用场","没价值","!不是没用"],
+              "morality": -1,
+              "reaction": [
+                {"t":"say","who":"serena","text":"……看不见未来的观测者，就没有用了。"},
+                {"t":"narr","text":"她轻轻念了一遍，像在念一行旧规章。"},
+                {"t":"say","who":"serena","text":"观测所的守则里，也是这么写的。"}
+              ],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH13_EYES":"CRUEL"},"add":{"GD_BOND_SERENA":-1}}
+            },
+            {
+              "id": "pity",
+              "label": "觉得可惜",
+              "desc": "好可惜、太遗憾了。",
+              "keywords": ["好可惜","可惜","太可惜","遗憾","!不可惜"],
+              "morality": 0,
+              "reaction": [
+                {"t":"say","who":"serena","text":"……可惜吗。"},
+                {"t":"narr","text":"她想了想。"},
+                {"t":"say","who":"serena","text":"我以为我会这么觉得。"}
+              ],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH13_EYES":"PITY"}}
+            },
+            {
+              "id": "future",
+              "label": "问以后怎么办",
+              "desc": "那以后怎么办、接下来呢。",
+              "keywords": ["以后怎么办","怎么办","以后呢","接下来","那以后"],
+              "morality": 0,
+              "reaction": [
+                {"t":"say","who":"serena","text":"以后……我不知道。"},
+                {"t":"narr","text":"她说完，自己愣了一下。"},
+                {"t":"say","who":"serena","text":"……我不知道。原来说出这句话，是这种感觉。"}
+              ],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH13_EYES":"FUTURE"}}
+            },
+            {
+              "id": "present",
+              "label": "告诉她只看现在",
+              "desc": "以后可以只看现在、不用再看未来了。",
+              "keywords": ["只看现在","看现在","现在就好","不用看未来","活在现在","就看现在","看我们","现在"],
+              "morality": 1,
+              "reaction": [
+                {"t":"say","who":"serena","text":"……只看现在。"},
+                {"t":"narr","text":"她重复了一遍，像第一次学会一个词。"},
+                {"t":"narr","text":"她抬起头，真的去看了——看莉亚，看米娅，看{PLAYER_NAME}。"}
+              ],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH13_EYES":"PRESENT"}}
+            },
+            {
+              "id": "ask",
+              "label": "问她还好吗",
+              "desc": "你还好吗、没事吧、难受吗。",
+              "keywords": ["你还好吗","还好吗","没事吧","难受吗","感觉怎么样","怎么样"],
+              "morality": 1,
+              "reaction": [
+                {"t":"say","who":"serena","text":"我……不知道该怎么回答。以前，我总是在别人问之前就知道答案。"},
+                {"t":"narr","text":"她顿了顿。"},
+                {"t":"say","who":"serena","text":"现在要等你问完，我才能想。……这样，很好。"}
+              ],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH13_EYES":"ASK"}}
+            },
+            {
+              "id": "beside",
+              "label": "走到她身边",
+              "desc": "走过去站在她身边，或者握住她的手。",
+              "keywords": ["走到她身边","站到她旁边","站在她身边","牵她的手","握住她的手","走过去","陪着她","陪她"],
+              "morality": 1,
+              "reaction": [{"t":"narr","text":"{PLAYER_NAME}走过去，站到她身边，什么也没问。"},{"t":"narr","text":"塞雷娜没有看他。可她也没有走开。"}],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH13_EYES":"BESIDE"}}
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [{"t":"narr","text":"没有人说话。核心室里，只有零号很轻很轻的咕噜声。"}],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH13_EYES":"QUIET"}}
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {"t":"say","who":"serena","text":"……好安静。原来这就是“现在”的感觉。只有现在，没有以后。"},
+        {"t":"narr","text":"然后她笑了。不是从前那种隔着一层纱的微笑——是一个普通的、松了一口气的、十九岁女孩的笑。"},
+        {
+          "t": "if",
+          "when": {"var":"GD_BOND_SERENA","gte":14},
+          "then": [{"t":"narr","text":"她朝{PLAYER_NAME}伸出那只没戴手套的右手，在半空停了停，最后只轻轻碰了一下他的袖口。"}]
+        },
+        {"t":"say","who":"lia","text":"……预言都应验了。可每一条，都不是我们以为的那样。"},
+        {"t":"say","who":"serena","text":"嗯。第四条路从来不是逃开预言。是把它重新写一遍。"},
+        {"t":"narr","text":"穹顶外，月亮的边缘亮起一线银光，越来越宽。月蚀在退。黎明——真正的黎明——要来了。"}
+      ]
+    }
+  ],
+  "end": {
+    "save": "SAVE_G013_END",
+    "next": "g014",
+    "set": {"flags":{"GD_CH13_SEALED":true}},
+    "summary": [
+      {"text":"{PLAYER_NAME}和莉亚、米娅、塞雷娜在记忆空间里，看见了彼此最深的伤疤。"},
+      {"when":{"flag":"GD_CH13_EXPOSED","eq":"HUG"},"text":"{PLAYER_NAME}在光里一个一个抱住了她们；莉亚说了“放手”，却没有推开。"},
+      {"when":{"flag":"GD_CH13_EXPOSED","eq":"TO_LIA"},"text":"{PLAYER_NAME}把希尔达那句“不要恨自己”，说给了莉亚听。"},
+      {"when":{"flag":"GD_CH13_EXPOSED","eq":"TOGETHER"},"text":"{PLAYER_NAME}说，原来大家都一样：带着伤疤，假装没事。"},
+      {"when":{"flag":"GD_CH13_EXPOSED","eq":"PRETEND"},"text":"{PLAYER_NAME}想假装什么都没看见；可在那里，谎话也会被看见。"},
+      {"when":{"flag":"GD_CH13_EXPOSED","eq":"MOCK"},"text":"{PLAYER_NAME}在记忆空间里说了冷话，光点暗了一下。"},
+      {"text":"四个人分担了封印的代价，篝火旁的那一夜，成了最后的锚点。"},
+      {"when":{"flag":"GD_CH13_ANCHOR","eq":"HELD"},"text":"交出那一夜之前，{PLAYER_NAME}犹豫过；莉亚说，剩下的够他记一辈子。"},
+      {
+        "when": {
+          "any": [
+            {"flag":"GD_CH13_ZERO","eq":"STAY"},
+            {"flag":"GD_CH13_ZERO","eq":"HELP"},
+            {"flag":"GD_CH13_ZERO","eq":"NAME"},
+            {"flag":"GD_CH13_ZERO","eq":"REASSURE"}
+          ]
+        },
+        "text": "零号停下的时候，{PLAYER_NAME}陪在米娅身边；然后，它咕噜了一声。"
+      },
+      {"when":{"flag":"GD_CH13_ZERO","eq":"DISMISS"},"text":"{PLAYER_NAME}说零号只是机器，米娅没有抬头。"},
+      {"text":"莉亚的剑裂了，没有断；零号还在转；塞雷娜再也看不见未来，第一次只剩下“现在”。"}
+    ]
+  }
+}

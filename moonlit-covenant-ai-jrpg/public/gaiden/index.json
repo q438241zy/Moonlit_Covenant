@@ -1,0 +1,137 @@
+[
+  {
+    "id": "g001",
+    "number": 1,
+    "title": "第一章｜银轨号上的异变",
+    "estimatedMinutes": 9,
+    "file": "/gaiden/g001.json",
+    "requires": null,
+    "source": "scenario/chapter-01.json"
+  },
+  {
+    "id": "g002",
+    "number": 2,
+    "title": "第二章｜赤色誓约",
+    "estimatedMinutes": 7,
+    "file": "/gaiden/g002.json",
+    "requires": "g001",
+    "source": "scenario/chapter-02.json"
+  },
+  {
+    "id": "g003",
+    "number": 3,
+    "title": "第三章｜九命机关",
+    "estimatedMinutes": 9,
+    "file": "/gaiden/g003.json",
+    "requires": "g002",
+    "source": "scenario/chapter-03.json"
+  },
+  {
+    "id": "g004",
+    "number": 4,
+    "title": "第四章｜月蚀预言",
+    "estimatedMinutes": 7,
+    "file": "/gaiden/g004.json",
+    "requires": "g003",
+    "source": "scenario/chapter-04.json"
+  },
+  {
+    "id": "g005",
+    "number": 5,
+    "title": "第五章｜战前之夜",
+    "estimatedMinutes": 8,
+    "file": "/gaiden/g005.json",
+    "requires": "g004",
+    "source": "scenario/chapter-05.json"
+  },
+  {
+    "id": "g006",
+    "number": 6,
+    "title": "第六章｜霜冻回廊",
+    "estimatedMinutes": 8,
+    "file": "/gaiden/g006.json",
+    "requires": "g005",
+    "source": "scenario/chapter-06.json"
+  },
+  {
+    "id": "g007",
+    "number": 7,
+    "title": "第七章｜食梦兽",
+    "estimatedMinutes": 9,
+    "file": "/gaiden/g007.json",
+    "requires": "g006",
+    "source": "scenario/chapter-07.json"
+  },
+  {
+    "id": "g008",
+    "number": 8,
+    "title": "第八章｜裂隙深处",
+    "estimatedMinutes": 8,
+    "file": "/gaiden/g008.json",
+    "requires": "g007",
+    "source": "scenario/chapter-08.json"
+  },
+  {
+    "id": "g009",
+    "number": 9,
+    "title": "第九章｜记忆碎片",
+    "estimatedMinutes": 9,
+    "file": "/gaiden/g009.json",
+    "requires": "g008",
+    "source": "scenario/chapter-09.json"
+  },
+  {
+    "id": "g010",
+    "number": 10,
+    "title": "第十章｜黎明种",
+    "estimatedMinutes": 7,
+    "file": "/gaiden/g010.json",
+    "requires": "g009",
+    "source": "scenario/chapter-10.json"
+  },
+  {
+    "id": "g011",
+    "number": 11,
+    "title": "第十一章｜背叛与信任",
+    "estimatedMinutes": 9,
+    "file": "/gaiden/g011.json",
+    "requires": "g010",
+    "source": "scenario/chapter-11.json"
+  },
+  {
+    "id": "g012",
+    "number": 12,
+    "title": "第十二章｜月蚀降临",
+    "estimatedMinutes": 9,
+    "file": "/gaiden/g012.json",
+    "requires": "g011",
+    "source": "scenario/chapter-12.json"
+  },
+  {
+    "id": "g013",
+    "number": 13,
+    "title": "第十三章｜最终封印",
+    "estimatedMinutes": 9,
+    "file": "/gaiden/g013.json",
+    "requires": "g012",
+    "source": "scenario/chapter-13.json"
+  },
+  {
+    "id": "g014",
+    "number": 14,
+    "title": "第十四章｜第四条路",
+    "estimatedMinutes": 9,
+    "file": "/gaiden/g014.json",
+    "requires": "g013",
+    "source": "scenario/chapter-14.json"
+  },
+  {
+    "id": "g015",
+    "number": 15,
+    "title": "第十五章｜她们会记得你",
+    "estimatedMinutes": 9,
+    "file": "/gaiden/g015.json",
+    "requires": "g014",
+    "source": "scenario/chapter-15.json"
+  }
+]

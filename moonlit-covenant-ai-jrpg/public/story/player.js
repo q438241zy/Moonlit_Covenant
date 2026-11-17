@@ -16,15 +16,22 @@ import { mountCommissionBoard } from '../skill-board.js';
 const root = document.getElementById('story');
 const toastRoot = document.getElementById('toasts');
 
+// 同一个播放器放两条轨道（docs/STORY-ENGINE.md §12）：默认是主线（正史）；?track=gaiden 是 IF 外传《银轨号》正篇——
+// 章节在 /gaiden/（不在 /story/ 这个正典目录里），存档、通关记录与已读都另用一组键，不发主线奖励，也没有番外与委托板。
+const GAIDEN = (() => { try { return new URLSearchParams(window.location.search).get('track') === 'gaiden'; } catch { return false; } })();
+const TRACK = GAIDEN
+  ? { index: '/gaiden/index.json', dir: '/gaiden/', id: /^g\d{3}$/, keyPrefix: 'moonlit:story:gd:', canon: '默认前情' }
+  : { index: '/story/chapters/index.json', dir: '/story/chapters/', id: /^ch\d{3}$/, keyPrefix: 'moonlit:story:', canon: '默认正史' };
+
 const KEYS = {
   name: 'moonlit:name',
   settings: 'moonlit:story:settings',
-  auto: 'moonlit:story:autosave',
-  progress: 'moonlit:story:progress',
-  read: 'moonlit:story:read',
-  backlog: 'moonlit:story:backlog',
-  draft: 'moonlit:story:draft',
-  save: (key) => `moonlit:story:save:${key}`,
+  auto: `${TRACK.keyPrefix}autosave`,
+  progress: `${TRACK.keyPrefix}progress`,
+  read: `${TRACK.keyPrefix}read`,
+  backlog: `${TRACK.keyPrefix}backlog`,
+  draft: `${TRACK.keyPrefix}draft`,
+  save: (key) => `${TRACK.keyPrefix}save:${key}`,
   // 番外（剧本规格§七「存档键与主线分开」）：自动存档、通关记录、章末存档、回看都另用一组键，番外永远不覆盖主线的「继续」
   exAuto: 'moonlit:story:ex:autosave',
   exProgress: 'moonlit:story:ex:progress',
@@ -266,12 +273,12 @@ async function fetchJson(url) {
 
 // 主线章节在 /story/chapters/，番外（ex001–ex010）在 /story/extras/（番外目录 S.extras）
 async function loadChapter(id) {
-  const extra = isExtraId(id);
-  if (!/^ch\d{3}$/.test(String(id || '')) && !extra) return null;
+  const extra = !GAIDEN && isExtraId(id);
+  if (!TRACK.id.test(String(id || '')) && !extra) return null;
   if (S.chapters.get(id)) return S.chapters.get(id);
   const entry = (extra ? S.extras : S.index).find((e) => e.id === id);
-  const pattern = extra ? /^\/story\/extras\/ex\d{3}\.json$/ : /^\/story\/chapters\/ch\d{3}\.json$/;
-  const url = pattern.test(entry?.file || '') ? entry.file : `/story/${extra ? 'extras' : 'chapters'}/${id}.json`;
+  const dir = extra ? '/story/extras/' : TRACK.dir;
+  const url = entry?.file === `${dir}${id}.json` ? entry.file : `${dir}${id}.json`;
   const chapter = await fetchJson(url);
   if (!chapter || chapter.id !== id || !Array.isArray(chapter.shots) || !chapter.shots.length) return null;
   S.chapters.set(id, chapter);
@@ -394,7 +401,7 @@ async function renderStart() {
       <header class="start-top">
         <a class="ghost-link" href="/">${icon('chevron-left', { size: 16 })}<span>返回主菜单</span></a>
         <div class="start-top-actions">
-          ${isCompleted(BOARD_OPENS) ? `<button class="btn ghost small" type="button" data-act="board">${icon('flag', { size: 16 })}<span>委托板</span></button>` : ''}
+          ${!GAIDEN && isCompleted(BOARD_OPENS) ? `<button class="btn ghost small" type="button" data-act="board">${icon('flag', { size: 16 })}<span>委托板</span></button>` : ''}
           <button class="icon-btn" type="button" data-act="settings" aria-haspopup="dialog" aria-expanded="false" aria-label="设置">${icon('settings', { size: 19 })}</button>
         </div>
         ${settingsHtml()}
@@ -402,9 +409,11 @@ async function renderStart() {
       <div class="start-grid">
         <section class="start-hero" aria-labelledby="startTitle">
           <img class="start-crest" src="/assets/ui/eclipse-crest.svg" alt="" />
-          <p class="eyebrow">MAIN STORY · 主线（正史）</p>
+          ${GAIDEN ? `<p class="eyebrow">IF SIDE STORY · 外传（IF）</p>
+          <h1 class="start-title" id="startTitle">银轨号<span>她们会记得你</span></h1>
+          <p class="start-tag">开往世界尽头的列车在无星夜里停驶，窗外有一只正在吃记忆的眼睛。<br>这里同样没有固定选项——你说出口的每一句话，她们都会记得。</p>` : `<p class="eyebrow">MAIN STORY · 主线（正史）</p>
           <h1 class="start-title" id="startTitle">月蚀契约<span>亚克的旅程</span></h1>
-          <p class="start-tag">黑翼焚毁故乡的那一夜，牧羊青年立下了屠龙之誓。<br>这里没有固定选项——你说出口的每一句话、做出的每一个动作，世界都会记住。</p>
+          <p class="start-tag">黑翼焚毁故乡的那一夜，牧羊青年立下了屠龙之誓。<br>这里没有固定选项——你说出口的每一句话、做出的每一个动作，世界都会记住。</p>`}
           <label class="name-field">
             <span class="name-label">${icon('user', { size: 16 })}主角名字</span>
             <input id="nameField" type="text" maxlength="12" autocomplete="nickname" spellcheck="false" value="${esc(loadStoredName())}" placeholder="${esc(DEFAULT_PLAYER_NAME)}" />
@@ -414,11 +423,14 @@ async function renderStart() {
             <button class="btn ${primary ? 'secondary' : 'primary'} large" type="button" data-act="begin" id="beginBtn" disabled>${icon('moon', { size: 18 })}<span>载入中…</span></button>
           </div>
           <p class="start-hint">${icon('feather', { size: 15 })}点击 / 空格推进 · 在输入框里用自己的话替主角回应</p>
-          <p class="start-note">${icon('info', { size: 15 })}<span>这里是正史主线。主菜单里的「银轨号」是 IF 外传，人物设定与主线不同；主线首次通关每章可得钻石。</span></p>
+          <p class="start-note">${icon('info', { size: 15 })}<span>${GAIDEN
+    ? '这里是 IF 外传《银轨号》正篇（15 章），与正史无关：人物身份照外传设定，进度与主线分开，不发主线奖励。主菜单「外传：银轨号」里的序章是浓缩体验版。'
+    : '这里是正史主线。主菜单里的「银轨号」是 IF 外传，人物设定与主线不同；主线首次通关每章可得钻石。'}</span></p>
         </section>
         <section class="start-chapters" aria-labelledby="chapterHeading">
           <div class="chapters-head">
-            <div class="ch-tabs" role="tablist" aria-label="章节分页">
+            ${GAIDEN ? '<h2 class="gd-heading">正篇 · 15 章</h2>' : ''}
+            <div class="ch-tabs" role="tablist" aria-label="章节分页"${GAIDEN ? ' hidden' : ''}>
               <button class="ch-tab" type="button" role="tab" id="chapterHeading" data-tab="chapters" aria-controls="chPanel" aria-selected="${S.tab === 'chapters'}" tabindex="${S.tab === 'chapters' ? 0 : -1}">章节</button>
               <button class="ch-tab" type="button" role="tab" id="extrasHeading" data-tab="extras" aria-controls="exPanel" aria-selected="${S.tab === 'extras'}" tabindex="${S.tab === 'extras' ? 0 : -1}">番外・休息日</button>
             </div>
@@ -429,9 +441,9 @@ async function renderStart() {
               ${ids.map((id) => chapterCardHtml(id)).join('') || '<li class="ch-empty">章节目录读取失败，请刷新重试。</li>'}
             </ol>
           </div>
-          <div id="exPanel" role="tabpanel" aria-labelledby="extrasHeading"${S.tab === 'extras' ? '' : ' hidden'}>
+          ${GAIDEN ? '' : `<div id="exPanel" role="tabpanel" aria-labelledby="extrasHeading"${S.tab === 'extras' ? '' : ' hidden'}>
             ${extrasPanelHtml()}
-          </div>
+          </div>`}
         </section>
       </div>
     </main>`;
@@ -443,9 +455,9 @@ async function renderStart() {
   $('[data-act="board"]')?.addEventListener('click', renderBoardView);
   bindSettings($('#start'));
   $('#chList').querySelectorAll('[data-start]').forEach((btn) => btn.addEventListener('click', () => startChapter(btn.dataset.start, { canon: btn.dataset.canon === '1' })));
-  bindExtrasPanel();
+  if (!GAIDEN) bindExtrasPanel();
   $$('.ch-tab').forEach((tab) => tab.addEventListener('click', () => switchTab(tab.dataset.tab, true)));
-  $('.ch-tabs').addEventListener('keydown', (e) => {
+  $('.ch-tabs')?.addEventListener('keydown', (e) => {
     if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
     e.preventDefault();
     switchTab(S.tab === 'chapters' ? 'extras' : 'chapters', true);
@@ -709,7 +721,7 @@ function chapterCardHtml(id) {
     if (!done && !unlocked) meta.push(`完成「${reqEntry?.label || e.requires}」后解锁`);
   }
   const canonLink = chapter && e.requires
-    ? `<button class="link-btn" type="button" data-start="${esc(id)}" data-canon="1">从本章开始（使用默认正史）</button>` : '';
+    ? `<button class="link-btn" type="button" data-start="${esc(id)}" data-canon="1">从本章开始（使用${TRACK.canon}）</button>` : '';
   const mainBtn = chapter && unlocked
     ? `<button class="btn ${done ? 'secondary' : 'primary'} small" type="button" data-start="${esc(id)}" aria-label="${done ? '重玩' : '开始'}${esc(e.label)}">${icon(done ? 'refresh' : 'play', { size: 15 })}${done ? '重玩' : '开始'}</button>` : '';
   const badge = !chapter ? `<span class="ch-badge">${icon('clock', { size: 14 })}制作中</span>`
@@ -750,7 +762,7 @@ async function startChapter(id, { canon = false } = {}) {
     run = createRun({ playerName: name, chapter, mode: S.settings.mode });
   }
   run.mode = S.settings.mode;
-  if (e.requires && !prev) toast('已按默认正史补齐前情');
+  if (e.requires && !prev) toast(GAIDEN ? '已按默认前情补齐' : '已按默认正史补齐前情');
   enterPlay(chapter, run, { fresh: true });
 }
 
@@ -1777,7 +1789,7 @@ async function judgeInput(nodeId, text, def) {
       headers: { 'content-type': 'application/json', accept: 'application/json' },
       // mode：判定器按当前内容模式写在场角色的反应（game/story-judge.mjs；没传时按 12+）
       // 番外：wearing（类型相符时她穿着什么，不计分）；主线：extraMemories（读过的番外 id，服务器取那一条记忆，只当闲谈）
-      body: JSON.stringify({ chapterId: S.chapter.id, nodeId, text, context: { ...publicSummary(S.run), mode: normalizeMode(S.run.mode), ...(inExtra() ? { wearing: wearingContext() } : { extraMemories: extraMemoryIds() }) } }),
+      body: JSON.stringify({ chapterId: S.chapter.id, nodeId, text, context: { ...publicSummary(S.run), mode: normalizeMode(S.run.mode), ...(inExtra() ? { wearing: wearingContext() } : GAIDEN ? {} : { extraMemories: extraMemoryIds() }) } }),
       signal: ctrl.signal,
     });
     if (res.ok) {
@@ -2034,7 +2046,7 @@ async function onEnd(end) {
   void scr.offsetWidth;
   scr.classList.add('show');
   announce(`章节完成：${ch.title}`);
-  showChapterReward(scr, ch, run.playerName); // 不等它：奖励到了再补进完成页
+  if (!GAIDEN) showChapterReward(scr, ch, run.playerName); // 不等它：奖励到了再补进完成页（外传不发主线奖励）
   const nextBtn = $('[data-end="next"]', scr);
   const replayBtn = $('[data-end="replay"]', scr);
   // 连按空格 / 回车 / 点击推进最后几句时，多出来的那一下会落在刚弹出的按钮上：直接跳进下一章或重玩，章节完成页一闪而过。
@@ -2293,18 +2305,20 @@ document.addEventListener('visibilitychange', () => { if (document.visibilitySta
 async function boot() {
   const params = new URLSearchParams(window.location.search);
   const want = params.get('chapter');
-  S.focus = want && /^ch\d{3}$/.test(want) ? want : null;
+  S.focus = want && TRACK.id.test(want) ? want : null;
+  if (GAIDEN) document.title = '月蚀契约 · 外传：银轨号';
+  if (GAIDEN) S.tab = 'chapters';
   // ?extra=ex001（换衣间的番外入口）或 ?tab=extras：打开「番外・休息日」分页
-  if (isExtraId(params.get('extra')) || params.get('tab') === 'extras') S.tab = 'extras';
+  if (!GAIDEN && (isExtraId(params.get('extra')) || params.get('tab') === 'extras')) S.tab = 'extras';
   const [index, speakers, locations, extras] = await Promise.all([
-    fetchJson('/story/chapters/index.json'),
+    fetchJson(TRACK.index),
     fetchJson('/story/speakers.json'),
     fetchJson('/story/locations.json'),
-    fetchJson('/story/extras/index.json'),
+    GAIDEN ? Promise.resolve([]) : fetchJson('/story/extras/index.json'),
     loadPaint(),
   ]);
   S.extras = Array.isArray(extras) ? extras.filter((e) => isExtraId(e?.id)) : [];
-  S.index = Array.isArray(index) ? index.filter((e) => /^ch\d{3}$/.test(e?.id || '')) : [];
+  S.index = Array.isArray(index) ? index.filter((e) => TRACK.id.test(e?.id || '')) : [];
   S.speakers = speakers && typeof speakers === 'object' ? speakers : {};
   S.locations = locations && typeof locations === 'object' ? locations : {};
   await renderStart();

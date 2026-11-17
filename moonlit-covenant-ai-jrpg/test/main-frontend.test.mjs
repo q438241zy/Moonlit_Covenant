@@ -105,9 +105,11 @@ test('B6：地图是外传专用；赫麦村是主线入口；没内容的城镇
   assert.match(app, /function gaidenChaptersCleared\(\)/);
 });
 
-test('B1：章节页与外传阅读器标明 IF 外传、剧本草稿（只读）', () => {
-  assert.ok(app.includes('外传：银轨号（IF 外传 · 剧本草稿）'));
+test('B1：章节页与外传阅读器标明 IF 外传；正篇可玩，原稿标「剧本草稿（只读）」', () => {
+  assert.ok(app.includes('外传：银轨号 · 正篇（IF 外传）'));
+  assert.ok(app.includes('外传原稿（剧本草稿 · 只读）'));
   assert.ok(app.includes('剧本草稿（只读）'));
+  assert.ok(app.includes("const GAIDEN_MAIN_URL = '/story.html?track=gaiden';"), '正篇在主线播放器的外传轨道里玩');
   assert.ok(app.includes('主线：亚克的旅程（正史）'));
 });
 
