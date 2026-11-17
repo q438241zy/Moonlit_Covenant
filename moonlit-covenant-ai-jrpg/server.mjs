@@ -20,7 +20,7 @@ import { generateCharacterReply, fallbackReply, AI_CONFIG } from './game/ai.mjs'
 import { CHARACTERS, STRATEGIES, DECISIONS, GAME_TITLE, GAME_SUBTITLE, CG_GALLERY } from './game/content.mjs';
 import { MEMBERSHIP_TIERS, DIAMOND_PACKS, createPlayerAccount, purchaseMembership, purchaseDiamonds, grantDailyCredits, getMembershipInfo } from './game/membership.mjs';
 import { CREDIT_COSTS, createCreditMeter, addCredit, getMeterStatus } from './game/credit.mjs';
-import { CHARACTER_POOL, COSTUME_POOL, COSTUME_TYPE_META, GACHA_RATES, GACHA_COSTS, GACHA_CURRENCY, DUPLICATE_COMPENSATION, pullGacha, PITY_THRESHOLD, publicPools, clearedChaptersOf, highestClearedChapter, viewCostume, WARDROBE_TICKET, wardrobeStatus, wardrobeTicketChoices, redeemWardrobeTicket } from './game/gacha.mjs';
+import { CHARACTER_POOL, COSTUME_POOL, COSTUME_TYPE_META, GACHA_RATES, GACHA_COSTS, GACHA_CURRENCY, DUPLICATE_COMPENSATION, pullGacha, PITY_THRESHOLD, publicPools, clearedChaptersOf, highestClearedChapter, viewCostume, WARDROBE_TICKET, wardrobeStatus, wardrobeTicketChoices, redeemWardrobeTicket, REPRINT_RULES, currentReprint, reprintTable, reprintRates } from './game/gacha.mjs';
 import { COSTUME_LABELS, equipCostume, getEquippedCostumes, branchScenesView } from './game/costume.mjs';
 import { createAnalyticsStore, trackSession, trackDailyActive, getDashboardData, getRealtimeStats, pruneAnalytics } from './game/analytics.mjs';
 import { AI_MODELS, PER_PLAYER_ROUTING, getActiveModel, switchModel, createDefaultSettings } from './game/settings.mjs';
@@ -482,6 +482,12 @@ function storyExtras() {
   }
 }
 
+// 典藏复刻（game/gacha.mjs 的 REPRINT_RULES）：只有对应番外已上线的典藏进轮换
+function liveReprint(now = Date.now()) {
+  const view = branchScenesView(storyExtras());
+  return currentReprint(REPRINT_RULES.types.filter((t) => view[t]?.available), now);
+}
+
 const INTERNAL_ERROR_TYPES = [TypeError, RangeError, SyntaxError, ReferenceError];
 
 /**
@@ -636,6 +642,13 @@ async function handleApi(req, res, url) {
       progress: { highestCleared: highestClearedChapter(cleared) },
       // 秘技召唤（技能稿 3.2）：只出已入队角色的暮紫、赤月；概率表与保底就是实际抽取用的（game/skill-gacha.mjs）
       skill: publicSkillPool(account),
+      // 典藏复刻池（服装稿 §5.1）：本期复刻的那类典藏 8 件＋常驻 40 件，概率与服饰池相同，抽到复刻款的稀有度时一半落在复刻款；
+      // 保底与衣橱券和服饰池共用。没有任何典藏番外上线时为 null
+      reprint: (() => {
+        const r = liveReprint();
+        if (!r) return null;
+        return { ...r, days: REPRINT_RULES.days, featuredShare: REPRINT_RULES.featuredShare, items: reprintTable(r).featured.map((c) => viewCostume(c, cleared)), rates: reprintRates(r) };
+      })(),
       // 衣橱券（服装稿 1.2）：服饰池每抽 1 点、满 90 点一张，一张换一件已登场女主的常驻 5★ 服装；第 90 抽的 5★ 保底照旧
       wardrobe: {
         ...wardrobeStatus(account),
@@ -672,7 +685,7 @@ async function handleApi(req, res, url) {
       trackSession(analyticsStore, account.id, 'gacha_pull');
       return sendJson(res, 200, { ...result, account: publicAccount(account) });
     }
-    const result = pullGacha(account, pool, body.count || 1, { currency: body.currency });
+    const result = pullGacha(account, pool, body.count || 1, { currency: body.currency, reprint: pool === 'reprint' ? liveReprint() : null });
     if (!result.ok) return sendJson(res, 400, result);
     trackSession(analyticsStore, account.id, 'gacha_pull');
     return sendJson(res, 200, { ...result, account: publicAccount(account) });

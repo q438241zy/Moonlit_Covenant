@@ -1596,3 +1596,8 @@ body:has(.game-frame) .cg-unlock-stack { top:10px; }
 }
 /* 委托板与赤月 cut-in 的样式在 skill-board.css（主线播放页也用） */
 .wardrobe-branch-link { color:var(--gold); font-weight:700; text-decoration:underline; text-underline-offset:2px; }
+/* 典藏复刻池（服装稿 §5.1）：本期复刻的横幅 */
+.reprint-banner { margin:0 0 14px; padding:14px 16px; border:1px solid rgba(255,210,125,.35); border-radius:16px; background:linear-gradient(135deg, rgba(255,210,125,.12), rgba(192,150,255,.10)); }
+.reprint-banner h3 { display:flex; align-items:center; gap:8px; margin:4px 0 6px; }
+.reprint-kicker { display:inline-flex; align-items:center; gap:6px; color:var(--gold, #ffd27d); font-size:.78rem; font-weight:800; letter-spacing:.06em; }
+.reprint-banner p { margin:0; font-size:.82rem; line-height:1.6; }
