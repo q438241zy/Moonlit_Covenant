@@ -12,20 +12,22 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { JOBS, SIZE } from './manifest.mjs';
-import { readAigc, aigcExif, insertApp1, jpegAigc } from './aigc.mjs';
+import { JOBS, SIZE, ALPHA_GROUPS } from './manifest.mjs';
+import { readAigc, aigcExif, insertApp1, jpegAigc, insertPngExif, pngAigc } from './aigc.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const paintDir = path.join(root, 'public/assets/paint');
-const QUALITY = { cards: '80', cg: '82', scenes: '80', 'story-bg': '82' };
+const QUALITY = { cards: '80', cg: '82', scenes: '80', 'story-bg': '82', 'story-insert': '82' };
+const TOP = new Set(['portraits', 'costumes', 'costumes-soft', 'costumes-bust', 'costumes-bust-soft', 'story-npc']);
 
 export const hasMagick = () => { try { execFileSync('convert', ['-version'], { stdio: 'ignore' }); return true; } catch { return false; } };
 
 /** compress one raw image into a game JPEG for `group`, keeping (or adding) its AIGC metadata */
-export function finalizeOne(src, dest, { group, id }) {
-  const size = SIZE[group];
+export function finalizeOne(src, dest, { group, id, target }) {
+  const size = target || SIZE[group];
   if (!size) throw new Error(`finalize: unknown group ${group}`);
-  const jpeg = execFileSync('convert', [src, '-resize', `${size}^`, '-gravity', group === 'portraits' || group === 'costumes' || group === 'story-npc' ? 'north' : 'center',
+  if (ALPHA_GROUPS.has(group)) return finalizeAlpha(src, dest, { group, id, size });
+  const jpeg = execFileSync('convert', [src, '-resize', `${size}^`, '-gravity', TOP.has(group) ? 'north' : 'center',
     '-extent', size, '-strip', '-interlace', 'Plane', '-quality', QUALITY[group] || '84',
     '-set', 'comment', 'AI-generated image (月蚀契约 tools/art/raster)', 'jpg:-'], { maxBuffer: 64 * 1024 * 1024 });
   const meta = readAigc(fs.readFileSync(src));
@@ -34,6 +36,18 @@ export function finalizeOne(src, dest, { group, id }) {
   }
   const out = insertApp1(jpeg, meta);
   if (!jpegAigc(out)) throw new Error(`finalize: ${dest} lost its AIGC metadata`);
+  fs.mkdirSync(path.dirname(dest), { recursive: true });
+  fs.writeFileSync(dest, out);
+  return out.length;
+}
+
+/** 透明底的组（胸像）：裁成游戏尺寸的 PNG，保留 alpha，再写回 AIGC 元数据（PNG eXIf 块） */
+function finalizeAlpha(src, dest, { id, size }) {
+  const png = execFileSync('convert', [src, '-resize', `${size}^`, '-gravity', 'north', '-background', 'none', '-extent', size, '-strip', 'png32:-'], { maxBuffer: 64 * 1024 * 1024 });
+  const meta = readAigc(fs.readFileSync(src));
+  const exif = meta.exif || aigcExif(JSON.stringify({ AIGC: { Label: '1', ContentProducer: '', ProduceID: id, ContentPropagator: '月蚀契约 tools/art/raster', PropagateID: id } }));
+  const out = insertPngExif(png, exif);
+  if (!pngAigc(out)) throw new Error(`finalize: ${dest} lost its AIGC metadata`);
   fs.mkdirSync(path.dirname(dest), { recursive: true });
   fs.writeFileSync(dest, out);
   return out.length;
@@ -50,8 +64,9 @@ function main() {
     const src = path.join(root, job.out);
     if (!fs.existsSync(src)) continue;
     const name = path.basename(job.out, path.extname(job.out));
-    const dest = path.join(paintDir, job.group, `${name}.jpg`);
-    const stale = !fs.existsSync(dest) || fs.statSync(dest).mtimeMs < fs.statSync(src).mtimeMs || !jpegAigc(fs.readFileSync(dest));
+    const alpha = ALPHA_GROUPS.has(job.group);
+    const dest = path.join(paintDir, job.group, `${name}.${alpha ? 'png' : 'jpg'}`);
+    const stale = !fs.existsSync(dest) || fs.statSync(dest).mtimeMs < fs.statSync(src).mtimeMs || !(alpha ? pngAigc : jpegAigc)(fs.readFileSync(dest));
     if (stale) {
       finalizeOne(src, dest, job);
       done += 1;

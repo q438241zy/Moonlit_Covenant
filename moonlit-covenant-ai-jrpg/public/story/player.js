@@ -337,7 +337,7 @@ function artUrl(who, sp) {
   else if (ch.defaultCostume) id = `${who}_${ch.defaultCostume}`;
   if (!/^[a-z]+_[a-z]+$/.test(id)) return base;
   const soft = normalizeMode(S.run?.mode) !== '15+' && id.endsWith('_swimsuit');
-  return `/assets/costumes/bust/${soft ? 'soft/' : ''}${id}.svg`;
+  return paint(`/assets/costumes/bust/${soft ? 'soft/' : ''}${id}.svg`);
 }
 // 番外开局时读一次换衣间（不为此建号；没有账户或离线就都穿默认服）
 async function loadEquipped() {

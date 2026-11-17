@@ -136,3 +136,32 @@ export function jpegAigc(jpeg) {
   }
   return null;
 }
+
+/** PNG 加一个 eXIf 块（TIFF 数据，放在 IEND 之前）；已有 eXIf 时替换 */
+export function insertPngExif(png, exif) {
+  if (!png.subarray(0, 8).equals(PNG_SIG)) throw new Error('not a PNG');
+  const parts = [PNG_SIG];
+  for (let i = 8; i + 8 <= png.length;) {
+    const len = png.readUInt32BE(i), type = png.toString('latin1', i + 4, i + 8);
+    const chunk = png.subarray(i, i + 12 + len);
+    i += 12 + len;
+    if (type === 'eXIf') continue;
+    if (type === 'IEND') {
+      const head = Buffer.alloc(8);
+      head.writeUInt32BE(exif.length, 0);
+      head.write('eXIf', 4, 'latin1');
+      const crc = Buffer.alloc(4);
+      crc.writeUInt32BE(zlib.crc32(Buffer.concat([head.subarray(4), exif])) >>> 0, 0);
+      parts.push(head, exif, crc);
+    }
+    parts.push(chunk);
+    if (type === 'IEND') break;
+  }
+  return Buffer.concat(parts);
+}
+
+/** PNG 是否带 AIGC 标识（eXIf 或文本块里提到 AIGC） */
+export function pngAigc(png) {
+  const meta = readAigc(png);
+  return Boolean((meta.exif && has(meta.exif)) || (meta.xmp && has(meta.xmp)));
+}
