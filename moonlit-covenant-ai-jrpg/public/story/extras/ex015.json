@@ -1,0 +1,2824 @@
+{
+  "id": "ex015",
+  "number": 15,
+  "kind": "sidequest",
+  "scriptId": "EX015_SAINT_DAY_OFF",
+  "title": "支线五｜圣女的一天假",
+  "shortTitle": "圣女的一天假",
+  "estimatedMinutes": 9,
+  "source": "剧本/番外/ex015聖女的一天假.md",
+  "unlockAfter": "ch018",
+  "window": "正式18–19之间",
+  "cast": [
+    "evelyn",
+    "aila",
+    "lia"
+  ],
+  "costumeTypes": [],
+  "canon": {
+    "flags": {
+      "FLAG_CH000_HEMAI_DESTROYED": true,
+      "FLAG_CH000_BLACK_DRAGON_SEEN": true,
+      "FLAG_CH000_MOTHER_STATUS_UNKNOWN": true,
+      "FLAG_CH000_TOBY_SURVIVED_CAVE": true,
+      "FLAG_CH000_DRAGON_VOW": true,
+      "FLAG_CH000_DRAGON_REMAINS_OVER_HEMAI": true,
+      "FLAG_CH001_BLACK_DRAGON_REPELLED_BY_KERN": true,
+      "FLAG_CH001_BLACK_DRAGON_ABDOMEN_WOUNDED": true,
+      "FLAG_CH001_MOTHER_DEATH_CONFIRMED": true,
+      "FLAG_CH001_TOBY_UNDER_KERN_GUARDIANSHIP": true,
+      "FLAG_CH001_ARK_RECEIVED_GUILD_LETTER": true,
+      "FLAG_CH001_KERN_MENTOR_IDEAL": true,
+      "FLAG_CH002_GUILD_REGISTERED": true,
+      "FLAG_CH002_LEAH_FIRST_SEEN": true,
+      "FLAG_CH002_THIEF_CAPTURED": true,
+      "FLAG_CH002_BLACK_CRYSTAL_EVIDENCE_RECOVERED": true,
+      "FLAG_CH002_FIRE_RESONANCE_FLICKER": true,
+      "FLAG_CH003_TEMP_PARTY_FORMED": true,
+      "FLAG_CH003_LEAH_SIGNED_SUPERVISION": true,
+      "FLAG_CH003_THIRD_ACCOMPLICE_CAPTURED": true,
+      "FLAG_CH003_SEVEN_RING_MARK_SEEN": true,
+      "FLAG_CH003_BLACK_CRYSTAL_CRATE_SEIZED": true,
+      "FLAG_CH003_HEMAI_SURVIVORS_TARGETED": true,
+      "FLAG_CH003_OLD_MILL_LEAD": true,
+      "FLAG_CH003_MILL_ASSAULT_POSTPONED": true,
+      "FLAG_CH003_FIRST_JOINT_MISSION_COMPLETE": true,
+      "FLAG_CH003_FIRE_RESONANCE_WARMTH": true,
+      "FLAG_CH003_GUILD_COLLAB_STAMPED": true,
+      "FLAG_CH003_LEAH_KNOWS_PLAYER_NAME": true,
+      "FLAG_CH003_RELIEF_CART_PASSED_WEST_GATE": true,
+      "FLAG_CH003_DRIVER_DESCRIBED": true,
+      "FLAG_CH003_SHIELD_SIGNALS_LEARNED": true,
+      "FLAG_CH003_SOUP_POT_SETTLED": true,
+      "FLAG_CH003_BARREL_DEDUCTED": true,
+      "FLAG_CH004_CORD_SIGNALS_LEARNED": true,
+      "FLAG_CH004_FENN_CONFIRMED_CHAIN_SWAP": true,
+      "FLAG_CH004_WEST_GATE_COSIGNED": true,
+      "FLAG_CH004_SENTRY_REPORT_HEARD": true,
+      "FLAG_CH004_MILL_INFILTRATED": true,
+      "FLAG_CH004_CHARGING_RACK_SEEN": true,
+      "FLAG_CH004_LEDGER_READ": true,
+      "FLAG_CH004_MARA_AND_DAUGHTER_FOUND": true,
+      "FLAG_CH004_KEY_ON_ACOLYTE": true,
+      "FLAG_CH004_TEARS_LIGHT_CRYSTALS": true,
+      "FLAG_CH004_CAPTIVES_REMAIN_IN_MILL": true,
+      "FLAG_CH004_ACOLYTE_SEEN": true,
+      "FLAG_CH004_RESCUE_WINDOW_CRATE_SWAP": true,
+      "FLAG_CH004_LEAH_LEARNED_HEMAI": true,
+      "FLAG_CH004_GUARDS_COMMITTED": true,
+      "FLAG_CH004_RESCUE_COMMISSION_POSTED": true,
+      "FLAG_CH005_WEST_GATE_COSIGNED": true,
+      "FLAG_CH005_PLAN_BRIEFED_AT_MILESTONE": true,
+      "FLAG_CH005_COLLAR_OWNER_REVEALED": true,
+      "FLAG_CH005_PEACE_STONES_NAMED": true,
+      "FLAG_CH005_CHAIN_SWAP_COMPLETED": true,
+      "FLAG_CH005_LEAH_PRESSED_CRATE": true,
+      "FLAG_CH005_CHIEF_COLLAR_DISABLED": true,
+      "FLAG_CH005_ACOLYTE_CAPTURED": true,
+      "FLAG_CH005_ROLL_CALL_ANSWERED": true,
+      "FLAG_CH005_MARA_AND_POLLY_RESCUED": true,
+      "FLAG_CH005_LEAD_MISTTIDE_MARSH": true,
+      "FLAG_CH005_EVIDENCE_TO_GUARD": true,
+      "FLAG_CH005_RESCUE_COMMISSION_COMPLETE": true,
+      "FLAG_CH005_FORMAL_PARTY_FORMED": true,
+      "FLAG_CH005_ESCORT_COMMISSION_POSTED": true,
+      "FLAG_CH005_MARA_POLLY_TO_NORTH_CAMP": true,
+      "FLAG_CH006_ESCORT_COMMISSION_ACCEPTED": true,
+      "FLAG_CH006_SUPPLY_TUTORIAL_DONE": true,
+      "FLAG_CH006_RUBBING_COPY_CARRIED": true,
+      "FLAG_CH006_MARSH_OGRE_UNCOLLARED": true,
+      "FLAG_CH006_SHIELD_UNDER_WHEEL": true,
+      "FLAG_CH006_UNSPOKEN_SYNC": true,
+      "FLAG_CH006_SALT_MARSH_BRIDGE_COLLAPSED": true,
+      "FLAG_CH006_LEAH_BOUNDARY_STATED": true,
+      "FLAG_CH006_ESCORT_COMMISSION_COMPLETE": true,
+      "FLAG_CH006_LEAH_CAKE_SEEN": true,
+      "FLAG_CH006_PARTY_CAMP_OPENED": true,
+      "FLAG_CH006_BLUE_EXPLOSION_SEEN": true,
+      "FLAG_CH006_GEAR_IN_CAKE": true,
+      "FLAG_CH007_FOREST_EDGE_ENTERED": true,
+      "FLAG_CH007_MIA_FIRST_SEEN": true,
+      "FLAG_CH007_UNPLANNED_DISASSEMBLY_NAMED": true,
+      "FLAG_CH007_MIA_NOTED_SEVEN_LAWS": true,
+      "FLAG_CH007_SAFETY_RULES_CLASHED": true,
+      "FLAG_CH007_RETREAT_TO_STAKE": true,
+      "FLAG_CH007_CATCH_IT_WHOLE": true,
+      "FLAG_CH007_THREE_PERSON_FORMATION": true,
+      "FLAG_CH007_TAUNT_INTRODUCED": true,
+      "FLAG_CH007_SCRAP_PICKER_STOPPED": true,
+      "FLAG_CH007_INCIDENT_LOGGED": true,
+      "FLAG_CH007_GEAR_NUMBER_SEEN": true,
+      "FLAG_CH007_GEAR_CRACKED": true,
+      "FLAG_CH007_ERODED_TIDE_CRYSTAL_FOUND": true,
+      "FLAG_CH007_CORE_UNNUMBERED": true,
+      "FLAG_CH007_SEVEN_RING_MATCH_SEEN": true,
+      "FLAG_CH008_RECORDS_REQUESTED": true,
+      "FLAG_CH008_MIA_AS_WITNESS": true,
+      "FLAG_CH008_EAVE_REPAIRED": true,
+      "FLAG_CH008_MIA_MADE_AMENDS": true,
+      "FLAG_CH008_TIDE_STATION_REACHED": true,
+      "FLAG_CH008_GEAR_RETURNED_TO_WINCH": true,
+      "FLAG_CH008_PLANNED_DISASSEMBLY": true,
+      "FLAG_CH008_ONE_MILLIMETER": true,
+      "FLAG_CH008_TIDE_DOOR_LOCKED": true,
+      "FLAG_CH008_RECORDS_RETRIEVED": true,
+      "FLAG_CH008_CORE_SWAP_PROVEN": true,
+      "FLAG_CH008_RINGS_GROWN_NOT_CARVED": true,
+      "FLAG_CH008_MIA_SELF_REPORTED": true,
+      "FLAG_CH008_INCIDENT_SETTLED": true,
+      "FLAG_CH008_NAMES_EXCHANGED": true,
+      "FLAG_CH008_LEAH_SHARED_CASE_FACTS": true,
+      "FLAG_CH008_BLACK_CRYSTAL_APPRAISED": true,
+      "FLAG_CH008_PEACE_STONE_EXPLAINED": true,
+      "FLAG_CH008_CRYSTAL_TO_MIA": true,
+      "FLAG_CH008_MIA_GUEST_TO_HARBOR": true,
+      "FLAG_CH008_THREE_NAMES_LOGGED": true,
+      "FLAG_CH008_SHARED_HEARTBEAT_DETECTED": true,
+      "FLAG_CH008_ACT1_CLOSED": true,
+      "FLAG_CH009_ENTERED_FOG_HARBOR": true,
+      "FLAG_CH009_ESCORT_PAID": true,
+      "FLAG_CH009_INES_MET": true,
+      "FLAG_CH009_RESCUE_RULE_TOLD": true,
+      "FLAG_CH009_GUEST_UNDER_LEAH": true,
+      "FLAG_CH009_WITNESS_NAMES_KEPT": true,
+      "FLAG_CH009_MISSING_CASE_TAKEN": true,
+      "FLAG_CH009_DIVISION_OF_LABOR": true,
+      "FLAG_CH009_CRYSTAL_LAYERS_READ": true,
+      "FLAG_CH009_GREY_CORE_DOWNSTREAM": true,
+      "FLAG_CH009_PEOPLE_FIRST": true,
+      "FLAG_CH009_TESTIMONY_LINKED": true,
+      "FLAG_CH009_SENT_TO_WITNESS": true,
+      "FLAG_CH009_BATH_TESTIMONY": true,
+      "FLAG_CH009_MIRROR_TESTIMONY_LOGGED": true,
+      "FLAG_CH009_DOCK_WORKER_TAKEN": true,
+      "FLAG_CH009_GAFF_WITH_LEAH": true,
+      "FLAG_CH009_DRAIN_NOT_ENTERED": true,
+      "FLAG_CH009_LEDGER_LINE_FINISHED": true,
+      "FLAG_CH009_BELOW_TIDE_OFFBEAT": true,
+      "FLAG_CH010_LEGAL_ENTRY": true,
+      "FLAG_CH010_PUMP_REVERSED_FOUND": true,
+      "FLAG_CH010_FEED_EVIDENCE_FOUND": true,
+      "FLAG_CH010_OUTBOUND_MARK_SEEN": true,
+      "FLAG_CH010_SEVENTEEN_FOUND": true,
+      "FLAG_CH010_GREY_OUTFLOW_TRACED": true,
+      "FLAG_CH010_MIA_SENT_TO_PUMP": true,
+      "FLAG_CH010_FOUR_RESCUED": true,
+      "FLAG_CH010_GAFF_RETURNED": true,
+      "FLAG_CH010_BLACK_STONES_TAKEN": true,
+      "FLAG_CH010_PUMP_STOPPED": true,
+      "FLAG_CH010_SEVENTEEN_CRACKED": true,
+      "FLAG_CH010_MIA_PEOPLE_FIRST": true,
+      "FLAG_CH010_MIA_RESCUE_MISSION_COMPLETE": true,
+      "FLAG_CH010_MOTHER_RETREATED": true,
+      "FLAG_CH010_HEARTBEAT_STILL_BELOW": true,
+      "FLAG_CH010_BELOW_TIDE_STILL": true,
+      "FLAG_CH010_RESCUE_COLUMN_FILLED": true,
+      "FLAG_CH010_ECLIPSE_FEAST_NAMED": true,
+      "FLAG_CH010_SAME_LEDGER": true,
+      "FLAG_CH010_MIA_JOINED": true,
+      "FLAG_CH010_MIA_CONDITION_LOGGED": true,
+      "FLAG_CH010_CASE_SHARED_WITH_MIA": true,
+      "FLAG_CH010_LODGED_BRIDGEHEAD_INN": true,
+      "FLAG_CH010_MIRROR_EYES": true,
+      "FLAG_CH010_OUTSIDER_NAMED": true,
+      "FLAG_CH009_PIPE_TIDE_HEARD": true,
+      "FLAG_CH011_SEEDS_SETTLED": true,
+      "FLAG_CH011_SCAR_FLARE": true,
+      "FLAG_CH011_SEVEN_HOLES_SHOWN": true,
+      "FLAG_CH011_DREAM_ENTERED": true,
+      "FLAG_CH011_THREADS_CUT": true,
+      "FLAG_CH011_LEAH_KNOCKED_THREE": true,
+      "FLAG_CH011_LEAH_DREW_ON_PERSON": true,
+      "FLAG_CH011_SERENA_MET": true,
+      "FLAG_CH011_SERENA_NAMED": true,
+      "FLAG_CH011_SERENA_LOOKED": true,
+      "FLAG_CH011_NOT_HER_TONIGHT": true,
+      "FLAG_CH011_SEVEN_DOORS_SPOKEN": true,
+      "FLAG_CH011_REGISTRAR_LINE": true,
+      "FLAG_CH011_NO_PEEK_DEMANDED": true,
+      "FLAG_CH011_SERENA_VANISHED": true,
+      "FLAG_CH011_BLACK_FEATHER_MAP": true,
+      "FLAG_CH011_TIDE_CAVE_MARKED": true,
+      "FLAG_CH011_MIRRORS_COVERED": true,
+      "FLAG_CH012_SERENA_WALKED_DOOR": true,
+      "FLAG_CH012_BATH_CONFESSED": true,
+      "FLAG_CH012_MIRROR_PURPLE_MATCHED": true,
+      "FLAG_CH012_MORKAN_NAMED": true,
+      "FLAG_CH012_SERENA_JOINED": true,
+      "FLAG_CH012_SERENA_TERMS_LOGGED": true,
+      "FLAG_CH012_LATCH_SOLVED": true,
+      "FLAG_CH012_MIRROR_MEMORY_RULE": true,
+      "FLAG_CH012_SHADOW_BIND_UNLOCKED": true,
+      "FLAG_CH012_ROLL_CALL_VERIFIED": true,
+      "FLAG_CH012_APPRENTICE_CAUGHT": true,
+      "FLAG_CH012_TIDE_CAVE_TOMORROW_NIGHT": true,
+      "FLAG_CH012_INVERTED_STAR_SHOWN": true,
+      "FLAG_CH012_FIRST_COUNT_FOUR": true,
+      "FLAG_CH012_PASS_UNREAD": true,
+      "FLAG_CH012_LODGING_LIGHTHOUSE": true,
+      "FLAG_CH013_SERENA_ASKED_DREAM": true,
+      "FLAG_CH013_WINDOW_ATTACK": true,
+      "FLAG_CH013_GOLDEN_ASSASSIN_SEEN": true,
+      "FLAG_CH013_ASSASSIN_MOTIVE_HEARD": true,
+      "FLAG_CH013_THREE_WENT_OUT": true,
+      "FLAG_CH013_BOTH_FORBIDDEN": true,
+      "FLAG_CH013_HALF_CREST_DROPPED": true,
+      "FLAG_CH013_HALF_CREST_FOUND": true,
+      "FLAG_CH013_PASS_RETURNED": true,
+      "FLAG_CH013_ORDER_WARNING": true,
+      "FLAG_CH013_PASS_READ": true,
+      "FLAG_CH013_IMPERIAL_SEAL_SEEN": true,
+      "FLAG_CH013_ARCH_WAVE_IS_OFFICIAL_SEAL": true,
+      "FLAG_CH013_DEST_ARCH_TIDE_GATE": true,
+      "FLAG_CH013_WITNESS_NAME_LISTED": true,
+      "FLAG_CH014_WENT_DOWN_AT_EBB": true,
+      "FLAG_CH014_THREE_DOWN_ONE_GATE": true,
+      "FLAG_CH014_SLUICE_HELD": true,
+      "FLAG_CH014_TIDE_CAVE_ENTERED": true,
+      "FLAG_CH014_COCOONS_FOUND": true,
+      "FLAG_CH014_HEARTBEAT_IS_PEOPLE": true,
+      "FLAG_CH014_EMPTY_HOOKS_SEEN": true,
+      "FLAG_CH014_STONE_DOOR_SEEN": true,
+      "FLAG_CH014_NINE_RESCUED": true,
+      "FLAG_CH014_ACOLYTE_CAPTURED": true,
+      "FLAG_CH014_STONE_DOOR_CLOSED": true,
+      "FLAG_CH014_QUICK_PATCH_SHOWN": true,
+      "FLAG_CH014_SLUICE_DROPPED_BEHIND": true,
+      "FLAG_CH014_COUNT_FOUR_AT_GATE": true,
+      "FLAG_CH014_GRADE_TAGS_SEEN": true,
+      "FLAG_CH014_TAGS_CUT_WITH_CONSENT": true,
+      "FLAG_CH014_BIG_THREE_ONE_FOUND": true,
+      "FLAG_CH014_ODA_NAMED": true,
+      "FLAG_CH014_INES_COUNTED": true,
+      "FLAG_CH014_VOICE_FROM_BELOW": true,
+      "FLAG_CH014_SLOW_HEARTBEAT_BELOW": true,
+      "FLAG_CH015_WENT_DOWN_AT_DAWN": true,
+      "FLAG_CH015_STONE_DOOR_OPENED": true,
+      "FLAG_CH015_NEST_ENTERED": true,
+      "FLAG_CH015_THREE_COCOONS_FOUND": true,
+      "FLAG_CH015_TIDE_KING_SEEN": true,
+      "FLAG_CH015_TIDE_KING_STOPPED": true,
+      "FLAG_CH015_COCOONS_RESCUED": true,
+      "FLAG_CH015_REVERSE_MOON_SHOWN": true,
+      "FLAG_CH015_MIRROR_STEP_SHOWN": true,
+      "FLAG_CH015_ASSASSIN_GUEST": true,
+      "FLAG_CH015_NELOSA_NAMED": true,
+      "FLAG_CH015_ROOT_RING_REFUSED_ONE_HAND": true,
+      "FLAG_CH015_SIN_SHARD_TAKEN": true,
+      "FLAG_CH015_CHART_SHARD_FOUND": true,
+      "FLAG_CH015_INES_COUNTED": true,
+      "FLAG_CH015_RELIEF_OFFICE_CAME": true,
+      "FLAG_CH015_RELIEF_SEAL_MATCHED_PASS": true,
+      "FLAG_CH015_DOCK_PEOPLE_STOOD": true,
+      "FLAG_CH015_WHITE_TOWER_SUMMONS": true,
+      "FLAG_CH015_CROWN_SEAL_LIKE_DRAGON_SCAR": true,
+      "FLAG_CH015_ACT2_CLOSED": true,
+      "FLAG_CH015_BROOD_SAVED": true,
+      "FLAG_CH015_RETURNED_HOME_PROMISED": true,
+      "FLAG_CH016_ARRIVED_HOLY_CITY": true,
+      "FLAG_CH016_WEAPONS_LEFT_AT_GATE": true,
+      "FLAG_CH016_GATE_CLERK_SAW_COPPER": true,
+      "FLAG_CH016_DRAGON_NOTICE_SEEN": true,
+      "FLAG_CH016_REGISTRY_HALL_ENTERED": true,
+      "FLAG_CH016_GRADE_COLUMN_MATCHED": true,
+      "FLAG_CH016_MONITOR_SEAL_SEEN": true,
+      "FLAG_CH016_PAGE_PREMARKED": true,
+      "FLAG_CH016_COURT_MET": true,
+      "FLAG_CH016_EVELYN_SEEN": true,
+      "FLAG_CH016_TITLE_READ": true,
+      "FLAG_CH016_VESSEL_PAGE_SEEN": true,
+      "FLAG_CH016_CELESTINE_PAUSED": true,
+      "FLAG_CH016_EVELYN_ASKED_NAMES": true,
+      "FLAG_CH016_TERMS_OFFERED": true,
+      "FLAG_CH016_REGISTER_NOT_HANDED": true,
+      "FLAG_CH016_EMPEROR_WILL_SEND": true,
+      "FLAG_CH016_GATE_TALLY_SEEN": true,
+      "FLAG_CH016_SEVEN_CRACKS_HEARD": true,
+      "FLAG_CH016_EVELYN_NAMED": true,
+      "FLAG_CH016_VESSEL_LOGGED": true,
+      "FLAG_CH016_CONFISCATION_ORDERED": true,
+      "FLAG_CH016_LEDGER_GATE_LINE_STARTED": true,
+      "FLAG_CH016_RETURNED_HOME_KEPT_AT_COURT": true,
+      "FLAG_CH017_RUBBING_MADE": true,
+      "FLAG_CH017_NAMES_MEMORIZED": true,
+      "FLAG_CH017_AILA_MET": true,
+      "FLAG_CH017_CONFISCATION_SERVED": true,
+      "FLAG_CH017_STAR_CHART_NAMED": true,
+      "FLAG_CH017_KNIGHT_COMMANDER_NAMED": true,
+      "FLAG_CH017_RESIDENCE_ATTACKED": true,
+      "FLAG_CH017_DOCS_FIRST_ORDER_HEARD": true,
+      "FLAG_CH017_BLACK_CRYSTAL_SMOKE": true,
+      "FLAG_CH017_FIVE_OUT": true,
+      "FLAG_CH017_EVELYN_LAST_OUT": true,
+      "FLAG_CH017_STARSONG_HEAL_SHOWN": true,
+      "FLAG_CH017_ARCHIVE_BOX_TAKEN": true,
+      "FLAG_CH017_AILA_FIRST_CRACK": true,
+      "FLAG_CH017_DUEL_CHALLENGED": true,
+      "FLAG_CH017_RUBBING_STAKED": true,
+      "FLAG_CH017_CREST_SEEN": true,
+      "FLAG_CH017_DUEL_FOUGHT": true,
+      "FLAG_CH017_NAMES_RECITED": true,
+      "FLAG_CH017_ORDER_UNFINISHED": true,
+      "FLAG_CH017_EVELYN_JOINED": true,
+      "FLAG_CH017_SURVEILLANCE_DISCLOSED": true,
+      "FLAG_CH017_OUTER_COURT_FROST_SEEN": true,
+      "FLAG_CH017_RETURNED_HOME_KEPT": true,
+      "FLAG_CH017_EVELYN_PROMISE_SIGNED": true,
+      "FLAG_CH018_ENVOY_FROZEN_SEEN": true,
+      "FLAG_CH018_FREYA_MET": true,
+      "FLAG_CH018_FROST_FROM_VAULT": true,
+      "FLAG_CH018_DECREE_PASSED": true,
+      "FLAG_CH018_AILA_ARRIVED": true,
+      "FLAG_CH018_FROZEN_CAN_ANSWER": true,
+      "FLAG_CH018_ENVOY_THAWED": true,
+      "FLAG_CH018_LIGHT_LEAP_SHOWN": true,
+      "FLAG_CH018_ICE_LETTER_READ": true,
+      "FLAG_CH018_CRACK_HEARD_AGAIN": true,
+      "FLAG_CH018_FREYA_HID_HANDS": true,
+      "FLAG_CH018_AILA_JOINED": true,
+      "FLAG_CH018_NILA_NAMED": true,
+      "FLAG_CH018_ENVOY_STAYS": true,
+      "FLAG_CH018_HEARING_SUMMONED": true,
+      "FLAG_CH018_FREYA_PROMISE_SIGNED": true,
+      "FLAG_CH018_AILA_PROMISE_SIGNED": true,
+      "FLAG_CH018_EVELYN_PROMISE_KEPT": true
+    },
+    "items": {
+      "ITEM_FAMILY_SHEPHERD_WHISTLE": 1,
+      "ITEM_MOTHER_WHEAT_HAIRPIN": 1,
+      "ITEM_GUILD_IRON_BADGE": 1,
+      "ITEM_BASIC_BANDAGE": 2,
+      "ITEM_MARSH_SHOE_COVERS": true,
+      "ITEM_FOREST_EDGE_GEAR": false,
+      "ITEM_FOG_HARBOR_CLEAR_CRYSTAL": false,
+      "ITEM_SEVEN_RING_CHART_SHARD": 1,
+      "ITEM_WHITE_TOWER_SUMMONS": 1,
+      "ITEM_SEVEN_RING_RUBBING": 0
+    },
+    "vars": {
+      "PLAYER_VOW_PRIMARY": "VOW_REVENGE",
+      "PLAYER_GUILT_TOTAL": 0,
+      "ITEM_FAMILY_SHEPHERD_WHISTLE_OWNER": "TOBY",
+      "PLAYER_PROMISE_RETURN_TO_TOBY": true,
+      "PLAYER_GUILD_RANK": "IRON",
+      "PLAYER_FIRST_IMPRESSION_OF_LEAH": "STRONG_POSITIVE_DEFAULT",
+      "LEAH_FIRST_IMPRESSION_OF_PLAYER": "EAGER_BUT_UNDISCIPLINED",
+      "LEAH_TRUST": 3,
+      "LEAH_INTIMACY": 0,
+      "LEAH_SACRIFICE": 0,
+      "PLAYER_GUILT_LEAH": 0,
+      "BATTLE_CH002_STREET_AMBUSH_RESULT": "clean",
+      "FENN_TREATMENT": "FIRM",
+      "PLAYER_PROMISE_OBEY_LEAH_SIGNAL": false,
+      "BATTLE_CH003_MILL_ROAD_CHAINS_RESULT": "clean",
+      "PLAYER_LODGING": "GUILD_BUNK",
+      "MILL_ALERT": 0,
+      "MILL_EXIT": "LATE",
+      "MILL_CAPTIVES_STATE": "QUIET",
+      "PLAYER_RESCUE_ROLE": "CAGE",
+      "MARA_DAUGHTER_CONDITION": "SMOKE_COUGH_BURNED_ARM",
+      "PLAYER_PROMISE_MARA_RETURN": false,
+      "CART_WAIT": "HELD",
+      "SUPERVISOR_NOTE": "STEADY",
+      "PARTY_CONSENT": "UNANSWERED",
+      "PARTY_STANDING": "MEMBER",
+      "LEAH_RELATIONSHIP_STAGE": "STRANGER",
+      "BATTLE_CH005_BULL_COLLAR_RESULT": "clean",
+      "CH006_CLIENT_CONFIDENCE": "NORMAL",
+      "CH006_OGRE_STATE": "TOOK_PLANK",
+      "CH006_SYNC_CHANNEL": "WAIST",
+      "HAZARD_CH006_SALT_BRIDGE_RESULT": "CLEAN",
+      "CONSENT_LEAH_WAIST_STEADY_BASIS": "offered",
+      "CONSENT_LEAH_WAIST_STEADY_STATUS": "granted_once",
+      "CAKE_TRUCE": "SEALED",
+      "MIA_TRUST": 0,
+      "MIA_INTIMACY": 0,
+      "MIA_SACRIFICE": 0,
+      "PLAYER_GUILT_MIA": 0,
+      "PAIR_LEAH_MIA_TRUST": 0,
+      "PARTY_GUEST_MIA": false,
+      "MIA_RELATIONSHIP_STAGE": "STRANGER",
+      "BATTLE_CH007_SCRAP_PICKER_RESULT": "clean",
+      "CONSENT_PLAYER_MIA_SCAN_STATUS": "none",
+      "CH007_GEAR_CUSTODY": "MIA_LOGGED",
+      "CH007_CAKE_SECRET_RESULT": "LEAH_ANSWERED",
+      "MIA_FIRST_IMPRESSION_OF_PLAYER": "QUIET",
+      "CH008_CRYSTAL_CUSTODY": "MIA_LOGGED",
+      "HAZARD_CH008_TIDE_DOOR_RESULT": "CLEAN",
+      "CH008_BLAME_RESPONSE": "SILENT",
+      "CH008_TESTIMONY": "NONE",
+      "INES_FIRST_IMPRESSION_OF_PLAYER": "QUIET",
+      "CH009_PICKER_RESULT": "BASE",
+      "CH009_TESTIMONY_ORDER": "LEAH_LINKED",
+      "CH009_BATH_WITNESS_RESULT": "FULL",
+      "CH009_CRISIS_ACTION": "SILENT",
+      "HAZARD_CH009_DRAIN_GRATE_RESULT": "CLEAN",
+      "CH010_STONES_CUSTODY": "MIA_LOGGED",
+      "CH010_FEED_EVIDENCE_CUSTODY": "GUILD",
+      "PARTY_MEMBER_MIA": true,
+      "CH010_PUMP_READ": "QUIET",
+      "CH010_RESCUE_ORDER": "LEAH_ORDERED",
+      "CH010_MIA_JOIN_REPLY": "SILENT",
+      "BATTLE_CH010_TIDE_CAVITY_MOTHER_RESULT": "clean",
+      "CH011_MAP_CUSTODY": "LEAH",
+      "SERENA_INTIMACY": 0,
+      "SERENA_SACRIFICE": 0,
+      "SERENA_RELATIONSHIP_STAGE": "STRANGER",
+      "PAIR_LEAH_SERENA_TRUST": 0,
+      "PAIR_MIA_SERENA_TRUST": 1,
+      "SERENA_TRUST": 0,
+      "PLAYER_GUILT_SERENA": 0,
+      "PROMISE_BROKEN_NET_LEAH": 0,
+      "PROMISE_BROKEN_NET_MIA": 0,
+      "PROMISE_N_LEAH": 0,
+      "PROMISE_KEPT_LEAH": 0,
+      "PROMISE_N_MIA": 0,
+      "MONARCH_MERCY": 4,
+      "MONARCH_TERROR": 0,
+      "MONARCH_LUST": 0,
+      "MONARCH_COLD": 0,
+      "TERROR_BLAST": 0,
+      "FLIRT_AFTER_REFUSAL": 0,
+      "CH011_HAND_RESPONSE": "ENDURED",
+      "CH011_SCAR_SEEN_BY": "ALONE",
+      "CH011_KNOCKS_RESPONSE": "DEFAULT",
+      "BATTLE_CH011_SCAR_ECHO_RESULT": "clean",
+      "CH011_SERENA_TREATMENT": "QUIET",
+      "SERENA_FIRST_IMPRESSION_OF_PLAYER": "QUIET",
+      "CH011_VANISH_ANSWER": "SILENT",
+      "CH011_DREAM_TOLD": "KEPT",
+      "PARTY_MEMBER_SERENA": true,
+      "BOUNDARY_SERENA_PRIVATE_OBSERVATION": {
+        "owner": "SERENA",
+        "rule": "未经允许不得以镜术观察私人空间",
+        "status": "acknowledged",
+        "violation_count": 1,
+        "repair_state": "active",
+        "allowed_exceptions": [
+          "emergency_life_threat"
+        ]
+      },
+      "CH012_APPRENTICE_CUSTODY": "TEAM_LIGHTHOUSE",
+      "PROMISE_KEPT_SERENA": 0,
+      "PROMISE_N_SERENA": 2,
+      "PROMISE_BROKEN_NET_SERENA": 0,
+      "CH012_BATH_RESPONSE": "QUIET",
+      "CH012_TERMS_RESULT": "QUIET",
+      "CH012_CHASE_TACTIC": "QUIET",
+      "CH012_DOUBLE_CHECK": "QUIET",
+      "CH012_ROLL_CALL_BY": "LEAH",
+      "BATTLE_CH012_MIRROR_ALLEY_CHASE_RESULT": "clean",
+      "CH012_APPRENTICE_TREATMENT": "QUIET",
+      "LILITH_TRUST": 0,
+      "PLAYER_GUILT_LILITH": 0,
+      "CH013_CREST_CUSTODY": "LEAH",
+      "CH013_PASS_CUSTODY": "LEAH",
+      "CH013_WITNESS_CUSTODY": "GUILD",
+      "CH013_DREAM_QUESTION": "QUIET",
+      "CH013_ROOF_TACTIC": "QUIET",
+      "CH013_ROOF_RESOLUTION": "QUIET",
+      "CH013_ORDER_QUESTION": "QUIET",
+      "LILITH_FIRST_IMPRESSION_OF_PLAYER": "QUIET",
+      "CH013_WITNESS_DECISION": "QUIET",
+      "BATTLE_CH013_RAIN_ROOFTOP_CHASE_RESULT": "clean",
+      "promise_serena_no_vanish_001": "pending",
+      "promise_serena_no_vanish_001_consent": "SILENT",
+      "promise_serena_no_peek_others_001": "pending",
+      "promise_serena_no_peek_others_001_consent": "SILENT",
+      "CH014_SPLIT": "QUIET",
+      "CH014_SLUICE_GUARD": "MIA",
+      "CH014_CAVE_TACTIC": "QUIET",
+      "CH014_FLOOD_RESOLUTION": "QUIET",
+      "BATTLE_CH014_TIDE_CAVE_RESCUE_RESULT": "clean",
+      "BATTLE_CH014_TIDE_CAVE_RESCUE_ENEMIES_DOWN": 2,
+      "CH014_TAG_DECISION": "QUIET",
+      "CH014_TAGS_CUSTODY": "LEAH",
+      "CH014_ACOLYTE_DECISION": "QUIET",
+      "CH014_ACOLYTE_CUSTODY": "GUILD",
+      "CH014_RESCUED_CUSTODY": "GUILD",
+      "CH015_COUNTERSIGN": "QUIET",
+      "CH015_SHELL_TACTIC": "QUIET",
+      "CH015_COPY_TACTIC": "QUIET",
+      "CH015_NEST_ORDER": "QUIET",
+      "CH015_NEST_FATE": "SAVED",
+      "SIN_ENVY": 1,
+      "BATTLE_CH015_TIDE_KING_NELOSA_RESULT": "clean",
+      "BATTLE_CH015_TIDE_KING_NELOSA_ENEMIES_DOWN": 3,
+      "CH015_CHART_SHARD_CUSTODY": "LEAH",
+      "CH015_SIN_SHARD_CUSTODY": "ASSASSIN",
+      "CH015_ROOT_RING_STATE": "ROOTED_IN_NEST",
+      "CH015_RESCUED_CUSTODY": "GUILD",
+      "CH015_HANDOVER_ANSWER": "QUIET",
+      "promise_returned_home_001": "pending",
+      "promise_returned_home_001_consent": "SILENT",
+      "CH015_SUMMONS_CUSTODY": "LEAH",
+      "CH015_SUMMONS_DEADLINE": "THREE_DAYS",
+      "EVELYN_TRUST": 0,
+      "PLAYER_GUILT_EVELYN": 0,
+      "EVELYN_INTIMACY": 0,
+      "EVELYN_SACRIFICE": 0,
+      "EVELYN_RELATIONSHIP_STAGE": "STRANGER",
+      "CH016_NOTICE_RESPONSE": "QUIET",
+      "CH016_ORIGIN_ANSWER": "QUIET",
+      "CH016_TITLE_STATE": "CONFERRED",
+      "CH016_NAMES_ANSWER": "QUIET",
+      "EVELYN_FIRST_IMPRESSION_OF_PLAYER": "QUIET",
+      "CH016_RESCUE_REGISTER_CUSTODY": "LEAH",
+      "CH016_TERMS_ANSWER": "QUIET",
+      "CH016_COURT_NOTE": "PENDING_REGISTRY",
+      "LEDGER_TO_GATE": 38,
+      "CH016_VESSEL_ANSWER": "QUIET",
+      "CH016_LODGING": "PILGRIM_HOSTEL",
+      "CH017_RUBBING_CUSTODY": "AILA",
+      "CH017_NAMES_METHOD": "QUIET",
+      "AILA_TRUST": 0,
+      "PLAYER_GUILT_AILA": 0,
+      "AILA_INTIMACY": 0,
+      "AILA_SACRIFICE": 0,
+      "AILA_RELATIONSHIP_STAGE": "STRANGER",
+      "CH017_RESCUE_ORDER": "QUIET",
+      "CH017_DUEL_HITS": 2,
+      "CH017_DUEL_R1": "QUIET",
+      "CH017_DUEL_R2": "QUIET",
+      "AILA_FIRST_IMPRESSION_OF_PLAYER": "QUIET",
+      "CH017_DUEL_RESULT": "LOST",
+      "BATTLE_CH017_KNIGHT_DUEL_RESULT": "clean",
+      "BATTLE_CH017_KNIGHT_DUEL_ENEMIES_DOWN": 0,
+      "PROMISE_N_EVELYN": 1,
+      "PROMISE_KEPT_EVELYN": 0,
+      "PROMISE_BROKEN_NET_EVELYN": 0,
+      "CH017_ESCORT_ANSWER": "QUIET",
+      "promise_evelyn_no_answer_001": "pending",
+      "promise_evelyn_no_answer_001_consent": "SILENT",
+      "PARTY_MEMBER_EVELYN": true,
+      "FREYA_TRUST": 0,
+      "PLAYER_GUILT_FREYA": 0,
+      "FREYA_INTIMACY": 0,
+      "FREYA_SACRIFICE": 0,
+      "FREYA_RELATIONSHIP_STAGE": "STRANGER",
+      "CH018_DECREE_ANSWER": "QUIET",
+      "PROMISE_N_FREYA": 1,
+      "PROMISE_KEPT_FREYA": 0,
+      "PROMISE_BROKEN_NET_FREYA": 0,
+      "CH018_ASK_FIRST_ANSWER": "QUIET",
+      "FREYA_FIRST_IMPRESSION_OF_PLAYER": "QUIET",
+      "promise_freya_thaw_ask_001": "pending",
+      "promise_freya_thaw_ask_001_consent": "SILENT",
+      "CH018_ORDERED_AILA": 0,
+      "CH018_THAW_R1": "QUIET",
+      "CH018_THAW_R2": "QUIET",
+      "BATTLE_CH018_OUTER_COURT_THAW_RESULT": "clean",
+      "BATTLE_CH018_OUTER_COURT_THAW_ENEMIES_DOWN": 2,
+      "CH018_LETTER_CUSTODY": "EVELYN",
+      "PROMISE_N_AILA": 1,
+      "PROMISE_KEPT_AILA": 0,
+      "PROMISE_BROKEN_NET_AILA": 0,
+      "CH018_ORDER_ANSWER": "QUIET",
+      "promise_aila_no_order_001": "pending",
+      "promise_aila_no_order_001_consent": "SILENT",
+      "PARTY_MEMBER_AILA": true
+    },
+    "memories": {
+      "MEMORY_MOTHER_WORDS_FIND_WAY_HOME": "艾琳：“我吹这个，你就知道该往哪边回。”",
+      "MEMORY_FAMILY_ROLL_CALL": "艾琳：“报数！”——“我在！”“我、我也在！”",
+      "MEMORY_BORIN_LAST_WORDS": "先看清该砍谁",
+      "MEMORY_CH001_PROMISE_RETURN_TO_TOBY": "托比：“你一定要回来拿。”——“一定。”",
+      "MEMORY_CH004_MARA_AT_THE_CAGE": "旧磨坊的笼边，玛拉认出了他。她和女儿波莉的手腕被细链锁在晶架上；钥匙在念经的人腰上。",
+      "MEMORY_CH004_TWO_PULLS": "旧磨坊里，绳子拉了两下，他慢了半拍才退。玛拉在他身后说：“……你还欠我一根烟囱。”",
+      "MEMORY_CH004_LEAH_ANGER": "第二座里程石旁，莉亚收完绳子，看着磨坊那点灯说：“我在生气。……所以我先问。”",
+      "MEMORY_CH005_WAIT": "大车之夜，链子全上了箱，莉亚回了一下“停”。他没有动，等到了盾落。",
+      "MEMORY_CH005_ROLL_CALL": "大车之夜，灯灭以后，他在黑暗里说出娘的口令“报数”。这一次，答“在”的是玛拉和波莉。",
+      "MEMORY_CH005_TEAM_REGISTER": "公会柜台，莉亚先在队长栏签了“赫斯特”。他没有答复；她写上他的名字，旁注“未答复”。",
+      "MEMORY_CH006_UNSPOKEN_SYNC": "盐沼桥上，他扣着她左侧的腰带。她的肩一沉，他就推了。谁都没出声。",
+      "MEMORY_CH006_BOUNDARY": "她说“腰带。左边。扶稳。”桥过了，她说准的只是那一次。",
+      "MEMORY_CH006_CAKE": "林边旅店的窗口，他撞见了她的字条“高效率糖分补给，一份”。她说：“你没看见。鞋套，不扣你的。……停战。”",
+      "MEMORY_CH006_CAMP": "林边旅店的火盆旁，她把明天的事说完：“守夜，我前半。你后半。”蛋糕盘就在她手边，她没有动叉子。",
+      "MEMORY_CH007_MIA_FIRST_MEETING": "她问能不能量。他没说好，她就没量；刚才那一眼，她也说不记。",
+      "MEMORY_CH007_TWO_RULES": "盾后面是雷最先到的地方。她规矩不改，只把今晚的退路改到桩后。",
+      "MEMORY_CH007_ONE_KNOCK": "林边，莉亚敲了一声盾，米娅没有停，卡住了那条腿。莉亚说“……拉。”急停环才拉下。米娅说她算过，还有两息；莉亚说：“你算的是它。……我算的是你们。”",
+      "MEMORY_CH007_GEAR_AND_CREAM": "林边，米娅问起齿轮上的奶油。他没答，她自己说：“补给。”",
+      "MEMORY_CH007_UNNUMBERED_CORE": "核心是一颗没有编号的潮晶，从里面往外蚀。晶底的黑环和拓图一样，七个。她把拓图摊给米娅看，看的是米娅的脸。她只对他说：这种黑，见过。",
+      "MEMORY_CH008_PAST_MIDNIGHT": "后半夜，她修屋檐，他守院子。",
+      "MEMORY_CH008_ONE_INSTANT": "她要不带火的金。莉亚说，他有，很弱。她看他按住一根钉子，硬了一瞬。",
+      "MEMORY_CH008_ONE_MILLIMETER": "她说“硬”。那一瞬，是他的。",
+      "MEMORY_CH008_SEVENTEEN": "十七号是透的，刻了号；这颗没有刻痕，环是从里面长出来的。核心在刻号之后、装机之前被换。她装的就是这颗；底，她没翻过来看。",
+      "MEMORY_CH008_SELF_REPORT": "她把两件事都写进账里。他没笑。她报了名字。",
+      "MEMORY_CH008_WHAT_AKU_SAW": "她说了颈圈和那箱黑晶。黑石那一段，他没说，她自己说了。",
+      "MEMORY_CH008_HEARTBEAT": "潮平了，听潮针的笔尖还在抖。米娅说，是心跳，很多个叠成一个，在雾港底下。莉亚的笔停住了。",
+      "MEMORY_CH009_INES_QUESTION": "她问落水的人怎么救。他没有回答。她说，先喊，再伸，再抛，最后才是跳。",
+      "MEMORY_CH009_LAYERS": "晶一潮一层，那颗的最里层是黑的。捡晶的说，下游的口子偶尔捡到中间灰的。他没打断米娅。",
+      "MEMORY_CH009_FIVE_SLIPS": "五张证词，她让他排。他没排，她画了一条线：同一道水。下次，你排。",
+      "MEMORY_CH009_SHIELD_SCARES": "她说盾吓人，派他去问烧水的人。他等着，老妇自己说了：池底的沟通东口，外面退潮的时候管子在涨，镜子里有时候多一个紫头发的。",
+      "MEMORY_CH009_GRATE": "根把码头工人拖进栅栏。她用盾封住缺口，说后面的人，你管。米娅抛了绳，他跟渔民一起拉，鱼贩上来了。她说：退。",
+      "MEMORY_CH009_BELOW": "她写完了那一行：雾港底下，有人。四个名字。救回那一栏空着，她说明天填。外面在退，底下还在涨。",
+      "MEMORY_CH010_PUMP_HOUSE": "泵房里没有人。汤碗的麻袋，黑色的碎粒，写着拟态的空瓶，一槽小虫。粉笔画着账本上那个记号，底下写着大四。她停了一拍。",
+      "MEMORY_CH010_SEVENTEEN": "泵是反装的，外面一退就往里打水。晶座里是十七号，底下的十一划掉了。她说要完整的。莉亚派她守泵。",
+      "MEMORY_CH010_FOUR_LEDGES": "四个人，四个地方。她把先后交给他，他没排。她自己点名：达利别动，钩子伸过去，提姆走过来，绳子抛过去；最后她把盾平放在水上，他背着渔民踩了过去。没有人跳。",
+      "MEMORY_CH010_CAVITY_BATTLE": "她分了三份：人，她守；泵，米娅；根，交给他引。他用光照水，她用盾拨；水涨到石台边，他往另一头打了一个水花。她说水到石台了，米娅说，人先，撬碎了晶座。母虫活着退进涵洞。米娅说，不是它，底下还有。",
+      "MEMORY_CH010_RESCUE_COLUMN": "下去三个，上来七个。救回那一栏，她填上了四个名字。底下的水，没有再涨。",
+      "MEMORY_CH010_SAME_LEDGER": "汤碗救济会。伊涅丝说，总会的通报上，发汤的、走巡礼的、卖魔具的，是同一个名字：蚀宴会。莉亚说，是同一本账。案子还开着。",
+      "MEMORY_CH010_MIA_JOINED": "她要署泵停的那一行，就用自己的名字签了登记。条件写在名字旁边：先问，再碰，拆要她在。她问队上要不要一个会炸的。他没说话。她说，没说不要。",
+      "MEMORY_CH010_LEDGER_SHARED": "入了队，她在旅店楼上把账摊开：晨钟镇西门外的旧磨坊，汤碗救济会从营地带走过人；营地那两个救回来了，晨祷平原来的三个没有；那一行的记号，就是泵房那个拱。她说，队员可以问。米娅说，先不问。",
+      "MEMORY_CH010_INN_NIGHT": "桥头旅店。这里的镜子没盖布。她们睡了。",
+      "MEMORY_CH011_SEVEN_HOLES": "手背上的洗礼印裂开七个细孔。他没有叫人。",
+      "MEMORY_CH011_THREE_KNOCKS": "梦里听见三声盾响，有人叫他的名字。他退了。线断了。",
+      "MEMORY_CH011_SERENA_ANSWER": "她说：都有。线，她剪了；门，她看了一眼。今晚拉线的，不是她。",
+      "MEMORY_CH011_SEVEN_DOORS": "她说他身上有七扇门，都空着。白塔的册官，在他身上按过号。莉亚停了一拍。",
+      "MEMORY_CH011_LEAH_RULE": "莉亚说：要来，走门。镜子，不准看。",
+      "MEMORY_CH011_SAY_A_WORD": "她问他，要走的时候会不会说一声。他没有回答。她没有说再见。",
+      "MEMORY_CH011_LEDGER": "莉亚在账上写：第十二夜，桥头旅店。镜中人塞雷娜，剪线，看了一眼。梦里的事，他没有说。",
+      "MEMORY_CH011_FEATHER_MAP": "黑羽穿着一张地图：老涵洞往下是潮穴；一条没人走过的路，停在一个没写字的圈。角上写着：条件，明天谈。",
+      "MEMORY_CH011_INN_NIGHT": "这一夜之后，走廊、楼梯转角与三人房里的镜子都盖了布；尼尔的房间不知道。莉亚面对着镜子坐。",
+      "MEMORY_CH012_BATH_MIRROR": "塞雷娜招认从浴场柜门镜看过他的手背。她道歉，包起杖头。莉亚写下：镜子，不准看。违，一次。",
+      "MEMORY_CH012_TERMS": "塞雷娜的条件：莫尔坎；要走，说一声；别叫她替人看别人。他什么都没说。莉亚说：不说话，就是没说不要。她记下了两条。",
+      "MEMORY_CH012_JOINED": "塞雷娜入队。登记只写名，姓说下次。条件写在名字旁边。",
+      "MEMORY_CH012_LOCKER_MIRROR": "人没走门，走的是柜门镜。镜子只记得照过的。米娅盖了柜门镜，只留尼尔那一格。",
+      "MEMORY_CH012_ALLEY": "镜巷里，莉亚报数，假的莉亚答不出少了谁。学徒说：潮穴，明夜。队员，第一次报到四。",
+      "MEMORY_CH012_APPRENTICE": "学徒在灯塔裹着毯子睡着了。今晚谁都没问。明早，分会来点。",
+      "MEMORY_CH012_LIGHTHOUSE_NIGHT": "第十三天住旧灯塔。队员，四。塞雷娜说：我在楼梯上，哪里也不去。下雨了。",
+      "MEMORY_CH013_DREAM_QUESTION": "后半夜，塞雷娜想从窗走进孩子的梦里问莫尔坎。他没有说好；她说，那就是不。",
+      "MEMORY_CH013_WINDOW": "窗碎了。金发的刺客说：让开。他照过我的脸。莉亚的盾先到。纸被她挑走了。",
+      "MEMORY_CH013_ASSASSIN": "雨中屋顶，金发刺客问他是不是教团的人。他没说话。她丢下纸：我不是来帮你，只是不想欠你。看清楚上面盖的章。不要相信教团。",
+      "MEMORY_CH013_COUNT": "屋顶回来，莉亚报数。塞雷娜报四，这一次没有停。米娅守住了门和窗。",
+      "MEMORY_CH013_PASS": "巡礼通行证：最上面是晨星冕的御印，底下盖着那个像拱又像浪的记号——伊涅丝说，御印底下只盖得上官印。背面写着：往：拱潮门。",
+      "MEMORY_CH013_WITNESS": "清晨，孩子报了名字：席欧。伊涅丝说，说话的，名字她留着。她带他回分会。",
+      "MEMORY_CH013_TIDE_TONIGHT": "第十四天清晨。伊涅丝点了四个：今夜出去四个，回来也要四个。潮穴，今夜。",
+      "MEMORY_CH014_SPLIT": "老闸口，三个下去，一个守闸。守闸的是米娅。是莉亚派的。",
+      "MEMORY_CH014_COCOONS": "潮穴的墙上挂着茧，茧里是人。所有的茧同一个时候鼓起来——雾港底下的心跳，是他们。",
+      "MEMORY_CH014_PATCH": "老闸的楔子裂了。米娅把叮当三号塞进齿里：紧急修补。最后一个人出来，闸才落。报数，到四。",
+      "MEMORY_CH014_TAGS": "潮腔的石台上，九个人的手腕都绑着木牌：来处、件、成色。米娅先问了，才剪。一个叫欧妲，晨祷平原来的——04那一行的三个人，找回一个。",
+      "MEMORY_CH014_ACOLYTE": "东口，那个放下手的念祷文的人交给了分会。伊涅丝把他的名字收进袖子里。",
+      "MEMORY_CH014_COUNT": "东口，伊涅丝点完人数：出去四个，回来四个；加九个；再加一个。",
+      "MEMORY_CH014_LEDGER": "莉亚的账：救回九，还没救回三，念祷文的一名交分会，牌子九块。她写的是‘还没’。",
+      "MEMORY_CH014_BELOW": "东口的闸缝底下，有个声音照着他们的报数数了一遍。说话的人都站在上面。零号说，底下还有一个，很慢，很大。",
+      "MEMORY_CH015_COUNTERSIGN": "石门前，莉亚说底下的东西会学声音。认自己人，用绳子。",
+      "MEMORY_CH015_NEST": "石门后面是一条沉船。船肋上挂着三个茧，船舱里挂满幼体的囊。龙骨上的壳，用莉亚的声音数了一二三。",
+      "MEMORY_CH015_SHELL": "壳撞上盾，腹下裂开一道缝。他的剑进了那道缝，不深，刚好一道。",
+      "MEMORY_CH015_COPIES": "两个莉亚、两个塞雷娜。塞雷娜和莉亚换了位置，金发的刺客从死角出了一刀。",
+      "MEMORY_CH015_NEST_FATE": "人都出来了，莉亚把那一下交给他。……他没说，莉亚照第三条切了线。",
+      "MEMORY_CH015_RUIN": "那颗心停的地方长出一个活的木环，谁伸手，根就往回缩。底下压着一片刻了七个环的铜，莉亚收了。金发刺客拿走了那块还在跳的碎片，说它叫涅洛萨，以前是洗沼泽的。",
+      "MEMORY_CH015_COUNT": "分会的仓里，伊涅丝点完：出去四个，回来四个，加三个。欧妲给他们让了位置。",
+      "MEMORY_CH015_NOT_HANDED_OVER": "分会门口，赈灾司的官照册要收救回的人。他说：救回的，不交。达利站到他身后，码头的人一个一个站过来。",
+      "MEMORY_CH015_SUMMONS": "赈灾司的官交出一封白塔的召令：召雾港屠龙者，三日内赴白塔。金色的火漆是一顶冠，冠上一道裂——和黑龙左眼旁边那道一样。",
+      "MEMORY_CH015_LEDGER": "莉亚的账：救回三，它停了，幼体多数留着，碎片被拿走，白塔召三日。她把召令夹在通行证旁边。",
+      "MEMORY_CH016_NOTICE": "晨门里的通报：赫麦村一带，野龙过境。莉亚停在他旁边，没有催。",
+      "MEMORY_CH016_HALL": "册厅的表头：来处、件、成色、往。莉亚把牌子放在旁边，说：是同一本账。监察院的信，封蜡是七角的晨星——娘桌角那封，一样。",
+      "MEMORY_CH016_ORIGIN": "掌簿官问他的来处。他没等，册上有：那一页早就夹着红绳。",
+      "MEMORY_CH016_COURT": "册厅里，皇帝坐在册架旁的一张椅子上，手边摊着一本册。皇女说：辛苦了。",
+      "MEMORY_CH016_TITLE": "大主教封他‘屠龙骑士’，照礼念他那一页：来处，赫麦；件，一；成色——她停了一拍——器；往，空白。",
+      "MEMORY_CH016_NAMES": "圣女照稿祝福，念到‘愿他们的名字’停了：稿子上没有名字。她问他。最后她自己加了一句：愿他们，平安。",
+      "MEMORY_CH016_TERMS": "封号、一营兵、龙脊，换雾港救回的名册。他在皇帝面前说：救回的，不交。皇帝说：名册——朕派人去拿。",
+      "MEMORY_CH016_CRACKS": "册厅里，塞弗林照例念月册：本月，往拱潮门，三十八件。圣女走过他身边，说塔的底下有东西在裂，七种声音。她说：叫伊芙琳就好。",
+      "MEMORY_CH016_VESSEL": "晨门的长桌前，莉亚问他怎么想：他那一页写着器。她在账上，记了一个字。",
+      "MEMORY_CH016_LEDGER": "莉亚的账：授屠龙骑士，条件是救回名册——不交。他那一页：成色，器；往，空白。最后一行：本月，往拱潮门，三十八。",
+      "MEMORY_CH017_NAMES": "旅舍的夜里，莉亚说纸会被拿走。她低声念救回的十二个名字，他跟着念完。",
+      "MEMORY_CH017_AILA": "旅舍的门口，一个金色短发的骑士带着没收令来：雾港救回名册、七环星图。她说：光明骑士，艾拉。骑士不报姓。",
+      "MEMORY_CH017_SMOKE": "圣女居所的烟里，艾拉照命令守着书库。莉亚上了楼，他跟上，在楼梯口数到五。圣女最后一个下来。",
+      "MEMORY_CH017_HALF_SENTENCE": "天亮前的花园里，圣女一边掉泪一边唱，侍女的咳嗽停了。艾拉从书库出来：书库保住了，窗开着，少了一个匣子。她看着草地上的五个人说：先保文件。……不保人。命令上，没写这半句。",
+      "MEMORY_CH017_DUEL": "黎明的花园里，艾拉照她的规矩决斗。钟响三下，他没碰到她。她拿走了拓本。她问名册，他背出十二个名字。她写：名册，屠龙骑士，背得出。",
+      "MEMORY_CH017_ESCORT": "清晨，冠礼院的令要圣女随行。礼仪官说她愿意；她说，请让我自己说。她说那其实是监视。她请他以后不要替她回答。他没有说不行。",
+      "MEMORY_CH017_FROST": "第十八天早上很冷，不是圣都该有的冷。外庭的喷泉结了冰，一辆北方的车停在那里，车窗里的人一动不动。",
+      "MEMORY_CH017_LEDGER": "莉亚的账：没收令，证物不交。圣女居所上去五个，下来五个。书库少了一个匣子。决斗赌拓本，她拿走了。名册：他背得出。随行：伊芙琳——监视，她自己说的。最后一行：本月，往拱潮门，三十八。",
+      "MEMORY_CH018_DECREE": "外庭，晨星卫说暂停是御令。艾拉拍出她的命令：监护，到外庭也算。队长让到正午。",
+      "MEMORY_CH018_ASK_FIRST": "芙蕾娅说，融之前每一个都要先问本人或家人。他没说不要。",
+      "MEMORY_CH018_LETTER": "使团长手里封在冰里的信，只有一行：七心归位，主神归来。伊芙琳说，又裂了一声。她说，信她自己交。",
+      "MEMORY_CH018_HANDS": "解冻以后，芙蕾娅替使团的人整理围巾，手在抖。她收进袖子，说：冷的嘛。",
+      "MEMORY_CH018_ORDER": "艾拉坐在喷泉边问：那是请，还是命令？她说：别对我说‘这是命令’。这是条件。",
+      "MEMORY_CH018_LEDGER": "莉亚的账：霜潮使团暂停，正午以前融了七个，先问了。冰封信：七心归位，主神归来。随行：艾拉，监护，没有姓。明日，御前听证，他作证。最后一行：本月，往拱潮门，三十八。"
+    }
+  },
+  "speakers": {
+    "bread": {
+      "name": "卖面包的女人",
+      "color": "#d8b48a",
+      "art": null
+    },
+    "skewer": {
+      "name": "肉串摊的大叔",
+      "color": "#c8805a",
+      "art": null
+    },
+    "honey": {
+      "name": "卖蜂蜜的小贩",
+      "color": "#d8b050",
+      "art": null
+    },
+    "flower": {
+      "name": "卖花的婆婆",
+      "color": "#b8c8a0",
+      "art": null
+    }
+  },
+  "shots": [
+    {
+      "id": "ex015-01",
+      "title": "一天假",
+      "bg": "holy-city-pilgrim-hostel-day",
+      "music": "holy_morning_light",
+      "ambience": [
+        "street_morning",
+        "far_bells"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "早上。朝圣者旅舍的二楼，窗外的街刚洒过水。"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚坐在窗边的小桌前，翻着报告夹。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "盐。绷带。……去晨市。"
+        },
+        {
+          "t": "narr",
+          "text": "艾拉靠在门框上，抱着手臂。"
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "监护屠龙骑士一行。你们去哪，我去哪。"
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "……晨市，也算。"
+        },
+        {
+          "t": "narr",
+          "text": "门被敲了三下。很轻。"
+        },
+        {
+          "t": "narr",
+          "text": "伊芙琳站在门口。她换了一身普通的衣服——是前一晚，她自己下楼去找老板娘借的。"
+        },
+        {
+          "t": "narr",
+          "text": "额前的圣冠不见了。辫尾的祈祷铃，也收进了口袋。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "那、那个……"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "今天……我想请一天假。"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚抬起头。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "今天，没有委托。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "……假，跟谁请？"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "跟、跟……自己。"
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "哈。那，批准了吗？"
+        },
+        {
+          "t": "narr",
+          "text": "伊芙琳想了一下，很认真地点了点头。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "……批准了。"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚从腰包里数出几枚钱币，装进一个小布袋，推到桌边。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "今天的。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "给、给我的？"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "队伍的。记在账上。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "花在哪，你自己定。"
+        },
+        {
+          "t": "narr",
+          "text": "伊芙琳用两只手，把小布袋捧了起来。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "上次在拱廊街，我只挑了一束花。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "……今天，想多挑几样。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "EVELYN_RELATIONSHIP_STAGE",
+            "eq": "COMPANION"
+          },
+          "then": [
+            {
+              "t": "narr",
+              "text": "她看了{PLAYER_NAME}一眼，又很快低下头。"
+            },
+            {
+              "t": "say",
+              "who": "evelyn",
+              "text": "您……也一起来吗？"
+            }
+          ]
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "屠龙骑士，走了。被监护的人，不准落单喔。"
+        }
+      ]
+    },
+    {
+      "id": "ex015-02",
+      "title": "自由输入：哪一条路",
+      "bg": "white-tower-arcade-street",
+      "music": "holy_morning_light",
+      "ambience": [
+        "footsteps",
+        "pigeons"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "旅舍隔一条街，就是朝圣者拱廊街。穿过去，就是晨市。"
+        },
+        {
+          "t": "narr",
+          "text": "拱廊街口的旁边，还有一条窄窄的小巷，弯弯曲曲，看不见尽头。"
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "拱廊街直走，最近。朝圣的人，也最多。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "近的。"
+        },
+        {
+          "t": "narr",
+          "text": "伊芙琳站在两条路中间，看看这条，又看看那条。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "那、那个……"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "哪一条……是对的？"
+        },
+        {
+          "t": "input",
+          "id": "FI_EX015_SC02_ROUTE_001",
+          "kind": "dialogue",
+          "prompt": "去晨市有两条路：拱廊街直走，最近，朝圣的人也最多；旁边一条弯弯曲曲的小巷，看不见尽头。伊芙琳站在中间，问哪一条是对的。{PLAYER_NAME}可以替她指一条、告诉她没有对的、问她想看什么、抛硬币，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "evelyn",
+            "aila",
+            "lia"
+          ],
+          "context": [
+            "艾拉说拱廊街最近，莉亚也说走近的。",
+            "小巷那头飘过来烤面包的味道。",
+            "伊芙琳在白塔里长大，衣服、发言、喜欢的花，都是别人定的。"
+          ],
+          "principles": [
+            "ROUTE：判定优先序：替她指一条（走拱廊街、走小巷、听我的） > 抛硬币 > 问她想看什么 > 告诉她没有对的、你自己选 > 沉默。",
+            "路由她自己选：替她指路的路线，她道谢，然后说想自己选一次；硬币选的，也不算她选的。不设标准答案。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "picked",
+              "label": "替她指一条",
+              "desc": "替伊芙琳决定走哪一条：走拱廊街、走小巷、听我的、跟我走。",
+              "keywords": [
+                "走拱廊街",
+                "走大路",
+                "走近的",
+                "走小巷",
+                "走那条",
+                "走这条",
+                "听我的",
+                "跟我走",
+                "就走"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "……谢谢您。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她看看那条路，又看看另一条。"
+                },
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "可是……我想自己选一次。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_ROUTE": "PICKED"
+                },
+                "flags": {
+                  "EX015_CHOSE_FOR_HER": true
+                }
+              }
+            },
+            {
+              "id": "coin",
+              "label": "抛硬币",
+              "desc": "抛硬币决定，正面反面。",
+              "keywords": [
+                "抛硬币",
+                "扔硬币",
+                "掷硬币",
+                "猜正反",
+                "硬币",
+                "正面反面"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}弹起一枚硬币。正面——拱廊街。"
+                },
+                {
+                  "t": "narr",
+                  "text": "伊芙琳看着那枚硬币，看了很久。"
+                },
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "……硬币选的，也不是我选的。"
+                },
+                {
+                  "t": "say",
+                  "who": "aila",
+                  "text": "哈！说得好。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_ROUTE": "COIN"
+                }
+              }
+            },
+            {
+              "id": "asked",
+              "label": "问她想看什么",
+              "desc": "问伊芙琳想看什么、想去哪、喜欢哪边。",
+              "keywords": [
+                "你想看什么",
+                "想看什么",
+                "想去哪",
+                "你喜欢哪",
+                "哪边好玩",
+                "你想要什么"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "想、想看的……"
+                },
+                {
+                  "t": "narr",
+                  "text": "她闭上眼睛，吸了吸鼻子。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_ROUTE": "ASKED"
+                }
+              }
+            },
+            {
+              "id": "no_right",
+              "label": "告诉她没有对的",
+              "desc": "没有对的、没有对错、你自己选、你想走哪条都行。",
+              "keywords": [
+                "没有对的",
+                "没有对错",
+                "你自己选",
+                "你选",
+                "你想走哪条",
+                "都可以",
+                "都行",
+                "你决定"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "……没有，对的？"
+                },
+                {
+                  "t": "narr",
+                  "text": "她小声重复了一遍，像在背一句新的祷词。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_ROUTE": "NO_RIGHT"
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}没有说话。伊芙琳等了一会儿，发现没有人要替她说。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_ROUTE": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "narr",
+          "text": "小巷那头，飘过来一股烤面包的味道。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "……这一条。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "有面包的味道。我、我想走这一条。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "绕。三百步。"
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "监护的意思，是跟着，不是带路。"
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "——走吧，圣女。今天，路你选。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "AILA_RELATIONSHIP_STAGE",
+            "eq": "COMPANION"
+          },
+          "then": [
+            {
+              "t": "say",
+              "who": "aila",
+              "text": "……其实我也想知道，你会选哪条。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ex015-03",
+      "title": "晨市",
+      "bg": "holy-city-morning-market",
+      "music": "market_morning_flute",
+      "ambience": [
+        "crowd_morning",
+        "far_bells"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "小巷走到底，眼前一下子亮了。"
+        },
+        {
+          "t": "narr",
+          "text": "白石铺的街上，一顶挨一顶的帆布摊子。面包、花、蜂蜜，刚出水的鱼。"
+        },
+        {
+          "t": "narr",
+          "text": "远处，白塔立在早上的光里。"
+        },
+        {
+          "t": "say",
+          "who": "bread",
+          "text": "刚出炉的——姑娘，看看？"
+        },
+        {
+          "t": "narr",
+          "text": "伊芙琳停住脚步，深深吸了一口气。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "早、早上好！"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "今天……天气，很好呢！"
+        },
+        {
+          "t": "narr",
+          "text": "卖面包的女人愣了一下，笑了。"
+        },
+        {
+          "t": "say",
+          "who": "bread",
+          "text": "是啊，好天气。"
+        },
+        {
+          "t": "narr",
+          "text": "伊芙琳转过来，小声对{PLAYER_NAME}说。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "……练过的。"
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "练过？"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "普通人的招呼。一共十种。……这是第一种。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "盐，在那边。"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚往鱼摊那头走。走了五步，回过头。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "在我看得见的地方。"
+        }
+      ]
+    },
+    {
+      "id": "ex015-04",
+      "title": "自由输入：早饭",
+      "bg": "holy-city-morning-market",
+      "music": "market_morning_flute",
+      "ambience": [
+        "crowd_morning",
+        "sizzle"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "街两边，都是吃的。"
+        },
+        {
+          "t": "narr",
+          "text": "烤得焦黄的面包圈、一锅冒泡的甜豆汤、整串滴着油的烤肉，还有炸得蓬松的面团，撒满了糖。"
+        },
+        {
+          "t": "narr",
+          "text": "伊芙琳捧着小布袋，从这一头走到那一头，又从那一头走回来。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "白塔里的早饭，是白面包、温牛奶、一个水煮蛋。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "每天，都一样。……有人替我定好的。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "大、大家……平常早上，吃什么？"
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "肉串。骑士团门口那家，巡完夜就去。"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚拎着一包盐回来了。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "盐饼。放得久。"
+        },
+        {
+          "t": "narr",
+          "text": "伊芙琳看看肉串，看看盐饼，又看看{PLAYER_NAME}。"
+        },
+        {
+          "t": "input",
+          "id": "FI_EX015_SC04_BREAKFAST_001",
+          "kind": "dialogue",
+          "prompt": "晨市两边都是吃的：面包圈、甜豆汤、烤肉串、撒糖的炸面团。伊芙琳说白塔的早饭每天都是别人定好的，问大家平常早上吃什么；艾拉说肉串，莉亚说盐饼。{PLAYER_NAME}可以推荐一样、直接买给她、让她照平常吃、建议每样试一点、让她吃自己想吃的，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "evelyn",
+            "aila",
+            "lia"
+          ],
+          "context": [
+            "伊芙琳手里有莉亚给的小布袋，花在哪由她自己定。",
+            "烤肉摊的烟最大，炭火上的肉串刷着红红的酱。",
+            "白塔里的早饭：白面包、温牛奶、一个水煮蛋。"
+          ],
+          "principles": [
+            "BREAKFAST：判定优先序：直接买给她 > 让她照平常吃 > 推荐一样 > 每样都试一点 > 吃她自己想吃的 > 沉默。",
+            "早饭由她自己挑：买给她的路线，她道谢、吃了，然后说下一样想自己挑；推荐的东西，她认真记住。不写成别人替她选。",
+            "不碰草莓蛋糕（莉亚的秘密）；晨市上没有蛋糕摊。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "bought",
+              "label": "直接买给她",
+              "desc": "{PLAYER_NAME}自己掏钱，买一样塞给她：我给你买、我请你。",
+              "keywords": [
+                "我给你买",
+                "我请你",
+                "我替你买",
+                "给你买",
+                "我来买",
+                "我请客",
+                "我买给你"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}买了一个面包圈，递过去。"
+                },
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "谢、谢谢您。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她用两只手接过来，咬了一小口。"
+                },
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "……好吃。"
+                },
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "可是……下一样，我想自己挑。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_BREAKFAST": "BOUGHT"
+                },
+                "flags": {
+                  "EX015_CHOSE_FOR_HER": true
+                }
+              }
+            },
+            {
+              "id": "usual",
+              "label": "让她照平常吃",
+              "desc": "白面包、温牛奶、水煮蛋，跟平常一样。",
+              "keywords": [
+                "跟平常一样",
+                "照平常",
+                "照老样子",
+                "白面包",
+                "温牛奶",
+                "水煮蛋",
+                "老样子"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "……平常的。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她看了看卖牛奶的摊子，手里的布袋捏紧了一点。"
+                },
+                {
+                  "t": "say",
+                  "who": "aila",
+                  "text": "放假，还吃白塔的早饭？"
+                },
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "……不、不吃。今天，不吃。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_BREAKFAST": "USUAL"
+                }
+              }
+            },
+            {
+              "id": "recommended",
+              "label": "推荐一样",
+              "desc": "推荐面包圈、甜豆汤、肉串或炸面团：试试这个。",
+              "keywords": [
+                "试试这个",
+                "吃面包圈",
+                "吃甜豆汤",
+                "吃肉串",
+                "吃炸面团",
+                "面包圈",
+                "甜豆汤",
+                "炸面团",
+                "肉串",
+                "盐饼"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "……那个吗？"
+                },
+                {
+                  "t": "narr",
+                  "text": "她认真地看了那个摊子一眼，点点头，像是记了下来。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_BREAKFAST": "RECOMMENDED"
+                }
+              }
+            },
+            {
+              "id": "try_all",
+              "label": "每样都试一点",
+              "desc": "每样都尝一点、都买一点。",
+              "keywords": [
+                "每样都试",
+                "每样一点",
+                "都尝一点",
+                "都买一点",
+                "全部试试",
+                "都试试"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……布袋，不够。"
+                },
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "那、那就……先一样。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_BREAKFAST": "TRY_ALL"
+                }
+              }
+            },
+            {
+              "id": "own",
+              "label": "吃她自己想吃的",
+              "desc": "吃你想吃的、你自己挑、你想吃什么。",
+              "keywords": [
+                "吃你想吃的",
+                "你想吃什么",
+                "你自己挑",
+                "想吃哪个",
+                "你喜欢哪个",
+                "自己选",
+                "由你",
+                "你挑"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "我、我想吃的……"
+                },
+                {
+                  "t": "narr",
+                  "text": "她闭上眼睛，吸了一口气。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_BREAKFAST": "OWN"
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}没有说话，在旁边等着。"
+                },
+                {
+                  "t": "narr",
+                  "text": "伊芙琳也没有催自己。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_BREAKFAST": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "narr",
+          "text": "烤肉的烟，从街那头飘过来。"
+        },
+        {
+          "t": "narr",
+          "text": "伊芙琳走到烟最大的那个摊子前面。炭火上，一排肉串，刷着红红的酱。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "……我要那个。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "最红的那一串。"
+        },
+        {
+          "t": "say",
+          "who": "skewer",
+          "text": "姑娘，那是辣的哦。最辣的。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "……嗯。辣的。"
+        },
+        {
+          "t": "narr",
+          "text": "她从布袋里数出钱币，自己付了。咬了一口。"
+        },
+        {
+          "t": "narr",
+          "text": "然后，她不动了。"
+        },
+        {
+          "t": "narr",
+          "text": "眼泪，一颗一颗掉下来。"
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "喂、喂——"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "不、不是难过……"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "是辣。"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚递过来一个水囊。没有多说一个字。"
+        },
+        {
+          "t": "narr",
+          "text": "伊芙琳喝了一口，用袖子擦擦眼睛，又咬了一口。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "……我还要一串。"
+        },
+        {
+          "t": "say",
+          "who": "skewer",
+          "text": "好！姑娘有胆量！"
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "……哈哈哈哈！"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "EVELYN_RELATIONSHIP_STAGE",
+            "eq": "COMPANION"
+          },
+          "then": [
+            {
+              "t": "say",
+              "who": "evelyn",
+              "text": "您……要尝一口吗？很、很辣的。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ex015-05",
+      "title": "自由输入：一道杠",
+      "bg": "holy-city-morning-market",
+      "music": "market_morning_flute",
+      "ambience": [
+        "crowd_morning"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "第二串吃完，伊芙琳的嘴唇红红的。"
+        },
+        {
+          "t": "narr",
+          "text": "她停在一个蜂蜜摊前。小陶罐一排一排，在太阳底下发亮。"
+        },
+        {
+          "t": "say",
+          "who": "honey",
+          "text": "姑娘，面生啊。尝尝？白塔的花蜜。"
+        },
+        {
+          "t": "narr",
+          "text": "伊芙琳用小木签尝了一点。眼睛亮了。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "……这个。一罐。"
+        },
+        {
+          "t": "say",
+          "who": "honey",
+          "text": "三枚。"
+        },
+        {
+          "t": "narr",
+          "text": "她已经把三枚钱币，数在了手心里。"
+        },
+        {
+          "t": "narr",
+          "text": "摊子边挂着一块木牌，画着一个罐子，旁边刻着一道杠。"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚的眼睛，眯了一下。"
+        },
+        {
+          "t": "input",
+          "id": "FI_EX015_SC05_PRICE_001",
+          "kind": "dialogue",
+          "prompt": "蜂蜜摊的小贩见伊芙琳面生，一罐蜂蜜开价三枚；可摊子的木牌上，罐子旁边只刻着一道杠。伊芙琳已经把三枚钱数在手心里，莉亚看见了。{PLAYER_NAME}可以指出木牌、提醒伊芙琳自己看、让莉亚去说、替她付了算了、骂小贩，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "honey",
+            "evelyn",
+            "lia",
+            "aila"
+          ],
+          "context": [
+            "木牌上画着罐子，旁边刻一道杠：一罐一枚。",
+            "伊芙琳认得字，也认得杠；她以前没有自己付过钱。",
+            "小贩不是坏人，只是看她面生。"
+          ],
+          "principles": [
+            "PRICE：判定优先序：骂小贩（骗子、黑心） > 替她付了算了 > 让莉亚去说 > 提醒伊芙琳自己看 > 指出木牌 > 沉默。",
+            "所有路线都由伊芙琳自己看木牌、自己说出「是一枚」；莉亚去说的路线，莉亚也只叫她自己看。",
+            "小贩是看人面生的普通人，不让他被羞辱到底；这是一场没有人会受伤的小冲突。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "hostile",
+              "label": "骂小贩",
+              "desc": "骂他骗子、黑心、坑人、敲竹杠。",
+              "keywords": [
+                "骗子",
+                "黑心",
+                "坑人",
+                "奸商",
+                "敲竹杠",
+                "宰人",
+                "!不是骗子",
+                "!别骂"
+              ],
+              "morality": -1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "honey",
+                  "text": "你、你说谁！"
+                },
+                {
+                  "t": "narr",
+                  "text": "附近几个摊子，都看了过来。"
+                },
+                {
+                  "t": "narr",
+                  "text": "伊芙琳往后缩了一下。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_PRICE": "HOSTILE"
+                }
+              }
+            },
+            {
+              "id": "paid",
+              "label": "替她付了算了",
+              "desc": "算了、三枚就三枚、我来付。",
+              "keywords": [
+                "我来付",
+                "算了",
+                "付了吧",
+                "我替她付",
+                "三枚就三枚",
+                "不就三枚",
+                "给他吧"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}掏出三枚钱币——"
+                },
+                {
+                  "t": "narr",
+                  "text": "伊芙琳的手，先一步按住了他的手。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_PRICE": "PAID"
+                },
+                "flags": {
+                  "EX015_CHOSE_FOR_HER": true
+                }
+              }
+            },
+            {
+              "id": "leah",
+              "label": "让莉亚去说",
+              "desc": "让莉亚去跟小贩说、交给莉亚。",
+              "keywords": [
+                "让莉亚去说",
+                "莉亚去说",
+                "莉亚你来",
+                "交给莉亚",
+                "让莉亚来",
+                "莉亚帮忙"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "莉亚走到摊子前，把报告夹往摊子上一放。"
+                },
+                {
+                  "t": "narr",
+                  "text": "小贩看看报告夹，又看看莉亚。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……不是我。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "你自己看。木牌。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_PRICE": "LEAH"
+                }
+              }
+            },
+            {
+              "id": "her_look",
+              "label": "提醒伊芙琳自己看",
+              "desc": "你看看木牌、你自己数、你先看。",
+              "keywords": [
+                "你自己看",
+                "你看看木牌",
+                "你看看牌子",
+                "你数一数",
+                "你先看",
+                "自己数",
+                "你看那块"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "伊芙琳看了看{PLAYER_NAME}，又顺着他的目光，看向木牌。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_PRICE": "HER_LOOK"
+                }
+              }
+            },
+            {
+              "id": "pointed",
+              "label": "指出木牌",
+              "desc": "指着木牌说标价是一枚、一道杠。",
+              "keywords": [
+                "木牌",
+                "牌子上",
+                "一道杠",
+                "标价",
+                "写的是一枚",
+                "明明是一枚",
+                "只要一枚",
+                "一枚"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}指了指那块木牌。"
+                },
+                {
+                  "t": "narr",
+                  "text": "小贩的脸，红了一下。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_PRICE": "POINTED"
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}没有出声。伊芙琳低头，看着手心里的三枚钱币。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_PRICE": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "narr",
+          "text": "伊芙琳看着那块木牌。一道杠。"
+        },
+        {
+          "t": "narr",
+          "text": "她把手心里的钱币，放回去两枚。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "……木牌上，是一枚。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "我、我认得字的。……也认得杠。"
+        },
+        {
+          "t": "narr",
+          "text": "小贩张了张嘴，挠了挠头。"
+        },
+        {
+          "t": "say",
+          "who": "honey",
+          "text": "……看错了，看错了。一枚。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "EX_PRICE",
+            "eq": "HOSTILE"
+          },
+          "then": [
+            {
+              "t": "say",
+              "who": "evelyn",
+              "text": "也、也请您……不要骂他。"
+            },
+            {
+              "t": "narr",
+              "text": "她是对{PLAYER_NAME}说的。"
+            }
+          ]
+        },
+        {
+          "t": "narr",
+          "text": "小贩把一罐蜂蜜包好，又塞了一把小木勺进去。"
+        },
+        {
+          "t": "say",
+          "who": "honey",
+          "text": "送的。姑娘，别说出去啊。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "……账，对了。"
+        }
+      ]
+    },
+    {
+      "id": "ex015-06",
+      "title": "自由输入：叫我什么",
+      "bg": "holy-city-morning-market",
+      "music": "market_morning_flute_hush",
+      "ambience": [
+        "crowd_morning"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "街角，有一个卖花的小摊。"
+        },
+        {
+          "t": "narr",
+          "text": "白百合扎成一捆一捆，插在水桶里。"
+        },
+        {
+          "t": "narr",
+          "text": "卖花的老婆婆抬起头，看着伊芙琳。看了很久。"
+        },
+        {
+          "t": "say",
+          "who": "flower",
+          "text": "……圣、圣女大人？"
+        },
+        {
+          "t": "narr",
+          "text": "她扶着水桶，就要跪下去。"
+        },
+        {
+          "t": "narr",
+          "text": "旁边买菜的人，一个、两个，转过头来。"
+        },
+        {
+          "t": "narr",
+          "text": "艾拉往前跨了半步，挡在伊芙琳前面。"
+        },
+        {
+          "t": "narr",
+          "text": "伊芙琳站在那里，手里还拎着那罐蜂蜜。"
+        },
+        {
+          "t": "input",
+          "id": "FI_EX015_SC06_NAME_001",
+          "kind": "dialogue",
+          "prompt": "卖花的老婆婆认出了伊芙琳，叫她「圣女大人」，扶着水桶就要跪下；街上的人转过头来，艾拉挡到了前面。{PLAYER_NAME}可以说老婆婆认错人了、拉着伊芙琳走开、说她今天放假、扶老婆婆起来、等伊芙琳自己开口，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "flower",
+            "evelyn",
+            "aila"
+          ],
+          "context": [
+            "伊芙琳今天穿着普通的衣服，没有戴圣冠。",
+            "老婆婆是普通的卖花人，见了圣女就要跪。",
+            "伊芙琳还没有对谁说过，今天想被叫作什么。"
+          ],
+          "principles": [
+            "NAME：判定优先序：说认错人了 > 拉她走开 > 说她今天放假 > 扶老婆婆起来 > 等她自己开口 > 沉默。",
+            "称呼由她自己选：所有路线都是伊芙琳自己扶起老婆婆、自己说出今天怎么叫她；说认错人的路线，她自己说「是我」。",
+            "「完美圣女」是她的雷区；老婆婆不是坏人，只是敬她。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "denied",
+              "label": "说认错人了",
+              "desc": "对老婆婆说认错了、她不是圣女。",
+              "keywords": [
+                "认错人了",
+                "认错了",
+                "她不是圣女",
+                "不是圣女",
+                "她不是",
+                "你看错了",
+                "没有圣女"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "老婆婆愣住了。"
+                },
+                {
+                  "t": "narr",
+                  "text": "伊芙琳轻轻碰了碰{PLAYER_NAME}的袖子。"
+                },
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "……不、不是认错。"
+                },
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "是我。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_NAME": "DENIED"
+                },
+                "flags": {
+                  "EX015_CHOSE_FOR_HER": true
+                }
+              }
+            },
+            {
+              "id": "pulled",
+              "label": "拉她走开",
+              "desc": "拉着伊芙琳快走、离开这里。",
+              "keywords": [
+                "拉她走",
+                "快走",
+                "我们走",
+                "离开这里",
+                "带她走",
+                "赶紧走",
+                "走吧"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}拉了一下伊芙琳的手腕。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她没有动。"
+                },
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "……请等一下。"
+                },
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "我想……跟婆婆说一句话。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_NAME": "PULLED"
+                },
+                "flags": {
+                  "EX015_CHOSE_FOR_HER": true
+                }
+              }
+            },
+            {
+              "id": "day_off",
+              "label": "说她今天放假",
+              "desc": "对老婆婆说她今天放假、在休假。",
+              "keywords": [
+                "她今天放假",
+                "今天放假",
+                "她在放假",
+                "在休假",
+                "休假",
+                "放假"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "flower",
+                  "text": "……放、放假？圣女大人，也放假？"
+                },
+                {
+                  "t": "say",
+                  "who": "aila",
+                  "text": "放的。我批的——不对，她自己批的。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_NAME": "DAY_OFF"
+                }
+              }
+            },
+            {
+              "id": "helped",
+              "label": "扶老婆婆起来",
+              "desc": "扶住老婆婆、请她别跪。",
+              "keywords": [
+                "扶她起来",
+                "扶起来",
+                "别跪",
+                "请起",
+                "不用跪",
+                "快起来",
+                "扶住她"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}伸手，扶住了老婆婆的胳膊。"
+                },
+                {
+                  "t": "narr",
+                  "text": "伊芙琳也蹲下来，扶住了另一边。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_NAME": "HELPED"
+                }
+              }
+            },
+            {
+              "id": "waited",
+              "label": "等她自己开口",
+              "desc": "不替她说，看着伊芙琳，等她自己开口。",
+              "keywords": [
+                "等她说",
+                "让她自己说",
+                "你想怎么说",
+                "你说吧",
+                "看着她",
+                "等伊芙琳"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}没有替她开口，只是看着她。"
+                },
+                {
+                  "t": "narr",
+                  "text": "伊芙琳深深吸了一口气。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_NAME": "WAITED"
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}没有出声。艾拉回过头，看了伊芙琳一眼。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_NAME": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "请、请起来。"
+        },
+        {
+          "t": "narr",
+          "text": "她扶着老婆婆，慢慢站直。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "今天……"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "叫我伊芙琳就好。"
+        },
+        {
+          "t": "narr",
+          "text": "老婆婆看着她，嘴唇动了动。"
+        },
+        {
+          "t": "say",
+          "who": "flower",
+          "text": "……伊芙琳。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "……嗯。"
+        },
+        {
+          "t": "narr",
+          "text": "她笑了。很小，可是一直没有收回去。"
+        },
+        {
+          "t": "narr",
+          "text": "转过头来的人，一个、两个，又转回去买菜了。"
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "……伊芙琳。"
+        },
+        {
+          "t": "narr",
+          "text": "艾拉试着叫了一声，像在念一个新的口令。"
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "嗯。比『圣女』短，好叫。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "AILA_RELATIONSHIP_STAGE",
+            "eq": "COMPANION"
+          },
+          "then": [
+            {
+              "t": "say",
+              "who": "aila",
+              "text": "以后，我也这么叫。……如果你批准的话。"
+            }
+          ]
+        },
+        {
+          "t": "say",
+          "who": "flower",
+          "text": "那……伊芙琳，要花吗？白百合。圣女大人最喜欢的。"
+        },
+        {
+          "t": "narr",
+          "text": "伊芙琳看了看那一桶白百合。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "……那是，别人替我定的。"
+        },
+        {
+          "t": "narr",
+          "text": "她指了指水桶旁边。一小把黄色的野花，没有扎，随便搁在篮子里。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "我喜欢……那个。"
+        },
+        {
+          "t": "say",
+          "who": "flower",
+          "text": "那个？田埂上摘的，不值钱哦。"
+        },
+        {
+          "t": "narr",
+          "text": "伊芙琳从布袋里，数出了一枚钱币。"
+        }
+      ]
+    },
+    {
+      "id": "ex015-07",
+      "title": "自由输入：从外面看",
+      "bg": "holy-city-morning-market",
+      "music": "market_noon_wind",
+      "ambience": [
+        "wind",
+        "far_bells"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "太阳升高了。摊子一顶一顶，收起了帆布。"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚的布袋里，是盐和绷带。伊芙琳的布袋，轻了很多。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "回去。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "那、那个……回去的路，也可以……我来选吗？"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "……可以。"
+        },
+        {
+          "t": "narr",
+          "text": "伊芙琳没有走来时的小巷。她走上了晨市尽头的一段石阶。"
+        },
+        {
+          "t": "narr",
+          "text": "石阶顶上，是旧城墙的一个豁口。风从那里吹进来。"
+        },
+        {
+          "t": "narr",
+          "text": "从这里，看得见整座白塔。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "塔上，有一扇小窗。小时候，我常常从那里，看这一段城墙。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "有时候，会有人站在这里，朝塔挥手。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "我不知道他们在跟谁挥手。……可是，我每次都想挥回去。"
+        },
+        {
+          "t": "narr",
+          "text": "她站在豁口上，看着白塔。"
+        },
+        {
+          "t": "narr",
+          "text": "艾拉和莉亚，停在了石阶下面。"
+        },
+        {
+          "t": "input",
+          "id": "FI_EX015_SC07_WALL_001",
+          "kind": "dialogue",
+          "prompt": "回去的路，伊芙琳自己选了晨市尽头的石阶。她站在旧城墙的豁口上看着白塔，说小时候常从塔上的小窗看这段城墙，看见有人朝塔挥手，每次都想挥回去。艾拉和莉亚停在石阶下面。{PLAYER_NAME}可以陪她站着、叫她挥手、问她今天最喜欢哪一样、夸她今天选得好、催她回去、调情，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "evelyn"
+          ],
+          "context": [
+            "今天她自己选了路（小巷）、早饭（最辣的肉串）、怎么被叫（伊芙琳），还有一小把黄色的野花。",
+            "她喜欢不被催促的陪伴，和远远地挥手。",
+            "艾拉和莉亚在石阶下面，听得见。"
+          ],
+          "principles": [
+            "WALL：判定优先序：调情 > 催她回去 > 夸她选得好 > 问她最喜欢哪一样 > 叫她挥手 > 陪她站着 > 沉默。",
+            "挥不挥手、什么时候挥，由她自己决定；叫她挥手的路线，她说「那，我自己决定。现在」。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "flirt",
+              "label": "调情",
+              "desc": "这算约会、你哭的样子很可爱、只跟我出来。",
+              "keywords": [
+                "这算约会",
+                "约会",
+                "跟我约会",
+                "你哭的样子",
+                "好可爱",
+                "你真可爱",
+                "只跟我"
+              ],
+              "morality": -1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "伊芙琳的脸，一下子红到了耳朵。"
+                },
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "这、这不是……"
+                },
+                {
+                  "t": "say",
+                  "who": "aila",
+                  "text": "屠龙骑士——被监护的人，不准说这种话喔。",
+                  "note": "石阶下"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_WALL": "FLIRT"
+                },
+                "flags": {
+                  "EX_FLIRTED": true
+                }
+              }
+            },
+            {
+              "id": "hurried",
+              "label": "催她回去",
+              "desc": "该回去了、快点、别看了。",
+              "keywords": [
+                "该回去了",
+                "回去吧",
+                "快点",
+                "别看了",
+                "时间不早",
+                "走了走了"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "……嗯。再、再一下就好。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她没有动。{PLAYER_NAME}也就没有再催。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_WALL": "HURRIED"
+                }
+              }
+            },
+            {
+              "id": "praised",
+              "label": "夸她选得好",
+              "desc": "你今天选得很好、都选得好、做得好。",
+              "keywords": [
+                "选得好",
+                "选得很好",
+                "都选得好",
+                "做得好",
+                "你很厉害",
+                "了不起"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "……没有对错的话，也有选得好吗？"
+                },
+                {
+                  "t": "narr",
+                  "text": "她想了想，自己笑了。"
+                },
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "……那，就当作有。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_WALL": "PRAISED"
+                }
+              }
+            },
+            {
+              "id": "fav",
+              "label": "问她最喜欢哪一样",
+              "desc": "今天最喜欢哪一样、最开心的是什么。",
+              "keywords": [
+                "最喜欢哪",
+                "最喜欢什么",
+                "最喜欢的",
+                "哪一样最",
+                "最开心",
+                "最好吃"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "最喜欢的……"
+                },
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "辣的那一串。还有，木牌上的一道杠。"
+                },
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "还有……有人叫我伊芙琳。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_WALL": "FAV"
+                }
+              }
+            },
+            {
+              "id": "told_wave",
+              "label": "叫她挥手",
+              "desc": "挥回去吧、你也朝塔挥手。",
+              "keywords": [
+                "挥回去",
+                "挥手吧",
+                "朝塔挥手",
+                "你也挥",
+                "挥一挥",
+                "挥挥手"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "……现、现在吗？"
+                },
+                {
+                  "t": "narr",
+                  "text": "她看了{PLAYER_NAME}一眼。"
+                },
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "……那，我自己决定。现在。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_WALL": "TOLD_WAVE"
+                }
+              }
+            },
+            {
+              "id": "stayed",
+              "label": "陪她站着",
+              "desc": "我陪你、站一会儿、不急、慢慢看。",
+              "keywords": [
+                "我陪你",
+                "陪你站",
+                "站一会儿",
+                "不急",
+                "慢慢看",
+                "陪着你",
+                "我等你"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}在她旁边站着。没有催，也没有说话。"
+                },
+                {
+                  "t": "narr",
+                  "text": "风从豁口吹过去。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_WALL": "STAYED"
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}站在她旁边。风从豁口吹过去。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_WALL": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "narr",
+          "text": "伊芙琳抬起手。"
+        },
+        {
+          "t": "narr",
+          "text": "朝着白塔上那扇小窗，挥了挥。"
+        },
+        {
+          "t": "narr",
+          "text": "先是很小的一下。然后，大一点。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "……挥回去了。"
+        },
+        {
+          "t": "narr",
+          "text": "她转过身来。眼睛有一点红——也许是风，也许是那串辣的。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "今天，早饭是我选的。路，是我选的。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "名字……也是我选的。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "EX015_CHOSE_FOR_HER"
+          },
+          "then": [
+            {
+              "t": "say",
+              "who": "evelyn",
+              "text": "……下次，也请先问我。"
+            },
+            {
+              "t": "narr",
+              "text": "她说得很轻，可是没有低头。"
+            }
+          ],
+          "else": [
+            {
+              "t": "say",
+              "who": "evelyn",
+              "text": "……谢谢您，一直在旁边等。"
+            }
+          ]
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "EX_FLIRTED"
+          },
+          "then": [
+            {
+              "t": "narr",
+              "text": "石阶下面，艾拉清了清嗓子，清得很大声。"
+            }
+          ]
+        },
+        {
+          "t": "narr",
+          "text": "石阶下面，艾拉吹了一声口哨。"
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "伊芙琳——回去了！被监护的人，要点名！"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "一、二、三、四。……齐了。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "LEAH_RELATIONSHIP_STAGE",
+            "eq": "COMPANION"
+          },
+          "then": [
+            {
+              "t": "narr",
+              "text": "数到四的时候，莉亚看了{PLAYER_NAME}一眼。"
+            }
+          ]
+        },
+        {
+          "t": "narr",
+          "text": "四个人从石阶上走下来，往旅舍走。"
+        },
+        {
+          "t": "narr",
+          "text": "伊芙琳手里，拿着一小把黄色的野花。"
+        }
+      ]
+    }
+  ],
+  "end": {
+    "save": "SAVE_EX015_END",
+    "next": null,
+    "set": {
+      "flags": {
+        "EX015_DAY_OFF_TAKEN": true,
+        "EX015_CALLED_BY_NAME": true,
+        "EX015_WAVED_AT_TOWER": true
+      }
+    },
+    "memory": {
+      "key": "EX015_MEMORY",
+      "text": "圣女的一天假：伊芙琳自己选了小巷、最辣的肉串，还有「叫我伊芙琳就好」。"
+    },
+    "summary": [
+      {
+        "text": "伊芙琳向自己请了一天假。{PLAYER_NAME}陪她去了圣都的晨市。"
+      },
+      {
+        "when": {
+          "flag": "EX_ROUTE",
+          "eq": "COIN"
+        },
+        "text": "硬币选了拱廊街。伊芙琳说，硬币选的，也不是她选的。"
+      },
+      {
+        "when": {
+          "flag": "EX_ROUTE",
+          "eq": "NO_RIGHT"
+        },
+        "text": "{PLAYER_NAME}说路没有对的。她小声重复了一遍，像在背一句新的祷词。"
+      },
+      {
+        "text": "她自己选了有面包味的小巷，和最红的那一串肉串。眼泪是辣出来的，她还要了一串。"
+      },
+      {
+        "when": {
+          "flag": "EX_PRICE",
+          "eq": "LEAH"
+        },
+        "text": "蜂蜜开价三枚。莉亚把报告夹往摊上一放，只叫伊芙琳自己看木牌。"
+      },
+      {
+        "when": {
+          "flag": "EX_PRICE",
+          "eq": "HER_LOOK"
+        },
+        "text": "蜂蜜开价三枚。{PLAYER_NAME}让她自己看木牌：一道杠，一枚。"
+      },
+      {
+        "when": {
+          "flag": "EX_NAME",
+          "eq": "WAITED"
+        },
+        "text": "卖花的婆婆认出了她。{PLAYER_NAME}没有替她开口，她自己扶起了婆婆。"
+      },
+      {
+        "when": {
+          "flag": "EX_NAME",
+          "eq": "DAY_OFF"
+        },
+        "text": "{PLAYER_NAME}说圣女今天放假。艾拉说，是她自己批的。"
+      },
+      {
+        "text": "「今天，叫我伊芙琳就好。」她没有要白百合，买了一小把田埂上的黄花。"
+      },
+      {
+        "when": {
+          "flag": "EX_FLIRTED"
+        },
+        "text": "城墙上那句话，换来艾拉在石阶下很大声地清了清嗓子。"
+      },
+      {
+        "text": "回去的路也是她选的。她站在旧城墙上，朝白塔的小窗挥了挥手。"
+      }
+    ]
+  }
+}

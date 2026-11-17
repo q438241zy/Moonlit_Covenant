@@ -1228,5 +1228,41 @@
     "svg": "/assets/story/bg/silver-rail-window-dusk.svg",
     "top": "#f0a878",
     "bottom": "#2a1a28"
+  },
+  "fog-harbor-old-bathhouse": {
+    "name": "雾港·旧浴场·镜厅",
+    "svg": "/assets/story/bg/fog-harbor-old-bathhouse.svg",
+    "top": "#8a8a9a",
+    "bottom": "#1a1a22"
+  },
+  "fog-harbor-backstreet-day": {
+    "name": "雾港·排水区的后街·白天",
+    "svg": "/assets/story/bg/fog-harbor-backstreet-day.svg",
+    "top": "#8a8a9a",
+    "bottom": "#1a1a22"
+  },
+  "holy-city-morning-market": {
+    "name": "白塔圣都·晨市",
+    "svg": "/assets/story/bg/holy-city-morning-market.svg",
+    "top": "#8a8a9a",
+    "bottom": "#1a1a22"
+  },
+  "white-tower-nameless-ward": {
+    "name": "白塔·无名病房",
+    "svg": "/assets/story/bg/white-tower-nameless-ward.svg",
+    "top": "#8a8a9a",
+    "bottom": "#1a1a22"
+  },
+  "verdant-mirror-street-day": {
+    "name": "绿镜城·活藤街·白天",
+    "svg": "/assets/story/bg/verdant-mirror-street-day.svg",
+    "top": "#8a8a9a",
+    "bottom": "#1a1a22"
+  },
+  "frostbell-camp-day": {
+    "name": "霜铃城外·营地·白天",
+    "svg": "/assets/story/bg/frostbell-camp-day.svg",
+    "top": "#8a8a9a",
+    "bottom": "#1a1a22"
   }
 }

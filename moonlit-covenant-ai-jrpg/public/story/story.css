@@ -1104,3 +1104,6 @@ button.ghost-link { border: 0; background: none; cursor: pointer; }
 @keyframes capStill { 0%, 78% { opacity: 1; } 100% { opacity: 0; } }
 /* IF 外传《银轨号》正篇轨道（?track=gaiden）：章节列表的标题 */
 .gd-heading { margin: 0; font-size: 1.1rem; padding-left: 12px; border-left: 3px solid var(--blue); }
+
+/* 番外分页里「成长支线」的小标题 */
+.ex-section { margin: 10px 0 2px; padding-left: 10px; border-left: 3px solid var(--gold); color: var(--muted); font-size: .82rem; font-weight: 800; list-style: none; }

@@ -10,6 +10,8 @@
 
 const SVG_PATH = /^\/assets\/(portraits|costumes\/bust\/soft|costumes\/bust|costumes\/soft|costumes|cg|boss|scenes|cards|story\/bg|story\/npc|story\/insert)\/([\w-]+?)(?:_e)?\.svg$/;
 const ALPHA = new Set(['story-npc', 'costumes-bust', 'costumes-bust-soft']);
+// 不在 /assets/<组>/ 下的两张：标题背景与世界地图（ui 组）
+const UI = { '/assets/title-bg.svg': 'title-bg', '/assets/map/world-map.svg': 'world-map' };
 let ready = new Map();
 
 export async function loadPaint() {
@@ -23,6 +25,7 @@ export async function loadPaint() {
 
 // 矢量路径 -> 已就绪的厚涂路径（进化卡面沿用基础卡面的厚涂图）；其他路径原样返回
 export function paint(url) {
+  if (UI[url]) return ready.get('ui')?.has(UI[url]) ? `/assets/paint/ui/${UI[url]}.jpg` : url;
   const m = typeof url === 'string' ? url.match(SVG_PATH) : null;
   if (!m) return url;
   const group = m[1].replaceAll('/', '-'); // story/bg -> story-bg，costumes/bust/soft -> costumes-bust-soft

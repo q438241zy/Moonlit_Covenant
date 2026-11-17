@@ -642,7 +642,9 @@ function extrasPanelHtml() {
   const save = load(KEYS.exAuto, null);
   const live = save?.run && !save.run.done && isExtraId(save.chapterId) ? extraEntry(save.chapterId) : null;
   const resume = live ? `<button class="btn primary ex-resume" type="button" data-act="continue-extra">${icon('play', { size: 16 })}<span>继续番外</span><small>${esc(`${entryFor(live.id).label} · ${timeAgo(save.savedAt)}`)}</small></button>` : '';
-  const cards = S.extras.map(extraCardHtml).join('') || '<li class="ch-empty">番外目录读取失败，请刷新重试。</li>';
+  // 成长支线（kind: 'sidequest'，ex011 起）跟在十篇番外后面，单列一个小标题
+  const firstQuest = S.extras.findIndex((e) => e.kind === 'sidequest');
+  const cards = S.extras.map((e, i) => (i === firstQuest ? '<li class="ex-section">成长支线 · 正典里的小事件，同样零后果</li>' : '') + extraCardHtml(e)).join('') || '<li class="ch-empty">番外目录读取失败，请刷新重试。</li>';
   return `<p class="ex-intro">${icon('sparkle', { size: 15 })}<span>正典里某个不特定的休息日。番外不影响主线：只读解锁章的章末存档开场，读完不改变任何信赖、约定与结局；首次读完可得钻石与外观。</span></p>
     ${resume}
     <ol class="ch-list ex-list" id="exList">${cards}</ol>`;

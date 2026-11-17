@@ -1509,7 +1509,7 @@ function mapPage() {
               <stop offset="0%" stop-color="#5ee4ff" stop-opacity=".55"/><stop offset="100%" stop-color="#5ee4ff" stop-opacity="0"/>
             </radialGradient>
           </defs>
-          <image href="${ART.map}" x="0" y="0" width="${MAP_W}" height="${MAP_H}" preserveAspectRatio="xMidYMid slice" aria-hidden="true"/>
+          <image href="${paint(ART.map)}" x="0" y="0" width="${MAP_W}" height="${MAP_H}" preserveAspectRatio="xMidYMid slice" aria-hidden="true"/>
           ${MAP_TOWNS.map(townNodeSvg).join('')}
           <g id="playerMarker" style="${playerMarkerTransform()}" role="img" aria-label="你的位置">
             <circle class="marker-glow" r="22" fill="url(#markerGlow)"/>
@@ -2829,6 +2829,9 @@ async function boot() {
   let sessionLost = false;
   try {
     const [metaPayload] = await Promise.all([apiGet('/api/meta'), loadPaint()]);
+    // 标题背景是 CSS 背景图（styles.css 的 --title-bg）：GPT 出的厚涂版就绪时换上
+    const titleBg = paint('/assets/title-bg.svg');
+    if (titleBg !== '/assets/title-bg.svg') document.documentElement.style.setProperty('--title-bg', `url("${titleBg}")`);
     meta = metaPayload.meta;
     const sessionId = store.get('moonlit:session');
     if (sessionId) {
