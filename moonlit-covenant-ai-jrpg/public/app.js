@@ -61,7 +61,7 @@ function demoToolsEnabled() {
    B6：这张地图属于 IF 外传「银轨号」。
    - 银轨站（entry:'gaiden'）进入外传，与标题页的外传卡片是同一个外传会话，所以从一开始就开放（unlockChapter:0）；
    - 赫麦村（entry:'mainline'）是通往主线「亚克的旅程」（正史）的入口，不属于外传进度；
-   - 其余城镇是外传后续章节的舞台，还没有内容：一律显示「敬请期待」。unlockChapter 是外传章节号，
+   - 其余城镇是外传正篇（/story.html?track=gaiden，g001–g015）的进度标记：通关外传第 unlockChapter 章就抵达；unlockChapter 是外传章节号，
      「是否已抵达」由外传进度推导（gaidenChaptersCleared），不再由调试按钮写入。描述是外传（IF）的设定，不是正史。 */
 const MAP_TOWNS = [
   { id:'hemai',    name:'赫麦村 · 亚克的故乡（主线）', label:'赫麦村 · 亚克的故乡', sub:'主线', icon:'village', x:12, y:72, unlockChapter:0, entry:'mainline', desc:'晨祷平原上的麦田小村，亚克长大的地方。主线「亚克的旅程」（正史）从这里开始；它不属于银轨号外传，两边的进度互不影响。', color:'#ffd27d' },
@@ -74,7 +74,24 @@ const MAP_TOWNS = [
   { id:'terminal', name:'终点站',       icon:'terminal',   x:90, y:68, unlockChapter:13, desc:'外传设定：银轨的尽头，一切结束与开始的地方。', color:'#ff8fb8' },
 ];
 // 目前能玩的外传章节数（银轨号 · 序章）；通关后记在本机，存档失效也不会让地图倒退
-const GAIDEN_PLAYABLE_CHAPTERS = 1;
+const GAIDEN_PLAYABLE_CHAPTERS = 1; // 序章（会话制体验版）算作第 1 章的进度
+// 外传正篇 15 章在主线播放器里玩（/story.html?track=gaiden），进度存在 public/story/player.js 的外传存档键里
+const GAIDEN_MAIN_PROGRESS_KEY = 'moonlit:story:gd:progress';
+const GAIDEN_MAIN_URL = '/story.html?track=gaiden';
+let gaidenIndexPromise = null;
+function loadGaidenIndex() {
+  gaidenIndexPromise ||= fetch('/gaiden/index.json', { headers: { accept: 'application/json' } })
+    .then((res) => (res.ok ? res.json() : []))
+    .then((list) => (Array.isArray(list) ? list.filter((ch) => /^g\d{3}$/.test(ch?.id || '')) : []))
+    .catch(() => { gaidenIndexPromise = null; return []; });
+  return gaidenIndexPromise;
+}
+// 正篇已通关的最高章号（本机）
+function gaidenMainCleared() {
+  const done = store.json(GAIDEN_MAIN_PROGRESS_KEY, {});
+  return Object.keys(done && typeof done === 'object' ? done : {}).filter((id) => /^g\d{3}$/.test(id)).reduce((max, id) => Math.max(max, Number(id.slice(1))), 0);
+}
+const gaidenChapterUrl = (n) => `${GAIDEN_MAIN_URL}&chapter=g${String(n).padStart(3, '0')}`;
 const GAIDEN_CLEARED_KEY = 'moonlit:gaiden:cleared';
 const DEV_GAIDEN_KEY = 'moonlit:dev:gaidenChapters';
 // 玩家标记停在城镇徽章的右上方，避免盖住徽章；默认停在银轨站（外传起点）
@@ -379,6 +396,8 @@ function titleScreen() {
     ? `<button id="continueGame" class="button primary">${icon('station', { size: 17 })}继续外传 · ${escapeHtml(currentScene)}</button>
        <button id="newGame" class="button ghost">${icon('refresh', { size: 16 })}新开外传</button>`
     : `<button id="newGame" class="button primary">${icon('station', { size: 17 })}进入银轨号外传</button>`;
+  // 外传正篇 15 章（主线播放器的外传轨道）：随时都能从第一章开始，不必先玩序章
+  const sideMainLink = `<a class="button secondary" href="${GAIDEN_MAIN_URL}">${icon('book', { size: 16 })}正篇 15 章${gaidenMainCleared() ? ` · 已通关 ${gaidenMainCleared()}` : ''}</a>`;
   const secondaryActions = [
     externalCta(meta?.marketing?.wishlistUrl, '加入 Steam 愿望单', 'ghost'),
     `<button id="titleHelp" class="button ghost">${icon('help', { size: 16 })}外传玩法</button>`,
@@ -407,8 +426,8 @@ function titleScreen() {
               <p>平行世界的一夜：月蚀列车上，三名队友与吞噬记忆的怪物。人物身份与主线不同，不影响正史。</p>
               <label class="name-label" for="playerName">你在外传里的名字（队友称你「队长」）</label>
               <input id="playerName" class="name-field" maxlength="16" autocomplete="nickname" value="${escapeHtml(state?.playerName || store.get('moonlit:name') || '队长')}" placeholder="例如：队长">
-              <div class="mode-actions">${sideActions}</div>
-              <div class="mode-meta">${aiBadge()}<span class="pill">约 15–25 分钟</span><span class="pill">3 名可交流队友</span><span class="pill">确定性回合战斗</span></div>
+              <div class="mode-actions">${sideActions}${sideMainLink}</div>
+              <div class="mode-meta">${aiBadge()}<span class="pill">序章约 15–25 分钟 · 正篇 15 章</span><span class="pill">3 名可交流队友</span><span class="pill">确定性回合战斗</span></div>
             </article>
           </div>
           <a class="mode-lab" href="/cards.html">
@@ -1429,13 +1448,13 @@ function devGaidenChapters() {
   return Number.isInteger(value) && value > 0 ? value : 0;
 }
 
-// 已通关的外传章节数：目前只有序章可玩（通关 = 本机记录过结局，或当前存档已到结局）
+// 已通关的外传章节数：序章通关算 1，正篇按本机通关的最高章号；取较大的
 function gaidenChaptersCleared() {
-  const real = gaidenClearedLocally() || Boolean(state?.ending) ? GAIDEN_PLAYABLE_CHAPTERS : 0;
-  return real + devGaidenChapters();
+  const prologue = gaidenClearedLocally() || Boolean(state?.ending) ? GAIDEN_PLAYABLE_CHAPTERS : 0;
+  return Math.max(prologue, gaidenMainCleared()) + devGaidenChapters();
 }
 
-// 'mainline'：通往主线；'gaiden'：外传入口；'reached'：外传已推进到这里但还没有内容；'locked'：还没推进到
+// 'mainline'：通往主线；'gaiden'：外传入口；'reached'：外传正篇已推进到这里；'locked'：还没推进到
 function townStatus(town) {
   if (town.entry) return town.entry;
   return town.unlockChapter <= gaidenChaptersCleared() ? 'reached' : 'locked';
@@ -1443,10 +1462,11 @@ function townStatus(town) {
 
 function townNodeSvg(town) {
   const status = townStatus(town);
-  const open = status === 'mainline' || status === 'gaiden';
+  // 外传正篇已推进到这里（reached）也算点亮：面板里可以重温那一章
+  const open = status !== 'locked';
   const glyph = status === 'locked' ? 'lock' : town.icon;
-  const sub = town.sub || (open ? '' : '敬请期待');
-  return `<g class="town-node ${open ? 'unlocked' : 'locked'} town-${status}" data-town="${town.id}" transform="translate(${town.x * MAP_W / 100},${town.y * MAP_H / 100})" style="--town:${town.color}" role="button" tabindex="0" aria-label="${escapeHtml(town.name)}${open ? '' : '（敬请期待）'}">
+  const sub = town.sub || (status === 'locked' ? `外传第${town.unlockChapter}章` : '');
+  return `<g class="town-node ${open ? 'unlocked' : 'locked'} town-${status}" data-town="${town.id}" transform="translate(${town.x * MAP_W / 100},${town.y * MAP_H / 100})" style="--town:${town.color}" role="button" tabindex="0" aria-label="${escapeHtml(town.name)}${status === 'locked' ? `（通关外传第${town.unlockChapter}章后抵达）` : ''}">
     <circle class="town-halo" r="30"/>
     <circle class="town-ring" r="21"/>
     <circle class="town-core" r="16.5"/>
@@ -1460,10 +1480,12 @@ function playerMarkerTransform() {
   return `transform:translate(${(playerPos.x * MAP_W / 100).toFixed(1)}px,${(playerPos.y * MAP_H / 100).toFixed(1)}px)`;
 }
 
-// 外传进度条：序章内按场景推进；通关后显示「后续章节敬请期待」
+// 外传进度条：正篇有进度就按正篇（15 章）算；否则序章内按场景推进
 function gaidenProgressInfo() {
+  const main = gaidenMainCleared();
+  if (main > 0) return { percent: Math.round(main / 15 * 100), text: main >= 15 ? '银轨号 · 正篇：15 章全部通关' : `银轨号 · 正篇：已通关 ${main} / 15 章` };
   const cleared = gaidenClearedLocally() || Boolean(state?.ending);
-  if (cleared && (!state || state.ending)) return { percent: 100, text: '银轨号 · 序章：已通关 · 后续章节敬请期待' };
+  if (cleared && (!state || state.ending)) return { percent: 100, text: '银轨号 · 序章：已通关 · 正篇 15 章已开放' };
   if (state) {
     const step = Math.max(0, GAIDEN_SCENES.indexOf(state.scene));
     return { percent: Math.round(step / (GAIDEN_SCENES.length - 1) * 100), text: `银轨号 · 序章：进行中（${sceneName(state.scene)}）${cleared ? ' · 曾通关' : ''}` };
@@ -1478,7 +1500,7 @@ function mapPage() {
       <div class="page-header">
         <div class="eyebrow">IF 外传 · 银轨号 · 路线图</div>
         <h1>银轨号路线图</h1>
-        <p class="muted">这张地图属于 IF 外传「银轨号」：银轨站进入外传序章；赫麦村通往主线「亚克的旅程」（正史）；其余城镇是外传后续章节，敬请期待。</p>
+        <p class="muted">这张地图属于 IF 外传「银轨号」：银轨站进入外传序章（浓缩体验版）；赫麦村通往主线「亚克的旅程」（正史）；其余城镇随外传正篇的进度点亮。</p>
       </div>
       <div class="map-container" id="mapContainer">
         <svg id="worldMap" viewBox="0 0 ${MAP_W} ${MAP_H}" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="银轨号外传路线图">
@@ -1581,12 +1603,24 @@ function showTownInfo(town) {
       ? { label: state ? `继续外传 · ${sceneName(state.scene)}` : '开始银轨号外传', action: enterGaiden }
       : null;
 
+  // 正篇的进度标记：抵达了就能重温那一章；没抵达就写要通关第几章，主按钮去正篇里接着玩
+  const next = Math.min(15, gaidenMainCleared() + 1);
   actions.innerHTML = scene
     ? `<button class="button primary" id="enterTownBtn" type="button">${escapeHtml(scene.label)}</button>
-       <button class="button secondary" id="leaveTownBtn" type="button">离开</button>`
-    : `<button class="button secondary" type="button" disabled>${icon('lock', { size: 15 })}敬请期待</button>
+       ${status === 'gaiden' ? `<a class="button secondary" href="${GAIDEN_MAIN_URL}">${icon('book', { size: 15 })}外传正篇 15 章</a>` : ''}
+       <button class="button ghost" id="leaveTownBtn" type="button">离开</button>`
+    : `${status === 'reached'
+      ? `<a class="button primary" href="${gaidenChapterUrl(town.unlockChapter)}">${icon('refresh', { size: 15 })}重温外传第${town.unlockChapter}章</a>`
+      : `<a class="button primary" href="${gaidenChapterUrl(next)}">${icon('play', { size: 15 })}继续外传正篇（第${next}章）</a>`}
        <button class="button ghost" id="leaveTownBtn" type="button">离开</button>
-       <p class="faint map-info-note">外传后续章节还在制作中${status === 'reached' ? '' : '，推进外传后会在地图上点亮'}。</p>`;
+       <p class="faint map-info-note" id="townChapterNote">${status === 'reached' ? `外传第${town.unlockChapter}章已通关。` : `通关外传第${town.unlockChapter}章后抵达这里。`}</p>`;
+  if (!scene) {
+    loadGaidenIndex().then((list) => {
+      const ch = list.find((c) => c.number === town.unlockChapter);
+      const note = document.getElementById('townChapterNote');
+      if (ch && note) note.textContent = `${status === 'reached' ? '已通关' : '通关后抵达：'}外传「${String(ch.title).split('｜').pop()}」（第${ch.number}章）${status === 'reached' ? '。' : '。'}`;
+    });
+  }
   document.getElementById('enterTownBtn')?.addEventListener('click', () => {
     hideTownInfo();
     scene.action();
@@ -2544,8 +2578,13 @@ function chaptersPage() {
         <h2 class="section-title" id="mainlineTitle">主线：亚克的旅程（正史）</h2>
         <div class="chapter-grid" id="mainlineChapters"><div class="loader">加载中…</div></div>
       </section>
-      <h2 class="section-title chapters-side-title" id="sideTitle">外传：银轨号（IF 外传 · 剧本草稿）</h2>
-      <div class="if-note" role="note">${icon('info', { size: 16 })}<p>以下是 IF 外传「银轨号」的剧本草稿，只能阅读，不能游玩；其中的人物身份、称号与经历只属于这个平行世界，正史以主线为准。可游玩的外传序章在标题页的「外传：银轨号」。</p></div>
+      <section class="chapters-section story-mainline" aria-labelledby="gaidenMainTitle">
+        <h2 class="section-title chapters-side-title" id="gaidenMainTitle">外传：银轨号 · 正篇（IF 外传）</h2>
+        <div class="if-note" role="note">${icon('info', { size: 16 })}<p>IF 外传「银轨号」的正篇 15 章，和主线一样是自由输入的视觉小说；人物身份、称号与经历只属于这个平行世界，正史以主线为准，进度与主线分开。标题页「外传：银轨号」里的序章是浓缩体验版。</p></div>
+        <div class="chapter-grid" id="gaidenChapters"><div class="loader">加载中…</div></div>
+      </section>
+      <h2 class="section-title chapters-side-title" id="sideTitle">外传原稿（剧本草稿 · 只读）</h2>
+      <div class="if-note" role="note">${icon('info', { size: 16 })}<p>正篇据以改写的剧本原稿，保留原来的固定选项写法，只能阅读。</p></div>
       <section class="chapters-section" id="chaptersSection" aria-labelledby="sideTitle"><div class="loader">加载中…</div></section>
     </main>`;
 }
@@ -2574,8 +2613,26 @@ async function loadMainlineChapters() {
   }
 }
 
+// 外传正篇（public/gaiden/index.json），点开进入主线播放器的外传轨道
+async function loadGaidenChapters() {
+  const box = document.querySelector('#gaidenChapters');
+  if (!box) return;
+  const items = await loadGaidenIndex();
+  const done = store.json(GAIDEN_MAIN_PROGRESS_KEY, {});
+  box.innerHTML = items.length ? items.map((ch) => `
+    <a class="chapter-card mainline-card" href="${GAIDEN_MAIN_URL}&chapter=${encodeURIComponent(ch.id)}">
+      <div class="chapter-num">${String(ch.number ?? '').padStart(2, '0')}</div>
+      <div class="chapter-info">
+        <h3>${escapeHtml(ch.title || ch.id)}</h3>
+        <span class="pill">${done?.[ch.id] ? `${icon('check', { size: 13 })}已完成` : `${icon('feather', { size: 13 })}自由输入${ch.estimatedMinutes ? ` · 约 ${ch.estimatedMinutes} 分钟` : ''}`}</span>
+      </div>
+      ${icon('chevron-right', { size: 18, cls: 'mainline-go' })}
+    </a>`).join('') : '<p class="muted">外传正篇目录暂不可用。</p>';
+}
+
 async function loadChapters() {
   loadMainlineChapters();
+  loadGaidenChapters();
   try {
     const data = await apiGet('/api/scenario/index');
     const section = document.querySelector('#chaptersSection');

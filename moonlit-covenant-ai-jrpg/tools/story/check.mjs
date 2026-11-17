@@ -23,12 +23,13 @@ const index = readJson('public/story/chapters/index.json');
 const extrasIndex = fs.existsSync(path.join(root, 'public/story/extras/index.json')) ? readJson('public/story/extras/index.json') : [];
 
 const args = process.argv.slice(2);
-const only = args.filter((a) => /^(ch|ex)\d{3}$/.test(a));
+const only = args.filter((a) => /^(ch|ex|g)\d{3}$/.test(a));
 const transcript = args.includes('--transcript');
 const playArg = (args.find((a) => a.startsWith('intent=')) || '').split('=')[1];
 
 function loadChapter(id) {
-  const file = path.join(root, `public/story/${id.startsWith('ex') ? 'extras' : 'chapters'}`, `${id}.json`);
+  const dir = id.startsWith('ex') ? 'public/story/extras' : id.startsWith('g') ? 'public/gaiden' : 'public/story/chapters';
+  const file = path.join(root, dir, `${id}.json`);
   return fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')) : null;
 }
 
@@ -221,7 +222,12 @@ if (!only.length && !transcript && playArg === undefined) {
 let prevRuns = [];
 let greedyRuns = MAXIMIZE.map(() => null);
 const endRuns = new Map(); // 章节 id → 这一章各策略的章末存档（番外从解锁章的这些存档开局）
-for (const entry of index) {
+// 主线一条链，IF 外传《银轨号》正篇（public/gaiden/，g001–g015）另一条链：各自从头接续，互不继承存档
+const gaidenIndex = fs.existsSync(path.join(root, 'public/gaiden/index.json')) ? readJson('public/gaiden/index.json') : [];
+for (const [list, fileDir] of [[index, '/story/chapters'], [gaidenIndex, '/gaiden']]) {
+prevRuns = [];
+greedyRuns = MAXIMIZE.map(() => null);
+for (const entry of list) {
   if (only.length && !only.includes(entry.id)) continue;
   const chapter = loadChapter(entry.id);
   if (!chapter) {
@@ -231,11 +237,11 @@ for (const entry of index) {
   }
   // 契约 K-9：标题页的「约 N 分钟」和章节名直接读 index.json，必须和章节文件一致
   const indexErrors = [];
-  if (entry.file !== `/story/chapters/${entry.id}.json`) indexErrors.push(`file 应为 /story/chapters/${entry.id}.json（实际 ${entry.file}）`);
-  if (entry.estimatedMinutes !== chapter.estimatedMinutes) indexErrors.push(`estimatedMinutes ${entry.estimatedMinutes} ≠ 章节文件 ${chapter.estimatedMinutes}`);
+  if (entry.file !== `${fileDir}/${entry.id}.json`) indexErrors.push(`file 应为 ${fileDir}/${entry.id}.json（实际 ${entry.file}）`);
+  if ((list === index || entry.estimatedMinutes !== undefined) && entry.estimatedMinutes !== chapter.estimatedMinutes) indexErrors.push(`estimatedMinutes ${entry.estimatedMinutes} ≠ 章节文件 ${chapter.estimatedMinutes}`);
   if (entry.title !== chapter.title) indexErrors.push(`title「${entry.title}」≠ 章节文件「${chapter.title}」`);
   if (entry.number !== chapter.number) indexErrors.push(`number ${entry.number} ≠ 章节文件 ${chapter.number}`);
-  if ((chapter.end?.next ?? null) !== (index[index.indexOf(entry) + 1]?.id ?? null)) indexErrors.push(`end.next ${chapter.end?.next} 与目录里的下一章 ${index[index.indexOf(entry) + 1]?.id ?? null} 不一致`);
+  if ((chapter.end?.next ?? null) !== (list[list.indexOf(entry) + 1]?.id ?? null)) indexErrors.push(`end.next ${chapter.end?.next} 与目录里的下一章 ${list[list.indexOf(entry) + 1]?.id ?? null} 不一致`);
   if (indexErrors.length) {
     failed = true;
     console.log(`✗ ${entry.id} 与 index.json 不一致：`);
@@ -304,6 +310,7 @@ for (const entry of index) {
   const known = new Set([...runs, ...greedyRuns.filter(Boolean)].map(promiseSignature));
   prevRuns = [...runs, ...greedyRuns.filter(Boolean), ...[...promiseRuns].filter(([sig]) => !known.has(sig)).map(([, r]) => r).slice(0, 6)];
   endRuns.set(entry.id, prevRuns);
+}
 }
 
 // ─── 番外 ───

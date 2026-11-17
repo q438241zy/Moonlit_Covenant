@@ -1,0 +1,534 @@
+{
+  "id": "g014",
+  "number": 14,
+  "scriptId": "GD_14_FOURTH_PATH",
+  "title": "第十四章｜第四条路",
+  "shortTitle": "第四条路",
+  "estimatedMinutes": 9,
+  "source": "scenario/chapter-14.json",
+  "canon": {
+    "vars": {"GD_BOND_LIA":13,"GD_BOND_MIA":13,"GD_BOND_SERENA":13},
+    "flags": {"GD_CH13_ANCHOR":"CLOSED","GD_CH13_ZERO":"STAY"}
+  },
+  "speakers": {"dawn_lord":{"name":"黎明卿","color":"#f0d890","art":null},"aurora":{"name":"欧若拉·诺克斯","color":"#c8b4e8","art":null}},
+  "shots": [
+    {
+      "id": "g014-01",
+      "title": "自由输入：种子发芽",
+      "bg": "nox-observatory-dawn",
+      "music": "dawn_strings",
+      "ambience": ["wind_high","birds_far"],
+      "beats": [
+        {"t":"narr","text":"月蚀退尽的时候，穹顶一瓣一瓣向两边滑开。冷风灌进核心室，带着山里的露水味。"},
+        {"t":"title","lines":[],"title":"第十四章｜第四条路","subtitle":"不在那三条里面"},
+        {"t":"narr","text":"观测所建在山顶。穹顶敞开以后，整座山谷都在脚下，河弯在晨雾里发着光。"},
+        {"t":"narr","text":"第一缕真正的阳光越过东边的山脊，穿过穹顶，落在黎明种上。"},
+        {"t":"narr","text":"然后，种子裂开了。不是碎——是像一颗真正的种子，在春天的土里顶开了自己的壳。嫩芽探出来，金色的光尘飘进晨光里。"},
+        {"t":"say","who":"mia","text":"黎明种……在发芽？这不符合任何一条——不对，它本来就不符合任何一条。"},
+        {"t":"narr","text":"黎明卿站在种子下方。她的身影比之前淡了，晨光能从她的肩膀穿过去。"},
+        {"t":"say","who":"dawn_lord","text":"封印改变了它。它不再是改写记忆的装置，只是一颗装着你们记忆碎片的种子。"},
+        {"t":"say","who":"dawn_lord","text":"它不会再改写任何人。它只是记住了你们——记住了你们选择相信彼此的那一刻。"},
+        {
+          "t": "if",
+          "when": {"flag":"GD_CH13_ANCHOR","eq":"SPOKEN"},
+          "then": [{"t":"say","who":"dawn_lord","text":"还有你说出口的那一句话。它也一起记住了。"}]
+        },
+        {"t":"say","who":"lia","text":"……所以，它不会再被拿去做那种事了。"},
+        {"t":"say","who":"dawn_lord","text":"不会了。黎明种计划结束了。而我——欧若拉留在计划里的这段记忆——也会跟着散去。"},
+        {"t":"say","who":"serena","text":"……母亲。"},
+        {"t":"say","who":"dawn_lord","text":"不要难过，塞雷娜。我只是她留下的一段影子。真正的她还在休眠舱里，记忆会还给她，她会醒的。"},
+        {"t":"say","who":"dawn_lord","text":"替我告诉她……对不起。还有，她做得很好。把女儿养得这么好。"},
+        {"t":"narr","text":"黎明卿的轮廓开始变淡。金色的光尘从她身上飘起来，像被风吹散的蒲公英。"},
+        {
+          "t": "input",
+          "id": "FI_G014_SC01_FAREWELL_001",
+          "kind": "dialogue",
+          "prompt": "黎明卿——欧若拉留在计划里的记忆体——正在晨光里消散，她托塞雷娜向真正的母亲道歉。消散之前，{PLAYER_NAME}还来得及说最后一句话。他可以谢谢她、请她自己去说、质问她、安慰塞雷娜，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": ["dawn_lord","serena","lia","mia"],
+          "context": ["黎明卿以为让人忘掉痛苦就是救赎，为此把整列银轨号当成了培养皿。","她最后没有阻止四重共鸣，还亲口宣布了封印完成。","她托塞雷娜把“对不起”和“她做得很好”转告真正的欧若拉。"],
+          "principles": [
+            "FAREWELL：判定优先序：否定式（不怪你） > 质问、不原谅 > 请她自己去说 > 谢谢她 > 安慰塞雷娜 > 沉默。",
+            "黎明卿不辩解，接受任何评价；她的消散是硬事件。",
+            "本节点的非固定反应，最多一行、不超过20字。"
+          ],
+          "intents": [
+            {
+              "id": "neg_guard",
+              "label": "否定式表态（按道谢处理）",
+              "desc": "“我不怪你”“不恨你”这类否定句，是原谅。",
+              "keywords": ["我不怪你","不怪你","不恨你","没有怪你","没怪你"],
+              "morality": 1,
+              "reaction": [
+                {"t":"narr","text":"黎明卿愣了一下。"},
+                {"t":"say","who":"dawn_lord","text":"……谢谢？对我？"},
+                {"t":"narr","text":"她笑了。那个笑，和记忆空间里蹲下来替女儿理领子的女人，一模一样。"}
+              ],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH14_FAREWELL":"THANKED"}}
+            },
+            {
+              "id": "blame",
+              "label": "质问、不原谅",
+              "desc": "你凭什么、我不原谅你、都是你害的。",
+              "keywords": ["你凭什么","凭什么","不原谅","你害了","都是你","你没资格","恨你","怪你","!不怪","!不恨","!没怪"],
+              "morality": 0,
+              "reaction": [
+                {"t":"say","who":"dawn_lord","text":"……你说得对。"},
+                {"t":"narr","text":"她没有辩解。"},
+                {"t":"say","who":"dawn_lord","text":"所以，我才要消失。"}
+              ],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH14_FAREWELL":"BLAMED"}}
+            },
+            {
+              "id": "herself",
+              "label": "请她自己去说",
+              "desc": "你自己去跟她说、亲口告诉她。",
+              "keywords": ["你自己去说","自己去说","亲口","自己告诉她","你自己说","自己说"],
+              "morality": 0,
+              "reaction": [
+                {"t":"say","who":"dawn_lord","text":"……我是她的记忆。她醒来的时候，会记得我想说的话。"},
+                {"t":"say","who":"dawn_lord","text":"所以，这已经是亲口了。"}
+              ],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH14_FAREWELL":"HERSELF"}}
+            },
+            {
+              "id": "thanks",
+              "label": "谢谢她、送她走",
+              "desc": "谢谢你、我原谅你、一路走好。",
+              "keywords": ["谢谢你","谢谢","原谅你","原谅","辛苦了","再见","一路走好","安息"],
+              "morality": 1,
+              "reaction": [
+                {"t":"narr","text":"黎明卿愣了一下。"},
+                {"t":"say","who":"dawn_lord","text":"……谢谢？对我？"},
+                {"t":"narr","text":"她笑了。那个笑，和记忆空间里蹲下来替女儿理领子的女人，一模一样。"}
+              ],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH14_FAREWELL":"THANKED"}}
+            },
+            {
+              "id": "serena",
+              "label": "安慰塞雷娜",
+              "desc": "对塞雷娜说话：别哭、我陪你、我们会告诉她。",
+              "keywords": ["塞雷娜","别哭","我陪你","会告诉她","我们会告诉她","我在"],
+              "morality": 1,
+              "reaction": [{"t":"narr","text":"{PLAYER_NAME}站到塞雷娜身边。"},{"t":"say","who":"dawn_lord","text":"……有你们在她身边，我就放心了。"}],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH14_FAREWELL":"SERENA"}}
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [{"t":"narr","text":"{PLAYER_NAME}没有说话。有些告别，不需要旁人开口。"}],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH14_FAREWELL":"QUIET"}}
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {"t":"say","who":"serena","text":"……我会告诉她的。"},
+        {"t":"narr","text":"塞雷娜的声音在抖。"},
+        {"t":"say","who":"dawn_lord","text":"谢谢你们，选了第四条路。不是牺牲，不是逃避，也不是改写——是信任。这是我最没有算到的答案。"},
+        {"t":"narr","text":"她消散了。光尘落进黎明种的嫩芽里。塞雷娜伸出手，光尘从她指缝间穿过去，一点也没有留下。"}
+      ]
+    },
+    {
+      "id": "g014-02",
+      "title": "自由输入：休眠舱",
+      "bg": "nox-observatory-lab",
+      "music": "reunion_piano",
+      "ambience": ["pods_hiss","murmur"],
+      "beats": [
+        {"t":"narr","text":"地下实验室里，休眠舱一个接一个打开了。银色导线一根根脱落，沉睡的人们开始翻身、咳嗽，像做了一个太长的梦。"},
+        {"t":"say","who":"mia","text":"记忆在回流！零号现在没有读数——可是我的耳朵听得见！被抽走的东西，都在往回走！"},
+        {"t":"narr","text":"塞雷娜停在最里面那座休眠舱前，站了很久。舱盖缓缓升起。"},
+        {"t":"narr","text":"舱里的女人睁开了眼睛。鬓边有了白发，发间别着一枚银色的月相盘——和塞雷娜辫子上那枚，是一对。欧若拉·诺克斯，真正的、活着的她。"},
+        {"t":"say","who":"aurora","text":"……塞雷娜？"},
+        {"t":"say","who":"serena","text":"……妈妈。"},
+        {"t":"say","who":"aurora","text":"我做了一个很长的梦。梦里你七岁，站在观测所门口哭。我转身走了。我……"},
+        {"t":"say","who":"serena","text":"我知道。我都记得。"},
+        {"t":"say","who":"serena","text":"可是我也记得……每年冬天，观测所都会收到一条没有署名的围巾。针脚，和你教我织的一模一样。"},
+        {"t":"say","who":"aurora","text":"你……发现了？"},
+        {"t":"say","who":"serena","text":"七岁那年冬天就发现了。只是一直不敢确认。"},
+        {"t":"narr","text":"欧若拉伸出手。塞雷娜跪在舱边，被那双手抱住了。两枚月相盘轻轻碰在一起，“叮”的一声。"},
+        {"t":"narr","text":"两个人都在哭——这一次不是悲伤，是十二年的等待，终于有了回音。"},
+        {"t":"narr","text":"不远处，莉亚别过脸，盯着墙上的仪表盘看。"},
+        {"t":"say","who":"mia","text":"莉亚，你在哭。"},
+        {"t":"say","who":"lia","text":"没有。是灰尘。"},
+        {"t":"say","who":"mia","text":"这里是密封实验室，没有灰尘。"},
+        {"t":"say","who":"lia","text":"……闭嘴，米娅。"},
+        {
+          "t": "input",
+          "id": "FI_G014_SC02_REUNION_001",
+          "kind": "action",
+          "prompt": "塞雷娜和刚醒来的母亲欧若拉抱在一起哭。莉亚别过脸说是灰尘，米娅在一旁拆穿她。{PLAYER_NAME}可以悄悄退后给母女俩空间、招呼莉亚和米娅一起出去、逗一逗莉亚、上前跟欧若拉打招呼，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": ["lia","mia","serena","aurora"],
+          "context": ["欧若拉刚醒，记忆还在一点点回来。","塞雷娜等这一刻等了十二年。","莉亚最怕被人看见自己哭。"],
+          "principles": [
+            "REUNION：判定优先序：否定式（不打扰、不上前） > 上前打扰 > 逗莉亚 > 招呼大家出去 > 悄悄退后 > 沉默。",
+            "不让任何人打断母女的拥抱；上前的人会被莉亚和米娅拉回来。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "neg_guard",
+              "label": "否定式表态（按退后处理）",
+              "desc": "“不打扰她们”“不上前”这类否定句，意思是给她们空间。",
+              "keywords": ["不打扰","别打扰","不去打扰","不上前","别上前","不过去"],
+              "morality": 1,
+              "reaction": [
+                {"t":"narr","text":"{PLAYER_NAME}悄悄退后了一步，又一步。"},
+                {"t":"narr","text":"有些时刻，不需要旁观的人。"},
+                {"t":"narr","text":"塞雷娜埋在母亲肩上，没有回头。可她的右手从背后伸出来，朝他的方向，很轻地摆了一下。"}
+              ],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH14_REUNION":"STEP_BACK"},"add":{"GD_BOND_SERENA":1}}
+            },
+            {
+              "id": "intrude",
+              "label": "上前打招呼",
+              "desc": "走上前去跟欧若拉打招呼、自我介绍。",
+              "keywords": ["上前打招呼","打招呼","上前","您好","阿姨","自我介绍","欧若拉","!不上前","!别上前"],
+              "morality": 0,
+              "reaction": [
+                {"t":"narr","text":"{PLAYER_NAME}刚往前迈了一步，袖子就被拽住了。莉亚拽着一边，米娅拽着另一边。"},
+                {"t":"say","who":"lia","text":"……现在不是时候。"},
+                {"t":"say","who":"mia","text":"打招呼可以等。这个，等不了。"}
+              ],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH14_REUNION":"INTRUDE"}}
+            },
+            {
+              "id": "tease",
+              "label": "逗莉亚",
+              "desc": "笑莉亚哭了、问她是不是灰尘。",
+              "keywords": ["你哭了","哭了","莉亚哭","眼睛红","灰尘","承认吧","!没哭","!不是哭"],
+              "morality": 0,
+              "reaction": [
+                {"t":"say","who":"lia","text":"……你也闭嘴。"},
+                {"t":"narr","text":"她用手背狠狠擦了一下眼睛。"},
+                {"t":"say","who":"mia","text":"嘿嘿。"}
+              ],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH14_REUNION":"TEASE"}}
+            },
+            {
+              "id": "go_out",
+              "label": "招呼莉亚和米娅出去",
+              "desc": "对莉亚和米娅说：走吧，让她们待一会儿。",
+              "keywords": ["让她们待一会儿","待一会儿","我们出去","出去吧","一起出去","走吧","我们走"],
+              "morality": 1,
+              "reaction": [
+                {"t":"narr","text":"{PLAYER_NAME}朝莉亚和米娅笑了笑，偏了偏头。"},
+                {"t":"say","who":"mia","text":"嗯！"},
+                {"t":"narr","text":"莉亚没说话，第一个转身往门口走。走到门边，她又回头看了一眼。"},
+                {"t":"say","who":"lia","text":"……走慢点。让她们多待一会儿。"}
+              ],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH14_REUNION":"GO_OUT"},"add":{"GD_BOND_LIA":1,"GD_BOND_MIA":1}}
+            },
+            {
+              "id": "step_back",
+              "label": "悄悄退后",
+              "desc": "悄悄退后一步，给母女俩空间。",
+              "keywords": ["退后一步","退后","后退","给她们空间","悄悄退开","退开","站远一点"],
+              "morality": 1,
+              "reaction": [
+                {"t":"narr","text":"{PLAYER_NAME}悄悄退后了一步，又一步。"},
+                {"t":"narr","text":"有些时刻，不需要旁观的人。"},
+                {"t":"narr","text":"塞雷娜埋在母亲肩上，没有回头。可她的右手从背后伸出来，朝他的方向，很轻地摆了一下。"}
+              ],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH14_REUNION":"STEP_BACK"},"add":{"GD_BOND_SERENA":1}}
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类：他没有上前打扰。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [{"t":"narr","text":"{PLAYER_NAME}没有出声，也没有上前。他只是站在原地，等她们哭完。"}],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH14_REUNION":"QUIET"},"add":{"GD_BOND_SERENA":1}}
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {"t":"narr","text":"欧若拉终于抬起头，越过女儿的肩膀，看见了门口那三个人。"},
+        {"t":"say","who":"aurora","text":"那几位是……"},
+        {"t":"say","who":"serena","text":"我的同伴。……我的同伴。"},
+        {"t":"if","when":{"var":"GD_BOND_SERENA","gte":15},"then":[{"t":"narr","text":"她说“同伴”的时候，看的是{PLAYER_NAME}。"}]},
+        {"t":"narr","text":"欧若拉替女儿理了理衣领——和十二年前那个早上，一样的动作。"},
+        {"t":"say","who":"aurora","text":"去吧。等我能下床走路了……这一次，换我去接你。"}
+      ]
+    },
+    {
+      "id": "g014-03",
+      "title": "铁轨回来了",
+      "bg": "silver-rail-dawn-tracks",
+      "music": "departure_whistle",
+      "ambience": ["steam","rails"],
+      "beats": [
+        {"t":"narr","text":"银轨号重新启动了。汽笛拉响，断在雾里的铁轨一节一节重新出现，通向远处被太阳照亮的地平线。"},
+        {"t":"narr","text":"乘客们揉着眼睛回到车厢，问彼此睡了多久。记忆还回来了，那一夜却被轻轻抹淡，像一场醒来就忘的梦。"},
+        {"t":"say","who":"mia","text":"动力，正常。轨道，正常。通讯——正常！乘客也都醒了！"},
+        {"t":"narr","text":"零号窝在米娅的工具包里，眼睛一闪一闪，慢得像在打瞌睡。"},
+        {"t":"say","who":"mia","text":"零号的共感齿轮要修很久。可是它在转。很慢，但在转。"},
+        {
+          "t": "if",
+          "when": {
+            "any": [
+              {"flag":"GD_CH13_ZERO","eq":"STAY"},
+              {"flag":"GD_CH13_ZERO","eq":"HELP"},
+              {"flag":"GD_CH13_ZERO","eq":"NAME"},
+              {"flag":"GD_CH13_ZERO","eq":"REASSURE"}
+            ]
+          },
+          "then": [{"t":"narr","text":"经过{PLAYER_NAME}身边的时候，零号的眼睛朝他多闪了一下。"}]
+        }
+      ]
+    },
+    {
+      "id": "g014-04",
+      "title": "自由输入：第八道刻痕",
+      "bg": "silver-rail-observation-car-day",
+      "music": "homeward_light",
+      "ambience": ["rails_soft"],
+      "beats": [
+        {"t":"narr","text":"观景车厢里洒满了阳光。莉亚坐在窗边，“断章”横放在膝上，剑身那道新裂痕亮得刺眼。"},
+        {"t":"say","who":"lia","text":"……结束了。真的结束了。"},
+        {"t":"narr","text":"塞雷娜坐在对面，脱下了观测者的外袍，眼睛是普通的深紫色。"},
+        {"t":"say","who":"serena","text":"第一次见面那晚，我说我看见了三条路，莉亚没让我说完。"},
+        {"t":"say","who":"lia","text":"……那时候在打架。"},
+        {"t":"say","who":"serena","text":"黎明种也一样。观测所命令我在终点之前销毁它，可我看见的未来里，它只有三条路。"},
+        {"t":"say","who":"serena","text":"第一条，把它公开，交给全世界监督。最诚实，也最危险——会有无数只手伸过来抢。"},
+        {"t":"say","who":"serena","text":"第二条，照观测所的办法封印它：四个人的记忆合成一把钥匙，其中一个人交出全部记忆当燃料，剩下的人一辈子守着那扇门。"},
+        {"t":"say","who":"serena","text":"第三条，把它毁掉。争夺会结束，被它收进去的记忆，也永远回不来了。"},
+        {"t":"say","who":"serena","text":"每一条的尽头，都有人要付账。"},
+        {"t":"say","who":"lia","text":"……那现在呢？"},
+        {"t":"say","who":"serena","text":"现在它不是武器，也不是锁。公开什么？它只记得我们的一夜。封住什么？它不需要钥匙，也没有人烧掉自己。毁掉什么？——被拿走的记忆，正在回家。"},
+        {"t":"say","who":"serena","text":"这是第四条。不在那三条里面。"},
+        {"t":"narr","text":"她摊开右手。那道像一只闭着的眼睛的银色印记，还在掌心里。"},
+        {"t":"say","who":"serena","text":"观测所叫它“第四观测印”。它从来没有睁开过——我一直以为，是我不够格看见第四条路。"},
+        {"t":"say","who":"mia","text":"第四个按钮！前三个我都起过名字：“别按”“真的别按”“按了就回不去”。第四个——不用起了。它根本不是按钮。"},
+        {"t":"say","who":"serena","text":"我看不见未来了。可是第四条路，本来就不是用来看见的——未来，是我们自己走出来的。"},
+        {"t":"narr","text":"莉亚低头看着剑柄上的七道刻痕。然后，她笑了——不是苦笑，不是冷笑，是一个真的、松开了的笑。"},
+        {"t":"narr","text":"她摸出小刀，在第七道旁边，刻了一道新的。"},
+        {"t":"say","who":"lia","text":"……第八道。"},
+        {"t":"narr","text":"她抬起头，看着{PLAYER_NAME}。"},
+        {"t":"say","who":"lia","text":"我说过，只有你倒下了，我才会刻这一道。看来，我食言了。"},
+        {"t":"say","who":"lia","text":"但这一次，不是墓志铭。是勋章。"},
+        {
+          "t": "input",
+          "id": "FI_G014_SC04_NOTCH_001",
+          "kind": "dialogue",
+          "prompt": "莉亚在剑柄上刻下了第八道刻痕。原来的七道里，第一道是入团那天七个人一起刻的，后六道是她一个人刻的；这一道是留给{PLAYER_NAME}的，她说这次不是墓志铭，是勋章。他可以收下这枚勋章、拿出自己那柄短剑、提醒她说好不刻的、答应她自己不会倒下、逗她难得笑了，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": ["lia","mia","serena"],
+          "context": [
+            "餐车那一夜莉亚说过：“从今天起，你就是我的第八道刻痕……所以，别让我刻。”",
+            "那一夜之后，莉亚给{PLAYER_NAME}的那柄备用短剑上，多了一道浅浅的新刻痕——她早就把他记成第八个了。",
+            "赤誓骑士入团那天，七个人一起刻下了第一道痕。"
+          ],
+          "principles": ["NOTCH：判定优先序：提醒说好不刻 > 拿出短剑 > 答应不会倒下 > 收下勋章 > 逗她 > 沉默。","莉亚被说中心事会别过脸、整理肩甲、说“别误会”。","本节点的非固定反应，最多一行、不超过15字。"],
+          "intents": [
+            {
+              "id": "remind",
+              "label": "提醒她说好不刻的",
+              "desc": "说好不刻的、你食言了。",
+              "keywords": ["说好不刻的","说好不刻","你答应过","食言","不是说好","说话不算数"],
+              "morality": 0,
+              "reaction": [
+                {"t":"say","who":"lia","text":"……切。"},
+                {"t":"narr","text":"她把小刀收回去。"},
+                {"t":"say","who":"lia","text":"就这一次。……别得寸进尺。"}
+              ],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH14_NOTCH":"REMIND"}}
+            },
+            {
+              "id": "mine",
+              "label": "拿出自己那柄短剑",
+              "desc": "亮出莉亚给的短剑，上面也有一道刻痕。",
+              "keywords": ["我的短剑","短剑","我也有一道","我也刻","刻一道","我也要刻"],
+              "morality": 0,
+              "reaction": [
+                {"t":"narr","text":"{PLAYER_NAME}抽出那柄短剑。剑柄上有一道浅浅的刻痕——从餐车那一夜起就在了。"},
+                {"t":"narr","text":"莉亚的耳朵红了。"},
+                {"t":"say","who":"lia","text":"……你发现了。"},
+                {"t":"say","who":"lia","text":"那一道，是记着你是第八个。这一道……是记着你还在。别误会。"}
+              ],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH14_NOTCH":"MINE"}}
+            },
+            {
+              "id": "promise",
+              "label": "答应她不会倒下",
+              "desc": "我不会倒下、不会让你刻名字。",
+              "keywords": ["我不会倒下","不会倒下","不会死","不会让你刻","别让你刻","活下去","活着"],
+              "morality": 0,
+              "reaction": [
+                {"t":"say","who":"lia","text":"……这句话，你说了就要做到。"},
+                {"t":"narr","text":"她别过脸去整理肩甲。"},
+                {"t":"say","who":"lia","text":"我会盯着的。"}
+              ],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH14_NOTCH":"PROMISE"}}
+            },
+            {
+              "id": "accept",
+              "label": "收下这枚勋章",
+              "desc": "收下、配得上、刻得好。",
+              "keywords": ["勋章","收下","配得上","值得","刻得好","好看","好"],
+              "morality": 0,
+              "reaction": [
+                {"t":"say","who":"lia","text":"……嗯。"},
+                {"t":"narr","text":"她把剑翻过来，让阳光照在那道新刻痕上。"},
+                {"t":"say","who":"lia","text":"这一道，刻得最直。"}
+              ],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH14_NOTCH":"MEDAL"}}
+            },
+            {
+              "id": "tease",
+              "label": "逗她难得笑了",
+              "desc": "你笑了、难得、再笑一个。",
+              "keywords": ["你笑了","笑了","难得","再笑一个"],
+              "morality": 0,
+              "reaction": [{"t":"say","who":"lia","text":"看什么。"},{"t":"narr","text":"她嘴上这么说，笑却没有收回去。"}],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH14_NOTCH":"TEASE"}}
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [{"t":"narr","text":"{PLAYER_NAME}没有说话，只是看着那道新刻痕。"},{"t":"narr","text":"莉亚也没说话。她把剑收回鞘里，动作很轻。"}],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH14_NOTCH":"QUIET"}}
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {"t":"narr","text":"列车拐过一道弯，阳光落满了整节车厢。"},
+        {
+          "t": "input",
+          "id": "FI_G014_SC04_NEXT_001",
+          "kind": "dialogue",
+          "prompt": "列车在阳光里往前开，银轨号上的事结束了，三个人都在{PLAYER_NAME}身边。他可以宣布任务完成、问下一站去哪里、说到站以后各走各的，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": ["lia","mia","serena"],
+          "context": ["米娅本来就是要去东部的万象图书馆找文献。","莉亚已经退出了赤誓骑士团。","塞雷娜的母亲说，等她能下床走路，就去接塞雷娜。"],
+          "principles": [
+            "NEXT：判定优先序：否定式（不分开、不解散） > 各走各的 > 任务完成 > 下一站一起 > 沉默。",
+            "不让任何人真的在这里离队；说要分开的话，她们会把话挡回去。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "neg_guard",
+              "label": "否定式表态（按“一起”处理）",
+              "desc": "“不分开”“不解散”这类否定句，意思是一起走。",
+              "keywords": ["不分开","不解散","不散","不会走","别走","不走"],
+              "morality": 1,
+              "reaction": [{"t":"say","who":"mia","text":"不散！说好了！"},{"t":"say","who":"lia","text":"……嗯。"}],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH14_NEXT":"TOGETHER"},"add":{"GD_BOND_LIA":1,"GD_BOND_MIA":1,"GD_BOND_SERENA":1}}
+            },
+            {
+              "id": "part",
+              "label": "到站以后各走各的",
+              "desc": "任务结束了，到站就分开、解散。",
+              "keywords": ["各走各的","分开","解散","散了吧","就此别过","下车","!不分开","!不解散","!不散"],
+              "morality": 0,
+              "reaction": [
+                {"t":"narr","text":"车厢里安静了一下。"},
+                {"t":"say","who":"mia","text":"……到站之前，不准说这种话。"},
+                {"t":"say","who":"lia","text":"到了再说。现在，先坐着。"}
+              ],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH14_NEXT":"PART"}}
+            },
+            {
+              "id": "done",
+              "label": "银轨号护卫队，任务完成",
+              "desc": "宣布任务完成、收工。",
+              "keywords": ["任务完成","完成","收工","护卫队","辛苦了","结束了"],
+              "morality": 1,
+              "reaction": [{"t":"say","who":"lia","text":"……嗯。任务完成。"},{"t":"say","who":"mia","text":"银轨号护卫队，全员生还！零号也算！"}],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH14_NEXT":"DONE"},"add":{"GD_BOND_LIA":1,"GD_BOND_MIA":1,"GD_BOND_SERENA":1}}
+            },
+            {
+              "id": "together",
+              "label": "下一站是哪里？一起",
+              "desc": "问下一站去哪里，不管去哪里，一起。",
+              "keywords": ["下一站","一起","去哪里","去哪","不管去哪","接下来"],
+              "morality": 1,
+              "reaction": [{"t":"say","who":"mia","text":"下一站？等一下，我有时刻表——"}],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH14_NEXT":"TOGETHER"},"add":{"GD_BOND_LIA":1,"GD_BOND_MIA":1,"GD_BOND_SERENA":1}}
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [{"t":"narr","text":"{PLAYER_NAME}没有说话，只是看着窗外的光。"}],
+              "reactionFixed": true,
+              "set": {"flags":{"GD_CH14_NEXT":"QUIET"}}
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {"t":"narr","text":"米娅掏出一张皱巴巴的时刻表。"},
+        {"t":"say","who":"mia","text":"下一站是……万象图书馆！我本来就要去那里！目的变了，目的地没变！"},
+        {"t":"say","who":"serena","text":"也许那里有修共感齿轮的文献。也有我想知道的事——观测者以后，该怎么活。"},
+        {"t":"say","who":"lia","text":"……我无所谓。你们去哪，我去哪。反正我现在没有骑士团了。"},
+        {"t":"narr","text":"她把剑收回鞘里。"},
+        {"t":"say","who":"lia","text":"……而且。有人还欠我一杯咖啡。在餐车里，凉掉的那杯。"},
+        {"t":"if","when":{"var":"GD_BOND_LIA","gte":15},"then":[{"t":"say","who":"lia","text":"这次要热的。……笨蛋队长。"}]},
+        {
+          "t": "if",
+          "when": {"var":"GD_BOND_MIA","gte":15},
+          "then": [{"t":"narr","text":"米娅把时刻表折好，塞进{PLAYER_NAME}的口袋里。"},{"t":"say","who":"mia","text":"你帮我收着。我会弄丢的。……大概吧。"}]
+        },
+        {"t":"narr","text":"列车在阳光里往前开。月蚀结束了，黎明到了。银轨号上的四个人，终于可以只做乘客。"}
+      ]
+    }
+  ],
+  "end": {
+    "save": "SAVE_G014_END",
+    "next": "g015",
+    "set": {"flags":{"GD_CH14_FOURTH_PATH":true}},
+    "summary": [
+      {"text":"黎明种在第一缕阳光里发了芽：它不再改写任何人，只记住了{PLAYER_NAME}他们四个。"},
+      {"when":{"flag":"GD_CH14_FAREWELL","eq":"THANKED"},"text":"黎明卿消散之前，{PLAYER_NAME}向她道了谢；她笑得和塞雷娜的母亲一模一样。"},
+      {"when":{"flag":"GD_CH14_FAREWELL","eq":"BLAMED"},"text":"{PLAYER_NAME}没有原谅黎明卿；她没有辩解。"},
+      {"when":{"flag":"GD_CH14_FAREWELL","eq":"SERENA"},"text":"黎明卿消散的时候，{PLAYER_NAME}站在塞雷娜身边。"},
+      {"text":"欧若拉·诺克斯醒了。她答应塞雷娜：这一次，换她去接女儿。"},
+      {
+        "when": {"any":[{"flag":"GD_CH14_REUNION","eq":"STEP_BACK"},{"flag":"GD_CH14_REUNION","eq":"QUIET"}]},
+        "text": "母女重逢的时候，{PLAYER_NAME}悄悄退开，把那一刻留给了她们。"
+      },
+      {"when":{"flag":"GD_CH14_REUNION","eq":"GO_OUT"},"text":"{PLAYER_NAME}招呼莉亚和米娅先出去；莉亚说，走慢点。"},
+      {"text":"公开、封印、摧毁之外，{PLAYER_NAME}他们走出了第四条路。"},
+      {"when":{"flag":"GD_CH14_NOTCH","eq":"MINE"},"text":"莉亚刻下第八道刻痕时，{PLAYER_NAME}亮出了短剑上那一道旧痕。"},
+      {"when":{"flag":"GD_CH14_NOTCH","eq":"PROMISE"},"text":"莉亚刻下第八道刻痕时，{PLAYER_NAME}答应她自己不会倒下。"},
+      {"text":"莉亚剑柄上的第八道刻痕，不是墓志铭，是勋章。银轨号开往万象图书馆。"}
+    ]
+  }
+}

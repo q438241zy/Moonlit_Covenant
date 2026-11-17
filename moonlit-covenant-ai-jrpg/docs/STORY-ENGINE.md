@@ -253,3 +253,18 @@ evalCond(run, cond)  interpolate(text, run)  publicSummary(run)
 **换衣间入口**：`/api/costume` 的 `branches` 由 `branchScenesView(番外目录, 主线首通, 番外首通)` 算出，每类服装多一个 `extrasStatus: [{ id, title, live, unlocked, cleared, unlockAfter }]`；对应番外已上线并解锁时，换衣间写「番外「…」· 前往」，链接到 `/story.html?extra=exNNN`。
 
 **校验**：`npm run story:check` 在主线之后照样校验并试玩每一篇已上线的番外（从默认正史开局，也从解锁章各策略的章末存档开局），另查目录与文件一致、解锁章不晚于正式25、赠品只有★3 或非卖品。`node tools/story/check.mjs ex001 --transcript` 导出番外逐字稿。
+
+## 12. IF 外传《银轨号》正篇（g001–g015）
+
+《银轨号》是与正史无关的 IF 外传（核#12 B1）。主菜单「外传：银轨号」里的会话制序章（`game/engine.mjs`、`game/content.mjs`）是整条故事的浓缩体验版；`scenario/chapter-01…15.json` 是 15 章剧本原稿（固定选项，主菜单「章节」里只读）。正篇把这 15 章转写成本引擎的章节格式（固定选项改成自由输入），用同一个播放器的**外传轨道**来玩。
+
+| 路径 | 作用 |
+|---|---|
+| `public/gaiden/index.json` | 外传目录：`id`（g001…g015）、`number`、`title`（「第一章｜银轨号上的异变」）、`estimatedMinutes`、`file`、`requires`（上一章）、`source`（对应的原稿） |
+| `public/gaiden/gNNN.json` | 外传章节，格式同第 2 节；`end.next` 接下一章（g015 为 `null`）。外传称号（赤誓骑士、猫耳机关师、月蚀观测者）只在外传里成立，所以外传数据放在 `public/gaiden/`，**不进 `public/story/` 这个正典目录**（canon-guard B1/B15） |
+
+- **入口**：`/story.html?track=gaiden`（`&chapter=gNNN` 直达）。主菜单的外传卡片、「章节」页与外传路线图都有入口；地图上的城镇按正篇通关的最高章号点亮（第 3、5、7、9、11、13 章），城镇面板可以重温那一章或接着往下玩。
+- **播放器**（`TRACK`）：换成外传的标题与说明；章节读 `/gaiden/`；自动存档、通关记录、章末存档、已读与回看都用 `moonlit:story:gd:*`，与主线互不影响；不领主线首通奖励，没有番外分页与委托板；「从本章开始」用的是「默认前情」（各章的 `canon`）。
+- **变量**：外传自成一条时间线，跨章只用 `GD_BOND_LIA` / `GD_BOND_MIA` / `GD_BOND_SERENA`（原稿选项里的 `bond_*`、`trust_mia`），各章内部的旗标用 `GD_CHNN_*`；主线 AI 不读外传的任何东西。
+- **判定**：`loadStoryChapter` 读 `public/gaiden/`；提示词第一句写明「IF 外传《银轨号》（与正史无关的平行故事，人物身份照外传设定）」，口吻照 `docs/CHARACTER-DESIGN.md`。
+- **校验**：`npm run story:check` 在主线之后另起一条链，逐章接续试玩外传；`node tools/story/check.mjs g001` 单章校验。外传禁用改掉的旧名（见 `docs/CHARACTER-DESIGN.md` 的改名表）与主线剧透词（`test/story-gaiden.test.mjs`）。

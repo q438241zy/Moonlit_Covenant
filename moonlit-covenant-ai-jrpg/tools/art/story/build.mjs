@@ -43,6 +43,13 @@ import { ex007Bgs } from './bg-ex007.mjs';
 import { ex008Bgs } from './bg-ex008.mjs';
 import { ex009Bgs } from './bg-ex009.mjs';
 import { ex010Bgs } from './bg-ex010.mjs';
+import { gaidenGBgs } from './bg-gaiden-g.mjs';
+import { gaidenFBgs } from './bg-gaiden-f.mjs';
+import { gaidenEBgs } from './bg-gaiden-e.mjs';
+import { gaidenDBgs } from './bg-gaiden-d.mjs';
+import { gaidenCBgs } from './bg-gaiden-c.mjs';
+import { gaidenBBgs } from './bg-gaiden-b.mjs';
+import { gaidenABgs } from './bg-gaiden-a.mjs';
 import { lighthouseBgs } from './bg-lighthouse.mjs';
 import { alleyBgs } from './bg-alley.mjs';
 import { roofBgs } from './bg-roofs.mjs';
@@ -81,7 +88,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../.
 const locations = JSON.parse(fs.readFileSync(path.join(root, 'public/story/locations.json'), 'utf8'));
 const speakers = JSON.parse(fs.readFileSync(path.join(root, 'public/story/speakers.json'), 'utf8'));
 
-const bgs = { ...villageBgs, ...nightBgs, ...dawnBgs, ...townBgs, ...millBgs, ...oldMillBgs, ...marshBgs, ...tideBgs, ...harborBgs, ...sewerBgs, ...innBgs, ...lighthouseBgs, ...alleyBgs, ...roofBgs, ...tideCaveBgs, ...tideNestBgs, ...guildDockBgs, ...whiteTowerBgs, ...holyCityBgs, ...archiveBgs, ...archTideBgs, ...northHillBgs, ...verdantBgs, ...ashPassBgs, ...frostbellBgs, ...furnaceBgs, ...dragonsleepBgs, ...ravenfeatherBgs, ...siegeBgs, ...moonringBgs, ...ex002Bgs, ...ex003Bgs, ...ex004Bgs, ...ex005Bgs, ...ex006Bgs, ...ex007Bgs, ...ex008Bgs, ...ex009Bgs, ...ex010Bgs };
+const bgs = { ...villageBgs, ...nightBgs, ...dawnBgs, ...townBgs, ...millBgs, ...oldMillBgs, ...marshBgs, ...tideBgs, ...harborBgs, ...sewerBgs, ...innBgs, ...lighthouseBgs, ...alleyBgs, ...roofBgs, ...tideCaveBgs, ...tideNestBgs, ...guildDockBgs, ...whiteTowerBgs, ...holyCityBgs, ...archiveBgs, ...archTideBgs, ...northHillBgs, ...verdantBgs, ...ashPassBgs, ...frostbellBgs, ...furnaceBgs, ...dragonsleepBgs, ...ravenfeatherBgs, ...siegeBgs, ...moonringBgs, ...ex002Bgs, ...ex003Bgs, ...ex004Bgs, ...ex005Bgs, ...ex006Bgs, ...ex007Bgs, ...ex008Bgs, ...ex009Bgs, ...ex010Bgs, ...gaidenABgs, ...gaidenBBgs, ...gaidenCBgs, ...gaidenDBgs, ...gaidenEBgs, ...gaidenFBgs, ...gaidenGBgs };
 // bust id -> generator; the file is public/assets/story/npc/<id>.svg (several speakers may share one file)
 const npcBusts = { ...silhouetteBusts, lia: () => liaBust(), mia: () => miaBust(), serena: () => serenaBust(), ...ch12Busts, golden_assassin: () => goldenAssassinBust(), ...ch15Busts, ...ch16Busts, ...ch17Busts, ...ch18Busts, ...ch19Busts, ...ch20Busts, ...ch30Busts };
 const BG_BUDGET = 90 * 1024, NPC_BUDGET = 70 * 1024, INSERT_BUDGET = 40 * 1024;
@@ -114,6 +121,8 @@ const want = process.argv.slice(2);
 const pick = (group, id) => !want.length || want.includes(group) || want.includes(id);
 const jobs = [];
 for (const id of Object.keys(locations)) {
+  // 外传正篇复用银轨号原有的场景图（public/assets/scenes、cg）：不是这里生成的，跳过
+  if (!String(locations[id].svg || '').startsWith('/assets/story/bg/')) continue;
   if (!bgs[id]) { console.error(`missing background generator for location "${id}"`); process.exitCode = 1; continue; }
   if (pick('bg', id)) jobs.push({ id, rel: `public/assets/story/bg/${id}.svg`, make: bgs[id], w: 1600, h: 900, budget: BG_BUDGET });
 }

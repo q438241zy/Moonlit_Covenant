@@ -1066,5 +1066,167 @@
     "svg": "/assets/story/bg/if-modern-mall.svg",
     "top": "#f0ece4",
     "bottom": "#7a7068"
+  },
+  "silver-rail-dining-car": {
+    "name": "银轨号·餐车",
+    "svg": "/assets/scenes/camp-bg.svg",
+    "top": "#3a2a1c",
+    "bottom": "#0e0a08"
+  },
+  "silver-rail-roof-battle": {
+    "name": "银轨号·撕裂的车顶·月蚀",
+    "svg": "/assets/scenes/battle-bg.svg",
+    "top": "#2a2240",
+    "bottom": "#0a0812"
+  },
+  "silver-rail-dawn-tracks": {
+    "name": "银轨号·黎明的铁轨",
+    "svg": "/assets/scenes/ending-bg.svg",
+    "top": "#e8c8a8",
+    "bottom": "#3a3448"
+  },
+  "silver-rail-window-eye": {
+    "name": "银轨号·窗外的眼睛",
+    "svg": "/assets/cg/intro-eye.svg",
+    "top": "#141428",
+    "bottom": "#04040a"
+  },
+  "frost-corridor-memory": {
+    "name": "霜冻回廊·记忆之霜",
+    "svg": "/assets/cg/corridor-frost.svg",
+    "top": "#a8c8e0",
+    "bottom": "#1a2a3a"
+  },
+  "dream-eater-descend": {
+    "name": "记忆迷宫·食梦兽降临",
+    "svg": "/assets/cg/battle-descend.svg",
+    "top": "#2a1a3a",
+    "bottom": "#08040e"
+  },
+  "dream-eater-collapse": {
+    "name": "记忆迷宫·记忆崩塌",
+    "svg": "/assets/cg/battle-phase2.svg",
+    "top": "#3a2a4a",
+    "bottom": "#0a0610"
+  },
+  "silver-rail-observation-car": {
+    "name": "银轨号·观景车厢·夜",
+    "svg": "/assets/story/bg/silver-rail-observation-car.svg",
+    "top": "#1a1a30",
+    "bottom": "#08060e"
+  },
+  "silver-rail-observation-car-day": {
+    "name": "银轨号·观景车厢·白天",
+    "svg": "/assets/story/bg/silver-rail-observation-car-day.svg",
+    "top": "#d8e0e8",
+    "bottom": "#5a4a3a"
+  },
+  "silver-rail-dark-car": {
+    "name": "银轨号·熄灯的车厢",
+    "svg": "/assets/story/bg/silver-rail-dark-car.svg",
+    "top": "#0e0e18",
+    "bottom": "#020204"
+  },
+  "north-snowfield-memory": {
+    "name": "回忆·北境雪原",
+    "svg": "/assets/story/bg/north-snowfield-memory.svg",
+    "top": "#c8d4e0",
+    "bottom": "#5a6470"
+  },
+  "silver-rail-corridor": {
+    "name": "银轨号·列车走廊·夜",
+    "svg": "/assets/story/bg/silver-rail-corridor.svg",
+    "top": "#2a2228",
+    "bottom": "#0a0808"
+  },
+  "silver-rail-luggage-workshop": {
+    "name": "银轨号·行李车厢·米娅的工作室",
+    "svg": "/assets/story/bg/silver-rail-luggage-workshop.svg",
+    "top": "#3a3020",
+    "bottom": "#0e0a06"
+  },
+  "silver-rail-roof-night": {
+    "name": "银轨号·车顶·月夜",
+    "svg": "/assets/story/bg/silver-rail-roof-night.svg",
+    "top": "#1a2040",
+    "bottom": "#060810"
+  },
+  "silver-rail-camp": {
+    "name": "银轨号旁的临时营地·篝火夜",
+    "svg": "/assets/story/bg/silver-rail-camp.svg",
+    "top": "#1a1a28",
+    "bottom": "#140c08"
+  },
+  "frost-corridor-entrance": {
+    "name": "霜冻回廊·入口",
+    "svg": "/assets/story/bg/frost-corridor-entrance.svg",
+    "top": "#8aa8c0",
+    "bottom": "#101a24"
+  },
+  "memory-labyrinth-hall": {
+    "name": "记忆迷宫·入口大厅",
+    "svg": "/assets/story/bg/memory-labyrinth-hall.svg",
+    "top": "#2a2440",
+    "bottom": "#0a0812"
+  },
+  "memory-labyrinth-ruin": {
+    "name": "记忆迷宫·废墟",
+    "svg": "/assets/story/bg/memory-labyrinth-ruin.svg",
+    "top": "#3a3440",
+    "bottom": "#0e0c12"
+  },
+  "rift-depths": {
+    "name": "裂隙深处·数据残骸",
+    "svg": "/assets/story/bg/rift-depths.svg",
+    "top": "#1a1030",
+    "bottom": "#040208"
+  },
+  "nox-observatory-lab": {
+    "name": "诺克斯观测所·地下实验室",
+    "svg": "/assets/story/bg/nox-observatory-lab.svg",
+    "top": "#2a2a3a",
+    "bottom": "#0a0a10"
+  },
+  "nox-observatory-core": {
+    "name": "诺克斯观测所·核心室",
+    "svg": "/assets/story/bg/nox-observatory-core.svg",
+    "top": "#2a2048",
+    "bottom": "#080612"
+  },
+  "nox-observatory-core-eclipse": {
+    "name": "诺克斯观测所·核心室·月蚀",
+    "svg": "/assets/story/bg/nox-observatory-core-eclipse.svg",
+    "top": "#3a1830",
+    "bottom": "#0a0408"
+  },
+  "nox-observatory-restroom": {
+    "name": "诺克斯观测所·休整室",
+    "svg": "/assets/story/bg/nox-observatory-restroom.svg",
+    "top": "#3a3028",
+    "bottom": "#0e0a08"
+  },
+  "nox-observatory-eclipse-void": {
+    "name": "月蚀完成·虚空",
+    "svg": "/assets/story/bg/nox-observatory-eclipse-void.svg",
+    "top": "#140a20",
+    "bottom": "#000000"
+  },
+  "memory-space": {
+    "name": "记忆空间·共鸣",
+    "svg": "/assets/story/bg/memory-space.svg",
+    "top": "#f0e8ff",
+    "bottom": "#3a2a5a"
+  },
+  "nox-observatory-dawn": {
+    "name": "诺克斯观测所·黎明",
+    "svg": "/assets/story/bg/nox-observatory-dawn.svg",
+    "top": "#f0c8a0",
+    "bottom": "#3a3040"
+  },
+  "silver-rail-window-dusk": {
+    "name": "银轨号·车窗旁·黄昏",
+    "svg": "/assets/story/bg/silver-rail-window-dusk.svg",
+    "top": "#f0a878",
+    "bottom": "#2a1a28"
   }
 }

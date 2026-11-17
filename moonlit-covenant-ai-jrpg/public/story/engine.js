@@ -19,6 +19,9 @@ const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
 export const CHAPTER_ID = /^ch\d{3}$/;
 export const EXTRA_ID = /^ex\d{3}$/;
 export const isExtraId = (id) => EXTRA_ID.test(String(id || ''));
+// IF 外传《银轨号》正篇 g001–g015：另一条时间线，数据在 public/gaiden/，存档键与主线分开（docs/STORY-ENGINE.md §12）
+export const GAIDEN_ID = /^g\d{3}$/;
+export const isGaidenId = (id) => GAIDEN_ID.test(String(id || ''));
 // 番外的变量沙箱：flags / items / vars / memories 与 add 的键都必须以 EX_ 或 EX001_ 这样的番外编号开头（*_TRUST、promise_*、FLAG_MAIN_* 一律不准写）
 export const EXTRA_VAR = /^EX(?:\d{3})?_[A-Z0-9_]+$/; // EX_DOOR、EX001_HELPED_INN
 
@@ -383,7 +386,7 @@ export function validateChapter(chapter, { speakers = {}, locations = {} } = {})
   const err = (where, msg) => errors.push(`${chapter?.id || '?'} ${where}: ${msg}`);
   if (!chapter || typeof chapter !== 'object') return ['章节不是对象'];
   const extra = isExtraId(chapter.id);
-  if (!CHAPTER_ID.test(chapter.id || '') && !extra) err('id', '格式应为 ch000（番外为 ex001）');
+  if (!CHAPTER_ID.test(chapter.id || '') && !extra && !isGaidenId(chapter.id)) err('id', '格式应为 ch000（番外为 ex001，外传为 g001）');
   if (typeof chapter.title !== 'string' || !chapter.title) err('title', '缺少标题');
   if (!Array.isArray(chapter.shots) || !chapter.shots.length) err('shots', '没有分镜');
   if (!chapter.end || !('next' in chapter.end)) err('end', '缺少 end.next');

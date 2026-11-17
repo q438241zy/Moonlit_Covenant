@@ -1,0 +1,1704 @@
+{
+  "id": "g012",
+  "number": 12,
+  "scriptId": "GD_12_THE_ECLIPSE_DESCENDS",
+  "title": "第十二章｜月蚀降临",
+  "shortTitle": "月蚀降临",
+  "estimatedMinutes": 9,
+  "source": "scenario/chapter-12.json",
+  "canon": {
+    "vars": {
+      "GD_BOND_LIA": 11,
+      "GD_BOND_MIA": 11,
+      "GD_BOND_SERENA": 11,
+      "GD_CH11_KEY": "TOGETHER",
+      "GD_CH11_TRUST": "DEFEND"
+    },
+    "flags": {
+      "GD_CH11_SERENA_PROMISE": false
+    }
+  },
+  "speakers": {
+    "dawn_lord": {
+      "name": "黎明卿",
+      "color": "#f0d890",
+      "art": null
+    }
+  },
+  "shots": [
+    {
+      "id": "g012-01",
+      "title": "自由输入：觉醒态",
+      "bg": "nox-observatory-core-eclipse",
+      "music": "gd_eclipse",
+      "ambience": [
+        "hum",
+        "quake"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "他们冲回核心室的时候，一切都变了。"
+        },
+        {
+          "t": "narr",
+          "text": "黎明种在疯狂地旋转。金色褪成了刺目的白，光一下一下地脉动，像一颗越跳越快的心。"
+        },
+        {
+          "t": "narr",
+          "text": "穹顶变成了透明的。头顶的月亮，只剩最后一丝银边。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "月蚀……已经完成了百分之九十五。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "最多，还有一个小时。"
+        },
+        {
+          "t": "narr",
+          "text": "黎明卿站在种子下方。列车长不见了。"
+        },
+        {
+          "t": "say",
+          "who": "dawn_lord",
+          "text": "你们来了。"
+        },
+        {
+          "t": "narr",
+          "text": "她看了一眼米娅衣襟里那点微弱的蓝光。"
+        },
+        {
+          "t": "say",
+          "who": "dawn_lord",
+          "text": "……那只小机关。我没有把它算进去。"
+        },
+        {
+          "t": "say",
+          "who": "dawn_lord",
+          "text": "但无论你们是否愿意，仪式都会开始。月蚀完成的那一刻，黎明种会自动激活——所有被收集的记忆，都将被改写。不可逆转。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "那就在那之前，毁掉它！"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚拔剑冲了出去。赤色的剑气斩向黎明种——在离种子一尺的地方，撞上了一道看不见的墙。"
+        },
+        {
+          "t": "fx",
+          "fx": "shake",
+          "ms": 700
+        },
+        {
+          "t": "narr",
+          "text": "反震把她整个人弹了回来。她重重撞在墙上，又滑落到地上。",
+          "text15": "反震把她整个人弹了回来。她重重撞在墙上，又滑落到地上，嘴角渗出一道血。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "咳……！什么……"
+        },
+        {
+          "t": "narr",
+          "text": "黎明种的白光一跳。余波像潮水一样，朝倒地的莉亚卷了过去。"
+        },
+        {
+          "t": "input",
+          "id": "FI_GD12_SC01_RECOIL_001",
+          "kind": "action",
+          "prompt": "莉亚斩向黎明种，被看不见的屏障弹飞，撞在墙上倒地；种子的白光余波正朝她卷过去。{PLAYER_NAME}可以挡到她身前、冲过去扶她、叫米娅或塞雷娜帮忙、自己也冲上去砍种子、质问黎明卿，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "lia",
+            "mia",
+            "serena",
+            "dawn_lord"
+          ],
+          "context": [
+            "黎明种在月蚀期间处于“觉醒态”，物理攻击打不进去。",
+            "余波只是光：打在身上会一阵眩晕、短暂想不起一些小事，不致命。",
+            "莉亚的剑还在手里；她最讨厌被人看见自己倒下。"
+          ],
+          "principles": [
+            "RECOIL：判定优先序：自己也冲上去砍种子 > 质问黎明卿 > 挡在莉亚身前 > 扶她 > 叫人帮忙 > 沉默。",
+            "硬事件：屏障打不破；不管谁砍，都会被弹开。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "attack",
+              "label": "也冲上去砍种子",
+              "desc": "自己也冲向黎明种，想砍碎它。",
+              "keywords": [
+                "砍种子",
+                "冲上去",
+                "我也砍",
+                "攻击种子",
+                "一起砍",
+                "打碎它",
+                "毁掉它"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}冲向黎明种。"
+                },
+                {
+                  "t": "narr",
+                  "text": "离种子一尺，同样的墙，同样的反震。他被掀翻在莉亚旁边。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……学我干什么。笨蛋队长。"
+                },
+                {
+                  "t": "narr",
+                  "text": "两个人一起，狼狈地从地上爬起来。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "GD_CH12_RECOIL": "ATTACK"
+                }
+              }
+            },
+            {
+              "id": "question",
+              "label": "质问黎明卿",
+              "desc": "质问黎明卿到底想怎样，要她住手。",
+              "keywords": [
+                "质问黎明卿",
+                "黎明卿",
+                "你到底想怎样",
+                "住手",
+                "你疯了",
+                "快停下"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "dawn_lord",
+                  "text": "我想怎样，已经说过了。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她终于回过头，看着{PLAYER_NAME}。眼神里没有恨，只有一种很深的疲惫。"
+                },
+                {
+                  "t": "say",
+                  "who": "dawn_lord",
+                  "text": "我想让你们，不再痛。"
+                },
+                {
+                  "t": "narr",
+                  "text": "莉亚咬着牙，自己用剑撑着站了起来。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "GD_CH12_RECOIL": "QUESTION"
+                }
+              }
+            },
+            {
+              "id": "shield",
+              "label": "挡在莉亚身前",
+              "desc": "抢在余波前面，挡在倒地的莉亚身前。",
+              "keywords": [
+                "挡在她前面",
+                "挡住",
+                "挡在莉亚身前",
+                "护住莉亚",
+                "替她挡",
+                "站到她前面",
+                "挡在前面",
+                "用身体挡"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}抢在余波前面，挡在了莉亚身前。"
+                },
+                {
+                  "t": "narr",
+                  "text": "白光撞在背上。不疼。只是一瞬间，好像有什么很小的事，从脑子里被抹掉了——一首歌的名字，一条街的样子。然后，就过去了。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……谁让你挡的。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她抓着他的胳膊站起来，抓得很紧。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……别误会。我只是站不稳。"
+                },
+                {
+                  "t": "if",
+                  "when": {
+                    "var": "GD_BOND_LIA",
+                    "gte": 13
+                  },
+                  "then": [
+                    {
+                      "t": "say",
+                      "who": "lia",
+                      "text": "……下次，换我挡。"
+                    }
+                  ]
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "GD_CH12_RECOIL": "SHIELD"
+                },
+                "add": {
+                  "GD_BOND_LIA": 1
+                }
+              }
+            },
+            {
+              "id": "help_up",
+              "label": "冲过去扶她",
+              "desc": "冲过去把莉亚从地上拉起来。",
+              "keywords": [
+                "扶起莉亚",
+                "扶她",
+                "扶莉亚",
+                "拉她起来",
+                "冲过去",
+                "跑过去",
+                "莉亚你没事吧",
+                "莉亚还好吗"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}冲过去，把莉亚从地上拉了起来。余波擦着两个人的脚边扫过去，地上的铭文亮了一下，又暗了。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……我自己能起来。"
+                },
+                {
+                  "t": "narr",
+                  "text": "话是这么说，她没有松手。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "GD_CH12_RECOIL": "HELP"
+                },
+                "add": {
+                  "GD_BOND_LIA": 1
+                }
+              }
+            },
+            {
+              "id": "call_help",
+              "label": "叫人帮忙",
+              "desc": "喊米娅或塞雷娜去救莉亚。",
+              "keywords": [
+                "米娅帮忙",
+                "塞雷娜帮忙",
+                "快来帮忙",
+                "救她",
+                "快救莉亚"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "塞雷娜抬手，一道银色的薄光挡在莉亚身前。余波撞上去，碎成了细雪一样的光点。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……只能挡这一次。"
+                },
+                {
+                  "t": "narr",
+                  "text": "米娅已经扑过去，把莉亚拖到了柱子后面。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "GD_CH12_RECOIL": "CALL"
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}还没来得及动，余波已经扫了过去。"
+                },
+                {
+                  "t": "narr",
+                  "text": "莉亚咬着牙，自己用剑撑着站了起来。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "GD_CH12_RECOIL": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "say",
+          "who": "dawn_lord",
+          "text": "黎明种在月蚀期间，处于“觉醒态”。物理攻击无效。"
+        },
+        {
+          "t": "say",
+          "who": "dawn_lord",
+          "text": "唯一能触及它的方式，是封印仪式——或者，用等量的记忆能量，与它共鸣。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "等量的记忆能量……"
+        },
+        {
+          "t": "narr",
+          "text": "米娅盯着地上的仪式阵：四个方位，四个基座。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "四个S级样本的全部记忆……所以，这就是为什么，需要四个人站在基座上。"
+        },
+        {
+          "t": "say",
+          "who": "dawn_lord",
+          "text": "是的。四个人站上基座，把记忆注入黎明种。但只有一个人的记忆，会被完全消耗——作为封印的燃料。其余三个人，只会失去一小部分。"
+        },
+        {
+          "t": "say",
+          "who": "dawn_lord",
+          "text": "或者——你们什么都不做。月蚀完成，黎明种自动激活，所有人的记忆一起被改写。"
+        },
+        {
+          "t": "say",
+          "who": "dawn_lord",
+          "text": "没有牺牲。但也没有选择。"
+        }
+      ]
+    },
+    {
+      "id": "g012-02",
+      "title": "自由输入：绝望",
+      "bg": "nox-observatory-core-eclipse",
+      "music": "gd_despair",
+      "ambience": [
+        "quake"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "地面开始震颤。仪式阵自己亮了起来；四个基座上升起四道光柱，静静地立着，像在等人。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "……一个小时。我们只有一个小时，来做一个决定。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "GD_CH11_KEY",
+            "eq": "SELF"
+          },
+          "then": [
+            {
+              "t": "say",
+              "who": "lia",
+              "text": "你要是再说一次“让我来”，我先把你打晕。"
+            },
+            {
+              "t": "narr",
+              "text": "她没有看{PLAYER_NAME}。可这句话是对谁说的，所有人都知道。"
+            }
+          ]
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "我……我还在想替代方案。"
+        },
+        {
+          "t": "narr",
+          "text": "米娅把工具包里剩下的东西全倒在地上：齿轮、发条、半截导线，还有一个贴着“真的别按”标签的小盒子。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "一定有办法用机械共振来替代记忆能量——共振腔、谐波、放大级——给我时间，喵——"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "米娅。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "……没有了。我看见了所有时间线。在月蚀完成之前，没有任何机械装置，能产生足够的共振能量。"
+        },
+        {
+          "t": "narr",
+          "text": "米娅的手停住了。一颗齿轮从她指尖滚落，在地上转了几圈，倒下。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "不要……不要告诉我“不可能”……我是天才机关师……我一定能……"
+        },
+        {
+          "t": "narr",
+          "text": "米娅安静了下来。她最怕的就是这个——安静下来。左耳在发抖，一直在转，像在找一个听不见的讯号，只找到一片沙沙的杂音。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "米娅。"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚走过去，双手按住米娅的肩膀。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "你已经做得够多了。零号替我们挡了那一下。你不需要再一个人扛了。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "可是……如果什么都做不了……那我们……"
+        },
+        {
+          "t": "input",
+          "id": "FI_GD12_SC02_DESPAIR_001",
+          "kind": "dialogue",
+          "prompt": "塞雷娜说没有任何机械能替代记忆能量；米娅一下子安静了，手停在一堆零件上，左耳一直在转。莉亚按着她的肩膀。{PLAYER_NAME}可以陪在米娅身边、告诉她这不是她的错、坚持说一定还有机械的办法、说已经没办法了，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "mia",
+            "lia",
+            "serena"
+          ],
+          "context": [
+            "米娅最怕安静下来；有人在她安静时依然留在身边，是她最想要的。",
+            "零号在米娅的外套里，蓝光很弱，齿轮还在转。",
+            "塞雷娜看见了所有时间线：月蚀完成前，造不出替代品。"
+          ],
+          "principles": [
+            "DESPAIR：判定优先序：说已经没办法了、放弃 > 坚持说一定还有机械办法 > 告诉她不是她的错 > 陪在她身边 > 沉默。",
+            "这是全篇最低的一刻：不给廉价的希望，也不让任何人说米娅没用。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "neg_guard",
+              "label": "否定式表态（按陪着她处理）",
+              "desc": "只说“不放弃／还没结束”，没有给出机械办法，按陪着她处理。",
+              "keywords": [
+                "不放弃",
+                "不会放弃",
+                "没有放弃",
+                "还没结束",
+                "不认输",
+                "别放弃"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}在米娅身边蹲下。"
+                },
+                {
+                  "t": "narr",
+                  "text": "米娅的左耳慢慢停了下来，转向他，不动了。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "……嗯。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "GD_CH12_DESPAIR": "STAY"
+                },
+                "add": {
+                  "GD_BOND_MIA": 1
+                }
+              }
+            },
+            {
+              "id": "give_up",
+              "label": "说已经没办法了",
+              "desc": "说没办法了、算了、认命吧。",
+              "keywords": [
+                "没办法了",
+                "放弃吧",
+                "算了",
+                "认命",
+                "没用的",
+                "别折腾了",
+                "!不放弃",
+                "!不会放弃",
+                "!没有放弃",
+                "!别放弃",
+                "!不能放弃"
+              ],
+              "morality": -1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "米娅缩了一下。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "……嗯。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她把零件一颗一颗捡回包里，捡得很慢。"
+                },
+                {
+                  "t": "narr",
+                  "text": "莉亚瞪了{PLAYER_NAME}一眼。那一眼里，已经没有骂人的力气了。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "GD_CH12_DESPAIR": "GIVE_UP"
+                },
+                "add": {
+                  "GD_BOND_MIA": -1
+                }
+              }
+            },
+            {
+              "id": "insist",
+              "label": "坚持说还有机械办法",
+              "desc": "坚持说一定还有办法、让米娅再想想、再试试。",
+              "keywords": [
+                "一定还有办法",
+                "肯定有办法",
+                "再想想",
+                "你做得到",
+                "继续想",
+                "再试试",
+                "你可以的"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "……对、对吧？我再——"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "米娅。"
+                },
+                {
+                  "t": "narr",
+                  "text": "塞雷娜只叫了她的名字。米娅的手又停住了。"
+                },
+                {
+                  "t": "narr",
+                  "text": "有时候，希望比绝望更疼。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "GD_CH12_DESPAIR": "INSIST"
+                }
+              }
+            },
+            {
+              "id": "not_fault",
+              "label": "告诉她不是她的错",
+              "desc": "告诉米娅这不是她的错、她已经做得够多了。",
+              "keywords": [
+                "不是你的错",
+                "不怪你",
+                "你已经很努力",
+                "你做得够多了",
+                "你没有错",
+                "你很厉害"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "米娅抬起头，看着{PLAYER_NAME}。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "……可是我修不好。零号也是，这次也是。我什么都修不好。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她又低下了头。可她没有再去碰那堆零件。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "GD_CH12_DESPAIR": "NOT_FAULT"
+                },
+                "add": {
+                  "GD_BOND_MIA": 1
+                }
+              }
+            },
+            {
+              "id": "stay",
+              "label": "陪在她身边",
+              "desc": "什么也不多说，在米娅身边蹲下、陪着她、握住她的手。",
+              "keywords": [
+                "陪着她",
+                "陪她",
+                "坐在她旁边",
+                "蹲下来",
+                "握住她的手",
+                "抱住米娅",
+                "我在这里",
+                "我陪你",
+                "不用说话"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}在米娅身边蹲下，什么也没说。只是待在那里。"
+                },
+                {
+                  "t": "narr",
+                  "text": "米娅的左耳慢慢停了下来，转向他，不动了。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "……你不用说点什么吗？"
+                },
+                {
+                  "t": "narr",
+                  "text": "他没有。米娅吸了一下鼻子，把额头靠在了他的肩膀上。"
+                },
+                {
+                  "t": "if",
+                  "when": {
+                    "var": "GD_BOND_MIA",
+                    "gte": 13
+                  },
+                  "then": [
+                    {
+                      "t": "say",
+                      "who": "mia",
+                      "text": "……就一下。一下下就好。"
+                    }
+                  ]
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "GD_CH12_DESPAIR": "STAY"
+                },
+                "add": {
+                  "GD_BOND_MIA": 1
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "没有人说话。核心室里只有黎明种的嗡鸣。"
+                },
+                {
+                  "t": "narr",
+                  "text": "米娅最怕的那种安静，压了下来。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "GD_CH12_DESPAIR": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "……还有一条路。"
+        },
+        {
+          "t": "narr",
+          "text": "所有人看向塞雷娜。她的表情很平静。太平静了。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "预言说，“除非第四条路被找到”。我一直在想，第四条路是什么。现在……我看见了。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "第四条路，不是“谁牺牲”。是“如何牺牲”。"
+        }
+      ]
+    },
+    {
+      "id": "g012-03",
+      "title": "自由输入：相信我",
+      "bg": "nox-observatory-core-eclipse",
+      "music": "gd_despair",
+      "ambience": [
+        "quake"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "塞雷娜的眼睛里，映着黎明种的白光。发辫上的月相盘，停在最后一格——几乎全黑的那一格。"
+        },
+        {
+          "t": "input",
+          "id": "FI_GD12_SC03_FOURTH_001",
+          "kind": "dialogue",
+          "prompt": "塞雷娜说她看见了第四条路：不是“谁牺牲”，是“如何牺牲”。她的表情平静得过了头。{PLAYER_NAME}可以要她说下去、说不管什么路都一起走、追问她打算做什么、不许她一个人去、说不相信她，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "serena",
+            "lia",
+            "mia"
+          ],
+          "context": [
+            "塞雷娜这时还不会说出第四条路的内容，要等月蚀完成那一刻。",
+            "上一章她承认过早就预见了背叛却没有说。",
+            "莉亚最受不了有人一个人扛。"
+          ],
+          "principles": [
+            "FOURTH：判定优先序：说不相信她 > 不许她一个人去 > 追问她打算做什么 > 要她说下去、一起走 > 沉默。",
+            "塞雷娜在这里不揭晓第四条路；她只要大家相信她。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "neg_guard",
+              "label": "否定式表态（按一起走处理）",
+              "desc": "只说“不是不信你／没有不信”，按一起走处理。",
+              "keywords": [
+                "没有不信",
+                "不是不信",
+                "不会不信",
+                "不是不相信",
+                "没有不相信"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……一起。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她把这两个字，在嘴里放了一会儿。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "好。一起。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "GD_CH12_FOURTH": "TOGETHER"
+                },
+                "add": {
+                  "GD_BOND_SERENA": 1
+                }
+              }
+            },
+            {
+              "id": "distrust",
+              "label": "说不相信她",
+              "desc": "说不信她、她又要瞒着大家、信不过。",
+              "keywords": [
+                "我不信你",
+                "不相信你",
+                "凭什么信你",
+                "你又要骗",
+                "又瞒着",
+                "信不过",
+                "!不是不信",
+                "!没有不信",
+                "!不会不信"
+              ],
+              "morality": -1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "塞雷娜没有躲开他的视线。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……我知道。换成是我，也不会信。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她说得很平静。可月相盘，又往后退了一格。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "GD_CH12_FOURTH": "DISTRUST"
+                },
+                "add": {
+                  "GD_BOND_SERENA": -1
+                }
+              }
+            },
+            {
+              "id": "forbid",
+              "label": "不许她一个人去",
+              "desc": "不许塞雷娜一个人去、不许她牺牲自己。",
+              "keywords": [
+                "不许你一个人",
+                "不准你一个人",
+                "别一个人去",
+                "不许牺牲自己",
+                "不要牺牲自己",
+                "别丢下我们",
+                "不许你去"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……我没有说，我要一个人去。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她看向{PLAYER_NAME}，嘴角动了一下，像是想笑。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "这一次，我不打算一个人去。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "GD_CH12_FOURTH": "FORBID"
+                },
+                "add": {
+                  "GD_BOND_SERENA": 1
+                }
+              }
+            },
+            {
+              "id": "probe",
+              "label": "追问她打算做什么",
+              "desc": "看穿她的表情：塞雷娜，你打算做什么？",
+              "keywords": [
+                "你的表情",
+                "你打算做什么",
+                "你要做什么",
+                "你想干什么",
+                "你在想什么",
+                "你的眼神",
+                "你想做什么"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "塞雷娜看了{PLAYER_NAME}很久。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……你总是看得见，我不想被看见的那一部分。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "没有别人看得见。连我自己的预言，也看不见。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "GD_CH12_FOURTH": "PROBE"
+                },
+                "add": {
+                  "GD_BOND_SERENA": 1
+                }
+              }
+            },
+            {
+              "id": "together",
+              "label": "要她说下去、一起走",
+              "desc": "说下去，不管是什么路，大家一起走。",
+              "keywords": [
+                "说下去",
+                "一起走",
+                "不管什么路",
+                "不管是什么路",
+                "我们一起",
+                "我们听着"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……一起。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她把这两个字，在嘴里放了一会儿。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "好。一起。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "GD_CH12_FOURTH": "TOGETHER"
+                },
+                "add": {
+                  "GD_BOND_SERENA": 1
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}看着她，等她说下去。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "GD_CH12_FOURTH": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "……不是现在。等月蚀完成的那一刻，你们就会明白。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "GD_CH11_SERENA_PROMISE"
+          },
+          "then": [
+            {
+              "t": "say",
+              "who": "serena",
+              "text": "我答应过，下一次要说出来。所以这一次……我先说了一半。"
+            },
+            {
+              "t": "narr",
+              "text": "她看向{PLAYER_NAME}，像在确认他还记不记得。"
+            }
+          ]
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "但在那之前——我需要你们相信我。无论接下来发生什么。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "GD_CH11_TRUST",
+            "eq": "BLAME"
+          },
+          "then": [
+            {
+              "t": "say",
+              "who": "serena",
+              "text": "我知道，我没有资格这样要求。"
+            }
+          ]
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "相信我。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "……你又在一个人扛了。"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚的声音哑了。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "最后一次。"
+        },
+        {
+          "t": "narr",
+          "text": "塞雷娜笑了一下。很淡，很快。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "我保证。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "var": "GD_BOND_SERENA",
+            "gte": 13
+          },
+          "then": [
+            {
+              "t": "narr",
+              "text": "她看了{PLAYER_NAME}一眼。那一眼很短，却没有在核对任何东西。"
+            }
+          ]
+        },
+        {
+          "t": "narr",
+          "text": "穹顶外，月亮的最后一丝银边，开始消失。"
+        },
+        {
+          "t": "narr",
+          "text": "黑暗在吞掉最后的光。而黎明种的白光，越来越亮，越来越亮——"
+        }
+      ]
+    },
+    {
+      "id": "g012-04",
+      "title": "自由输入：月蚀完成",
+      "bg": "nox-observatory-eclipse-void",
+      "music": "gd_eclipse_complete",
+      "ambience": [
+        "void"
+      ],
+      "beats": [
+        {
+          "t": "fx",
+          "fx": "fade-in",
+          "ms": 1200
+        },
+        {
+          "t": "narr",
+          "text": "月蚀完成了。"
+        },
+        {
+          "t": "narr",
+          "text": "月亮消失了。头顶只剩一圈暗红的环，像一只被烧穿的眼睛，悬在无底的黑里。"
+        },
+        {
+          "t": "narr",
+          "text": "穹顶外什么都没有了。没有星，没有山，只有黑，和黑里慢慢漂着的碎片。"
+        },
+        {
+          "t": "narr",
+          "text": "然后，黎明种绽开了。"
+        },
+        {
+          "t": "fx",
+          "fx": "flash",
+          "ms": 600
+        },
+        {
+          "t": "narr",
+          "text": "不是爆炸，是绽放。像一朵花在一瞬间盛开，白色的光从种子里倾泻出来。四道光柱冲天而起，仪式阵的铭文全部亮起。"
+        },
+        {
+          "t": "narr",
+          "text": "{PLAYER_NAME}下意识地往前一步，挡在了莉亚身前。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "GD_CH12_RECOIL",
+            "eq": "SHIELD"
+          },
+          "then": [
+            {
+              "t": "say",
+              "who": "lia",
+              "text": "……又挡。"
+            }
+          ],
+          "else": [
+            {
+              "t": "say",
+              "who": "lia",
+              "text": "……挡什么。光而已。"
+            }
+          ]
+        },
+        {
+          "t": "say",
+          "who": "dawn_lord",
+          "text": "时间到了。黎明种激活。记忆改写程序，启动——"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "不。"
+        },
+        {
+          "t": "narr",
+          "text": "塞雷娜走向基座。不是犹豫的、害怕的步子，是平静的、确定的。像走向一个她早就看见过的结局。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "塞雷娜！你——"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "莉亚。米娅。还有你。"
+        },
+        {
+          "t": "narr",
+          "text": "她转过身，看着他们三个。紫色的瞳孔里，星图不再旋转。它们静止了，像所有的未来都已经确定。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "第四条路。不是一个人牺牲记忆。是——四个人分担。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "预言说，“必有一人成为钥匙”。但它没有说，钥匙必须是一个人。四个人的记忆同时注入，每个人只失去四分之一——没有人会失去全部。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "四分之……一？"
+        },
+        {
+          "t": "narr",
+          "text": "米娅的耳朵一下子竖了起来。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "那每个人只会失去一部分？不会完全忘记自己是谁？"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "是的。但有一个条件。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "四个人必须完全信任彼此。注入记忆的那一瞬间，所有的防备都会消失。所有的秘密、所有的伤疤、所有的真实——都会摊开在另外三个人面前。"
+        },
+        {
+          "t": "narr",
+          "text": "她顿了很久。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "包括那些，我们最不想被人看见的部分。"
+        },
+        {
+          "t": "narr",
+          "text": "塞雷娜摘下了右手的白手套。掌心里有一道很淡的银色印记，像一只闭着的眼睛。"
+        },
+        {
+          "t": "narr",
+          "text": "这一次，她没有把手套戴回去。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "……"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚沉默了一会儿，走上了第二个基座。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "我没什么好藏的。我的伤疤，你们早就看过了。"
+        },
+        {
+          "t": "narr",
+          "text": "米娅抱紧了怀里的零号，走上第三个基座。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "我……我也是。反正你们已经知道，我是个被退学的笨蛋了。"
+        },
+        {
+          "t": "narr",
+          "text": "只剩最后一个基座。三个人都看着{PLAYER_NAME}。"
+        },
+        {
+          "t": "input",
+          "id": "FI_GD12_SC04_HANDS_001",
+          "kind": "action",
+          "prompt": "塞雷娜、莉亚、米娅已经站上三个基座，等着最后一个人。注入记忆的瞬间，所有的秘密和伤疤都会摊开在彼此面前。{PLAYER_NAME}走向最后一个基座：可以说些什么、承认他也有不想被看见的东西、只是伸出手，或者拒绝站上去。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "lia",
+            "mia",
+            "serena"
+          ],
+          "context": [
+            "四个人的手要叠在一起。",
+            "月蚀已经完成；黎明种的白光正在充满整个空间。",
+            "{PLAYER_NAME}不记得登上银轨号以前的事；他自己也不知道会被看见什么。"
+          ],
+          "principles": [
+            "HANDS：判定优先序：拒绝站上去 > 承认他也有不想被看见的东西 > 说话（狼狈、一起） > 伸出手 > 沉默。",
+            "硬事件：四只手叠在一起；拒绝的话，莉亚会自己抓住他的手。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "neg_guard",
+              "label": "否定式表态（按伸出手处理）",
+              "desc": "只说“不会逃／不会拒绝”，按伸出手处理。",
+              "keywords": [
+                "不会逃",
+                "不逃",
+                "不会拒绝",
+                "没有拒绝",
+                "不会退",
+                "不退"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}走上最后一个基座，把手伸了出去。"
+                },
+                {
+                  "t": "narr",
+                  "text": "莉亚看了那只手一眼。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……嗯。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "GD_CH12_HANDS": "HAND"
+                },
+                "add": {
+                  "GD_BOND_LIA": 1,
+                  "GD_BOND_MIA": 1,
+                  "GD_BOND_SERENA": 1
+                }
+              }
+            },
+            {
+              "id": "refuse",
+              "label": "拒绝站上去",
+              "desc": "不想站上去、拒绝、退出。",
+              "keywords": [
+                "我不上去",
+                "不站上去",
+                "拒绝",
+                "我不要",
+                "我退出",
+                "不干",
+                "!不会拒绝",
+                "!没有拒绝"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}停在最后一级台阶前。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……由不得你。"
+                },
+                {
+                  "t": "narr",
+                  "text": "莉亚伸手，一把抓住他的手腕，把他拽了上去。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "要怕，上来再怕。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "GD_CH12_HANDS": "REFUSE"
+                }
+              }
+            },
+            {
+              "id": "confess",
+              "label": "承认他也有不想被看见的东西",
+              "desc": "说他也怕被看见、也有伤疤、不知道会被看见什么。",
+              "keywords": [
+                "我也有不想被看见",
+                "我也怕",
+                "我也有秘密",
+                "我也有伤疤",
+                "不知道会被看见什么",
+                "我也不想被看见",
+                "我也不记得"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……谢谢你说出来。"
+                },
+                {
+                  "t": "narr",
+                  "text": "塞雷娜看着{PLAYER_NAME}。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "这是我今晚听到的，最诚实的一句话。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "那我们就是四个怕被看见的人了。……正好。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "GD_CH12_HANDS": "CONFESS"
+                },
+                "add": {
+                  "GD_BOND_LIA": 1,
+                  "GD_BOND_MIA": 1,
+                  "GD_BOND_SERENA": 1
+                }
+              }
+            },
+            {
+              "id": "speak",
+              "label": "说你们早就看见我的狼狈了",
+              "desc": "从银轨号到现在，她们已经看见了他所有的狼狈，不差这最后一点；一起。",
+              "keywords": [
+                "狼狈",
+                "不差这最后一点",
+                "从银轨号到现在",
+                "你们早就看见",
+                "我们一起",
+                "一起上",
+                "一起吧"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "米娅噗地笑了出来，又赶紧捂住嘴。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "……这倒是。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "你最狼狈的样子，我看得最多。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "观测结果显示——确实不差。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "GD_CH12_HANDS": "SPEAK"
+                },
+                "add": {
+                  "GD_BOND_LIA": 1,
+                  "GD_BOND_MIA": 1,
+                  "GD_BOND_SERENA": 1
+                }
+              }
+            },
+            {
+              "id": "hand",
+              "label": "只是伸出手",
+              "desc": "什么都不说，只是走上去伸出手、把手叠上去。",
+              "keywords": [
+                "伸出手",
+                "伸手",
+                "握住",
+                "把手叠上去",
+                "叠上去",
+                "把手放上去",
+                "牵手"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}走上最后一个基座，把手伸了出去。"
+                },
+                {
+                  "t": "narr",
+                  "text": "莉亚看了那只手一眼。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……嗯。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "GD_CH12_HANDS": "HAND"
+                },
+                "add": {
+                  "GD_BOND_LIA": 1,
+                  "GD_BOND_MIA": 1,
+                  "GD_BOND_SERENA": 1
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话（原稿：什么都不说，只是伸出手），或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}走上最后一个基座，把手伸了出去。"
+                },
+                {
+                  "t": "narr",
+                  "text": "没有人需要他再说什么。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "GD_CH12_HANDS": "QUIET"
+                },
+                "add": {
+                  "GD_BOND_LIA": 1,
+                  "GD_BOND_MIA": 1,
+                  "GD_BOND_SERENA": 1
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "narr",
+          "text": "四只手叠在了一起。"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚的手粗糙而有力。米娅的手纤细，指尖带着机油的味道。塞雷娜的手冰凉而柔软，掌心那道印记，贴着{PLAYER_NAME}的手背。还有他自己的手——温暖的，坚定的。"
+        },
+        {
+          "t": "narr",
+          "text": "零号在米娅怀里，亮了最后一下蓝光。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "……一起。"
+        },
+        {
+          "t": "fx",
+          "fx": "flash",
+          "ms": 900
+        },
+        {
+          "t": "narr",
+          "text": "白光吞没了一切。"
+        }
+      ]
+    }
+  ],
+  "end": {
+    "save": "SAVE_G012_END",
+    "next": "g013",
+    "set": {
+      "flags": {
+        "GD_CH12_ECLIPSE_COMPLETE": true,
+        "GD_CH12_FOURTH_PATH_REVEALED": true,
+        "GD_CH12_HANDS_JOINED": true
+      }
+    },
+    "summary": [
+      {
+        "text": "月蚀走到了百分之九十五。莉亚斩向黎明种，被觉醒态的屏障弹飞。"
+      },
+      {
+        "when": {
+          "flag": "GD_CH12_RECOIL",
+          "eq": "SHIELD"
+        },
+        "text": "{PLAYER_NAME}挡在倒地的莉亚身前，替她接下了黎明种的余波。"
+      },
+      {
+        "when": {
+          "flag": "GD_CH12_RECOIL",
+          "eq": "HELP"
+        },
+        "text": "{PLAYER_NAME}冲过去，把莉亚从地上拉了起来。"
+      },
+      {
+        "text": "塞雷娜看遍了所有时间线：月蚀完成前，没有任何机械能替代记忆能量。"
+      },
+      {
+        "when": {
+          "flag": "GD_CH12_DESPAIR",
+          "eq": "STAY"
+        },
+        "text": "米娅安静下来的时候，{PLAYER_NAME}什么也没说，只是陪在她身边。"
+      },
+      {
+        "when": {
+          "flag": "GD_CH12_DESPAIR",
+          "eq": "NOT_FAULT"
+        },
+        "text": "{PLAYER_NAME}告诉米娅，那不是她的错。"
+      },
+      {
+        "when": {
+          "flag": "GD_CH12_DESPAIR",
+          "eq": "GIVE_UP"
+        },
+        "text": "{PLAYER_NAME}说已经没办法了，米娅把零件一颗一颗捡回了包里。"
+      },
+      {
+        "when": {
+          "flag": "GD_CH12_FOURTH",
+          "eq": "PROBE"
+        },
+        "text": "{PLAYER_NAME}看穿了塞雷娜平静得过头的表情。"
+      },
+      {
+        "when": {
+          "flag": "GD_CH12_FOURTH",
+          "eq": "DISTRUST"
+        },
+        "text": "{PLAYER_NAME}说不相信塞雷娜；她说，换成是她也不会信。"
+      },
+      {
+        "text": "月蚀完成。塞雷娜摘下手套，揭开了第四条路：四个人分担，每人只失去四分之一。"
+      },
+      {
+        "when": {
+          "flag": "GD_CH12_HANDS",
+          "eq": "CONFESS"
+        },
+        "text": "{PLAYER_NAME}承认，他也有不想被看见的东西。"
+      },
+      {
+        "text": "四只手叠在一起。白光吞没了一切。"
+      }
+    ]
+  }
+}
