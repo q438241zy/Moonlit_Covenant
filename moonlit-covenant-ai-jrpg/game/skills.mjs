@@ -124,6 +124,19 @@ export function logSkill(book, entry, now = Date.now()) {
  * 个人章（20、21、23–29）蓝另 +5；召唤券：幕界 08/15/21/25 各 5 张、30 通关 10 张。按 rewards.chaptersCleared 补发，
  * 每章只发一次（记在 skillbook.granted）。返回这一次新发的合计。
  */
+/**
+ * 番外首通的剧情材料（技能稿 3.1：白 10、绿 5、蓝 2）。是否首通由调用方（game/rewards.mjs 的 recordExtraClear）判断，
+ * 这里只发放并记一笔日志。返回本次发放的 { white, green, blue }。
+ */
+export function grantExtraMaterials(account, extraId, now = Date.now()) {
+  const book = ensureSkillbook(account, now);
+  const add = SKILL_DATA.storyMaterials.extraFirstClear || {};
+  const total = { white: 0, green: 0, blue: 0 };
+  for (const tier of STORY_TIERS) { const n = nonNeg(add[tier]); book.materials[tier] += n; total[tier] = n; }
+  logSkill(book, { type: 'extra_grant', extra: String(extraId), ...total }, now);
+  return total;
+}
+
 export function syncSkillRewards(account, now = Date.now()) {
   const book = account.skillbook;
   const cleared = clearedChaptersOf(account);

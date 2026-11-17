@@ -48,6 +48,8 @@
 | ch029 | 第二十九章｜白塔之围 |
 | ch030 | 第三十章｜月蚀加冕 |
 
+**番外・休息日**（`剧本/番外/`、`public/story/extras/`；剧本规格§七、提案 4.7）：10 篇与主线剧情无关的正典日常（ex010 是平行现代的 IF 篇），在主线章节选择页的「番外・休息日」分页里，通关各自的解锁章（正式10–25）后开放，每篇 8–12 分钟、同样是自由输入。番外只读解锁章的章末存档开场，读完不改变任何信赖、约定与结局（只写 `EX_*` 变量，存档键与主线分开）；每篇留一条记忆，之后的主线章节里角色可以当闲谈提起。类型相符的番外（例如女仆装之于桥头旅店的帮工日）里，女主的胸像换成她在换衣间装备的服装，海边番外没装备泳装时穿度假装。首次读完：80 钻石、技能材料，以及指定的★3 或非卖品外观（两篇海边番外送齐八人的度假装）。格式与接口见 [`docs/STORY-ENGINE.md`](docs/STORY-ENGINE.md) §11。
+
 序章到第三十章共 31 章都已转写成可玩版，全部是正式稿（各章的稿次与作者核可见 `剧本/README_章節對照表.md`）；第二十六章起路线可见，第二十九、三十章按君主路线分版，第三十章是终章。每章约 11–24 分钟，预计时长见章节选择页（`public/story/chapters/index.json` 的 `estimatedMinutes`）。章节数据在 `public/story/chapters/`，格式与引擎见 [`docs/STORY-ENGINE.md`](docs/STORY-ENGINE.md)；校验与自动试玩：`npm run story:check`。
 
 内容分级（作者核#13 第8条、核#14）：主线默认 **15+ 戏剧模式**（擦边与流血可以出现，但不露骨），设置里可随时切换 **12+ 柔和模式**（以剪影、遮挡与结果带过），两种模式的剧情、选择与结局完全相同。第一次进入主线时选择一次；已经存过设置的玩家沿用原来的模式，只看到一次「默认已改为 15+」的提示。两档共同禁区：裸露与性行为、性暴力、虐杀与肢解特写，未满 18 岁的角色永远不进擦边或血腥描写；主线判定器与外传聊天的模型提示词带同一份规则（外传还没有模式设置，按 12+）。细则见 `docs/STORY-ENGINE.md` §10。
@@ -76,7 +78,7 @@
 - 换衣：8 位女主 × 10 类服装（常驻 5 类、典藏 4 类、赠品 1 类）；抽到的服装都会出现在换衣间（还没拥有对应女主的，列在「待解锁角色」里；女主还没登场的，以剪影列在「尚未登场」里，通关她的登场章后才能换装）。外传队伍头像、委托板的单位卡与赤月 cut-in 都穿着换衣间里装备的服装。
 - **典藏**（决定#31，`剧本/README_轉蛋服裝設計.md` §5.1）：原来的新年、圣诞、端午、周年庆四类改为典藏，显示名换成世界内的节庆——新历祭服、冬灯节服、龙舟祭服、纪念日礼服（稀有度不变）。它们退出常驻服饰池（抽不到），但服装 id 不变，已经拥有的照样能穿，换衣间在每位女主下面单列「典藏」一组（只列已拥有的）；对应番外上线时以限时池复刻。度假装同样只在已拥有时单列「赠品」一组。存档不需要迁移：原来的 `<女主>_swimsuit` 现在就是新泳装。
 - **衣橱券**（服装稿 1.2）：服饰池每抽累积 1 点，出 5★ 也不清零；满 90 点自动换成一张衣橱券，一张券换一件指定的常驻 5★ 服装（只限已在主线登场的女主、还没拥有的）。第 90 抽必出 5★ 的保底照旧。召唤页的服饰池上方显示进度与兑换。
-- 每类服装对应一篇将来的番外（`game/costume.mjs` 的 `BRANCH_SCENES`：番外 id、开放章节与入口文案），番外系统还没上线，界面显示「番外 · 敬请期待」。服装不是番外的解锁条件。
+- 每类服装对应一篇番外（`game/costume.mjs` 的 `BRANCH_SCENES`）：对应番外已上线并解锁时，换衣间写「番外「…」· 前往」，直接打开主线播放页的「番外・休息日」；还没解锁的写「通关第N章后开放」。服装不是番外的解锁条件，番外也不要求穿服装。
 - 商店：会员、钻石充值保留为**演示用的免费补充**（没有真实支付，标价仅作展示）；由「演示工具」开关控制（见下文），本地运行默认开启。
 - 设置：AI 模式说明、音效开关、后台管理入口。按玩家切换模型尚未实现，设置页不再展示模型预设（所有玩家共用服务器配置的 AI）。
 
@@ -92,6 +94,7 @@
 |---|---:|---|
 | 每日签到 | 50 起，连签每天 +10，最多 +40（第 5 天起每天 90） | 按服务器本地日期每天一次，断签从第 1 天重新算 |
 | 主线章节首次通关 | 每章 160 | 每章只发一次；同时发放在该章正式入队的女主 |
+| 番外首次读完 | 每篇 80 | 每篇只发一次；另有技能材料（练习手记 10、实战手记 5、源律残章 2）与指定的★3 / 非卖品外观（已拥有的★3 折成钻石） |
 | 卡牌对战获胜 | 每胜 40 | 每天前 5 胜（每天最多 200），之后照常可以打 |
 | 第一次进入卡牌对战 | 800 + 500 碎片 | 正好一次十连开包 |
 | 新建账户（demo 模式） | 1,600 钻石 + 600 Credit | 核#15：抽卡只收钻石后提高起始钻石；Credit 只用于 AI 聊天 |
@@ -310,7 +313,7 @@ public/
   index.html, app.js    主游戏：标题页、IF 外传、地图、剧本草稿阅读器、召唤、换衣、商店、设置
   styles.css, icons.js, paint.js   主游戏样式、原创线性图标库、厚涂图替换清单读取
   story.html            主线「亚克的旅程」
-  story/                主线播放器（player.js）、纯函数引擎（engine.js）、内容分级设置（rating.js）、章节数据（chapters/）、角色与场景表
+  story/                主线播放器（player.js）、纯函数引擎（engine.js）、内容分级设置（rating.js）、章节数据（chapters/）、番外（extras/）、角色与场景表
   cards.html, cards.js, cards.css   卡牌对战（实验模式）
   character-manager.html 角色设定管理原型
   assets/               美术资产（矢量 SVG 由 tools/art/ 生成，详见「资产说明」）
@@ -390,7 +393,8 @@ Dockerfile, docker-compose.yml
 - `GET /api/gacha/pools?playerId=`：卡池、概率与保底，以及 `currency: 'diamonds'`、`costs`（`{ diamonds: { single, ten } }`）、`duplicateCompensation`（`{ 3: 8, 4: 16, 5: 160 }`）、`heroineJoins`（女主 id → 入队章节）、`progress: { highestCleared }`。`characters` / `costumes` 是按这个玩家主线进度的对外视图：还没登场的女主是 `{ id, rarity, sealed: true, name: '？？？', title: '？？？', unlockChapter, joinChapter, debutLabel }`（`debutLabel` 形如「第13章登场」），她的服装是 `{ id, characterId, type, rarity, sealed: true, name: '？？？·女仆装', unlockChapter, debutLabel }`（没有立绘路径）；已登场的带完整资料与 `sealed: false`。不带 `playerId`（或账户不存在）按零进度。
 - `POST /api/gacha/pull`：`{ playerId, pool, count }` 召唤，只收钻石；`currency` 可以省略或写 `'diamonds'`，旧前端传来的 `'credit'` 返回 400 `DIAMONDS_ONLY`、不扣任何东西。返回 `{ pool, currency: 'diamonds', results, cost, pity, compensation: { diamonds }, balance: { diamonds }, account }`，`results[i]` 是同一个登场闸门下的视图，另带 `isNew`、`duplicate`、`compensation`；服饰池另带 `wardrobe: { points, tickets, pointsPerTicket }`（衣橱券）；钻石不足返回 400 `INSUFFICIENT_DIAMONDS`。
 - `POST /api/gacha/wardrobe-ticket`：`{ playerId, costumeId }` 用一张衣橱券换一件常驻 5★ 服装；没有券 `NO_WARDROBE_TICKET`、不是常驻 5★ `NOT_EXCHANGEABLE`、她还没登场 `SEALED`、已经拥有 `ALREADY_OWNED`（都是 400）。`GET /api/gacha/pools` 的 `wardrobe` 给出本账户的点数、券与可以换的服装（`choices`）。
-- `GET /api/costume?playerId=`、`POST /api/costume/equip`：服装列表（`costumePool` 同样按登场闸门给视图，常驻条目带款名 `description` 与台词 `line`）、穿戴。`typeMeta` 是每类服装的稀有度与归属（`status`：`current` 常驻 / `archive` 典藏 / `gift` 赠品）、`soft`（有 12+ 罩衫版）与 `if`（异界IF）。
+- `POST /api/story/extra`：`{ playerId, extraId }` 报告番外读完（`docs/STORY-ENGINE.md` §11）。番外必须在 `public/story/extras/index.json` 里且已上线，否则 400 `UNKNOWN_EXTRA`；账户还没首通它的解锁章时 403 `EXTRA_LOCKED`；幂等。返回 `{ granted, diamonds, extraReward, costumesGranted, costumesCompensated, skillMaterials, alreadyCleared, extrasCleared, balance, account }`。番外首通记在 `rewards.extrasCleared`，不进 `chaptersCleared`。
+- `GET /api/costume?playerId=`、`POST /api/costume/equip`：服装列表（`costumePool` 同样按登场闸门给视图，常驻条目带款名 `description` 与台词 `line`）、穿戴。`typeMeta` 是每类服装的稀有度与归属（`status`：`current` 常驻 / `archive` 典藏 / `gift` 赠品）、`soft`（有 12+ 罩衫版）与 `if`（异界IF）。`branches` 是每类服装对应的番外入口，带 `extrasStatus: [{ id, title, live, unlocked, cleared, unlockAfter }]`（按这个玩家的进度算）。
 - `GET /api/membership/tiers`：会员档位与钻石包。
 - 演示工具（`DEMO_TOOLS`，关闭时 403）：`POST /api/membership/purchase`、`POST /api/diamonds/purchase`、`POST /api/costume/grant-all`。
 - `GET /api/settings/ai?playerId=`：`{ perPlayerRouting: false, current, models: [], settings }`，`current` 是所有玩家共用的 AI（同 `/api/meta` 的 `ai`）；按玩家路由实现前不下发模型预设。`POST /api/settings/ai` 对存在的账户返回 409 `PER_PLAYER_ROUTING_UNAVAILABLE`。

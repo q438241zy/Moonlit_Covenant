@@ -4,7 +4,7 @@
 
 import {
   ENGINE_VERSION, DEFAULT_PLAYER_NAME, cleanName, createRun, continueRun, next, resolveInput,
-  demoJudge, findNode, evalCond, interpolate, publicSummary, eachBeat,
+  demoJudge, findNode, evalCond, interpolate, publicSummary, eachBeat, startExtraRun, isExtraId,
 } from './engine.js';
 import {
   DEFAULT_MODE, MODES, SETTINGS_NOTE, CHOICE_NOTE, NOTICE_TEXT, normalizeMode, otherMode, initSettings, acknowledgeRating,
@@ -25,7 +25,15 @@ const KEYS = {
   backlog: 'moonlit:story:backlog',
   draft: 'moonlit:story:draft',
   save: (key) => `moonlit:story:save:${key}`,
+  // 番外（剧本规格§七「存档键与主线分开」）：自动存档、通关记录、章末存档、回看都另用一组键，番外永远不覆盖主线的「继续」
+  exAuto: 'moonlit:story:ex:autosave',
+  exProgress: 'moonlit:story:ex:progress',
+  exBacklog: 'moonlit:story:ex:backlog',
+  exSave: (key) => `moonlit:story:ex:save:${key}`,
+  // 每篇番外留下的一条记忆（番外 id 列表）：主线判定时报给服务器，主线 AI 可以当闲谈提起，但不作为任何条件
+  exMemories: 'moonlit:story:ex:memories',
 };
+const HEROINE_IDS = ['lia', 'mia', 'serena', 'evelyn', 'aila', 'freya', 'ophelia', 'lilith'];
 const SPEEDS = { slow: { cps: 20, label: '慢' }, normal: { cps: 38, label: '中' }, fast: { cps: 80, label: '快' }, instant: { cps: 0, label: '瞬间' } };
 const PACES = { relaxed: { k: 1.35, label: '从容' }, normal: { k: 1, label: '标准' }, brisk: { k: 0.65, label: '紧凑' } };
 // collateral 是「波及了不该波及的」：第二章是住户与路人，第三章是干芦苇起火——用不绑定具体对象的说法
@@ -129,7 +137,7 @@ function toast(message, kind = '') {
 // 没有账户就像主游戏那样建一个（POST /api/account/create）；任何一步失败都静默跳过——奖励不该打断读完一章。
 const ACCOUNT_KEY = 'moonlit:playerId';
 const BOARD_OPENS = 'ch005'; // 委托板（技能战）在正式05 通关后开放（game/skills.mjs 的 partySize）
-const HEROINE_NAMES = { lia: '莉亚', mia: '米娅', serena: '塞雷娜', freya: '芙蕾娅', lilith: '莉莉丝', evelyn: '伊芙琳', ophelia: '奥菲利亚', aila: '艾拉' };
+const HEROINE_NAMES = { lia: '莉亚', mia: '米娅', serena: '塞雷娜', freya: '芙蕾娅', lilith: '莉莉丝', evelyn: '伊芙琳', ophelia: '奥菲莉亚', aila: '艾拉' };
 function storedPlayerId() {
   try { return (localStorage.getItem(ACCOUNT_KEY) || '').trim() || null; } catch { return null; }
 }
@@ -213,7 +221,9 @@ function revealReward(scr, box) {
 // 内容模式默认 15+（rating.js）：没存过设置的新玩家在标题页选一次；老玩家沿用存档里的模式，只提示一次默认已改
 const BOOT_SETTINGS = initSettings(load(KEYS.settings, null), { speed: 'normal', pace: 'normal' });
 const S = {
-  index: [], speakers: {}, locations: {},
+  index: [], extras: [], speakers: {}, locations: {},
+  tab: 'chapters', // 章节选择页的分页：'chapters' 主线章节 / 'extras' 番外・休息日
+  equipped: {}, // 番外里换胸像用的换衣间装备（loadEquipped）
   chapters: new Map(),
   settings: BOOT_SETTINGS.settings,
   ratingPrompt: BOOT_SETTINGS.prompt, // 'choose' | 'notice' | null：标题页第一次渲染时处理，之后清空
@@ -254,11 +264,14 @@ async function fetchJson(url) {
   } catch { return null; }
 }
 
+// 主线章节在 /story/chapters/，番外（ex001–ex010）在 /story/extras/（番外目录 S.extras）
 async function loadChapter(id) {
-  if (!/^ch\d{3}$/.test(String(id || ''))) return null;
+  const extra = isExtraId(id);
+  if (!/^ch\d{3}$/.test(String(id || '')) && !extra) return null;
   if (S.chapters.get(id)) return S.chapters.get(id);
-  const entry = S.index.find((e) => e.id === id);
-  const url = /^\/story\/chapters\/ch\d{3}\.json$/.test(entry?.file || '') ? entry.file : `/story/chapters/${id}.json`;
+  const entry = (extra ? S.extras : S.index).find((e) => e.id === id);
+  const pattern = extra ? /^\/story\/extras\/ex\d{3}\.json$/ : /^\/story\/chapters\/ch\d{3}\.json$/;
+  const url = pattern.test(entry?.file || '') ? entry.file : `/story/${extra ? 'extras' : 'chapters'}/${id}.json`;
   const chapter = await fetchJson(url);
   if (!chapter || chapter.id !== id || !Array.isArray(chapter.shots) || !chapter.shots.length) return null;
   S.chapters.set(id, chapter);
@@ -266,7 +279,7 @@ async function loadChapter(id) {
 }
 
 function entryFor(id, chapter = S.chapters.get(id)) {
-  const e = S.index.find((x) => x.id === id);
+  const e = (isExtraId(id) ? S.extras : S.index).find((x) => x.id === id);
   const number = e?.number ?? chapter?.number ?? Number(String(id).slice(2));
   const title = chapter?.title || e?.title || id;
   return { id, number, title, ...splitTitle(title, number), requires: e?.requires ?? null, minutes: chapter?.estimatedMinutes ?? e?.estimatedMinutes, inIndex: Boolean(e) };
@@ -293,6 +306,52 @@ function endSaveOf(id) {
   return save?.run ? save : null;
 }
 function speakerOf(who) { return S.chapter?.speakers?.[who] || S.speakers[who] || null; }
+
+// ─── 番外（剧本规格§七）───
+// 通关解锁章（本机主线进度）后开放；进度、自动存档、章末存档都在 KEYS.ex* 里，和主线分开
+const inExtra = () => isExtraId(S.chapter?.id);
+const autoKey = () => (inExtra() ? KEYS.exAuto : KEYS.auto);
+const backlogKey = () => (inExtra() ? KEYS.exBacklog : KEYS.backlog);
+function exProgress() { const p = load(KEYS.exProgress, {}); return p && typeof p === 'object' ? p : {}; }
+function isExtraDone(id) { return Boolean(exProgress()[id]); }
+function extraEntry(id) { return S.extras.find((e) => e.id === id) || null; }
+function extraUnlocked(entry) { return Boolean(entry?.unlockAfter && isCompleted(entry.unlockAfter)); }
+function extraMemoryIds() { const list = load(KEYS.exMemories, []); return Array.isArray(list) ? list.filter((id) => isExtraId(id)).slice(-10) : []; }
+// 番外里的胸像（服装稿 4.1）：这一篇的 costumeTypes 包含她装备的类型，就换成 costumes/bust/ 的服装胸像（12+ 的泳装用罩衫版）；
+// 否则海边番外用度假装胸像（defaultCostume），其余番外用默认胸像。主线永远不换。
+function artUrl(who, sp) {
+  const base = sp?.art ? paint(sp.art) : null;
+  const ch = S.chapter;
+  if (!base || !isExtraId(ch?.id) || !HEROINE_IDS.includes(who)) return base;
+  const equipped = typeof S.equipped?.[who] === 'string' ? S.equipped[who] : '';
+  const type = equipped.startsWith(`${who}_`) ? equipped.slice(who.length + 1) : '';
+  let id = '';
+  if (type && (ch.anyCostume || (ch.costumeTypes || []).includes(type))) id = equipped;
+  else if (ch.defaultCostume) id = `${who}_${ch.defaultCostume}`;
+  if (!/^[a-z]+_[a-z]+$/.test(id)) return base;
+  const soft = normalizeMode(S.run?.mode) !== '15+' && id.endsWith('_swimsuit');
+  return `/assets/costumes/bust/${soft ? 'soft/' : ''}${id}.svg`;
+}
+// 番外开局时读一次换衣间（不为此建号；没有账户或离线就都穿默认服）
+async function loadEquipped() {
+  S.equipped = {};
+  const id = storedPlayerId();
+  if (!id) return;
+  const r = await apiJson(`/api/account?playerId=${encodeURIComponent(id)}`);
+  if (r.ok && r.data?.account?.equippedCostumes && typeof r.data.account.equippedCostumes === 'object') S.equipped = { ...r.data.account.equippedCostumes };
+}
+// 类型相符的番外里，判定上下文带一句「她穿着X」（服装稿 1.1：不计分）；服务器只认这一篇 costumeTypes 里的类型
+function wearingContext() {
+  const ch = S.chapter;
+  if (!isExtraId(ch?.id)) return undefined;
+  const out = {};
+  for (const who of HEROINE_IDS) {
+    const equipped = typeof S.equipped?.[who] === 'string' ? S.equipped[who] : '';
+    const type = equipped.startsWith(`${who}_`) ? equipped.slice(who.length + 1) : '';
+    if (type && (ch.anyCostume || (ch.costumeTypes || []).includes(type))) out[who] = type;
+  }
+  return Object.keys(out).length ? out : undefined;
+}
 
 // ═══════════════════════════════════════════════════════════
 // 标题 / 章节选择
@@ -359,12 +418,20 @@ async function renderStart() {
         </section>
         <section class="start-chapters" aria-labelledby="chapterHeading">
           <div class="chapters-head">
-            <h2 id="chapterHeading">章节</h2>
-            <span class="muted">完成上一章即可解锁下一章</span>
+            <div class="ch-tabs" role="tablist" aria-label="章节分页">
+              <button class="ch-tab" type="button" role="tab" id="chapterHeading" data-tab="chapters" aria-controls="chPanel" aria-selected="${S.tab === 'chapters'}" tabindex="${S.tab === 'chapters' ? 0 : -1}">章节</button>
+              <button class="ch-tab" type="button" role="tab" id="extrasHeading" data-tab="extras" aria-controls="exPanel" aria-selected="${S.tab === 'extras'}" tabindex="${S.tab === 'extras' ? 0 : -1}">番外・休息日</button>
+            </div>
+            <span class="muted" id="tabHint">${S.tab === 'extras' ? '通关对应章节即可开放' : '完成上一章即可解锁下一章'}</span>
           </div>
-          <ol class="ch-list" id="chList">
-            ${ids.map((id) => chapterCardHtml(id)).join('') || '<li class="ch-empty">章节目录读取失败，请刷新重试。</li>'}
-          </ol>
+          <div id="chPanel" role="tabpanel" aria-labelledby="chapterHeading"${S.tab === 'extras' ? ' hidden' : ''}>
+            <ol class="ch-list" id="chList">
+              ${ids.map((id) => chapterCardHtml(id)).join('') || '<li class="ch-empty">章节目录读取失败，请刷新重试。</li>'}
+            </ol>
+          </div>
+          <div id="exPanel" role="tabpanel" aria-labelledby="extrasHeading"${S.tab === 'extras' ? '' : ' hidden'}>
+            ${extrasPanelHtml()}
+          </div>
         </section>
       </div>
     </main>`;
@@ -376,6 +443,13 @@ async function renderStart() {
   $('[data-act="board"]')?.addEventListener('click', renderBoardView);
   bindSettings($('#start'));
   $('#chList').querySelectorAll('[data-start]').forEach((btn) => btn.addEventListener('click', () => startChapter(btn.dataset.start, { canon: btn.dataset.canon === '1' })));
+  bindExtrasPanel();
+  $$('.ch-tab').forEach((tab) => tab.addEventListener('click', () => switchTab(tab.dataset.tab, true)));
+  $('.ch-tabs').addEventListener('keydown', (e) => {
+    if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+    e.preventDefault();
+    switchTab(S.tab === 'chapters' ? 'extras' : 'chapters', true);
+  });
 
   // 次按钮：直达链接 > 第一个未完成且已解锁的章节 > 从序章重玩；和主按钮重复（读完一章后的「开始下一章」）时不再显示第二遍
   const begin = $('#beginBtn');
@@ -539,6 +613,87 @@ function ratingNotice() {
   });
 }
 
+// ─── 番外・休息日（剧本规格§七：入口在主线播放页的分页里，标题页的两张卡不变）───
+function switchTab(tab, focus = false) {
+  S.tab = tab === 'extras' ? 'extras' : 'chapters';
+  $$('.ch-tab').forEach((t) => {
+    const on = t.dataset.tab === S.tab;
+    t.setAttribute('aria-selected', String(on));
+    t.tabIndex = on ? 0 : -1;
+    if (on && focus) t.focus({ preventScroll: true });
+  });
+  $('#chPanel').hidden = S.tab !== 'chapters';
+  $('#exPanel').hidden = S.tab !== 'extras';
+  $('#tabHint').textContent = S.tab === 'extras' ? '通关对应章节即可开放' : '完成上一章即可解锁下一章';
+}
+function extrasPanelHtml() {
+  const save = load(KEYS.exAuto, null);
+  const live = save?.run && !save.run.done && isExtraId(save.chapterId) ? extraEntry(save.chapterId) : null;
+  const resume = live ? `<button class="btn primary ex-resume" type="button" data-act="continue-extra">${icon('play', { size: 16 })}<span>继续番外</span><small>${esc(`${entryFor(live.id).label} · ${timeAgo(save.savedAt)}`)}</small></button>` : '';
+  const cards = S.extras.map(extraCardHtml).join('') || '<li class="ch-empty">番外目录读取失败，请刷新重试。</li>';
+  return `<p class="ex-intro">${icon('sparkle', { size: 15 })}<span>正典里某个不特定的休息日。番外不影响主线：只读解锁章的章末存档开场，读完不改变任何信赖、约定与结局；首次读完可得钻石与外观。</span></p>
+    ${resume}
+    <ol class="ch-list ex-list" id="exList">${cards}</ol>`;
+}
+function extraCardHtml(entry) {
+  const e = entryFor(entry.id);
+  const live = Boolean(entry.file);
+  const open = live && extraUnlocked(entry);
+  const done = isExtraDone(entry.id);
+  const unlockLabel = entryFor(entry.unlockAfter).label;
+  const cls = ['ch-card', 'ex-card', !live ? 'unavailable' : open ? 'open' : 'locked', done ? 'done' : ''].filter(Boolean).join(' ');
+  const meta = [];
+  if (!live) meta.push(`通关${unlockLabel}后开放`);
+  else if (!open) meta.push(`通关「${unlockLabel}」后开放`);
+  else {
+    if (entry.estimatedMinutes) meta.push(`约 ${entry.estimatedMinutes} 分钟`);
+    meta.push(entry.if ? 'IF · 与正史无关' : `时间窗：${entry.window}`);
+    const cast = (entry.cast || []).map((id) => HEROINE_NAMES[id]).filter(Boolean);
+    if (cast.length) meta.push(cast.length === HEROINE_IDS.length ? '全员' : cast.join('、'));
+  }
+  // 还没解锁的番外只给标题与解锁章：登场女主与简介要等解锁（解锁章一定不早于每位登场女主的入队章）
+  const blurb = open && entry.blurb ? `<p class="ex-blurb">${esc(entry.blurb)}</p>` : '';
+  const badge = !live ? `<span class="ch-badge">${icon('clock', { size: 14 })}制作中</span>`
+    : done ? `<span class="ch-badge ok">${icon('check', { size: 14 })}已读</span>`
+      : !open ? `<span class="ch-badge">${icon('lock', { size: 14 })}未解锁</span>` : '';
+  const ifTag = entry.if ? '<span class="ch-badge ex-if">IF</span> ' : '';
+  const btn = open ? `<button class="btn ${done ? 'secondary' : 'primary'} small" type="button" data-extra="${esc(entry.id)}" aria-label="${done ? '重读' : '开始'}${esc(e.label)}">${icon(done ? 'refresh' : 'play', { size: 15 })}${done ? '重读' : '开始'}</button>` : '';
+  return `<li class="${cls}" data-id="${esc(entry.id)}">
+    <div class="ch-num">${esc(e.label)}</div>
+    <div class="ch-body">
+      <h3>${esc(e.name)} ${ifTag}${badge}</h3>
+      <p class="ch-meta">${esc(meta.join(' · '))}</p>
+      ${blurb}
+    </div>
+    <div class="ch-actions">${btn}</div>
+  </li>`;
+}
+function bindExtrasPanel() {
+  $('[data-act="continue-extra"]')?.addEventListener('click', () => continueSave({ extra: true }));
+  $$('#exList [data-extra]').forEach((btn) => btn.addEventListener('click', () => startExtra(btn.dataset.extra)));
+}
+async function startExtra(id) {
+  const entry = extraEntry(id);
+  if (!entry?.file) { toast('这篇番外还在制作中', 'warn'); return; }
+  if (!extraUnlocked(entry)) { toast(`通关「${entryFor(entry.unlockAfter).label}」后开放`, 'warn'); return; }
+  const extra = await loadChapter(id);
+  if (!extra) { toast('番外读取失败，请检查网络后重试', 'warn'); return; }
+  const save = load(KEYS.exAuto, null);
+  if (save?.run && !save.run.done) {
+    const ok = await confirmDialog('开始新的番外会覆盖当前的番外自动存档（主线进度不受影响）。', '开始新进度');
+    if (!ok) return;
+  }
+  const name = currentName();
+  storeName(name);
+  // 只读解锁章的章末存档快照；没有就用番外自带的默认正史（剧本规格§七）
+  const snap = endSaveOf(extra.unlockAfter);
+  const run = startExtraRun({ extra, snapshot: snap?.run || null, playerName: name, mode: S.settings.mode });
+  if (!snap) toast('没有找到解锁章的章末存档：按默认正史开始');
+  await loadEquipped();
+  S.tab = 'extras';
+  enterPlay(extra, run, { fresh: true });
+}
+
 function chapterCardHtml(id) {
   const e = entryFor(id);
   const chapter = isAvailable(id); // 只看目录，不下载章节文件
@@ -612,8 +767,9 @@ async function startNextFromSave(save, nextId) {
   enterPlay(chapter, run, { fresh: true });
 }
 
-async function continueSave() {
-  const save = load(KEYS.auto, null);
+async function continueSave({ extra = false } = {}) {
+  const save = load(extra ? KEYS.exAuto : KEYS.auto, null);
+  if (extra) { S.tab = 'extras'; await loadEquipped(); }
   if (!save?.run || !save.chapterId) { toast('没有可继续的存档', 'warn'); return; }
   const chapter = await loadChapter(save.chapterId);
   if (!chapter) { toast(isAvailable(save.chapterId) ? '章节读取失败，请检查网络后重试' : '存档所在的章节尚未开放', 'warn'); return; }
@@ -623,7 +779,7 @@ async function continueSave() {
   storeName(name);
   run.playerName = name;
   run.mode = S.settings.mode;
-  const log = load(KEYS.backlog, null);
+  const log = load(extra ? KEYS.exBacklog : KEYS.backlog, null);
   const backlog = log?.chapterId === save.chapterId && Array.isArray(log.lines) ? log.lines.filter((l) => l && typeof l.text === 'string') : [];
   enterPlay(chapter, run, { fresh: false, backlog, stage: save.stage });
 }
@@ -883,7 +1039,7 @@ function restoreStage(stage) {
     for (const side of ['left', 'right']) {
       const who = typeof art[side] === 'string' ? art[side] : '';
       const sp = who ? speakerOf(who) : null;
-      if (sp?.art) setSlot(side, paint(sp.art), who);
+      if (sp?.art) setSlot(side, artUrl(who, sp), who);
     }
   }
 }
@@ -947,9 +1103,9 @@ function autosave() {
 function checkpoint(runJson, flush = false) {
   if (!S.chapter) return;
   try {
-    localStorage.setItem(KEYS.auto, `{"run":${runJson},"chapterId":${JSON.stringify(S.chapter.id)},"savedAt":${Date.now()},"stage":${JSON.stringify(stageState())}}`);
+    localStorage.setItem(autoKey(), `{"run":${runJson},"chapterId":${JSON.stringify(S.chapter.id)},"savedAt":${Date.now()},"stage":${JSON.stringify(stageState())}}`);
   } catch { /* 隐私模式 / 配额已满：本次不存 */ }
-  store(KEYS.backlog, { chapterId: S.chapter.id, lines: S.backlog.slice(-200) });
+  store(backlogKey(), { chapterId: S.chapter.id, lines: S.backlog.slice(-200) });
   if (flush) flushRead();
 }
 
@@ -1230,7 +1386,7 @@ function updateArt(beat) {
   if (beat.t !== 'say' || OFFSTAGE_NOTE.test(beat.note || '')) { setArtActive(null); return; }
   const sp = speakerOf(beat.who);
   const side = beat.who === 'aku' ? 'left' : 'right';
-  if (sp?.art) setSlot(side, paint(sp.art), beat.who);
+  if (sp?.art) setSlot(side, artUrl(beat.who, sp), beat.who);
   setArtActive(sp?.art ? side : null);
 }
 function setSlot(side, url, who = '') {
@@ -1620,7 +1776,8 @@ async function judgeInput(nodeId, text, def) {
       method: 'POST',
       headers: { 'content-type': 'application/json', accept: 'application/json' },
       // mode：判定器按当前内容模式写在场角色的反应（game/story-judge.mjs；没传时按 12+）
-      body: JSON.stringify({ chapterId: S.chapter.id, nodeId, text, context: { ...publicSummary(S.run), mode: normalizeMode(S.run.mode) } }),
+      // 番外：wearing（类型相符时她穿着什么，不计分）；主线：extraMemories（读过的番外 id，服务器取那一条记忆，只当闲谈）
+      body: JSON.stringify({ chapterId: S.chapter.id, nodeId, text, context: { ...publicSummary(S.run), mode: normalizeMode(S.run.mode), ...(inExtra() ? { wearing: wearingContext() } : { extraMemories: extraMemoryIds() }) } }),
       signal: ctrl.signal,
     });
     if (res.ok) {
@@ -1842,6 +1999,7 @@ async function onEnd(end) {
   P.dock.classList.add('idle');
   P.hud.hidden = true;
   P.play.classList.remove('has-hud');
+  if (isExtraId(ch.id)) { onExtraEnd(end, ch, run); return; }
   const saveKey = end?.save || `SAVE_${ch.id.toUpperCase()}_END`;
   store(KEYS.save(saveKey), { run, chapterId: ch.id, savedAt: Date.now() });
   const prog = progress();
@@ -1939,6 +2097,97 @@ async function onEnd(end) {
   await wireNext();
 }
 
+// 番外读完（剧本规格§七）：存档与通关记录写进番外自己的键，记下这一篇的那条记忆；没有「下一章」
+function onExtraEnd(end, ch, run) {
+  const saveKey = end?.save || `SAVE_${ch.id.toUpperCase()}_END`;
+  store(KEYS.exSave(saveKey), { run, chapterId: ch.id, savedAt: Date.now() });
+  const prog = exProgress();
+  prog[ch.id] = { save: saveKey, at: Date.now() };
+  store(KEYS.exProgress, prog);
+  if (end?.memory?.text) store(KEYS.exMemories, [...extraMemoryIds().filter((id) => id !== ch.id), ch.id]);
+  flushRead();
+  const e = entryFor(ch.id, ch);
+  const summary = (end?.summary || []).filter((x) => x?.text && evalCond(run, x.when)).map((x) => x.text);
+  const lines = (summary.length ? summary : ['{PLAYER_NAME}度过了一个休息日。']).map((t) => interpolate(t, run));
+  const memory = end?.memory?.text ? interpolate(end.memory.text, run) : '';
+  const scr = P.endScreen;
+  scr.innerHTML = `<div class="end-card" role="dialog" aria-modal="true" aria-labelledby="endTitle">
+      <img class="end-crest" src="/assets/ui/eclipse-crest.svg" alt="" />
+      <p class="eyebrow">EXTRA · 番外读完</p>
+      <h2 id="endTitle"><span>${esc(e.label)}</span>${esc(e.name)}</h2>
+      <div class="end-rule"></div>
+      <h3 class="end-sub">${icon('book', { size: 15 })}这一天</h3>
+      <ul class="end-summary">${lines.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>
+      ${memory ? `<p class="end-memory">${icon('feather', { size: 14 })}<span>记住的事：${esc(memory)}</span></p>` : ''}
+      <p class="end-save">${icon('save', { size: 14 })}番外存档（与主线分开）· 不改变任何信赖、约定与结局</p>
+      <div class="end-reward" hidden></div>
+      <div class="end-actions">
+        <button class="btn primary large" type="button" data-end="list">${icon('book', { size: 18 })}<span>返回番外列表</span></button>
+        <button class="btn secondary" type="button" data-end="replay">${icon('refresh', { size: 16 })}重读本篇</button>
+      </div>
+    </div>`;
+  scr.hidden = false;
+  setBackdropInert(scr, true);
+  scr.classList.remove('show');
+  void scr.offsetWidth;
+  scr.classList.add('show');
+  announce(`番外读完：${ch.title}`);
+  showExtraReward(scr, ch, run.playerName);
+  const listBtn = $('[data-end="list"]', scr);
+  // 同章节完成页：入场动画走完、玩家停手之后才接受按键，连按空格不会替玩家按下按钮
+  const armAt = performance.now() + (reducedMotion ? 350 : 900);
+  let armed = false;
+  const guarded = (fn) => () => { if (armed) fn(); };
+  scr.inert = true;
+  const tryArm = () => {
+    if (!scr.isConnected || scr.hidden || S.chapter !== ch) return;
+    const now = performance.now();
+    const wait = Math.max(armAt - now, S.lastInputAt + 450 - now);
+    if (wait > 0) { setTimeout(tryArm, wait + 16); return; }
+    armed = true;
+    scr.inert = false;
+    listBtn.focus({ preventScroll: true });
+  };
+  setTimeout(tryArm, Math.max(0, armAt - performance.now()));
+  listBtn.addEventListener('click', guarded(() => { S.tab = 'extras'; renderStart(); }));
+  $('[data-end="replay"]', scr).addEventListener('click', guarded(replayChapter));
+}
+async function showExtraReward(scr, ch, playerName) {
+  const box = $('.end-reward', scr);
+  if (!box) return;
+  const playerId = await ensurePlayerAccount(playerName);
+  const r = playerId ? await apiJson('/api/story/extra', { playerId, extraId: ch.id }) : null;
+  if (!box.isConnected || S.chapter !== ch) return;
+  let html = '';
+  if (r?.ok) html = extraRewardHtml(r.data);
+  else if (r?.data?.error?.code === 'EXTRA_LOCKED' || r?.data?.code === 'EXTRA_LOCKED') html = `<p class="end-reward-note">${icon('info', { size: 14 })}账户里还没有解锁章的首通记录，首读奖励先不发放</p>`;
+  if (!html) return;
+  box.innerHTML = html;
+  box.hidden = false;
+  if (r?.data?.granted) {
+    announce($$('.end-reward-list li', box).map((li) => li.textContent.trim()).join('；'));
+    revealReward(scr, box);
+  }
+}
+const COSTUME_TYPE_NAMES = { maid: '女仆装', sportwear: '运动短袖', resort: '度假装', duanwu: '龙舟祭服' };
+function extraRewardHtml(r) {
+  const n = (v) => (Number.isFinite(v) && v > 0 ? Math.floor(v) : 0);
+  const costumeName = (id) => { const [who, type] = String(id).split('_'); return `${HEROINE_NAMES[who] || who}·${COSTUME_TYPE_NAMES[type] || type}`; };
+  const rows = [];
+  if (n(r.extraReward)) rows.push([icon('diamond', { size: 16 }), `番外首读奖励：钻石 +${n(r.extraReward)}`]);
+  const got = Array.isArray(r.costumesGranted) ? r.costumesGranted : [];
+  if (got.length) rows.push([icon('sparkle', { size: 16 }), `获得外观：${got.map(costumeName).join('、')}（主菜单 · 换衣间）`]);
+  for (const c of Array.isArray(r.costumesCompensated) ? r.costumesCompensated : []) {
+    if (n(c?.diamonds)) rows.push([icon('diamond', { size: 16 }), `${costumeName(c.id)}已经拥有：折算钻石 +${n(c.diamonds)}`]);
+  }
+  const mats = r.skillMaterials || {};
+  if (n(mats.white) || n(mats.green) || n(mats.blue)) rows.push([icon('book', { size: 16 }), `技能强化材料：练习手记 +${n(mats.white)}、实战手记 +${n(mats.green)}、源律残章 +${n(mats.blue)}`]);
+  if (!rows.length) return r.alreadyCleared ? `<p class="end-reward-note">${icon('check', { size: 14 })}这篇番外的首读奖励已领取</p>` : '';
+  const balance = Number.isFinite(r.balance) ? `现有钻石 ${Math.floor(r.balance)} · ` : '';
+  return `<ul class="end-reward-list">${rows.map(([ico, t]) => `<li>${ico}<span>${esc(t)}</span></li>`).join('')}</ul>
+    <p class="end-reward-note">${esc(balance)}钻石可在主菜单的「召唤」里使用</p>`;
+}
+
 function replayChapter() {
   if (S.startRun) {
     const run = clone(S.startRun);
@@ -1947,6 +2196,11 @@ function replayChapter() {
     return;
   }
   const ch = S.chapter;
+  if (isExtraId(ch.id)) {
+    const snap = endSaveOf(ch.unlockAfter);
+    enterPlay(ch, startExtraRun({ extra: ch, snapshot: snap?.run || null, playerName: S.run.playerName, mode: S.settings.mode }), { fresh: true });
+    return;
+  }
   const e = entryFor(ch.id, ch);
   const prev = e.requires ? endSaveOf(e.requires) : null;
   const run = prev ? continueRun(prev.run, ch) : createRun({ playerName: S.run.playerName, chapter: ch, mode: S.settings.mode });
@@ -2040,12 +2294,16 @@ async function boot() {
   const params = new URLSearchParams(window.location.search);
   const want = params.get('chapter');
   S.focus = want && /^ch\d{3}$/.test(want) ? want : null;
-  const [index, speakers, locations] = await Promise.all([
+  // ?extra=ex001（换衣间的番外入口）或 ?tab=extras：打开「番外・休息日」分页
+  if (isExtraId(params.get('extra')) || params.get('tab') === 'extras') S.tab = 'extras';
+  const [index, speakers, locations, extras] = await Promise.all([
     fetchJson('/story/chapters/index.json'),
     fetchJson('/story/speakers.json'),
     fetchJson('/story/locations.json'),
+    fetchJson('/story/extras/index.json'),
     loadPaint(),
   ]);
+  S.extras = Array.isArray(extras) ? extras.filter((e) => isExtraId(e?.id)) : [];
   S.index = Array.isArray(index) ? index.filter((e) => /^ch\d{3}$/.test(e?.id || '')) : [];
   S.speakers = speakers && typeof speakers === 'object' ? speakers : {};
   S.locations = locations && typeof locations === 'object' ? locations : {};

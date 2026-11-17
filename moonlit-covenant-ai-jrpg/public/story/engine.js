@@ -15,6 +15,13 @@ const SILENT_HINT = /一言不发|沉默|不说话|没说话|没有说话|说不
 const clone = (v) => (v === undefined ? v : JSON.parse(JSON.stringify(v)));
 const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
 
+// 主线章节 ch000–ch030；番外 ex001–ex010 是独立命名空间（剧本规格§七：不占 chNNN，end.next 为空，只能写 EX_* 变量）
+export const CHAPTER_ID = /^ch\d{3}$/;
+export const EXTRA_ID = /^ex\d{3}$/;
+export const isExtraId = (id) => EXTRA_ID.test(String(id || ''));
+// 番外的变量沙箱：flags / items / vars / memories 与 add 的键都必须以 EX_ 或 EX001_ 这样的番外编号开头（*_TRUST、promise_*、FLAG_MAIN_* 一律不准写）
+export const EXTRA_VAR = /^EX(?:\d{3})?_[A-Z0-9_]+$/; // EX_DOOR、EX001_HELPED_INN
+
 export function cleanName(name) {
   const s = String(name ?? '').replace(/[<>{}\[\]"'`\\]/g, '').trim().slice(0, 12);
   return s || DEFAULT_PLAYER_NAME;
@@ -48,6 +55,17 @@ export function continueRun(prev, chapter) {
   run.voice = clone(prev.voice) || {};
   run.morality = prev.morality || 0;
   run.completed = [...new Set([...(prev.completed || []), prev.chapterId])];
+  return run;
+}
+
+/**
+ * 番外开局（剧本规格§七「变量沙箱」）：只读解锁章的章末存档快照（snapshot＝那一章读完时的 run），没有就用番外自带的
+ * 默认正史 canon。番外的 run 永远不接回主线：播放器把它存在另一组存档键里，读完也不会成为任何主线章节的前情。
+ */
+export function startExtraRun({ extra, snapshot = null, playerName, mode = '12+' }) {
+  const run = snapshot && typeof snapshot === 'object' && snapshot.flags ? continueRun(snapshot, extra) : createRun({ playerName, chapter: extra, mode });
+  run.playerName = cleanName(playerName ?? run.playerName);
+  run.mode = mode === '15+' ? '15+' : '12+';
   return run;
 }
 
@@ -364,10 +382,27 @@ export function validateChapter(chapter, { speakers = {}, locations = {} } = {})
   const errors = [];
   const err = (where, msg) => errors.push(`${chapter?.id || '?'} ${where}: ${msg}`);
   if (!chapter || typeof chapter !== 'object') return ['章节不是对象'];
-  if (!/^ch\d{3}$/.test(chapter.id || '')) err('id', '格式应为 ch000');
+  const extra = isExtraId(chapter.id);
+  if (!CHAPTER_ID.test(chapter.id || '') && !extra) err('id', '格式应为 ch000（番外为 ex001）');
   if (typeof chapter.title !== 'string' || !chapter.title) err('title', '缺少标题');
   if (!Array.isArray(chapter.shots) || !chapter.shots.length) err('shots', '没有分镜');
   if (!chapter.end || !('next' in chapter.end)) err('end', '缺少 end.next');
+  // 番外：零后果、独立存档（剧本规格§七）——不接下一章，只写 EX_* 变量，留一条可回忆的记忆
+  const sandbox = (set, where) => {
+    if (!extra || !set || typeof set !== 'object') return;
+    for (const key of ['flags', 'items', 'vars', 'memories', 'add']) {
+      for (const name of Object.keys(set[key] || {})) if (!EXTRA_VAR.test(name)) err(where, `番外只能写 EX_* 变量，不能写 ${key}.${name}`);
+    }
+  };
+  if (extra) {
+    if (chapter.end?.next != null) err('end', '番外的 end.next 必须为 null（不进主线的 requires 链）');
+    if (!CHAPTER_ID.test(chapter.unlockAfter || '')) err('unlockAfter', '番外要写解锁章 unlockAfter（ch010 这样的主线章节 id）');
+    const memory = chapter.end?.memory;
+    if (!memory || !EXTRA_VAR.test(memory.key || '') || typeof memory.text !== 'string' || !memory.text.trim()) err('end.memory', '番外要留一条可回忆的记忆 { key: "EX_…", text }');
+    else if (memory.text.length > 60) err('end.memory', '记忆不超过 60 字');
+    // canon 是没有解锁章存档时的默认正史快照（只读），不算写入；章末与节拍里的写入才受沙箱限制
+    sandbox(chapter.end?.set, 'end.set');
+  }
   const allSpeakers = { ...speakers, ...(chapter.speakers || {}) };
   const shotIds = new Set();
   const inputIds = new Map();
@@ -397,8 +432,11 @@ export function validateChapter(chapter, { speakers = {}, locations = {} } = {})
     if (beat.t === 'fx' && !FX.has(beat.fx)) err(where, `未知特效 ${beat.fx}`);
     if (beat.t === 'title' && !beat.title) err(where, '片名缺少 title');
     if (beat.t === 'if') { if (!beat.when) err(where, 'if 缺少 when'); checkCond(beat.when, where); }
+    if (beat.t === 'set') sandbox(beat, where);
+    if (beat.t === 'input') for (const x of beat.intents || []) sandbox(x.set, `${where} ${beat.id}.${x.id}`);
     if (beat.t === 'battle') {
       if (!beat.id) err(where, '战斗缺少 id');
+      if (extra && !EXTRA_VAR.test(`${beat.id || ''}_RESULT`)) err(where, `番外的战斗 id 要以 EX_ 开头（战斗结果写进 vars.<id>_RESULT）`);
       if (!beat.enemies?.length) err(where, '战斗没有敌人');
       if (!beat.rounds?.length) err(where, '战斗没有回合');
       (beat.rounds || []).forEach((r) => { if (r.t !== 'input') err(where, '战斗回合必须是 input 节点'); });

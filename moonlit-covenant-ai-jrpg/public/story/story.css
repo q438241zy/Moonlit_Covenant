@@ -287,6 +287,21 @@ button, input, textarea { font: inherit; color: inherit; }
 .ch-badge.ok { color: var(--success); border-color: rgba(140, 240, 201, .35); }
 .ch-actions { display: flex; gap: 8px; }
 
+/* 章节 / 番外・休息日 分页（剧本规格§七） */
+.ch-tabs { display: flex; gap: 4px; padding: 3px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255, 255, 255, .04); }
+.ch-tab { padding: 6px 14px; border: 0; border-radius: 999px; background: none; color: var(--muted); font: inherit; font-size: .9rem; font-weight: 800; cursor: pointer; }
+.ch-tab:hover { color: var(--text); }
+.ch-tab[aria-selected="true"] { background: rgba(192, 150, 255, .18); color: var(--text); box-shadow: inset 0 0 0 1px rgba(192, 150, 255, .4); }
+.ch-tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.ex-intro { display: flex; gap: 8px; align-items: flex-start; margin: 0 0 12px; color: var(--muted); font-size: .8rem; line-height: 1.6; }
+.ex-intro svg { flex: none; margin-top: 3px; color: var(--accent); }
+.ex-resume { margin: 0 0 12px; }
+.ex-resume small { margin-left: 6px; opacity: .8; font-weight: 600; }
+.ex-blurb { margin: 6px 0 0; color: var(--muted); font-size: .8rem; line-height: 1.55; }
+.ch-badge.ex-if { color: var(--gold); border-color: rgba(255, 210, 125, .45); }
+.end-memory { display: flex; align-items: flex-start; justify-content: center; gap: 6px; margin: 12px 0 0; color: var(--muted); font-size: .82rem; line-height: 1.6; }
+.end-memory svg { flex: none; margin-top: 4px; color: var(--accent); }
+
 /* ─── 设置浮层 ─── */
 .pop {
   position: absolute;

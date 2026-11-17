@@ -6,8 +6,9 @@ import { readFileSync, statSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { AI_CONFIG, contentRatingRules, normalizeContentMode } from './ai.mjs';
-import { demoJudge, findNode, sanitizeLines, cleanName } from '../public/story/engine.js';
+import { demoJudge, findNode, sanitizeLines, cleanName, CHAPTER_ID, EXTRA_ID } from '../public/story/engine.js';
 import { mainlineSkillLines } from './skills.mjs';
+import { COSTUME_TYPE_META } from './gacha.mjs';
 
 const withName = (text, playerName) => String(text ?? '').replaceAll('{PLAYER_NAME}', playerName);
 
@@ -34,13 +35,48 @@ export function readJsonCached(file) {
   return data;
 }
 
+// 主线章节在 chapters/，番外（ex001–ex010，剧本规格§七）在 extras/；两者节点格式相同
 export function loadStoryChapter(chapterId) {
-  if (!/^ch\d{3}$/.test(String(chapterId))) return null;
+  const id = String(chapterId);
+  const dir = CHAPTER_ID.test(id) ? 'chapters' : EXTRA_ID.test(id) ? 'extras' : null;
+  if (!dir) return null;
   try {
-    return readJsonCached(join(storyDir, 'chapters', `${chapterId}.json`));
+    return readJsonCached(join(storyDir, dir, `${id}.json`));
   } catch {
     return null;
   }
+}
+
+/**
+ * 番外里的服装（服装稿 1.1）：只在类型相符的番外里，判定上下文才带一句「她穿着X」，而且不计分。
+ * wearing 是客户端报的 { 女主 id: 服装类型 }，只认这一篇番外 costumeTypes 里的类型（anyCostume 的番外认全部类型）。
+ */
+export function wearingFacts(chapter, wearing, names = {}) {
+  if (!EXTRA_ID.test(String(chapter?.id || '')) || !wearing || typeof wearing !== 'object') return [];
+  const types = chapter.anyCostume ? Object.keys(COSTUME_TYPE_META) : (chapter.costumeTypes || []);
+  const lines = [];
+  for (const [who, type] of Object.entries(wearing)) {
+    if (!HEROINE_SPEAKER.test(who) || who.includes('_') || !types.includes(type) || !COSTUME_TYPE_META[type]) continue;
+    lines.push(`${names[who]?.name || who}穿着${COSTUME_TYPE_META[type].label}（她自己挑的）。`);
+  }
+  return lines.length ? ['外观（只用于描写，不计分，不要细写衣服的样子）：', ...lines.slice(0, 8)] : [];
+}
+
+/**
+ * 番外留下的记忆（剧本规格§七：每篇一条，主线 AI 可以提起，但不作为任何条件）。客户端只报番外 id，记忆原文由服务器从
+ * 番外文件读取；只收番外解锁章之后的主线章节（重玩更早的章节时不提）。
+ */
+export function extraMemoryFacts(chapter, ids) {
+  if (!CHAPTER_ID.test(String(chapter?.id || '')) || !Array.isArray(ids)) return [];
+  const lines = [];
+  for (const id of [...new Set(ids.map(String))].filter((x) => EXTRA_ID.test(x)).slice(0, 10)) {
+    const extra = loadStoryChapter(id);
+    const unlock = Number(String(extra?.unlockAfter || '').slice(2));
+    const text = extra?.end?.memory?.text;
+    if (!text || !Number.isFinite(unlock) || chapter.number <= unlock) continue;
+    lines.push(text);
+  }
+  return lines.length ? ['番外里的回忆（角色可以当闲谈提起，不作为任何条件，不改变判定）：', ...lines.slice(-3)] : [];
 }
 
 function speakers(chapter) {
@@ -120,15 +156,16 @@ export const STORY_MINORS = ['托比', '波莉', '妮拉', '派克', '幼龙豆�
 const RATING_VIOLATION = 'intent 按越界意图归类（节点没有对应意图时取最接近的负面意图），morality 取 -2';
 
 /** 判定器的系统提示词。mode 是客户端 context.mode（'15+' | '12+'），没传或不认识时按 12+。 */
-export function buildPrompt(chapter, node, playerName, recent = [], mode) {
+export function buildPrompt(chapter, node, playerName, recent = [], mode, { wearing = null, extraMemories = null } = {}) {
   const names = speakers(chapter);
   const who = (node.focus || []).map((id) => `${id}=${String(names[id]?.name || id).replace('{PLAYER_NAME}', playerName)}`).join('，') || '（无，只能用 narr 叙述）';
   const intents = node.intents.map((x) => `- ${x.id}：${withName(x.label, playerName)}${x.desc ? `——${withName(x.desc, playerName)}` : ''}`).join('\n');
   const history = recent.map((r) => `- ${r.id}：「${r.text}」→ ${r.intent}`).join('\n') || '（无）';
   const skillFacts = battleSkillFacts(chapter, node.id);
-  const facts = [...(node.context || []), ...(skillFacts.length ? ['在场者的能力（只作描述依据，不改变本节点各意图的效果）：', ...skillFacts] : [])];
+  const facts = [...(node.context || []), ...(skillFacts.length ? ['在场者的能力（只作描述依据，不改变本节点各意图的效果）：', ...skillFacts] : []),
+    ...wearingFacts(chapter, wearing, names), ...extraMemoryFacts(chapter, extraMemories)];
   return [
-    `你是《月蚀契约》主线剧情的判定器。主角名叫${playerName}，玩家用自由文字描述${playerName}的台词或行动。`,
+    `你是《月蚀契约》${EXTRA_ID.test(String(chapter.id)) ? '番外（正典日常的休息日，零后果）' : '主线剧情'}的判定器。主角名叫${playerName}，玩家用自由文字描述${playerName}的台词或行动。`,
     `章节：${chapter.title}。当前节点：${node.id}（${node.kind}）。界面提示：${withName(node.prompt, playerName)}`,
     `场景事实：\n${facts.map((s) => `- ${withName(s, playerName)}`).join('\n') || '（无）'}`,
     `演出原则：\n${(node.principles || []).map((s) => `- ${withName(s, playerName)}`).join('\n') || '（无）'}`,
@@ -154,7 +191,7 @@ function extractJson(text) {
   throw new Error('模型没有返回 JSON。');
 }
 
-async function callModel(chapter, node, text, playerName, recent, mode) {
+async function callModel(chapter, node, text, playerName, recent, mode, extras) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), AI_CONFIG.timeoutMs);
   const base = {
@@ -162,7 +199,7 @@ async function callModel(chapter, node, text, playerName, recent, mode) {
     temperature: 0.5,
     max_tokens: 420,
     messages: [
-      { role: 'system', content: buildPrompt(chapter, node, playerName, recent, mode) },
+      { role: 'system', content: buildPrompt(chapter, node, playerName, recent, mode, extras) },
       { role: 'user', content: text || '（沉默，不说话也不行动）' },
     ],
   };
@@ -251,7 +288,9 @@ async function judgeWithModel(chapter, node, clean, context, demo) {
   }));
   try {
     const mode = normalizeContentMode(context?.mode); // 内容模式只影响提示词里的分级规则，判定与校验照旧
-    const judged = normalizeModelJudgement(await callModel(chapter, node, clean, playerName, recent, mode), node);
+    // 番外的服装外观、主线可以提起的番外记忆：都只进提示词的场景事实，不影响意图与分数
+    const extras = { wearing: context?.wearing, extraMemories: context?.extraMemories };
+    const judged = normalizeModelJudgement(await callModel(chapter, node, clean, playerName, recent, mode, extras), node);
     if (judged) return judged;
     console.warn('[story judge] 模型输出未通过校验，使用演示判定');
   } catch (error) {

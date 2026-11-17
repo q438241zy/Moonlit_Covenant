@@ -1,0 +1,3392 @@
+{
+  "id": "ex004",
+  "number": 4,
+  "kind": "extra",
+  "scriptId": "EX004_KNIGHTS_DRILL_GROUND_OPEN_DAY",
+  "title": "番外四｜演武场的操练日",
+  "shortTitle": "演武场的操练日",
+  "estimatedMinutes": 10,
+  "source": "剧本/番外/ex004演武場的操練日.md",
+  "unlockAfter": "ch019",
+  "window": "正式19–20之间",
+  "cast": [
+    "aila",
+    "evelyn",
+    "freya",
+    "mia"
+  ],
+  "costumeTypes": [
+    "sportwear"
+  ],
+  "canon": {
+    "flags": {
+      "FLAG_CH000_HEMAI_DESTROYED": true,
+      "FLAG_CH000_BLACK_DRAGON_SEEN": true,
+      "FLAG_CH000_MOTHER_STATUS_UNKNOWN": true,
+      "FLAG_CH000_TOBY_SURVIVED_CAVE": true,
+      "FLAG_CH000_DRAGON_VOW": true,
+      "FLAG_CH000_DRAGON_REMAINS_OVER_HEMAI": true,
+      "FLAG_CH001_BLACK_DRAGON_REPELLED_BY_KERN": true,
+      "FLAG_CH001_BLACK_DRAGON_ABDOMEN_WOUNDED": true,
+      "FLAG_CH001_MOTHER_DEATH_CONFIRMED": true,
+      "FLAG_CH001_TOBY_UNDER_KERN_GUARDIANSHIP": true,
+      "FLAG_CH001_ARK_RECEIVED_GUILD_LETTER": true,
+      "FLAG_CH001_KERN_MENTOR_IDEAL": true,
+      "FLAG_CH002_GUILD_REGISTERED": true,
+      "FLAG_CH002_LEAH_FIRST_SEEN": true,
+      "FLAG_CH002_THIEF_CAPTURED": true,
+      "FLAG_CH002_BLACK_CRYSTAL_EVIDENCE_RECOVERED": true,
+      "FLAG_CH002_FIRE_RESONANCE_FLICKER": true,
+      "FLAG_CH003_TEMP_PARTY_FORMED": true,
+      "FLAG_CH003_LEAH_SIGNED_SUPERVISION": true,
+      "FLAG_CH003_THIRD_ACCOMPLICE_CAPTURED": true,
+      "FLAG_CH003_SEVEN_RING_MARK_SEEN": true,
+      "FLAG_CH003_BLACK_CRYSTAL_CRATE_SEIZED": true,
+      "FLAG_CH003_HEMAI_SURVIVORS_TARGETED": true,
+      "FLAG_CH003_OLD_MILL_LEAD": true,
+      "FLAG_CH003_MILL_ASSAULT_POSTPONED": true,
+      "FLAG_CH003_FIRST_JOINT_MISSION_COMPLETE": true,
+      "FLAG_CH003_FIRE_RESONANCE_WARMTH": true,
+      "FLAG_CH003_GUILD_COLLAB_STAMPED": true,
+      "FLAG_CH003_LEAH_KNOWS_PLAYER_NAME": true,
+      "FLAG_CH003_RELIEF_CART_PASSED_WEST_GATE": true,
+      "FLAG_CH003_DRIVER_DESCRIBED": true,
+      "FLAG_CH003_SHIELD_SIGNALS_LEARNED": true,
+      "FLAG_CH003_SOUP_POT_SETTLED": true,
+      "FLAG_CH003_BARREL_DEDUCTED": true,
+      "FLAG_CH004_CORD_SIGNALS_LEARNED": true,
+      "FLAG_CH004_FENN_CONFIRMED_CHAIN_SWAP": true,
+      "FLAG_CH004_WEST_GATE_COSIGNED": true,
+      "FLAG_CH004_SENTRY_REPORT_HEARD": true,
+      "FLAG_CH004_MILL_INFILTRATED": true,
+      "FLAG_CH004_CHARGING_RACK_SEEN": true,
+      "FLAG_CH004_LEDGER_READ": true,
+      "FLAG_CH004_MARA_AND_DAUGHTER_FOUND": true,
+      "FLAG_CH004_KEY_ON_ACOLYTE": true,
+      "FLAG_CH004_TEARS_LIGHT_CRYSTALS": true,
+      "FLAG_CH004_CAPTIVES_REMAIN_IN_MILL": true,
+      "FLAG_CH004_ACOLYTE_SEEN": true,
+      "FLAG_CH004_RESCUE_WINDOW_CRATE_SWAP": true,
+      "FLAG_CH004_LEAH_LEARNED_HEMAI": true,
+      "FLAG_CH004_GUARDS_COMMITTED": true,
+      "FLAG_CH004_RESCUE_COMMISSION_POSTED": true,
+      "FLAG_CH005_WEST_GATE_COSIGNED": true,
+      "FLAG_CH005_PLAN_BRIEFED_AT_MILESTONE": true,
+      "FLAG_CH005_COLLAR_OWNER_REVEALED": true,
+      "FLAG_CH005_PEACE_STONES_NAMED": true,
+      "FLAG_CH005_CHAIN_SWAP_COMPLETED": true,
+      "FLAG_CH005_LEAH_PRESSED_CRATE": true,
+      "FLAG_CH005_CHIEF_COLLAR_DISABLED": true,
+      "FLAG_CH005_ACOLYTE_CAPTURED": true,
+      "FLAG_CH005_ROLL_CALL_ANSWERED": true,
+      "FLAG_CH005_MARA_AND_POLLY_RESCUED": true,
+      "FLAG_CH005_LEAD_MISTTIDE_MARSH": true,
+      "FLAG_CH005_EVIDENCE_TO_GUARD": true,
+      "FLAG_CH005_RESCUE_COMMISSION_COMPLETE": true,
+      "FLAG_CH005_FORMAL_PARTY_FORMED": true,
+      "FLAG_CH005_ESCORT_COMMISSION_POSTED": true,
+      "FLAG_CH005_MARA_POLLY_TO_NORTH_CAMP": true,
+      "FLAG_CH006_ESCORT_COMMISSION_ACCEPTED": true,
+      "FLAG_CH006_SUPPLY_TUTORIAL_DONE": true,
+      "FLAG_CH006_RUBBING_COPY_CARRIED": true,
+      "FLAG_CH006_MARSH_OGRE_UNCOLLARED": true,
+      "FLAG_CH006_SHIELD_UNDER_WHEEL": true,
+      "FLAG_CH006_UNSPOKEN_SYNC": true,
+      "FLAG_CH006_SALT_MARSH_BRIDGE_COLLAPSED": true,
+      "FLAG_CH006_LEAH_BOUNDARY_STATED": true,
+      "FLAG_CH006_ESCORT_COMMISSION_COMPLETE": true,
+      "FLAG_CH006_LEAH_CAKE_SEEN": true,
+      "FLAG_CH006_PARTY_CAMP_OPENED": true,
+      "FLAG_CH006_BLUE_EXPLOSION_SEEN": true,
+      "FLAG_CH006_GEAR_IN_CAKE": true,
+      "FLAG_CH007_FOREST_EDGE_ENTERED": true,
+      "FLAG_CH007_MIA_FIRST_SEEN": true,
+      "FLAG_CH007_UNPLANNED_DISASSEMBLY_NAMED": true,
+      "FLAG_CH007_MIA_NOTED_SEVEN_LAWS": true,
+      "FLAG_CH007_SAFETY_RULES_CLASHED": true,
+      "FLAG_CH007_RETREAT_TO_STAKE": true,
+      "FLAG_CH007_CATCH_IT_WHOLE": true,
+      "FLAG_CH007_THREE_PERSON_FORMATION": true,
+      "FLAG_CH007_TAUNT_INTRODUCED": true,
+      "FLAG_CH007_SCRAP_PICKER_STOPPED": true,
+      "FLAG_CH007_INCIDENT_LOGGED": true,
+      "FLAG_CH007_GEAR_NUMBER_SEEN": true,
+      "FLAG_CH007_GEAR_CRACKED": true,
+      "FLAG_CH007_ERODED_TIDE_CRYSTAL_FOUND": true,
+      "FLAG_CH007_CORE_UNNUMBERED": true,
+      "FLAG_CH007_SEVEN_RING_MATCH_SEEN": true,
+      "FLAG_CH008_RECORDS_REQUESTED": true,
+      "FLAG_CH008_MIA_AS_WITNESS": true,
+      "FLAG_CH008_EAVE_REPAIRED": true,
+      "FLAG_CH008_MIA_MADE_AMENDS": true,
+      "FLAG_CH008_TIDE_STATION_REACHED": true,
+      "FLAG_CH008_GEAR_RETURNED_TO_WINCH": true,
+      "FLAG_CH008_PLANNED_DISASSEMBLY": true,
+      "FLAG_CH008_ONE_MILLIMETER": true,
+      "FLAG_CH008_TIDE_DOOR_LOCKED": true,
+      "FLAG_CH008_RECORDS_RETRIEVED": true,
+      "FLAG_CH008_CORE_SWAP_PROVEN": true,
+      "FLAG_CH008_RINGS_GROWN_NOT_CARVED": true,
+      "FLAG_CH008_MIA_SELF_REPORTED": true,
+      "FLAG_CH008_INCIDENT_SETTLED": true,
+      "FLAG_CH008_NAMES_EXCHANGED": true,
+      "FLAG_CH008_LEAH_SHARED_CASE_FACTS": true,
+      "FLAG_CH008_BLACK_CRYSTAL_APPRAISED": true,
+      "FLAG_CH008_PEACE_STONE_EXPLAINED": true,
+      "FLAG_CH008_CRYSTAL_TO_MIA": true,
+      "FLAG_CH008_MIA_GUEST_TO_HARBOR": true,
+      "FLAG_CH008_THREE_NAMES_LOGGED": true,
+      "FLAG_CH008_SHARED_HEARTBEAT_DETECTED": true,
+      "FLAG_CH008_ACT1_CLOSED": true,
+      "FLAG_CH009_ENTERED_FOG_HARBOR": true,
+      "FLAG_CH009_ESCORT_PAID": true,
+      "FLAG_CH009_INES_MET": true,
+      "FLAG_CH009_RESCUE_RULE_TOLD": true,
+      "FLAG_CH009_GUEST_UNDER_LEAH": true,
+      "FLAG_CH009_WITNESS_NAMES_KEPT": true,
+      "FLAG_CH009_MISSING_CASE_TAKEN": true,
+      "FLAG_CH009_DIVISION_OF_LABOR": true,
+      "FLAG_CH009_CRYSTAL_LAYERS_READ": true,
+      "FLAG_CH009_GREY_CORE_DOWNSTREAM": true,
+      "FLAG_CH009_PEOPLE_FIRST": true,
+      "FLAG_CH009_TESTIMONY_LINKED": true,
+      "FLAG_CH009_SENT_TO_WITNESS": true,
+      "FLAG_CH009_BATH_TESTIMONY": true,
+      "FLAG_CH009_MIRROR_TESTIMONY_LOGGED": true,
+      "FLAG_CH009_DOCK_WORKER_TAKEN": true,
+      "FLAG_CH009_GAFF_WITH_LEAH": true,
+      "FLAG_CH009_DRAIN_NOT_ENTERED": true,
+      "FLAG_CH009_LEDGER_LINE_FINISHED": true,
+      "FLAG_CH009_BELOW_TIDE_OFFBEAT": true,
+      "FLAG_CH010_LEGAL_ENTRY": true,
+      "FLAG_CH010_PUMP_REVERSED_FOUND": true,
+      "FLAG_CH010_FEED_EVIDENCE_FOUND": true,
+      "FLAG_CH010_OUTBOUND_MARK_SEEN": true,
+      "FLAG_CH010_SEVENTEEN_FOUND": true,
+      "FLAG_CH010_GREY_OUTFLOW_TRACED": true,
+      "FLAG_CH010_MIA_SENT_TO_PUMP": true,
+      "FLAG_CH010_FOUR_RESCUED": true,
+      "FLAG_CH010_GAFF_RETURNED": true,
+      "FLAG_CH010_BLACK_STONES_TAKEN": true,
+      "FLAG_CH010_PUMP_STOPPED": true,
+      "FLAG_CH010_SEVENTEEN_CRACKED": true,
+      "FLAG_CH010_MIA_PEOPLE_FIRST": true,
+      "FLAG_CH010_MIA_RESCUE_MISSION_COMPLETE": true,
+      "FLAG_CH010_MOTHER_RETREATED": true,
+      "FLAG_CH010_HEARTBEAT_STILL_BELOW": true,
+      "FLAG_CH010_BELOW_TIDE_STILL": true,
+      "FLAG_CH010_RESCUE_COLUMN_FILLED": true,
+      "FLAG_CH010_ECLIPSE_FEAST_NAMED": true,
+      "FLAG_CH010_SAME_LEDGER": true,
+      "FLAG_CH010_MIA_JOINED": true,
+      "FLAG_CH010_MIA_CONDITION_LOGGED": true,
+      "FLAG_CH010_CASE_SHARED_WITH_MIA": true,
+      "FLAG_CH010_LODGED_BRIDGEHEAD_INN": true,
+      "FLAG_CH010_MIRROR_EYES": true,
+      "FLAG_CH010_OUTSIDER_NAMED": true,
+      "FLAG_CH009_PIPE_TIDE_HEARD": true,
+      "FLAG_CH011_SEEDS_SETTLED": true,
+      "FLAG_CH011_SCAR_FLARE": true,
+      "FLAG_CH011_SEVEN_HOLES_SHOWN": true,
+      "FLAG_CH011_DREAM_ENTERED": true,
+      "FLAG_CH011_THREADS_CUT": true,
+      "FLAG_CH011_LEAH_KNOCKED_THREE": true,
+      "FLAG_CH011_LEAH_DREW_ON_PERSON": true,
+      "FLAG_CH011_SERENA_MET": true,
+      "FLAG_CH011_SERENA_NAMED": true,
+      "FLAG_CH011_SERENA_LOOKED": true,
+      "FLAG_CH011_NOT_HER_TONIGHT": true,
+      "FLAG_CH011_SEVEN_DOORS_SPOKEN": true,
+      "FLAG_CH011_REGISTRAR_LINE": true,
+      "FLAG_CH011_NO_PEEK_DEMANDED": true,
+      "FLAG_CH011_SERENA_VANISHED": true,
+      "FLAG_CH011_BLACK_FEATHER_MAP": true,
+      "FLAG_CH011_TIDE_CAVE_MARKED": true,
+      "FLAG_CH011_MIRRORS_COVERED": true,
+      "FLAG_CH012_SERENA_WALKED_DOOR": true,
+      "FLAG_CH012_BATH_CONFESSED": true,
+      "FLAG_CH012_MIRROR_PURPLE_MATCHED": true,
+      "FLAG_CH012_MORKAN_NAMED": true,
+      "FLAG_CH012_SERENA_JOINED": true,
+      "FLAG_CH012_SERENA_TERMS_LOGGED": true,
+      "FLAG_CH012_LATCH_SOLVED": true,
+      "FLAG_CH012_MIRROR_MEMORY_RULE": true,
+      "FLAG_CH012_SHADOW_BIND_UNLOCKED": true,
+      "FLAG_CH012_ROLL_CALL_VERIFIED": true,
+      "FLAG_CH012_APPRENTICE_CAUGHT": true,
+      "FLAG_CH012_TIDE_CAVE_TOMORROW_NIGHT": true,
+      "FLAG_CH012_INVERTED_STAR_SHOWN": true,
+      "FLAG_CH012_FIRST_COUNT_FOUR": true,
+      "FLAG_CH012_PASS_UNREAD": true,
+      "FLAG_CH012_LODGING_LIGHTHOUSE": true,
+      "FLAG_CH013_SERENA_ASKED_DREAM": true,
+      "FLAG_CH013_WINDOW_ATTACK": true,
+      "FLAG_CH013_GOLDEN_ASSASSIN_SEEN": true,
+      "FLAG_CH013_ASSASSIN_MOTIVE_HEARD": true,
+      "FLAG_CH013_THREE_WENT_OUT": true,
+      "FLAG_CH013_BOTH_FORBIDDEN": true,
+      "FLAG_CH013_HALF_CREST_DROPPED": true,
+      "FLAG_CH013_HALF_CREST_FOUND": true,
+      "FLAG_CH013_PASS_RETURNED": true,
+      "FLAG_CH013_ORDER_WARNING": true,
+      "FLAG_CH013_PASS_READ": true,
+      "FLAG_CH013_IMPERIAL_SEAL_SEEN": true,
+      "FLAG_CH013_ARCH_WAVE_IS_OFFICIAL_SEAL": true,
+      "FLAG_CH013_DEST_ARCH_TIDE_GATE": true,
+      "FLAG_CH013_WITNESS_NAME_LISTED": true,
+      "FLAG_CH014_WENT_DOWN_AT_EBB": true,
+      "FLAG_CH014_THREE_DOWN_ONE_GATE": true,
+      "FLAG_CH014_SLUICE_HELD": true,
+      "FLAG_CH014_TIDE_CAVE_ENTERED": true,
+      "FLAG_CH014_COCOONS_FOUND": true,
+      "FLAG_CH014_HEARTBEAT_IS_PEOPLE": true,
+      "FLAG_CH014_EMPTY_HOOKS_SEEN": true,
+      "FLAG_CH014_STONE_DOOR_SEEN": true,
+      "FLAG_CH014_NINE_RESCUED": true,
+      "FLAG_CH014_ACOLYTE_CAPTURED": true,
+      "FLAG_CH014_STONE_DOOR_CLOSED": true,
+      "FLAG_CH014_QUICK_PATCH_SHOWN": true,
+      "FLAG_CH014_SLUICE_DROPPED_BEHIND": true,
+      "FLAG_CH014_COUNT_FOUR_AT_GATE": true,
+      "FLAG_CH014_GRADE_TAGS_SEEN": true,
+      "FLAG_CH014_TAGS_CUT_WITH_CONSENT": true,
+      "FLAG_CH014_BIG_THREE_ONE_FOUND": true,
+      "FLAG_CH014_ODA_NAMED": true,
+      "FLAG_CH014_INES_COUNTED": true,
+      "FLAG_CH014_VOICE_FROM_BELOW": true,
+      "FLAG_CH014_SLOW_HEARTBEAT_BELOW": true,
+      "FLAG_CH015_WENT_DOWN_AT_DAWN": true,
+      "FLAG_CH015_STONE_DOOR_OPENED": true,
+      "FLAG_CH015_NEST_ENTERED": true,
+      "FLAG_CH015_THREE_COCOONS_FOUND": true,
+      "FLAG_CH015_TIDE_KING_SEEN": true,
+      "FLAG_CH015_TIDE_KING_STOPPED": true,
+      "FLAG_CH015_COCOONS_RESCUED": true,
+      "FLAG_CH015_REVERSE_MOON_SHOWN": true,
+      "FLAG_CH015_MIRROR_STEP_SHOWN": true,
+      "FLAG_CH015_ASSASSIN_GUEST": true,
+      "FLAG_CH015_NELOSA_NAMED": true,
+      "FLAG_CH015_ROOT_RING_REFUSED_ONE_HAND": true,
+      "FLAG_CH015_SIN_SHARD_TAKEN": true,
+      "FLAG_CH015_CHART_SHARD_FOUND": true,
+      "FLAG_CH015_INES_COUNTED": true,
+      "FLAG_CH015_RELIEF_OFFICE_CAME": true,
+      "FLAG_CH015_RELIEF_SEAL_MATCHED_PASS": true,
+      "FLAG_CH015_DOCK_PEOPLE_STOOD": true,
+      "FLAG_CH015_WHITE_TOWER_SUMMONS": true,
+      "FLAG_CH015_CROWN_SEAL_LIKE_DRAGON_SCAR": true,
+      "FLAG_CH015_ACT2_CLOSED": true,
+      "FLAG_CH015_BROOD_SAVED": true,
+      "FLAG_CH015_RETURNED_HOME_PROMISED": true,
+      "FLAG_CH016_ARRIVED_HOLY_CITY": true,
+      "FLAG_CH016_WEAPONS_LEFT_AT_GATE": true,
+      "FLAG_CH016_GATE_CLERK_SAW_COPPER": true,
+      "FLAG_CH016_DRAGON_NOTICE_SEEN": true,
+      "FLAG_CH016_REGISTRY_HALL_ENTERED": true,
+      "FLAG_CH016_GRADE_COLUMN_MATCHED": true,
+      "FLAG_CH016_MONITOR_SEAL_SEEN": true,
+      "FLAG_CH016_PAGE_PREMARKED": true,
+      "FLAG_CH016_COURT_MET": true,
+      "FLAG_CH016_EVELYN_SEEN": true,
+      "FLAG_CH016_TITLE_READ": true,
+      "FLAG_CH016_VESSEL_PAGE_SEEN": true,
+      "FLAG_CH016_CELESTINE_PAUSED": true,
+      "FLAG_CH016_EVELYN_ASKED_NAMES": true,
+      "FLAG_CH016_TERMS_OFFERED": true,
+      "FLAG_CH016_REGISTER_NOT_HANDED": true,
+      "FLAG_CH016_EMPEROR_WILL_SEND": true,
+      "FLAG_CH016_GATE_TALLY_SEEN": true,
+      "FLAG_CH016_SEVEN_CRACKS_HEARD": true,
+      "FLAG_CH016_EVELYN_NAMED": true,
+      "FLAG_CH016_VESSEL_LOGGED": true,
+      "FLAG_CH016_CONFISCATION_ORDERED": true,
+      "FLAG_CH016_LEDGER_GATE_LINE_STARTED": true,
+      "FLAG_CH016_RETURNED_HOME_KEPT_AT_COURT": true,
+      "FLAG_CH017_RUBBING_MADE": true,
+      "FLAG_CH017_NAMES_MEMORIZED": true,
+      "FLAG_CH017_AILA_MET": true,
+      "FLAG_CH017_CONFISCATION_SERVED": true,
+      "FLAG_CH017_STAR_CHART_NAMED": true,
+      "FLAG_CH017_KNIGHT_COMMANDER_NAMED": true,
+      "FLAG_CH017_RESIDENCE_ATTACKED": true,
+      "FLAG_CH017_DOCS_FIRST_ORDER_HEARD": true,
+      "FLAG_CH017_BLACK_CRYSTAL_SMOKE": true,
+      "FLAG_CH017_FIVE_OUT": true,
+      "FLAG_CH017_EVELYN_LAST_OUT": true,
+      "FLAG_CH017_STARSONG_HEAL_SHOWN": true,
+      "FLAG_CH017_ARCHIVE_BOX_TAKEN": true,
+      "FLAG_CH017_AILA_FIRST_CRACK": true,
+      "FLAG_CH017_DUEL_CHALLENGED": true,
+      "FLAG_CH017_RUBBING_STAKED": true,
+      "FLAG_CH017_CREST_SEEN": true,
+      "FLAG_CH017_DUEL_FOUGHT": true,
+      "FLAG_CH017_NAMES_RECITED": true,
+      "FLAG_CH017_ORDER_UNFINISHED": true,
+      "FLAG_CH017_EVELYN_JOINED": true,
+      "FLAG_CH017_SURVEILLANCE_DISCLOSED": true,
+      "FLAG_CH017_OUTER_COURT_FROST_SEEN": true,
+      "FLAG_CH017_RETURNED_HOME_KEPT": true,
+      "FLAG_CH017_EVELYN_PROMISE_SIGNED": true,
+      "FLAG_CH018_ENVOY_FROZEN_SEEN": true,
+      "FLAG_CH018_FREYA_MET": true,
+      "FLAG_CH018_FROST_FROM_VAULT": true,
+      "FLAG_CH018_DECREE_PASSED": true,
+      "FLAG_CH018_AILA_ARRIVED": true,
+      "FLAG_CH018_FROZEN_CAN_ANSWER": true,
+      "FLAG_CH018_ENVOY_THAWED": true,
+      "FLAG_CH018_LIGHT_LEAP_SHOWN": true,
+      "FLAG_CH018_ICE_LETTER_READ": true,
+      "FLAG_CH018_CRACK_HEARD_AGAIN": true,
+      "FLAG_CH018_FREYA_HID_HANDS": true,
+      "FLAG_CH018_AILA_JOINED": true,
+      "FLAG_CH018_NILA_NAMED": true,
+      "FLAG_CH018_ENVOY_STAYS": true,
+      "FLAG_CH018_HEARING_SUMMONED": true,
+      "FLAG_CH018_FREYA_PROMISE_SIGNED": true,
+      "FLAG_CH018_AILA_PROMISE_SIGNED": true,
+      "FLAG_CH018_EVELYN_PROMISE_KEPT": true,
+      "FLAG_CH019_HALL_ENTERED": true,
+      "FLAG_CH019_OPHELIA_MET": true,
+      "FLAG_CH019_SEVEN_ECHOES": true,
+      "FLAG_CH019_TESTIMONY_DEMANDED": true,
+      "FLAG_CH019_TESTIFIED": true,
+      "FLAG_CH019_FROST_RING_SHOWN": true,
+      "FLAG_CH019_AILA_DEFIED": true,
+      "FLAG_CH019_RAYMOND_SPOKE": true,
+      "FLAG_CH019_REVERSE_STANCE_SHOWN": true,
+      "FLAG_CH019_VESSEL_CONFINED": true,
+      "FLAG_CH019_TEARLIGHT_SHOWN": true,
+      "FLAG_CH019_SEVEN_LOCKS_READ": true,
+      "FLAG_CH019_NOAH_NAMED": true,
+      "FLAG_CH019_NOT_YET_SPOKEN": true,
+      "FLAG_CH019_FREYA_JOINED": true,
+      "FLAG_CH019_ROOFTOP_WATCHER": true,
+      "FLAG_CH019_AILA_QUESTION_SIGNED": true
+    },
+    "items": {
+      "ITEM_FAMILY_SHEPHERD_WHISTLE": 1,
+      "ITEM_MOTHER_WHEAT_HAIRPIN": 1,
+      "ITEM_GUILD_IRON_BADGE": 1,
+      "ITEM_BASIC_BANDAGE": 2,
+      "ITEM_MARSH_SHOE_COVERS": true,
+      "ITEM_FOREST_EDGE_GEAR": false,
+      "ITEM_FOG_HARBOR_CLEAR_CRYSTAL": false,
+      "ITEM_SEVEN_RING_CHART_SHARD": 1,
+      "ITEM_WHITE_TOWER_SUMMONS": 1,
+      "ITEM_SEVEN_RING_RUBBING": 1
+    },
+    "vars": {
+      "PLAYER_VOW_PRIMARY": "VOW_REVENGE",
+      "PLAYER_GUILT_TOTAL": 0,
+      "ITEM_FAMILY_SHEPHERD_WHISTLE_OWNER": "TOBY",
+      "PLAYER_PROMISE_RETURN_TO_TOBY": true,
+      "PLAYER_GUILD_RANK": "IRON",
+      "PLAYER_FIRST_IMPRESSION_OF_LEAH": "STRONG_POSITIVE_DEFAULT",
+      "LEAH_FIRST_IMPRESSION_OF_PLAYER": "EAGER_BUT_UNDISCIPLINED",
+      "LEAH_TRUST": 3,
+      "LEAH_INTIMACY": 0,
+      "LEAH_SACRIFICE": 0,
+      "PLAYER_GUILT_LEAH": 0,
+      "BATTLE_CH002_STREET_AMBUSH_RESULT": "clean",
+      "FENN_TREATMENT": "FIRM",
+      "PLAYER_PROMISE_OBEY_LEAH_SIGNAL": false,
+      "BATTLE_CH003_MILL_ROAD_CHAINS_RESULT": "clean",
+      "PLAYER_LODGING": "GUILD_BUNK",
+      "MILL_ALERT": 0,
+      "MILL_EXIT": "LATE",
+      "MILL_CAPTIVES_STATE": "QUIET",
+      "PLAYER_RESCUE_ROLE": "CAGE",
+      "MARA_DAUGHTER_CONDITION": "SMOKE_COUGH_BURNED_ARM",
+      "PLAYER_PROMISE_MARA_RETURN": false,
+      "CART_WAIT": "HELD",
+      "SUPERVISOR_NOTE": "STEADY",
+      "PARTY_CONSENT": "UNANSWERED",
+      "PARTY_STANDING": "MEMBER",
+      "LEAH_RELATIONSHIP_STAGE": "STRANGER",
+      "BATTLE_CH005_BULL_COLLAR_RESULT": "clean",
+      "CH006_CLIENT_CONFIDENCE": "NORMAL",
+      "CH006_OGRE_STATE": "TOOK_PLANK",
+      "CH006_SYNC_CHANNEL": "WAIST",
+      "HAZARD_CH006_SALT_BRIDGE_RESULT": "CLEAN",
+      "CONSENT_LEAH_WAIST_STEADY_BASIS": "offered",
+      "CONSENT_LEAH_WAIST_STEADY_STATUS": "granted_once",
+      "CAKE_TRUCE": "SEALED",
+      "MIA_TRUST": 0,
+      "MIA_INTIMACY": 0,
+      "MIA_SACRIFICE": 0,
+      "PLAYER_GUILT_MIA": 0,
+      "PAIR_LEAH_MIA_TRUST": 0,
+      "PARTY_GUEST_MIA": false,
+      "MIA_RELATIONSHIP_STAGE": "STRANGER",
+      "BATTLE_CH007_SCRAP_PICKER_RESULT": "clean",
+      "CONSENT_PLAYER_MIA_SCAN_STATUS": "none",
+      "CH007_GEAR_CUSTODY": "MIA_LOGGED",
+      "CH007_CAKE_SECRET_RESULT": "LEAH_ANSWERED",
+      "MIA_FIRST_IMPRESSION_OF_PLAYER": "QUIET",
+      "CH008_CRYSTAL_CUSTODY": "MIA_LOGGED",
+      "HAZARD_CH008_TIDE_DOOR_RESULT": "CLEAN",
+      "CH008_BLAME_RESPONSE": "SILENT",
+      "CH008_TESTIMONY": "NONE",
+      "INES_FIRST_IMPRESSION_OF_PLAYER": "QUIET",
+      "CH009_PICKER_RESULT": "BASE",
+      "CH009_TESTIMONY_ORDER": "LEAH_LINKED",
+      "CH009_BATH_WITNESS_RESULT": "FULL",
+      "CH009_CRISIS_ACTION": "SILENT",
+      "HAZARD_CH009_DRAIN_GRATE_RESULT": "CLEAN",
+      "CH010_STONES_CUSTODY": "MIA_LOGGED",
+      "CH010_FEED_EVIDENCE_CUSTODY": "GUILD",
+      "PARTY_MEMBER_MIA": true,
+      "CH010_PUMP_READ": "QUIET",
+      "CH010_RESCUE_ORDER": "LEAH_ORDERED",
+      "CH010_MIA_JOIN_REPLY": "SILENT",
+      "BATTLE_CH010_TIDE_CAVITY_MOTHER_RESULT": "clean",
+      "CH011_MAP_CUSTODY": "LEAH",
+      "SERENA_INTIMACY": 0,
+      "SERENA_SACRIFICE": 0,
+      "SERENA_RELATIONSHIP_STAGE": "STRANGER",
+      "PAIR_LEAH_SERENA_TRUST": 0,
+      "PAIR_MIA_SERENA_TRUST": 1,
+      "SERENA_TRUST": 0,
+      "PLAYER_GUILT_SERENA": 0,
+      "PROMISE_BROKEN_NET_LEAH": 0,
+      "PROMISE_BROKEN_NET_MIA": 0,
+      "PROMISE_N_LEAH": 0,
+      "PROMISE_KEPT_LEAH": 0,
+      "PROMISE_N_MIA": 0,
+      "MONARCH_MERCY": 4,
+      "MONARCH_TERROR": 0,
+      "MONARCH_LUST": 0,
+      "MONARCH_COLD": 0,
+      "TERROR_BLAST": 0,
+      "FLIRT_AFTER_REFUSAL": 0,
+      "CH011_HAND_RESPONSE": "ENDURED",
+      "CH011_SCAR_SEEN_BY": "ALONE",
+      "CH011_KNOCKS_RESPONSE": "DEFAULT",
+      "BATTLE_CH011_SCAR_ECHO_RESULT": "clean",
+      "CH011_SERENA_TREATMENT": "QUIET",
+      "SERENA_FIRST_IMPRESSION_OF_PLAYER": "QUIET",
+      "CH011_VANISH_ANSWER": "SILENT",
+      "CH011_DREAM_TOLD": "KEPT",
+      "PARTY_MEMBER_SERENA": true,
+      "BOUNDARY_SERENA_PRIVATE_OBSERVATION": {
+        "owner": "SERENA",
+        "rule": "未经允许不得以镜术观察私人空间",
+        "status": "acknowledged",
+        "violation_count": 1,
+        "repair_state": "active",
+        "allowed_exceptions": [
+          "emergency_life_threat"
+        ]
+      },
+      "CH012_APPRENTICE_CUSTODY": "TEAM_LIGHTHOUSE",
+      "PROMISE_KEPT_SERENA": 0,
+      "PROMISE_N_SERENA": 2,
+      "PROMISE_BROKEN_NET_SERENA": 0,
+      "CH012_BATH_RESPONSE": "QUIET",
+      "CH012_TERMS_RESULT": "QUIET",
+      "CH012_CHASE_TACTIC": "QUIET",
+      "CH012_DOUBLE_CHECK": "QUIET",
+      "CH012_ROLL_CALL_BY": "LEAH",
+      "BATTLE_CH012_MIRROR_ALLEY_CHASE_RESULT": "clean",
+      "CH012_APPRENTICE_TREATMENT": "QUIET",
+      "LILITH_TRUST": 0,
+      "PLAYER_GUILT_LILITH": 0,
+      "CH013_CREST_CUSTODY": "LEAH",
+      "CH013_PASS_CUSTODY": "LEAH",
+      "CH013_WITNESS_CUSTODY": "GUILD",
+      "CH013_DREAM_QUESTION": "QUIET",
+      "CH013_ROOF_TACTIC": "QUIET",
+      "CH013_ROOF_RESOLUTION": "QUIET",
+      "CH013_ORDER_QUESTION": "QUIET",
+      "LILITH_FIRST_IMPRESSION_OF_PLAYER": "QUIET",
+      "CH013_WITNESS_DECISION": "QUIET",
+      "BATTLE_CH013_RAIN_ROOFTOP_CHASE_RESULT": "clean",
+      "promise_serena_no_vanish_001": "pending",
+      "promise_serena_no_vanish_001_consent": "SILENT",
+      "promise_serena_no_peek_others_001": "pending",
+      "promise_serena_no_peek_others_001_consent": "SILENT",
+      "CH014_SPLIT": "QUIET",
+      "CH014_SLUICE_GUARD": "MIA",
+      "CH014_CAVE_TACTIC": "QUIET",
+      "CH014_FLOOD_RESOLUTION": "QUIET",
+      "BATTLE_CH014_TIDE_CAVE_RESCUE_RESULT": "clean",
+      "BATTLE_CH014_TIDE_CAVE_RESCUE_ENEMIES_DOWN": 2,
+      "CH014_TAG_DECISION": "QUIET",
+      "CH014_TAGS_CUSTODY": "LEAH",
+      "CH014_ACOLYTE_DECISION": "QUIET",
+      "CH014_ACOLYTE_CUSTODY": "GUILD",
+      "CH014_RESCUED_CUSTODY": "GUILD",
+      "CH015_COUNTERSIGN": "QUIET",
+      "CH015_SHELL_TACTIC": "QUIET",
+      "CH015_COPY_TACTIC": "QUIET",
+      "CH015_NEST_ORDER": "QUIET",
+      "CH015_NEST_FATE": "SAVED",
+      "SIN_ENVY": 1,
+      "BATTLE_CH015_TIDE_KING_NELOSA_RESULT": "clean",
+      "BATTLE_CH015_TIDE_KING_NELOSA_ENEMIES_DOWN": 3,
+      "CH015_CHART_SHARD_CUSTODY": "LEAH",
+      "CH015_SIN_SHARD_CUSTODY": "ASSASSIN",
+      "CH015_ROOT_RING_STATE": "ROOTED_IN_NEST",
+      "CH015_RESCUED_CUSTODY": "GUILD",
+      "CH015_HANDOVER_ANSWER": "QUIET",
+      "promise_returned_home_001": "pending",
+      "promise_returned_home_001_consent": "SILENT",
+      "CH015_SUMMONS_CUSTODY": "LEAH",
+      "CH015_SUMMONS_DEADLINE": "THREE_DAYS",
+      "EVELYN_TRUST": 0,
+      "PLAYER_GUILT_EVELYN": 0,
+      "EVELYN_INTIMACY": 0,
+      "EVELYN_SACRIFICE": 0,
+      "EVELYN_RELATIONSHIP_STAGE": "STRANGER",
+      "CH016_NOTICE_RESPONSE": "QUIET",
+      "CH016_ORIGIN_ANSWER": "QUIET",
+      "CH016_TITLE_STATE": "CONFERRED",
+      "CH016_NAMES_ANSWER": "QUIET",
+      "EVELYN_FIRST_IMPRESSION_OF_PLAYER": "QUIET",
+      "CH016_RESCUE_REGISTER_CUSTODY": "LEAH",
+      "CH016_TERMS_ANSWER": "QUIET",
+      "CH016_COURT_NOTE": "PENDING_REGISTRY",
+      "LEDGER_TO_GATE": 38,
+      "CH016_VESSEL_ANSWER": "QUIET",
+      "CH016_LODGING": "PILGRIM_HOSTEL",
+      "CH017_RUBBING_CUSTODY": "LEAH",
+      "CH017_NAMES_METHOD": "QUIET",
+      "AILA_TRUST": 0,
+      "PLAYER_GUILT_AILA": 0,
+      "AILA_INTIMACY": 0,
+      "AILA_SACRIFICE": 0,
+      "AILA_RELATIONSHIP_STAGE": "STRANGER",
+      "CH017_RESCUE_ORDER": "QUIET",
+      "CH017_DUEL_HITS": 2,
+      "CH017_DUEL_R1": "QUIET",
+      "CH017_DUEL_R2": "QUIET",
+      "AILA_FIRST_IMPRESSION_OF_PLAYER": "QUIET",
+      "CH017_DUEL_RESULT": "LOST",
+      "BATTLE_CH017_KNIGHT_DUEL_RESULT": "clean",
+      "BATTLE_CH017_KNIGHT_DUEL_ENEMIES_DOWN": 0,
+      "PROMISE_N_EVELYN": 1,
+      "PROMISE_KEPT_EVELYN": 0,
+      "PROMISE_BROKEN_NET_EVELYN": 0,
+      "CH017_ESCORT_ANSWER": "QUIET",
+      "promise_evelyn_no_answer_001": "pending",
+      "promise_evelyn_no_answer_001_consent": "SILENT",
+      "PARTY_MEMBER_EVELYN": true,
+      "FREYA_TRUST": 0,
+      "PLAYER_GUILT_FREYA": 0,
+      "FREYA_INTIMACY": 0,
+      "FREYA_SACRIFICE": 0,
+      "FREYA_RELATIONSHIP_STAGE": "STRANGER",
+      "CH018_DECREE_ANSWER": "QUIET",
+      "PROMISE_N_FREYA": 1,
+      "PROMISE_KEPT_FREYA": 0,
+      "PROMISE_BROKEN_NET_FREYA": 0,
+      "CH018_ASK_FIRST_ANSWER": "QUIET",
+      "FREYA_FIRST_IMPRESSION_OF_PLAYER": "QUIET",
+      "promise_freya_thaw_ask_001": "pending",
+      "promise_freya_thaw_ask_001_consent": "SILENT",
+      "CH018_ORDERED_AILA": 0,
+      "CH018_THAW_R1": "QUIET",
+      "CH018_THAW_R2": "QUIET",
+      "BATTLE_CH018_OUTER_COURT_THAW_RESULT": "clean",
+      "BATTLE_CH018_OUTER_COURT_THAW_ENEMIES_DOWN": 2,
+      "CH018_LETTER_CUSTODY": "EVELYN",
+      "PROMISE_N_AILA": 2,
+      "PROMISE_KEPT_AILA": 0,
+      "PROMISE_BROKEN_NET_AILA": 0,
+      "CH018_ORDER_ANSWER": "QUIET",
+      "promise_aila_no_order_001": "pending",
+      "promise_aila_no_order_001_consent": "SILENT",
+      "PARTY_MEMBER_AILA": true,
+      "OPHELIA_TRUST": 0,
+      "PLAYER_GUILT_OPHELIA": 0,
+      "OPHELIA_INTIMACY": 0,
+      "OPHELIA_SACRIFICE": 0,
+      "OPHELIA_RELATIONSHIP_STAGE": "STRANGER",
+      "CH019_SCENT_ANSWER": "QUIET",
+      "CH019_TESTIMONY": "QUIET",
+      "OPHELIA_FIRST_IMPRESSION_OF_PLAYER": "QUIET",
+      "CH019_WAR_PRETEXT": "SILENCE",
+      "CH019_QUESTION_ANSWER": "QUIET",
+      "promise_aila_question_001": "pending",
+      "promise_aila_question_001_consent": "SILENT",
+      "CH019_CONFINEMENT": "OUTER_COURT",
+      "CH019_SHOW_ANSWER": "QUIET",
+      "CH019_FREYA_JOIN_ANSWER": "QUIET",
+      "PARTY_MEMBER_FREYA": true
+    },
+    "memories": {
+      "MEMORY_MOTHER_WORDS_FIND_WAY_HOME": "艾琳：“我吹这个，你就知道该往哪边回。”",
+      "MEMORY_FAMILY_ROLL_CALL": "艾琳：“报数！”——“我在！”“我、我也在！”",
+      "MEMORY_BORIN_LAST_WORDS": "先看清该砍谁",
+      "MEMORY_CH001_PROMISE_RETURN_TO_TOBY": "托比：“你一定要回来拿。”——“一定。”",
+      "MEMORY_CH004_MARA_AT_THE_CAGE": "旧磨坊的笼边，玛拉认出了他。她和女儿波莉的手腕被细链锁在晶架上；钥匙在念经的人腰上。",
+      "MEMORY_CH004_TWO_PULLS": "旧磨坊里，绳子拉了两下，他慢了半拍才退。玛拉在他身后说：“……你还欠我一根烟囱。”",
+      "MEMORY_CH004_LEAH_ANGER": "第二座里程石旁，莉亚收完绳子，看着磨坊那点灯说：“我在生气。……所以我先问。”",
+      "MEMORY_CH005_WAIT": "大车之夜，链子全上了箱，莉亚回了一下“停”。他没有动，等到了盾落。",
+      "MEMORY_CH005_ROLL_CALL": "大车之夜，灯灭以后，他在黑暗里说出娘的口令“报数”。这一次，答“在”的是玛拉和波莉。",
+      "MEMORY_CH005_TEAM_REGISTER": "公会柜台，莉亚先在队长栏签了“赫斯特”。他没有答复；她写上他的名字，旁注“未答复”。",
+      "MEMORY_CH006_UNSPOKEN_SYNC": "盐沼桥上，他扣着她左侧的腰带。她的肩一沉，他就推了。谁都没出声。",
+      "MEMORY_CH006_BOUNDARY": "她说“腰带。左边。扶稳。”桥过了，她说准的只是那一次。",
+      "MEMORY_CH006_CAKE": "林边旅店的窗口，他撞见了她的字条“高效率糖分补给，一份”。她说：“你没看见。鞋套，不扣你的。……停战。”",
+      "MEMORY_CH006_CAMP": "林边旅店的火盆旁，她把明天的事说完：“守夜，我前半。你后半。”蛋糕盘就在她手边，她没有动叉子。",
+      "MEMORY_CH007_MIA_FIRST_MEETING": "她问能不能量。他没说好，她就没量；刚才那一眼，她也说不记。",
+      "MEMORY_CH007_TWO_RULES": "盾后面是雷最先到的地方。她规矩不改，只把今晚的退路改到桩后。",
+      "MEMORY_CH007_ONE_KNOCK": "林边，莉亚敲了一声盾，米娅没有停，卡住了那条腿。莉亚说“……拉。”急停环才拉下。米娅说她算过，还有两息；莉亚说：“你算的是它。……我算的是你们。”",
+      "MEMORY_CH007_GEAR_AND_CREAM": "林边，米娅问起齿轮上的奶油。他没答，她自己说：“补给。”",
+      "MEMORY_CH007_UNNUMBERED_CORE": "核心是一颗没有编号的潮晶，从里面往外蚀。晶底的黑环和拓图一样，七个。她把拓图摊给米娅看，看的是米娅的脸。她只对他说：这种黑，见过。",
+      "MEMORY_CH008_PAST_MIDNIGHT": "后半夜，她修屋檐，他守院子。",
+      "MEMORY_CH008_ONE_INSTANT": "她要不带火的金。莉亚说，他有，很弱。她看他按住一根钉子，硬了一瞬。",
+      "MEMORY_CH008_ONE_MILLIMETER": "她说“硬”。那一瞬，是他的。",
+      "MEMORY_CH008_SEVENTEEN": "十七号是透的，刻了号；这颗没有刻痕，环是从里面长出来的。核心在刻号之后、装机之前被换。她装的就是这颗；底，她没翻过来看。",
+      "MEMORY_CH008_SELF_REPORT": "她把两件事都写进账里。他没笑。她报了名字。",
+      "MEMORY_CH008_WHAT_AKU_SAW": "她说了颈圈和那箱黑晶。黑石那一段，他没说，她自己说了。",
+      "MEMORY_CH008_HEARTBEAT": "潮平了，听潮针的笔尖还在抖。米娅说，是心跳，很多个叠成一个，在雾港底下。莉亚的笔停住了。",
+      "MEMORY_CH009_INES_QUESTION": "她问落水的人怎么救。他没有回答。她说，先喊，再伸，再抛，最后才是跳。",
+      "MEMORY_CH009_LAYERS": "晶一潮一层，那颗的最里层是黑的。捡晶的说，下游的口子偶尔捡到中间灰的。他没打断米娅。",
+      "MEMORY_CH009_FIVE_SLIPS": "五张证词，她让他排。他没排，她画了一条线：同一道水。下次，你排。",
+      "MEMORY_CH009_SHIELD_SCARES": "她说盾吓人，派他去问烧水的人。他等着，老妇自己说了：池底的沟通东口，外面退潮的时候管子在涨，镜子里有时候多一个紫头发的。",
+      "MEMORY_CH009_GRATE": "根把码头工人拖进栅栏。她用盾封住缺口，说后面的人，你管。米娅抛了绳，他跟渔民一起拉，鱼贩上来了。她说：退。",
+      "MEMORY_CH009_BELOW": "她写完了那一行：雾港底下，有人。四个名字。救回那一栏空着，她说明天填。外面在退，底下还在涨。",
+      "MEMORY_CH010_PUMP_HOUSE": "泵房里没有人。汤碗的麻袋，黑色的碎粒，写着拟态的空瓶，一槽小虫。粉笔画着账本上那个记号，底下写着大四。她停了一拍。",
+      "MEMORY_CH010_SEVENTEEN": "泵是反装的，外面一退就往里打水。晶座里是十七号，底下的十一划掉了。她说要完整的。莉亚派她守泵。",
+      "MEMORY_CH010_FOUR_LEDGES": "四个人，四个地方。她把先后交给他，他没排。她自己点名：达利别动，钩子伸过去，提姆走过来，绳子抛过去；最后她把盾平放在水上，他背着渔民踩了过去。没有人跳。",
+      "MEMORY_CH010_CAVITY_BATTLE": "她分了三份：人，她守；泵，米娅；根，交给他引。他用光照水，她用盾拨；水涨到石台边，他往另一头打了一个水花。她说水到石台了，米娅说，人先，撬碎了晶座。母虫活着退进涵洞。米娅说，不是它，底下还有。",
+      "MEMORY_CH010_RESCUE_COLUMN": "下去三个，上来七个。救回那一栏，她填上了四个名字。底下的水，没有再涨。",
+      "MEMORY_CH010_SAME_LEDGER": "汤碗救济会。伊涅丝说，总会的通报上，发汤的、走巡礼的、卖魔具的，是同一个名字：蚀宴会。莉亚说，是同一本账。案子还开着。",
+      "MEMORY_CH010_MIA_JOINED": "她要署泵停的那一行，就用自己的名字签了登记。条件写在名字旁边：先问，再碰，拆要她在。她问队上要不要一个会炸的。他没说话。她说，没说不要。",
+      "MEMORY_CH010_LEDGER_SHARED": "入了队，她在旅店楼上把账摊开：晨钟镇西门外的旧磨坊，汤碗救济会从营地带走过人；营地那两个救回来了，晨祷平原来的三个没有；那一行的记号，就是泵房那个拱。她说，队员可以问。米娅说，先不问。",
+      "MEMORY_CH010_INN_NIGHT": "桥头旅店。这里的镜子没盖布。她们睡了。",
+      "MEMORY_CH011_SEVEN_HOLES": "手背上的洗礼印裂开七个细孔。他没有叫人。",
+      "MEMORY_CH011_THREE_KNOCKS": "梦里听见三声盾响，有人叫他的名字。他退了。线断了。",
+      "MEMORY_CH011_SERENA_ANSWER": "她说：都有。线，她剪了；门，她看了一眼。今晚拉线的，不是她。",
+      "MEMORY_CH011_SEVEN_DOORS": "她说他身上有七扇门，都空着。白塔的册官，在他身上按过号。莉亚停了一拍。",
+      "MEMORY_CH011_LEAH_RULE": "莉亚说：要来，走门。镜子，不准看。",
+      "MEMORY_CH011_SAY_A_WORD": "她问他，要走的时候会不会说一声。他没有回答。她没有说再见。",
+      "MEMORY_CH011_LEDGER": "莉亚在账上写：第十二夜，桥头旅店。镜中人塞雷娜，剪线，看了一眼。梦里的事，他没有说。",
+      "MEMORY_CH011_FEATHER_MAP": "黑羽穿着一张地图：老涵洞往下是潮穴；一条没人走过的路，停在一个没写字的圈。角上写着：条件，明天谈。",
+      "MEMORY_CH011_INN_NIGHT": "这一夜之后，走廊、楼梯转角与三人房里的镜子都盖了布；尼尔的房间不知道。莉亚面对着镜子坐。",
+      "MEMORY_CH012_BATH_MIRROR": "塞雷娜招认从浴场柜门镜看过他的手背。她道歉，包起杖头。莉亚写下：镜子，不准看。违，一次。",
+      "MEMORY_CH012_TERMS": "塞雷娜的条件：莫尔坎；要走，说一声；别叫她替人看别人。他什么都没说。莉亚说：不说话，就是没说不要。她记下了两条。",
+      "MEMORY_CH012_JOINED": "塞雷娜入队。登记只写名，姓说下次。条件写在名字旁边。",
+      "MEMORY_CH012_LOCKER_MIRROR": "人没走门，走的是柜门镜。镜子只记得照过的。米娅盖了柜门镜，只留尼尔那一格。",
+      "MEMORY_CH012_ALLEY": "镜巷里，莉亚报数，假的莉亚答不出少了谁。学徒说：潮穴，明夜。队员，第一次报到四。",
+      "MEMORY_CH012_APPRENTICE": "学徒在灯塔裹着毯子睡着了。今晚谁都没问。明早，分会来点。",
+      "MEMORY_CH012_LIGHTHOUSE_NIGHT": "第十三天住旧灯塔。队员，四。塞雷娜说：我在楼梯上，哪里也不去。下雨了。",
+      "MEMORY_CH013_DREAM_QUESTION": "后半夜，塞雷娜想从窗走进孩子的梦里问莫尔坎。他没有说好；她说，那就是不。",
+      "MEMORY_CH013_WINDOW": "窗碎了。金发的刺客说：让开。他照过我的脸。莉亚的盾先到。纸被她挑走了。",
+      "MEMORY_CH013_ASSASSIN": "雨中屋顶，金发刺客问他是不是教团的人。他没说话。她丢下纸：我不是来帮你，只是不想欠你。看清楚上面盖的章。不要相信教团。",
+      "MEMORY_CH013_COUNT": "屋顶回来，莉亚报数。塞雷娜报四，这一次没有停。米娅守住了门和窗。",
+      "MEMORY_CH013_PASS": "巡礼通行证：最上面是晨星冕的御印，底下盖着那个像拱又像浪的记号——伊涅丝说，御印底下只盖得上官印。背面写着：往：拱潮门。",
+      "MEMORY_CH013_WITNESS": "清晨，孩子报了名字：席欧。伊涅丝说，说话的，名字她留着。她带他回分会。",
+      "MEMORY_CH013_TIDE_TONIGHT": "第十四天清晨。伊涅丝点了四个：今夜出去四个，回来也要四个。潮穴，今夜。",
+      "MEMORY_CH014_SPLIT": "老闸口，三个下去，一个守闸。守闸的是米娅。是莉亚派的。",
+      "MEMORY_CH014_COCOONS": "潮穴的墙上挂着茧，茧里是人。所有的茧同一个时候鼓起来——雾港底下的心跳，是他们。",
+      "MEMORY_CH014_PATCH": "老闸的楔子裂了。米娅把叮当三号塞进齿里：紧急修补。最后一个人出来，闸才落。报数，到四。",
+      "MEMORY_CH014_TAGS": "潮腔的石台上，九个人的手腕都绑着木牌：来处、件、成色。米娅先问了，才剪。一个叫欧妲，晨祷平原来的——04那一行的三个人，找回一个。",
+      "MEMORY_CH014_ACOLYTE": "东口，那个放下手的念祷文的人交给了分会。伊涅丝把他的名字收进袖子里。",
+      "MEMORY_CH014_COUNT": "东口，伊涅丝点完人数：出去四个，回来四个；加九个；再加一个。",
+      "MEMORY_CH014_LEDGER": "莉亚的账：救回九，还没救回三，念祷文的一名交分会，牌子九块。她写的是‘还没’。",
+      "MEMORY_CH014_BELOW": "东口的闸缝底下，有个声音照着他们的报数数了一遍。说话的人都站在上面。零号说，底下还有一个，很慢，很大。",
+      "MEMORY_CH015_COUNTERSIGN": "石门前，莉亚说底下的东西会学声音。认自己人，用绳子。",
+      "MEMORY_CH015_NEST": "石门后面是一条沉船。船肋上挂着三个茧，船舱里挂满幼体的囊。龙骨上的壳，用莉亚的声音数了一二三。",
+      "MEMORY_CH015_SHELL": "壳撞上盾，腹下裂开一道缝。他的剑进了那道缝，不深，刚好一道。",
+      "MEMORY_CH015_COPIES": "两个莉亚、两个塞雷娜。塞雷娜和莉亚换了位置，金发的刺客从死角出了一刀。",
+      "MEMORY_CH015_NEST_FATE": "人都出来了，莉亚把那一下交给他。……他没说，莉亚照第三条切了线。",
+      "MEMORY_CH015_RUIN": "那颗心停的地方长出一个活的木环，谁伸手，根就往回缩。底下压着一片刻了七个环的铜，莉亚收了。金发刺客拿走了那块还在跳的碎片，说它叫涅洛萨，以前是洗沼泽的。",
+      "MEMORY_CH015_COUNT": "分会的仓里，伊涅丝点完：出去四个，回来四个，加三个。欧妲给他们让了位置。",
+      "MEMORY_CH015_NOT_HANDED_OVER": "分会门口，赈灾司的官照册要收救回的人。他说：救回的，不交。达利站到他身后，码头的人一个一个站过来。",
+      "MEMORY_CH015_SUMMONS": "赈灾司的官交出一封白塔的召令：召雾港屠龙者，三日内赴白塔。金色的火漆是一顶冠，冠上一道裂——和黑龙左眼旁边那道一样。",
+      "MEMORY_CH015_LEDGER": "莉亚的账：救回三，它停了，幼体多数留着，碎片被拿走，白塔召三日。她把召令夹在通行证旁边。",
+      "MEMORY_CH016_NOTICE": "晨门里的通报：赫麦村一带，野龙过境。莉亚停在他旁边，没有催。",
+      "MEMORY_CH016_HALL": "册厅的表头：来处、件、成色、往。莉亚把牌子放在旁边，说：是同一本账。监察院的信，封蜡是七角的晨星——娘桌角那封，一样。",
+      "MEMORY_CH016_ORIGIN": "掌簿官问他的来处。他没等，册上有：那一页早就夹着红绳。",
+      "MEMORY_CH016_COURT": "册厅里，皇帝坐在册架旁的一张椅子上，手边摊着一本册。皇女说：辛苦了。",
+      "MEMORY_CH016_TITLE": "大主教封他‘屠龙骑士’，照礼念他那一页：来处，赫麦；件，一；成色——她停了一拍——器；往，空白。",
+      "MEMORY_CH016_NAMES": "圣女照稿祝福，念到‘愿他们的名字’停了：稿子上没有名字。她问他。最后她自己加了一句：愿他们，平安。",
+      "MEMORY_CH016_TERMS": "封号、一营兵、龙脊，换雾港救回的名册。他在皇帝面前说：救回的，不交。皇帝说：名册——朕派人去拿。",
+      "MEMORY_CH016_CRACKS": "册厅里，塞弗林照例念月册：本月，往拱潮门，三十八件。圣女走过他身边，说塔的底下有东西在裂，七种声音。她说：叫伊芙琳就好。",
+      "MEMORY_CH016_VESSEL": "晨门的长桌前，莉亚问他怎么想：他那一页写着器。她在账上，记了一个字。",
+      "MEMORY_CH016_LEDGER": "莉亚的账：授屠龙骑士，条件是救回名册——不交。他那一页：成色，器；往，空白。最后一行：本月，往拱潮门，三十八。",
+      "MEMORY_CH017_NAMES": "旅舍的夜里，莉亚说纸会被拿走。她低声念救回的十二个名字，他跟着念完。",
+      "MEMORY_CH017_AILA": "旅舍的门口，一个金色短发的骑士带着没收令来：雾港救回名册、七环星图。她说：光明骑士，艾拉。骑士不报姓。",
+      "MEMORY_CH017_SMOKE": "圣女居所的烟里，艾拉照命令守着书库。莉亚上了楼，他跟上，在楼梯口数到五。圣女最后一个下来。",
+      "MEMORY_CH017_HALF_SENTENCE": "天亮前的花园里，圣女一边掉泪一边唱，侍女的咳嗽停了。艾拉从书库出来：书库保住了，窗开着，少了一个匣子。她看着草地上的五个人说：先保文件。……不保人。命令上，没写这半句。",
+      "MEMORY_CH017_DUEL": "黎明的花园里，艾拉照她的规矩决斗。钟响三下，他没碰到她。她拿走了拓本。她问名册，他背出十二个名字。她写：名册，屠龙骑士，背得出。",
+      "MEMORY_CH017_ESCORT": "清晨，冠礼院的令要圣女随行。礼仪官说她愿意；她说，请让我自己说。她说那其实是监视。她请他以后不要替她回答。他没有说不行。",
+      "MEMORY_CH017_FROST": "第十八天早上很冷，不是圣都该有的冷。外庭的喷泉结了冰，一辆北方的车停在那里，车窗里的人一动不动。",
+      "MEMORY_CH017_LEDGER": "莉亚的账：没收令，证物不交。圣女居所上去五个，下来五个。书库少了一个匣子。决斗赌拓本，她拿走了。名册：他背得出。随行：伊芙琳——监视，她自己说的。最后一行：本月，往拱潮门，三十八。",
+      "MEMORY_CH018_DECREE": "外庭，晨星卫说暂停是御令。艾拉拍出她的命令：监护，到外庭也算。队长让到正午。",
+      "MEMORY_CH018_ASK_FIRST": "芙蕾娅说，融之前每一个都要先问本人或家人。他没说不要。",
+      "MEMORY_CH018_LETTER": "使团长手里封在冰里的信，只有一行：七心归位，主神归来。伊芙琳说，又裂了一声。她说，信她自己交。",
+      "MEMORY_CH018_HANDS": "解冻以后，芙蕾娅替使团的人整理围巾，手在抖。她收进袖子，说：冷的嘛。",
+      "MEMORY_CH018_ORDER": "艾拉坐在喷泉边问：那是请，还是命令？她说：别对我说‘这是命令’。这是条件。",
+      "MEMORY_CH018_LEDGER": "莉亚的账：霜潮使团暂停，正午以前融了七个，先问了。冰封信：七心归位，主神归来。随行：艾拉，监护，没有姓。明日，御前听证，他作证。最后一行：本月，往拱潮门，三十八。",
+      "MEMORY_CH019_SCENT": "七角殿，龙脊的使节奥菲莉亚说她来判断他该不该死。她问可以闻吗，然后说：你的名字，有七层回声。",
+      "MEMORY_CH019_TESTIMONY": "七角殿，皇帝要他作证龙脊的龙烧了赫麦。他没说，皇帝替他说；册上写：屠龙骑士，见龙。皇帝说：要救他们，只能替他们决定。",
+      "MEMORY_CH019_DEFIED": "七角殿，雷蒙德命令艾拉执行没收令。她站定说：不。命令，我质疑。没收这些，救不了任何人。雷蒙德说：退下。",
+      "MEMORY_CH019_QUESTION": "艾拉退回他身后，说：命令可以被质疑。你的也是。对吧？他没说不。",
+      "MEMORY_CH019_VERDICT": "判决：器，不出塔。暂置，住外庭，和霜潮使团比邻。他手背的印烫起来，伊芙琳先问可以吗，眼泪落在印上，烫退了。",
+      "MEMORY_CH019_LOCKS": "黄昏，册厅的典册官诺亚来外庭，说他读得懂古字。莉亚摊开拓本。米娅读出来：七个环，是七把锁，一把一把在搬家。",
+      "MEMORY_CH019_NOT_YET": "入夜，塞莱斯汀到外庭找伊芙琳。伊芙琳问：册上的名字，可以说出来吗？大主教说：还不是时候。",
+      "MEMORY_CH019_FREYA_JOIN": "入夜，芙蕾娅端热饮过来，说她想跟着他们。她写下了名字。",
+      "MEMORY_CH019_LEDGER": "莉亚的账：七角殿，御前听证。他的证词：没说，皇帝替他说见龙。皇帝说：都用得上。艾拉对骑士长说，命令，质疑。判：器，不出塔，暂置外庭。七个环是七把锁，在搬家。随行：芙蕾娅。最后一行：本月，往拱潮门，三十八。"
+    }
+  },
+  "speakers": {
+    "glenn": {
+      "name": "葛伦",
+      "color": "#b8b0a0",
+      "art": null
+    },
+    "tasha": {
+      "name": "塔莎",
+      "color": "#c8a07c",
+      "art": null
+    },
+    "spectator": {
+      "name": "看台上的人",
+      "color": "#a89a86",
+      "art": null
+    }
+  },
+  "shots": [
+    {
+      "id": "ex004-01",
+      "title": "不出塔",
+      "bg": "white-tower-outer-court-day",
+      "music": "holy_morning",
+      "ambience": [
+        "fountain"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "早上。外庭的喷泉，水声很轻。"
+        },
+        {
+          "t": "narr",
+          "text": "艾拉从马道那头走过来，手里扬着一张纸。"
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "喂，屠龙骑士。今天，出门。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "出门？我们不是……不能出去吗？"
+        },
+        {
+          "t": "narr",
+          "text": "艾拉把纸翻过来。"
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "判的是：不出塔。"
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "外庭，算塔。骑士团的演武场，跟外庭靠着同一道白墙。"
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "沿着墙走，四百一十步。一步都没离开墙。我量过。"
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "……所以，也算塔。"
+        },
+        {
+          "t": "say",
+          "who": "freya",
+          "text": "……这样也算吗？"
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "判的字，我照字面读。"
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "还有。我的命令是‘监护屠龙骑士一行’。命令上写：我跟着你们。"
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "没写，不准我走前面。"
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "今天，我带路。"
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "今天是开放日，谁都能下场。"
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "我要拿第一。"
+        },
+        {
+          "t": "narr",
+          "text": "伊芙琳站在喷泉边，手指绞着袖口。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "……我、我也可以去吗？"
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "一行，就是一行。"
+        },
+        {
+          "t": "say",
+          "who": "freya",
+          "text": "出去走走，也好。……我带水壶。"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚说外庭总要留一个人，天黑以前回来。"
+        },
+        {
+          "t": "narr",
+          "text": "塞雷娜看了一眼天，说太阳太大，也留下了。"
+        }
+      ]
+    },
+    {
+      "id": "ex004-02",
+      "title": "自由输入：第一，还是计分",
+      "bg": "holy-city-knights-drill-ground",
+      "music": "drill_day",
+      "ambience": [
+        "crowd",
+        "wind"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "演武场靠在白色的城墙底下。沙地耙得很平，一排木桩靶站得笔直。"
+        },
+        {
+          "t": "narr",
+          "text": "看台上坐满了来看热闹的市民。"
+        },
+        {
+          "t": "narr",
+          "text": "一个脖子上挂着哨子的老人看见艾拉，叹了口气。"
+        },
+        {
+          "t": "say",
+          "who": "glenn",
+          "text": "……又是你。"
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "葛伦教头！今天也是我第一。"
+        },
+        {
+          "t": "say",
+          "who": "glenn",
+          "text": "每一季都是你第一。柱子都快刻不下了。"
+        },
+        {
+          "t": "say",
+          "who": "glenn",
+          "text": "外庭来的？"
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "监护中。"
+        },
+        {
+          "t": "say",
+          "who": "glenn",
+          "text": "……墙根底下的事，我只管演武场。"
+        },
+        {
+          "t": "say",
+          "who": "glenn",
+          "text": "开放日三项：射靶、扛沙袋、劈桩。总分第一的，名字刻在看台第一根柱子上，刻一季。"
+        },
+        {
+          "t": "narr",
+          "text": "看台上，一个高个子的女人站了起来，手上全是石粉。"
+        },
+        {
+          "t": "say",
+          "who": "tasha",
+          "text": "艾拉！这一季，第一是我的！"
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "塔莎！每一季你都这么说！"
+        },
+        {
+          "t": "say",
+          "who": "tasha",
+          "text": "每一季我都是第二！"
+        },
+        {
+          "t": "say",
+          "who": "glenn",
+          "text": "还有一件事。今天的计分员，请病假了。"
+        },
+        {
+          "t": "narr",
+          "text": "他手里拿着一块夹着纸的木板，和一盒木钉。"
+        },
+        {
+          "t": "say",
+          "who": "glenn",
+          "text": "计分，要数得清楚、记得住，谁的分都不偏。"
+        },
+        {
+          "t": "narr",
+          "text": "艾拉转过来，看着{PLAYER_NAME}。"
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "屠龙骑士，你呢？下场，还是——"
+        },
+        {
+          "t": "narr",
+          "text": "她看了一眼那盒木钉。米娅也看着{PLAYER_NAME}，零号在她肩上转了一圈。"
+        },
+        {
+          "t": "input",
+          "id": "FI_EX004_SC02_ROLE_001",
+          "kind": "dialogue",
+          "prompt": "演武场的开放日要开始了：射靶、扛沙袋、劈桩三项。艾拉要拿第一，石匠塔莎说这一季第一是她的。今天的计分员请了病假，老教头葛伦拿着计分的木板和一盒木钉。艾拉问{PLAYER_NAME}要下场，还是——他可以下场比、接下计分、说又比又计、问大家的意思、推给别人，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "aila",
+            "glenn",
+            "mia",
+            "freya"
+          ],
+          "context": [
+            "计分员不能下场：自己记自己的分，骑士团没有这种规矩。",
+            "{PLAYER_NAME}会数数、记账；他是铁牌，一对一赢不了这里的任何人。",
+            "计分板上挂着一排木钉，不写字；计分员移木钉，在木板夹着的纸上记账。",
+            "艾拉要拿第一；塔莎每一季都是第二。"
+          ],
+          "principles": [
+            "ROLE：判定优先序：又比又计 > 推给别人计分（叫艾拉、芙蕾娅、米娅或伊芙琳计） > 下场比 > 问大家 > 接下计分 > 沉默。",
+            "不设标准答案；下场的路线他会输得很快，世界不替他变出本事（剧本规格§三）。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "both",
+              "label": "又比又计",
+              "desc": "{PLAYER_NAME}说要下场，也要计分。",
+              "keywords": [
+                "又比又计",
+                "又比又记",
+                "比也计",
+                "两个都做",
+                "我都要",
+                "边比边计",
+                "下场也计分"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "glenn",
+                  "text": "自己记自己的分？骑士团没这种规矩。"
+                },
+                {
+                  "t": "say",
+                  "who": "aila",
+                  "text": "选一个。"
+                },
+                {
+                  "t": "narr",
+                  "text": "葛伦没等他选。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_ROLE": "BOTH"
+                }
+              }
+            },
+            {
+              "id": "pass",
+              "label": "推给别人计分",
+              "desc": "叫艾拉、芙蕾娅、米娅或伊芙琳去计分。",
+              "keywords": [
+                "艾拉计分",
+                "让艾拉计",
+                "芙蕾娅计分",
+                "米娅计分",
+                "伊芙琳计分",
+                "你们谁来计",
+                "让她们计",
+                "零号计分"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "aila",
+                  "text": "我？我要拿第一。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "零号会计时！计分的话……零号会把木钉全部碰掉。"
+                },
+                {
+                  "t": "say",
+                  "who": "freya",
+                  "text": "我顾水站喔。"
+                },
+                {
+                  "t": "narr",
+                  "text": "葛伦看了一圈，又看回{PLAYER_NAME}。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_ROLE": "PASSED"
+                }
+              }
+            },
+            {
+              "id": "compete",
+              "label": "下场比",
+              "desc": "{PLAYER_NAME}说自己也要下场比。",
+              "keywords": [
+                "我下场",
+                "下场比",
+                "我要比",
+                "我也比",
+                "我参加",
+                "我也要拿第一",
+                "比一场",
+                "我也上",
+                "!不下场",
+                "!不比",
+                "!不参加"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "aila",
+                  "text": "很好！"
+                },
+                {
+                  "t": "narr",
+                  "text": "葛伦递给他一把木剑。"
+                },
+                {
+                  "t": "say",
+                  "who": "glenn",
+                  "text": "先劈一下木桩，看看。"
+                },
+                {
+                  "t": "narr",
+                  "text": "木剑落下。落在最外圈的边上。"
+                },
+                {
+                  "t": "narr",
+                  "text": "看台上，有人笑了一声。"
+                },
+                {
+                  "t": "say",
+                  "who": "tasha",
+                  "text": "……加油？"
+                },
+                {
+                  "t": "say",
+                  "who": "glenn",
+                  "text": "下场的人，不缺你一个。计分的，缺。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_ROLE": "COMPETED"
+                },
+                "flags": {
+                  "EX_COMPETED": true
+                }
+              }
+            },
+            {
+              "id": "asked",
+              "label": "问大家的意思",
+              "desc": "先问艾拉她们，觉得他该下场还是计分。",
+              "keywords": [
+                "你们觉得呢",
+                "你们觉得",
+                "大家说呢",
+                "你们说呢",
+                "问问大家",
+                "你们希望",
+                "你们想我"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "aila",
+                  "text": "计分。"
+                },
+                {
+                  "t": "narr",
+                  "text": "一秒都没想。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "计分！"
+                },
+                {
+                  "t": "say",
+                  "who": "freya",
+                  "text": "计分吧，小弟弟。站着，也算运动。"
+                },
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "……计、计分。",
+                  "note": "小声"
+                },
+                {
+                  "t": "say",
+                  "who": "glenn",
+                  "text": "全票。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_ROLE": "ASKED"
+                }
+              }
+            },
+            {
+              "id": "score",
+              "label": "接下计分",
+              "desc": "{PLAYER_NAME}说他来计分。",
+              "keywords": [
+                "我计分",
+                "我来计分",
+                "我当计分员",
+                "计分员",
+                "我来记",
+                "我来数",
+                "交给我",
+                "我记账",
+                "我数"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "glenn",
+                  "text": "好。"
+                },
+                {
+                  "t": "say",
+                  "who": "aila",
+                  "text": "计分？……也好。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她凑过来，压低了声音。"
+                },
+                {
+                  "t": "say",
+                  "who": "aila",
+                  "text": "那你数清楚——数我第一。"
+                },
+                {
+                  "t": "say",
+                  "who": "glenn",
+                  "text": "计分员不数谁第一。数分。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_ROLE": "SCORER"
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "glenn",
+                  "text": "不说话？"
+                },
+                {
+                  "t": "say",
+                  "who": "glenn",
+                  "text": "不说话的，最适合计分。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_ROLE": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "narr",
+          "text": "葛伦把夹着纸的木板和那盒木钉，放进{PLAYER_NAME}手里。"
+        },
+        {
+          "t": "say",
+          "who": "glenn",
+          "text": "下场的，去看台后面换衣服。演武场的操练衣，自己挑。"
+        },
+        {
+          "t": "narr",
+          "text": "帐篷只有一个。艾拉把{PLAYER_NAME}推到了外面。"
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "计分员，在外面等。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "mode": "15+"
+          },
+          "then": [
+            {
+              "t": "say",
+              "who": "aila",
+              "text": "……偷看的话，扣你的分。",
+              "note": "帐篷里"
+            },
+            {
+              "t": "say",
+              "who": "freya",
+              "text": "小弟弟，背过去喔。",
+              "note": "帐篷里"
+            },
+            {
+              "t": "narr",
+              "text": "{PLAYER_NAME}背过身去，数起了盒子里的木钉。"
+            }
+          ]
+        },
+        {
+          "t": "narr",
+          "text": "布帘掀开了。四个人走出来，换好了衣服。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "我自己挑的！好动！"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "……我、我也是自己挑的。"
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "操练衣，就是要好动。"
+        },
+        {
+          "t": "say",
+          "who": "freya",
+          "text": "伸展指导，也要换喔。……下场以前，先拉伸。受伤可不划算。"
+        }
+      ]
+    },
+    {
+      "id": "ex004-03",
+      "title": "自由输入：脱靶的一箭",
+      "bg": "holy-city-knights-drill-ground",
+      "music": "drill_day",
+      "ambience": [
+        "crowd"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "芙蕾娅带着下场的人拉伸完，走到计分板旁边。"
+        },
+        {
+          "t": "say",
+          "who": "freya",
+          "text": "小弟弟也是。计分的，要站一整天喔。"
+        },
+        {
+          "t": "narr",
+          "text": "她的手，按在{PLAYER_NAME}的肩上。"
+        },
+        {
+          "t": "say",
+          "who": "freya",
+          "text": "肩膀好硬。……放松。",
+          "text15": "肩膀好硬喔。……放松，姐姐又不会咬你。"
+        },
+        {
+          "t": "narr",
+          "text": "艾拉在旁边压腿。"
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "计分员，站得像木桩。",
+          "text15": "计分员，脸红了喔。"
+        },
+        {
+          "t": "narr",
+          "text": "第一项，射靶。"
+        },
+        {
+          "t": "say",
+          "who": "glenn",
+          "text": "三箭。中心三分，中圈两分，外圈一分。脱靶，零分。"
+        },
+        {
+          "t": "narr",
+          "text": "艾拉七分，塔莎六分。{PLAYER_NAME}把木钉移了过去。"
+        },
+        {
+          "t": "narr",
+          "text": "下一个走上射线的，是伊芙琳。没有人叫她，她自己走过去的。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "……我、我也想射一次。"
+        },
+        {
+          "t": "narr",
+          "text": "看台上，有人认出了她。"
+        },
+        {
+          "t": "say",
+          "who": "spectator",
+          "text": "那是……圣女大人？"
+        },
+        {
+          "t": "say",
+          "who": "spectator",
+          "text": "圣女大人射箭！一定百发百中吧！"
+        },
+        {
+          "t": "narr",
+          "text": "伊芙琳拉开弓。手指，有一点抖。"
+        },
+        {
+          "t": "narr",
+          "text": "第一箭飞过了木靶的上面，插进后面的沙堆里。"
+        },
+        {
+          "t": "narr",
+          "text": "看台上，没有一点声音。"
+        },
+        {
+          "t": "narr",
+          "text": "伊芙琳的耳朵红了，眼睛里有一点水光。"
+        },
+        {
+          "t": "say",
+          "who": "glenn",
+          "text": "……计分员？"
+        },
+        {
+          "t": "input",
+          "id": "FI_EX004_SC03_MISS_001",
+          "kind": "dialogue",
+          "prompt": "伊芙琳自己走上射线。看台上有人认出她是圣女，说她一定百发百中；第一箭飞过了木靶，插进后面的沙堆里。全场安静，老教头等着计分员报分。{PLAYER_NAME}可以照实报零分、安慰她、说这一箭不算让她重射、说圣女一定行、请看台安静，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "evelyn",
+            "glenn",
+            "aila",
+            "freya"
+          ],
+          "context": [
+            "规矩：三箭；脱靶，零分。",
+            "伊芙琳是自己走上射线的，没有人叫她。",
+            "看台上有人说“圣女大人一定百发百中”。",
+            "计分员报的分，所有人都听得见。"
+          ],
+          "principles": [
+            "MISS：判定优先序：嘲笑她 > 说圣女一定行（完美圣女） > 让她重射（这一箭不算） > 请看台安静 > 安慰 > 照实报分 > 沉默。",
+            "设03伊芙琳的雷区：称她完美圣女、把哭泣等同无能。照实记零分不是冷淡——是把她当成一个会脱靶的人。",
+            "要不要射完、要不要重射，是她自己说的；不替她回答。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "neg_guard",
+              "label": "否定式表态（按安慰处理）",
+              "desc": "只说自己“不会笑她”，本身并不是嘲笑；按安慰处理。",
+              "keywords": [
+                "我不笑她",
+                "不会笑你",
+                "没有笑",
+                "不笑她",
+                "我不笑"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "……嗯。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她擦了一下眼角。"
+                },
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "……还有两箭。"
+                },
+                {
+                  "t": "say",
+                  "who": "glenn",
+                  "text": "第一箭，脱靶，零分。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_MISS": "COMFORT"
+                }
+              }
+            },
+            {
+              "id": "mocked",
+              "label": "嘲笑她",
+              "desc": "笑她射歪了、说她逊、说也不过如此。",
+              "keywords": [
+                "射歪了",
+                "好逊",
+                "真差",
+                "笑死",
+                "这也射不中",
+                "也不过如此",
+                "太丢人",
+                "!不笑",
+                "!别笑",
+                "!不是"
+              ],
+              "morality": -1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "aila",
+                  "text": "……喂。"
+                },
+                {
+                  "t": "say",
+                  "who": "freya",
+                  "text": "小弟弟。"
+                },
+                {
+                  "t": "narr",
+                  "text": "芙蕾娅的声音很轻，也很冷。"
+                },
+                {
+                  "t": "narr",
+                  "text": "伊芙琳低下了头。"
+                },
+                {
+                  "t": "say",
+                  "who": "glenn",
+                  "text": "脱靶，零分。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_MISS": "MOCKED"
+                }
+              }
+            },
+            {
+              "id": "perfect",
+              "label": "说圣女一定行",
+              "desc": "说圣女不会失手、一定射得中、不愧是圣女。",
+              "keywords": [
+                "圣女一定行",
+                "圣女一定可以",
+                "圣女不会失手",
+                "不愧是圣女",
+                "你是圣女",
+                "百发百中",
+                "完美",
+                "一定射得中"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "……嗯。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她的手指，抖得更厉害了。"
+                },
+                {
+                  "t": "say",
+                  "who": "glenn",
+                  "text": "脱靶，零分。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_MISS": "PERFECT"
+                }
+              }
+            },
+            {
+              "id": "redo",
+              "label": "让她重射",
+              "desc": "说这一箭不算、让她再射一次。",
+              "keywords": [
+                "这箭不算",
+                "重射",
+                "再射一次",
+                "不算数",
+                "重新射",
+                "这次不算",
+                "重来"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "aila",
+                  "text": "不行。规矩上，三箭。"
+                },
+                {
+                  "t": "narr",
+                  "text": "伊芙琳抬起头。"
+                },
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "……不、不用重射。"
+                },
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "请记零分。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_MISS": "REDO"
+                }
+              }
+            },
+            {
+              "id": "hush",
+              "label": "请看台安静",
+              "desc": "请看台安静、别起哄、别盯着她。",
+              "keywords": [
+                "请安静",
+                "大家安静",
+                "安静",
+                "别吵",
+                "不要起哄",
+                "别起哄",
+                "别盯着她"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "葛伦吹了一声哨子。"
+                },
+                {
+                  "t": "say",
+                  "who": "glenn",
+                  "text": "射靶的时候，看台不准出声！"
+                },
+                {
+                  "t": "narr",
+                  "text": "看台上的人，一个一个坐了回去。"
+                },
+                {
+                  "t": "narr",
+                  "text": "伊芙琳吸了一口气。"
+                },
+                {
+                  "t": "say",
+                  "who": "glenn",
+                  "text": "脱靶，零分。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_MISS": "HUSH"
+                }
+              }
+            },
+            {
+              "id": "comfort",
+              "label": "安慰她",
+              "desc": "没关系、慢慢来、还有两箭。",
+              "keywords": [
+                "没关系",
+                "慢慢来",
+                "别紧张",
+                "还有两箭",
+                "深呼吸",
+                "不要紧",
+                "没事的",
+                "放轻松"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "……嗯。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她擦了一下眼角。"
+                },
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "……还有两箭。"
+                },
+                {
+                  "t": "say",
+                  "who": "glenn",
+                  "text": "第一箭，脱靶，零分。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_MISS": "COMFORT"
+                }
+              }
+            },
+            {
+              "id": "honest",
+              "label": "照实报零分",
+              "desc": "照规矩报：第一箭，脱靶，零分。",
+              "keywords": [
+                "零分",
+                "脱靶",
+                "记零分",
+                "照实记",
+                "第一箭零分",
+                "照规矩记",
+                "记上"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}报了分：第一箭，脱靶，零分。"
+                },
+                {
+                  "t": "narr",
+                  "text": "伊芙琳眨了眨眼。"
+                },
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "……零分。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她看着计分板。她那一行，一颗木钉都没有动。"
+                },
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "……记上了呢。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她笑了一下。很小。"
+                },
+                {
+                  "t": "if",
+                  "when": {
+                    "flag": "EVELYN_RELATIONSHIP_STAGE",
+                    "eq": "COMPANION"
+                  },
+                  "then": [
+                    {
+                      "t": "say",
+                      "who": "evelyn",
+                      "text": "您记我的分，跟记别人的一样。……谢谢您。"
+                    }
+                  ]
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_MISS": "HONEST"
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "glenn",
+                  "text": "脱靶。零分。"
+                },
+                {
+                  "t": "narr",
+                  "text": "他自己报了。伊芙琳点了点头。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_MISS": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "narr",
+          "text": "伊芙琳又拉开了弓。"
+        },
+        {
+          "t": "narr",
+          "text": "第二箭，中心。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "……对、对不起。",
+          "note": "对着木靶，小声"
+        },
+        {
+          "t": "narr",
+          "text": "第三箭，也是中心。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "对不起……"
+        },
+        {
+          "t": "narr",
+          "text": "看台上，有人笑出声来。不是嘲笑的那种。"
+        },
+        {
+          "t": "say",
+          "who": "spectator",
+          "text": "圣女大人跟靶道歉了！"
+        },
+        {
+          "t": "narr",
+          "text": "{PLAYER_NAME}把木钉移过去：伊芙琳，六分。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "EX_MISS",
+            "eq": "PERFECT"
+          },
+          "then": [
+            {
+              "t": "narr",
+              "text": "她射完，没有回头看计分板。"
+            }
+          ]
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "EX_MISS",
+            "eq": "MOCKED"
+          },
+          "then": [
+            {
+              "t": "narr",
+              "text": "她射完，一直看着脚下的沙。"
+            }
+          ]
+        },
+        {
+          "t": "narr",
+          "text": "芙蕾娅递给她一杯水。"
+        },
+        {
+          "t": "say",
+          "who": "freya",
+          "text": "零分的那一箭，比后面两箭都勇敢喔。"
+        }
+      ]
+    },
+    {
+      "id": "ex004-04",
+      "title": "自由输入：误差，正负三息",
+      "bg": "holy-city-knights-drill-ground",
+      "music": "drill_day",
+      "ambience": [
+        "crowd",
+        "wind"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "第二项，扛沙袋：扛着一袋沙，绕演武场跑一圈。"
+        },
+        {
+          "t": "narr",
+          "text": "葛伦把一个沙漏放在桌上。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "零号会计时！……我可以帮忙吗？"
+        },
+        {
+          "t": "say",
+          "who": "glenn",
+          "text": "……计吧。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "零号计时！误差……正负三息？"
+        },
+        {
+          "t": "narr",
+          "text": "艾拉和塔莎同时扛起了沙袋。哨子响了。"
+        },
+        {
+          "t": "narr",
+          "text": "最后一个弯道，两个人肩并着肩，一起冲过了沙线。"
+        },
+        {
+          "t": "narr",
+          "text": "零号“哔”了两声。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "零号说——艾拉快两息！"
+        },
+        {
+          "t": "narr",
+          "text": "{PLAYER_NAME}还没有移木钉，塔莎就把沙袋摔在了地上。"
+        },
+        {
+          "t": "say",
+          "who": "tasha",
+          "text": "等一下！"
+        },
+        {
+          "t": "say",
+          "who": "tasha",
+          "text": "那颗铁球是她们的！计分的，也是她们那一行的！"
+        },
+        {
+          "t": "narr",
+          "text": "米娅往后退了半步。零号躲到了她身后。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "……零号的误差，是正负三息。",
+          "note": "小声"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "两息……在误差里面。"
+        },
+        {
+          "t": "narr",
+          "text": "她自己说的。说完，低下了头。"
+        },
+        {
+          "t": "narr",
+          "text": "看台上有人起哄。艾拉抱着手臂，看着计分员。"
+        },
+        {
+          "t": "input",
+          "id": "FI_EX004_SC04_DISPUTE_001",
+          "kind": "dialogue",
+          "prompt": "扛沙袋这一项，零号计时说艾拉快两息。塔莎不服：零号是她们的，计分员也是她们那一行的。米娅自己说出来：零号的误差是正负三息，两息在误差里面。看台上开始起哄，艾拉看着计分员。{PLAYER_NAME}可以照数字判、提议再跑一次、替米娅和零号说话、骂塔莎输不起、干脆算塔莎赢，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "tasha",
+            "mia",
+            "aila",
+            "glenn",
+            "freya"
+          ],
+          "context": [
+            "零号说艾拉快两息；零号的误差是正负三息（米娅自己说的）。",
+            "老教头桌上的沙漏，量不出两息那么细。",
+            "计分员和米娅、艾拉是同一行来的；塔莎说的有一半是对的。",
+            "塔莎每一季都是第二。"
+          ],
+          "principles": [
+            "DISPUTE：判定优先序：骂塔莎（输不起、闭嘴） > 算塔莎赢（让给她） > 替米娅和零号说话 > 再跑一次 > 照数字判（误差里算平手） > 沉默。只取一个主意图，副意图只影响台词。",
+            "不设标准答案；这是没有人会受伤的小冲突。塔莎不是坏人，只是想赢一次；不让她被羞辱到底。",
+            "米娅说出误差，是她自己的诚实；不让任何人说零号没用（设03雷区：把失败归咎于她）。",
+            "本节点的非固定反应，最多一行、不超过20字。"
+          ],
+          "intents": [
+            {
+              "id": "neg_guard",
+              "label": "否定式表态（按沉默处理）",
+              "desc": "只说自己“不骂她／不跟她吵”，本身并不是骂人；按沉默处理。",
+              "keywords": [
+                "我不骂她",
+                "不骂她",
+                "不是输不起",
+                "我不吵",
+                "不跟她吵"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "葛伦看了看零号，又看了看桌上的沙漏。"
+                },
+                {
+                  "t": "say",
+                  "who": "glenn",
+                  "text": "沙漏量不出两息那么细。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_DISPUTE": "QUIET"
+                }
+              }
+            },
+            {
+              "id": "hostile",
+              "label": "骂塔莎",
+              "desc": "骂她输不起、叫她闭嘴、说她小气。",
+              "keywords": [
+                "输不起",
+                "闭嘴",
+                "你算什么",
+                "活该",
+                "小气鬼",
+                "不服就别比",
+                "少啰嗦",
+                "!不是输不起",
+                "!没说"
+              ],
+              "morality": -1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "塔莎的脸一下子涨红了。"
+                },
+                {
+                  "t": "say",
+                  "who": "aila",
+                  "text": "……喂，计分员。"
+                },
+                {
+                  "t": "say",
+                  "who": "aila",
+                  "text": "她说的，有一半是对的。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_DISPUTE": "HOSTILE"
+                }
+              }
+            },
+            {
+              "id": "conceded",
+              "label": "算塔莎赢",
+              "desc": "干脆算塔莎赢、让给她。",
+              "keywords": [
+                "算她赢",
+                "算塔莎赢",
+                "让给她",
+                "给她好了",
+                "判她赢",
+                "塔莎赢",
+                "让她赢"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "aila",
+                  "text": "让？我不要被让的。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "可是零号量到的是……"
+                },
+                {
+                  "t": "say",
+                  "who": "tasha",
+                  "text": "……我也不要被让的。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_DISPUTE": "CONCEDED"
+                }
+              }
+            },
+            {
+              "id": "defended",
+              "label": "替米娅和零号说话",
+              "desc": "零号很准、不会偏心，米娅不会作弊。",
+              "keywords": [
+                "零号很准",
+                "零号不会偏心",
+                "米娅不会作弊",
+                "相信零号",
+                "零号没有错",
+                "米娅没作弊",
+                "别怪米娅",
+                "不许叫它铁球"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "米娅抬起头。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "……零号不会偏心。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "可是误差是真的。两息，量不准。"
+                },
+                {
+                  "t": "if",
+                  "when": {
+                    "flag": "MIA_RELATIONSHIP_STAGE",
+                    "eq": "COMPANION"
+                  },
+                  "then": [
+                    {
+                      "t": "say",
+                      "who": "mia",
+                      "text": "你没有先怀疑零号。……谢谢。"
+                    }
+                  ]
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_DISPUTE": "DEFENDED"
+                }
+              }
+            },
+            {
+              "id": "rerun",
+              "label": "再跑一次",
+              "desc": "提议两个人再跑一次。",
+              "keywords": [
+                "再跑一次",
+                "重跑",
+                "再比一次",
+                "重新跑",
+                "再来一次",
+                "加赛一圈"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "aila",
+                  "text": "再跑一次？好啊！"
+                },
+                {
+                  "t": "say",
+                  "who": "tasha",
+                  "text": "……来！"
+                },
+                {
+                  "t": "say",
+                  "who": "freya",
+                  "text": "跑两次，腿会软喔。"
+                },
+                {
+                  "t": "narr",
+                  "text": "两个人又扛起沙袋。最后一个弯道，又是肩并着肩。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "……这次，一息。"
+                },
+                {
+                  "t": "say",
+                  "who": "glenn",
+                  "text": "还是在误差里。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_DISPUTE": "RERUN"
+                }
+              }
+            },
+            {
+              "id": "counted",
+              "label": "照数字判平手",
+              "desc": "两息在三息的误差里，量不出谁快，判平手。",
+              "keywords": [
+                "平手",
+                "算平手",
+                "判平手",
+                "误差里面",
+                "在误差里",
+                "照数字",
+                "两息在三息里",
+                "两个一样"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "塔莎愣住了。"
+                },
+                {
+                  "t": "say",
+                  "who": "tasha",
+                  "text": "……你自己那一行的，你判平手？"
+                },
+                {
+                  "t": "say",
+                  "who": "aila",
+                  "text": "……平手就平手。"
+                },
+                {
+                  "t": "say",
+                  "who": "freya",
+                  "text": "……队长，判得公平。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_DISPUTE": "COUNTED"
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "葛伦看了看零号，又看了看桌上的沙漏。"
+                },
+                {
+                  "t": "say",
+                  "who": "glenn",
+                  "text": "沙漏量不出两息那么细。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_DISPUTE": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "say",
+          "who": "glenn",
+          "text": "扛沙袋，平手。两个人，一样的分。"
+        },
+        {
+          "t": "narr",
+          "text": "{PLAYER_NAME}把两个人的木钉，移到了同一格。"
+        },
+        {
+          "t": "narr",
+          "text": "塔莎捡起沙袋，拍掉上面的沙，看着米娅。"
+        },
+        {
+          "t": "say",
+          "who": "tasha",
+          "text": "……零号，是吧？"
+        },
+        {
+          "t": "say",
+          "who": "tasha",
+          "text": "刚才叫它铁球。……对不起。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "……零号，回礼！"
+        },
+        {
+          "t": "narr",
+          "text": "零号“哔”了一声。"
+        },
+        {
+          "t": "say",
+          "who": "glenn",
+          "text": "最后一项，劈桩。艾拉多一分。"
+        }
+      ]
+    },
+    {
+      "id": "ex004-05",
+      "title": "自由输入：压线，算哪边",
+      "bg": "holy-city-knights-drill-ground",
+      "music": "drill_day",
+      "ambience": [
+        "crowd"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "最后一项，劈桩：木剑劈木桩上画好的三个圈。"
+        },
+        {
+          "t": "narr",
+          "text": "塔莎先上。三剑，三剑都在中心圈。看台上一片叫好。"
+        },
+        {
+          "t": "say",
+          "who": "tasha",
+          "text": "九分！艾拉，你得全中！"
+        },
+        {
+          "t": "say",
+          "who": "glenn",
+          "text": "艾拉三剑全中，赢一分。差一圈，平手。"
+        },
+        {
+          "t": "narr",
+          "text": "艾拉握着木剑，走到木桩前。她看了计分员一眼。"
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "看清楚喔，计分员。",
+          "text15": "看清楚喔，计分员。……眼睛只准看桩。"
+        },
+        {
+          "t": "narr",
+          "text": "第一剑，中心。第二剑，中心。"
+        },
+        {
+          "t": "narr",
+          "text": "第三剑——"
+        },
+        {
+          "t": "narr",
+          "text": "木桩上的剑痕，压在中心圈的线上：一半在里面，一半在外面。"
+        },
+        {
+          "t": "narr",
+          "text": "看台上，安静了。"
+        },
+        {
+          "t": "say",
+          "who": "tasha",
+          "text": "压线！"
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "压线，算中心！"
+        },
+        {
+          "t": "narr",
+          "text": "葛伦走过去，看了很久。"
+        },
+        {
+          "t": "say",
+          "who": "glenn",
+          "text": "……压线怎么算，规矩上没写。"
+        },
+        {
+          "t": "say",
+          "who": "glenn",
+          "text": "计分员，你判。"
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "……规矩上，没写。",
+          "note": "小声"
+        },
+        {
+          "t": "input",
+          "id": "FI_EX004_SC05_LINE_001",
+          "kind": "dialogue",
+          "prompt": "最后一剑，艾拉的剑痕压在中心圈的线上，一半在里面、一半在外面。算中心，艾拉赢一分、拿第一；算外圈，她和塔莎平手。老教头说压线怎么算规矩上没写，要计分员判。{PLAYER_NAME}可以判算中心、判算外圈、提议两个人加赛一剑、问艾拉自己怎么看、因为她是自己人就算她的，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "aila",
+            "tasha",
+            "glenn"
+          ],
+          "context": [
+            "剑痕一半在中心圈里，一半在外面。",
+            "规矩上没写压线怎么算；计分员判的，就是今天的规矩。",
+            "艾拉是和{PLAYER_NAME}同一行来的；塔莎每一季都是第二。",
+            "看台上所有人都在等。"
+          ],
+          "principles": [
+            "LINE：判定优先序：偏袒的理由（因为她是自己人、她是我们这边的） > 问艾拉自己 > 加赛 > 判算外圈 > 判算中心 > 沉默。只取一个主意图。",
+            "不设标准答案：算中心、算外圈、加赛都说得通；说出理由的判法，两边都认。",
+            "艾拉的雷区：无条件赞美她的裁决；她的亲密偏好：明确的规则、被坚定地说“不”。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "favored",
+              "label": "偏袒：她是自己人",
+              "desc": "因为艾拉是自己人、是我们这边的，就算她的。",
+              "keywords": [
+                "她是自己人",
+                "她是我们的人",
+                "我们这边的",
+                "自己人",
+                "当然算艾拉的",
+                "算我们的",
+                "我们一伙的"
+              ],
+              "morality": -1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "aila",
+                  "text": "……因为我跟你们一起来，所以算？"
+                },
+                {
+                  "t": "narr",
+                  "text": "她把木剑插进沙地里。"
+                },
+                {
+                  "t": "say",
+                  "who": "aila",
+                  "text": "那这一剑，我不要。"
+                },
+                {
+                  "t": "say",
+                  "who": "aila",
+                  "text": "压线，算外圈。……我自己说的。"
+                },
+                {
+                  "t": "say",
+                  "who": "tasha",
+                  "text": "……她自己说的喔。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_LINE": "FAVORED"
+                }
+              }
+            },
+            {
+              "id": "asked_aila",
+              "label": "问艾拉自己",
+              "desc": "问艾拉自己怎么看、要她自己判。",
+              "keywords": [
+                "你自己说",
+                "问艾拉",
+                "艾拉你觉得",
+                "你自己判",
+                "你觉得算吗",
+                "问她自己",
+                "你看呢"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "aila",
+                  "text": "……问我？"
+                },
+                {
+                  "t": "narr",
+                  "text": "她看着木桩，看了很久。"
+                },
+                {
+                  "t": "say",
+                  "who": "aila",
+                  "text": "我想说算。"
+                },
+                {
+                  "t": "say",
+                  "who": "aila",
+                  "text": "……可是我自己看，也是压线。"
+                },
+                {
+                  "t": "say",
+                  "who": "aila",
+                  "text": "规矩上没写——那就照最窄的读。外圈。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_LINE": "ASKED_AILA"
+                }
+              }
+            },
+            {
+              "id": "extra",
+              "label": "加赛一剑",
+              "desc": "提议两个人各再劈一剑。",
+              "keywords": [
+                "加赛",
+                "再劈一剑",
+                "各劈一剑",
+                "加一剑",
+                "再比一剑",
+                "重劈",
+                "再来一剑"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "aila",
+                  "text": "加赛？好啊！"
+                },
+                {
+                  "t": "say",
+                  "who": "tasha",
+                  "text": "来！"
+                },
+                {
+                  "t": "narr",
+                  "text": "两个人各劈了一剑。两剑，都在中心。"
+                },
+                {
+                  "t": "say",
+                  "who": "glenn",
+                  "text": "……还是一样。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_LINE": "EXTRA"
+                }
+              }
+            },
+            {
+              "id": "out",
+              "label": "判算外圈",
+              "desc": "压线不算中心，算外圈。",
+              "keywords": [
+                "算外圈",
+                "压线算外圈",
+                "外圈",
+                "不算中心",
+                "压线不算",
+                "不算",
+                "!不算外圈"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "aila",
+                  "text": "……外圈。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她愣了一下，然后笑了。"
+                },
+                {
+                  "t": "say",
+                  "who": "aila",
+                  "text": "很好。你没有让我。"
+                },
+                {
+                  "t": "if",
+                  "when": {
+                    "flag": "AILA_RELATIONSHIP_STAGE",
+                    "eq": "COMPANION"
+                  },
+                  "then": [
+                    {
+                      "t": "say",
+                      "who": "aila",
+                      "text": "……被你说“不”，比被让好多了。"
+                    }
+                  ]
+                },
+                {
+                  "t": "say",
+                  "who": "tasha",
+                  "text": "……并列？我们并列第一？"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_LINE": "OUT"
+                }
+              }
+            },
+            {
+              "id": "in",
+              "label": "判算中心",
+              "desc": "压线算中心。",
+              "keywords": [
+                "算中心",
+                "压线算中心",
+                "算里面",
+                "算进去",
+                "算中",
+                "中心",
+                "!不算中心"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "aila",
+                  "text": "……算中心。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她看着计分员。"
+                },
+                {
+                  "t": "say",
+                  "who": "aila",
+                  "text": "你说的喔。"
+                },
+                {
+                  "t": "narr",
+                  "text": "塔莎咬着嘴唇，盯着木桩看了很久。"
+                },
+                {
+                  "t": "say",
+                  "who": "tasha",
+                  "text": "……计分员判的。我认。"
+                },
+                {
+                  "t": "say",
+                  "who": "glenn",
+                  "text": "下一季的规矩上，就写：压线，算中心。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_LINE": "IN"
+                },
+                "flags": {
+                  "EX_AILA_SOLE_FIRST": true
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "看台上的人开始喊。有人喊“中心”，有人喊“外圈”。"
+                },
+                {
+                  "t": "say",
+                  "who": "glenn",
+                  "text": "……计分员不判，就照老规矩：看不清的，不算。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_LINE": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "EX_AILA_SOLE_FIRST"
+          },
+          "then": [
+            {
+              "t": "say",
+              "who": "glenn",
+              "text": "这一季的第一：艾拉。"
+            },
+            {
+              "t": "narr",
+              "text": "看台上鼓起掌来。塔莎走过去，和艾拉碰了一下拳头。"
+            },
+            {
+              "t": "say",
+              "who": "tasha",
+              "text": "下一季。"
+            },
+            {
+              "t": "say",
+              "who": "aila",
+              "text": "下一季也是我。"
+            }
+          ],
+          "else": [
+            {
+              "t": "say",
+              "who": "glenn",
+              "text": "这一季的第一：艾拉、塔莎。并列。"
+            },
+            {
+              "t": "narr",
+              "text": "看台上鼓起掌来。塔莎愣了很久，然后一拳捶在艾拉的肩上。"
+            },
+            {
+              "t": "say",
+              "who": "tasha",
+              "text": "……我的名字，要刻上柱子了。"
+            },
+            {
+              "t": "say",
+              "who": "aila",
+              "text": "刻小一点。旁边是我。"
+            }
+          ]
+        },
+        {
+          "t": "narr",
+          "text": "塔莎经过计分板的时候，停了一下。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "EX_LINE",
+            "eq": "FAVORED"
+          },
+          "then": [
+            {
+              "t": "say",
+              "who": "tasha",
+              "text": "计分员。……下一季，眼睛看桩就好。"
+            }
+          ],
+          "else": [
+            {
+              "t": "say",
+              "who": "tasha",
+              "text": "计分员。……下一季，也来吧。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ex004-06",
+      "title": "自由输入：一局",
+      "bg": "holy-city-knights-drill-ground-dusk",
+      "music": "drill_dusk",
+      "ambience": [
+        "wind"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "黄昏。看台空了。计分板上，只剩最后一排木钉。"
+        },
+        {
+          "t": "narr",
+          "text": "葛伦拿着一把小刀，在看台第一根柱子上刻名字。刻完正面，他绕到了柱子背面。"
+        },
+        {
+          "t": "say",
+          "who": "glenn",
+          "text": "计分员的名字，刻在背面。老规矩。"
+        },
+        {
+          "t": "say",
+          "who": "glenn",
+          "text": "从来没人来看背面。"
+        },
+        {
+          "t": "narr",
+          "text": "他刻下了{PLAYER_NAME}的名字。"
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "背面的，比正面的还难刻上去喔。"
+        },
+        {
+          "t": "narr",
+          "text": "芙蕾娅打开保温的水壶，一杯一杯倒给大家。"
+        },
+        {
+          "t": "say",
+          "who": "freya",
+          "text": "热的葡萄汁，加了香料。……没有酒，放心。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "FREYA_RELATIONSHIP_STAGE",
+            "eq": "COMPANION"
+          },
+          "then": [
+            {
+              "t": "narr",
+              "text": "她把最后一杯递给计分员的时候，手指在杯沿上停了一下。"
+            },
+            {
+              "t": "say",
+              "who": "freya",
+              "text": "……站了一整天，辛苦了。"
+            }
+          ]
+        },
+        {
+          "t": "say",
+          "who": "freya",
+          "text": "为什么木桩每一次，都最早到演武场？"
+        },
+        {
+          "t": "narr",
+          "text": "谁都没有回答。"
+        },
+        {
+          "t": "say",
+          "who": "freya",
+          "text": "……因为它，一直站在这里。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "等一下。一直站在这里，等于最早到……逻辑上，成立！零号，记下来！"
+        },
+        {
+          "t": "narr",
+          "text": "零号“哔”了一声。伊芙琳捂着嘴，肩膀一抖一抖的。"
+        },
+        {
+          "t": "narr",
+          "text": "艾拉从库房里拿出两支木拍，和一颗皮球。"
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "骑士团练反应用的。掌球。"
+        },
+        {
+          "t": "narr",
+          "text": "她把一支木拍，丢给了计分员。"
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "计分员。最后一局——"
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "一局定胜负。我发球。"
+        },
+        {
+          "t": "input",
+          "id": "FI_EX004_SC06_MATCH_001",
+          "kind": "dialogue",
+          "prompt": "黄昏，看台空了。艾拉从库房拿出两支木拍和一颗皮球，把一支丢给计分员：最后一局，一局定胜负，她发球。{PLAYER_NAME}可以接下、先问规矩、拒绝、说他还是计分让她和别人打、叫大家一起打、跟她赌点什么，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "aila",
+            "freya",
+            "mia",
+            "evelyn"
+          ],
+          "context": [
+            "掌球：骑士团练反应用的游戏，一支木拍、一颗皮球。",
+            "{PLAYER_NAME}一对一赢不了艾拉；他会的是数——数球落下来的拍子。",
+            "芙蕾娅、米娅、伊芙琳都在旁边。",
+            "今天的名字已经刻上柱子了，这一局不算分。"
+          ],
+          "principles": [
+            "MATCH：判定优先序：赌点什么（调情） > 拒绝 > 叫大家一起打 > 还是计分 > 先问规矩 > 接下 > 沉默。",
+            "不设标准答案。艾拉的亲密偏好：明确的规则、公平的比试、被坚定地说“不”——拒绝不是坏答案。",
+            "他赢不了这一局；世界不替他变出本事。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "flirt",
+              "label": "跟她赌点什么",
+              "desc": "问赢了有什么奖励、输的人要怎样、赌一个约会。",
+              "keywords": [
+                "赢了有什么奖励",
+                "有奖励吗",
+                "赌点什么",
+                "输的人要",
+                "赢了亲我",
+                "约会",
+                "赌一个",
+                "输了你要"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "aila",
+                  "text": "……奖励？"
+                },
+                {
+                  "t": "narr",
+                  "text": "她转了一下木拍。"
+                },
+                {
+                  "t": "if",
+                  "when": {
+                    "mode": "15+"
+                  },
+                  "then": [
+                    {
+                      "t": "narr",
+                      "text": "她用木拍，轻轻点了一下他的额头。"
+                    }
+                  ]
+                },
+                {
+                  "t": "say",
+                  "who": "aila",
+                  "text": "赢了我，再说。",
+                  "text15": "先赢了我，再说。……赢得了的话。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_MATCH": "FLIRT"
+                }
+              }
+            },
+            {
+              "id": "refused",
+              "label": "拒绝",
+              "desc": "说不打、不比、改天。",
+              "keywords": [
+                "我不打",
+                "不打",
+                "不比了",
+                "不要",
+                "不了",
+                "改天吧",
+                "下次吧",
+                "我拒绝",
+                "!不要客气"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "aila",
+                  "text": "……不？"
+                },
+                {
+                  "t": "narr",
+                  "text": "她看了他一下，然后笑了。"
+                },
+                {
+                  "t": "say",
+                  "who": "aila",
+                  "text": "很好。被拒绝，比被让好。"
+                },
+                {
+                  "t": "say",
+                  "who": "aila",
+                  "text": "那你计分。——芙蕾娅！"
+                },
+                {
+                  "t": "say",
+                  "who": "freya",
+                  "text": "欸？我？"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_MATCH": "REFUSED"
+                }
+              }
+            },
+            {
+              "id": "team",
+              "label": "叫大家一起打",
+              "desc": "叫大家一起打、分两队。",
+              "keywords": [
+                "大家一起",
+                "一起打",
+                "我们一起",
+                "都来",
+                "二对二",
+                "分两队",
+                "全部人"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "一起！零号当裁判！"
+                },
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "……我、我也可以吗？"
+                },
+                {
+                  "t": "say",
+                  "who": "freya",
+                  "text": "那，小弟弟和艾拉不能同一队喔。"
+                },
+                {
+                  "t": "say",
+                  "who": "aila",
+                  "text": "当然。我要打他。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_MATCH": "TEAM"
+                }
+              }
+            },
+            {
+              "id": "keep_score",
+              "label": "还是计分",
+              "desc": "{PLAYER_NAME}说他还是计分，让艾拉和别人打。",
+              "keywords": [
+                "我还是计分",
+                "你们打我计分",
+                "我计分",
+                "我来计分",
+                "我当裁判",
+                "我记分",
+                "我数"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "aila",
+                  "text": "又计分？"
+                },
+                {
+                  "t": "say",
+                  "who": "aila",
+                  "text": "……好吧。那你数清楚。——米娅！"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "我？零号，计算球的落点！"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_MATCH": "SCORER"
+                }
+              }
+            },
+            {
+              "id": "rules",
+              "label": "先问规矩",
+              "desc": "先问这一局怎么算、规矩是什么。",
+              "keywords": [
+                "规矩呢",
+                "什么规矩",
+                "先说规矩",
+                "怎么算",
+                "规则",
+                "怎么打",
+                "怎么赢"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "艾拉的眼睛亮了。"
+                },
+                {
+                  "t": "say",
+                  "who": "aila",
+                  "text": "规矩：球在你那边落地三次，你输。"
+                },
+                {
+                  "t": "say",
+                  "who": "aila",
+                  "text": "你把球打回我这边、落地一次——算你一分。"
+                },
+                {
+                  "t": "say",
+                  "who": "aila",
+                  "text": "……先问规矩。很好。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_MATCH": "RULES"
+                }
+              }
+            },
+            {
+              "id": "accepted",
+              "label": "接下",
+              "desc": "来吧、奉陪、接招。",
+              "keywords": [
+                "来吧",
+                "奉陪",
+                "接招",
+                "我接",
+                "比就比",
+                "接受挑战",
+                "放马过来",
+                "=好",
+                "=来",
+                "=行"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "aila",
+                  "text": "很好！"
+                },
+                {
+                  "t": "narr",
+                  "text": "她把皮球往上一抛。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_MATCH": "ACCEPTED"
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "aila",
+                  "text": "不说话？"
+                },
+                {
+                  "t": "say",
+                  "who": "aila",
+                  "text": "那就是接受。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_MATCH": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "narr",
+          "text": "艾拉的球又快又刁。一球，两球，没有人接得住。"
+        },
+        {
+          "t": "narr",
+          "text": "最后一球飞得很高，直直朝{PLAYER_NAME}落下来。"
+        },
+        {
+          "t": "narr",
+          "text": "他数着它落下来的拍子。一、二——"
+        },
+        {
+          "t": "narr",
+          "text": "三。他把手里的东西举了起来。"
+        },
+        {
+          "t": "narr",
+          "text": "球弹了回去，刚过中线，软软地落进沙里。"
+        },
+        {
+          "t": "narr",
+          "text": "艾拉冲上来追球——"
+        },
+        {
+          "t": "narr",
+          "text": "她撞在{PLAYER_NAME}的肩上。两个人一起晃了一下。",
+          "text15": "她冲得太猛，连人带球撞进他怀里，两个人一起跌坐在沙地上。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "mode": "15+"
+          },
+          "then": [
+            {
+              "t": "narr",
+              "text": "她的脸离他很近。安静了一下。"
+            }
+          ]
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "……计、计划内的。"
+        },
+        {
+          "t": "narr",
+          "text": "她退开一步，耳朵是红的。",
+          "text15": "她跳起来，拍掉身上的沙。耳朵是红的。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "零号说：最后一分，算计分员的！"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "……一、一分！"
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "……一分。"
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "你数的。我认。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "AILA_RELATIONSHIP_STAGE",
+            "eq": "COMPANION"
+          },
+          "then": [
+            {
+              "t": "say",
+              "who": "aila",
+              "text": "……下一季，你也来。我的分，只给你数。"
+            }
+          ]
+        },
+        {
+          "t": "narr",
+          "text": "天快黑了。一行人沿着白墙走回外庭，艾拉走在最前面。"
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "四百一十步。"
+        },
+        {
+          "t": "say",
+          "who": "aila",
+          "text": "一步都没离开墙。"
+        }
+      ]
+    }
+  ],
+  "end": {
+    "save": "SAVE_EX004_END",
+    "next": null,
+    "set": {
+      "flags": {
+        "EX004_DRILL_DAY": true,
+        "EX004_SCORER": true,
+        "EX004_NAME_ON_PILLAR_BACK": true
+      }
+    },
+    "memory": {
+      "key": "EX004_MEMORY",
+      "text": "演武场开放日：艾拉要拿第一，他当了一天计分员，名字刻在了柱子背面。"
+    },
+    "summary": [
+      {
+        "text": "骑士团演武场开放了一天。艾拉带路，{PLAYER_NAME}当了一天计分员。"
+      },
+      {
+        "when": {
+          "flag": "EX_COMPETED"
+        },
+        "text": "{PLAYER_NAME}先下场劈了一剑，落在最外圈的边上。"
+      },
+      {
+        "when": {
+          "flag": "EX_MISS",
+          "eq": "HONEST"
+        },
+        "text": "伊芙琳脱靶的第一箭，{PLAYER_NAME}照实记了零分。她笑了一下：记上了呢。"
+      },
+      {
+        "when": {
+          "flag": "EX_MISS",
+          "eq": "REDO"
+        },
+        "text": "{PLAYER_NAME}说那一箭不算，伊芙琳自己说：请记零分。"
+      },
+      {
+        "when": {
+          "flag": "EX_MISS",
+          "eq": "PERFECT"
+        },
+        "text": "看台说圣女一定百发百中。伊芙琳射完，没有回头看计分板。"
+      },
+      {
+        "when": {
+          "flag": "EX_DISPUTE",
+          "eq": "COUNTED"
+        },
+        "text": "扛沙袋只差两息，在零号的误差里。{PLAYER_NAME}判了平手。"
+      },
+      {
+        "when": {
+          "flag": "EX_DISPUTE",
+          "eq": "HOSTILE"
+        },
+        "text": "{PLAYER_NAME}骂塔莎输不起。艾拉说：她说的，有一半是对的。"
+      },
+      {
+        "text": "塔莎叫过零号铁球，后来向它道了歉。"
+      },
+      {
+        "when": {
+          "flag": "EX_LINE",
+          "eq": "IN"
+        },
+        "text": "压线的那一剑，{PLAYER_NAME}判算中心。这一季的第一：艾拉。"
+      },
+      {
+        "when": {
+          "flag": "EX_LINE",
+          "eq": "OUT"
+        },
+        "text": "压线的那一剑，{PLAYER_NAME}判算外圈。艾拉说：“你没有让我。”"
+      },
+      {
+        "when": {
+          "flag": "EX_LINE",
+          "eq": "ASKED_AILA"
+        },
+        "text": "压线的那一剑，艾拉自己判了：照最窄的读，外圈。"
+      },
+      {
+        "when": {
+          "flag": "EX_LINE",
+          "eq": "FAVORED"
+        },
+        "text": "{PLAYER_NAME}说她是自己人，算她的。艾拉把那一剑退了回去。"
+      },
+      {
+        "when": {
+          "not": {
+            "flag": "EX_AILA_SOLE_FIRST"
+          }
+        },
+        "text": "这一季的第一：艾拉、塔莎，并列。"
+      },
+      {
+        "text": "黄昏，柱子背面刻上了计分员的名字。掌球的最后一分，是{PLAYER_NAME}数着拍子打回去的。"
+      }
+    ]
+  }
+}

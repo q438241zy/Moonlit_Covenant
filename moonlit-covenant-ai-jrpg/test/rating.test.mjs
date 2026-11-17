@@ -112,7 +112,7 @@ test('rating: player.js boots settings through rating.js, sends the mode to the 
   assert.match(player, /esc\(SETTINGS_NOTE\)/);
   assert.match(player, /function ratingChoice\(\)/);
   assert.match(player, /function ratingNotice\(\)/);
-  assert.match(player, /context: \{ \.\.\.publicSummary\(S\.run\), mode: normalizeMode\(S\.run\.mode\) \}/, 'the judge request carries the content mode');
+  assert.match(player, /context: \{ \.\.\.publicSummary\(S\.run\), mode: normalizeMode\(S\.run\.mode\), /, 'the judge request carries the content mode');
   // 严格 CSP：模板里不写内联事件属性，也不用 javascript: 链接
   for (const file of ['public/story/player.js', 'public/story/rating.js', 'public/story.html']) {
     const src = read(file);

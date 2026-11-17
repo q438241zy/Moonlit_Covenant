@@ -29,6 +29,7 @@
   "exchange": { "pickPurple": { "purple": 40 }, "ticketFromPurple": { "purple": 50 }, "ticketFromRed": { "red": 10 } },
   "storyMaterials": {
     "chapterFirstClear": { "white": 6, "green": 3, "blue": 1 },
+    "extraFirstClear": { "white": 10, "green": 5, "blue": 2 },
     "actBonus": { "chapters": ["ch008", "ch015", "ch021", "ch025", "ch030"], "blue": 5 },
     "personalBonus": { "chapters": ["ch020", "ch021", "ch023", "ch024", "ch025", "ch026", "ch027", "ch028", "ch029"], "blue": 5 },
     "commissionDaily": { "wins": 3, "white": 4, "green": 1 },

@@ -2166,7 +2166,7 @@ function costumePage() {
   return `${navBar()}
     <main class="page-content">
       <div class="page-header"><div class="eyebrow">WARDROBE · 换衣间</div><h1>服饰更换</h1>
-        <p class="muted">为已拥有的女主更换皮肤（主线入队或召唤获得）。服装通过「召唤 · 服饰池」获取；抽到了服装但还没有该角色时，服装会先收进「待解锁角色」；还没在主线登场的女主先收在「尚未登场」里，以剪影显示。「典藏」是已退出常驻服饰池的节庆服装：已经拥有的照样能穿，对应番外上线时会限时复刻；「赠品」是海边番外首通送的度假装。带 IF 角标的 OL装是「异界IF」，与正史无关。内容模式为 12+ 时，泳装显示加罩衫的版本。服装对应的番外 · 敬请期待。</p>
+        <p class="muted">为已拥有的女主更换皮肤（主线入队或召唤获得）。服装通过「召唤 · 服饰池」获取；抽到了服装但还没有该角色时，服装会先收进「待解锁角色」；还没在主线登场的女主先收在「尚未登场」里，以剪影显示。「典藏」是已退出常驻服饰池的节庆服装：已经拥有的照样能穿，对应番外上线时会限时复刻；「赠品」是海边番外首通送的度假装。带 IF 角标的 OL装是「异界IF」，与正史无关。内容模式为 12+ 时，泳装显示加罩衫的版本。每类服装对应一篇番外（主线「番外・休息日」分页）：番外里只有类型相符的那几篇会换上她装备的服装，服装不是番外的解锁条件。</p>
       </div>
       <section class="costume-section" id="costumeSection"><div class="loader">加载中…</div></section>
     </main>`;
@@ -2192,6 +2192,18 @@ function archiveCostumeTypes(types, costumePool, typeMeta) {
 }
 
 // 赠品（度假装）：不在任何抽取表里，只列已经拥有的
+// 换衣间里「这类服装对应的番外」：已上线并解锁的给入口（主线播放页的「番外・休息日」分页），否则写解锁条件或「敬请期待」
+function wardrobeBranchHtml(branch) {
+  const list = Array.isArray(branch.extrasStatus) ? branch.extrasStatus : [];
+  const open = list.find((x) => x.live && x.unlocked);
+  const live = list.find((x) => x.live);
+  const title = escapeHtml(String(open?.title || live?.title || branch.title).split("｜").pop());
+  let tail = '敬请期待';
+  if (open) tail = `<a class="wardrobe-branch-link" href="/story.html?extra=${encodeURIComponent(open.id)}">${open.cleared ? '重读' : '前往'}</a>`;
+  else if (live) tail = `通关第${Number(String(live.unlockAfter || '').slice(2))}章后开放`;
+  return `<p class="wardrobe-branch muted">${icon('scroll', { size: 14 })}<span>番外「${title}」· ${tail}</span></p>`;
+}
+
 function giftCostumeTypes(types, typeMeta) {
   return new Set(Object.keys(types).filter((type) => typeMeta?.[type]?.status === 'gift'));
 }
@@ -2378,7 +2390,7 @@ async function loadCostumes() {
             <p class="muted">${escapeHtml(ch.title || '')}</p>
             <p class="wardrobe-current">${equippedLabel ? `当前皮肤：<strong>${icon(COSTUME_TYPE_META[equippedType]?.icon || 'dress', { size: 16 })} ${escapeHtml(equippedLabel)}</strong>${archiveTagHtml(equippedType, archived)}` : `当前皮肤：<strong class="is-default">${icon('outfit-default', { size: 16 })} 默认服装</strong>`}</p>
             ${equippedId && styleOf[equippedId] ? `<p class="wardrobe-style">「${escapeHtml(styleOf[equippedId].description)}」${ifTagHtml(equippedType)}${styleOf[equippedId].line ? `<span class="muted">${escapeHtml(styleOf[equippedId].line)}</span>` : ''}</p>` : ''}
-            ${equippedType && branches[equippedType] ? `<p class="wardrobe-branch muted">${icon('scroll', { size: 14 })}<span>番外「${escapeHtml(branches[equippedType].title)}」· 敬请期待</span></p>` : ''}
+            ${equippedType && branches[equippedType] ? wardrobeBranchHtml(branches[equippedType]) : ''}
           </div>
         </div>
         <div class="costume-grid">${slots}</div>
