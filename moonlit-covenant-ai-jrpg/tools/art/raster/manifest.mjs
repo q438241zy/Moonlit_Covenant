@@ -1,5 +1,8 @@
-// 厚涂位图出图清单：画风统一参照旧的莉亚厚涂 PNG（lia.png，赤红高马尾那张，见 legacyRef）。
-// 每个任务 = { id, group, out, size, seed, prompt, refs, label? }
+// 位图出图清单（全部交给 GPT 出图，docs/ART-LIST-GPT.md）：画风是「日本动画画师画的欧洲奇幻」——日式动漫的人物画法
+// （大而有神的眼睛、干净的线稿、柔和的赛璐璐加厚涂上色），配欧洲中世纪奇幻的建筑、服饰与器物；以女主角立绘为基准：
+// 先出八位女主立绘（参考旧的莉亚厚涂 PNG），其余所有图都拿女主立绘当画风参考，全套统一。
+// 每个任务 = { id, group, out, size, seed, prompt, refs, label?, alpha?, target?, usage? }
+//   alpha：要透明底（胸像），finalize 输出 PNG；target：游戏内尺寸（缺省按 SIZE[group]）；usage：出现在哪里（清单用）
 //   refs：参考图（相对项目根目录）。第一张通常是画风参考，其余用于保持角色长相一致。
 //   out：原始输出路径（tools/art/raster/out/ 下，finalize.mjs 再压缩进 public/assets/paint/）。
 //   label：可选的中文说明（只用于 public/assets/paint/README.md 的清单）。
@@ -16,25 +19,34 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../.
 const readJson = (rel) => JSON.parse(fs.readFileSync(path.join(root, rel), 'utf8'));
 
 // 游戏内尺寸（finalize.mjs 按此裁切压缩，与对应矢量资产同尺寸，CSS 无需改动比例）与分组说明
-export const SIZE = { portraits: '832x1216', costumes: '832x1216', cg: '1600x900', scenes: '1600x900', cards: '512x512', boss: '1000x1000', 'story-bg': '1600x900', 'story-npc': '600x800' };
+export const SIZE = {
+  portraits: '832x1216', costumes: '832x1216', 'costumes-soft': '832x1216', 'costumes-bust': '600x800', 'costumes-bust-soft': '600x800',
+  cg: '1600x900', scenes: '1600x900', cards: '512x512', boss: '1000x1000', 'story-bg': '1600x900', 'story-npc': '600x800', 'story-insert': '800x600',
+};
+// 要透明底的组（finalize 输出 PNG，public/paint.js 换图时用 .png）
+export const ALPHA_GROUPS = new Set(['story-npc', 'costumes-bust', 'costumes-bust-soft']);
 export const GROUPS = {
   portraits: { title: '女主立绘' },
   costumes: { title: '服装立绘' },
+  'costumes-soft': { title: '泳装 12+ 罩衫版立绘', note: '同一件泳装外面加她自己的罩衫；内容模式 12+ 时显示。' },
+  'costumes-bust': { title: '服装透明胸像', note: '委托板单位卡与类型相符的番外用；透明底 PNG。' },
+  'costumes-bust-soft': { title: '泳装 12+ 罩衫版透明胸像', note: '透明底 PNG。' },
   cg: { title: '剧情 CG' },
   boss: { title: '食梦兽三阶段', note: '深色底即可，游戏内自动羽化边缘。' },
   scenes: { title: '舞台背景' },
   cards: { title: '卡面', note: '进化版沿用同一张。' },
-  'story-bg': { title: '主线场景背景', note: '清单来自 public/story/locations.json。' },
-  'story-npc': { title: '主线胸像', note: '清单来自 public/story/speakers.json（同一文件只列一次）。矢量版是透明底；JPEG 没有透明通道，换上前先确认在白天场景上不会出现底色方框。' },
+  'story-bg': { title: '剧情场景背景（主线、番外、外传正篇）', note: '清单来自 public/story/locations.json；外传正篇复用的序章场景图在 scenes / cg 组。' },
+  'story-npc': { title: '剧情胸像', note: '清单来自 public/story/speakers.json（同一文件只列一次）。透明底 PNG。' },
+  'story-insert': { title: '道具特写叠图', note: '台词或叙述出现某件道具时浮在场景上的卡片；不画任何文字。' },
 };
 
 export const STYLE = [
-  'semi-realistic anime illustration, painterly thick-paint (impasto) digital painting with visible brush strokes',
-  'Japanese dark-fantasy JRPG key art, refined mature facial features, sharp expressive eyes',
-  'detailed material rendering of metal, leather and cloth with wear and scratches',
-  'dramatic side moonlight, colored rim light, deep shadows, muted desaturated palette with rich accent colors',
-  'same art style, brushwork, lighting and color grading as the reference image',
-  'high detail, masterpiece, no text, no watermark, no signature, no logo',
+  'Japanese anime art style drawn by a Japanese anime illustrator, set in a European medieval high-fantasy world (European architecture, armor, clothing and props)',
+  'anime character design like a Japanese JRPG key visual: large expressive eyes, clean confident line art, soft cel shading blended with painterly thick-paint rendering',
+  'refined adult facial features, detailed rendering of metal, leather and cloth with subtle wear',
+  'cinematic moonlight, colored rim light, rich but slightly muted palette with vivid accent colors',
+  'same art style, line weight, coloring and lighting as the reference images (the heroine portraits)',
+  'high detail, no text, no letters, no watermark, no signature, no logo',
 ].join(', ');
 
 export const NEGATIVE = 'text, watermark, signature, logo, chibi, child, loli, nsfw, cleavage, revealing clothes, swimsuit, lingerie, lowres, blurry, extra fingers, deformed hands, bad anatomy';
@@ -74,7 +86,10 @@ const OUTFITS = {
   resort: 'wearing a light summer sundress with a thin cardigan and a flower clip, palm fronds and a night sea in the background',
 };
 
-const portraitRef = (id) => HEROINES[id].ref || `tools/art/raster/out/portraits/${id}.png`;
+const HEROINE_IDS = new Set(Object.keys(HEROINES));
+const portraitRef = (id) => `tools/art/raster/out/portraits/${id}.png`; // 新出的正典立绘（旧 PNG 只是立绘本身的参考）
+// 除了八张立绘，其余所有图的第一张参考都是新出的莉亚立绘：画风、线稿与上色都以女主立绘为准
+const HEROINE_STYLE = portraitRef('lia');
 
 const jobs = [];
 
@@ -84,7 +99,8 @@ for (const [id, h] of Object.entries(HEROINES)) {
     id: `portrait-${id}`, group: 'portraits', existing: false,
     out: `tools/art/raster/out/portraits/${id}.png`, size: '1024x1536', seed: 1000 + jobs.length,
     prompt: `${STYLE}. Upper body portrait in 3/4 view of ${h.look}. Background: ${h.bg}, dark and atmospheric. ${h.rim}.`,
-    refs: [STYLE_REF],
+    refs: [STYLE_REF, ...(h.ref && h.ref !== STYLE_REF ? [h.ref] : [])],
+    usage: '召唤、换衣间、委托板绝技切入；后面所有图的画风参考',
   });
 }
 
@@ -95,7 +111,36 @@ for (const id of Object.keys(HEROINES)) {
       id: `costume-${id}-${type}`, group: 'costumes', after: [`portrait-${id}`],
       out: `tools/art/raster/out/costumes/${id}_${type}.png`, size: '1024x1536', seed: 2000 + jobs.length,
       prompt: `${STYLE}. The same character as the second reference image (same face, eyes, hair and head accessories), upper body portrait in 3/4 view, ${outfit}. ${HEROINES[id].rim}.`,
-      refs: [STYLE_REF, portraitRef(id)],
+      refs: [portraitRef(id)],
+      usage: '召唤结果、换衣间、服饰池卡面',
+      ...(type === 'swimsuit' ? { negative: NEGATIVE_SWIMSUIT } : {}),
+    });
+  }
+}
+
+// 2b) 泳装的 12+ 罩衫版（服装稿 §1.3）：同一件泳装外面加她自己的罩衫，以泳装那张为参考
+for (const id of Object.keys(HEROINES)) {
+  jobs.push({
+    id: `costume-soft-${id}`, group: 'costumes-soft', after: [`costume-${id}-swimsuit`],
+    out: `tools/art/raster/out/costumes-soft/${id}_swimsuit.png`, size: '1024x1536', seed: 2600 + jobs.length,
+    prompt: `${STYLE}. Exactly the same character, pose, swimsuit and seaside scene as the reference image, but she now wears her own light opaque cover-up over the swimsuit (an open beach shirt, a hooded rash-guard jacket or a long wrap skirt with a short cardigan, in her colors), covering the shoulders and hips, modest and cheerful. ${HEROINES[id].rim}.`,
+    refs: [`tools/art/raster/out/costumes/${id}_swimsuit.png`, portraitRef(id)],
+    usage: '内容模式 12+ 时替换泳装立绘',
+  });
+}
+
+// 2c) 服装透明胸像（600×800；委托板单位卡、类型相符的番外）：以该服装立绘为参考，透明底
+for (const id of Object.keys(HEROINES)) {
+  for (const type of [...Object.keys(OUTFITS), 'swimsuit-soft']) {
+    const soft = type === 'swimsuit-soft';
+    const costume = soft ? `tools/art/raster/out/costumes-soft/${id}_swimsuit.png` : `tools/art/raster/out/costumes/${id}_${type}.png`;
+    jobs.push({
+      id: `bust-${id}-${type}`, group: soft ? 'costumes-bust-soft' : 'costumes-bust', alpha: true,
+      after: [soft ? `costume-soft-${id}` : `costume-${id}-${type}`],
+      out: `tools/art/raster/out/${soft ? 'costumes-bust-soft' : 'costumes-bust'}/${id}_${soft ? 'swimsuit' : type}.png`, size: '1024x1536', seed: 2800 + jobs.length,
+      prompt: `${STYLE}. Bust portrait (head to chest, facing the viewer at 3/4) of exactly the same character in exactly the same outfit as the reference image, on a fully transparent background with no backdrop, no floor and no scenery, clean silhouette edges.`,
+      refs: [costume],
+      usage: soft ? '12+ 时委托板与海边番外的泳装胸像' : '委托板单位卡；类型相符的番外里她说话时的胸像',
       ...(type === 'swimsuit' ? { negative: NEGATIVE_SWIMSUIT } : {}),
     });
   }
@@ -122,7 +167,9 @@ for (const [name, scene, refs, onTrain] of CG) {
   jobs.push({
     id: `cg-${name}`, group: 'cg', out: `tools/art/raster/out/cg/${name}.png`, size: '1920x1080', seed: 3000 + jobs.length,
     prompt: `${STYLE}. Cinematic wide 16:9 story illustration. ${onTrain ? `Setting: ${TRAIN}. ` : ''}${scene}.`,
-    refs: [STYLE_REF, ...refs.filter((r) => r !== STYLE_REF)],
+    refs: [HEROINE_STYLE, ...refs.filter((r) => r !== STYLE_REF).map((r) => (r === legacyRef('lia.png') ? portraitRef('lia') : r === legacyRef('mia.png') ? portraitRef('mia') : r === legacyRef('serena.png') ? portraitRef('serena') : r))].filter((r, i, a) => a.indexOf(r) === i),
+    after: ['portrait-lia', 'portrait-mia', 'portrait-serena'],
+    usage: '外传 CG 图库与序章演出',
   });
 }
 
@@ -135,7 +182,9 @@ const BOSS_PHASES = [
 BOSS_PHASES.forEach((desc, i) => jobs.push({
   id: `boss-${i + 1}`, group: 'boss', out: `tools/art/raster/out/boss/dream-eater-${i + 1}.png`, size: '1024x1024', seed: 4000 + i,
   prompt: `${STYLE}. Full-body creature design centered on a plain very dark navy background, tragic and sublime, ${desc}.`,
-  refs: [STYLE_REF, BOSS],
+  refs: [HEROINE_STYLE, BOSS],
+  after: ['portrait-lia'],
+  usage: '外传序章 Boss 战（按血量换三阶段）',
 }));
 
 // 5) 舞台背景
@@ -147,7 +196,9 @@ const SCENES = [
 SCENES.forEach(([name, desc], i) => jobs.push({
   id: `scene-${name}`, group: 'scenes', out: `tools/art/raster/out/scenes/${name}.png`, size: '1920x1080', seed: 5000 + i,
   prompt: `${STYLE}. Wide 16:9 background painting, ${desc}.`,
-  refs: [STYLE_REF],
+  refs: [HEROINE_STYLE],
+  after: ['portrait-lia'],
+  usage: '外传序章舞台；外传正篇也复用（餐车、撕裂的车顶、黎明的铁轨）',
 }));
 
 // 6) 38 张卡面：画面主体按卡名/效果描述
@@ -192,15 +243,16 @@ const CARD_SUBJECT = {
   serena_hero: 'the purple-black-haired mage Serena with her moon-phase hair ornament, raising a gloved hand as a void moon forms behind her',
 };
 const CLASS_TONE = { neutral: 'moonlit silver and steel-blue night palette', lia: 'crimson and gold palette, flames and embers', lilith: 'violet and black-gold palette, smoke and shadows', serena: 'indigo and purple palette, void, moons and stars' };
-const HERO_REF = { lia_hero: legacyRef('lia.png'), serena_hero: legacyRef('serena.png'), lilith_hero: 'tools/art/raster/out/portraits/lilith.png' };
+const HERO_REF = { lia_hero: portraitRef('lia'), serena_hero: portraitRef('serena'), lilith_hero: portraitRef('lilith') };
 for (const card of CARDS) {
   const subject = CARD_SUBJECT[card.id];
   if (!subject) throw new Error(`manifest: missing card subject for ${card.id}`);
   jobs.push({
-    id: `card-${card.id}`, group: 'cards', after: card.id === 'lilith_hero' ? ['portrait-lilith'] : undefined,
+    id: `card-${card.id}`, group: 'cards', after: ['portrait-lia', ...(HERO_REF[card.id] ? [`portrait-${card.id.split('_')[0]}`] : [])],
     out: `tools/art/raster/out/cards/${card.id}.png`, size: '1024x1024', seed: 6000 + jobs.length,
     prompt: `${STYLE}. Square trading-card illustration, centered dramatic composition with a soft dark vignette, no card frame, ${CLASS_TONE[card.class]}: ${subject}.`,
-    refs: [STYLE_REF, ...(HERO_REF[card.id] ? [HERO_REF[card.id]] : [])],
+    refs: [HEROINE_STYLE, ...(HERO_REF[card.id] && HERO_REF[card.id] !== HEROINE_STYLE ? [HERO_REF[card.id]] : [])],
+    usage: '卡牌对战（实验模式）卡面',
   });
 }
 
@@ -211,12 +263,40 @@ const svgLabel = (rel) => {
   const m = fs.existsSync(file) ? fs.readFileSync(file, 'utf8').match(/aria-label="([^"]*)"/) : null;
   return m ? m[1] : '';
 };
-const STORY_WORLD = 'low-fantasy medieval world, painterly, no text';
+const STORY_WORLD = 'European medieval low-fantasy world, no text';
+// 每个场景、每个说话人出现在哪几章（主线 chNNN、番外 exNNN、外传正篇 gNNN），清单里按这个排优先级
+const usageIndex = (() => {
+  const bg = new Map(), who = new Map();
+  const add = (map, key, ch) => { if (!map.has(key)) map.set(key, new Set()); map.get(key).add(ch); };
+  const dirs = [['public/story/chapters', /^ch\d{3}\.json$/], ['public/story/extras', /^ex\d{3}\.json$/], ['public/gaiden', /^g\d{3}\.json$/]];
+  for (const [dir, re] of dirs) {
+    const abs = path.join(root, dir);
+    if (!fs.existsSync(abs)) continue;
+    for (const f of fs.readdirSync(abs).filter((n) => re.test(n)).sort()) {
+      const id = f.replace('.json', '');
+      const walk = (o) => {
+        if (Array.isArray(o)) return o.forEach(walk);
+        if (!o || typeof o !== 'object') return;
+        if (typeof o.bg === 'string') add(bg, o.bg, id);
+        if (o.t === 'say' && typeof o.who === 'string') add(who, o.who, id);
+        if (typeof o.insert === 'string') add(bg, `insert:${o.insert}`, id);
+        Object.values(o).forEach(walk);
+      };
+      walk(JSON.parse(fs.readFileSync(path.join(abs, f), 'utf8')).shots);
+    }
+  }
+  return { bg, who };
+})();
+const usageText = (set) => (set && set.size ? [...set].join(' ') : '（暂无章节使用）');
 for (const [id, loc] of Object.entries(readJson('public/story/locations.json'))) {
+  // 外传正篇复用的旧场景图（public/assets/scenes、cg）已经在上面的 scenes / cg 组里，不再重复出
+  if (!String(loc.svg || '').startsWith('/assets/story/bg/')) continue;
   jobs.push({
     id: `story-bg-${id}`, group: 'story-bg', label: loc.name, out: `tools/art/raster/out/story-bg/${id}.png`, size: '1920x1080', seed: 7000 + jobs.length,
-    prompt: `${STYLE}. Wide 16:9 story background painting, ${STORY_WORLD}, no characters in focus. Scene: ${svgLabel(loc.svg) || loc.name}.`,
-    refs: [STYLE_REF],
+    // 番外十（IF）的现代办公室与商场：平行现代，不套欧洲中世纪
+    prompt: `${STYLE}. Wide 16:9 story background painting, ${id.startsWith('if-modern') ? 'parallel-world modern-day city (an IF side story), contemporary interior, no text, no logos' : STORY_WORLD}, no characters in focus. Scene: ${svgLabel(loc.svg) || loc.name}.`,
+    refs: [HEROINE_STYLE], after: ['portrait-lia'],
+    usage: usageText(usageIndex.bg.get(id)),
   });
 }
 const busts = new Map();
@@ -227,9 +307,32 @@ for (const [sid, sp] of Object.entries(readJson('public/story/speakers.json'))) 
 for (const [name, { sp }] of busts) {
   jobs.push({
     id: `story-npc-${name}`, group: 'story-npc', label: sp.name.replace('{PLAYER_NAME}', '亚克'), out: `tools/art/raster/out/story-npc/${name}.png`, size: '1024x1365', seed: 8000 + jobs.length,
-    prompt: `${STYLE}. Bust portrait (head and shoulders, facing the viewer at 3/4) on a plain very dark background, ${STORY_WORLD}: ${svgLabel(sp.art) || sp.name}.`,
-    refs: [STYLE_REF, ...(name === 'lia' ? [legacyRef('lia.png')] : [])].filter((r, i, a) => a.indexOf(r) === i),
+    prompt: `${STYLE}. Bust portrait (head and shoulders, facing the viewer at 3/4) on a fully transparent background with no backdrop, ${STORY_WORLD}: ${svgLabel(sp.art) || sp.name}.`,
+    alpha: true,
+    refs: [HEROINE_STYLE, ...(HEROINE_IDS.has(name.split('_')[0]) && name.split('_')[0] !== 'lia' ? [portraitRef(name.split('_')[0])] : [])],
+    after: ['portrait-lia', ...(HEROINE_IDS.has(name.split('_')[0]) ? [`portrait-${name.split('_')[0]}`] : [])],
+    usage: usageText(new Set(Object.entries(readJson('public/story/speakers.json')).filter(([, v]) => v.art === sp.art).flatMap(([k]) => [...(usageIndex.who.get(k) || [])]))),
+  });
+}
+
+// 8) 道具特写叠图（800×600，tools/art/story/inserts.mjs 的矢量版）：不画任何文字，字由台词交代
+const insertDir = path.join(root, 'public/assets/story/insert');
+for (const f of fs.existsSync(insertDir) ? fs.readdirSync(insertDir).filter((n) => n.endsWith('.svg')).sort() : []) {
+  const name = f.replace('.svg', '');
+  jobs.push({
+    id: `insert-${name}`, group: 'story-insert', out: `tools/art/raster/out/story-insert/${name}.png`, size: '1536x1024', seed: 9000 + jobs.length,
+    prompt: `${STYLE}. Close-up still-life illustration of a single prop on a dark softly lit surface, centered, ${STORY_WORLD}, any writing on paper is shown only as illegible scribble lines, absolutely no readable letters: ${svgLabel(`/assets/story/insert/${f}`) || name}.`,
+    refs: [HEROINE_STYLE], after: ['portrait-lia'],
+    usage: usageText(usageIndex.bg.get(`insert:${name}`)),
   });
 }
 
 export const JOBS = jobs;
+
+// GPT 出图（gpt-image）只给三种尺寸：竖图 1024x1536、横图 1536x1024、方图 1024x1024；finalize.mjs 再裁成游戏尺寸
+export const gptSize = (size) => {
+  const [w, h] = String(size).split('x').map(Number);
+  return w > h ? '1536x1024' : w < h ? '1024x1536' : '1024x1024';
+};
+// GPT 没有单独的负面提示词：把「避免」并进提示词
+export const gptPrompt = (job) => `${job.prompt} Avoid: ${job.negative || NEGATIVE}.`;

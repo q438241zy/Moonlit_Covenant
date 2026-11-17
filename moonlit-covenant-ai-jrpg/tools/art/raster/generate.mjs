@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // 厚涂位图批量出图（零依赖，Node 20+）。清单见 manifest.mjs。
 //
-//   ARK_API_KEY=… node tools/art/raster/generate.mjs                 # 默认：火山方舟 Seedream
+//   OPENAI_API_KEY=… node tools/art/raster/generate.mjs --provider openai   # GPT 出图（gpt-image，docs/ART-LIST-GPT.md）
+//   ARK_API_KEY=… node tools/art/raster/generate.mjs                 # 火山方舟 Seedream
 //   SILICONFLOW_API_KEY=… node tools/art/raster/generate.mjs --provider siliconflow
 //
 // 参数：
@@ -17,7 +18,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { JOBS, NEGATIVE } from './manifest.mjs';
+import { JOBS, NEGATIVE, gptSize, gptPrompt } from './manifest.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 const outDir = path.join(root, 'tools/art/raster/out');
@@ -31,6 +32,14 @@ const opt = (name, fallback) => {
 };
 
 const PROVIDERS = {
+  // OpenAI gpt-image：有参考图时走 images/edits（multipart，最多 16 张参考图），没有时走 images/generations；
+  // 胸像（job.alpha）要透明底。返回 b64。
+  openai: {
+    key: 'OPENAI_API_KEY',
+    base: process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1',
+    model: process.env.OPENAI_IMAGE_MODEL || 'gpt-image-1',
+    multipart: true,
+  },
   // 火山方舟（豆包 Seedream）：OpenAI 风格 images/generations，支持多张参考图，b64 直接返回，免去下载第二个域名
   ark: {
     key: 'ARK_API_KEY',
@@ -64,7 +73,7 @@ const PROVIDERS = {
   },
 };
 
-const providerName = opt('provider', process.env.ARK_API_KEY ? 'ark' : process.env.SILICONFLOW_API_KEY ? 'siliconflow' : 'ark');
+const providerName = opt('provider', process.env.OPENAI_API_KEY ? 'openai' : process.env.ARK_API_KEY ? 'ark' : process.env.SILICONFLOW_API_KEY ? 'siliconflow' : 'openai');
 const provider = PROVIDERS[providerName];
 if (!provider) throw new Error(`未知 provider：${providerName}`);
 const model = opt('model', provider.model);
@@ -103,13 +112,42 @@ function refDataUri(rel) {
   return `data:${mime};base64,${fs.readFileSync(file).toString('base64')}`;
 }
 
+async function callOpenAI(job, refs) {
+  const size = gptSize(job.size);
+  const prompt = gptPrompt(job);
+  const background = job.alpha ? 'transparent' : 'opaque';
+  let res;
+  if (refs.length) {
+    const form = new FormData();
+    form.append('model', model);
+    form.append('prompt', prompt);
+    form.append('size', size);
+    form.append('quality', process.env.OPENAI_IMAGE_QUALITY || 'high');
+    form.append('background', background);
+    refs.slice(0, 16).forEach((uri, i) => {
+      const [head, b64] = uri.split(',');
+      const mime = head.slice(5, head.indexOf(';'));
+      form.append('image[]', new Blob([Buffer.from(b64, 'base64')], { type: mime }), `ref${i}.${mime.endsWith('png') ? 'png' : 'jpg'}`);
+    });
+    res = await fetch(`${provider.base}/images/edits`, { method: 'POST', headers: { authorization: `Bearer ${apiKey}` }, body: form, signal: AbortSignal.timeout(300_000) });
+  } else {
+    res = await fetch(`${provider.base}/images/generations`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', authorization: `Bearer ${apiKey}` },
+      body: JSON.stringify({ model, prompt, size, quality: process.env.OPENAI_IMAGE_QUALITY || 'high', background, n: 1 }),
+      signal: AbortSignal.timeout(300_000),
+    });
+  }
+  return res;
+}
+
 async function callApi(job) {
   const refs = job.refs.map(refDataUri);
   if (refs.some((r) => r === null)) {
     const missing = job.refs.filter((r, i) => refs[i] === null);
     throw new Error(`参考图不存在：${missing.join(', ')}（先跑它依赖的任务：${(job.after || []).join(', ')}）`);
   }
-  const res = await fetch(`${provider.base}/images/generations`, {
+  const res = provider.multipart ? await callOpenAI(job, refs) : await fetch(`${provider.base}/images/generations`, {
     method: 'POST',
     headers: { 'content-type': 'application/json', authorization: `Bearer ${apiKey}` },
     body: JSON.stringify(provider.body(job, model, refs)),
@@ -136,7 +174,7 @@ function log(entry) {
 async function runJob(job, index) {
   const tag = `[${index + 1}/${jobs.length}] ${job.id}`;
   if (dryRun) {
-    console.log(`${tag}  ${job.size}  seed=${job.seed}  refs=${job.refs.join(' + ') || '—'}\n  ${job.prompt}\n`);
+    console.log(`${tag}  ${providerName === 'openai' ? gptSize(job.size) : job.size}${job.alpha ? ' 透明底' : ''}  seed=${job.seed}  refs=${job.refs.join(' + ') || '—'}\n  ${job.prompt}\n`);
     return true;
   }
   for (let attempt = 1; attempt <= 3; attempt += 1) {
@@ -159,14 +197,16 @@ async function runJob(job, index) {
   return false;
 }
 
-// 依赖立绘的任务（服装、莉莉丝英雄卡）放到立绘之后
-const first = jobs.filter((j) => !j.after);
-const second = jobs.filter((j) => j.after);
+// 按依赖分层：立绘 → 服装与其余（以立绘为画风参考）→ 泳装罩衫版 → 胸像；同一层内并发
+const byId = new Map(JOBS.map((j) => [j.id, j]));
+const depth = (j, seen = new Set()) => (j.after || []).reduce((d, a) => (byId.has(a) && !seen.has(a) ? Math.max(d, 1 + depth(byId.get(a), new Set([...seen, a]))) : d), 0);
+const layers = [];
+for (const j of jobs) (layers[depth(j)] ||= []).push(j);
 const concurrency = Math.max(1, Number(opt('concurrency', 2)));
 console.log(`${dryRun ? '[dry-run] ' : ''}provider=${providerName} model=${model} 任务 ${jobs.length} 个，并发 ${concurrency}`);
 
 let failed = 0;
-for (const batch of [first, second]) {
+for (const batch of layers.filter(Boolean)) {
   let next = 0;
   await Promise.all(Array.from({ length: concurrency }, async () => {
     while (next < batch.length) {

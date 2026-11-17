@@ -15,6 +15,7 @@
     "art:cards": "node tools/art/build-cards.mjs",
     "art:paint": "node tools/art/raster/generate.mjs",
     "art:paint:finalize": "node tools/art/raster/finalize.mjs",
+    "art:list": "node tools/art/raster/list.mjs",
     "art:legacy-jpg": "node tools/art/raster/compress-legacy.mjs",
     "story:check": "node tools/story/check.mjs",
     "check": "node tools/check-syntax.mjs"

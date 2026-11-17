@@ -1,13 +1,15 @@
 // 厚涂位图预留位：public/assets/paint/manifest.json 里登记的图优先显示，其余继续用矢量 SVG。
 // 出图后运行 tools/art/raster/finalize.mjs 会写入 JPEG 并更新清单，无需改代码。
 // 清单格式：{ "portraits": ["freya"], "costumes": ["freya_maid"], "cg": [], "boss": [], "scenes": [], "cards": [], "story-bg": [], "story-npc": [] }
+// 胸像组（story-npc、costumes-bust、costumes-bust-soft）是透明底 PNG，其余是 JPEG（tools/art/raster/finalize.mjs）。
 //
 // 「AI 生成」角标（B17）：厚涂位图由 AI 生成，矢量 SVG 是原创美术。paint() 换成位图时，渲染器给图片的容器
 // 加上 aiPaintedClass(url)，并把 aiBadge(url) 放进容器——各页面（主游戏、主线播放器、卡牌对战）用同一个角标。
 // 角标的基础样式由本模块以可构造样式表（document.adoptedStyleSheets）注入，不需要内联 <style>，符合 CSP；
 // 选择器包在 :where() 里（特异性为 0），页面样式表可以按场景微调位置与字号。
 
-const SVG_PATH = /^\/assets\/(portraits|costumes|cg|boss|scenes|cards|story\/bg|story\/npc)\/([\w-]+?)(?:_e)?\.svg$/;
+const SVG_PATH = /^\/assets\/(portraits|costumes\/bust\/soft|costumes\/bust|costumes\/soft|costumes|cg|boss|scenes|cards|story\/bg|story\/npc|story\/insert)\/([\w-]+?)(?:_e)?\.svg$/;
+const ALPHA = new Set(['story-npc', 'costumes-bust', 'costumes-bust-soft']);
 let ready = new Map();
 
 export async function loadPaint() {
@@ -23,9 +25,9 @@ export async function loadPaint() {
 export function paint(url) {
   const m = typeof url === 'string' ? url.match(SVG_PATH) : null;
   if (!m) return url;
-  const group = m[1].replace('/', '-'); // story/bg -> story-bg
+  const group = m[1].replaceAll('/', '-'); // story/bg -> story-bg，costumes/bust/soft -> costumes-bust-soft
   const name = m[2];
-  return ready.get(group)?.has(name) ? `/assets/paint/${group}/${name}.jpg` : url;
+  return ready.get(group)?.has(name) ? `/assets/paint/${group}/${name}.${ALPHA.has(group) ? 'png' : 'jpg'}` : url;
 }
 
 /** paint(url) 是否换成了厚涂位图（AI 生成）。 */
