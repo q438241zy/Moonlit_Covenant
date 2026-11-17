@@ -319,7 +319,68 @@ export function redeemWardrobeTicket(account, costumeId) {
   return { ok: true, costume: viewCostume(costume, clearedChaptersOf(account)), wardrobe: wardrobeStatus(account) };
 }
 
-export const GACHA_POOLS = ['character', 'costume'];
+/**
+ * 典藏复刻池（服装稿 §5.1「对应番外上线时以限时池复刻；稀有度、保底与公示规则和服装池相同」）：
+ * - 四类典藏（冬灯节服、新历祭服、纪念日礼服、龙舟祭服）轮流复刻，每期 14 天，按服务器时间从 REPRINT_RULES.anchor 起算；
+ *   只有对应番外已经上线的典藏才进轮换（由服务器按番外目录传入 liveTypes）。
+ * - 池子＝常驻 40 件＋本期复刻的 8 件；稀有度概率与服饰池相同（5★3%／4★17%／3★80%）。抽到的稀有度正好是复刻款的稀有度时，
+ *   一半（featuredShare）落在复刻款、一半落在同稀有度的常驻款；其余稀有度照常驻表。每件的实际概率由 reprintRates 算出并公示。
+ * - 保底计数与衣橱券点数和服饰池共用（同一个「服饰召唤」）：第 90 抽必出 5★ 照旧。
+ */
+export const REPRINT_RULES = Object.freeze({
+  types: Object.freeze(['christmas', 'newyear', 'anniversary', 'duanwu']),
+  days: 14,
+  anchor: Date.UTC(2026, 10, 2), // 2026-11-02（星期一）
+  featuredShare: 0.5
+});
+
+/** 现在这一期复刻的是哪类典藏；liveTypes 是对应番外已上线的典藏类型。都没上线时为 null。 */
+export function currentReprint(liveTypes = REPRINT_RULES.types, now = Date.now()) {
+  const live = new Set(liveTypes || []);
+  const types = REPRINT_RULES.types.filter((t) => live.has(t) && COSTUME_TYPE_META[t]?.status === 'archive');
+  if (!types.length) return null;
+  const period = REPRINT_RULES.days * 86400000;
+  const index = Math.floor((now - REPRINT_RULES.anchor) / period);
+  const k = ((index % types.length) + types.length) % types.length;
+  const startsAt = REPRINT_RULES.anchor + index * period;
+  const type = types[k];
+  const nextType = types[(k + 1) % types.length];
+  return {
+    type,
+    label: COSTUME_TYPE_META[type].label,
+    rarity: COSTUME_TYPE_META[type].rarity,
+    startsAt,
+    endsAt: startsAt + period,
+    next: { type: nextType, label: COSTUME_TYPE_META[nextType].label }
+  };
+}
+
+/** 复刻池的条目：本期复刻的 8 件（featured）与常驻 40 件 */
+export function reprintTable(reprint) {
+  const featured = reprint ? COSTUME_CATALOG.filter((c) => c.type === reprint.type) : [];
+  return { featured, standing: COSTUME_PULL_TABLE };
+}
+
+/** 复刻池每个条目的实际概率（公示用；与 pullGacha 的抽法一致）：{ featured: { rarity, each, total }, byRarity: { 5: { standingEach }, … } } */
+export function reprintRates(reprint) {
+  const { featured, standing } = reprintTable(reprint);
+  const rates = GACHA_RATES.costume;
+  const share = featured.length ? REPRINT_RULES.featuredShare : 0;
+  const byRarity = {};
+  for (const [r, total] of Object.entries(rates)) {
+    const rarity = Number(r);
+    const n = standing.filter((c) => c.rarity === rarity).length;
+    const standingTotal = rarity === reprint?.rarity ? total * (1 - share) : total;
+    byRarity[rarity] = { total, standingTotal, standingEach: n ? standingTotal / n : 0, standingCount: n };
+  }
+  const featuredTotal = reprint ? rates[reprint.rarity] * share : 0;
+  return {
+    featured: { rarity: reprint?.rarity ?? null, total: featuredTotal, each: featured.length ? featuredTotal / featured.length : 0, count: featured.length },
+    byRarity
+  };
+}
+
+export const GACHA_POOLS = ['character', 'costume', 'reprint'];
 
 /** 召唤唯一的货币。 */
 export const GACHA_CURRENCY = 'diamonds';
@@ -346,9 +407,9 @@ export function duplicateCompensation(rarity) {
   return DUPLICATE_COMPENSATION[Number(rarity)] || 0;
 }
 
-/** 把任意输入归一成合法的池名：只有 'costume' 是服饰池，其余一律按角色池处理（与服务器记录拥有物的规则一致）。 */
+/** 把任意输入归一成合法的池名：'costume' 服饰池、'reprint' 典藏复刻池，其余一律按角色池处理（与服务器记录拥有物的规则一致）。 */
 export function normalizePool(pool) {
-  return pool === 'costume' ? 'costume' : 'character';
+  return pool === 'costume' || pool === 'reprint' ? pool : 'character';
 }
 
 /**
@@ -374,6 +435,12 @@ export function pullGacha(account, pool, count, options = {}) {
     return { ok: false, code: 'DIAMONDS_ONLY', message: '召唤只收钻石；Credit 只用于 AI 对话。' };
   }
   const poolKey = normalizePool(pool);
+  // 典藏复刻池要由调用方给出本期复刻（currentReprint）；没有复刻时不扣钻石
+  const reprint = poolKey === 'reprint' ? options?.reprint || null : null;
+  if (poolKey === 'reprint' && !reprint) return { ok: false, code: 'NO_REPRINT', message: '现在没有开放的典藏复刻。' };
+  const costumeLike = poolKey === 'costume' || poolKey === 'reprint';
+  // 复刻池与服饰池共用保底计数（同一个「服饰召唤」）
+  const pityKey = costumeLike ? 'costume' : 'character';
   const pullCount = Number(count) === 10 ? 10 : 1;
   const label = pullCount === 10 ? '十连' : '单抽';
   const cost = pullCount === 10 ? GACHA_DIAMOND_COSTS.ten : GACHA_DIAMOND_COSTS.single;
@@ -385,38 +452,41 @@ export function pullGacha(account, pool, count, options = {}) {
 
   // 初始化保底计数器
   if (!account.pityCounters || typeof account.pityCounters !== 'object') account.pityCounters = {};
-  if (!Number.isFinite(account.pityCounters[poolKey])) account.pityCounters[poolKey] = 0;
+  if (!Number.isFinite(account.pityCounters[pityKey])) account.pityCounters[pityKey] = 0;
 
   // 已拥有列表：isNew 以「这一抽之前」为准
-  const ownedKey = poolKey === 'costume' ? 'ownedCostumes' : 'ownedCharacters';
+  const ownedKey = costumeLike ? 'ownedCostumes' : 'ownedCharacters';
   if (!Array.isArray(account[ownedKey])) account[ownedKey] = [];
   const owned = new Set(account[ownedKey]);
 
-  const rates = GACHA_RATES[poolKey];
-  const sourcePool = poolKey === 'costume' ? COSTUME_PULL_TABLE : CHARACTER_POOL;
-  const view = poolKey === 'costume' ? viewCostume : viewCharacter;
+  const rates = GACHA_RATES[costumeLike ? 'costume' : 'character'];
+  const sourcePool = costumeLike ? COSTUME_PULL_TABLE : CHARACTER_POOL;
+  const featured = reprint ? reprintTable(reprint).featured : [];
+  const view = costumeLike ? viewCostume : viewCharacter;
   const cleared = clearedChaptersOf(account);
   const results = [];
   let compensationTotal = 0;
 
   for (let i = 0; i < pullCount; i++) {
-    account.pityCounters[poolKey] += 1;
+    account.pityCounters[pityKey] += 1;
     let rarity;
 
     // 保底机制：达到阈值必出5星
-    if (account.pityCounters[poolKey] >= PITY_THRESHOLD) {
+    if (account.pityCounters[pityKey] >= PITY_THRESHOLD) {
       rarity = 5;
-      account.pityCounters[poolKey] = 0;
+      account.pityCounters[pityKey] = 0;
     } else {
       rarity = rollRarity(rates);
       if (rarity === 5) {
-        account.pityCounters[poolKey] = 0; // 出5星重置保底
+        account.pityCounters[pityKey] = 0; // 出5星重置保底
       }
     }
 
     // 从对应稀有度的池中随机选取。
     // 概率表只列池内存在的稀有度；万一不一致，降到池内最低稀有度，不能退回整池随机（否则概率与保底都会失真）。
     let candidates = sourcePool.filter((item) => item.rarity === rarity);
+    // 复刻池：抽到复刻款的稀有度时，一半落在复刻款
+    if (featured.length && rarity === reprint.rarity && Math.random() < REPRINT_RULES.featuredShare) candidates = featured;
     if (candidates.length === 0) {
       const lowest = Math.min(...sourcePool.map((item) => item.rarity));
       candidates = sourcePool.filter((item) => item.rarity === lowest);
@@ -445,9 +515,9 @@ export function pullGacha(account, pool, count, options = {}) {
     account.diamonds = (Number.isFinite(account.diamonds) ? account.diamonds : 0) + compensationTotal;
   }
 
-  // 衣橱券：服饰池每抽 1 点，满 90 点换一张（5★ 不清零）
+  // 衣橱券：服饰池（含典藏复刻池）每抽 1 点，满 90 点换一张（5★ 不清零）
   let wardrobe;
-  if (poolKey === 'costume') {
+  if (costumeLike) {
     const w = wardrobeOf(account);
     w.points += pullCount * WARDROBE_TICKET.pointsPerPull;
     while (w.points >= WARDROBE_TICKET.pointsPerTicket) {
@@ -463,7 +533,8 @@ export function pullGacha(account, pool, count, options = {}) {
     currency: GACHA_CURRENCY,
     results,
     cost,
-    pity: account.pityCounters[poolKey],
+    pity: account.pityCounters[pityKey],
+    ...(reprint ? { reprint: { type: reprint.type, label: reprint.label, endsAt: reprint.endsAt } } : {}),
     compensation: { diamonds: compensationTotal },
     balance: { diamonds: Number.isFinite(account.diamonds) ? account.diamonds : 0 },
     ...(wardrobe ? { wardrobe } : {})
@@ -478,7 +549,8 @@ export function pullGacha(account, pool, count, options = {}) {
  */
 export function getPityCounter(account, pool) {
   if (!account.pityCounters) return 0;
-  return account.pityCounters[normalizePool(pool)] || 0;
+  const key = normalizePool(pool) === 'character' ? 'character' : 'costume'; // 复刻池与服饰池共用
+  return account.pityCounters[key] || 0;
 }
 
 // 内部工具：根据概率表抽取稀有度（从高到低累加；表里只列池内存在的稀有度）

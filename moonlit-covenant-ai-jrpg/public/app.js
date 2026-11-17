@@ -1902,11 +1902,12 @@ function gachaPage() {
   return `${navBar()}
     <main class="page-content">
       <div class="page-header"><div class="eyebrow">SUMMON · 星轨召唤</div><h1>召唤系统</h1>
-        <p class="muted">角色池：8 位女主 · 服饰池：泳装、婚礼礼服、OL装（异界IF）、女仆装、运动短袖 × 8 位女主（四类节庆服装已转为典藏，不在池中）· 第 90 抽必出 5★，服饰池另有衣橱券。召唤只收钻石。还没在主线登场的女主和她的服装显示为剪影，通关她登场的那一章后揭晓；女主在主线正式入队时会自动加入，重复抽到的会折成钻石。</p>
+        <p class="muted">角色池：8 位女主 · 服饰池：泳装、婚礼礼服、OL装（异界IF）、女仆装、运动短袖 × 8 位女主（四类节庆服装已转为典藏，不在常驻池；「典藏复刻」每 14 天轮流复刻其中一类）· 第 90 抽必出 5★，服饰池另有衣橱券。召唤只收钻石。还没在主线登场的女主和她的服装显示为剪影，通关她登场的那一章后揭晓；女主在主线正式入队时会自动加入，重复抽到的会折成钻石。</p>
       </div>
       <div class="gacha-tabs">
         <button class="gacha-tab ${currentGachaPool === 'character' ? 'active' : ''}" data-pool="character">角色池</button>
         <button class="gacha-tab ${currentGachaPool === 'costume' ? 'active' : ''}" data-pool="costume">服饰池</button>
+        <button class="gacha-tab ${currentGachaPool === 'reprint' ? 'active' : ''}" data-pool="reprint">典藏复刻</button>
         <button class="gacha-tab ${currentGachaPool === 'skill' ? 'active' : ''}" data-pool="skill">秘技召唤</button>
       </div>
       <section class="gacha-pool" id="gachaPool"><div class="loader">加载中…</div></section>
@@ -2057,6 +2058,12 @@ async function loadGachaPool() {
       bindSkillPoolEvents();
       return;
     }
+    if (currentGachaPool === 'reprint') {
+      if (ratesBox) ratesBox.innerHTML = reprintRatesHtml(data);
+      pool.innerHTML = reprintPoolHtml(data, index);
+      bindWardrobeTicket();
+      return;
+    }
     if (ratesBox) ratesBox.innerHTML = gachaRatesHtml(currentGachaPool, data);
     if (currentGachaPool === 'character') {
       pool.innerHTML = `<div class="gacha-grid">${data.characters.map((c) => `
@@ -2091,6 +2098,57 @@ async function loadGachaPool() {
       bindWardrobeTicket();
     }
   } catch (e) { showToast(e.message, 'error'); }
+}
+
+/* 典藏复刻池（服装稿 §5.1；game/gacha.mjs 的 REPRINT_RULES）：四类典藏轮流复刻，每期 14 天；池子是本期复刻的 8 件加常驻 40 件，
+   概率与服饰池相同，抽到复刻款的稀有度时一半落在复刻款。保底与衣橱券和服饰池共用。 */
+const fmtDay = (ts) => { const d = new Date(ts); return `${d.getMonth() + 1}月${d.getDate()}日`; };
+function reprintPoolHtml(data, index) {
+  const r = data.reprint;
+  if (!r) return '<p class="muted">现在没有开放的典藏复刻：对应的番外上线后，典藏服装会轮流复刻。</p>';
+  const characters = Object.fromEntries((data.characters || []).map((c) => [c.id, c]));
+  const meta = COSTUME_TYPE_META[r.type] || {};
+  return `<div class="reprint-banner rarity-${r.rarity}">
+      <div class="reprint-kicker">${icon('sparkle', { size: 14 })}典藏复刻 · 本期</div>
+      <h3>${icon(meta.icon || 'dress', { size: 20 })}${escapeHtml(r.label)}<span class="gacha-stars">${starsHtml(r.rarity)}</span></h3>
+      <p class="muted">${fmtDay(r.startsAt)} – ${fmtDay(r.endsAt - 1)} · 下一期：${escapeHtml(r.next?.label || '')}。抽到 ${r.rarity}★ 时有一半是本期复刻款；其余照常驻服饰池。保底计数与衣橱券进度和服饰池共用。</p>
+    </div>
+    ${wardrobeTicketHtml(data.wardrobe)}
+    <div class="gacha-grid small">${(r.items || []).map((c) => c.sealed ? `
+      <div class="gacha-costume-card rarity-${c.rarity} is-sealed" title="${escapeHtml(`${c.name}（${debutText(c, index)}）`)}">
+        ${silhouetteThumb('costume-thumb', `${c.name} · ${debutText(c, index)}`)}
+        <div class="gacha-char-name">${escapeHtml(SEALED_NAME)}</div>
+        <div class="gacha-char-title">${escapeHtml(debutText(c, index))}</div>
+      </div>` : `
+      <div class="gacha-costume-card rarity-${c.rarity}" title="${escapeHtml(c.description || c.name)}">
+        ${faceThumb(softCostume(c.file) || ART.costume(c.characterId, r.type), { cls: 'costume-thumb', alt: c.name, fallback: ART.portrait(c.characterId), lazy: true })}
+        <div class="gacha-char-name">${escapeHtml(String(characters[c.characterId]?.name || c.characterId).split('·')[0])}</div>
+        <div class="gacha-char-title">${(playerAccount?.ownedCostumes || []).includes(c.id) ? '已拥有' : escapeHtml(r.label)}</div>
+      </div>`).join('')}</div>
+    <p class="muted gacha-rates-note">常驻服饰池的 40 件（泳装、婚礼礼服、OL装、女仆装、运动短袖）也在这个池里，见下方概率公示。</p>`;
+}
+function reprintRatesHtml(data) {
+  const r = data.reprint;
+  if (!r) return '';
+  const rates = r.rates || {};
+  const pity = Number(data.pity) || 90;
+  const rows = [
+    { label: `本期复刻 · ${r.label}`, rarity: r.rarity, total: rates.featured?.total || 0, each: rates.featured?.each || 0, n: rates.featured?.count || 0 },
+    ...Object.entries(rates.byRarity || {}).sort(([a], [b]) => b - a).map(([rarity, v]) => ({ label: '常驻服饰', rarity: Number(rarity), total: v.standingTotal, each: v.standingEach, n: v.standingCount })),
+  ];
+  return `
+    <h2 class="section-title" id="gachaRatesTitle">概率公示 · 典藏复刻</h2>
+    <p class="muted gacha-rates-note">稀有度概率与服饰池相同：5★ ${formatRate(data.rates?.costume?.[5] || 0)} / 4★ ${formatRate(data.rates?.costume?.[4] || 0)} / 3★ ${formatRate(data.rates?.costume?.[3] || 0)}。抽到 ${r.rarity}★ 时，${Math.round((r.featuredShare || 0.5) * 100)}% 是本期复刻款。保底：与服饰池共用计数，连续 ${pity - 1} 次未出 5★ 时第 ${pity} 次必出 5★。概率按四舍五入显示。</p>
+    <div class="rates-table" role="table" aria-label="典藏复刻概率">
+      <div class="rates-row rates-head" role="row"><span role="columnheader">稀有度</span><span role="columnheader">合计</span><span role="columnheader">单个条目</span><span role="columnheader">条目</span></div>
+      ${rows.map((row) => `<div class="rates-row rarity-${row.rarity}" role="row">
+        <span role="cell" class="rates-rarity">${starsHtml(row.rarity, 5)}<b>${row.rarity}★</b></span>
+        <span role="cell" class="rates-total">${formatRate(row.total)}</span>
+        <span role="cell" class="rates-each">${formatRate(row.each)} <small>× ${row.n}</small></span>
+        <span role="cell" class="rates-items"><span>${escapeHtml(row.label)}</span></span>
+      </div>`).join('')}
+    </div>
+    ${duplicateNoteHtml(data)}`;
 }
 
 /* 衣橱券（服装稿 1.2）：服饰池每抽 1 点、满 90 点自动换一张，一张换一件指定的常驻 5★ 服装（只能选已登场女主的、还没拥有的）。
