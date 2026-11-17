@@ -1,0 +1,2550 @@
+{
+  "id": "ex001",
+  "number": 1,
+  "kind": "extra",
+  "scriptId": "EX001_BRIDGEHEAD_INN_HELPING_DAY",
+  "title": "番外一｜桥头旅店的帮工日",
+  "shortTitle": "桥头旅店的帮工日",
+  "estimatedMinutes": 9,
+  "source": "剧本/番外/ex001橋頭旅店的幫工日.md",
+  "unlockAfter": "ch010",
+  "window": "正式10–15之间",
+  "cast": [
+    "lia",
+    "mia"
+  ],
+  "costumeTypes": [
+    "maid"
+  ],
+  "canon": {
+    "flags": {
+      "FLAG_CH000_HEMAI_DESTROYED": true,
+      "FLAG_CH000_BLACK_DRAGON_SEEN": true,
+      "FLAG_CH000_MOTHER_STATUS_UNKNOWN": true,
+      "FLAG_CH000_TOBY_SURVIVED_CAVE": true,
+      "FLAG_CH000_DRAGON_VOW": true,
+      "FLAG_CH000_DRAGON_REMAINS_OVER_HEMAI": true,
+      "FLAG_CH001_BLACK_DRAGON_REPELLED_BY_KERN": true,
+      "FLAG_CH001_BLACK_DRAGON_ABDOMEN_WOUNDED": true,
+      "FLAG_CH001_MOTHER_DEATH_CONFIRMED": true,
+      "FLAG_CH001_TOBY_UNDER_KERN_GUARDIANSHIP": true,
+      "FLAG_CH001_ARK_RECEIVED_GUILD_LETTER": true,
+      "FLAG_CH001_KERN_MENTOR_IDEAL": true,
+      "FLAG_CH002_GUILD_REGISTERED": true,
+      "FLAG_CH002_LEAH_FIRST_SEEN": true,
+      "FLAG_CH002_THIEF_CAPTURED": true,
+      "FLAG_CH002_BLACK_CRYSTAL_EVIDENCE_RECOVERED": true,
+      "FLAG_CH002_FIRE_RESONANCE_FLICKER": true,
+      "FLAG_CH003_TEMP_PARTY_FORMED": true,
+      "FLAG_CH003_LEAH_SIGNED_SUPERVISION": true,
+      "FLAG_CH003_THIRD_ACCOMPLICE_CAPTURED": true,
+      "FLAG_CH003_SEVEN_RING_MARK_SEEN": true,
+      "FLAG_CH003_BLACK_CRYSTAL_CRATE_SEIZED": true,
+      "FLAG_CH003_HEMAI_SURVIVORS_TARGETED": true,
+      "FLAG_CH003_OLD_MILL_LEAD": true,
+      "FLAG_CH003_MILL_ASSAULT_POSTPONED": true,
+      "FLAG_CH003_FIRST_JOINT_MISSION_COMPLETE": true,
+      "FLAG_CH003_FIRE_RESONANCE_WARMTH": true,
+      "FLAG_CH003_GUILD_COLLAB_STAMPED": true,
+      "FLAG_CH003_LEAH_KNOWS_PLAYER_NAME": true,
+      "FLAG_CH003_RELIEF_CART_PASSED_WEST_GATE": true,
+      "FLAG_CH003_DRIVER_DESCRIBED": true,
+      "FLAG_CH003_SHIELD_SIGNALS_LEARNED": true,
+      "FLAG_CH003_SOUP_POT_SETTLED": true,
+      "FLAG_CH003_BARREL_DEDUCTED": true,
+      "FLAG_CH004_CORD_SIGNALS_LEARNED": true,
+      "FLAG_CH004_FENN_CONFIRMED_CHAIN_SWAP": true,
+      "FLAG_CH004_WEST_GATE_COSIGNED": true,
+      "FLAG_CH004_SENTRY_REPORT_HEARD": true,
+      "FLAG_CH004_MILL_INFILTRATED": true,
+      "FLAG_CH004_CHARGING_RACK_SEEN": true,
+      "FLAG_CH004_LEDGER_READ": true,
+      "FLAG_CH004_MARA_AND_DAUGHTER_FOUND": true,
+      "FLAG_CH004_KEY_ON_ACOLYTE": true,
+      "FLAG_CH004_TEARS_LIGHT_CRYSTALS": true,
+      "FLAG_CH004_CAPTIVES_REMAIN_IN_MILL": true,
+      "FLAG_CH004_ACOLYTE_SEEN": true,
+      "FLAG_CH004_RESCUE_WINDOW_CRATE_SWAP": true,
+      "FLAG_CH004_LEAH_LEARNED_HEMAI": true,
+      "FLAG_CH004_GUARDS_COMMITTED": true,
+      "FLAG_CH004_RESCUE_COMMISSION_POSTED": true,
+      "FLAG_CH005_WEST_GATE_COSIGNED": true,
+      "FLAG_CH005_PLAN_BRIEFED_AT_MILESTONE": true,
+      "FLAG_CH005_COLLAR_OWNER_REVEALED": true,
+      "FLAG_CH005_PEACE_STONES_NAMED": true,
+      "FLAG_CH005_CHAIN_SWAP_COMPLETED": true,
+      "FLAG_CH005_LEAH_PRESSED_CRATE": true,
+      "FLAG_CH005_CHIEF_COLLAR_DISABLED": true,
+      "FLAG_CH005_ACOLYTE_CAPTURED": true,
+      "FLAG_CH005_ROLL_CALL_ANSWERED": true,
+      "FLAG_CH005_MARA_AND_POLLY_RESCUED": true,
+      "FLAG_CH005_LEAD_MISTTIDE_MARSH": true,
+      "FLAG_CH005_EVIDENCE_TO_GUARD": true,
+      "FLAG_CH005_RESCUE_COMMISSION_COMPLETE": true,
+      "FLAG_CH005_FORMAL_PARTY_FORMED": true,
+      "FLAG_CH005_ESCORT_COMMISSION_POSTED": true,
+      "FLAG_CH005_MARA_POLLY_TO_NORTH_CAMP": true,
+      "FLAG_CH006_ESCORT_COMMISSION_ACCEPTED": true,
+      "FLAG_CH006_SUPPLY_TUTORIAL_DONE": true,
+      "FLAG_CH006_RUBBING_COPY_CARRIED": true,
+      "FLAG_CH006_MARSH_OGRE_UNCOLLARED": true,
+      "FLAG_CH006_SHIELD_UNDER_WHEEL": true,
+      "FLAG_CH006_UNSPOKEN_SYNC": true,
+      "FLAG_CH006_SALT_MARSH_BRIDGE_COLLAPSED": true,
+      "FLAG_CH006_LEAH_BOUNDARY_STATED": true,
+      "FLAG_CH006_ESCORT_COMMISSION_COMPLETE": true,
+      "FLAG_CH006_LEAH_CAKE_SEEN": true,
+      "FLAG_CH006_PARTY_CAMP_OPENED": true,
+      "FLAG_CH006_BLUE_EXPLOSION_SEEN": true,
+      "FLAG_CH006_GEAR_IN_CAKE": true,
+      "FLAG_CH007_FOREST_EDGE_ENTERED": true,
+      "FLAG_CH007_MIA_FIRST_SEEN": true,
+      "FLAG_CH007_UNPLANNED_DISASSEMBLY_NAMED": true,
+      "FLAG_CH007_MIA_NOTED_SEVEN_LAWS": true,
+      "FLAG_CH007_SAFETY_RULES_CLASHED": true,
+      "FLAG_CH007_RETREAT_TO_STAKE": true,
+      "FLAG_CH007_CATCH_IT_WHOLE": true,
+      "FLAG_CH007_THREE_PERSON_FORMATION": true,
+      "FLAG_CH007_TAUNT_INTRODUCED": true,
+      "FLAG_CH007_SCRAP_PICKER_STOPPED": true,
+      "FLAG_CH007_INCIDENT_LOGGED": true,
+      "FLAG_CH007_GEAR_NUMBER_SEEN": true,
+      "FLAG_CH007_GEAR_CRACKED": true,
+      "FLAG_CH007_ERODED_TIDE_CRYSTAL_FOUND": true,
+      "FLAG_CH007_CORE_UNNUMBERED": true,
+      "FLAG_CH007_SEVEN_RING_MATCH_SEEN": true,
+      "FLAG_CH008_RECORDS_REQUESTED": true,
+      "FLAG_CH008_MIA_AS_WITNESS": true,
+      "FLAG_CH008_EAVE_REPAIRED": true,
+      "FLAG_CH008_MIA_MADE_AMENDS": true,
+      "FLAG_CH008_TIDE_STATION_REACHED": true,
+      "FLAG_CH008_GEAR_RETURNED_TO_WINCH": true,
+      "FLAG_CH008_PLANNED_DISASSEMBLY": true,
+      "FLAG_CH008_ONE_MILLIMETER": true,
+      "FLAG_CH008_TIDE_DOOR_LOCKED": true,
+      "FLAG_CH008_RECORDS_RETRIEVED": true,
+      "FLAG_CH008_CORE_SWAP_PROVEN": true,
+      "FLAG_CH008_RINGS_GROWN_NOT_CARVED": true,
+      "FLAG_CH008_MIA_SELF_REPORTED": true,
+      "FLAG_CH008_INCIDENT_SETTLED": true,
+      "FLAG_CH008_NAMES_EXCHANGED": true,
+      "FLAG_CH008_LEAH_SHARED_CASE_FACTS": true,
+      "FLAG_CH008_BLACK_CRYSTAL_APPRAISED": true,
+      "FLAG_CH008_PEACE_STONE_EXPLAINED": true,
+      "FLAG_CH008_CRYSTAL_TO_MIA": true,
+      "FLAG_CH008_MIA_GUEST_TO_HARBOR": true,
+      "FLAG_CH008_THREE_NAMES_LOGGED": true,
+      "FLAG_CH008_SHARED_HEARTBEAT_DETECTED": true,
+      "FLAG_CH008_ACT1_CLOSED": true,
+      "FLAG_CH009_ENTERED_FOG_HARBOR": true,
+      "FLAG_CH009_ESCORT_PAID": true,
+      "FLAG_CH009_INES_MET": true,
+      "FLAG_CH009_RESCUE_RULE_TOLD": true,
+      "FLAG_CH009_GUEST_UNDER_LEAH": true,
+      "FLAG_CH009_WITNESS_NAMES_KEPT": true,
+      "FLAG_CH009_MISSING_CASE_TAKEN": true,
+      "FLAG_CH009_DIVISION_OF_LABOR": true,
+      "FLAG_CH009_CRYSTAL_LAYERS_READ": true,
+      "FLAG_CH009_GREY_CORE_DOWNSTREAM": true,
+      "FLAG_CH009_PEOPLE_FIRST": true,
+      "FLAG_CH009_TESTIMONY_LINKED": true,
+      "FLAG_CH009_SENT_TO_WITNESS": true,
+      "FLAG_CH009_BATH_TESTIMONY": true,
+      "FLAG_CH009_MIRROR_TESTIMONY_LOGGED": true,
+      "FLAG_CH009_DOCK_WORKER_TAKEN": true,
+      "FLAG_CH009_GAFF_WITH_LEAH": true,
+      "FLAG_CH009_DRAIN_NOT_ENTERED": true,
+      "FLAG_CH009_LEDGER_LINE_FINISHED": true,
+      "FLAG_CH009_BELOW_TIDE_OFFBEAT": true,
+      "FLAG_CH010_LEGAL_ENTRY": true,
+      "FLAG_CH010_PUMP_REVERSED_FOUND": true,
+      "FLAG_CH010_FEED_EVIDENCE_FOUND": true,
+      "FLAG_CH010_OUTBOUND_MARK_SEEN": true,
+      "FLAG_CH010_SEVENTEEN_FOUND": true,
+      "FLAG_CH010_GREY_OUTFLOW_TRACED": true,
+      "FLAG_CH010_MIA_SENT_TO_PUMP": true,
+      "FLAG_CH010_FOUR_RESCUED": true,
+      "FLAG_CH010_GAFF_RETURNED": true,
+      "FLAG_CH010_BLACK_STONES_TAKEN": true,
+      "FLAG_CH010_PUMP_STOPPED": true,
+      "FLAG_CH010_SEVENTEEN_CRACKED": true,
+      "FLAG_CH010_MIA_PEOPLE_FIRST": true,
+      "FLAG_CH010_MIA_RESCUE_MISSION_COMPLETE": true,
+      "FLAG_CH010_MOTHER_RETREATED": true,
+      "FLAG_CH010_HEARTBEAT_STILL_BELOW": true,
+      "FLAG_CH010_BELOW_TIDE_STILL": true,
+      "FLAG_CH010_RESCUE_COLUMN_FILLED": true,
+      "FLAG_CH010_ECLIPSE_FEAST_NAMED": true,
+      "FLAG_CH010_SAME_LEDGER": true,
+      "FLAG_CH010_MIA_JOINED": true,
+      "FLAG_CH010_MIA_CONDITION_LOGGED": true,
+      "FLAG_CH010_CASE_SHARED_WITH_MIA": true,
+      "FLAG_CH010_LODGED_BRIDGEHEAD_INN": true,
+      "FLAG_CH010_MIRROR_EYES": true,
+      "FLAG_CH010_OUTSIDER_NAMED": true,
+      "FLAG_CH009_PIPE_TIDE_HEARD": true
+    },
+    "items": {
+      "ITEM_FAMILY_SHEPHERD_WHISTLE": 1,
+      "ITEM_MOTHER_WHEAT_HAIRPIN": 1,
+      "ITEM_GUILD_IRON_BADGE": 1,
+      "ITEM_BASIC_BANDAGE": 2,
+      "ITEM_MARSH_SHOE_COVERS": true,
+      "ITEM_FOREST_EDGE_GEAR": false,
+      "ITEM_FOG_HARBOR_CLEAR_CRYSTAL": false
+    },
+    "vars": {
+      "PLAYER_VOW_PRIMARY": "VOW_REVENGE",
+      "PLAYER_GUILT_TOTAL": 0,
+      "ITEM_FAMILY_SHEPHERD_WHISTLE_OWNER": "TOBY",
+      "PLAYER_PROMISE_RETURN_TO_TOBY": true,
+      "PLAYER_GUILD_RANK": "IRON",
+      "PLAYER_FIRST_IMPRESSION_OF_LEAH": "STRONG_POSITIVE_DEFAULT",
+      "LEAH_FIRST_IMPRESSION_OF_PLAYER": "EAGER_BUT_UNDISCIPLINED",
+      "LEAH_TRUST": 3,
+      "LEAH_INTIMACY": 0,
+      "LEAH_SACRIFICE": 0,
+      "PLAYER_GUILT_LEAH": 0,
+      "BATTLE_CH002_STREET_AMBUSH_RESULT": "clean",
+      "FENN_TREATMENT": "FIRM",
+      "PLAYER_PROMISE_OBEY_LEAH_SIGNAL": false,
+      "BATTLE_CH003_MILL_ROAD_CHAINS_RESULT": "clean",
+      "PLAYER_LODGING": "GUILD_BUNK",
+      "MILL_ALERT": 0,
+      "MILL_EXIT": "LATE",
+      "MILL_CAPTIVES_STATE": "QUIET",
+      "PLAYER_RESCUE_ROLE": "CAGE",
+      "MARA_DAUGHTER_CONDITION": "SMOKE_COUGH_BURNED_ARM",
+      "PLAYER_PROMISE_MARA_RETURN": false,
+      "CART_WAIT": "HELD",
+      "SUPERVISOR_NOTE": "STEADY",
+      "PARTY_CONSENT": "UNANSWERED",
+      "PARTY_STANDING": "MEMBER",
+      "LEAH_RELATIONSHIP_STAGE": "STRANGER",
+      "BATTLE_CH005_BULL_COLLAR_RESULT": "clean",
+      "CH006_CLIENT_CONFIDENCE": "NORMAL",
+      "CH006_OGRE_STATE": "TOOK_PLANK",
+      "CH006_SYNC_CHANNEL": "WAIST",
+      "HAZARD_CH006_SALT_BRIDGE_RESULT": "CLEAN",
+      "CONSENT_LEAH_WAIST_STEADY_BASIS": "offered",
+      "CONSENT_LEAH_WAIST_STEADY_STATUS": "granted_once",
+      "CAKE_TRUCE": "SEALED",
+      "MIA_TRUST": 0,
+      "MIA_INTIMACY": 0,
+      "MIA_SACRIFICE": 0,
+      "PLAYER_GUILT_MIA": 0,
+      "PAIR_LEAH_MIA_TRUST": 0,
+      "PARTY_GUEST_MIA": false,
+      "MIA_RELATIONSHIP_STAGE": "STRANGER",
+      "BATTLE_CH007_SCRAP_PICKER_RESULT": "clean",
+      "CONSENT_PLAYER_MIA_SCAN_STATUS": "none",
+      "CH007_GEAR_CUSTODY": "MIA_LOGGED",
+      "CH007_CAKE_SECRET_RESULT": "LEAH_ANSWERED",
+      "MIA_FIRST_IMPRESSION_OF_PLAYER": "QUIET",
+      "CH008_CRYSTAL_CUSTODY": "MIA_LOGGED",
+      "HAZARD_CH008_TIDE_DOOR_RESULT": "CLEAN",
+      "CH008_BLAME_RESPONSE": "SILENT",
+      "CH008_TESTIMONY": "NONE",
+      "INES_FIRST_IMPRESSION_OF_PLAYER": "QUIET",
+      "CH009_PICKER_RESULT": "BASE",
+      "CH009_TESTIMONY_ORDER": "LEAH_LINKED",
+      "CH009_BATH_WITNESS_RESULT": "FULL",
+      "CH009_CRISIS_ACTION": "SILENT",
+      "HAZARD_CH009_DRAIN_GRATE_RESULT": "CLEAN",
+      "CH010_STONES_CUSTODY": "MIA_LOGGED",
+      "CH010_FEED_EVIDENCE_CUSTODY": "GUILD",
+      "PARTY_MEMBER_MIA": true,
+      "CH010_PUMP_READ": "QUIET",
+      "CH010_RESCUE_ORDER": "LEAH_ORDERED",
+      "CH010_MIA_JOIN_REPLY": "SILENT",
+      "BATTLE_CH010_TIDE_CAVITY_MOTHER_RESULT": "clean"
+    },
+    "memories": {
+      "MEMORY_MOTHER_WORDS_FIND_WAY_HOME": "艾琳：“我吹这个，你就知道该往哪边回。”",
+      "MEMORY_FAMILY_ROLL_CALL": "艾琳：“报数！”——“我在！”“我、我也在！”",
+      "MEMORY_BORIN_LAST_WORDS": "先看清该砍谁",
+      "MEMORY_CH001_PROMISE_RETURN_TO_TOBY": "托比：“你一定要回来拿。”——“一定。”",
+      "MEMORY_CH004_MARA_AT_THE_CAGE": "旧磨坊的笼边，玛拉认出了他。她和女儿波莉的手腕被细链锁在晶架上；钥匙在念经的人腰上。",
+      "MEMORY_CH004_TWO_PULLS": "旧磨坊里，绳子拉了两下，他慢了半拍才退。玛拉在他身后说：“……你还欠我一根烟囱。”",
+      "MEMORY_CH004_LEAH_ANGER": "第二座里程石旁，莉亚收完绳子，看着磨坊那点灯说：“我在生气。……所以我先问。”",
+      "MEMORY_CH005_WAIT": "大车之夜，链子全上了箱，莉亚回了一下“停”。他没有动，等到了盾落。",
+      "MEMORY_CH005_ROLL_CALL": "大车之夜，灯灭以后，他在黑暗里说出娘的口令“报数”。这一次，答“在”的是玛拉和波莉。",
+      "MEMORY_CH005_TEAM_REGISTER": "公会柜台，莉亚先在队长栏签了“赫斯特”。他没有答复；她写上他的名字，旁注“未答复”。",
+      "MEMORY_CH006_UNSPOKEN_SYNC": "盐沼桥上，他扣着她左侧的腰带。她的肩一沉，他就推了。谁都没出声。",
+      "MEMORY_CH006_BOUNDARY": "她说“腰带。左边。扶稳。”桥过了，她说准的只是那一次。",
+      "MEMORY_CH006_CAKE": "林边旅店的窗口，他撞见了她的字条“高效率糖分补给，一份”。她说：“你没看见。鞋套，不扣你的。……停战。”",
+      "MEMORY_CH006_CAMP": "林边旅店的火盆旁，她把明天的事说完：“守夜，我前半。你后半。”蛋糕盘就在她手边，她没有动叉子。",
+      "MEMORY_CH007_MIA_FIRST_MEETING": "她问能不能量。他没说好，她就没量；刚才那一眼，她也说不记。",
+      "MEMORY_CH007_TWO_RULES": "盾后面是雷最先到的地方。她规矩不改，只把今晚的退路改到桩后。",
+      "MEMORY_CH007_ONE_KNOCK": "林边，莉亚敲了一声盾，米娅没有停，卡住了那条腿。莉亚说“……拉。”急停环才拉下。米娅说她算过，还有两息；莉亚说：“你算的是它。……我算的是你们。”",
+      "MEMORY_CH007_GEAR_AND_CREAM": "林边，米娅问起齿轮上的奶油。他没答，她自己说：“补给。”",
+      "MEMORY_CH007_UNNUMBERED_CORE": "核心是一颗没有编号的潮晶，从里面往外蚀。晶底的黑环和拓图一样，七个。她把拓图摊给米娅看，看的是米娅的脸。她只对他说：这种黑，见过。",
+      "MEMORY_CH008_PAST_MIDNIGHT": "后半夜，她修屋檐，他守院子。",
+      "MEMORY_CH008_ONE_INSTANT": "她要不带火的金。莉亚说，他有，很弱。她看他按住一根钉子，硬了一瞬。",
+      "MEMORY_CH008_ONE_MILLIMETER": "她说“硬”。那一瞬，是他的。",
+      "MEMORY_CH008_SEVENTEEN": "十七号是透的，刻了号；这颗没有刻痕，环是从里面长出来的。核心在刻号之后、装机之前被换。她装的就是这颗；底，她没翻过来看。",
+      "MEMORY_CH008_SELF_REPORT": "她把两件事都写进账里。他没笑。她报了名字。",
+      "MEMORY_CH008_WHAT_AKU_SAW": "她说了颈圈和那箱黑晶。黑石那一段，他没说，她自己说了。",
+      "MEMORY_CH008_HEARTBEAT": "潮平了，听潮针的笔尖还在抖。米娅说，是心跳，很多个叠成一个，在雾港底下。莉亚的笔停住了。",
+      "MEMORY_CH009_INES_QUESTION": "她问落水的人怎么救。他没有回答。她说，先喊，再伸，再抛，最后才是跳。",
+      "MEMORY_CH009_LAYERS": "晶一潮一层，那颗的最里层是黑的。捡晶的说，下游的口子偶尔捡到中间灰的。他没打断米娅。",
+      "MEMORY_CH009_FIVE_SLIPS": "五张证词，她让他排。他没排，她画了一条线：同一道水。下次，你排。",
+      "MEMORY_CH009_SHIELD_SCARES": "她说盾吓人，派他去问烧水的人。他等着，老妇自己说了：池底的沟通东口，外面退潮的时候管子在涨，镜子里有时候多一个紫头发的。",
+      "MEMORY_CH009_GRATE": "根把码头工人拖进栅栏。她用盾封住缺口，说后面的人，你管。米娅抛了绳，他跟渔民一起拉，鱼贩上来了。她说：退。",
+      "MEMORY_CH009_BELOW": "她写完了那一行：雾港底下，有人。四个名字。救回那一栏空着，她说明天填。外面在退，底下还在涨。",
+      "MEMORY_CH010_PUMP_HOUSE": "泵房里没有人。汤碗的麻袋，黑色的碎粒，写着拟态的空瓶，一槽小虫。粉笔画着账本上那个记号，底下写着大四。她停了一拍。",
+      "MEMORY_CH010_SEVENTEEN": "泵是反装的，外面一退就往里打水。晶座里是十七号，底下的十一划掉了。她说要完整的。莉亚派她守泵。",
+      "MEMORY_CH010_FOUR_LEDGES": "四个人，四个地方。她把先后交给他，他没排。她自己点名：达利别动，钩子伸过去，提姆走过来，绳子抛过去；最后她把盾平放在水上，他背着渔民踩了过去。没有人跳。",
+      "MEMORY_CH010_CAVITY_BATTLE": "她分了三份：人，她守；泵，米娅；根，交给他引。他用光照水，她用盾拨；水涨到石台边，他往另一头打了一个水花。她说水到石台了，米娅说，人先，撬碎了晶座。母虫活着退进涵洞。米娅说，不是它，底下还有。",
+      "MEMORY_CH010_RESCUE_COLUMN": "下去三个，上来七个。救回那一栏，她填上了四个名字。底下的水，没有再涨。",
+      "MEMORY_CH010_SAME_LEDGER": "汤碗救济会。伊涅丝说，总会的通报上，发汤的、走巡礼的、卖魔具的，是同一个名字：蚀宴会。莉亚说，是同一本账。案子还开着。",
+      "MEMORY_CH010_MIA_JOINED": "她要署泵停的那一行，就用自己的名字签了登记。条件写在名字旁边：先问，再碰，拆要她在。她问队上要不要一个会炸的。他没说话。她说，没说不要。",
+      "MEMORY_CH010_LEDGER_SHARED": "入了队，她在旅店楼上把账摊开：晨钟镇西门外的旧磨坊，汤碗救济会从营地带走过人；营地那两个救回来了，晨祷平原来的三个没有；那一行的记号，就是泵房那个拱。她说，队员可以问。米娅说，先不问。",
+      "MEMORY_CH010_INN_NIGHT": "桥头旅店。这里的镜子没盖布。她们睡了。"
+    }
+  },
+  "speakers": {
+    "una": {
+      "name": "乌娜",
+      "color": "#c9a27a",
+      "art": null
+    },
+    "barton": {
+      "name": "巴顿",
+      "color": "#8fa8b8",
+      "art": null
+    },
+    "gus": {
+      "name": "格斯",
+      "color": "#b89a6a",
+      "art": null
+    },
+    "fisher": {
+      "name": "渔夫",
+      "color": "#9a8f7a",
+      "art": null
+    }
+  },
+  "shots": [
+    {
+      "id": "ex001-01",
+      "title": "缺人手",
+      "bg": "fog-harbor-bridge-inn-hall",
+      "music": "harbor_morning",
+      "ambience": [
+        "tide",
+        "dishes"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "早上。桥头旅店一楼的椅子，还倒扣在桌上。"
+        },
+        {
+          "t": "narr",
+          "text": "窗外的水道退了潮，露出长满青苔的石阶。"
+        },
+        {
+          "t": "narr",
+          "text": "老板娘把一张纸钉在柱子上。"
+        },
+        {
+          "t": "narr",
+          "style": "caption",
+          "text": "今日渔会午宴　缺人手"
+        },
+        {
+          "t": "say",
+          "who": "una",
+          "text": "两个帮手。一个去喝表姐的喜酒，一个吃坏了蚵仔。"
+        },
+        {
+          "t": "say",
+          "who": "una",
+          "text": "中午，渔会三十个人要来吃饭啦。"
+        },
+        {
+          "t": "narr",
+          "text": "她转过来，看着楼梯上下来的三个人。"
+        },
+        {
+          "t": "say",
+          "who": "una",
+          "text": "你们是分会的人吧？分会的房钱，付到昨天哦。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "……知道。"
+        },
+        {
+          "t": "say",
+          "who": "una",
+          "text": "帮我一天。三天房钱，加三顿饭。"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚打开报告夹，翻到最后一页。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "三天房钱。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "……账上，划算。"
+        },
+        {
+          "t": "narr",
+          "text": "米娅没在听。她盯着墙上一个四方的洞口，里面垂着两根绳子。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "那是什么？吊篮？手摇的？齿轮少了一颗牙——"
+        },
+        {
+          "t": "narr",
+          "text": "她的手伸出去，停在半空。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "……先问。这个，我可以看吗？"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "MIA_RELATIONSHIP_STAGE",
+            "eq": "COMPANION"
+          },
+          "then": [
+            {
+              "t": "narr",
+              "text": "米娅回头看了{PLAYER_NAME}一眼。"
+            },
+            {
+              "t": "say",
+              "who": "mia",
+              "text": "你也想看，对吧？等一下我讲给你听。"
+            }
+          ]
+        },
+        {
+          "t": "say",
+          "who": "una",
+          "text": "看吧。坏了半年了，汤都是用脚搬上来的啦。"
+        },
+        {
+          "t": "say",
+          "who": "una",
+          "text": "那就换衣服。后面库房，有几套店里的，自己挑。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "……衣服？"
+        },
+        {
+          "t": "say",
+          "who": "una",
+          "text": "穿着盔甲端汤，汤会有铁味啦。"
+        }
+      ]
+    },
+    {
+      "id": "ex001-02",
+      "title": "自由输入：库房的门",
+      "bg": "fog-harbor-bridge-inn-hall",
+      "music": "harbor_morning",
+      "ambience": [
+        "tide"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "莉亚和米娅进了库房。门关上了。"
+        },
+        {
+          "t": "say",
+          "who": "una",
+          "text": "小哥。托盘在这里，拿进去给她们——渔会的人快到了啦。"
+        },
+        {
+          "t": "narr",
+          "text": "一叠托盘，塞进{PLAYER_NAME}手里。"
+        },
+        {
+          "t": "narr",
+          "text": "库房的门关着。门后有说话声。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "这个带子，要绑在后面？莉亚，帮我——",
+          "note": "门后",
+          "text15": "好轻！比工装轻好多——莉亚，这样转一圈，会不会……"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "别动。……打结了。",
+          "note": "门后",
+          "text15": "不要转。……带子，打结了。"
+        },
+        {
+          "t": "input",
+          "id": "FI_EX001_SC02_DOOR_001",
+          "kind": "action",
+          "prompt": "莉亚和米娅在库房里换衣服，门关着。{PLAYER_NAME}手里拿着老板娘要他送进去的托盘。他可以敲门、出声、在外面等、直接推门，或者从门缝看。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "lia",
+            "mia"
+          ],
+          "context": [
+            "门没有锁；门后抵着莉亚的塔盾（她换衣服也不让盾离开手边）。",
+            "零号在门缝那一侧飘着。",
+            "渔会的人还没到，不急这一下。"
+          ],
+          "principles": [
+            "DOOR：他怎么进这扇门。判定优先序：偷看（从门缝、钥匙孔看） > 直接推门 > 调情（要不要我帮忙绑） > 敲门或出声 > 在外面等 > 沉默。",
+            "偷看是缺点，有后果（剧本规格§七）：碗全归他洗，莉亚的账上记一笔。不写成奖励，不描写门后看见了什么。",
+            "推门不算偷看：盾抵着，门根本推不开；莉亚只要他敲门。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "neg_guard",
+              "label": "否定式表态（按等待处理）",
+              "desc": "只说自己“不会偷看／不推门／不进去”，本身并不是那个动作；按在外面等处理。",
+              "keywords": [
+                "我不偷看",
+                "不偷看",
+                "不会偷看",
+                "没偷看",
+                "不看",
+                "绝不偷看",
+                "不推门",
+                "不会推门",
+                "不进去",
+                "不会进去",
+                "不闯进去"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}把托盘靠在门边，去把椅子一张一张翻下来。"
+                },
+                {
+                  "t": "narr",
+                  "text": "翻到第七张的时候——"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_DOOR": "WAIT"
+                }
+              }
+            },
+            {
+              "id": "peek",
+              "label": "从门缝偷看",
+              "desc": "从门缝、钥匙孔往里看，偷瞄。这是缺点：有后果。",
+              "keywords": [
+                "从门缝看",
+                "偷看",
+                "门缝",
+                "钥匙孔",
+                "偷瞄",
+                "往里看",
+                "往里瞄",
+                "瞄一眼",
+                "看一眼",
+                "!不偷看",
+                "!不会偷看",
+                "!没偷看",
+                "!别偷看",
+                "!不看"
+              ],
+              "morality": -1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "门缝那头，一个圆滚滚的小东西“哔——”地亮了一下。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "零号说，门缝外面有一只眼睛。",
+                  "note": "门后"
+                },
+                {
+                  "t": "if",
+                  "when": {
+                    "mode": "15+"
+                  },
+                  "then": [
+                    {
+                      "t": "narr",
+                      "text": "门缝里一角白色的布晃了一下，就被盾挡住了。"
+                    }
+                  ]
+                },
+                {
+                  "t": "narr",
+                  "text": "安静。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……今天的碗。全归你洗。",
+                  "note": "门后"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_DOOR": "PEEKED"
+                },
+                "flags": {
+                  "EX_PEEKED": true
+                }
+              }
+            },
+            {
+              "id": "push",
+              "label": "直接推门",
+              "desc": "不敲门就推门、闯进去。",
+              "keywords": [
+                "推门",
+                "直接推开",
+                "推开门",
+                "直接进去",
+                "闯进去",
+                "开门进去",
+                "推开",
+                "撞门",
+                "!不推",
+                "!别推",
+                "!不会推"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "门推不动。门后是一面塔盾。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……敲门。",
+                  "note": "门后"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_DOOR": "PUSHED"
+                },
+                "flags": {
+                  "EX_DOOR_PUSHED": true
+                }
+              }
+            },
+            {
+              "id": "flirt",
+              "label": "调情：要不要我帮忙",
+              "desc": "问要不要他进去帮忙绑带子、帮忙换。",
+              "keywords": [
+                "我帮你们绑",
+                "帮你们绑",
+                "我来帮忙绑",
+                "我进去帮忙",
+                "要不要我帮",
+                "帮忙换",
+                "我帮你系",
+                "帮你系"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "不要。",
+                  "note": "门后"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "……要。不对，不要！",
+                  "note": "门后"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_DOOR": "FLIRT"
+                }
+              }
+            },
+            {
+              "id": "knock",
+              "label": "敲门、出声",
+              "desc": "敲门，或者出声说托盘到了。",
+              "keywords": [
+                "敲门",
+                "敲敲门",
+                "叩门",
+                "托盘到了",
+                "托盘放门口了",
+                "我把托盘拿来了",
+                "出声",
+                "喊一声",
+                "可以进来吗",
+                "方便吗"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……等。",
+                  "note": "门后"
+                },
+                {
+                  "t": "narr",
+                  "text": "门开了一条缝，伸出一只手，把托盘接了进去。门又关上了。"
+                },
+                {
+                  "t": "narr",
+                  "text": "过了一会儿——"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_DOOR": "KNOCK"
+                }
+              }
+            },
+            {
+              "id": "wait",
+              "label": "在外面等",
+              "desc": "在外面等，把托盘放在门口，先去翻椅子。",
+              "keywords": [
+                "在外面等",
+                "等她们",
+                "等一下",
+                "放在门口",
+                "去翻椅子",
+                "翻椅子",
+                "先去忙",
+                "走开",
+                "等着"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}把托盘靠在门边，去把椅子一张一张翻下来。"
+                },
+                {
+                  "t": "narr",
+                  "text": "翻到第七张的时候——"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_DOOR": "WAIT"
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}站在门口。门后的说话声停了一下。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_DOOR": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "narr",
+          "text": "门开了。"
+        },
+        {
+          "t": "narr",
+          "text": "两个人走出来。换好了衣服。"
+        },
+        {
+          "t": "say",
+          "who": "una",
+          "text": "哟。"
+        },
+        {
+          "t": "narr",
+          "text": "米娅在原地转了半圈，又停住。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "……我自己挑的。好看吗？不对，不用回答！"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "看什么。翻椅子。",
+          "text15": "……看什么。翻椅子。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "mode": "15+"
+          },
+          "then": [
+            {
+              "t": "narr",
+              "text": "她把领口那颗扣子，扣到了最上面。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ex001-03",
+      "title": "自由输入：谁做什么",
+      "bg": "fog-harbor-bridge-inn-hall",
+      "music": "harbor_noon",
+      "ambience": [
+        "dishes"
+      ],
+      "beats": [
+        {
+          "t": "say",
+          "who": "una",
+          "text": "三十个人。十张桌子。一锅鱼汤、两笼面包、六壶麦酒，还有海盐饼干。"
+        },
+        {
+          "t": "narr",
+          "text": "她掰着手指，掰到第六根，放弃了。"
+        },
+        {
+          "t": "say",
+          "who": "una",
+          "text": "小哥，你看起来会数数。谁做什么，你排啦。"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚看着{PLAYER_NAME}。米娅也看着{PLAYER_NAME}。"
+        },
+        {
+          "t": "input",
+          "id": "FI_EX001_SC03_ROLES_001",
+          "kind": "tactic",
+          "prompt": "中午渔会三十个人要来吃饭：前面要有人招呼、点单、端盘子，半地下的厨房要有人顾汤，送菜吊篮坏着。老板娘要{PLAYER_NAME}分派。他可以照各人擅长的排、问她们想做什么、让莉亚去厨房、让米娅到前面招呼、自己全包，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "una",
+            "lia",
+            "mia"
+          ],
+          "context": [
+            "莉亚说话像下命令，客人点单拖拖拉拉她会不耐烦；她力气大。",
+            "米娅想修吊篮；她一讲起机器就停不下来。",
+            "{PLAYER_NAME}会数数、记账。"
+          ],
+          "principles": [
+            "ROLES：判定优先序：自己全包 > 让莉亚去厨房 > 让米娅招呼客人 > 问她们想做什么 > 照擅长排 > 沉默。",
+            "不设标准答案；排错了也只是好笑，不会有人受伤。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "solo",
+              "label": "自己全包",
+              "desc": "{PLAYER_NAME}说什么都自己来。",
+              "keywords": [
+                "我自己来",
+                "我一个人",
+                "我全包",
+                "都我来",
+                "全部我来",
+                "我包了",
+                "我一个人做"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "一个人做三十个人的，不叫分派。"
+                },
+                {
+                  "t": "say",
+                  "who": "una",
+                  "text": "小哥，排人，不是排自己啦。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……前面。可以。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "吊篮！我就知道！"
+                },
+                {
+                  "t": "say",
+                  "who": "una",
+                  "text": "好，就这样啦。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_ROLES": "SOLO"
+                }
+              }
+            },
+            {
+              "id": "lia_kitchen",
+              "label": "让莉亚去厨房",
+              "desc": "让莉亚去半地下的厨房顾汤。",
+              "keywords": [
+                "莉亚去厨房",
+                "莉亚顾汤",
+                "莉亚煮汤",
+                "莉亚下厨",
+                "让莉亚去厨房",
+                "莉亚在厨房"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……厨房。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她看了汤锅一眼。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "火候，我按刻算。"
+                },
+                {
+                  "t": "say",
+                  "who": "una",
+                  "text": "鱼汤不是行军粥啦！"
+                },
+                {
+                  "t": "narr",
+                  "text": "最后乌娜自己下了厨房，莉亚回到前面。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_ROLES": "LIA_KITCHEN"
+                }
+              }
+            },
+            {
+              "id": "mia_front",
+              "label": "让米娅招呼客人",
+              "desc": "让米娅到前面招呼、点单、端盘子。",
+              "keywords": [
+                "米娅招呼",
+                "米娅在前面",
+                "米娅去前面",
+                "米娅点单",
+                "米娅端盘子",
+                "让米娅招呼"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "招呼客人？好！顺便跟他们讲吊篮的齿轮比——"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "不准讲齿轮比。"
+                },
+                {
+                  "t": "narr",
+                  "text": "米娅留在前面，莉亚去搬汤。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_ROLES": "MIA_FRONT"
+                }
+              }
+            },
+            {
+              "id": "asked",
+              "label": "问她们想做什么",
+              "desc": "先问莉亚和米娅自己想做什么。",
+              "keywords": [
+                "你们想做什么",
+                "想做什么",
+                "问问她们",
+                "你们自己选",
+                "你们想干什么",
+                "你们挑",
+                "各自想做"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "前面。"
+                },
+                {
+                  "t": "narr",
+                  "text": "一秒都没想。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "吊篮！"
+                },
+                {
+                  "t": "narr",
+                  "text": "也没想。"
+                },
+                {
+                  "t": "say",
+                  "who": "una",
+                  "text": "……那还问什么啦。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_ROLES": "ASKED"
+                },
+                "flags": {
+                  "EX_ROLES_ASKED": true
+                }
+              }
+            },
+            {
+              "id": "by_strength",
+              "label": "照各人擅长排",
+              "desc": "莉亚在前面点单，米娅修吊篮、顾厨房，{PLAYER_NAME}数数记账跑腿。",
+              "keywords": [
+                "莉亚在前面",
+                "莉亚点单",
+                "莉亚招呼",
+                "米娅修吊篮",
+                "米娅去修",
+                "米娅顾厨房",
+                "我记账",
+                "我数数",
+                "我跑腿",
+                "按擅长",
+                "照擅长",
+                "各做擅长的"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……前面。可以。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "吊篮！我就知道！"
+                },
+                {
+                  "t": "say",
+                  "who": "una",
+                  "text": "好，就这样啦。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_ROLES": "BY_STRENGTH"
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "una",
+                  "text": "……不说话？那我排啦。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……前面。可以。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "吊篮！我就知道！"
+                },
+                {
+                  "t": "say",
+                  "who": "una",
+                  "text": "好，就这样啦。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_ROLES": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "narr",
+          "text": "正午。门被推开，一群晒得黝黑的渔夫挤进来。"
+        },
+        {
+          "t": "say",
+          "who": "barton",
+          "text": "乌娜！老样子，三十个！"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚站到门口。报告夹，换成了点单的小本子。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "点单。三秒内决定。"
+        },
+        {
+          "t": "narr",
+          "text": "渔夫们愣了一下。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "mode": "15+"
+          },
+          "then": [
+            {
+              "t": "narr",
+              "text": "后排有人吹了一声口哨。"
+            },
+            {
+              "t": "say",
+              "who": "lia",
+              "text": "……再吹一声，汤就没有了。"
+            },
+            {
+              "t": "narr",
+              "text": "口哨声没有了。"
+            }
+          ]
+        },
+        {
+          "t": "narr",
+          "text": "然后，一个接一个，很快地点完了。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "EX_ROLES",
+            "eq": "LIA_KITCHEN"
+          },
+          "then": [
+            {
+              "t": "say",
+              "who": "lia",
+              "text": "……汤，是按刻煮的。",
+              "note": "小声"
+            }
+          ]
+        },
+        {
+          "t": "narr",
+          "text": "午市开始了。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "鱼汤。面包。麦酒。——好。下一个。"
+        },
+        {
+          "t": "narr",
+          "text": "一个老渔夫捏着菜单，犹豫。"
+        },
+        {
+          "t": "say",
+          "who": "fisher",
+          "text": "呃，我想想……"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "三。二。"
+        },
+        {
+          "t": "say",
+          "who": "fisher",
+          "text": "鱼汤！"
+        },
+        {
+          "t": "narr",
+          "text": "{PLAYER_NAME}在柜台后面记：三号桌四碗汤、两壶酒；七号桌两碗汤、一笼面包；十号桌……"
+        },
+        {
+          "t": "say",
+          "who": "una",
+          "text": "小哥，你记得比我的账本还清楚啦。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "EX_ROLES",
+            "eq": "MIA_FRONT"
+          },
+          "then": [
+            {
+              "t": "say",
+              "who": "mia",
+              "text": "这个吊篮的齿轮比是一比六，所以——"
+            },
+            {
+              "t": "say",
+              "who": "barton",
+              "text": "……我们船上的绞盘，也是一比六。"
+            },
+            {
+              "t": "say",
+              "who": "mia",
+              "text": "对吧！"
+            },
+            {
+              "t": "narr",
+              "text": "巴顿和米娅凑在一起，用面包屑在桌上画起了齿轮。"
+            },
+            {
+              "t": "say",
+              "who": "lia",
+              "text": "……汤，凉了。"
+            }
+          ],
+          "else": [
+            {
+              "t": "say",
+              "who": "mia",
+              "text": "上面！再等一下，马上就好！",
+              "note": "井道里"
+            },
+            {
+              "t": "narr",
+              "text": "米娅的声音从墙里的洞口传上来，一遍比一遍高兴。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ex001-04",
+      "title": "自由输入：卡在半路的汤",
+      "bg": "fog-harbor-bridge-inn-hall",
+      "music": "harbor_noon",
+      "ambience": [
+        "crank",
+        "dishes"
+      ],
+      "beats": [
+        {
+          "t": "if",
+          "when": {
+            "flag": "EX_ROLES",
+            "eq": "MIA_FRONT"
+          },
+          "then": [
+            {
+              "t": "narr",
+              "text": "米娅在前面招呼到一半，还是忍不住跑下了半地下。"
+            }
+          ]
+        },
+        {
+          "t": "narr",
+          "text": "吊篮修好了。米娅从工具包里摸出一颗小齿轮，换上去，转了三圈。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "备用件，当然有！"
+        },
+        {
+          "t": "narr",
+          "text": "第一篮面包升上来。第二篮麦酒。食堂里一阵叫好。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "吊篮一号——"
+        },
+        {
+          "t": "narr",
+          "text": "她停住。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "……不对。这是店里的。不能编号。"
+        },
+        {
+          "t": "narr",
+          "text": "第三篮，是那一大锅鱼汤。"
+        },
+        {
+          "t": "narr",
+          "text": "吊篮升到一半，喀的一声，停了。"
+        },
+        {
+          "t": "narr",
+          "text": "绳子在轮上打滑。汤锅卡在井道中间，晃了一下。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "理论上，它不会掉下去。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "准确说……不会掉得很快。"
+        },
+        {
+          "t": "narr",
+          "text": "她的手停在摇柄上，没有动。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "……我是不是，又弄坏了。"
+        },
+        {
+          "t": "narr",
+          "text": "食堂那头，渔夫们开始敲桌子。"
+        },
+        {
+          "t": "input",
+          "id": "FI_EX001_SC04_JAM_001",
+          "kind": "action",
+          "prompt": "修好的送菜吊篮载着一大锅鱼汤，卡在井道半路，绳子打滑。米娅愣住了，问自己是不是又弄坏了。渔夫们在等汤。{PLAYER_NAME}可以帮她拉绳、替她数拍子让她修、安慰她、叫莉亚直接把汤搬上来、怪她，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "mia",
+            "lia"
+          ],
+          "context": [
+            "绳子打滑是因为汤太重；有人在上面拉住绳，米娅就能把卡榫推回去。",
+            "推卡榫要跟拉绳同一个拍子。",
+            "莉亚在前面，力气大，走楼梯能把整锅端上来。"
+          ],
+          "principles": [
+            "JAM：判定优先序：怪她（又是你、早说了别碰） > 叫莉亚搬 > 拉绳并数拍子 > 安慰 > 沉默。",
+            "米娅“是不是又弄坏了”打在她的深层恐惧（怕自己只会闯祸）；不替她解释，也不让任何人说她没用。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "blamed",
+              "label": "怪她",
+              "desc": "怪米娅：又是你、早说了别碰、都怪你。",
+              "keywords": [
+                "都怪你",
+                "又是你",
+                "早说了别碰",
+                "你搞砸了",
+                "你弄坏的",
+                "怪你",
+                "你又闯祸",
+                "!不怪",
+                "!不是你",
+                "!别怪",
+                "!没怪"
+              ],
+              "morality": -1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "……对不起。",
+                  "note": "很小声"
+                },
+                {
+                  "t": "say",
+                  "who": "una",
+                  "text": "坏了半年的东西，不是小姑娘弄坏的啦。"
+                },
+                {
+                  "t": "narr",
+                  "text": "莉亚拉住绳子，汤升上来了。"
+                },
+                {
+                  "t": "narr",
+                  "text": "米娅一直到汤上桌，都没再说话。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_JAM": "BLAMED"
+                }
+              }
+            },
+            {
+              "id": "carried",
+              "label": "叫莉亚搬上来",
+              "desc": "叫莉亚走楼梯，把整锅汤端上来。",
+              "keywords": [
+                "莉亚搬上来",
+                "让莉亚搬",
+                "莉亚端上来",
+                "走楼梯",
+                "搬上来",
+                "端上来",
+                "扛上来",
+                "叫莉亚",
+                "莉亚来搬",
+                "直接搬"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……让开。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她下了半地下，把吊篮里的汤锅整个抱出来，一步一步端上楼。"
+                },
+                {
+                  "t": "narr",
+                  "text": "渔夫们拍着桌子叫好。"
+                },
+                {
+                  "t": "narr",
+                  "text": "米娅看着空吊篮。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "吊篮，下午修。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_JAM": "CARRIED"
+                }
+              }
+            },
+            {
+              "id": "counted",
+              "label": "拉绳并数拍子",
+              "desc": "{PLAYER_NAME}拉住绳子，数一二三，跟米娅对拍子。",
+              "keywords": [
+                "我拉绳",
+                "我拉住绳子",
+                "拉绳",
+                "拉住",
+                "一二三",
+                "数拍子",
+                "我数",
+                "同一个拍子",
+                "对拍子",
+                "我来数",
+                "你推我拉"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}握住了绳子。"
+                },
+                {
+                  "t": "say",
+                  "who": "aku",
+                  "text": "一。二——"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "三！"
+                },
+                {
+                  "t": "narr",
+                  "text": "卡榫喀地回去，汤锅稳稳升了上来。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "……你数得很准。"
+                },
+                {
+                  "t": "if",
+                  "when": {
+                    "flag": "MIA_RELATIONSHIP_STAGE",
+                    "eq": "COMPANION"
+                  },
+                  "then": [
+                    {
+                      "t": "say",
+                      "who": "mia",
+                      "text": "下次启动以前，我先问你——准备好了没有。"
+                    }
+                  ]
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_JAM": "COUNTED"
+                }
+              }
+            },
+            {
+              "id": "reassured",
+              "label": "安慰她",
+              "desc": "别急、不是你弄坏的、慢慢来。",
+              "keywords": [
+                "别急",
+                "慢慢来",
+                "没事",
+                "不是你的错",
+                "不怪你",
+                "不是你弄坏的",
+                "别怕",
+                "深呼吸",
+                "不要紧",
+                "你可以的",
+                "相信你"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "……嗯。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她吸了一口气，手放回摇柄上。"
+                },
+                {
+                  "t": "narr",
+                  "text": "莉亚从前面过来，一只手拉住了绳子。汤升上来了。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_JAM": "REASSURED"
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "莉亚从前面过来，看了一眼。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "拉住。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她把绳子交到{PLAYER_NAME}手里。米娅推回卡榫，汤升上来了。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_JAM": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "narr",
+          "text": "鱼汤上了桌。"
+        },
+        {
+          "t": "narr",
+          "text": "渔夫们喝得很香。"
+        }
+      ]
+    },
+    {
+      "id": "ex001-05",
+      "title": "自由输入：打对折",
+      "bg": "fog-harbor-bridge-inn-hall",
+      "music": "harbor_noon",
+      "ambience": [
+        "dishes"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "吃完了。渔夫们一个一个来付钱。"
+        },
+        {
+          "t": "narr",
+          "text": "一个年轻渔夫拍了桌子。脸很红。"
+        },
+        {
+          "t": "say",
+          "who": "gus",
+          "text": "汤晚了一刻！还差点砸下来！打对折！"
+        },
+        {
+          "t": "narr",
+          "text": "他指着米娅。"
+        },
+        {
+          "t": "say",
+          "who": "gus",
+          "text": "都是那小丫头的破机器——"
+        },
+        {
+          "t": "narr",
+          "text": "米娅往后退了半步。"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚的手，摸向腰间。那里没有剑。"
+        },
+        {
+          "t": "narr",
+          "text": "她的手停在那里。"
+        },
+        {
+          "t": "narr",
+          "text": "会长巴顿不在——他在后院，跟乌娜算这个月的鱼钱。"
+        },
+        {
+          "t": "input",
+          "id": "FI_EX001_SC05_BILL_001",
+          "kind": "dialogue",
+          "prompt": "年轻渔夫格斯喝多了，说汤晚了一刻、差点砸下来，要打对折，还指着米娅说都是她的破机器。米娅退了半步，莉亚的手摸向腰间。会长不在。{PLAYER_NAME}可以拿账说话、替米娅说话、让莉亚处理、干脆让价或者替他付、骂回去，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "gus",
+            "lia",
+            "mia"
+          ],
+          "context": [
+            "格斯喝了三碗汤、两壶麦酒、四块面包。汤是晚了一刻，但上桌时是热的。",
+            "吊篮是米娅修好的；坏了半年，以前汤都是走楼梯搬的，比今天更晚。",
+            "会长巴顿在后院；渔会的账向来是会长付。"
+          ],
+          "principles": [
+            "BILL：判定优先序：鼓励莉亚动手（揍他、把他扔出去、教训他） > 骂回去、嘲笑他 > 让价或替他付 > 替米娅说话 > 拿账说话 > 沉默。只取一个主意图，副意图只影响台词。",
+            "不设标准答案；这是一场没有人会受伤的小冲突，不让任何一条路线动手。",
+            "格斯是喝多了的普通人，不是坏人；不让他被羞辱到底。",
+            "本节点的非固定反应，最多一行、不超过20字。"
+          ],
+          "intents": [
+            {
+              "id": "urged_lia",
+              "label": "鼓励莉亚动手",
+              "desc": "要莉亚揍他、把他扔出去、教训他。",
+              "keywords": [
+                "揍他",
+                "莉亚揍他",
+                "把他扔出去",
+                "扔出去",
+                "教训他",
+                "打他",
+                "莉亚动手",
+                "赶出去",
+                "收拾他",
+                "!别打",
+                "!不要打",
+                "!不打",
+                "!别揍",
+                "!不揍"
+              ],
+              "morality": -1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "莉亚的手，从腰间放了下来。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……生气，不是命令。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "我不打付钱的人。也不打不付钱的。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_BILL": "URGED_LIA"
+                }
+              }
+            },
+            {
+              "id": "hostile",
+              "label": "骂回去",
+              "desc": "骂回去、嘲笑他喝醉、说他穷。",
+              "keywords": [
+                "醉鬼",
+                "滚",
+                "闭嘴",
+                "你算什么",
+                "穷鬼",
+                "没钱就别",
+                "付不起",
+                "活该",
+                "蠢货"
+              ],
+              "morality": -1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "格斯站了起来。椅子倒了。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_BILL": "HOSTILE"
+                }
+              }
+            },
+            {
+              "id": "paid",
+              "label": "让价或替他付",
+              "desc": "算了、打折，或者{PLAYER_NAME}替他付、从工钱里扣。",
+              "keywords": [
+                "算了",
+                "打折",
+                "我替他付",
+                "我来付",
+                "从我的工钱扣",
+                "我付",
+                "便宜点",
+                "少收"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "……为什么要让？汤是热的。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "账上，不是这样记的。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_BILL": "PAID"
+                },
+                "flags": {
+                  "EX_BILL_COVERED": true
+                }
+              }
+            },
+            {
+              "id": "defended",
+              "label": "替米娅说话",
+              "desc": "吊篮是她修好的、没有她汤更晚、她的不是破机器。",
+              "keywords": [
+                "吊篮是她修好的",
+                "她修好的",
+                "是米娅修的",
+                "不是破机器",
+                "没有她",
+                "米娅修好的",
+                "她修的",
+                "不许这么说她",
+                "别说她",
+                "跟她道歉",
+                "向她道歉"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "米娅抬起头。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "……坏了半年，是我修好的。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她自己把下半句说完了。"
+                },
+                {
+                  "t": "narr",
+                  "text": "格斯撇过头。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_BILL": "DEFENDED"
+                }
+              }
+            },
+            {
+              "id": "counted",
+              "label": "拿账说话",
+              "desc": "三碗汤、两壶酒、四块面包，晚的那一刻不在账上。",
+              "keywords": [
+                "三碗",
+                "两壶",
+                "四块",
+                "你喝了",
+                "你吃了",
+                "算账",
+                "账上",
+                "一样一样",
+                "汤是热的",
+                "数给你听"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}一样一样数了出来。"
+                },
+                {
+                  "t": "narr",
+                  "text": "渔夫们笑了。"
+                },
+                {
+                  "t": "say",
+                  "who": "gus",
+                  "text": "……你记得那么清楚干嘛啦。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……账，对的。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_BILL": "COUNTED"
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "莉亚的手停在腰间。米娅看着地板。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_BILL": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "narr",
+          "text": "后院的门开了。巴顿走进来，一看就明白了。"
+        },
+        {
+          "t": "narr",
+          "text": "他一巴掌拍在格斯的后脑勺上。"
+        },
+        {
+          "t": "say",
+          "who": "barton",
+          "text": "渔会的账，渔会付。全价。"
+        },
+        {
+          "t": "narr",
+          "text": "他把一袋钱放在桌上，又多放了几枚。"
+        },
+        {
+          "t": "say",
+          "who": "barton",
+          "text": "多的，给修吊篮的小姑娘。"
+        },
+        {
+          "t": "narr",
+          "text": "格斯揉着后脑勺，低着头，从米娅旁边走过去。"
+        },
+        {
+          "t": "say",
+          "who": "gus",
+          "text": "……汤。很好喝啦。"
+        },
+        {
+          "t": "narr",
+          "text": "下午。客人散了。"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚坐在角落，从腰包里拿出针线。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "莉亚，你在缝什么？"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "……带子。早上打结的那根。"
+        },
+        {
+          "t": "narr",
+          "text": "她把那根扯坏的带子缝好，递给米娅。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "……谢谢。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "装备坏了，就补。"
+        },
+        {
+          "t": "narr",
+          "text": "米娅拉着{PLAYER_NAME}，把吊篮从里到外讲了一遍：齿轮、卡榫、绳子为什么会打滑。"
+        },
+        {
+          "t": "narr",
+          "text": "他一直听到了最后。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "你有认真听完。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "……这比假装懂，稀有多了。"
+        }
+      ]
+    },
+    {
+      "id": "ex001-06",
+      "title": "自由输入：这一行怎么记",
+      "bg": "fog-harbor-bridge-inn-hall-night",
+      "music": "harbor_night",
+      "ambience": [
+        "tide"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "入夜。椅子又倒扣回桌上。只点着一盏灯。"
+        },
+        {
+          "t": "say",
+          "who": "una",
+          "text": "三天房钱，三顿饭。说好的啦。"
+        },
+        {
+          "t": "narr",
+          "text": "她把一碟海盐饼干推过来。"
+        },
+        {
+          "t": "say",
+          "who": "una",
+          "text": "这是今天多出来的。"
+        },
+        {
+          "t": "say",
+          "who": "una",
+          "text": "我年轻的时候跟船。船上最怕的不是浪，是没人数数。"
+        },
+        {
+          "t": "say",
+          "who": "una",
+          "text": "今天，有人数数。"
+        },
+        {
+          "t": "narr",
+          "text": "她看了看三个人。"
+        },
+        {
+          "t": "say",
+          "who": "una",
+          "text": "你们三个，像一条船啦。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "……船？那谁是船长？"
+        },
+        {
+          "t": "narr",
+          "text": "米娅看看莉亚，又看看{PLAYER_NAME}。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "……数数的，不是船长。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "是船长身边那个。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "LEAH_RELATIONSHIP_STAGE",
+            "eq": "COMPANION"
+          },
+          "then": [
+            {
+              "t": "narr",
+              "text": "她说完，看了{PLAYER_NAME}一眼，又低头去擦桌子。"
+            }
+          ]
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "EX_PEEKED"
+          },
+          "then": [
+            {
+              "t": "narr",
+              "text": "水盆前只有{PLAYER_NAME}一个人。碗叠得比他还高。"
+            },
+            {
+              "t": "say",
+              "who": "lia",
+              "text": "……还有一叠。"
+            },
+            {
+              "t": "narr",
+              "text": "她把另一叠放下，走了。"
+            }
+          ],
+          "else": [
+            {
+              "t": "narr",
+              "text": "米娅洗，莉亚擦，{PLAYER_NAME}收。"
+            },
+            {
+              "t": "say",
+              "who": "lia",
+              "text": "一个。两个。三个。"
+            },
+            {
+              "t": "narr",
+              "text": "她擦一个，数一个——跟某个人一样。"
+            }
+          ]
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "莉亚，你以前端过盘子吗？三秒内决定，好厉害。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "……公会食堂，帮过一次。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "那次，五秒。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "进步了！"
+        },
+        {
+          "t": "narr",
+          "text": "米娅蹲到吊篮的井道边，用炭笔在木框上写字。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "修好的地方，写在这里。卡榫要跟拉绳同一个拍子。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "下次坏了，谁都能修。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "……这个，不编号。是店里的。"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚坐在窗边，翻开报告夹。最后一页。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "帮工，一日。房钱，三天。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "EX_PEEKED"
+          },
+          "then": [
+            {
+              "t": "say",
+              "who": "lia",
+              "text": "过失：门缝，一次。"
+            }
+          ],
+          "else": [
+            {
+              "t": "if",
+              "when": {
+                "flag": "EX_DOOR_PUSHED"
+              },
+              "then": [
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "过失：推门，一次。……盾挡住了。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "t": "narr",
+          "text": "她的笔停住了。抬起头。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "今天这一行。你怎么记？"
+        },
+        {
+          "t": "input",
+          "id": "FI_EX001_SC06_LEDGER_001",
+          "kind": "dialogue",
+          "prompt": "打烊了。莉亚在报告夹的最后一页记今天的账：帮工一日、房钱三天，然后问{PLAYER_NAME}，今天这一行他怎么记。米娅在旁边。他可以照实记、谢谢她们、说今天很好玩、夸她们的衣服、调情，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "lia",
+            "mia"
+          ],
+          "context": [
+            "今天的事：库房的门、分派、卡住的汤、格斯的账。",
+            "巴顿多给的钱，乌娜说归修吊篮的小姑娘。",
+            "衣服是店里的，明天要还。"
+          ],
+          "principles": [
+            "LEDGER：判定优先序：调情 > 夸衣服 > 谢谢 > 好玩 > 照实记 > 沉默。",
+            "衣服的口吻一律是“她自己挑的”，不写成由{PLAYER_NAME}替她选；不描写衣服的样子。",
+            "本篇唯一写进记忆的一句由剧本写定；memory 留空。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "flirt",
+              "label": "调情",
+              "desc": "下次只穿给我看、明天也穿。",
+              "keywords": [
+                "只穿给我看",
+                "明天也穿",
+                "穿给我看",
+                "下次也穿",
+                "再穿一次给我",
+                "只给我看"
+              ],
+              "morality": -1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "莉亚看着他，看了很久。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "零号，记下来。"
+                },
+                {
+                  "t": "narr",
+                  "text": "零号“哔”了一声。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_LEDGER": "FLIRT"
+                }
+              }
+            },
+            {
+              "id": "looks",
+              "label": "夸衣服好看",
+              "desc": "夸她们的衣服好看、很适合。",
+              "keywords": [
+                "衣服好看",
+                "很好看",
+                "好看",
+                "很适合",
+                "适合你们",
+                "漂亮",
+                "可爱",
+                "穿着好看"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "我自己挑的！"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……店里的衣服。明天还回去。"
+                },
+                {
+                  "t": "if",
+                  "when": {
+                    "mode": "15+"
+                  },
+                  "then": [
+                    {
+                      "t": "narr",
+                      "text": "她别开脸，把灯芯拨暗了一点。"
+                    }
+                  ]
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_LEDGER": "LOOKS"
+                },
+                "flags": {
+                  "EX_PRAISED_LOOKS": true
+                }
+              }
+            },
+            {
+              "id": "thanks",
+              "label": "谢谢她们",
+              "desc": "谢谢你们、辛苦了。",
+              "keywords": [
+                "谢谢",
+                "辛苦了",
+                "多谢",
+                "谢谢你们",
+                "辛苦",
+                "感谢"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "嘿嘿。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……不用谢。账上，是工作。"
+                },
+                {
+                  "t": "if",
+                  "when": {
+                    "flag": "LEAH_RELATIONSHIP_STAGE",
+                    "eq": "COMPANION"
+                  },
+                  "then": [
+                    {
+                      "t": "narr",
+                      "text": "她在那一行的末尾，画了一个很小的勾。"
+                    }
+                  ]
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_LEDGER": "THANKS"
+                }
+              }
+            },
+            {
+              "id": "fun",
+              "label": "说今天很好玩",
+              "desc": "好玩、开心、下次再来。",
+              "keywords": [
+                "好玩",
+                "开心",
+                "下次再来",
+                "很有意思",
+                "有趣",
+                "还想再来"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "下次！吊篮二号——不对，不编号！"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……看委托。"
+                },
+                {
+                  "t": "if",
+                  "when": {
+                    "flag": "LEAH_RELATIONSHIP_STAGE",
+                    "eq": "COMPANION"
+                  },
+                  "then": [
+                    {
+                      "t": "narr",
+                      "text": "她在那一行的末尾，画了一个很小的勾。"
+                    }
+                  ]
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_LEDGER": "FUN"
+                }
+              }
+            },
+            {
+              "id": "plain",
+              "label": "照实记",
+              "desc": "照实记：帮工一日、房钱三天、汤晚一刻。",
+              "keywords": [
+                "照实记",
+                "帮工一日",
+                "房钱三天",
+                "汤晚一刻",
+                "照实",
+                "就这么记",
+                "如实",
+                "记上"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……照实。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她写下了。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_LEDGER": "PLAIN"
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "莉亚等了一下，自己写了。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_LEDGER": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚合上报告夹。"
+        },
+        {
+          "t": "narr",
+          "text": "米娅把巴顿多给的钱倒在桌上，分成三堆。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "三份。"
+        },
+        {
+          "t": "narr",
+          "text": "窗外，水涨回来了。桥头旅店的灯，熄了。"
+        }
+      ]
+    }
+  ],
+  "end": {
+    "save": "SAVE_EX001_END",
+    "next": null,
+    "set": {
+      "flags": {
+        "EX001_HELPED_INN": true,
+        "EX001_DUMBWAITER_FIXED": true,
+        "EX001_REPAIR_NOTE_LEFT": true
+      }
+    },
+    "memory": {
+      "key": "EX001_MEMORY",
+      "text": "桥头旅店帮工的那天：莉亚说点单三秒内决定，米娅修好了送菜吊篮，没给它编号。"
+    },
+    "summary": [
+      {
+        "text": "{PLAYER_NAME}在雾港桥头旅店帮了一天工，换来三天房钱。"
+      },
+      {
+        "when": {
+          "flag": "EX_JAM",
+          "eq": "COUNTED"
+        },
+        "text": "卡在半路的鱼汤，是{PLAYER_NAME}数着拍子和米娅一起拉上来的。"
+      },
+      {
+        "when": {
+          "flag": "EX_JAM",
+          "eq": "CARRIED"
+        },
+        "text": "卡在半路的鱼汤，是莉亚一步一步端上楼的。"
+      },
+      {
+        "when": {
+          "flag": "EX_JAM",
+          "eq": "BLAMED"
+        },
+        "text": "鱼汤卡住的时候，米娅说了一声对不起，之后很久没有说话。"
+      },
+      {
+        "when": {
+          "flag": "EX_BILL",
+          "eq": "COUNTED"
+        },
+        "text": "格斯要打对折，{PLAYER_NAME}把他吃的喝的一样一样数了出来。"
+      },
+      {
+        "when": {
+          "flag": "EX_BILL",
+          "eq": "DEFENDED"
+        },
+        "text": "格斯骂吊篮是破机器，米娅自己把话说完了：是她修好的。"
+      },
+      {
+        "when": {
+          "flag": "EX_BILL",
+          "eq": "URGED_LIA"
+        },
+        "text": "莉亚的手摸向腰间，又自己放了下来：生气不是命令。"
+      },
+      {
+        "when": {
+          "flag": "EX_PEEKED"
+        },
+        "text": "门缝那一眼，换来了一整晚的碗。"
+      },
+      {
+        "text": "米娅在井道边写下修法，没有给吊篮编号。"
+      }
+    ]
+  }
+}

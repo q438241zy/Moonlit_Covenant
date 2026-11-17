@@ -1,0 +1,255 @@
+[
+  {
+    "id": "ex001",
+    "number": 1,
+    "title": "番外一｜桥头旅店的帮工日",
+    "estimatedMinutes": 9,
+    "file": "/story/extras/ex001.json",
+    "source": "剧本/番外/ex001橋頭旅店的幫工日.md",
+    "unlockAfter": "ch010",
+    "window": "正式10–15之间",
+    "cast": [
+      "lia",
+      "mia"
+    ],
+    "costumeTypes": [
+      "maid"
+    ],
+    "gifts": {
+      "costumes": [
+        "lia_maid"
+      ]
+    },
+    "blurb": "雾港桥头旅店人手不够，大家换上女侍制服帮一天忙。"
+  },
+  {
+    "id": "ex002",
+    "number": 2,
+    "title": "番外二｜退潮的沙洲",
+    "estimatedMinutes": 9,
+    "file": "/story/extras/ex002.json",
+    "source": "剧本/番外/ex002退潮的沙洲.md",
+    "unlockAfter": "ch015",
+    "window": "正式15–16之间",
+    "cast": [
+      "lia",
+      "mia",
+      "serena"
+    ],
+    "costumeTypes": [
+      "swimsuit"
+    ],
+    "defaultCostume": "resort",
+    "gifts": {
+      "costumes": [
+        "lia_resort",
+        "mia_resort",
+        "serena_resort"
+      ]
+    },
+    "blurb": "雾港外海的沙洲退潮了。难得的休息日，换上泳装去拾贝、游泳——记得涂翠影药草防晒膏。"
+  },
+  {
+    "id": "ex003",
+    "number": 3,
+    "title": "番外三｜礼服橱窗",
+    "estimatedMinutes": 9,
+    "file": "/story/extras/ex003.json",
+    "source": "剧本/番外/ex003禮服櫥窗.md",
+    "unlockAfter": "ch017",
+    "window": "正式17–19之间",
+    "cast": [
+      "lia",
+      "mia",
+      "serena",
+      "evelyn"
+    ],
+    "costumeTypes": [
+      "wedding"
+    ],
+    "gifts": {
+      "costumes": []
+    },
+    "blurb": "拱廊街的礼服店缺试衣模特，请大家试穿婚礼主题的新季样衣。只是试穿——蛋糕倒是真的。"
+  },
+  {
+    "id": "ex004",
+    "number": 4,
+    "title": "番外四｜演武场的操练日",
+    "estimatedMinutes": 10,
+    "file": "/story/extras/ex004.json",
+    "source": "剧本/番外/ex004演武場的操練日.md",
+    "unlockAfter": "ch019",
+    "window": "正式19–20之间",
+    "cast": [
+      "aila",
+      "evelyn",
+      "freya",
+      "mia"
+    ],
+    "costumeTypes": [
+      "sportwear"
+    ],
+    "gifts": {
+      "costumes": [
+        "aila_sportwear"
+      ]
+    },
+    "blurb": "圣都骑士团的演武场对外开放一天。有人想拿第一，也有人只想当计分员。"
+  },
+  {
+    "id": "ex005",
+    "number": 5,
+    "title": "番外五｜冬灯夜",
+    "estimatedMinutes": 9,
+    "file": "/story/extras/ex005.json",
+    "source": "剧本/番外/ex005冬燈夜.md",
+    "unlockAfter": "ch020",
+    "window": "正式20–21之间",
+    "cast": [
+      "freya",
+      "ophelia",
+      "evelyn"
+    ],
+    "costumeTypes": [
+      "christmas"
+    ],
+    "gifts": {
+      "costumes": []
+    },
+    "blurb": "冬灯节的夜里，窗前一盏盏点起冬灯。大家换上节日的衣服，交换小礼物，在灯下说几句平时说不出口的话。"
+  },
+  {
+    "id": "ex006",
+    "number": 6,
+    "title": "番外六｜新历祭",
+    "estimatedMinutes": 10,
+    "file": "/story/extras/ex006.json",
+    "source": "剧本/番外/ex006新曆祭.md",
+    "unlockAfter": "ch022",
+    "window": "正式22–25之间",
+    "cast": [
+      "lia",
+      "mia",
+      "serena",
+      "evelyn",
+      "aila",
+      "freya",
+      "ophelia",
+      "lilith"
+    ],
+    "costumeTypes": [
+      "newyear"
+    ],
+    "gifts": {
+      "costumes": []
+    },
+    "blurb": "新历的第一天，营地挂起彩旗、摆开长桌。全员换上节日的衣服，围着篝火许下新一年的愿望。"
+  },
+  {
+    "id": "ex007",
+    "number": 7,
+    "title": "番外七｜影市砍价记",
+    "estimatedMinutes": 9,
+    "file": "/story/extras/ex007.json",
+    "source": "剧本/番外/ex007影市砍價記.md",
+    "unlockAfter": "ch023",
+    "window": "正式23–25之间",
+    "cast": [
+      "lilith",
+      "serena",
+      "ophelia"
+    ],
+    "costumeTypes": [],
+    "gifts": {
+      "costumes": []
+    },
+    "blurb": "雾港的市集与影市。三个人扮成商会职员去砍价——最会砍价的那个，偏偏最不像职员。"
+  },
+  {
+    "id": "ex008",
+    "number": 8,
+    "title": "番外八｜一路走来的纪念日",
+    "estimatedMinutes": 10,
+    "file": "/story/extras/ex008.json",
+    "source": "剧本/番外/ex008一路走來的紀念日.md",
+    "unlockAfter": "ch023",
+    "window": "正式22–23之间",
+    "cast": [
+      "lia",
+      "mia",
+      "serena"
+    ],
+    "costumeTypes": [
+      "anniversary"
+    ],
+    "gifts": {
+      "costumes": []
+    },
+    "blurb": "最早结伴上路的几个人翻出旧地图，一站一站地回想一路走来的日子。换上礼服，为相遇的那一天干一杯。"
+  },
+  {
+    "id": "ex009",
+    "number": 9,
+    "title": "番外九｜南岸的龙舟祭",
+    "estimatedMinutes": 10,
+    "file": "/story/extras/ex009.json",
+    "source": "剧本/番外/ex009南岸的龍舟祭.md",
+    "unlockAfter": "ch025",
+    "window": "正式23–24之间",
+    "cast": [
+      "lia",
+      "mia",
+      "serena",
+      "evelyn",
+      "aila",
+      "freya",
+      "ophelia",
+      "lilith"
+    ],
+    "costumeTypes": [
+      "swimsuit",
+      "duanwu"
+    ],
+    "defaultCostume": "resort",
+    "gifts": {
+      "costumes": [
+        "evelyn_resort",
+        "aila_resort",
+        "freya_resort",
+        "ophelia_resort",
+        "lilith_resort"
+      ]
+    },
+    "blurb": "南岸的河口办起了龙舟祭。有人上船划桨，有人在岸边擂鼓助威，也有人只想在沙滩上躺一下午。"
+  },
+  {
+    "id": "ex010",
+    "number": 10,
+    "title": "番外十｜如果在另一个世界上班",
+    "estimatedMinutes": 10,
+    "file": "/story/extras/ex010.json",
+    "source": "剧本/番外/ex010如果在另一個世界上班.md",
+    "unlockAfter": "ch022",
+    "window": "IF（与正史无关）",
+    "cast": [
+      "lia",
+      "mia",
+      "serena",
+      "evelyn",
+      "aila",
+      "freya",
+      "ophelia",
+      "lilith"
+    ],
+    "costumeTypes": [
+      "office"
+    ],
+    "anyCostume": true,
+    "gifts": {
+      "costumes": []
+    },
+    "if": true,
+    "blurb": "IF番外：平行的现代城市里，大家成了同一家公司的同事。与正史无关。"
+  }
+]

@@ -3,3 +3,5 @@
 *.bat text eol=crlf
 # shell 脚本必须是 LF：CRLF 会让 sh 报 $'\r': command not found
 *.sh text eol=lf
+# 生成的矢量美术必须是 LF：npm run art 逐字节可重现，art-assets 测试按字节比对（Windows 的 autocrlf 会把多行 SVG 改成 CRLF）
+*.svg text eol=lf

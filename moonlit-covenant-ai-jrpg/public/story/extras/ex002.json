@@ -1,0 +1,3449 @@
+{
+  "id": "ex002",
+  "number": 2,
+  "kind": "extra",
+  "scriptId": "EX002_EBB_TIDE_SANDBAR",
+  "title": "番外二｜退潮的沙洲",
+  "shortTitle": "退潮的沙洲",
+  "estimatedMinutes": 9,
+  "source": "剧本/番外/ex002退潮的沙洲.md",
+  "unlockAfter": "ch015",
+  "window": "正式15–16之间",
+  "cast": [
+    "lia",
+    "mia",
+    "serena"
+  ],
+  "costumeTypes": [
+    "swimsuit"
+  ],
+  "defaultCostume": "resort",
+  "canon": {
+    "flags": {
+      "FLAG_CH000_HEMAI_DESTROYED": true,
+      "FLAG_CH000_BLACK_DRAGON_SEEN": true,
+      "FLAG_CH000_MOTHER_STATUS_UNKNOWN": true,
+      "FLAG_CH000_TOBY_SURVIVED_CAVE": true,
+      "FLAG_CH000_DRAGON_VOW": true,
+      "FLAG_CH000_DRAGON_REMAINS_OVER_HEMAI": true,
+      "FLAG_CH001_BLACK_DRAGON_REPELLED_BY_KERN": true,
+      "FLAG_CH001_BLACK_DRAGON_ABDOMEN_WOUNDED": true,
+      "FLAG_CH001_MOTHER_DEATH_CONFIRMED": true,
+      "FLAG_CH001_TOBY_UNDER_KERN_GUARDIANSHIP": true,
+      "FLAG_CH001_ARK_RECEIVED_GUILD_LETTER": true,
+      "FLAG_CH001_KERN_MENTOR_IDEAL": true,
+      "FLAG_CH002_GUILD_REGISTERED": true,
+      "FLAG_CH002_LEAH_FIRST_SEEN": true,
+      "FLAG_CH002_THIEF_CAPTURED": true,
+      "FLAG_CH002_BLACK_CRYSTAL_EVIDENCE_RECOVERED": true,
+      "FLAG_CH002_FIRE_RESONANCE_FLICKER": true,
+      "FLAG_CH003_TEMP_PARTY_FORMED": true,
+      "FLAG_CH003_LEAH_SIGNED_SUPERVISION": true,
+      "FLAG_CH003_THIRD_ACCOMPLICE_CAPTURED": true,
+      "FLAG_CH003_SEVEN_RING_MARK_SEEN": true,
+      "FLAG_CH003_BLACK_CRYSTAL_CRATE_SEIZED": true,
+      "FLAG_CH003_HEMAI_SURVIVORS_TARGETED": true,
+      "FLAG_CH003_OLD_MILL_LEAD": true,
+      "FLAG_CH003_MILL_ASSAULT_POSTPONED": true,
+      "FLAG_CH003_FIRST_JOINT_MISSION_COMPLETE": true,
+      "FLAG_CH003_FIRE_RESONANCE_WARMTH": true,
+      "FLAG_CH003_GUILD_COLLAB_STAMPED": true,
+      "FLAG_CH003_LEAH_KNOWS_PLAYER_NAME": true,
+      "FLAG_CH003_RELIEF_CART_PASSED_WEST_GATE": true,
+      "FLAG_CH003_DRIVER_DESCRIBED": true,
+      "FLAG_CH003_SHIELD_SIGNALS_LEARNED": true,
+      "FLAG_CH003_SOUP_POT_SETTLED": true,
+      "FLAG_CH003_BARREL_DEDUCTED": true,
+      "FLAG_CH004_CORD_SIGNALS_LEARNED": true,
+      "FLAG_CH004_FENN_CONFIRMED_CHAIN_SWAP": true,
+      "FLAG_CH004_WEST_GATE_COSIGNED": true,
+      "FLAG_CH004_SENTRY_REPORT_HEARD": true,
+      "FLAG_CH004_MILL_INFILTRATED": true,
+      "FLAG_CH004_CHARGING_RACK_SEEN": true,
+      "FLAG_CH004_LEDGER_READ": true,
+      "FLAG_CH004_MARA_AND_DAUGHTER_FOUND": true,
+      "FLAG_CH004_KEY_ON_ACOLYTE": true,
+      "FLAG_CH004_TEARS_LIGHT_CRYSTALS": true,
+      "FLAG_CH004_CAPTIVES_REMAIN_IN_MILL": true,
+      "FLAG_CH004_ACOLYTE_SEEN": true,
+      "FLAG_CH004_RESCUE_WINDOW_CRATE_SWAP": true,
+      "FLAG_CH004_LEAH_LEARNED_HEMAI": true,
+      "FLAG_CH004_GUARDS_COMMITTED": true,
+      "FLAG_CH004_RESCUE_COMMISSION_POSTED": true,
+      "FLAG_CH005_WEST_GATE_COSIGNED": true,
+      "FLAG_CH005_PLAN_BRIEFED_AT_MILESTONE": true,
+      "FLAG_CH005_COLLAR_OWNER_REVEALED": true,
+      "FLAG_CH005_PEACE_STONES_NAMED": true,
+      "FLAG_CH005_CHAIN_SWAP_COMPLETED": true,
+      "FLAG_CH005_LEAH_PRESSED_CRATE": true,
+      "FLAG_CH005_CHIEF_COLLAR_DISABLED": true,
+      "FLAG_CH005_ACOLYTE_CAPTURED": true,
+      "FLAG_CH005_ROLL_CALL_ANSWERED": true,
+      "FLAG_CH005_MARA_AND_POLLY_RESCUED": true,
+      "FLAG_CH005_LEAD_MISTTIDE_MARSH": true,
+      "FLAG_CH005_EVIDENCE_TO_GUARD": true,
+      "FLAG_CH005_RESCUE_COMMISSION_COMPLETE": true,
+      "FLAG_CH005_FORMAL_PARTY_FORMED": true,
+      "FLAG_CH005_ESCORT_COMMISSION_POSTED": true,
+      "FLAG_CH005_MARA_POLLY_TO_NORTH_CAMP": true,
+      "FLAG_CH006_ESCORT_COMMISSION_ACCEPTED": true,
+      "FLAG_CH006_SUPPLY_TUTORIAL_DONE": true,
+      "FLAG_CH006_RUBBING_COPY_CARRIED": true,
+      "FLAG_CH006_MARSH_OGRE_UNCOLLARED": true,
+      "FLAG_CH006_SHIELD_UNDER_WHEEL": true,
+      "FLAG_CH006_UNSPOKEN_SYNC": true,
+      "FLAG_CH006_SALT_MARSH_BRIDGE_COLLAPSED": true,
+      "FLAG_CH006_LEAH_BOUNDARY_STATED": true,
+      "FLAG_CH006_ESCORT_COMMISSION_COMPLETE": true,
+      "FLAG_CH006_LEAH_CAKE_SEEN": true,
+      "FLAG_CH006_PARTY_CAMP_OPENED": true,
+      "FLAG_CH006_BLUE_EXPLOSION_SEEN": true,
+      "FLAG_CH006_GEAR_IN_CAKE": true,
+      "FLAG_CH007_FOREST_EDGE_ENTERED": true,
+      "FLAG_CH007_MIA_FIRST_SEEN": true,
+      "FLAG_CH007_UNPLANNED_DISASSEMBLY_NAMED": true,
+      "FLAG_CH007_MIA_NOTED_SEVEN_LAWS": true,
+      "FLAG_CH007_SAFETY_RULES_CLASHED": true,
+      "FLAG_CH007_RETREAT_TO_STAKE": true,
+      "FLAG_CH007_CATCH_IT_WHOLE": true,
+      "FLAG_CH007_THREE_PERSON_FORMATION": true,
+      "FLAG_CH007_TAUNT_INTRODUCED": true,
+      "FLAG_CH007_SCRAP_PICKER_STOPPED": true,
+      "FLAG_CH007_INCIDENT_LOGGED": true,
+      "FLAG_CH007_GEAR_NUMBER_SEEN": true,
+      "FLAG_CH007_GEAR_CRACKED": true,
+      "FLAG_CH007_ERODED_TIDE_CRYSTAL_FOUND": true,
+      "FLAG_CH007_CORE_UNNUMBERED": true,
+      "FLAG_CH007_SEVEN_RING_MATCH_SEEN": true,
+      "FLAG_CH008_RECORDS_REQUESTED": true,
+      "FLAG_CH008_MIA_AS_WITNESS": true,
+      "FLAG_CH008_EAVE_REPAIRED": true,
+      "FLAG_CH008_MIA_MADE_AMENDS": true,
+      "FLAG_CH008_TIDE_STATION_REACHED": true,
+      "FLAG_CH008_GEAR_RETURNED_TO_WINCH": true,
+      "FLAG_CH008_PLANNED_DISASSEMBLY": true,
+      "FLAG_CH008_ONE_MILLIMETER": true,
+      "FLAG_CH008_TIDE_DOOR_LOCKED": true,
+      "FLAG_CH008_RECORDS_RETRIEVED": true,
+      "FLAG_CH008_CORE_SWAP_PROVEN": true,
+      "FLAG_CH008_RINGS_GROWN_NOT_CARVED": true,
+      "FLAG_CH008_MIA_SELF_REPORTED": true,
+      "FLAG_CH008_INCIDENT_SETTLED": true,
+      "FLAG_CH008_NAMES_EXCHANGED": true,
+      "FLAG_CH008_LEAH_SHARED_CASE_FACTS": true,
+      "FLAG_CH008_BLACK_CRYSTAL_APPRAISED": true,
+      "FLAG_CH008_PEACE_STONE_EXPLAINED": true,
+      "FLAG_CH008_CRYSTAL_TO_MIA": true,
+      "FLAG_CH008_MIA_GUEST_TO_HARBOR": true,
+      "FLAG_CH008_THREE_NAMES_LOGGED": true,
+      "FLAG_CH008_SHARED_HEARTBEAT_DETECTED": true,
+      "FLAG_CH008_ACT1_CLOSED": true,
+      "FLAG_CH009_ENTERED_FOG_HARBOR": true,
+      "FLAG_CH009_ESCORT_PAID": true,
+      "FLAG_CH009_INES_MET": true,
+      "FLAG_CH009_RESCUE_RULE_TOLD": true,
+      "FLAG_CH009_GUEST_UNDER_LEAH": true,
+      "FLAG_CH009_WITNESS_NAMES_KEPT": true,
+      "FLAG_CH009_MISSING_CASE_TAKEN": true,
+      "FLAG_CH009_DIVISION_OF_LABOR": true,
+      "FLAG_CH009_CRYSTAL_LAYERS_READ": true,
+      "FLAG_CH009_GREY_CORE_DOWNSTREAM": true,
+      "FLAG_CH009_PEOPLE_FIRST": true,
+      "FLAG_CH009_TESTIMONY_LINKED": true,
+      "FLAG_CH009_SENT_TO_WITNESS": true,
+      "FLAG_CH009_BATH_TESTIMONY": true,
+      "FLAG_CH009_MIRROR_TESTIMONY_LOGGED": true,
+      "FLAG_CH009_DOCK_WORKER_TAKEN": true,
+      "FLAG_CH009_GAFF_WITH_LEAH": true,
+      "FLAG_CH009_DRAIN_NOT_ENTERED": true,
+      "FLAG_CH009_LEDGER_LINE_FINISHED": true,
+      "FLAG_CH009_BELOW_TIDE_OFFBEAT": true,
+      "FLAG_CH010_LEGAL_ENTRY": true,
+      "FLAG_CH010_PUMP_REVERSED_FOUND": true,
+      "FLAG_CH010_FEED_EVIDENCE_FOUND": true,
+      "FLAG_CH010_OUTBOUND_MARK_SEEN": true,
+      "FLAG_CH010_SEVENTEEN_FOUND": true,
+      "FLAG_CH010_GREY_OUTFLOW_TRACED": true,
+      "FLAG_CH010_MIA_SENT_TO_PUMP": true,
+      "FLAG_CH010_FOUR_RESCUED": true,
+      "FLAG_CH010_GAFF_RETURNED": true,
+      "FLAG_CH010_BLACK_STONES_TAKEN": true,
+      "FLAG_CH010_PUMP_STOPPED": true,
+      "FLAG_CH010_SEVENTEEN_CRACKED": true,
+      "FLAG_CH010_MIA_PEOPLE_FIRST": true,
+      "FLAG_CH010_MIA_RESCUE_MISSION_COMPLETE": true,
+      "FLAG_CH010_MOTHER_RETREATED": true,
+      "FLAG_CH010_HEARTBEAT_STILL_BELOW": true,
+      "FLAG_CH010_BELOW_TIDE_STILL": true,
+      "FLAG_CH010_RESCUE_COLUMN_FILLED": true,
+      "FLAG_CH010_ECLIPSE_FEAST_NAMED": true,
+      "FLAG_CH010_SAME_LEDGER": true,
+      "FLAG_CH010_MIA_JOINED": true,
+      "FLAG_CH010_MIA_CONDITION_LOGGED": true,
+      "FLAG_CH010_CASE_SHARED_WITH_MIA": true,
+      "FLAG_CH010_LODGED_BRIDGEHEAD_INN": true,
+      "FLAG_CH010_MIRROR_EYES": true,
+      "FLAG_CH010_OUTSIDER_NAMED": true,
+      "FLAG_CH009_PIPE_TIDE_HEARD": true,
+      "FLAG_CH011_SEEDS_SETTLED": true,
+      "FLAG_CH011_SCAR_FLARE": true,
+      "FLAG_CH011_SEVEN_HOLES_SHOWN": true,
+      "FLAG_CH011_DREAM_ENTERED": true,
+      "FLAG_CH011_THREADS_CUT": true,
+      "FLAG_CH011_LEAH_KNOCKED_THREE": true,
+      "FLAG_CH011_LEAH_DREW_ON_PERSON": true,
+      "FLAG_CH011_SERENA_MET": true,
+      "FLAG_CH011_SERENA_NAMED": true,
+      "FLAG_CH011_SERENA_LOOKED": true,
+      "FLAG_CH011_NOT_HER_TONIGHT": true,
+      "FLAG_CH011_SEVEN_DOORS_SPOKEN": true,
+      "FLAG_CH011_REGISTRAR_LINE": true,
+      "FLAG_CH011_NO_PEEK_DEMANDED": true,
+      "FLAG_CH011_SERENA_VANISHED": true,
+      "FLAG_CH011_BLACK_FEATHER_MAP": true,
+      "FLAG_CH011_TIDE_CAVE_MARKED": true,
+      "FLAG_CH011_MIRRORS_COVERED": true,
+      "FLAG_CH012_SERENA_WALKED_DOOR": true,
+      "FLAG_CH012_BATH_CONFESSED": true,
+      "FLAG_CH012_MIRROR_PURPLE_MATCHED": true,
+      "FLAG_CH012_MORKAN_NAMED": true,
+      "FLAG_CH012_SERENA_JOINED": true,
+      "FLAG_CH012_SERENA_TERMS_LOGGED": true,
+      "FLAG_CH012_LATCH_SOLVED": true,
+      "FLAG_CH012_MIRROR_MEMORY_RULE": true,
+      "FLAG_CH012_SHADOW_BIND_UNLOCKED": true,
+      "FLAG_CH012_ROLL_CALL_VERIFIED": true,
+      "FLAG_CH012_APPRENTICE_CAUGHT": true,
+      "FLAG_CH012_TIDE_CAVE_TOMORROW_NIGHT": true,
+      "FLAG_CH012_INVERTED_STAR_SHOWN": true,
+      "FLAG_CH012_FIRST_COUNT_FOUR": true,
+      "FLAG_CH012_PASS_UNREAD": true,
+      "FLAG_CH012_LODGING_LIGHTHOUSE": true,
+      "FLAG_CH013_SERENA_ASKED_DREAM": true,
+      "FLAG_CH013_WINDOW_ATTACK": true,
+      "FLAG_CH013_GOLDEN_ASSASSIN_SEEN": true,
+      "FLAG_CH013_ASSASSIN_MOTIVE_HEARD": true,
+      "FLAG_CH013_THREE_WENT_OUT": true,
+      "FLAG_CH013_BOTH_FORBIDDEN": true,
+      "FLAG_CH013_HALF_CREST_DROPPED": true,
+      "FLAG_CH013_HALF_CREST_FOUND": true,
+      "FLAG_CH013_PASS_RETURNED": true,
+      "FLAG_CH013_ORDER_WARNING": true,
+      "FLAG_CH013_PASS_READ": true,
+      "FLAG_CH013_IMPERIAL_SEAL_SEEN": true,
+      "FLAG_CH013_ARCH_WAVE_IS_OFFICIAL_SEAL": true,
+      "FLAG_CH013_DEST_ARCH_TIDE_GATE": true,
+      "FLAG_CH013_WITNESS_NAME_LISTED": true,
+      "FLAG_CH014_WENT_DOWN_AT_EBB": true,
+      "FLAG_CH014_THREE_DOWN_ONE_GATE": true,
+      "FLAG_CH014_SLUICE_HELD": true,
+      "FLAG_CH014_TIDE_CAVE_ENTERED": true,
+      "FLAG_CH014_COCOONS_FOUND": true,
+      "FLAG_CH014_HEARTBEAT_IS_PEOPLE": true,
+      "FLAG_CH014_EMPTY_HOOKS_SEEN": true,
+      "FLAG_CH014_STONE_DOOR_SEEN": true,
+      "FLAG_CH014_NINE_RESCUED": true,
+      "FLAG_CH014_ACOLYTE_CAPTURED": true,
+      "FLAG_CH014_STONE_DOOR_CLOSED": true,
+      "FLAG_CH014_QUICK_PATCH_SHOWN": true,
+      "FLAG_CH014_SLUICE_DROPPED_BEHIND": true,
+      "FLAG_CH014_COUNT_FOUR_AT_GATE": true,
+      "FLAG_CH014_GRADE_TAGS_SEEN": true,
+      "FLAG_CH014_TAGS_CUT_WITH_CONSENT": true,
+      "FLAG_CH014_BIG_THREE_ONE_FOUND": true,
+      "FLAG_CH014_ODA_NAMED": true,
+      "FLAG_CH014_INES_COUNTED": true,
+      "FLAG_CH014_VOICE_FROM_BELOW": true,
+      "FLAG_CH014_SLOW_HEARTBEAT_BELOW": true,
+      "FLAG_CH015_WENT_DOWN_AT_DAWN": true,
+      "FLAG_CH015_STONE_DOOR_OPENED": true,
+      "FLAG_CH015_NEST_ENTERED": true,
+      "FLAG_CH015_THREE_COCOONS_FOUND": true,
+      "FLAG_CH015_TIDE_KING_SEEN": true,
+      "FLAG_CH015_TIDE_KING_STOPPED": true,
+      "FLAG_CH015_COCOONS_RESCUED": true,
+      "FLAG_CH015_REVERSE_MOON_SHOWN": true,
+      "FLAG_CH015_MIRROR_STEP_SHOWN": true,
+      "FLAG_CH015_ASSASSIN_GUEST": true,
+      "FLAG_CH015_NELOSA_NAMED": true,
+      "FLAG_CH015_ROOT_RING_REFUSED_ONE_HAND": true,
+      "FLAG_CH015_SIN_SHARD_TAKEN": true,
+      "FLAG_CH015_CHART_SHARD_FOUND": true,
+      "FLAG_CH015_INES_COUNTED": true,
+      "FLAG_CH015_RELIEF_OFFICE_CAME": true,
+      "FLAG_CH015_RELIEF_SEAL_MATCHED_PASS": true,
+      "FLAG_CH015_DOCK_PEOPLE_STOOD": true,
+      "FLAG_CH015_WHITE_TOWER_SUMMONS": true,
+      "FLAG_CH015_CROWN_SEAL_LIKE_DRAGON_SCAR": true,
+      "FLAG_CH015_ACT2_CLOSED": true,
+      "FLAG_CH015_BROOD_SAVED": true,
+      "FLAG_CH015_RETURNED_HOME_PROMISED": true
+    },
+    "items": {
+      "ITEM_FAMILY_SHEPHERD_WHISTLE": 1,
+      "ITEM_MOTHER_WHEAT_HAIRPIN": 1,
+      "ITEM_GUILD_IRON_BADGE": 1,
+      "ITEM_BASIC_BANDAGE": 2,
+      "ITEM_MARSH_SHOE_COVERS": true,
+      "ITEM_FOREST_EDGE_GEAR": false,
+      "ITEM_FOG_HARBOR_CLEAR_CRYSTAL": false,
+      "ITEM_SEVEN_RING_CHART_SHARD": 1,
+      "ITEM_WHITE_TOWER_SUMMONS": 1
+    },
+    "vars": {
+      "PLAYER_VOW_PRIMARY": "VOW_REVENGE",
+      "PLAYER_GUILT_TOTAL": 0,
+      "ITEM_FAMILY_SHEPHERD_WHISTLE_OWNER": "TOBY",
+      "PLAYER_PROMISE_RETURN_TO_TOBY": true,
+      "PLAYER_GUILD_RANK": "IRON",
+      "PLAYER_FIRST_IMPRESSION_OF_LEAH": "STRONG_POSITIVE_DEFAULT",
+      "LEAH_FIRST_IMPRESSION_OF_PLAYER": "EAGER_BUT_UNDISCIPLINED",
+      "LEAH_TRUST": 3,
+      "LEAH_INTIMACY": 0,
+      "LEAH_SACRIFICE": 0,
+      "PLAYER_GUILT_LEAH": 0,
+      "BATTLE_CH002_STREET_AMBUSH_RESULT": "clean",
+      "FENN_TREATMENT": "FIRM",
+      "PLAYER_PROMISE_OBEY_LEAH_SIGNAL": false,
+      "BATTLE_CH003_MILL_ROAD_CHAINS_RESULT": "clean",
+      "PLAYER_LODGING": "GUILD_BUNK",
+      "MILL_ALERT": 0,
+      "MILL_EXIT": "LATE",
+      "MILL_CAPTIVES_STATE": "QUIET",
+      "PLAYER_RESCUE_ROLE": "CAGE",
+      "MARA_DAUGHTER_CONDITION": "SMOKE_COUGH_BURNED_ARM",
+      "PLAYER_PROMISE_MARA_RETURN": false,
+      "CART_WAIT": "HELD",
+      "SUPERVISOR_NOTE": "STEADY",
+      "PARTY_CONSENT": "UNANSWERED",
+      "PARTY_STANDING": "MEMBER",
+      "LEAH_RELATIONSHIP_STAGE": "STRANGER",
+      "BATTLE_CH005_BULL_COLLAR_RESULT": "clean",
+      "CH006_CLIENT_CONFIDENCE": "NORMAL",
+      "CH006_OGRE_STATE": "TOOK_PLANK",
+      "CH006_SYNC_CHANNEL": "WAIST",
+      "HAZARD_CH006_SALT_BRIDGE_RESULT": "CLEAN",
+      "CONSENT_LEAH_WAIST_STEADY_BASIS": "offered",
+      "CONSENT_LEAH_WAIST_STEADY_STATUS": "granted_once",
+      "CAKE_TRUCE": "SEALED",
+      "MIA_TRUST": 0,
+      "MIA_INTIMACY": 0,
+      "MIA_SACRIFICE": 0,
+      "PLAYER_GUILT_MIA": 0,
+      "PAIR_LEAH_MIA_TRUST": 0,
+      "PARTY_GUEST_MIA": false,
+      "MIA_RELATIONSHIP_STAGE": "STRANGER",
+      "BATTLE_CH007_SCRAP_PICKER_RESULT": "clean",
+      "CONSENT_PLAYER_MIA_SCAN_STATUS": "none",
+      "CH007_GEAR_CUSTODY": "MIA_LOGGED",
+      "CH007_CAKE_SECRET_RESULT": "LEAH_ANSWERED",
+      "MIA_FIRST_IMPRESSION_OF_PLAYER": "QUIET",
+      "CH008_CRYSTAL_CUSTODY": "MIA_LOGGED",
+      "HAZARD_CH008_TIDE_DOOR_RESULT": "CLEAN",
+      "CH008_BLAME_RESPONSE": "SILENT",
+      "CH008_TESTIMONY": "NONE",
+      "INES_FIRST_IMPRESSION_OF_PLAYER": "QUIET",
+      "CH009_PICKER_RESULT": "BASE",
+      "CH009_TESTIMONY_ORDER": "LEAH_LINKED",
+      "CH009_BATH_WITNESS_RESULT": "FULL",
+      "CH009_CRISIS_ACTION": "SILENT",
+      "HAZARD_CH009_DRAIN_GRATE_RESULT": "CLEAN",
+      "CH010_STONES_CUSTODY": "MIA_LOGGED",
+      "CH010_FEED_EVIDENCE_CUSTODY": "GUILD",
+      "PARTY_MEMBER_MIA": true,
+      "CH010_PUMP_READ": "QUIET",
+      "CH010_RESCUE_ORDER": "LEAH_ORDERED",
+      "CH010_MIA_JOIN_REPLY": "SILENT",
+      "BATTLE_CH010_TIDE_CAVITY_MOTHER_RESULT": "clean",
+      "CH011_MAP_CUSTODY": "LEAH",
+      "SERENA_INTIMACY": 0,
+      "SERENA_SACRIFICE": 0,
+      "SERENA_RELATIONSHIP_STAGE": "STRANGER",
+      "PAIR_LEAH_SERENA_TRUST": 0,
+      "PAIR_MIA_SERENA_TRUST": 1,
+      "SERENA_TRUST": 0,
+      "PLAYER_GUILT_SERENA": 0,
+      "PROMISE_BROKEN_NET_LEAH": 0,
+      "PROMISE_BROKEN_NET_MIA": 0,
+      "PROMISE_N_LEAH": 0,
+      "PROMISE_KEPT_LEAH": 0,
+      "PROMISE_N_MIA": 0,
+      "MONARCH_MERCY": 4,
+      "MONARCH_TERROR": 0,
+      "MONARCH_LUST": 0,
+      "MONARCH_COLD": 0,
+      "TERROR_BLAST": 0,
+      "FLIRT_AFTER_REFUSAL": 0,
+      "CH011_HAND_RESPONSE": "ENDURED",
+      "CH011_SCAR_SEEN_BY": "ALONE",
+      "CH011_KNOCKS_RESPONSE": "DEFAULT",
+      "BATTLE_CH011_SCAR_ECHO_RESULT": "clean",
+      "CH011_SERENA_TREATMENT": "QUIET",
+      "SERENA_FIRST_IMPRESSION_OF_PLAYER": "QUIET",
+      "CH011_VANISH_ANSWER": "SILENT",
+      "CH011_DREAM_TOLD": "KEPT",
+      "PARTY_MEMBER_SERENA": true,
+      "BOUNDARY_SERENA_PRIVATE_OBSERVATION": {
+        "owner": "SERENA",
+        "rule": "未经允许不得以镜术观察私人空间",
+        "status": "acknowledged",
+        "violation_count": 1,
+        "repair_state": "active",
+        "allowed_exceptions": [
+          "emergency_life_threat"
+        ]
+      },
+      "CH012_APPRENTICE_CUSTODY": "TEAM_LIGHTHOUSE",
+      "PROMISE_KEPT_SERENA": 0,
+      "PROMISE_N_SERENA": 2,
+      "PROMISE_BROKEN_NET_SERENA": 0,
+      "CH012_BATH_RESPONSE": "QUIET",
+      "CH012_TERMS_RESULT": "QUIET",
+      "CH012_CHASE_TACTIC": "QUIET",
+      "CH012_DOUBLE_CHECK": "QUIET",
+      "CH012_ROLL_CALL_BY": "LEAH",
+      "BATTLE_CH012_MIRROR_ALLEY_CHASE_RESULT": "clean",
+      "CH012_APPRENTICE_TREATMENT": "QUIET",
+      "LILITH_TRUST": 0,
+      "PLAYER_GUILT_LILITH": 0,
+      "CH013_CREST_CUSTODY": "LEAH",
+      "CH013_PASS_CUSTODY": "LEAH",
+      "CH013_WITNESS_CUSTODY": "GUILD",
+      "CH013_DREAM_QUESTION": "QUIET",
+      "CH013_ROOF_TACTIC": "QUIET",
+      "CH013_ROOF_RESOLUTION": "QUIET",
+      "CH013_ORDER_QUESTION": "QUIET",
+      "LILITH_FIRST_IMPRESSION_OF_PLAYER": "QUIET",
+      "CH013_WITNESS_DECISION": "QUIET",
+      "BATTLE_CH013_RAIN_ROOFTOP_CHASE_RESULT": "clean",
+      "promise_serena_no_vanish_001": "pending",
+      "promise_serena_no_vanish_001_consent": "SILENT",
+      "promise_serena_no_peek_others_001": "pending",
+      "promise_serena_no_peek_others_001_consent": "SILENT",
+      "CH014_SPLIT": "QUIET",
+      "CH014_SLUICE_GUARD": "MIA",
+      "CH014_CAVE_TACTIC": "QUIET",
+      "CH014_FLOOD_RESOLUTION": "QUIET",
+      "BATTLE_CH014_TIDE_CAVE_RESCUE_RESULT": "clean",
+      "BATTLE_CH014_TIDE_CAVE_RESCUE_ENEMIES_DOWN": 2,
+      "CH014_TAG_DECISION": "QUIET",
+      "CH014_TAGS_CUSTODY": "LEAH",
+      "CH014_ACOLYTE_DECISION": "QUIET",
+      "CH014_ACOLYTE_CUSTODY": "GUILD",
+      "CH014_RESCUED_CUSTODY": "GUILD",
+      "CH015_COUNTERSIGN": "QUIET",
+      "CH015_SHELL_TACTIC": "QUIET",
+      "CH015_COPY_TACTIC": "QUIET",
+      "CH015_NEST_ORDER": "QUIET",
+      "CH015_NEST_FATE": "SAVED",
+      "SIN_ENVY": 1,
+      "BATTLE_CH015_TIDE_KING_NELOSA_RESULT": "clean",
+      "BATTLE_CH015_TIDE_KING_NELOSA_ENEMIES_DOWN": 3,
+      "CH015_CHART_SHARD_CUSTODY": "LEAH",
+      "CH015_SIN_SHARD_CUSTODY": "ASSASSIN",
+      "CH015_ROOT_RING_STATE": "ROOTED_IN_NEST",
+      "CH015_RESCUED_CUSTODY": "GUILD",
+      "CH015_HANDOVER_ANSWER": "QUIET",
+      "promise_returned_home_001": "pending",
+      "promise_returned_home_001_consent": "SILENT",
+      "CH015_SUMMONS_CUSTODY": "LEAH",
+      "CH015_SUMMONS_DEADLINE": "THREE_DAYS"
+    },
+    "memories": {
+      "MEMORY_MOTHER_WORDS_FIND_WAY_HOME": "艾琳：“我吹这个，你就知道该往哪边回。”",
+      "MEMORY_FAMILY_ROLL_CALL": "艾琳：“报数！”——“我在！”“我、我也在！”",
+      "MEMORY_BORIN_LAST_WORDS": "先看清该砍谁",
+      "MEMORY_CH001_PROMISE_RETURN_TO_TOBY": "托比：“你一定要回来拿。”——“一定。”",
+      "MEMORY_CH004_MARA_AT_THE_CAGE": "旧磨坊的笼边，玛拉认出了他。她和女儿波莉的手腕被细链锁在晶架上；钥匙在念经的人腰上。",
+      "MEMORY_CH004_TWO_PULLS": "旧磨坊里，绳子拉了两下，他慢了半拍才退。玛拉在他身后说：“……你还欠我一根烟囱。”",
+      "MEMORY_CH004_LEAH_ANGER": "第二座里程石旁，莉亚收完绳子，看着磨坊那点灯说：“我在生气。……所以我先问。”",
+      "MEMORY_CH005_WAIT": "大车之夜，链子全上了箱，莉亚回了一下“停”。他没有动，等到了盾落。",
+      "MEMORY_CH005_ROLL_CALL": "大车之夜，灯灭以后，他在黑暗里说出娘的口令“报数”。这一次，答“在”的是玛拉和波莉。",
+      "MEMORY_CH005_TEAM_REGISTER": "公会柜台，莉亚先在队长栏签了“赫斯特”。他没有答复；她写上他的名字，旁注“未答复”。",
+      "MEMORY_CH006_UNSPOKEN_SYNC": "盐沼桥上，他扣着她左侧的腰带。她的肩一沉，他就推了。谁都没出声。",
+      "MEMORY_CH006_BOUNDARY": "她说“腰带。左边。扶稳。”桥过了，她说准的只是那一次。",
+      "MEMORY_CH006_CAKE": "林边旅店的窗口，他撞见了她的字条“高效率糖分补给，一份”。她说：“你没看见。鞋套，不扣你的。……停战。”",
+      "MEMORY_CH006_CAMP": "林边旅店的火盆旁，她把明天的事说完：“守夜，我前半。你后半。”蛋糕盘就在她手边，她没有动叉子。",
+      "MEMORY_CH007_MIA_FIRST_MEETING": "她问能不能量。他没说好，她就没量；刚才那一眼，她也说不记。",
+      "MEMORY_CH007_TWO_RULES": "盾后面是雷最先到的地方。她规矩不改，只把今晚的退路改到桩后。",
+      "MEMORY_CH007_ONE_KNOCK": "林边，莉亚敲了一声盾，米娅没有停，卡住了那条腿。莉亚说“……拉。”急停环才拉下。米娅说她算过，还有两息；莉亚说：“你算的是它。……我算的是你们。”",
+      "MEMORY_CH007_GEAR_AND_CREAM": "林边，米娅问起齿轮上的奶油。他没答，她自己说：“补给。”",
+      "MEMORY_CH007_UNNUMBERED_CORE": "核心是一颗没有编号的潮晶，从里面往外蚀。晶底的黑环和拓图一样，七个。她把拓图摊给米娅看，看的是米娅的脸。她只对他说：这种黑，见过。",
+      "MEMORY_CH008_PAST_MIDNIGHT": "后半夜，她修屋檐，他守院子。",
+      "MEMORY_CH008_ONE_INSTANT": "她要不带火的金。莉亚说，他有，很弱。她看他按住一根钉子，硬了一瞬。",
+      "MEMORY_CH008_ONE_MILLIMETER": "她说“硬”。那一瞬，是他的。",
+      "MEMORY_CH008_SEVENTEEN": "十七号是透的，刻了号；这颗没有刻痕，环是从里面长出来的。核心在刻号之后、装机之前被换。她装的就是这颗；底，她没翻过来看。",
+      "MEMORY_CH008_SELF_REPORT": "她把两件事都写进账里。他没笑。她报了名字。",
+      "MEMORY_CH008_WHAT_AKU_SAW": "她说了颈圈和那箱黑晶。黑石那一段，他没说，她自己说了。",
+      "MEMORY_CH008_HEARTBEAT": "潮平了，听潮针的笔尖还在抖。米娅说，是心跳，很多个叠成一个，在雾港底下。莉亚的笔停住了。",
+      "MEMORY_CH009_INES_QUESTION": "她问落水的人怎么救。他没有回答。她说，先喊，再伸，再抛，最后才是跳。",
+      "MEMORY_CH009_LAYERS": "晶一潮一层，那颗的最里层是黑的。捡晶的说，下游的口子偶尔捡到中间灰的。他没打断米娅。",
+      "MEMORY_CH009_FIVE_SLIPS": "五张证词，她让他排。他没排，她画了一条线：同一道水。下次，你排。",
+      "MEMORY_CH009_SHIELD_SCARES": "她说盾吓人，派他去问烧水的人。他等着，老妇自己说了：池底的沟通东口，外面退潮的时候管子在涨，镜子里有时候多一个紫头发的。",
+      "MEMORY_CH009_GRATE": "根把码头工人拖进栅栏。她用盾封住缺口，说后面的人，你管。米娅抛了绳，他跟渔民一起拉，鱼贩上来了。她说：退。",
+      "MEMORY_CH009_BELOW": "她写完了那一行：雾港底下，有人。四个名字。救回那一栏空着，她说明天填。外面在退，底下还在涨。",
+      "MEMORY_CH010_PUMP_HOUSE": "泵房里没有人。汤碗的麻袋，黑色的碎粒，写着拟态的空瓶，一槽小虫。粉笔画着账本上那个记号，底下写着大四。她停了一拍。",
+      "MEMORY_CH010_SEVENTEEN": "泵是反装的，外面一退就往里打水。晶座里是十七号，底下的十一划掉了。她说要完整的。莉亚派她守泵。",
+      "MEMORY_CH010_FOUR_LEDGES": "四个人，四个地方。她把先后交给他，他没排。她自己点名：达利别动，钩子伸过去，提姆走过来，绳子抛过去；最后她把盾平放在水上，他背着渔民踩了过去。没有人跳。",
+      "MEMORY_CH010_CAVITY_BATTLE": "她分了三份：人，她守；泵，米娅；根，交给他引。他用光照水，她用盾拨；水涨到石台边，他往另一头打了一个水花。她说水到石台了，米娅说，人先，撬碎了晶座。母虫活着退进涵洞。米娅说，不是它，底下还有。",
+      "MEMORY_CH010_RESCUE_COLUMN": "下去三个，上来七个。救回那一栏，她填上了四个名字。底下的水，没有再涨。",
+      "MEMORY_CH010_SAME_LEDGER": "汤碗救济会。伊涅丝说，总会的通报上，发汤的、走巡礼的、卖魔具的，是同一个名字：蚀宴会。莉亚说，是同一本账。案子还开着。",
+      "MEMORY_CH010_MIA_JOINED": "她要署泵停的那一行，就用自己的名字签了登记。条件写在名字旁边：先问，再碰，拆要她在。她问队上要不要一个会炸的。他没说话。她说，没说不要。",
+      "MEMORY_CH010_LEDGER_SHARED": "入了队，她在旅店楼上把账摊开：晨钟镇西门外的旧磨坊，汤碗救济会从营地带走过人；营地那两个救回来了，晨祷平原来的三个没有；那一行的记号，就是泵房那个拱。她说，队员可以问。米娅说，先不问。",
+      "MEMORY_CH010_INN_NIGHT": "桥头旅店。这里的镜子没盖布。她们睡了。",
+      "MEMORY_CH011_SEVEN_HOLES": "手背上的洗礼印裂开七个细孔。他没有叫人。",
+      "MEMORY_CH011_THREE_KNOCKS": "梦里听见三声盾响，有人叫他的名字。他退了。线断了。",
+      "MEMORY_CH011_SERENA_ANSWER": "她说：都有。线，她剪了；门，她看了一眼。今晚拉线的，不是她。",
+      "MEMORY_CH011_SEVEN_DOORS": "她说他身上有七扇门，都空着。白塔的册官，在他身上按过号。莉亚停了一拍。",
+      "MEMORY_CH011_LEAH_RULE": "莉亚说：要来，走门。镜子，不准看。",
+      "MEMORY_CH011_SAY_A_WORD": "她问他，要走的时候会不会说一声。他没有回答。她没有说再见。",
+      "MEMORY_CH011_LEDGER": "莉亚在账上写：第十二夜，桥头旅店。镜中人塞雷娜，剪线，看了一眼。梦里的事，他没有说。",
+      "MEMORY_CH011_FEATHER_MAP": "黑羽穿着一张地图：老涵洞往下是潮穴；一条没人走过的路，停在一个没写字的圈。角上写着：条件，明天谈。",
+      "MEMORY_CH011_INN_NIGHT": "这一夜之后，走廊、楼梯转角与三人房里的镜子都盖了布；尼尔的房间不知道。莉亚面对着镜子坐。",
+      "MEMORY_CH012_BATH_MIRROR": "塞雷娜招认从浴场柜门镜看过他的手背。她道歉，包起杖头。莉亚写下：镜子，不准看。违，一次。",
+      "MEMORY_CH012_TERMS": "塞雷娜的条件：莫尔坎；要走，说一声；别叫她替人看别人。他什么都没说。莉亚说：不说话，就是没说不要。她记下了两条。",
+      "MEMORY_CH012_JOINED": "塞雷娜入队。登记只写名，姓说下次。条件写在名字旁边。",
+      "MEMORY_CH012_LOCKER_MIRROR": "人没走门，走的是柜门镜。镜子只记得照过的。米娅盖了柜门镜，只留尼尔那一格。",
+      "MEMORY_CH012_ALLEY": "镜巷里，莉亚报数，假的莉亚答不出少了谁。学徒说：潮穴，明夜。队员，第一次报到四。",
+      "MEMORY_CH012_APPRENTICE": "学徒在灯塔裹着毯子睡着了。今晚谁都没问。明早，分会来点。",
+      "MEMORY_CH012_LIGHTHOUSE_NIGHT": "第十三天住旧灯塔。队员，四。塞雷娜说：我在楼梯上，哪里也不去。下雨了。",
+      "MEMORY_CH013_DREAM_QUESTION": "后半夜，塞雷娜想从窗走进孩子的梦里问莫尔坎。他没有说好；她说，那就是不。",
+      "MEMORY_CH013_WINDOW": "窗碎了。金发的刺客说：让开。他照过我的脸。莉亚的盾先到。纸被她挑走了。",
+      "MEMORY_CH013_ASSASSIN": "雨中屋顶，金发刺客问他是不是教团的人。他没说话。她丢下纸：我不是来帮你，只是不想欠你。看清楚上面盖的章。不要相信教团。",
+      "MEMORY_CH013_COUNT": "屋顶回来，莉亚报数。塞雷娜报四，这一次没有停。米娅守住了门和窗。",
+      "MEMORY_CH013_PASS": "巡礼通行证：最上面是晨星冕的御印，底下盖着那个像拱又像浪的记号——伊涅丝说，御印底下只盖得上官印。背面写着：往：拱潮门。",
+      "MEMORY_CH013_WITNESS": "清晨，孩子报了名字：席欧。伊涅丝说，说话的，名字她留着。她带他回分会。",
+      "MEMORY_CH013_TIDE_TONIGHT": "第十四天清晨。伊涅丝点了四个：今夜出去四个，回来也要四个。潮穴，今夜。",
+      "MEMORY_CH014_SPLIT": "老闸口，三个下去，一个守闸。守闸的是米娅。是莉亚派的。",
+      "MEMORY_CH014_COCOONS": "潮穴的墙上挂着茧，茧里是人。所有的茧同一个时候鼓起来——雾港底下的心跳，是他们。",
+      "MEMORY_CH014_PATCH": "老闸的楔子裂了。米娅把叮当三号塞进齿里：紧急修补。最后一个人出来，闸才落。报数，到四。",
+      "MEMORY_CH014_TAGS": "潮腔的石台上，九个人的手腕都绑着木牌：来处、件、成色。米娅先问了，才剪。一个叫欧妲，晨祷平原来的——04那一行的三个人，找回一个。",
+      "MEMORY_CH014_ACOLYTE": "东口，那个放下手的念祷文的人交给了分会。伊涅丝把他的名字收进袖子里。",
+      "MEMORY_CH014_COUNT": "东口，伊涅丝点完人数：出去四个，回来四个；加九个；再加一个。",
+      "MEMORY_CH014_LEDGER": "莉亚的账：救回九，还没救回三，念祷文的一名交分会，牌子九块。她写的是‘还没’。",
+      "MEMORY_CH014_BELOW": "东口的闸缝底下，有个声音照着他们的报数数了一遍。说话的人都站在上面。零号说，底下还有一个，很慢，很大。",
+      "MEMORY_CH015_COUNTERSIGN": "石门前，莉亚说底下的东西会学声音。认自己人，用绳子。",
+      "MEMORY_CH015_NEST": "石门后面是一条沉船。船肋上挂着三个茧，船舱里挂满幼体的囊。龙骨上的壳，用莉亚的声音数了一二三。",
+      "MEMORY_CH015_SHELL": "壳撞上盾，腹下裂开一道缝。他的剑进了那道缝，不深，刚好一道。",
+      "MEMORY_CH015_COPIES": "两个莉亚、两个塞雷娜。塞雷娜和莉亚换了位置，金发的刺客从死角出了一刀。",
+      "MEMORY_CH015_NEST_FATE": "人都出来了，莉亚把那一下交给他。……他没说，莉亚照第三条切了线。",
+      "MEMORY_CH015_RUIN": "那颗心停的地方长出一个活的木环，谁伸手，根就往回缩。底下压着一片刻了七个环的铜，莉亚收了。金发刺客拿走了那块还在跳的碎片，说它叫涅洛萨，以前是洗沼泽的。",
+      "MEMORY_CH015_COUNT": "分会的仓里，伊涅丝点完：出去四个，回来四个，加三个。欧妲给他们让了位置。",
+      "MEMORY_CH015_NOT_HANDED_OVER": "分会门口，赈灾司的官照册要收救回的人。他说：救回的，不交。达利站到他身后，码头的人一个一个站过来。",
+      "MEMORY_CH015_SUMMONS": "赈灾司的官交出一封白塔的召令：召雾港屠龙者，三日内赴白塔。金色的火漆是一顶冠，冠上一道裂——和黑龙左眼旁边那道一样。",
+      "MEMORY_CH015_LEDGER": "莉亚的账：救回三，它停了，幼体多数留着，碎片被拿走，白塔召三日。她把召令夹在通行证旁边。"
+    }
+  },
+  "speakers": {
+    "gwen": {
+      "name": "葛雯",
+      "color": "#8fb0a8",
+      "art": null
+    }
+  },
+  "shots": [
+    {
+      "id": "ex002-01",
+      "title": "半日洲",
+      "bg": "fog-harbor-sandbar",
+      "music": "sea_morning",
+      "ambience": [
+        "waves",
+        "gulls"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "style": "caption",
+          "text": "难得的休息日。分会今天，不派委托。"
+        },
+        {
+          "t": "narr",
+          "text": "雾港往外，船划了半个时辰。"
+        },
+        {
+          "t": "narr",
+          "text": "雾散开的地方，海退了下去，露出一片长长的沙洲。"
+        },
+        {
+          "t": "say",
+          "who": "gwen",
+          "text": "半日洲。一天，只露半天的脸。"
+        },
+        {
+          "t": "narr",
+          "text": "船家葛雯把篙往沙里一插，船停了。"
+        },
+        {
+          "t": "narr",
+          "text": "沙洲中间插着一根竹竿。竿子半腰，系着一块红布。"
+        },
+        {
+          "t": "say",
+          "who": "gwen",
+          "text": "看竹竿。水碰到红布，就回船。"
+        },
+        {
+          "t": "say",
+          "who": "gwen",
+          "text": "船，只等一次。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "……一次。记下了。"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚抱着报告夹下了船。报告夹用油布包了三层。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "莉亚，休息日也带报告夹？"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "休息日，也是一日。"
+        },
+        {
+          "t": "narr",
+          "text": "回头看，雾港缩成了一排低低的木屋和一片沼林。旧灯塔立在最外面的石堤上。"
+        },
+        {
+          "t": "narr",
+          "text": "塞雷娜最后一个下船。杖留在船上，杖头的布没有解。"
+        },
+        {
+          "t": "narr",
+          "text": "她走在沙上，眼睛看着天，不看脚边一洼一洼的水。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "塞雷娜，你干嘛一直看天？"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "水面也是一面。照得见人的，我不看。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "这一条是我自己加的。莉亚的账上没有，不用记。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "……记了。"
+        },
+        {
+          "t": "narr",
+          "text": "塞雷娜从怀里抽出一张折好的纸，摊开。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "整理一下。休息日的流程：第一，上岸。第二，涂药膏。第三，拾贝。第四，午饭。第五——"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "你连休息都要写流程？！"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "没写下来的事，我不知道该怎么做。……这句话说出口，比我想的还糟。"
+        },
+        {
+          "t": "narr",
+          "text": "葛雯从船舱里摸出一个小陶罐，抛给{PLAYER_NAME}。"
+        },
+        {
+          "t": "say",
+          "who": "gwen",
+          "text": "翠影药草防晒膏。海上的太阳，比雾港的毒。"
+        },
+        {
+          "t": "say",
+          "who": "gwen",
+          "text": "船篷后面，换衣服。"
+        },
+        {
+          "t": "narr",
+          "text": "三个人轮流去了船篷后面。换上了泳装。"
+        },
+        {
+          "t": "narr",
+          "text": "米娅第一个跳出来，在沙上转了半圈。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "我自己挑的！下水不会变重——是防水的！",
+          "text15": "我自己挑的！防水魔纱，下水不会变重——我再转一圈给你们看！"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "第一项，完成。评价，可以留到第五项以后。",
+          "text15": "看吧。我挑的时候，就知道会被看。……这句话听起来，比我想的更糟。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "看什么。看竹竿。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "mode": "15+"
+          },
+          "then": [
+            {
+              "t": "narr",
+              "text": "莉亚把视线钉在竹竿上。耳朵，有一点红。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ex002-02",
+      "title": "自由输入：翠影药草防晒膏",
+      "bg": "fog-harbor-sandbar",
+      "music": "sea_morning",
+      "ambience": [
+        "waves"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "沙洲上没有一点影子。太阳晒在湿沙上，白得发亮。"
+        },
+        {
+          "t": "narr",
+          "text": "{PLAYER_NAME}手里，是那一罐翠影药草防晒膏。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "成分：芦荟、翠影叶、蜂蜡，一点点薄荷——"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "我想拆开看看——不对，是涂。是涂！"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "我不用。晒不坏。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "第二项。后背，我自己够不着。"
+        },
+        {
+          "t": "input",
+          "id": "FI_EX002_SC02_SUNSCREEN_001",
+          "kind": "action",
+          "prompt": "沙洲上太阳很毒，船家给的翠影药草防晒膏只有一罐，在{PLAYER_NAME}手里。莉亚说她不用；米娅在念成分；塞雷娜说后背够不着。他可以劝莉亚也涂、安排谁帮谁、问塞雷娜要不要他帮忙、把药膏全让给她们自己不涂、不问就动手，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "lia",
+            "mia",
+            "serena"
+          ],
+          "context": [
+            "海上的太阳比雾港毒；船家说，不涂的人，下午就知道了。",
+            "莉亚讲规矩、讲装备保养；她不喜欢被当成需要照顾的人。",
+            "米娅碰东西以前先问；塞雷娜先问再动，除了经过同意，不碰任何人。",
+            "一罐药膏，够四个人用。"
+          ],
+          "principles": [
+            "SUNSCREEN：判定优先序：不问就动手（直接抹、按住涂） > 调情（全身我来、每个人我都帮） > 劝莉亚也涂 > 问塞雷娜要不要他帮忙 > 安排她们互相帮 > 自己不涂、全让给她们 > 沉默。",
+            "碰人要先问（她们的规矩）：不问就动手是缺点，被拒绝；问了，对方也可以说不。",
+            "不评论身体；泳装的样子不描写，口吻一律是她们自己挑的。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "neg_guard",
+              "label": "否定式表态（按安排处理）",
+              "desc": "只说自己“不碰／不乱碰／不动手”，本身并不是那个动作；按安排她们互相帮处理。",
+              "keywords": [
+                "我不碰",
+                "不碰你们",
+                "不会乱碰",
+                "不乱碰",
+                "我不动手",
+                "不会动手"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "塞雷娜，后背我来！先问——可以碰吗？"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……可以。你问了，所以可以。"
+                },
+                {
+                  "t": "narr",
+                  "text": "米娅涂得很认真，像在给零件上油。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_SUNSCREEN": "PAIRED"
+                }
+              }
+            },
+            {
+              "id": "grab",
+              "label": "不问就动手",
+              "desc": "不问就直接抹上去、按住她涂。这是缺点：被拒绝。",
+              "keywords": [
+                "直接抹",
+                "直接涂",
+                "不问就涂",
+                "抹她脸上",
+                "按住她",
+                "直接帮她涂",
+                "抓过来涂",
+                "!不直接",
+                "!不会",
+                "!不要直接"
+              ],
+              "morality": -1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}挖了一块药膏，手还没伸到——"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "手。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……手。"
+                },
+                {
+                  "t": "narr",
+                  "text": "两个人同时说。米娅把罐子从他手里接了过去。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "先问，再碰。我们的规矩吧？"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_SUNSCREEN": "GRABBED"
+                },
+                "flags": {
+                  "EX_GRABBED": true
+                }
+              }
+            },
+            {
+              "id": "flirt",
+              "label": "调情：每个人我都帮",
+              "desc": "说全身他来、每个人他都帮着涂。",
+              "keywords": [
+                "我帮你们全涂",
+                "全身",
+                "每个人我都帮",
+                "我来帮你们涂",
+                "哪里都帮",
+                "都交给我涂",
+                "一个一个来"
+              ],
+              "morality": -1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "不要。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……你说出来以后，我反而不想请你了。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "我、我自己会涂！"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_SUNSCREEN": "FLIRT"
+                }
+              }
+            },
+            {
+              "id": "persuade_lia",
+              "label": "劝莉亚也涂",
+              "desc": "劝莉亚：皮肤也是装备、要保养、晒伤了就是准备不足。",
+              "keywords": [
+                "莉亚也涂",
+                "莉亚也要",
+                "你也涂",
+                "装备",
+                "保养",
+                "准备不足",
+                "晒伤",
+                "也涂一下"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……装备。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她想了一下。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "装备，要保养。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她接过罐子，挖了一块，三下涂完，又递了回来。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "三息。下一个。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_SUNSCREEN": "LIA_CONVINCED"
+                },
+                "flags": {
+                  "EX_LIA_SUNSCREEN": true
+                }
+              }
+            },
+            {
+              "id": "offer_serena",
+              "label": "问塞雷娜要不要帮忙",
+              "desc": "先问塞雷娜：后背要不要他帮忙涂。",
+              "keywords": [
+                "我帮你涂后背",
+                "帮你涂后背",
+                "后背我来",
+                "要不要我帮",
+                "需要帮忙吗",
+                "我可以帮你吗",
+                "要我帮忙吗"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……你先问了。"
+                },
+                {
+                  "t": "if",
+                  "when": {
+                    "mode": "15+"
+                  },
+                  "then": [
+                    {
+                      "t": "say",
+                      "who": "serena",
+                      "text": "好。只有后背。"
+                    },
+                    {
+                      "t": "narr",
+                      "text": "她把长发拨到一边，转过身去。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "serena",
+                      "text": "手放在我看得见的地方——……不对，后背我看不见。这句话，收回。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "lia",
+                      "text": "三息。"
+                    },
+                    {
+                      "t": "narr",
+                      "text": "……莉亚真的在数。"
+                    }
+                  ],
+                  "else": [
+                    {
+                      "t": "narr",
+                      "text": "她想了一下，把罐子递给了米娅。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "serena",
+                      "text": "米娅，你来。他问了，所以我可以说不。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "mia",
+                      "text": "收到！"
+                    }
+                  ]
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_SUNSCREEN": "ASKED_SERENA"
+                }
+              }
+            },
+            {
+              "id": "pair_up",
+              "label": "安排她们互相帮",
+              "desc": "你们互相涂、米娅帮塞雷娜涂后背。",
+              "keywords": [
+                "你们互相涂",
+                "互相涂",
+                "米娅帮塞雷娜",
+                "米娅帮她",
+                "分一下",
+                "轮流涂",
+                "互相帮"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "塞雷娜，后背我来！先问——可以碰吗？"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……可以。你问了，所以可以。"
+                },
+                {
+                  "t": "narr",
+                  "text": "米娅涂得很认真，像在给零件上油。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "薄薄一层，不能漏缝——"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "我不是零件。……不过，谢谢。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_SUNSCREEN": "PAIRED"
+                }
+              }
+            },
+            {
+              "id": "self_skip",
+              "label": "自己不涂、全让给她们",
+              "desc": "他说自己不用、晒不坏，药膏都给她们。",
+              "keywords": [
+                "我不用涂",
+                "我不涂",
+                "都给你们",
+                "我晒不坏",
+                "让给你们",
+                "我就不用了"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "理论上，人都会晒伤。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……他说不用，就不用。"
+                },
+                {
+                  "t": "narr",
+                  "text": "两个说“不用”的人，站在太阳底下。"
+                },
+                {
+                  "t": "say",
+                  "who": "gwen",
+                  "text": "下午就知道了。",
+                  "note": "船上"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_SUNSCREEN": "SKIPPED"
+                },
+                "flags": {
+                  "EX_AKU_BARE": true
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}拿着罐子，没说话。"
+                },
+                {
+                  "t": "narr",
+                  "text": "米娅把罐子拿了过去。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "塞雷娜，后背我来！先问——可以碰吗？"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……可以。你问了，所以可以。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_SUNSCREEN": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "if",
+          "when": {
+            "any": [
+              {
+                "flag": "EX_SUNSCREEN",
+                "eq": "GRABBED"
+              },
+              {
+                "flag": "EX_SUNSCREEN",
+                "eq": "FLIRT"
+              },
+              {
+                "flag": "EX_SUNSCREEN",
+                "eq": "LIA_CONVINCED"
+              },
+              {
+                "flag": "EX_SUNSCREEN",
+                "eq": "SKIPPED"
+              }
+            ]
+          },
+          "then": [
+            {
+              "t": "narr",
+              "text": "塞雷娜的后背，最后是米娅涂的。先问过。"
+            }
+          ]
+        },
+        {
+          "t": "narr",
+          "text": "罐子在四个人手里转了一圈。"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚走到沙洲最高的那块沙丘上，站定，面对竹竿。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "第二条：不离开我的视线。休息日，也一样。"
+        }
+      ]
+    },
+    {
+      "id": "ex002-03",
+      "title": "自由输入：潮池",
+      "bg": "fog-harbor-sandbar",
+      "music": "sea_morning",
+      "ambience": [
+        "waves",
+        "gulls"
+      ],
+      "beats": [
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "第三项。拾贝。"
+        },
+        {
+          "t": "narr",
+          "text": "退了潮的沙洲上，留下一洼一洼的潮池。"
+        },
+        {
+          "t": "narr",
+          "text": "米娅趴在最大的那一洼旁边，整个人快掉进去了。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "海星！五个角的！还有会走路的贝壳——是寄居蟹！"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "塞雷娜！快来看！"
+        },
+        {
+          "t": "narr",
+          "text": "塞雷娜走过来，停在离潮池一步远的地方。"
+        },
+        {
+          "t": "narr",
+          "text": "她看着天。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "……水面，我不看。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "啊。"
+        },
+        {
+          "t": "narr",
+          "text": "米娅的笑停了一下。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "……对。照得见人的，都算。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "可是，海星很好看……"
+        },
+        {
+          "t": "input",
+          "id": "FI_EX002_SC03_TIDEPOOL_001",
+          "kind": "action",
+          "prompt": "米娅在潮池里找到了海星和寄居蟹，想给塞雷娜看。塞雷娜停在一步远的地方看着天——照得见人的水面，她自己定了不看。{PLAYER_NAME}可以把海星捧出水给她看、讲给她听、让米娅想办法、告诉她不看也没关系、劝她看一眼就好、要她顺便借水面看看别人，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "serena",
+            "mia"
+          ],
+          "context": [
+            "镜子、水面，照得见人的面，塞雷娜都借得来看；所以她自己定了：水面，不看。这是她自己的规矩，不是谁逼她的。",
+            "海星离开水一小会儿不要紧，看完要放回去。",
+            "米娅带着一个拾贝的小桶。"
+          ],
+          "principles": [
+            "TIDEPOOL：判定优先序：要她借水面看别人（看人、看谁在想什么） > 劝她破例看一眼 > 把海星捧出水给她看 > 讲给她听 > 让米娅想办法 > 说不看也没关系 > 沉默。“不用看”“不看也行”这类否定说法按“不看也没关系”处理。",
+            "塞雷娜不看水面是她自己的边界：不替她破例，也不把她的规矩说成怪癖。劝她看一眼，她不看；要她借水面看人，她拒绝，而且笑得很温柔——那是她真的不高兴。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "respected",
+              "label": "不看也没关系",
+              "desc": "告诉她不看也没关系、记得她的规矩、不勉强。（也接住“不用看”这类否定说法。）",
+              "keywords": [
+                "不看也没关系",
+                "不用看",
+                "不看也行",
+                "不勉强",
+                "你的规矩",
+                "我记得你说过",
+                "不看就不看",
+                "尊重你"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……嗯。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她还是看着天。说得很轻。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "规矩是我自己定的。被人记着，倒是第一次。"
+                },
+                {
+                  "t": "narr",
+                  "text": "米娅想了想，用小桶舀起海星，把水倒掉一半——再倒掉一半。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……那个，我可以看。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_TIDEPOOL": "RESPECTED"
+                }
+              }
+            },
+            {
+              "id": "peek_request",
+              "label": "要她借水面看别人",
+              "desc": "要塞雷娜顺便借水面看看别人、看谁在想什么。这是越界。",
+              "keywords": [
+                "借水面看别人",
+                "看看别人",
+                "看看莉亚在想什么",
+                "从水里看看",
+                "顺便看看",
+                "看看她在想",
+                "看看谁",
+                "借水面",
+                "!不用",
+                "!不要",
+                "!别看"
+              ],
+              "morality": -2,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "塞雷娜笑了。笑得很温柔。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "你要我借水面，看别人。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……不。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她转身走开了。米娅看了{PLAYER_NAME}一眼，没说话。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_TIDEPOOL": "PEEK_ASKED"
+                },
+                "flags": {
+                  "EX_PEEK_ASKED": true
+                }
+              }
+            },
+            {
+              "id": "coax",
+              "label": "劝她破例看一眼",
+              "desc": "劝她看一眼就好、只是海星、破例一次。",
+              "keywords": [
+                "看一眼",
+                "就一眼",
+                "破例",
+                "只是海星",
+                "看看嘛",
+                "没事的你看",
+                "看一下就好",
+                "!不用看",
+                "!不看也"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "一眼，也是看。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "水面照过的，不只海星。……今天早上，这一洼照过谁，我不知道。我也不想知道。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她还是看着天。"
+                },
+                {
+                  "t": "narr",
+                  "text": "米娅用小桶舀起海星，把水倒掉一半——再倒掉一半。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "这样呢？水只剩一点点，照不出人！理论上！"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……理论上。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_TIDEPOOL": "COAXED"
+                }
+              }
+            },
+            {
+              "id": "cupped",
+              "label": "把海星捧出水给她看",
+              "desc": "{PLAYER_NAME}把海星从潮池里捧出来，放在手心给她看。",
+              "keywords": [
+                "捧出来",
+                "捞出来",
+                "放在手心",
+                "拿出水",
+                "捧起来",
+                "捞起来",
+                "拿给她看",
+                "手心"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}把手伸进潮池，捧起了那只海星。"
+                },
+                {
+                  "t": "narr",
+                  "text": "水从指缝里漏光了。手心里，只剩一只湿湿的、橘红色的海星。"
+                },
+                {
+                  "t": "narr",
+                  "text": "他把手伸到塞雷娜面前。"
+                },
+                {
+                  "t": "narr",
+                  "text": "塞雷娜低下了头。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……手心里的，不是水面。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她看了很久。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "五个角。比我想的丑一点。……也好看一点。"
+                },
+                {
+                  "t": "if",
+                  "when": {
+                    "flag": "SERENA_RELATIONSHIP_STAGE",
+                    "eq": "COMPANION"
+                  },
+                  "then": [
+                    {
+                      "t": "say",
+                      "who": "serena",
+                      "text": "下次，也这样给我看。……只给我看。"
+                    }
+                  ]
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_TIDEPOOL": "CUPPED"
+                },
+                "flags": {
+                  "EX_STARFISH_SHOWN": true
+                }
+              }
+            },
+            {
+              "id": "told",
+              "label": "讲给她听",
+              "desc": "{PLAYER_NAME}把潮池里的东西一样一样讲给她听。",
+              "keywords": [
+                "讲给你听",
+                "我讲给你听",
+                "讲给她听",
+                "我描述",
+                "我说给你听",
+                "描述一下",
+                "它长得",
+                "告诉你长什么样"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}蹲在潮池边，一样一样讲给她听：五个角，橘红色，背上一粒一粒的；寄居蟹背着一个比自己大的壳，走得很急。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……走得很急。"
+                },
+                {
+                  "t": "narr",
+                  "text": "塞雷娜的眼睛还看着天，嘴角弯了一下。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "你讲的，水面照不出来。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_TIDEPOOL": "TOLD"
+                }
+              }
+            },
+            {
+              "id": "mia_idea",
+              "label": "让米娅想办法",
+              "desc": "让米娅想个办法，让塞雷娜不看水面也看得到。",
+              "keywords": [
+                "米娅想办法",
+                "米娅有办法",
+                "米娅你来",
+                "用桶装",
+                "用你的桶",
+                "想个办法"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "办法？有！"
+                },
+                {
+                  "t": "narr",
+                  "text": "米娅用小桶舀起海星，把水倒掉一半——再倒掉一半。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "水只剩一点点，晃来晃去，照不出人！理论上！"
+                },
+                {
+                  "t": "narr",
+                  "text": "塞雷娜低头，看了一眼桶底。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……理论上。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "它在动。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_TIDEPOOL": "MIA_IDEA"
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "潮池里，寄居蟹背着壳走过来，又走过去。"
+                },
+                {
+                  "t": "narr",
+                  "text": "米娅想了想，用小桶舀起海星，把水倒掉一半——再倒掉一半。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……那个，我可以看。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_TIDEPOOL": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "if",
+          "when": {
+            "not": {
+              "any": [
+                {
+                  "flag": "EX_TIDEPOOL",
+                  "eq": "TOLD"
+                },
+                {
+                  "flag": "EX_TIDEPOOL",
+                  "eq": "PEEK_ASKED"
+                }
+              ]
+            }
+          },
+          "then": [
+            {
+              "t": "narr",
+              "text": "海星回到了潮池里。"
+            }
+          ]
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "它们住在这里。看完，就留在这里。"
+        },
+        {
+          "t": "narr",
+          "text": "米娅站起来，把小桶摇得哗啦哗啦响。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "贝壳不一样！贝壳是空的——空的可以带走！"
+        }
+      ]
+    },
+    {
+      "id": "ex002-04",
+      "title": "自由输入：海鸥",
+      "bg": "fog-harbor-sandbar",
+      "music": "sea_noon",
+      "ambience": [
+        "waves",
+        "gulls"
+      ],
+      "beats": [
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "第四项。午饭。"
+        },
+        {
+          "t": "narr",
+          "text": "四份黑麦面包，四份烤鱼干，在油布上摆得一样整齐。是塞雷娜摆的。"
+        },
+        {
+          "t": "narr",
+          "text": "流程表压在一块石头下面，露出一角。"
+        },
+        {
+          "t": "narr",
+          "text": "一阵风。一道白影。"
+        },
+        {
+          "t": "narr",
+          "text": "一只海鸥叼起那一角，拍着翅膀飞走了——落在沙洲中间那根竹竿的顶上。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "流程表！"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "……鸟。不在规矩里。"
+        },
+        {
+          "t": "narr",
+          "text": "塞雷娜坐着没动。脸上很平静。"
+        },
+        {
+          "t": "narr",
+          "text": "她的手指，扣在一起，松开，又扣在一起。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "……第五项，是什么来着。"
+        },
+        {
+          "t": "input",
+          "id": "FI_EX002_SC04_GULL_001",
+          "kind": "action",
+          "prompt": "海鸥叼走了塞雷娜的休息日流程表，停在沙洲中间的竹竿顶上。塞雷娜脸上很平静，手指却一直扣在一起——没有流程，她不知道下一项是什么。{PLAYER_NAME}可以去追海鸥、拿午饭跟它换、让米娅和零号去要回来、告诉塞雷娜没有流程也行、说下一项大家一起定、笑她，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "serena",
+            "mia",
+            "lia"
+          ],
+          "context": [
+            "海鸥要的是吃的，不是纸。",
+            "零号会飞，飞得不快；海鸥比它快。",
+            "竹竿插在沙洲中间，水还没涨到那里。",
+            "塞雷娜怕没有安排的事：没写下来的，她不知道该怎么做。"
+          ],
+          "principles": [
+            "GULL：判定优先序：笑她（连休息都要流程、离了纸就不会玩） > 追海鸥 > 拿午饭换 > 让米娅和零号去 > 说下一项大家一起定 > 说没有流程也行 > 沉默。",
+            "塞雷娜怕的是被丢下、事情失控；不笑她，也不把她的流程表说成没用的东西。要不要照流程走，由她自己决定。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "neg_guard",
+              "label": "否定式表态（按没有流程也行处理）",
+              "desc": "只说自己“不笑你／不好笑”，本身不是嘲笑；按没有流程也行处理。",
+              "keywords": [
+                "我不笑",
+                "不好笑",
+                "没笑你",
+                "不会笑你",
+                "没什么好笑"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……不笑？"
+                },
+                {
+                  "t": "narr",
+                  "text": "她看着竹竿顶上的海鸥，看了很久。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "那，第五项——没有第五项。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……这句话，比我想的好一点。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_GULL": "NO_PLAN"
+                }
+              }
+            },
+            {
+              "id": "mocked",
+              "label": "笑她",
+              "desc": "笑她连休息都要写流程、离了纸就不会玩。",
+              "keywords": [
+                "连休息都要流程",
+                "真好笑",
+                "好奇怪",
+                "离了纸",
+                "怪人",
+                "笑死",
+                "没纸就不会玩",
+                "!不好笑",
+                "!不笑",
+                "!没笑"
+              ],
+              "morality": -1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "塞雷娜笑了。笑得很温柔。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "对。很好笑。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她把手收到身后，不再说话。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……笑完了？"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_GULL": "MOCKED"
+                }
+              }
+            },
+            {
+              "id": "chase",
+              "label": "追海鸥",
+              "desc": "{PLAYER_NAME}跑去追海鸥。",
+              "keywords": [
+                "我去追",
+                "追海鸥",
+                "追上去",
+                "跑过去",
+                "抓海鸥",
+                "追它",
+                "赶走它"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}追了出去。"
+                },
+                {
+                  "t": "narr",
+                  "text": "海鸥等他跑到竹竿底下，才慢慢飞起来，换到更远的一块礁石上。"
+                },
+                {
+                  "t": "narr",
+                  "text": "他又追。它又飞。"
+                },
+                {
+                  "t": "narr",
+                  "text": "第三次，他一脚踩进潮池，坐在了水里。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "……理论上，追不到。"
+                },
+                {
+                  "t": "narr",
+                  "text": "塞雷娜看着坐在水里的{PLAYER_NAME}。她的肩膀抖了一下——是在笑。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_GULL": "CHASED"
+                }
+              }
+            },
+            {
+              "id": "traded",
+              "label": "拿午饭换",
+              "desc": "拿自己的鱼干或面包跟海鸥换。",
+              "keywords": [
+                "拿午饭换",
+                "用鱼干换",
+                "拿吃的换",
+                "给它吃的",
+                "扔鱼干",
+                "喂它",
+                "我的鱼干给它",
+                "跟它换"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}拿起自己那一份鱼干，朝竹竿那边扔了过去。"
+                },
+                {
+                  "t": "narr",
+                  "text": "海鸥看看鱼干，看看纸。"
+                },
+                {
+                  "t": "narr",
+                  "text": "纸掉了下来。鱼干没有了。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "交易成立！"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……一份午饭，换一张流程表。你吃什么？"
+                },
+                {
+                  "t": "narr",
+                  "text": "塞雷娜把自己那一份，掰了一半给他。四份，不一样整齐了。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_GULL": "TRADED"
+                }
+              }
+            },
+            {
+              "id": "zero",
+              "label": "让米娅和零号去",
+              "desc": "让米娅叫零号飞过去要回来。",
+              "keywords": [
+                "让零号去",
+                "零号",
+                "米娅帮忙",
+                "米娅去要",
+                "让米娅"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "零号！出动——先问一下：你愿意吗？"
+                },
+                {
+                  "t": "narr",
+                  "text": "零号“哔”了一声。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "它说愿意！"
+                },
+                {
+                  "t": "narr",
+                  "text": "零号慢慢飞到竹竿顶上。海鸥歪着头看它。"
+                },
+                {
+                  "t": "narr",
+                  "text": "一个圆的，一只白的，对看了很久。海鸥先受不了，丢下纸飞走了。"
+                },
+                {
+                  "t": "narr",
+                  "text": "零号把纸顶了回来。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_GULL": "ZERO"
+                }
+              }
+            },
+            {
+              "id": "together",
+              "label": "说下一项大家一起定",
+              "desc": "说下一项不用纸，大家一起定。",
+              "keywords": [
+                "大家一起定",
+                "一起决定",
+                "一起定",
+                "问问大家",
+                "重新写",
+                "我们一起写",
+                "大家说了算"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……一起定？"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "我投游泳！"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……看竹竿。"
+                },
+                {
+                  "t": "narr",
+                  "text": "这算一票，还是不算，没人知道。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "那就——第五项，游泳。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她说出口，自己愣了一下。纸上没写的，她也说出来了。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_GULL": "TOGETHER"
+                }
+              }
+            },
+            {
+              "id": "no_plan",
+              "label": "说没有流程也行",
+              "desc": "告诉她没有流程也没关系，想做什么就做什么。",
+              "keywords": [
+                "没有流程也没关系",
+                "不用流程",
+                "没有也行",
+                "随便玩",
+                "想做什么就做什么",
+                "没关系",
+                "不要紧"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……没有流程，也行？"
+                },
+                {
+                  "t": "narr",
+                  "text": "她看着竹竿顶上的海鸥，看了很久。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "那，第五项——没有第五项。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……这句话，比我想的好一点。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_GULL": "NO_PLAN"
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "莉亚拿起一块鱼干，朝竹竿扬了扬手。"
+                },
+                {
+                  "t": "narr",
+                  "text": "海鸥丢下纸，扑了过来。鱼干没有了，纸回来了。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "鸟，也听得懂命令。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "那是听得懂鱼干吧！"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_GULL": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "if",
+          "when": {
+            "any": [
+              {
+                "flag": "EX_GULL",
+                "eq": "MOCKED"
+              },
+              {
+                "flag": "EX_GULL",
+                "eq": "CHASED"
+              },
+              {
+                "flag": "EX_GULL",
+                "eq": "NO_PLAN"
+              }
+            ]
+          },
+          "then": [
+            {
+              "t": "narr",
+              "text": "后来，海鸥自己飞走了。纸落在竹竿底下的湿沙上。"
+            }
+          ]
+        },
+        {
+          "t": "narr",
+          "text": "流程表回到了塞雷娜手里，湿了一角。第四项以后的字，都晕开了。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "not": {
+              "any": [
+                {
+                  "flag": "EX_GULL",
+                  "eq": "TOGETHER"
+                },
+                {
+                  "flag": "EX_GULL",
+                  "eq": "NO_PLAN"
+                }
+              ]
+            }
+          },
+          "then": [
+            {
+              "t": "say",
+              "who": "mia",
+              "text": "那下午——游泳！"
+            },
+            {
+              "t": "say",
+              "who": "serena",
+              "text": "……第五项，游泳。"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ex002-05",
+      "title": "自由输入：红布",
+      "bg": "fog-harbor-sandbar",
+      "music": "sea_noon",
+      "ambience": [
+        "waves"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "下午。米娅和塞雷娜下了水。"
+        },
+        {
+          "t": "narr",
+          "text": "米娅一下水就喊冷，喊完，又往深一点的地方走。"
+        },
+        {
+          "t": "narr",
+          "text": "塞雷娜闭着眼睛，仰面浮在水上——这样，就看不见水面。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "塞雷娜，往左一点！你要漂到海鸥那边了！"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "闭着眼睛游，全靠别人喊。……这么说起来，我好像很信任你。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "……欸？"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚没有下水。"
+        },
+        {
+          "t": "narr",
+          "text": "她站在沙洲最高的那一块，面对竹竿，像一面插在沙里的盾。从上岸到现在，她没有坐下过。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "not": {
+              "flag": "EX_LIA_SUNSCREEN"
+            }
+          },
+          "then": [
+            {
+              "t": "narr",
+              "text": "她的鼻尖，已经有一点红了。"
+            }
+          ]
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "莉亚！下来嘛！"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "有人要看着红布。"
+        },
+        {
+          "t": "narr",
+          "text": "水离红布，还有一大截。"
+        },
+        {
+          "t": "input",
+          "id": "FI_EX002_SC05_WATCH_001",
+          "kind": "dialogue",
+          "prompt": "下午，米娅和塞雷娜在水里玩，莉亚一个人站在沙洲最高处盯着竹竿上的红布，从上岸到现在没有坐下过。她说要有人看着红布——第二条，不离开她的视线。{PLAYER_NAME}可以替她看着竹竿、陪她一起站、劝她休息、命令她下水、不问就拉她下水，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "lia",
+            "mia",
+            "serena"
+          ],
+          "context": [
+            "水离红布还有一大截，离回船还早。",
+            "莉亚怕一放松，事情就会出错；她相信规矩能少死人。",
+            "{PLAYER_NAME}会数数——数潮，也是数数。",
+            "莉亚不喜欢被命令，也不喜欢被当成需要照顾的人；碰她要先问。"
+          ],
+          "principles": [
+            "WATCH：判定优先序：不问就拉她（拽她下水、推她） > 命令她 > 替她看着竹竿 > 陪她一起站 > 劝她休息 > 沉默。",
+            "不设标准答案；不把她说成扫兴的人。下不下水，是她自己的选择。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "neg_guard",
+              "label": "否定式表态（按陪她一起站处理）",
+              "desc": "只说自己“不拉你／不推你”，本身并不是那个动作；按陪她一起站处理。",
+              "keywords": [
+                "我不拉你",
+                "不拉你",
+                "不会拉你",
+                "不推你",
+                "不会推你",
+                "不碰你"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}在她旁边站定，也看着竹竿。"
+                },
+                {
+                  "t": "narr",
+                  "text": "站了一会儿，莉亚开口了。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……两个人看，一个就够了。你看左边，我看右边。"
+                },
+                {
+                  "t": "narr",
+                  "text": "竹竿只有一根。"
+                },
+                {
+                  "t": "narr",
+                  "text": "过了一会儿，莉亚坐了下来。就坐在沙上。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_WATCH": "STOOD_WITH"
+                },
+                "flags": {
+                  "EX_LIA_SAT": true
+                }
+              }
+            },
+            {
+              "id": "pulled",
+              "label": "不问就拉她下水",
+              "desc": "不问就拽她、推她、把她拉下水。这是缺点。",
+              "keywords": [
+                "拉她下水",
+                "拽她",
+                "推她下去",
+                "拉你下水",
+                "抱她下水",
+                "拉下去",
+                "把莉亚拉",
+                "扛下去",
+                "!不拉",
+                "!不会拉",
+                "!别拉",
+                "!不推"
+              ],
+              "morality": -1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}的手刚碰到她的手腕——"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "手。"
+                },
+                {
+                  "t": "narr",
+                  "text": "一个字。他的手停在半空。"
+                },
+                {
+                  "t": "narr",
+                  "text": "莉亚没有动。他也没有。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "……先问啦！",
+                  "note": "水里"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_WATCH": "PULLED"
+                }
+              }
+            },
+            {
+              "id": "ordered",
+              "label": "命令她下水",
+              "desc": "用命令的口气要她下水。",
+              "keywords": [
+                "这是命令",
+                "命令你",
+                "给我下去",
+                "你必须",
+                "马上下水",
+                "不许站着"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……命令？"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "休息日，没有命令。你的，我的，都没有。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她看着竹竿，站得更直了一点。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_WATCH": "ORDERED"
+                }
+              }
+            },
+            {
+              "id": "relieved",
+              "label": "替她看着竹竿",
+              "desc": "{PLAYER_NAME}说他来看着竹竿、数潮，让她去玩。",
+              "keywords": [
+                "我替你看",
+                "我来看竹竿",
+                "我数潮",
+                "换我来",
+                "我看着",
+                "你去玩",
+                "你去游泳",
+                "交给我",
+                "我盯着"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……你？"
+                },
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}站到她旁边，指着竹竿：水离红布还有多少，一刻涨多少，什么时候该喊。"
+                },
+                {
+                  "t": "narr",
+                  "text": "莉亚听完，看了他很久。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……第二条。今天，借你。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她把那块最高的沙让了出来。走了两步，又回头。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "水碰到红布以前，喊。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_WATCH": "RELIEVED"
+                },
+                "flags": {
+                  "EX_LIA_SWAM": true
+                }
+              }
+            },
+            {
+              "id": "stood_with",
+              "label": "陪她一起站",
+              "desc": "{PLAYER_NAME}陪她一起站、一起看着。",
+              "keywords": [
+                "陪你一起站",
+                "我陪你",
+                "一起看着",
+                "我也站",
+                "一起站",
+                "陪你看"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}在她旁边站定，也看着竹竿。"
+                },
+                {
+                  "t": "narr",
+                  "text": "站了一会儿，莉亚开口了。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……两个人看，一个就够了。你看左边，我看右边。"
+                },
+                {
+                  "t": "narr",
+                  "text": "竹竿只有一根。"
+                },
+                {
+                  "t": "narr",
+                  "text": "过了一会儿，莉亚坐了下来。就坐在沙上。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_WATCH": "STOOD_WITH"
+                },
+                "flags": {
+                  "EX_LIA_SAT": true
+                }
+              }
+            },
+            {
+              "id": "rest",
+              "label": "劝她休息",
+              "desc": "劝她坐下、放松，今天是休息日。",
+              "keywords": [
+                "休息一下",
+                "坐下吧",
+                "放松",
+                "今天是休息日",
+                "别太累",
+                "歇一会",
+                "坐一会"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "休息，就是没看着。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "没看着的时候，事情就会出错。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她说得很平，像在报一个数。"
+                },
+                {
+                  "t": "narr",
+                  "text": "……过了一会儿，她还是坐下了。眼睛没有离开竹竿。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_WATCH": "REST"
+                },
+                "flags": {
+                  "EX_LIA_SAT": true
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}没说话。莉亚也没说话。"
+                },
+                {
+                  "t": "narr",
+                  "text": "一个浪打上来，又退了下去。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_WATCH": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "EX_WATCH",
+            "eq": "RELIEVED"
+          },
+          "then": [
+            {
+              "t": "narr",
+              "text": "莉亚走进水里，走到齐腰的地方，站住了。"
+            },
+            {
+              "t": "narr",
+              "text": "米娅游过来，捧起一捧水，泼向莉亚。"
+            }
+          ],
+          "else": [
+            {
+              "t": "narr",
+              "text": "米娅从水里冲上岸，捧着一捧水，一路跑到莉亚面前，泼了过去。"
+            },
+            {
+              "t": "narr",
+              "text": "跑到的时候，手里的水只剩一半。一半，也够了。"
+            }
+          ]
+        },
+        {
+          "t": "narr",
+          "text": "水珠落在莉亚脸上。她眨了一下眼。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "EX_WATCH",
+            "eq": "RELIEVED"
+          },
+          "then": [
+            {
+              "t": "narr",
+              "text": "然后，她捧起一捧水——泼了回去。准确，有力，正中米娅的脸。"
+            }
+          ],
+          "else": [
+            {
+              "t": "narr",
+              "text": "然后，她下到水边，弯下腰，捧起一捧水——泼了回去。准确，有力，正中米娅的脸。"
+            }
+          ]
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "莉亚泼水了！莉亚会泼水！",
+          "text15": "莉亚泼水了！……湿了的莉亚，好像没那么凶了？"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "……还击。不算玩。",
+          "text15": "再说一次，再泼一次。……还击，不算玩。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "我闭着眼睛，也听见了三次。",
+          "note": "水里"
+        }
+      ]
+    },
+    {
+      "id": "ex002-06",
+      "title": "自由输入：涨潮",
+      "bg": "fog-harbor-sandbar-dusk",
+      "music": "sea_dusk",
+      "ambience": [
+        "waves",
+        "tide"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "黄昏。水涨回来了，比来的时候快。"
+        },
+        {
+          "t": "narr",
+          "text": "潮池一个接一个连起来，沙洲越来越窄。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "EX_WATCH",
+            "eq": "RELIEVED"
+          },
+          "then": [
+            {
+              "t": "narr",
+              "text": "{PLAYER_NAME}朝水里喊了一声：水快到红布了。"
+            }
+          ],
+          "else": [
+            {
+              "t": "say",
+              "who": "lia",
+              "text": "红布。回船。"
+            }
+          ]
+        },
+        {
+          "t": "narr",
+          "text": "船上，葛雯敲了三下船舷。"
+        },
+        {
+          "t": "say",
+          "who": "gwen",
+          "text": "船，只等一次！"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚、塞雷娜都回到了船边。米娅没有。"
+        },
+        {
+          "t": "narr",
+          "text": "她在沙洲最远的那一头，抱着小桶，站在越来越宽的水里。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "等一下！桶太重了——我走不快！"
+        },
+        {
+          "t": "narr",
+          "text": "桶里装满了一下午拾来的贝壳：螺旋的、扇形的、粉红的、有洞的。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "每一个都不一样……每一个，我都想要。"
+        },
+        {
+          "t": "narr",
+          "text": "水，涨到了她的膝盖。"
+        },
+        {
+          "t": "input",
+          "id": "FI_EX002_SC06_TIDE_001",
+          "kind": "tactic",
+          "prompt": "黄昏涨潮，船只等一次。米娅在沙洲最远的那头，抱着装满贝壳的小桶，桶太重走不快，水已经到了膝盖。{PLAYER_NAME}可以过去帮她提桶、请莉亚去、叫她只留几个、叫她全倒掉、催她快点、怪她贪心、告诉她慢慢来，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "mia",
+            "lia",
+            "serena"
+          ],
+          "context": [
+            "水还在涨；船家只等这一次。",
+            "桶里是一下午拾来的贝壳，每一个都不一样；贝壳是空的。",
+            "莉亚力气大；{PLAYER_NAME}走过去也来得及，回来时水会到腰。",
+            "米娅怕自己只会闯祸、拖累别人。"
+          ],
+          "principles": [
+            "TIDE：判定优先序：怪她（贪心、都怪你、又拖累大家） > 叫她全倒掉 > 请莉亚去 > 自己过去帮她提 > 叫她只留几个 > 催她快点 > 告诉她慢慢来 > 沉默。“不怪你”这类否定说法按“慢慢来”处理。",
+            "米娅“桶太重”打在她的深层恐惧（怕自己拖累别人）；不让任何人说她没用。",
+            "不设标准答案；所有路线都在水碰到红布以前回到船上，没有人受伤。碰人以前先问。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "reassured",
+              "label": "告诉她慢慢来",
+              "desc": "告诉她不怪她、别急、慢慢走。（也接住“不怪你”这类否定说法。）",
+              "keywords": [
+                "不怪你",
+                "不是你的错",
+                "慢慢走",
+                "别急",
+                "慢慢来",
+                "没事",
+                "别怕"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "……嗯！"
+                },
+                {
+                  "t": "narr",
+                  "text": "她吸了一口气，抱着桶，一步一步往回走。"
+                },
+                {
+                  "t": "narr",
+                  "text": "莉亚趟进水里迎过去，接过桶。另一只手，停在米娅的手腕旁边。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……可以吗。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "可以！"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_TIDE": "REASSURED",
+                  "EX_SHELLS": "ALL"
+                }
+              }
+            },
+            {
+              "id": "blamed",
+              "label": "怪她贪心",
+              "desc": "怪米娅：贪心、都怪你、又拖累大家。",
+              "keywords": [
+                "都怪你",
+                "贪心",
+                "拖累",
+                "早说了",
+                "捡那么多干嘛",
+                "又是你",
+                "!不怪",
+                "!不是你的错",
+                "!不贪心"
+              ],
+              "morality": -1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "……对不起。",
+                  "note": "很小声"
+                },
+                {
+                  "t": "narr",
+                  "text": "她把桶抱得更紧了，一步一步往回走。"
+                },
+                {
+                  "t": "narr",
+                  "text": "莉亚趟进水里，接过桶。另一只手，停在米娅的手腕旁边。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……可以吗。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "……嗯。"
+                },
+                {
+                  "t": "narr",
+                  "text": "米娅一直到上船，都没再说话。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_TIDE": "BLAMED",
+                  "EX_SHELLS": "ALL"
+                }
+              }
+            },
+            {
+              "id": "dumped",
+              "label": "叫她全倒掉",
+              "desc": "叫她把桶倒掉、不要了。",
+              "keywords": [
+                "全倒掉",
+                "都倒掉",
+                "倒掉",
+                "扔了",
+                "不要了",
+                "倒回海里",
+                "!一半",
+                "!留"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "……全部？"
+                },
+                {
+                  "t": "narr",
+                  "text": "她看着桶，看了很久。"
+                },
+                {
+                  "t": "narr",
+                  "text": "然后，她把桶倒过来。贝壳哗啦一声，落回水里。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "……反正，它们本来就是这里的。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她空着手走回来，走得很快。快到船边的时候，才回头看了一眼。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_TIDE": "DUMPED",
+                  "EX_SHELLS": "NONE"
+                }
+              }
+            },
+            {
+              "id": "lia_go",
+              "label": "请莉亚去",
+              "desc": "请力气大的莉亚过去帮她。",
+              "keywords": [
+                "莉亚去",
+                "请莉亚",
+                "莉亚帮",
+                "莉亚力气大",
+                "莉亚你去",
+                "麻烦莉亚"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……收到。"
+                },
+                {
+                  "t": "narr",
+                  "text": "莉亚趟进水里，三步并作两步，到了米娅身边。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她一只手提起桶，另一只手伸出去，停住。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……手。可以吗。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "可以！"
+                },
+                {
+                  "t": "narr",
+                  "text": "莉亚牵着她，提着桶，走了回来。水到了她们的腰。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_TIDE": "LIA_CARRIED",
+                  "EX_SHELLS": "ALL"
+                }
+              }
+            },
+            {
+              "id": "helped",
+              "label": "自己过去帮她提",
+              "desc": "{PLAYER_NAME}自己趟过去，替她提桶。",
+              "keywords": [
+                "我去帮你",
+                "我来提",
+                "我帮你提",
+                "我过去",
+                "我来拿",
+                "我去拿",
+                "我帮你拿"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}趟进水里，走到米娅身边，接过了桶。"
+                },
+                {
+                  "t": "narr",
+                  "text": "很重。比看起来重得多。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "……你提得动吗？"
+                },
+                {
+                  "t": "narr",
+                  "text": "提得动。只是走得很慢。回来的时候，水到了他的腰。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "你走得比我还慢……可是，你没叫我倒掉。"
+                },
+                {
+                  "t": "if",
+                  "when": {
+                    "flag": "MIA_RELATIONSHIP_STAGE",
+                    "eq": "COMPANION"
+                  },
+                  "then": [
+                    {
+                      "t": "say",
+                      "who": "mia",
+                      "text": "下次搬重的以前，我先问你——一起搬好不好。"
+                    }
+                  ]
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_TIDE": "HELPED",
+                  "EX_SHELLS": "ALL"
+                }
+              }
+            },
+            {
+              "id": "kept_few",
+              "label": "叫她只留几个",
+              "desc": "叫她挑几个最喜欢的留下，其余放回去。",
+              "keywords": [
+                "只留几个",
+                "留几个",
+                "挑几个",
+                "留最喜欢的",
+                "留一个",
+                "倒掉一半",
+                "少带一点"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "……只留几个？"
+                },
+                {
+                  "t": "narr",
+                  "text": "她低头看着桶，手伸进去，翻了很久。"
+                },
+                {
+                  "t": "narr",
+                  "text": "一个螺旋的。一个粉红的。一个有洞的——"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "……三个。"
+                },
+                {
+                  "t": "narr",
+                  "text": "剩下的，她倒回了水里。轻了的桶，提起来就跑。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "三个，刚好够！"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_TIDE": "KEPT_FEW",
+                  "EX_SHELLS": "THREE"
+                }
+              }
+            },
+            {
+              "id": "hurried",
+              "label": "催她快点",
+              "desc": "催她快点、快跑、来不及了。",
+              "keywords": [
+                "快点",
+                "快跑",
+                "快回来",
+                "别磨蹭",
+                "来不及了",
+                "跑起来"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "我在快了！"
+                },
+                {
+                  "t": "narr",
+                  "text": "她抱着桶跑起来。水里跑不快，溅起一片一片的水花。"
+                },
+                {
+                  "t": "narr",
+                  "text": "跑到一半，她停下，把桶里的贝壳倒掉一半，又跑。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_TIDE": "HURRIED",
+                  "EX_SHELLS": "HALF"
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "莉亚看了{PLAYER_NAME}一眼，转身趟进了水里。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她提起桶，伸出另一只手。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "……可以牵吗？"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……牵。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_TIDE": "QUIET",
+                  "EX_SHELLS": "ALL"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "narr",
+          "text": "水碰到红布的时候，四个人都在船上了。"
+        },
+        {
+          "t": "say",
+          "who": "gwen",
+          "text": "一次。刚好。"
+        },
+        {
+          "t": "narr",
+          "text": "葛雯撑开篙。船离开了沙洲。"
+        }
+      ]
+    },
+    {
+      "id": "ex002-07",
+      "title": "第五项以后",
+      "bg": "fog-harbor-sandbar-dusk",
+      "music": "sea_dusk",
+      "ambience": [
+        "waves",
+        "oars"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "船往雾港划。"
+        },
+        {
+          "t": "narr",
+          "text": "回头看，沙洲一点一点沉了下去。竹竿上的红布，被水淹过了。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "EX_AKU_BARE"
+          },
+          "then": [
+            {
+              "t": "narr",
+              "text": "{PLAYER_NAME}的肩膀，红得像煮过的虾。"
+            },
+            {
+              "t": "say",
+              "who": "gwen",
+              "text": "下午就知道了。我说过。"
+            },
+            {
+              "t": "say",
+              "who": "mia",
+              "text": "芦荟本来就是晒伤以后用的——现在涂，也有用！"
+            },
+            {
+              "t": "narr",
+              "text": "那一罐翠影药草防晒膏，最后全涂在了他一个人身上。"
+            }
+          ],
+          "else": [
+            {
+              "t": "if",
+              "when": {
+                "not": {
+                  "flag": "EX_LIA_SUNSCREEN"
+                }
+              },
+              "then": [
+                {
+                  "t": "narr",
+                  "text": "莉亚的鼻尖，红了。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "莉亚，鼻子……"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……不是晒的。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "是晒的。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "EX_SHELLS",
+            "eq": "THREE"
+          },
+          "then": [
+            {
+              "t": "narr",
+              "text": "米娅摊开手心：三个贝壳。"
+            },
+            {
+              "t": "say",
+              "who": "mia",
+              "text": "一个给莉亚，一个给塞雷娜，一个——"
+            },
+            {
+              "t": "narr",
+              "text": "她把最后一个，塞进了{PLAYER_NAME}手里。"
+            },
+            {
+              "t": "say",
+              "who": "mia",
+              "text": "我的，下次退潮再来捡！"
+            }
+          ],
+          "else": [
+            {
+              "t": "if",
+              "when": {
+                "flag": "EX_SHELLS",
+                "eq": "NONE"
+              },
+              "then": [
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "……一个都没带回来。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她看着沙洲沉下去的地方。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "可是，每一个长什么样，我都记得。……这个，不用桶。"
+                }
+              ],
+              "else": [
+                {
+                  "t": "narr",
+                  "text": "米娅抱着桶，一个一个挑。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "这个，给莉亚。这个，给塞雷娜。这个——"
+                },
+                {
+                  "t": "narr",
+                  "text": "她把一个有洞的贝壳，塞进了{PLAYER_NAME}手里。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "MIA_RELATIONSHIP_STAGE",
+            "eq": "COMPANION"
+          },
+          "then": [
+            {
+              "t": "say",
+              "who": "mia",
+              "text": "你那个，是最好看的。……不准问为什么。"
+            }
+          ]
+        },
+        {
+          "t": "narr",
+          "text": "塞雷娜摊开那张晕开的流程表。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "第五项以后，都看不清了。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "其实，我本来就不知道休息日的最后一项该写什么。"
+        },
+        {
+          "t": "narr",
+          "text": "她想了想，在最底下写了一行。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "第六项：回船。四个人。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "……照实。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "LEAH_RELATIONSHIP_STAGE",
+            "eq": "COMPANION"
+          },
+          "then": [
+            {
+              "t": "narr",
+              "text": "莉亚靠着船舷，闭上了眼睛。只闭了一下。"
+            }
+          ]
+        },
+        {
+          "t": "narr",
+          "text": "天黑以前，船靠上了旧灯塔下面的石堤。"
+        },
+        {
+          "t": "say",
+          "who": "gwen",
+          "text": "明天退潮，它还在。"
+        },
+        {
+          "t": "narr",
+          "text": "半日洲每天都在。只是一天，露半天的脸。"
+        }
+      ]
+    }
+  ],
+  "end": {
+    "save": "SAVE_EX002_END",
+    "next": null,
+    "set": {
+      "flags": {
+        "EX002_SANDBAR_DAY": true,
+        "EX002_BACK_BEFORE_THE_RED_CLOTH": true,
+        "EX002_SCHEDULE_ITEM_SIX": true
+      }
+    },
+    "memory": {
+      "key": "EX002_MEMORY",
+      "text": "退潮的沙洲那天：塞雷娜闭着眼睛游泳，莉亚泼回了一捧水，米娅在涨潮前回到了船上。"
+    },
+    "summary": [
+      {
+        "text": "{PLAYER_NAME}和莉亚、米娅、塞雷娜，坐船去了雾港外海的半日洲。"
+      },
+      {
+        "when": {
+          "flag": "EX_TIDEPOOL",
+          "eq": "CUPPED"
+        },
+        "text": "{PLAYER_NAME}把海星捧出水，塞雷娜低头看了：手心里的，不是水面。"
+      },
+      {
+        "when": {
+          "flag": "EX_TIDEPOOL",
+          "eq": "TOLD"
+        },
+        "text": "塞雷娜不看水面，潮池里的海星，是{PLAYER_NAME}讲给她听的。"
+      },
+      {
+        "when": {
+          "flag": "EX_TIDEPOOL",
+          "eq": "PEEK_ASKED"
+        },
+        "text": "{PLAYER_NAME}要塞雷娜借水面看别人。她笑得很温柔，说：不。"
+      },
+      {
+        "when": {
+          "flag": "EX_GULL",
+          "eq": "TRADED"
+        },
+        "text": "海鸥叼走了流程表，{PLAYER_NAME}拿自己的午饭换了回来。"
+      },
+      {
+        "when": {
+          "flag": "EX_GULL",
+          "eq": "TOGETHER"
+        },
+        "text": "流程表被海鸥叼走以后，第五项是大家一起定的。"
+      },
+      {
+        "when": {
+          "flag": "EX_WATCH",
+          "eq": "RELIEVED"
+        },
+        "text": "莉亚把第二条借给了{PLAYER_NAME}，自己下了水。"
+      },
+      {
+        "when": {
+          "flag": "EX_LIA_SAT"
+        },
+        "text": "莉亚在沙上坐了下来，眼睛还看着竹竿。"
+      },
+      {
+        "text": "米娅泼了莉亚一捧水。莉亚泼了回去：还击，不算玩。"
+      },
+      {
+        "when": {
+          "flag": "EX_TIDE",
+          "eq": "HELPED"
+        },
+        "text": "涨潮的时候，{PLAYER_NAME}替米娅提回了一整桶贝壳。"
+      },
+      {
+        "when": {
+          "flag": "EX_TIDE",
+          "eq": "KEPT_FEW"
+        },
+        "text": "涨潮的时候，米娅只留下三个贝壳，刚好够分。"
+      },
+      {
+        "when": {
+          "flag": "EX_TIDE",
+          "eq": "DUMPED"
+        },
+        "text": "涨潮的时候，米娅把一桶贝壳倒回了海里。"
+      },
+      {
+        "when": {
+          "flag": "EX_TIDE",
+          "eq": "BLAMED"
+        },
+        "text": "涨潮的时候，米娅说了一声对不起，之后很久没有说话。"
+      },
+      {
+        "when": {
+          "flag": "EX_AKU_BARE"
+        },
+        "text": "没涂防晒膏的{PLAYER_NAME}，回程时肩膀红得像煮过的虾。"
+      },
+      {
+        "text": "塞雷娜在流程表最底下写了一行：第六项，回船。四个人。"
+      }
+    ]
+  }
+}

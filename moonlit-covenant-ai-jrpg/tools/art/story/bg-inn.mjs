@@ -446,7 +446,206 @@ function innRoom() {
   return S.out();
 }
 
+// 番外 ex001《橋頭旅店的幫工日》: the ground-floor dining hall of the same inn. No mirrors, no figures.
+//   fog-harbor-bridge-inn-hall       — morning light: ten square tables with benches, a post with a paper notice pinned
+//                                      to it (blank paper, no lettering), the square hatch of the dumbwaiter in the left
+//                                      wall with its two ropes and a crank wheel, the storeroom door in the right wall,
+//                                      the counter at the back right; two windows onto the channel at low tide — mossy
+//                                      stone steps showing above the water.
+//   fog-harbor-bridge-inn-hall-night — after closing: the same room, the chairs (stools) turned up on the tables, one
+//                                      lamp lit on the near table, the windows dark with the tide come back in.
+function innHall(night) {
+  const S = new Scene(night ? 'sbInnHallN' : 'sbInnHall', night
+    ? '雾港·桥头旅店·一楼食堂·打烊：同一个木造食堂，凳子倒扣在桌上，只有近处一张桌上点着一盏灯；墙里送菜吊篮的方口垂着两根绳，柱子上还钉着那张告示，右边是库房的门；窗外的水道涨回来了，一片暗；没有人'
+    : '雾港·桥头旅店·一楼食堂·白天：木造食堂里十张方桌与长凳，柱子上钉着一张告示，左墙上一个四方的送菜吊篮口垂着两根绳、旁边一个手摇轮，右墙是通往库房的门，后面右边是柜台；两扇窗外是退潮的水道，长着青苔的石阶露出水面；没有镜子，没有人', night ? 7322 : 7321);
+  const VP = [800, 400], F = 720, EYE = 1.55;
+  const pr = persp({ vp: VP, F, eye: EYE });
+  const q = (pts) => pr.quad(pts);
+  const XL = -2.7, XR = 2.7, YC = 2.8, Z0 = 0.7, ZB = 6.4, WN = 0.95;
+  const P = night
+    ? { ...INN }
+    : { ...INN, plaster: '#a8916e', plasterShade: '#7a6448', wain: '#7a5636', wainLit: '#a87a4e', wainDark: '#4a321e',
+      floor: [[0, '#8a6a48'], [1, '#3a2818']], board: '#4a3420', ceil: '#5a4430', beam: '#3e2c1c', door: '#8a5e3a', doorLit: '#aa7a4e', doorDark: '#4a301c', frame: '#5a3e26' };
+  S.add(`<rect width="${W}" height="${H}" fill="${night ? '#0c0908' : '#3a2a1e'}"/>`);
+
+  // ---- shell -----------------------------------------------------------------------------------------------------------
+  {
+    const o = [];
+    o.push(`<path d="${q([[XL, WN, ZB], [XL, YC, ZB], [XR, YC, ZB], [XR, WN, ZB]])}" fill="${P.plaster}"/><path d="${q([[XL, 0, ZB], [XL, WN, ZB], [XR, WN, ZB], [XR, 0, ZB]])}" fill="${P.wain}"/>`);
+    o.push(`<path d="${q([[XL, YC, Z0], [XR, YC, Z0], [XR, YC, ZB], [XL, YC, ZB]])}" fill="${P.ceil}"/>`);
+    let bm = '';
+    for (const z of [1.5, 2.7, 3.9, 5.1]) bm += q([[XL, YC, z], [XR, YC, z], [XR, YC - 0.14, z], [XL, YC - 0.14, z]]);
+    o.push(`<path d="${bm}" fill="${P.beam}"/>`);
+    o.push(`<path d="${q([[XL, WN, Z0], [XL, YC, Z0], [XL, YC, ZB], [XL, WN, ZB]])}" fill="${S.lin([[0, P.plasterShade], [1, P.plaster]], 'x1="0" y1="0" x2="1" y2="0"')}"/><path d="${q([[XL, 0, Z0], [XL, WN, Z0], [XL, WN, ZB], [XL, 0, ZB]])}" fill="${S.lin([[0, P.wainDark], [1, P.wain]], 'x1="0" y1="0" x2="1" y2="0"')}"/>`);
+    o.push(`<path d="${q([[XR, WN, Z0], [XR, YC, Z0], [XR, YC, ZB], [XR, WN, ZB]])}" fill="${S.lin([[0, P.plaster], [1, P.plasterShade]], 'x1="0" y1="0" x2="1" y2="0"')}"/><path d="${q([[XR, 0, Z0], [XR, WN, Z0], [XR, WN, ZB], [XR, 0, ZB]])}" fill="${S.lin([[0, P.wain], [1, P.wainDark]], 'x1="0" y1="0" x2="1" y2="0"')}"/>`);
+    o.push(`<path d="${pl(pr.poly([[XL, WN, Z0], [XL, WN, ZB], [XR, WN, ZB], [XR, WN, Z0]]))}" fill="none" stroke="${P.wainLit}" stroke-width="3"/>`);
+    let pn = '';
+    for (let x = XL + 0.45; x < XR; x += 0.55) pn += pl(pr.poly([[x, 0.08, ZB], [x, WN - 0.08, ZB]]));
+    for (let z = 1.3; z < ZB; z += 0.7) pn += pl(pr.poly([[XL, 0.08, z], [XL, WN - 0.08, z]])) + pl(pr.poly([[XR, 0.08, z], [XR, WN - 0.08, z]]));
+    o.push(`<path d="${pn}" stroke="${P.wainDark}" stroke-width="1.5" opacity=".7"/>`);
+    o.push(`<path d="${q([[XL, 0, 0.45], [XR, 0, 0.45], [XR, 0, ZB], [XL, 0, ZB]])}" fill="${S.lin(P.floor, `gradientUnits="userSpaceOnUse" x1="0" y1="${VP[1]}" x2="0" y2="${H}"`)}"/>`);
+    let bd = '';
+    for (let x = XL + 0.2; x < XR; x += 0.2) bd += pl(pr.poly([[x, 0, 0.45], [x, 0, ZB]]));
+    o.push(`<path d="${bd}" stroke="${P.board}" stroke-width="1.3" opacity=".6"/>`);
+    S.add(o.join(''));
+  }
+
+  // ---- two windows on the back wall: the channel (low tide by day, high and dark at night) ------------------------------
+  for (const [x0w, x1w] of [[-1.9, -0.9], [0.2, 1.2]]) {
+    const y0w = 1.1, y1w = 2.15, z = ZB - 0.005;
+    const tl = pr(x0w, y1w, z), br = pr(x1w, y0w, z);
+    const win = pz([tl, [br[0], tl[1]], br, [tl[0], br[1]]]);
+    const clip = S.clip(win);
+    const ww = br[0] - tl[0], wh = br[1] - tl[1];
+    let roofs = `M${r0(tl[0] - 4)},${r0(br[1])}V${r0(tl[1] + wh * 0.45)}`;
+    for (let x = tl[0] - 4, i = 0; x < br[0] + 20; x += 34, i++) { const h = wh * (0.36 + (i % 3) * 0.05); roofs += `L${r0(x)},${r0(tl[1] + h)}L${r0(x + 15)},${r0(tl[1] + h - 12)}L${r0(x + 30)},${r0(tl[1] + h)}L${r0(x + 30)},${r0(tl[1] + h + 7)}L${r0(x + 34)},${r0(tl[1] + h + 7)}`; }
+    roofs += `V${r0(br[1])}Z`;
+    const wy = tl[1] + wh * (night ? 0.6 : 0.74);
+    const o = [];
+    o.push(`<rect x="${r0(tl[0] - 4)}" y="${r0(tl[1] - 4)}" width="${r0(ww + 8)}" height="${r0(wh + 8)}" fill="${night ? S.lin(P.night) : S.lin([[0, '#e8ecf0'], [0.6, '#c8d2d8'], [1, '#aab8c0']])}"/>`);
+    o.push(`<path d="${roofs}" fill="${night ? P.roofs : '#7a8288'}" opacity="${night ? 1 : 0.75}"/>`);
+    if (!night) {
+      // the stone steps down to the water, green with moss, showing above the low tide
+      let st = '';
+      for (let i = 0; i < 4; i++) { const y = wy - 22 + i * 8; st += `M${r0(tl[0] + ww * 0.1 + i * 7)},${r0(y)}H${r0(tl[0] + ww * 0.55 - i * 3)}V${r0(y + 8)}H${r0(tl[0] + ww * 0.1 + i * 7)}Z`; }
+      o.push(`<path d="${st}" fill="#6a7262"/><path d="M${r0(tl[0] + ww * 0.1)},${r0(wy - 2)}H${r0(tl[0] + ww * 0.55)}" stroke="#4e6a3e" stroke-width="5" opacity=".8"/>`);
+    }
+    o.push(`<path d="M${r0(tl[0] - 4)},${r0(wy)}H${r0(br[0] + 4)}V${r0(br[1] + 4)}H${r0(tl[0] - 4)}Z" fill="${night ? P.water : '#7a8c92'}"/>`);
+    let cur = '';
+    for (let i = 0; i < 4; i++) cur += `M${r0(tl[0] + 8 + ((i * 37) % Math.max(20, ww - 36)))},${r0(wy + 6 + i * ((br[1] - wy - 8) / 4))}q11,-2 22,0`;
+    o.push(`<path d="${cur}" fill="none" stroke="${night ? P.waterHi : '#c8d4d8'}" stroke-width="1.5" opacity=".6"/>`);
+    S.add(`<g clip-path="${clip}">${o.join('')}</g>`);
+    S.add(`<path d="${win}M${r0((tl[0] + br[0]) / 2)},${r0(tl[1])}V${r0(br[1])}M${r0(tl[0])},${r0((tl[1] + br[1]) / 2)}H${r0(br[0])}" fill="none" stroke="${P.frame}" stroke-width="7" stroke-linejoin="round"/>`);
+    S.add(`<path d="${q([[x0w - 0.06, y0w - 0.04, z], [x1w + 0.06, y0w - 0.04, z], [x1w + 0.06, y0w - 0.04, z - 0.12], [x0w - 0.06, y0w - 0.04, z - 0.12]])}" fill="${P.wainLit}"/>`);
+    if (!night) S.add(`<path d="${q([[x0w, 0.004, ZB - 0.2], [x1w, 0.004, ZB - 0.2], [x1w - 0.3, 0.004, ZB - 2.1], [x0w - 0.5, 0.004, ZB - 2.1]])}" fill="#fff4d8" opacity=".16" filter="${S.blur(2)}"/>`);
+  }
+
+  // ---- the counter at the back right, with mugs on it -----------------------------------------------------------------
+  {
+    const c0 = 1.55, c1 = XR, z0 = 4.9, z1 = ZB - 0.02, h = 1.05, o = [];
+    o.push(`<path d="${q([[c0, 0, z0], [c0, h, z0], [c1, h, z0], [c1, 0, z0]])}" fill="${P.door}" stroke="${P.doorDark}" stroke-width="2"/>`);
+    o.push(`<path d="${q([[c0, h, z0], [c1, h, z0], [c1, h, z1], [c0, h, z1]])}" fill="${P.doorLit}"/>`);
+    let mugs = '';
+    for (const x of [1.75, 1.95, 2.2]) { const m = pr(x, h, z0 + 0.2), k = F / (z0 + 0.2); mugs += `<rect x="${r0(m[0] - 0.05 * k)}" y="${r0(m[1] - 0.14 * k)}" width="${r0(0.1 * k)}" height="${r0(0.14 * k)}" rx="2" fill="${night ? '#5a5048' : '#c8b898'}" stroke="${P.doorDark}" stroke-width="1.5"/>`; }
+    o.push(mugs);
+    S.add(o.join(''));
+  }
+
+  // ---- the dumbwaiter hatch in the left wall: a square opening, two ropes, the crank wheel beside it ----------------------
+  {
+    const z0 = 2.9, z1 = 3.5, y0 = 0.95, y1 = 1.6, o = [];
+    o.push(`<path d="${q([[XL + 0.004, y0 - 0.06, z0 - 0.06], [XL + 0.004, y1 + 0.06, z0 - 0.06], [XL + 0.004, y1 + 0.06, z1 + 0.06], [XL + 0.004, y0 - 0.06, z1 + 0.06]])}" fill="${P.frame}"/>`);
+    o.push(`<path d="${q([[XL + 0.006, y0, z0], [XL + 0.006, y1, z0], [XL + 0.006, y1, z1], [XL + 0.006, y0, z1]])}" fill="#140e0a"/>`);
+    o.push(`<path d="${pl(pr.poly([[XL + 0.008, y1, z0 + 0.18], [XL + 0.008, y0 - 0.02, z0 + 0.18]]))}${pl(pr.poly([[XL + 0.008, y1, z1 - 0.18], [XL + 0.008, y0 - 0.02, z1 - 0.18]]))}" stroke="#b89a6a" stroke-width="3"/>`);
+    const wc = pr(XL + 0.01, 1.3, z1 + 0.32), wk = F / (z1 + 0.32);
+    o.push(`<ellipse cx="${r0(wc[0])}" cy="${r0(wc[1])}" rx="${f(0.07 * wk, 1)}" ry="${f(0.16 * wk, 1)}" fill="none" stroke="#3a2a1c" stroke-width="5"/><path d="M${r0(wc[0])},${r0(wc[1])}l${r0(0.05 * wk)},${r0(0.12 * wk)}" stroke="#3a2a1c" stroke-width="4"/>`);
+    S.add(o.join(''));
+  }
+
+  // ---- the storeroom door in the right wall ------------------------------------------------------------------------------
+  {
+    const D0 = 2.3, D1 = 3.1, DH = 2.05, o = [];
+    o.push(`<path d="${q([[XR - 0.004, 0, D0 - 0.08], [XR - 0.004, DH + 0.09, D0 - 0.08], [XR - 0.004, DH + 0.09, D1 + 0.08], [XR - 0.004, 0, D1 + 0.08]])}" fill="${P.frame}"/>`);
+    o.push(`<path d="${q([[XR - 0.006, 0, D0], [XR - 0.006, DH, D0], [XR - 0.006, DH, D1], [XR - 0.006, 0, D1]])}" fill="${P.door}" stroke="${P.doorDark}" stroke-width="2"/>`);
+    let pnl = '';
+    for (const [y0, y1] of [[0.15, 0.9], [1.1, 1.85]]) pnl += q([[XR - 0.008, y0, D0 + 0.1], [XR - 0.008, y1, D0 + 0.1], [XR - 0.008, y1, D1 - 0.1], [XR - 0.008, y0, D1 - 0.1]]);
+    const kn = pr(XR - 0.01, 1.0, D0 + 0.12);
+    o.push(`<path d="${pnl}" fill="none" stroke="${P.doorDark}" stroke-width="2"/><circle cx="${r0(kn[0])}" cy="${r0(kn[1])}" r="5" fill="${P.brass}"/>`);
+    S.add(o.join(''));
+  }
+
+  // ---- inn details: a fishing net with floats on the left wall, barrels by the counter, lamps hanging from the beams ---------
+  {
+    const o = [];
+    const n0 = 1.1, n1 = 2.3, ny0 = 1.45, ny1 = 2.45;
+    const net = q([[XL + 0.004, ny1, n0], [XL + 0.004, ny1, n1], [XL + 0.004, ny0 + 0.25, n1 - 0.1], [XL + 0.004, ny0, (n0 + n1) / 2], [XL + 0.004, ny0 + 0.2, n0 + 0.05]]);
+    const nc = S.clip(net);
+    let mesh = '';
+    for (let t = -1; t <= 2; t += 0.12) {
+      mesh += pl(pr.poly([[XL + 0.005, ny1, n0 + t], [XL + 0.005, ny0, n0 + t + 1.0]]));
+      mesh += pl(pr.poly([[XL + 0.005, ny1, n0 + t + 1.0], [XL + 0.005, ny0, n0 + t]]));
+    }
+    o.push(`<g clip-path="${nc}"><path d="${mesh}" stroke="${night ? '#5a4e3e' : '#8a7a5e'}" stroke-width="1.6" fill="none"/></g>`);
+    o.push(`<path d="${pl(pr.poly([[XL + 0.005, ny1, n0], [XL + 0.005, ny1, n1]]))}" stroke="#4a3a28" stroke-width="4"/>`);
+    for (const [y, z] of [[2.1, 1.35], [1.75, 1.7], [1.95, 2.05], [1.6, 1.25]]) { const c = pr(XL + 0.006, y, z), k = F / z; o.push(`<circle cx="${r0(c[0])}" cy="${r0(c[1])}" r="${f(0.05 * k, 1)}" fill="${night ? '#6a3a2a' : '#c8643a'}" stroke="#3a2418" stroke-width="1.5"/>`); }
+    // barrels by the counter
+    for (const [x, z] of [[1.3, 5.75], [1.05, 5.35]]) {
+      const top = pr(x, 0.7, z), bot = pr(x, 0, z), k = F / z, rx = 0.2 * k;
+      o.push(`<path d="M${r0(top[0] - rx)},${r0(top[1])}Q${r0(top[0] - rx * 1.15)},${r0((top[1] + bot[1]) / 2)} ${r0(bot[0] - rx)},${r0(bot[1])}H${r0(bot[0] + rx)}Q${r0(top[0] + rx * 1.15)},${r0((top[1] + bot[1]) / 2)} ${r0(top[0] + rx)},${r0(top[1])}Z" fill="${P.door}" stroke="${P.doorDark}" stroke-width="2"/>`);
+      o.push(`<ellipse cx="${r0(top[0])}" cy="${r0(top[1])}" rx="${r0(rx)}" ry="${r0(rx * 0.3)}" fill="${P.doorLit}" stroke="${P.doorDark}" stroke-width="2"/>`);
+      o.push(`<path d="M${r0(top[0] - rx * 1.08)},${r0(top[1] + (bot[1] - top[1]) * 0.3)}H${r0(top[0] + rx * 1.08)}M${r0(top[0] - rx * 1.08)},${r0(top[1] + (bot[1] - top[1]) * 0.72)}H${r0(top[0] + rx * 1.08)}" stroke="#3a2a1c" stroke-width="3"/>`);
+    }
+    // lamps hanging from the beams (unlit; after closing only the table lamp burns)
+    for (const [x, z] of [[-0.6, 3.9], [0.9, 3.9], [-1.4, 2.7], [1.5, 2.7]]) {
+      const a = pr(x, YC - 0.14, z), b = pr(x, 2.15, z), k = F / z;
+      o.push(`<path d="M${r0(a[0])},${r0(a[1])}V${r0(b[1])}" stroke="#2a1e14" stroke-width="2"/>`);
+      o.push(`<path d="M${r0(b[0] - 0.07 * k)},${r0(b[1] + 0.16 * k)}L${r0(b[0] - 0.04 * k)},${r0(b[1])}H${r0(b[0] + 0.04 * k)}L${r0(b[0] + 0.07 * k)},${r0(b[1] + 0.16 * k)}Z" fill="${night ? '#3a3026' : '#d8c088'}" stroke="#3a2a1c" stroke-width="2" opacity=".95"/>`);
+    }
+    S.add(o.join(''));
+  }
+
+  // ---- the post with the notice --------------------------------------------------------------------------------------------
+  {
+    const px = -1.05, pz0 = 3.6, w = 0.18, o = [];
+    o.push(`<path d="${q([[px - w / 2, 0, pz0], [px - w / 2, YC, pz0], [px + w / 2, YC, pz0], [px + w / 2, 0, pz0]])}" fill="${P.beam}" stroke="${P.wainDark}" stroke-width="2"/>`);
+    o.push(`<path d="${q([[px - w / 2 - 0.004, 1.15, pz0 - 0.005], [px - w / 2 - 0.004, 1.6, pz0 - 0.005], [px + w / 2 + 0.06, 1.6, pz0 - 0.005], [px + w / 2 + 0.06, 1.15, pz0 - 0.005]])}" fill="${night ? '#8a826e' : '#f0e8d4'}" stroke="#6a5a40" stroke-width="1.2"/>`);
+    let ln = '';
+    for (let y = 1.5; y > 1.2; y -= 0.07) ln += pl(pr.poly([[px - w / 2 + 0.02, y, pz0 - 0.006], [px + w / 2 + 0.03, y, pz0 - 0.006]]));
+    o.push(`<path d="${ln}" stroke="#8a7a5a" stroke-width="1.5" opacity=".6"/>`);
+    const pin = pr(px + 0.03, 1.57, pz0 - 0.006);
+    o.push(`<circle cx="${r0(pin[0])}" cy="${r0(pin[1])}" r="3" fill="#a83a2a"/>`);
+    S.add(o.join(''));
+  }
+
+  // ---- tables and benches, far to near (turned-up stools on them after closing) -------------------------------------------
+  const TH = 0.75;
+  const tables = [];
+  for (const z of [5.2, 4.2, 3.2, 2.2]) for (const x of [-1.9, -0.2, 1.3]) if (!(z > 4.8 && x > 1)) tables.push([x, z]);
+  tables.push([0.55, 1.45]);
+  tables.sort((a, b) => b[1] - a[1]);
+  for (const [x, z] of tables) {
+    const w = 0.95, d = 0.65, o = [];
+    const legs = [[x - w / 2 + 0.06, z - d / 2 + 0.06], [x + w / 2 - 0.06, z - d / 2 + 0.06], [x - w / 2 + 0.06, z + d / 2 - 0.06], [x + w / 2 - 0.06, z + d / 2 - 0.06]];
+    // benches along the long sides
+    for (const bz of [z + d / 2 + 0.22, z - d / 2 - 0.22]) {
+      o.push(`<path d="${q([[x - w / 2, 0.42, bz - 0.12], [x + w / 2, 0.42, bz - 0.12], [x + w / 2, 0.42, bz + 0.12], [x - w / 2, 0.42, bz + 0.12]])}" fill="${P.doorLit}" stroke="${P.doorDark}" stroke-width="1.5"/>`);
+      o.push(`<path d="${pl(pr.poly([[x - w / 2 + 0.05, 0, bz], [x - w / 2 + 0.05, 0.42, bz]]))}${pl(pr.poly([[x + w / 2 - 0.05, 0, bz], [x + w / 2 - 0.05, 0.42, bz]]))}" stroke="${P.doorDark}" stroke-width="3"/>`);
+    }
+    o.push(`<path d="${legs.map(([lx, lz]) => pl(pr.poly([[lx, 0, lz], [lx, TH, lz]]))).join('')}" stroke="${P.doorDark}" stroke-width="4"/>`);
+    o.push(`<path d="${q([[x - w / 2, TH, z - d / 2], [x + w / 2, TH, z - d / 2], [x + w / 2, TH, z + d / 2], [x - w / 2, TH, z + d / 2]])}" fill="${P.doorLit}" stroke="${P.doorDark}" stroke-width="2"/>`);
+    o.push(`<path d="${q([[x - w / 2, TH, z - d / 2], [x + w / 2, TH, z - d / 2], [x + w / 2, TH - 0.07, z - d / 2], [x - w / 2, TH - 0.07, z - d / 2]])}" fill="${P.door}"/>`);
+    if (night) {
+      // two stools turned up on the table: seat on the top, legs in the air
+      for (const sx of [x - 0.22, x + 0.22]) {
+        const sy = TH + 0.05;
+        o.push(`<path d="${q([[sx - 0.15, sy, z - 0.13], [sx + 0.15, sy, z - 0.13], [sx + 0.15, sy, z + 0.13], [sx - 0.15, sy, z + 0.13]])}" fill="${P.door}" stroke="${P.doorDark}" stroke-width="1.5"/>`);
+        o.push(`<path d="${[[-0.11, -0.09], [0.11, -0.09], [-0.11, 0.09], [0.11, 0.09]].map(([dx, dz]) => pl(pr.poly([[sx + dx, sy, z + dz], [sx + dx, sy + 0.26, z + dz]]))).join('')}" stroke="${P.door}" stroke-width="6" stroke-linecap="round"/>`);
+        o.push(`<path d="${pl(pr.poly([[sx - 0.11, sy + 0.17, z - 0.09], [sx + 0.11, sy + 0.17, z - 0.09]]))}" stroke="${P.doorDark}" stroke-width="3"/>`);
+      }
+    }
+    S.add(o.join(''));
+  }
+
+  // ---- the lamp after closing, on the near table ---------------------------------------------------------------------------
+  if (night) {
+    const lc = pr(0.55, TH + 0.25, 1.45), k = F / 1.45;
+    S.add(`<circle cx="${r0(lc[0])}" cy="${r0(lc[1])}" r="${r0(1.6 * k)}" fill="${S.rad([[0, P.lamp, 0.42], [0.35, '#ff9a50', 0.14], [1, '#ff9a50', 0]])}"/>`);
+    S.add(`<path d="M${r0(lc[0] - 0.08 * k)},${r0(lc[1] + 0.18 * k)}h${r0(0.16 * k)}l${r0(-0.02 * k)},${r0(-0.06 * k)}h${r0(-0.12 * k)}z" fill="#3a2a1c"/><path d="M${r0(lc[0] - 0.06 * k)},${r0(lc[1] + 0.12 * k)}q${r0(0.06 * k)},${r0(-0.3 * k)} ${r0(0.12 * k)},0z" fill="#ffd890" opacity=".85" stroke="#6a4a2a" stroke-width="2"/><circle cx="${r0(lc[0])}" cy="${r0(lc[1])}" r="4" fill="#fff0c0"/>`);
+  }
+
+  // ---- grading ---------------------------------------------------------------------------------------------------------------
+  if (night) {
+    S.add(`<rect width="${W}" height="${H}" fill="${S.rad([[0.2, '#060406', 0], [1, '#060406', 0.78]], 'cx="0.5" cy="0.62" r="0.8"')}"/>`);
+  } else {
+    S.add(`<rect width="${W}" height="${H}" fill="${S.rad([[0.45, '#1a1008', 0], [1, '#1a1008', 0.45]], 'cx="0.45" cy="0.4" r="0.8"')}"/>`);
+  }
+  S.add(`<rect y="600" width="${W}" height="300" fill="${S.lin([[0, '#080608', 0], [1, '#080608', night ? 0.7 : 0.5]])}"/>`);
+  return S.out();
+}
+
 export const innBgs = {
+  'fog-harbor-bridge-inn-hall': () => innHall(false),
+  'fog-harbor-bridge-inn-hall-night': () => innHall(true),
   'fog-harbor-bridge-inn-night': () => innCorridor('night'),
   'fog-harbor-bridge-inn-eyes': () => innCorridor('eyes'),
   'fog-harbor-bridge-inn-covered': () => innCorridor('covered'),

@@ -946,5 +946,125 @@
     "svg": "/assets/story/bg/arch-tide-waterway-mouth.svg",
     "top": "#4a4a58",
     "bottom": "#101016"
+  },
+  "fog-harbor-bridge-inn-hall": {
+    "name": "雾港·桥头旅店·一楼食堂",
+    "svg": "/assets/story/bg/fog-harbor-bridge-inn-hall.svg",
+    "top": "#c8b08a",
+    "bottom": "#3a2a1e"
+  },
+  "fog-harbor-bridge-inn-hall-night": {
+    "name": "雾港·桥头旅店·一楼食堂·打烊",
+    "svg": "/assets/story/bg/fog-harbor-bridge-inn-hall-night.svg",
+    "top": "#2a2018",
+    "bottom": "#08060a"
+  },
+  "fog-harbor-sandbar": {
+    "name": "雾港外海·沙洲·退潮",
+    "svg": "/assets/story/bg/fog-harbor-sandbar.svg",
+    "top": "#bcd4dc",
+    "bottom": "#3a5a62"
+  },
+  "fog-harbor-sandbar-dusk": {
+    "name": "雾港外海·沙洲·黄昏涨潮",
+    "svg": "/assets/story/bg/fog-harbor-sandbar-dusk.svg",
+    "top": "#e8a878",
+    "bottom": "#2a2a3a"
+  },
+  "white-tower-arcade-street": {
+    "name": "白塔圣都·朝圣者拱廊街",
+    "svg": "/assets/story/bg/white-tower-arcade-street.svg",
+    "top": "#e0d4bc",
+    "bottom": "#4a4038"
+  },
+  "white-tower-arcade-dress-shop": {
+    "name": "白塔·拱廊街·铸金商会礼服店",
+    "svg": "/assets/story/bg/white-tower-arcade-dress-shop.svg",
+    "top": "#f0e4d0",
+    "bottom": "#5a4a3e"
+  },
+  "holy-city-knights-drill-ground": {
+    "name": "白塔圣都·骑士团演武场·白天",
+    "svg": "/assets/story/bg/holy-city-knights-drill-ground.svg",
+    "top": "#d8dce4",
+    "bottom": "#6a6052"
+  },
+  "holy-city-knights-drill-ground-dusk": {
+    "name": "白塔圣都·骑士团演武场·黄昏",
+    "svg": "/assets/story/bg/holy-city-knights-drill-ground-dusk.svg",
+    "top": "#e8a070",
+    "bottom": "#3a2e2a"
+  },
+  "white-tower-outer-court-winter-lights": {
+    "name": "白塔·外庭·冬灯夜",
+    "svg": "/assets/story/bg/white-tower-outer-court-winter-lights.svg",
+    "top": "#1a2238",
+    "bottom": "#0a0c16"
+  },
+  "white-tower-outer-court-bathhouse": {
+    "name": "白塔·外庭浴场·蒸汽",
+    "svg": "/assets/story/bg/white-tower-outer-court-bathhouse.svg",
+    "top": "#c8ccd0",
+    "bottom": "#3a3e44"
+  },
+  "north-slope-camp-festival": {
+    "name": "北山缓坡·营地·新历祭",
+    "svg": "/assets/story/bg/north-slope-camp-festival.svg",
+    "top": "#dce4ec",
+    "bottom": "#5a5040"
+  },
+  "north-slope-camp-festival-night": {
+    "name": "北山缓坡·营地·新历祭之夜",
+    "svg": "/assets/story/bg/north-slope-camp-festival-night.svg",
+    "top": "#1a1a30",
+    "bottom": "#2a1a10"
+  },
+  "fog-harbor-market-day": {
+    "name": "雾港·市集·白天",
+    "svg": "/assets/story/bg/fog-harbor-market-day.svg",
+    "top": "#d4ccb0",
+    "bottom": "#4a4232"
+  },
+  "fog-harbor-shadow-market": {
+    "name": "雾港·影市",
+    "svg": "/assets/story/bg/fog-harbor-shadow-market.svg",
+    "top": "#2a2230",
+    "bottom": "#0a080e"
+  },
+  "north-slope-camp-anniversary-dusk": {
+    "name": "北山缓坡·营地·黄昏的长桌",
+    "svg": "/assets/story/bg/north-slope-camp-anniversary-dusk.svg",
+    "top": "#e8b080",
+    "bottom": "#3a2a22"
+  },
+  "north-slope-camp-anniversary-night": {
+    "name": "北山缓坡·营地·灯下的长桌",
+    "svg": "/assets/story/bg/north-slope-camp-anniversary-night.svg",
+    "top": "#1a1a2a",
+    "bottom": "#140e0a"
+  },
+  "verdant-south-beach": {
+    "name": "翠影南岸·海滩",
+    "svg": "/assets/story/bg/verdant-south-beach.svg",
+    "top": "#c8e4ec",
+    "bottom": "#c8b48a"
+  },
+  "verdant-river-mouth-dragonboat": {
+    "name": "翠影南岸·河口·龙舟祭",
+    "svg": "/assets/story/bg/verdant-river-mouth-dragonboat.svg",
+    "top": "#d4e4d8",
+    "bottom": "#3a5a4a"
+  },
+  "if-modern-office": {
+    "name": "IF·平行现代·办公室",
+    "svg": "/assets/story/bg/if-modern-office.svg",
+    "top": "#e4e8ec",
+    "bottom": "#6a7078"
+  },
+  "if-modern-mall": {
+    "name": "IF·平行现代·商场",
+    "svg": "/assets/story/bg/if-modern-mall.svg",
+    "top": "#f0ece4",
+    "bottom": "#7a7068"
   }
 }

@@ -16,12 +16,14 @@
  * 所有函数只改传入的 account 对象，不做 I/O；account.rewards 来自旧存档时会先被规整。
  */
 
-import { CHARACTER_POOL, duplicateCompensation } from './gacha.mjs';
-import { ensureSkillbook, syncSkillRewards } from './skills.mjs';
+import { CHARACTER_POOL, COSTUME_CATALOG, duplicateCompensation } from './gacha.mjs';
+import { ensureSkillbook, syncSkillRewards, grantExtraMaterials } from './skills.mjs';
 
 export const REWARD_RULES = Object.freeze({
   daily: Object.freeze({ base: 50, streakStep: 10, streakBonusCap: 40 }),
   chapterFirstClear: 160,
+  // 番外首通（提案 4.7；剧本规格§七）：80 钻石，另按番外目录送★3 或非卖品外观（★4、★5 永不赠送），技能材料见 game/skills.json
+  extraFirstClear: 80,
   cardWin: Object.freeze({ diamonds: 40, dailyCap: 5 }),
   // 第一次进入卡牌对战时的实验模式起始资源：正好一次十连开包（800）+ 500 合成碎片
   cardStarter: Object.freeze({ diamonds: 800, shards: 500 })
@@ -33,6 +35,8 @@ export const HEROINE_JOIN_CHAPTERS = Object.freeze(Object.fromEntries(
 ));
 
 export const CHAPTER_ID_PATTERN = /^ch\d{3}$/;
+// 番外 ex001–ex010：独立命名空间，首通记在 rewards.extrasCleared（不进 chaptersCleared，不影响登场闸门与入队）
+export const EXTRA_ID_PATTERN = /^ex\d{3}$/;
 const MAX_LOG = 30;
 const MAX_CHAPTERS = 500;
 
@@ -77,6 +81,7 @@ export function ensureRewards(account) {
       claims: count(daily.claims)
     },
     chaptersCleared: strings(raw.chaptersCleared, CHAPTER_ID_PATTERN).slice(0, MAX_CHAPTERS),
+    extrasCleared: strings(raw.extrasCleared, EXTRA_ID_PATTERN).slice(0, MAX_CHAPTERS),
     heroinesJoined: strings(raw.heroinesJoined, /^[a-z]+$/),
     cardWins: {
       day: Number.isFinite(dayNumber(cardWins.day)) ? cardWins.day : null,
@@ -134,6 +139,8 @@ export function getRewardStatus(account, now = Date.now()) {
     dailyAmount: dailyAmount(streak + 1),
     chaptersCleared: [...rewards.chaptersCleared],
     chapterReward: REWARD_RULES.chapterFirstClear,
+    extrasCleared: [...rewards.extrasCleared],
+    extraReward: REWARD_RULES.extraFirstClear,
     cardWinsToday: winsToday,
     cardWinCap: REWARD_RULES.cardWin.dailyCap,
     cardWinReward: REWARD_RULES.cardWin.diamonds,
@@ -221,6 +228,43 @@ export function recordChapterClear(account, chapterId, now = Date.now()) {
     chaptersCleared: [...rewards.chaptersCleared],
     balance: diamondsOf(account)
   };
+}
+
+/**
+ * 番外首次通关（POST /api/story/extra）。番外是否存在、是否已解锁（解锁章在 chaptersCleared 里）由调用方对照
+ * public/story/extras/index.json 校验，extra 就是目录里的那一条：{ id, gifts: { costumes: ['lia_maid', …] } }。
+ * 首通发 REWARD_RULES.extraFirstClear 钻石、技能材料（白 10、绿 5、蓝 2），并把赠品外观加进 ownedCostumes——
+ * 只认目录里★3 或非卖品（status 'gift'）的服装，★4、★5 永不赠送；已经抽到的★3 按重复补偿折成钻石。幂等。
+ * @returns {{granted: boolean, diamonds: number, extraReward: number, costumesGranted: string[],
+ *   costumesCompensated: Array<{id: string, diamonds: number}>, skillMaterials: object|null, alreadyCleared: boolean,
+ *   extrasCleared: string[], balance: number}}
+ */
+export function recordExtraClear(account, extra, now = Date.now()) {
+  const id = String(extra?.id || '');
+  if (!EXTRA_ID_PATTERN.test(id)) throw Object.assign(new Error('番外 ID 无效。'), { status: 400, code: 'UNKNOWN_EXTRA' });
+  const rewards = ensureRewards(account);
+  const alreadyCleared = rewards.extrasCleared.includes(id);
+  const result = { granted: false, diamonds: 0, extraReward: 0, costumesGranted: [], costumesCompensated: [], skillMaterials: null, alreadyCleared };
+  if (!alreadyCleared) {
+    rewards.extrasCleared.push(id);
+    result.extraReward = addDiamonds(account, rewards, REWARD_RULES.extraFirstClear, 'extra_first_clear', id, now);
+    if (!Array.isArray(account.ownedCostumes)) account.ownedCostumes = [];
+    for (const costumeId of Array.isArray(extra.gifts?.costumes) ? extra.gifts.costumes : []) {
+      const costume = COSTUME_CATALOG.find((c) => c.id === costumeId);
+      if (!costume || !(costume.status === 'gift' || costume.rarity === 3)) continue; // ★4、★5 永不赠送
+      if (account.ownedCostumes.includes(costume.id)) {
+        const amount = addDiamonds(account, rewards, duplicateCompensation(costume.rarity), 'extra_gift_duplicate', costume.id, now);
+        result.costumesCompensated.push({ id: costume.id, diamonds: amount });
+      } else {
+        account.ownedCostumes.push(costume.id);
+        result.costumesGranted.push(costume.id);
+      }
+    }
+    result.skillMaterials = grantExtraMaterials(account, id, now);
+    result.diamonds = result.extraReward + result.costumesCompensated.reduce((sum, c) => sum + c.diamonds, 0);
+    result.granted = true;
+  }
+  return { ...result, extrasCleared: [...rewards.extrasCleared], balance: diamondsOf(account) };
 }
 
 /**

@@ -223,3 +223,33 @@ evalCond(run, cond)  interpolate(text, run)  publicSummary(run)
 - **两种模式都禁止**：裸露与性行为、性暴力、虐杀与刑求过程、断肢与创口特写、以身体部位为焦点的描写；同一节拍不同时有血与擦边。**未成年硬名单**——托比（8）、波莉（6）、妮拉（15）、派克（15）、幼龙豆鳞，以及任何孩子——永远不进擦边或血腥节拍。
 - **模型提示词**：`game/ai.mjs` 的 `contentRatingRules(mode, { minors, onViolation })` 是唯一的一份规则文字，主线判定器（`game/story-judge.mjs` 的 `buildPrompt` 第 5 条，带未成年硬名单；玩家要求露骨性内容、性暴力或伤害孩子时在场角色拒绝或制止、按越界意图归类、`morality` 取 -2）与外传聊天（`buildSystemPrompt` 第 6 条，取代原来的「保持PG-13」）共用。外传页面还没有内容模式设置，聊天按 12+ 规则；`generateCharacterReply(state, id, message, { contentMode })` 已留好入口。
 
+
+## 11. 番外（ex001–ex010）
+
+依据：`剧本/README_劇本編寫規格.md` §七、提案 4.7、服装稿 1.1 与 4.1。番外是正典日常、零后果的休息日，**独立命名空间**，永远不进主线的 `requires` 链，也不占用任何 `chNNN`。
+
+| 路径 | 作用 |
+|---|---|
+| `public/story/extras/index.json` | 番外目录：`id`（ex001…）、`number`、`title`（「番外一｜…」）、`estimatedMinutes`、`file`、`source`、`unlockAfter`（解锁章，主线章节 id）、`window`（时间窗，例如「正式10–15之间」）、`cast`、`costumeTypes`、`defaultCostume?`（海边番外为 `resort`）、`anyCostume?`（IF 篇）、`gifts.costumes`（首通赠品，只能是★3 或非卖品）、`if?`、`blurb`。标题页一开始就读，所以标题与简介不写女主名字、不剧透（canon-guard 测试） |
+| `public/story/extras/exNNN.json` | 番外文件：格式同第 2 节的章节 JSON，另加 `kind: "extra"`、`unlockAfter`、`window`、`cast`、`costumeTypes`、`defaultCostume?`、`anyCostume?`；`canon` 是**没有解锁章存档时**的默认正史快照（照抄解锁章之后那一章的 `canon`，只读）；`end.next` 必须为 `null`；`end.memory = { key: 'EXnnn_MEMORY', text }`（≤60 字，这一篇唯一可回忆的记忆） |
+| `剧本/番外/exNNN<标题>.md` | 番外剧本（繁体），转写成上面的 JSON（简体） |
+
+**变量沙箱**（`validateChapter`，`EXTRA_VAR = /^EX(\d{3})?_[A-Z0-9_]+$/`）：番外的 `set` 节拍、意图的 `set`、`end.set` 只能写 `EX_*` 或 `EXnnn_*`；写 `*_TRUST`、`promise_*`、`FLAG_CH*`、`MONARCH_*` 之类一律报错；番外里的战斗 id 也要以 `EX_` 开头（结果写进 `vars.<id>_RESULT`）。
+
+**开局**（`startExtraRun({ extra, snapshot, playerName, mode })`）：只读解锁章的章末存档快照（播放器的 `endSaveOf(unlockAfter)`），没有就用番外的 `canon`；快照本身不被改动。番外读完不会成为任何主线章节的前情。
+
+**播放器**（`public/story/player.js`）：
+- 章节选择页分两页：「章节」与「番外・休息日」（`?tab=extras` 或 `?extra=exNNN` 直达后者）。番外卡片：没有 `file` 显示「制作中」；本机主线进度还没通关解锁章显示「通关「第N章」后开放」，只给标题（登场女主与简介要等解锁）；解锁后显示时长、时间窗（IF 篇写「IF · 与正史无关」）、登场者与简介。
+- 存档键与主线分开：`moonlit:story:ex:autosave`、`moonlit:story:ex:progress`、`moonlit:story:ex:save:<SAVE_EXnnn_END>`、`moonlit:story:ex:backlog`；番外进行中不会覆盖主线的「继续」，「番外・休息日」页另有「继续番外」。
+- 读完：完成页「这一天」（`end.summary`）与「记住的事」（`end.memory.text`），番外 id 记进 `moonlit:story:ex:memories`；按钮是「返回番外列表」「重读本篇」，没有下一章。
+- 胸像换装（服装稿 4.1）：说话的是八位女主（全局 id）时，这一篇的 `costumeTypes` 包含她在换衣间装备的类型（`anyCostume` 时任何类型），就换成 `/assets/costumes/bust/<id>_<type>.svg`（12+ 的泳装用 `bust/soft/`）；否则有 `defaultCostume` 时用 `<id>_<defaultCostume>` 的胸像，再否则用默认胸像。装备在开局时读一次 `/api/account`（不为此建号）。主线永远不换。
+
+**判定**（`game/story-judge.mjs`）：`loadStoryChapter` 也读 `extras/`；提示词第一句写「番外（正典日常的休息日，零后果）」。
+- 番外：`context.wearing = { 女主 id: 服装类型 }`，服务器只认这一篇 `costumeTypes` 里的类型，在场景事实里加一句「外观（只用于描写，不计分）：莉亚穿着女仆装（她自己挑的）。」（`wearingFacts`）。
+- 主线：`context.extraMemories = ['ex001', …]`（读过的番外 id），服务器从番外文件取那一条记忆，只收解锁章**之后**的主线章节，最多三条，写成「番外里的回忆（角色可以当闲谈提起，不作为任何条件，不改变判定）」（`extraMemoryFacts`）。意图、分数与校验都不受影响。
+
+**首通奖励**：`POST /api/story/extra { playerId, extraId }`。番外必须在目录里且有 `file`（否则 400 `UNKNOWN_EXTRA`），账户的主线首通里要有它的解锁章（否则 403 `EXTRA_LOCKED`）。首次读完发 80 钻石、技能材料「练习手记」10、「实战手记」5、「源律残章」2，以及目录里的赠品外观（已拥有的★3 按重复补偿折成钻石）；记在 `account.rewards.extrasCleared`，不进 `chaptersCleared`，不影响登场闸门与入队。幂等。返回 `{ granted, diamonds, extraReward, costumesGranted, costumesCompensated, skillMaterials, alreadyCleared, extrasCleared, balance, account }`。
+
+**换衣间入口**：`/api/costume` 的 `branches` 由 `branchScenesView(番外目录, 主线首通, 番外首通)` 算出，每类服装多一个 `extrasStatus: [{ id, title, live, unlocked, cleared, unlockAfter }]`；对应番外已上线并解锁时，换衣间写「番外「…」· 前往」，链接到 `/story.html?extra=exNNN`。
+
+**校验**：`npm run story:check` 在主线之后照样校验并试玩每一篇已上线的番外（从默认正史开局，也从解锁章各策略的章末存档开局），另查目录与文件一致、解锁章不晚于正式25、赠品只有★3 或非卖品。`node tools/story/check.mjs ex001 --transcript` 导出番外逐字稿。

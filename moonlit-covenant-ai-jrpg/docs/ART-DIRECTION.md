@@ -115,7 +115,7 @@
 | 纪念日礼服（典藏） | 星形勋章的中心 | 绶带上的小饰章 |
 | 度假装（赠品） | 项链吊坠 | 连衣裙的碎花印花 |
 
-装饰保持小而清楚：不加新滤镜，体积仍在服装立绘 80KB 预算内。服装对应的番外暂不制作（游戏内显示「番外 · 敬请期待」）。服装的武器位换成一件道具（泳装的救生浮标、阳伞、浪板……，见各生成器），莉亚的塔盾在每一套里都背着，只加装饰（浴巾、玫瑰花环、队旗，`outfit.extrasOverlay`，B10）。
+装饰保持小而清楚：不加新滤镜，体积仍在服装立绘 80KB 预算内。服装对应的番外已上线（主线播放页「番外・休息日」）：类型相符的番外里，说话的女主换成下面的透明胸像。服装的武器位换成一件道具（泳装的救生浮标、阳伞、浪板……，见各生成器），莉亚的塔盾在每一套里都背着，只加装饰（浴巾、玫瑰花环、队旗，`outfit.extrasOverlay`，B10）。
 
 ### 5.3 标题背景（audit B7，`public/assets/title-bg.svg`）
 
@@ -127,7 +127,7 @@
   - `public/assets/portraits/<id>.svg` × 8（莉亚带塔盾，§5.1）
   - `public/assets/costumes/<id>_<type>.svg` × 80：常驻 swimsuit / wedding / office / maid / sportwear，典藏 newyear / christmas / duanwu / anniversary，赠品 resort；每位女主带自己的徽记与纹样（§5.2）
   - `public/assets/costumes/soft/<id>_swimsuit.svg` × 8：12+ 罩衫版（§3）
-  - `public/assets/costumes/bust/<id>_<type>.svg` × 80 与 `bust/soft/` × 8：600×800 透明胸像（委托板的单位卡，将来的番外），由 `story/portrait-bust.mjs` 从同一张服装立绘缩成，预算 ≤ 70KB
+  - `public/assets/costumes/bust/<id>_<type>.svg` × 80 与 `bust/soft/` × 8：600×800 透明胸像（委托板的单位卡、类型相符的番外），由 `story/portrait-bust.mjs` 从同一张服装立绘缩成，预算 ≤ 70KB
 - CG：`public/assets/cg/<name>.svg` × 10
 - 卡面：`public/assets/cards/<cardId>.svg` × 38；进化版 `<cardId>_e.svg` × 27 由 `tools/art/build-cards.mjs` 从基础卡面派生
 - 地图：`public/assets/map/world-map.svg`

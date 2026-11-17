@@ -69,7 +69,19 @@ test('the canon spellings are actually in use (the guard is not vacuous)', () =>
 
 // 主线第十章（总纲010，对照表§六硬锚点）第一次点名「蚀宴会」，从 ch010 起的主线章节可以出现；更早的章节和其他玩家可见文件仍然不行
 const MAIN_LINE_FROM_CH010 = /^public\/story\/chapters\/ch(\d{3})\.json$/;
-const namesEclipseFeastLegally = (f) => Number((rel(f).match(MAIN_LINE_FROM_CH010) || [])[1] ?? -1) >= 10;
+// 番外的 canon（默认正史快照）照抄解锁章之后那一章的 canon，所以解锁章在 ch010 以后的番外文件里可以有这个词（spoiler_ceiling＝解锁章）
+const EXTRA_FILE = /^public\/story\/extras\/(ex\d{3})\.json$/;
+const extraUnlock = (id) => {
+  try {
+    const entry = JSON.parse(fs.readFileSync(path.join(root, 'public/story/extras/index.json'), 'utf8')).find((e) => e.id === id);
+    return Number(String(entry?.unlockAfter || '').slice(2));
+  } catch { return -1; }
+};
+const namesEclipseFeastLegally = (f) => {
+  const extra = rel(f).match(EXTRA_FILE);
+  if (extra) return extraUnlock(extra[1]) >= 10;
+  return Number((rel(f).match(MAIN_LINE_FROM_CH010) || [])[1] ?? -1) >= 10;
+};
 
 test('side-story spoilers 蚀宴会 / 第27章 stay out of every player-facing file', () => {
   const files = textFiles('public', 'game', 'cards', 'scenario');
@@ -231,5 +243,25 @@ test('核#14: a main-line chapter only names what has been revealed by then', ()
     const n = Number(name.slice(2, 5));
     const found = hits([path.join(chapters, name)], MAIN_LINE_SPOILERS.filter((s) => s.from > n).map((s) => s.term));
     assert.deepEqual(found, [], name);
+  }
+});
+
+// 番外（剧本规格§七）：spoiler_ceiling＝解锁章——番外只说解锁章之前已经揭晓的事；
+// 番外目录（public/story/extras/index.json）在标题页一开始就读，所以里面的标题与简介一个剧透词也不能有，也不写女主的名字。
+test('番外：每篇只说解锁章之前揭晓的事，番外目录开局可见、不剧透也不点名', () => {
+  const dir = path.join(root, 'public/story/extras');
+  const index = JSON.parse(fs.readFileSync(path.join(dir, 'index.json'), 'utf8'));
+  assert.deepEqual(hits([path.join(dir, 'index.json')], spoilersAfter(-1)), []);
+  const indexText = JSON.stringify(index.map(({ title, blurb, window }) => ({ title, blurb, window })));
+  for (const name of ['莉亚', '米娅', '塞雷娜', '伊芙琳', '艾拉', '芙蕾娅', '奥菲莉亚', '奥菲利亚', '莉莉丝']) assert.ok(!indexText.includes(name), `「${name}」 in the extras index`);
+  for (const entry of index) {
+    const file = path.join(dir, `${entry.id}.json`);
+    if (!entry.file || !fs.existsSync(file)) continue;
+    const ceiling = Number(entry.unlockAfter.slice(2));
+    const veils = [...MAIN_LINE_SPOILERS, ...SUMMON_POOL_NAME_VEILS].filter((s) => s.from > ceiling).map((s) => s.term);
+    // canon（默认正史快照）只是变量，不上屏；只查玩家看得见的字
+    const extra = JSON.parse(fs.readFileSync(file, 'utf8'));
+    const visible = JSON.stringify({ ...extra, canon: null });
+    assert.deepEqual(veils.filter((term) => visible.includes(term)), [], entry.id);
   }
 });

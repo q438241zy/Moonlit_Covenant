@@ -1,0 +1,2825 @@
+{
+  "id": "ex003",
+  "number": 3,
+  "kind": "extra",
+  "scriptId": "EX003_DRESS_SHOP_WINDOW_FITTING_DAY",
+  "title": "番外三｜礼服橱窗",
+  "shortTitle": "礼服橱窗",
+  "estimatedMinutes": 9,
+  "source": "剧本/番外/ex003禮服櫥窗.md",
+  "unlockAfter": "ch017",
+  "window": "正式17–19之间",
+  "cast": [
+    "lia",
+    "mia",
+    "serena",
+    "evelyn"
+  ],
+  "costumeTypes": [
+    "wedding"
+  ],
+  "canon": {
+    "flags": {
+      "FLAG_CH000_HEMAI_DESTROYED": true,
+      "FLAG_CH000_BLACK_DRAGON_SEEN": true,
+      "FLAG_CH000_MOTHER_STATUS_UNKNOWN": true,
+      "FLAG_CH000_TOBY_SURVIVED_CAVE": true,
+      "FLAG_CH000_DRAGON_VOW": true,
+      "FLAG_CH000_DRAGON_REMAINS_OVER_HEMAI": true,
+      "FLAG_CH001_BLACK_DRAGON_REPELLED_BY_KERN": true,
+      "FLAG_CH001_BLACK_DRAGON_ABDOMEN_WOUNDED": true,
+      "FLAG_CH001_MOTHER_DEATH_CONFIRMED": true,
+      "FLAG_CH001_TOBY_UNDER_KERN_GUARDIANSHIP": true,
+      "FLAG_CH001_ARK_RECEIVED_GUILD_LETTER": true,
+      "FLAG_CH001_KERN_MENTOR_IDEAL": true,
+      "FLAG_CH002_GUILD_REGISTERED": true,
+      "FLAG_CH002_LEAH_FIRST_SEEN": true,
+      "FLAG_CH002_THIEF_CAPTURED": true,
+      "FLAG_CH002_BLACK_CRYSTAL_EVIDENCE_RECOVERED": true,
+      "FLAG_CH002_FIRE_RESONANCE_FLICKER": true,
+      "FLAG_CH003_TEMP_PARTY_FORMED": true,
+      "FLAG_CH003_LEAH_SIGNED_SUPERVISION": true,
+      "FLAG_CH003_THIRD_ACCOMPLICE_CAPTURED": true,
+      "FLAG_CH003_SEVEN_RING_MARK_SEEN": true,
+      "FLAG_CH003_BLACK_CRYSTAL_CRATE_SEIZED": true,
+      "FLAG_CH003_HEMAI_SURVIVORS_TARGETED": true,
+      "FLAG_CH003_OLD_MILL_LEAD": true,
+      "FLAG_CH003_MILL_ASSAULT_POSTPONED": true,
+      "FLAG_CH003_FIRST_JOINT_MISSION_COMPLETE": true,
+      "FLAG_CH003_FIRE_RESONANCE_WARMTH": true,
+      "FLAG_CH003_GUILD_COLLAB_STAMPED": true,
+      "FLAG_CH003_LEAH_KNOWS_PLAYER_NAME": true,
+      "FLAG_CH003_RELIEF_CART_PASSED_WEST_GATE": true,
+      "FLAG_CH003_DRIVER_DESCRIBED": true,
+      "FLAG_CH003_SHIELD_SIGNALS_LEARNED": true,
+      "FLAG_CH003_SOUP_POT_SETTLED": true,
+      "FLAG_CH003_BARREL_DEDUCTED": true,
+      "FLAG_CH004_CORD_SIGNALS_LEARNED": true,
+      "FLAG_CH004_FENN_CONFIRMED_CHAIN_SWAP": true,
+      "FLAG_CH004_WEST_GATE_COSIGNED": true,
+      "FLAG_CH004_SENTRY_REPORT_HEARD": true,
+      "FLAG_CH004_MILL_INFILTRATED": true,
+      "FLAG_CH004_CHARGING_RACK_SEEN": true,
+      "FLAG_CH004_LEDGER_READ": true,
+      "FLAG_CH004_MARA_AND_DAUGHTER_FOUND": true,
+      "FLAG_CH004_KEY_ON_ACOLYTE": true,
+      "FLAG_CH004_TEARS_LIGHT_CRYSTALS": true,
+      "FLAG_CH004_CAPTIVES_REMAIN_IN_MILL": true,
+      "FLAG_CH004_ACOLYTE_SEEN": true,
+      "FLAG_CH004_RESCUE_WINDOW_CRATE_SWAP": true,
+      "FLAG_CH004_LEAH_LEARNED_HEMAI": true,
+      "FLAG_CH004_GUARDS_COMMITTED": true,
+      "FLAG_CH004_RESCUE_COMMISSION_POSTED": true,
+      "FLAG_CH005_WEST_GATE_COSIGNED": true,
+      "FLAG_CH005_PLAN_BRIEFED_AT_MILESTONE": true,
+      "FLAG_CH005_COLLAR_OWNER_REVEALED": true,
+      "FLAG_CH005_PEACE_STONES_NAMED": true,
+      "FLAG_CH005_CHAIN_SWAP_COMPLETED": true,
+      "FLAG_CH005_LEAH_PRESSED_CRATE": true,
+      "FLAG_CH005_CHIEF_COLLAR_DISABLED": true,
+      "FLAG_CH005_ACOLYTE_CAPTURED": true,
+      "FLAG_CH005_ROLL_CALL_ANSWERED": true,
+      "FLAG_CH005_MARA_AND_POLLY_RESCUED": true,
+      "FLAG_CH005_LEAD_MISTTIDE_MARSH": true,
+      "FLAG_CH005_EVIDENCE_TO_GUARD": true,
+      "FLAG_CH005_RESCUE_COMMISSION_COMPLETE": true,
+      "FLAG_CH005_FORMAL_PARTY_FORMED": true,
+      "FLAG_CH005_ESCORT_COMMISSION_POSTED": true,
+      "FLAG_CH005_MARA_POLLY_TO_NORTH_CAMP": true,
+      "FLAG_CH006_ESCORT_COMMISSION_ACCEPTED": true,
+      "FLAG_CH006_SUPPLY_TUTORIAL_DONE": true,
+      "FLAG_CH006_RUBBING_COPY_CARRIED": true,
+      "FLAG_CH006_MARSH_OGRE_UNCOLLARED": true,
+      "FLAG_CH006_SHIELD_UNDER_WHEEL": true,
+      "FLAG_CH006_UNSPOKEN_SYNC": true,
+      "FLAG_CH006_SALT_MARSH_BRIDGE_COLLAPSED": true,
+      "FLAG_CH006_LEAH_BOUNDARY_STATED": true,
+      "FLAG_CH006_ESCORT_COMMISSION_COMPLETE": true,
+      "FLAG_CH006_LEAH_CAKE_SEEN": true,
+      "FLAG_CH006_PARTY_CAMP_OPENED": true,
+      "FLAG_CH006_BLUE_EXPLOSION_SEEN": true,
+      "FLAG_CH006_GEAR_IN_CAKE": true,
+      "FLAG_CH007_FOREST_EDGE_ENTERED": true,
+      "FLAG_CH007_MIA_FIRST_SEEN": true,
+      "FLAG_CH007_UNPLANNED_DISASSEMBLY_NAMED": true,
+      "FLAG_CH007_MIA_NOTED_SEVEN_LAWS": true,
+      "FLAG_CH007_SAFETY_RULES_CLASHED": true,
+      "FLAG_CH007_RETREAT_TO_STAKE": true,
+      "FLAG_CH007_CATCH_IT_WHOLE": true,
+      "FLAG_CH007_THREE_PERSON_FORMATION": true,
+      "FLAG_CH007_TAUNT_INTRODUCED": true,
+      "FLAG_CH007_SCRAP_PICKER_STOPPED": true,
+      "FLAG_CH007_INCIDENT_LOGGED": true,
+      "FLAG_CH007_GEAR_NUMBER_SEEN": true,
+      "FLAG_CH007_GEAR_CRACKED": true,
+      "FLAG_CH007_ERODED_TIDE_CRYSTAL_FOUND": true,
+      "FLAG_CH007_CORE_UNNUMBERED": true,
+      "FLAG_CH007_SEVEN_RING_MATCH_SEEN": true,
+      "FLAG_CH008_RECORDS_REQUESTED": true,
+      "FLAG_CH008_MIA_AS_WITNESS": true,
+      "FLAG_CH008_EAVE_REPAIRED": true,
+      "FLAG_CH008_MIA_MADE_AMENDS": true,
+      "FLAG_CH008_TIDE_STATION_REACHED": true,
+      "FLAG_CH008_GEAR_RETURNED_TO_WINCH": true,
+      "FLAG_CH008_PLANNED_DISASSEMBLY": true,
+      "FLAG_CH008_ONE_MILLIMETER": true,
+      "FLAG_CH008_TIDE_DOOR_LOCKED": true,
+      "FLAG_CH008_RECORDS_RETRIEVED": true,
+      "FLAG_CH008_CORE_SWAP_PROVEN": true,
+      "FLAG_CH008_RINGS_GROWN_NOT_CARVED": true,
+      "FLAG_CH008_MIA_SELF_REPORTED": true,
+      "FLAG_CH008_INCIDENT_SETTLED": true,
+      "FLAG_CH008_NAMES_EXCHANGED": true,
+      "FLAG_CH008_LEAH_SHARED_CASE_FACTS": true,
+      "FLAG_CH008_BLACK_CRYSTAL_APPRAISED": true,
+      "FLAG_CH008_PEACE_STONE_EXPLAINED": true,
+      "FLAG_CH008_CRYSTAL_TO_MIA": true,
+      "FLAG_CH008_MIA_GUEST_TO_HARBOR": true,
+      "FLAG_CH008_THREE_NAMES_LOGGED": true,
+      "FLAG_CH008_SHARED_HEARTBEAT_DETECTED": true,
+      "FLAG_CH008_ACT1_CLOSED": true,
+      "FLAG_CH009_ENTERED_FOG_HARBOR": true,
+      "FLAG_CH009_ESCORT_PAID": true,
+      "FLAG_CH009_INES_MET": true,
+      "FLAG_CH009_RESCUE_RULE_TOLD": true,
+      "FLAG_CH009_GUEST_UNDER_LEAH": true,
+      "FLAG_CH009_WITNESS_NAMES_KEPT": true,
+      "FLAG_CH009_MISSING_CASE_TAKEN": true,
+      "FLAG_CH009_DIVISION_OF_LABOR": true,
+      "FLAG_CH009_CRYSTAL_LAYERS_READ": true,
+      "FLAG_CH009_GREY_CORE_DOWNSTREAM": true,
+      "FLAG_CH009_PEOPLE_FIRST": true,
+      "FLAG_CH009_TESTIMONY_LINKED": true,
+      "FLAG_CH009_SENT_TO_WITNESS": true,
+      "FLAG_CH009_BATH_TESTIMONY": true,
+      "FLAG_CH009_MIRROR_TESTIMONY_LOGGED": true,
+      "FLAG_CH009_DOCK_WORKER_TAKEN": true,
+      "FLAG_CH009_GAFF_WITH_LEAH": true,
+      "FLAG_CH009_DRAIN_NOT_ENTERED": true,
+      "FLAG_CH009_LEDGER_LINE_FINISHED": true,
+      "FLAG_CH009_BELOW_TIDE_OFFBEAT": true,
+      "FLAG_CH010_LEGAL_ENTRY": true,
+      "FLAG_CH010_PUMP_REVERSED_FOUND": true,
+      "FLAG_CH010_FEED_EVIDENCE_FOUND": true,
+      "FLAG_CH010_OUTBOUND_MARK_SEEN": true,
+      "FLAG_CH010_SEVENTEEN_FOUND": true,
+      "FLAG_CH010_GREY_OUTFLOW_TRACED": true,
+      "FLAG_CH010_MIA_SENT_TO_PUMP": true,
+      "FLAG_CH010_FOUR_RESCUED": true,
+      "FLAG_CH010_GAFF_RETURNED": true,
+      "FLAG_CH010_BLACK_STONES_TAKEN": true,
+      "FLAG_CH010_PUMP_STOPPED": true,
+      "FLAG_CH010_SEVENTEEN_CRACKED": true,
+      "FLAG_CH010_MIA_PEOPLE_FIRST": true,
+      "FLAG_CH010_MIA_RESCUE_MISSION_COMPLETE": true,
+      "FLAG_CH010_MOTHER_RETREATED": true,
+      "FLAG_CH010_HEARTBEAT_STILL_BELOW": true,
+      "FLAG_CH010_BELOW_TIDE_STILL": true,
+      "FLAG_CH010_RESCUE_COLUMN_FILLED": true,
+      "FLAG_CH010_ECLIPSE_FEAST_NAMED": true,
+      "FLAG_CH010_SAME_LEDGER": true,
+      "FLAG_CH010_MIA_JOINED": true,
+      "FLAG_CH010_MIA_CONDITION_LOGGED": true,
+      "FLAG_CH010_CASE_SHARED_WITH_MIA": true,
+      "FLAG_CH010_LODGED_BRIDGEHEAD_INN": true,
+      "FLAG_CH010_MIRROR_EYES": true,
+      "FLAG_CH010_OUTSIDER_NAMED": true,
+      "FLAG_CH009_PIPE_TIDE_HEARD": true,
+      "FLAG_CH011_SEEDS_SETTLED": true,
+      "FLAG_CH011_SCAR_FLARE": true,
+      "FLAG_CH011_SEVEN_HOLES_SHOWN": true,
+      "FLAG_CH011_DREAM_ENTERED": true,
+      "FLAG_CH011_THREADS_CUT": true,
+      "FLAG_CH011_LEAH_KNOCKED_THREE": true,
+      "FLAG_CH011_LEAH_DREW_ON_PERSON": true,
+      "FLAG_CH011_SERENA_MET": true,
+      "FLAG_CH011_SERENA_NAMED": true,
+      "FLAG_CH011_SERENA_LOOKED": true,
+      "FLAG_CH011_NOT_HER_TONIGHT": true,
+      "FLAG_CH011_SEVEN_DOORS_SPOKEN": true,
+      "FLAG_CH011_REGISTRAR_LINE": true,
+      "FLAG_CH011_NO_PEEK_DEMANDED": true,
+      "FLAG_CH011_SERENA_VANISHED": true,
+      "FLAG_CH011_BLACK_FEATHER_MAP": true,
+      "FLAG_CH011_TIDE_CAVE_MARKED": true,
+      "FLAG_CH011_MIRRORS_COVERED": true,
+      "FLAG_CH012_SERENA_WALKED_DOOR": true,
+      "FLAG_CH012_BATH_CONFESSED": true,
+      "FLAG_CH012_MIRROR_PURPLE_MATCHED": true,
+      "FLAG_CH012_MORKAN_NAMED": true,
+      "FLAG_CH012_SERENA_JOINED": true,
+      "FLAG_CH012_SERENA_TERMS_LOGGED": true,
+      "FLAG_CH012_LATCH_SOLVED": true,
+      "FLAG_CH012_MIRROR_MEMORY_RULE": true,
+      "FLAG_CH012_SHADOW_BIND_UNLOCKED": true,
+      "FLAG_CH012_ROLL_CALL_VERIFIED": true,
+      "FLAG_CH012_APPRENTICE_CAUGHT": true,
+      "FLAG_CH012_TIDE_CAVE_TOMORROW_NIGHT": true,
+      "FLAG_CH012_INVERTED_STAR_SHOWN": true,
+      "FLAG_CH012_FIRST_COUNT_FOUR": true,
+      "FLAG_CH012_PASS_UNREAD": true,
+      "FLAG_CH012_LODGING_LIGHTHOUSE": true,
+      "FLAG_CH013_SERENA_ASKED_DREAM": true,
+      "FLAG_CH013_WINDOW_ATTACK": true,
+      "FLAG_CH013_GOLDEN_ASSASSIN_SEEN": true,
+      "FLAG_CH013_ASSASSIN_MOTIVE_HEARD": true,
+      "FLAG_CH013_THREE_WENT_OUT": true,
+      "FLAG_CH013_BOTH_FORBIDDEN": true,
+      "FLAG_CH013_HALF_CREST_DROPPED": true,
+      "FLAG_CH013_HALF_CREST_FOUND": true,
+      "FLAG_CH013_PASS_RETURNED": true,
+      "FLAG_CH013_ORDER_WARNING": true,
+      "FLAG_CH013_PASS_READ": true,
+      "FLAG_CH013_IMPERIAL_SEAL_SEEN": true,
+      "FLAG_CH013_ARCH_WAVE_IS_OFFICIAL_SEAL": true,
+      "FLAG_CH013_DEST_ARCH_TIDE_GATE": true,
+      "FLAG_CH013_WITNESS_NAME_LISTED": true,
+      "FLAG_CH014_WENT_DOWN_AT_EBB": true,
+      "FLAG_CH014_THREE_DOWN_ONE_GATE": true,
+      "FLAG_CH014_SLUICE_HELD": true,
+      "FLAG_CH014_TIDE_CAVE_ENTERED": true,
+      "FLAG_CH014_COCOONS_FOUND": true,
+      "FLAG_CH014_HEARTBEAT_IS_PEOPLE": true,
+      "FLAG_CH014_EMPTY_HOOKS_SEEN": true,
+      "FLAG_CH014_STONE_DOOR_SEEN": true,
+      "FLAG_CH014_NINE_RESCUED": true,
+      "FLAG_CH014_ACOLYTE_CAPTURED": true,
+      "FLAG_CH014_STONE_DOOR_CLOSED": true,
+      "FLAG_CH014_QUICK_PATCH_SHOWN": true,
+      "FLAG_CH014_SLUICE_DROPPED_BEHIND": true,
+      "FLAG_CH014_COUNT_FOUR_AT_GATE": true,
+      "FLAG_CH014_GRADE_TAGS_SEEN": true,
+      "FLAG_CH014_TAGS_CUT_WITH_CONSENT": true,
+      "FLAG_CH014_BIG_THREE_ONE_FOUND": true,
+      "FLAG_CH014_ODA_NAMED": true,
+      "FLAG_CH014_INES_COUNTED": true,
+      "FLAG_CH014_VOICE_FROM_BELOW": true,
+      "FLAG_CH014_SLOW_HEARTBEAT_BELOW": true,
+      "FLAG_CH015_WENT_DOWN_AT_DAWN": true,
+      "FLAG_CH015_STONE_DOOR_OPENED": true,
+      "FLAG_CH015_NEST_ENTERED": true,
+      "FLAG_CH015_THREE_COCOONS_FOUND": true,
+      "FLAG_CH015_TIDE_KING_SEEN": true,
+      "FLAG_CH015_TIDE_KING_STOPPED": true,
+      "FLAG_CH015_COCOONS_RESCUED": true,
+      "FLAG_CH015_REVERSE_MOON_SHOWN": true,
+      "FLAG_CH015_MIRROR_STEP_SHOWN": true,
+      "FLAG_CH015_ASSASSIN_GUEST": true,
+      "FLAG_CH015_NELOSA_NAMED": true,
+      "FLAG_CH015_ROOT_RING_REFUSED_ONE_HAND": true,
+      "FLAG_CH015_SIN_SHARD_TAKEN": true,
+      "FLAG_CH015_CHART_SHARD_FOUND": true,
+      "FLAG_CH015_INES_COUNTED": true,
+      "FLAG_CH015_RELIEF_OFFICE_CAME": true,
+      "FLAG_CH015_RELIEF_SEAL_MATCHED_PASS": true,
+      "FLAG_CH015_DOCK_PEOPLE_STOOD": true,
+      "FLAG_CH015_WHITE_TOWER_SUMMONS": true,
+      "FLAG_CH015_CROWN_SEAL_LIKE_DRAGON_SCAR": true,
+      "FLAG_CH015_ACT2_CLOSED": true,
+      "FLAG_CH015_BROOD_SAVED": true,
+      "FLAG_CH015_RETURNED_HOME_PROMISED": true,
+      "FLAG_CH016_ARRIVED_HOLY_CITY": true,
+      "FLAG_CH016_WEAPONS_LEFT_AT_GATE": true,
+      "FLAG_CH016_GATE_CLERK_SAW_COPPER": true,
+      "FLAG_CH016_DRAGON_NOTICE_SEEN": true,
+      "FLAG_CH016_REGISTRY_HALL_ENTERED": true,
+      "FLAG_CH016_GRADE_COLUMN_MATCHED": true,
+      "FLAG_CH016_MONITOR_SEAL_SEEN": true,
+      "FLAG_CH016_PAGE_PREMARKED": true,
+      "FLAG_CH016_COURT_MET": true,
+      "FLAG_CH016_EVELYN_SEEN": true,
+      "FLAG_CH016_TITLE_READ": true,
+      "FLAG_CH016_VESSEL_PAGE_SEEN": true,
+      "FLAG_CH016_CELESTINE_PAUSED": true,
+      "FLAG_CH016_EVELYN_ASKED_NAMES": true,
+      "FLAG_CH016_TERMS_OFFERED": true,
+      "FLAG_CH016_REGISTER_NOT_HANDED": true,
+      "FLAG_CH016_EMPEROR_WILL_SEND": true,
+      "FLAG_CH016_GATE_TALLY_SEEN": true,
+      "FLAG_CH016_SEVEN_CRACKS_HEARD": true,
+      "FLAG_CH016_EVELYN_NAMED": true,
+      "FLAG_CH016_VESSEL_LOGGED": true,
+      "FLAG_CH016_CONFISCATION_ORDERED": true,
+      "FLAG_CH016_LEDGER_GATE_LINE_STARTED": true,
+      "FLAG_CH016_RETURNED_HOME_KEPT_AT_COURT": true,
+      "FLAG_CH017_RUBBING_MADE": true,
+      "FLAG_CH017_NAMES_MEMORIZED": true,
+      "FLAG_CH017_AILA_MET": true,
+      "FLAG_CH017_CONFISCATION_SERVED": true,
+      "FLAG_CH017_STAR_CHART_NAMED": true,
+      "FLAG_CH017_KNIGHT_COMMANDER_NAMED": true,
+      "FLAG_CH017_RESIDENCE_ATTACKED": true,
+      "FLAG_CH017_DOCS_FIRST_ORDER_HEARD": true,
+      "FLAG_CH017_BLACK_CRYSTAL_SMOKE": true,
+      "FLAG_CH017_FIVE_OUT": true,
+      "FLAG_CH017_EVELYN_LAST_OUT": true,
+      "FLAG_CH017_STARSONG_HEAL_SHOWN": true,
+      "FLAG_CH017_ARCHIVE_BOX_TAKEN": true,
+      "FLAG_CH017_AILA_FIRST_CRACK": true,
+      "FLAG_CH017_DUEL_CHALLENGED": true,
+      "FLAG_CH017_RUBBING_STAKED": true,
+      "FLAG_CH017_CREST_SEEN": true,
+      "FLAG_CH017_DUEL_FOUGHT": true,
+      "FLAG_CH017_NAMES_RECITED": true,
+      "FLAG_CH017_ORDER_UNFINISHED": true,
+      "FLAG_CH017_EVELYN_JOINED": true,
+      "FLAG_CH017_SURVEILLANCE_DISCLOSED": true,
+      "FLAG_CH017_OUTER_COURT_FROST_SEEN": true,
+      "FLAG_CH017_RETURNED_HOME_KEPT": true,
+      "FLAG_CH017_EVELYN_PROMISE_SIGNED": true
+    },
+    "items": {
+      "ITEM_FAMILY_SHEPHERD_WHISTLE": 1,
+      "ITEM_MOTHER_WHEAT_HAIRPIN": 1,
+      "ITEM_GUILD_IRON_BADGE": 1,
+      "ITEM_BASIC_BANDAGE": 2,
+      "ITEM_MARSH_SHOE_COVERS": true,
+      "ITEM_FOREST_EDGE_GEAR": false,
+      "ITEM_FOG_HARBOR_CLEAR_CRYSTAL": false,
+      "ITEM_SEVEN_RING_CHART_SHARD": 1,
+      "ITEM_WHITE_TOWER_SUMMONS": 1,
+      "ITEM_SEVEN_RING_RUBBING": 0
+    },
+    "vars": {
+      "PLAYER_VOW_PRIMARY": "VOW_REVENGE",
+      "PLAYER_GUILT_TOTAL": 0,
+      "ITEM_FAMILY_SHEPHERD_WHISTLE_OWNER": "TOBY",
+      "PLAYER_PROMISE_RETURN_TO_TOBY": true,
+      "PLAYER_GUILD_RANK": "IRON",
+      "PLAYER_FIRST_IMPRESSION_OF_LEAH": "STRONG_POSITIVE_DEFAULT",
+      "LEAH_FIRST_IMPRESSION_OF_PLAYER": "EAGER_BUT_UNDISCIPLINED",
+      "LEAH_TRUST": 3,
+      "LEAH_INTIMACY": 0,
+      "LEAH_SACRIFICE": 0,
+      "PLAYER_GUILT_LEAH": 0,
+      "BATTLE_CH002_STREET_AMBUSH_RESULT": "clean",
+      "FENN_TREATMENT": "FIRM",
+      "PLAYER_PROMISE_OBEY_LEAH_SIGNAL": false,
+      "BATTLE_CH003_MILL_ROAD_CHAINS_RESULT": "clean",
+      "PLAYER_LODGING": "GUILD_BUNK",
+      "MILL_ALERT": 0,
+      "MILL_EXIT": "LATE",
+      "MILL_CAPTIVES_STATE": "QUIET",
+      "PLAYER_RESCUE_ROLE": "CAGE",
+      "MARA_DAUGHTER_CONDITION": "SMOKE_COUGH_BURNED_ARM",
+      "PLAYER_PROMISE_MARA_RETURN": false,
+      "CART_WAIT": "HELD",
+      "SUPERVISOR_NOTE": "STEADY",
+      "PARTY_CONSENT": "UNANSWERED",
+      "PARTY_STANDING": "MEMBER",
+      "LEAH_RELATIONSHIP_STAGE": "STRANGER",
+      "BATTLE_CH005_BULL_COLLAR_RESULT": "clean",
+      "CH006_CLIENT_CONFIDENCE": "NORMAL",
+      "CH006_OGRE_STATE": "TOOK_PLANK",
+      "CH006_SYNC_CHANNEL": "WAIST",
+      "HAZARD_CH006_SALT_BRIDGE_RESULT": "CLEAN",
+      "CONSENT_LEAH_WAIST_STEADY_BASIS": "offered",
+      "CONSENT_LEAH_WAIST_STEADY_STATUS": "granted_once",
+      "CAKE_TRUCE": "SEALED",
+      "MIA_TRUST": 0,
+      "MIA_INTIMACY": 0,
+      "MIA_SACRIFICE": 0,
+      "PLAYER_GUILT_MIA": 0,
+      "PAIR_LEAH_MIA_TRUST": 0,
+      "PARTY_GUEST_MIA": false,
+      "MIA_RELATIONSHIP_STAGE": "STRANGER",
+      "BATTLE_CH007_SCRAP_PICKER_RESULT": "clean",
+      "CONSENT_PLAYER_MIA_SCAN_STATUS": "none",
+      "CH007_GEAR_CUSTODY": "MIA_LOGGED",
+      "CH007_CAKE_SECRET_RESULT": "LEAH_ANSWERED",
+      "MIA_FIRST_IMPRESSION_OF_PLAYER": "QUIET",
+      "CH008_CRYSTAL_CUSTODY": "MIA_LOGGED",
+      "HAZARD_CH008_TIDE_DOOR_RESULT": "CLEAN",
+      "CH008_BLAME_RESPONSE": "SILENT",
+      "CH008_TESTIMONY": "NONE",
+      "INES_FIRST_IMPRESSION_OF_PLAYER": "QUIET",
+      "CH009_PICKER_RESULT": "BASE",
+      "CH009_TESTIMONY_ORDER": "LEAH_LINKED",
+      "CH009_BATH_WITNESS_RESULT": "FULL",
+      "CH009_CRISIS_ACTION": "SILENT",
+      "HAZARD_CH009_DRAIN_GRATE_RESULT": "CLEAN",
+      "CH010_STONES_CUSTODY": "MIA_LOGGED",
+      "CH010_FEED_EVIDENCE_CUSTODY": "GUILD",
+      "PARTY_MEMBER_MIA": true,
+      "CH010_PUMP_READ": "QUIET",
+      "CH010_RESCUE_ORDER": "LEAH_ORDERED",
+      "CH010_MIA_JOIN_REPLY": "SILENT",
+      "BATTLE_CH010_TIDE_CAVITY_MOTHER_RESULT": "clean",
+      "CH011_MAP_CUSTODY": "LEAH",
+      "SERENA_INTIMACY": 0,
+      "SERENA_SACRIFICE": 0,
+      "SERENA_RELATIONSHIP_STAGE": "STRANGER",
+      "PAIR_LEAH_SERENA_TRUST": 0,
+      "PAIR_MIA_SERENA_TRUST": 1,
+      "SERENA_TRUST": 0,
+      "PLAYER_GUILT_SERENA": 0,
+      "PROMISE_BROKEN_NET_LEAH": 0,
+      "PROMISE_BROKEN_NET_MIA": 0,
+      "PROMISE_N_LEAH": 0,
+      "PROMISE_KEPT_LEAH": 0,
+      "PROMISE_N_MIA": 0,
+      "MONARCH_MERCY": 4,
+      "MONARCH_TERROR": 0,
+      "MONARCH_LUST": 0,
+      "MONARCH_COLD": 0,
+      "TERROR_BLAST": 0,
+      "FLIRT_AFTER_REFUSAL": 0,
+      "CH011_HAND_RESPONSE": "ENDURED",
+      "CH011_SCAR_SEEN_BY": "ALONE",
+      "CH011_KNOCKS_RESPONSE": "DEFAULT",
+      "BATTLE_CH011_SCAR_ECHO_RESULT": "clean",
+      "CH011_SERENA_TREATMENT": "QUIET",
+      "SERENA_FIRST_IMPRESSION_OF_PLAYER": "QUIET",
+      "CH011_VANISH_ANSWER": "SILENT",
+      "CH011_DREAM_TOLD": "KEPT",
+      "PARTY_MEMBER_SERENA": true,
+      "BOUNDARY_SERENA_PRIVATE_OBSERVATION": {
+        "owner": "SERENA",
+        "rule": "未经允许不得以镜术观察私人空间",
+        "status": "acknowledged",
+        "violation_count": 1,
+        "repair_state": "active",
+        "allowed_exceptions": [
+          "emergency_life_threat"
+        ]
+      },
+      "CH012_APPRENTICE_CUSTODY": "TEAM_LIGHTHOUSE",
+      "PROMISE_KEPT_SERENA": 0,
+      "PROMISE_N_SERENA": 2,
+      "PROMISE_BROKEN_NET_SERENA": 0,
+      "CH012_BATH_RESPONSE": "QUIET",
+      "CH012_TERMS_RESULT": "QUIET",
+      "CH012_CHASE_TACTIC": "QUIET",
+      "CH012_DOUBLE_CHECK": "QUIET",
+      "CH012_ROLL_CALL_BY": "LEAH",
+      "BATTLE_CH012_MIRROR_ALLEY_CHASE_RESULT": "clean",
+      "CH012_APPRENTICE_TREATMENT": "QUIET",
+      "LILITH_TRUST": 0,
+      "PLAYER_GUILT_LILITH": 0,
+      "CH013_CREST_CUSTODY": "LEAH",
+      "CH013_PASS_CUSTODY": "LEAH",
+      "CH013_WITNESS_CUSTODY": "GUILD",
+      "CH013_DREAM_QUESTION": "QUIET",
+      "CH013_ROOF_TACTIC": "QUIET",
+      "CH013_ROOF_RESOLUTION": "QUIET",
+      "CH013_ORDER_QUESTION": "QUIET",
+      "LILITH_FIRST_IMPRESSION_OF_PLAYER": "QUIET",
+      "CH013_WITNESS_DECISION": "QUIET",
+      "BATTLE_CH013_RAIN_ROOFTOP_CHASE_RESULT": "clean",
+      "promise_serena_no_vanish_001": "pending",
+      "promise_serena_no_vanish_001_consent": "SILENT",
+      "promise_serena_no_peek_others_001": "pending",
+      "promise_serena_no_peek_others_001_consent": "SILENT",
+      "CH014_SPLIT": "QUIET",
+      "CH014_SLUICE_GUARD": "MIA",
+      "CH014_CAVE_TACTIC": "QUIET",
+      "CH014_FLOOD_RESOLUTION": "QUIET",
+      "BATTLE_CH014_TIDE_CAVE_RESCUE_RESULT": "clean",
+      "BATTLE_CH014_TIDE_CAVE_RESCUE_ENEMIES_DOWN": 2,
+      "CH014_TAG_DECISION": "QUIET",
+      "CH014_TAGS_CUSTODY": "LEAH",
+      "CH014_ACOLYTE_DECISION": "QUIET",
+      "CH014_ACOLYTE_CUSTODY": "GUILD",
+      "CH014_RESCUED_CUSTODY": "GUILD",
+      "CH015_COUNTERSIGN": "QUIET",
+      "CH015_SHELL_TACTIC": "QUIET",
+      "CH015_COPY_TACTIC": "QUIET",
+      "CH015_NEST_ORDER": "QUIET",
+      "CH015_NEST_FATE": "SAVED",
+      "SIN_ENVY": 1,
+      "BATTLE_CH015_TIDE_KING_NELOSA_RESULT": "clean",
+      "BATTLE_CH015_TIDE_KING_NELOSA_ENEMIES_DOWN": 3,
+      "CH015_CHART_SHARD_CUSTODY": "LEAH",
+      "CH015_SIN_SHARD_CUSTODY": "ASSASSIN",
+      "CH015_ROOT_RING_STATE": "ROOTED_IN_NEST",
+      "CH015_RESCUED_CUSTODY": "GUILD",
+      "CH015_HANDOVER_ANSWER": "QUIET",
+      "promise_returned_home_001": "pending",
+      "promise_returned_home_001_consent": "SILENT",
+      "CH015_SUMMONS_CUSTODY": "LEAH",
+      "CH015_SUMMONS_DEADLINE": "THREE_DAYS",
+      "EVELYN_TRUST": 0,
+      "PLAYER_GUILT_EVELYN": 0,
+      "EVELYN_INTIMACY": 0,
+      "EVELYN_SACRIFICE": 0,
+      "EVELYN_RELATIONSHIP_STAGE": "STRANGER",
+      "CH016_NOTICE_RESPONSE": "QUIET",
+      "CH016_ORIGIN_ANSWER": "QUIET",
+      "CH016_TITLE_STATE": "CONFERRED",
+      "CH016_NAMES_ANSWER": "QUIET",
+      "EVELYN_FIRST_IMPRESSION_OF_PLAYER": "QUIET",
+      "CH016_RESCUE_REGISTER_CUSTODY": "LEAH",
+      "CH016_TERMS_ANSWER": "QUIET",
+      "CH016_COURT_NOTE": "PENDING_REGISTRY",
+      "LEDGER_TO_GATE": 38,
+      "CH016_VESSEL_ANSWER": "QUIET",
+      "CH016_LODGING": "PILGRIM_HOSTEL",
+      "CH017_RUBBING_CUSTODY": "AILA",
+      "CH017_NAMES_METHOD": "QUIET",
+      "AILA_TRUST": 0,
+      "PLAYER_GUILT_AILA": 0,
+      "AILA_INTIMACY": 0,
+      "AILA_SACRIFICE": 0,
+      "AILA_RELATIONSHIP_STAGE": "STRANGER",
+      "CH017_RESCUE_ORDER": "QUIET",
+      "CH017_DUEL_HITS": 2,
+      "CH017_DUEL_R1": "QUIET",
+      "CH017_DUEL_R2": "QUIET",
+      "AILA_FIRST_IMPRESSION_OF_PLAYER": "QUIET",
+      "CH017_DUEL_RESULT": "LOST",
+      "BATTLE_CH017_KNIGHT_DUEL_RESULT": "clean",
+      "BATTLE_CH017_KNIGHT_DUEL_ENEMIES_DOWN": 0,
+      "PROMISE_N_EVELYN": 1,
+      "PROMISE_KEPT_EVELYN": 0,
+      "PROMISE_BROKEN_NET_EVELYN": 0,
+      "CH017_ESCORT_ANSWER": "QUIET",
+      "promise_evelyn_no_answer_001": "pending",
+      "promise_evelyn_no_answer_001_consent": "SILENT",
+      "PARTY_MEMBER_EVELYN": true
+    },
+    "memories": {
+      "MEMORY_MOTHER_WORDS_FIND_WAY_HOME": "艾琳：“我吹这个，你就知道该往哪边回。”",
+      "MEMORY_FAMILY_ROLL_CALL": "艾琳：“报数！”——“我在！”“我、我也在！”",
+      "MEMORY_BORIN_LAST_WORDS": "先看清该砍谁",
+      "MEMORY_CH001_PROMISE_RETURN_TO_TOBY": "托比：“你一定要回来拿。”——“一定。”",
+      "MEMORY_CH004_MARA_AT_THE_CAGE": "旧磨坊的笼边，玛拉认出了他。她和女儿波莉的手腕被细链锁在晶架上；钥匙在念经的人腰上。",
+      "MEMORY_CH004_TWO_PULLS": "旧磨坊里，绳子拉了两下，他慢了半拍才退。玛拉在他身后说：“……你还欠我一根烟囱。”",
+      "MEMORY_CH004_LEAH_ANGER": "第二座里程石旁，莉亚收完绳子，看着磨坊那点灯说：“我在生气。……所以我先问。”",
+      "MEMORY_CH005_WAIT": "大车之夜，链子全上了箱，莉亚回了一下“停”。他没有动，等到了盾落。",
+      "MEMORY_CH005_ROLL_CALL": "大车之夜，灯灭以后，他在黑暗里说出娘的口令“报数”。这一次，答“在”的是玛拉和波莉。",
+      "MEMORY_CH005_TEAM_REGISTER": "公会柜台，莉亚先在队长栏签了“赫斯特”。他没有答复；她写上他的名字，旁注“未答复”。",
+      "MEMORY_CH006_UNSPOKEN_SYNC": "盐沼桥上，他扣着她左侧的腰带。她的肩一沉，他就推了。谁都没出声。",
+      "MEMORY_CH006_BOUNDARY": "她说“腰带。左边。扶稳。”桥过了，她说准的只是那一次。",
+      "MEMORY_CH006_CAKE": "林边旅店的窗口，他撞见了她的字条“高效率糖分补给，一份”。她说：“你没看见。鞋套，不扣你的。……停战。”",
+      "MEMORY_CH006_CAMP": "林边旅店的火盆旁，她把明天的事说完：“守夜，我前半。你后半。”蛋糕盘就在她手边，她没有动叉子。",
+      "MEMORY_CH007_MIA_FIRST_MEETING": "她问能不能量。他没说好，她就没量；刚才那一眼，她也说不记。",
+      "MEMORY_CH007_TWO_RULES": "盾后面是雷最先到的地方。她规矩不改，只把今晚的退路改到桩后。",
+      "MEMORY_CH007_ONE_KNOCK": "林边，莉亚敲了一声盾，米娅没有停，卡住了那条腿。莉亚说“……拉。”急停环才拉下。米娅说她算过，还有两息；莉亚说：“你算的是它。……我算的是你们。”",
+      "MEMORY_CH007_GEAR_AND_CREAM": "林边，米娅问起齿轮上的奶油。他没答，她自己说：“补给。”",
+      "MEMORY_CH007_UNNUMBERED_CORE": "核心是一颗没有编号的潮晶，从里面往外蚀。晶底的黑环和拓图一样，七个。她把拓图摊给米娅看，看的是米娅的脸。她只对他说：这种黑，见过。",
+      "MEMORY_CH008_PAST_MIDNIGHT": "后半夜，她修屋檐，他守院子。",
+      "MEMORY_CH008_ONE_INSTANT": "她要不带火的金。莉亚说，他有，很弱。她看他按住一根钉子，硬了一瞬。",
+      "MEMORY_CH008_ONE_MILLIMETER": "她说“硬”。那一瞬，是他的。",
+      "MEMORY_CH008_SEVENTEEN": "十七号是透的，刻了号；这颗没有刻痕，环是从里面长出来的。核心在刻号之后、装机之前被换。她装的就是这颗；底，她没翻过来看。",
+      "MEMORY_CH008_SELF_REPORT": "她把两件事都写进账里。他没笑。她报了名字。",
+      "MEMORY_CH008_WHAT_AKU_SAW": "她说了颈圈和那箱黑晶。黑石那一段，他没说，她自己说了。",
+      "MEMORY_CH008_HEARTBEAT": "潮平了，听潮针的笔尖还在抖。米娅说，是心跳，很多个叠成一个，在雾港底下。莉亚的笔停住了。",
+      "MEMORY_CH009_INES_QUESTION": "她问落水的人怎么救。他没有回答。她说，先喊，再伸，再抛，最后才是跳。",
+      "MEMORY_CH009_LAYERS": "晶一潮一层，那颗的最里层是黑的。捡晶的说，下游的口子偶尔捡到中间灰的。他没打断米娅。",
+      "MEMORY_CH009_FIVE_SLIPS": "五张证词，她让他排。他没排，她画了一条线：同一道水。下次，你排。",
+      "MEMORY_CH009_SHIELD_SCARES": "她说盾吓人，派他去问烧水的人。他等着，老妇自己说了：池底的沟通东口，外面退潮的时候管子在涨，镜子里有时候多一个紫头发的。",
+      "MEMORY_CH009_GRATE": "根把码头工人拖进栅栏。她用盾封住缺口，说后面的人，你管。米娅抛了绳，他跟渔民一起拉，鱼贩上来了。她说：退。",
+      "MEMORY_CH009_BELOW": "她写完了那一行：雾港底下，有人。四个名字。救回那一栏空着，她说明天填。外面在退，底下还在涨。",
+      "MEMORY_CH010_PUMP_HOUSE": "泵房里没有人。汤碗的麻袋，黑色的碎粒，写着拟态的空瓶，一槽小虫。粉笔画着账本上那个记号，底下写着大四。她停了一拍。",
+      "MEMORY_CH010_SEVENTEEN": "泵是反装的，外面一退就往里打水。晶座里是十七号，底下的十一划掉了。她说要完整的。莉亚派她守泵。",
+      "MEMORY_CH010_FOUR_LEDGES": "四个人，四个地方。她把先后交给他，他没排。她自己点名：达利别动，钩子伸过去，提姆走过来，绳子抛过去；最后她把盾平放在水上，他背着渔民踩了过去。没有人跳。",
+      "MEMORY_CH010_CAVITY_BATTLE": "她分了三份：人，她守；泵，米娅；根，交给他引。他用光照水，她用盾拨；水涨到石台边，他往另一头打了一个水花。她说水到石台了，米娅说，人先，撬碎了晶座。母虫活着退进涵洞。米娅说，不是它，底下还有。",
+      "MEMORY_CH010_RESCUE_COLUMN": "下去三个，上来七个。救回那一栏，她填上了四个名字。底下的水，没有再涨。",
+      "MEMORY_CH010_SAME_LEDGER": "汤碗救济会。伊涅丝说，总会的通报上，发汤的、走巡礼的、卖魔具的，是同一个名字：蚀宴会。莉亚说，是同一本账。案子还开着。",
+      "MEMORY_CH010_MIA_JOINED": "她要署泵停的那一行，就用自己的名字签了登记。条件写在名字旁边：先问，再碰，拆要她在。她问队上要不要一个会炸的。他没说话。她说，没说不要。",
+      "MEMORY_CH010_LEDGER_SHARED": "入了队，她在旅店楼上把账摊开：晨钟镇西门外的旧磨坊，汤碗救济会从营地带走过人；营地那两个救回来了，晨祷平原来的三个没有；那一行的记号，就是泵房那个拱。她说，队员可以问。米娅说，先不问。",
+      "MEMORY_CH010_INN_NIGHT": "桥头旅店。这里的镜子没盖布。她们睡了。",
+      "MEMORY_CH011_SEVEN_HOLES": "手背上的洗礼印裂开七个细孔。他没有叫人。",
+      "MEMORY_CH011_THREE_KNOCKS": "梦里听见三声盾响，有人叫他的名字。他退了。线断了。",
+      "MEMORY_CH011_SERENA_ANSWER": "她说：都有。线，她剪了；门，她看了一眼。今晚拉线的，不是她。",
+      "MEMORY_CH011_SEVEN_DOORS": "她说他身上有七扇门，都空着。白塔的册官，在他身上按过号。莉亚停了一拍。",
+      "MEMORY_CH011_LEAH_RULE": "莉亚说：要来，走门。镜子，不准看。",
+      "MEMORY_CH011_SAY_A_WORD": "她问他，要走的时候会不会说一声。他没有回答。她没有说再见。",
+      "MEMORY_CH011_LEDGER": "莉亚在账上写：第十二夜，桥头旅店。镜中人塞雷娜，剪线，看了一眼。梦里的事，他没有说。",
+      "MEMORY_CH011_FEATHER_MAP": "黑羽穿着一张地图：老涵洞往下是潮穴；一条没人走过的路，停在一个没写字的圈。角上写着：条件，明天谈。",
+      "MEMORY_CH011_INN_NIGHT": "这一夜之后，走廊、楼梯转角与三人房里的镜子都盖了布；尼尔的房间不知道。莉亚面对着镜子坐。",
+      "MEMORY_CH012_BATH_MIRROR": "塞雷娜招认从浴场柜门镜看过他的手背。她道歉，包起杖头。莉亚写下：镜子，不准看。违，一次。",
+      "MEMORY_CH012_TERMS": "塞雷娜的条件：莫尔坎；要走，说一声；别叫她替人看别人。他什么都没说。莉亚说：不说话，就是没说不要。她记下了两条。",
+      "MEMORY_CH012_JOINED": "塞雷娜入队。登记只写名，姓说下次。条件写在名字旁边。",
+      "MEMORY_CH012_LOCKER_MIRROR": "人没走门，走的是柜门镜。镜子只记得照过的。米娅盖了柜门镜，只留尼尔那一格。",
+      "MEMORY_CH012_ALLEY": "镜巷里，莉亚报数，假的莉亚答不出少了谁。学徒说：潮穴，明夜。队员，第一次报到四。",
+      "MEMORY_CH012_APPRENTICE": "学徒在灯塔裹着毯子睡着了。今晚谁都没问。明早，分会来点。",
+      "MEMORY_CH012_LIGHTHOUSE_NIGHT": "第十三天住旧灯塔。队员，四。塞雷娜说：我在楼梯上，哪里也不去。下雨了。",
+      "MEMORY_CH013_DREAM_QUESTION": "后半夜，塞雷娜想从窗走进孩子的梦里问莫尔坎。他没有说好；她说，那就是不。",
+      "MEMORY_CH013_WINDOW": "窗碎了。金发的刺客说：让开。他照过我的脸。莉亚的盾先到。纸被她挑走了。",
+      "MEMORY_CH013_ASSASSIN": "雨中屋顶，金发刺客问他是不是教团的人。他没说话。她丢下纸：我不是来帮你，只是不想欠你。看清楚上面盖的章。不要相信教团。",
+      "MEMORY_CH013_COUNT": "屋顶回来，莉亚报数。塞雷娜报四，这一次没有停。米娅守住了门和窗。",
+      "MEMORY_CH013_PASS": "巡礼通行证：最上面是晨星冕的御印，底下盖着那个像拱又像浪的记号——伊涅丝说，御印底下只盖得上官印。背面写着：往：拱潮门。",
+      "MEMORY_CH013_WITNESS": "清晨，孩子报了名字：席欧。伊涅丝说，说话的，名字她留着。她带他回分会。",
+      "MEMORY_CH013_TIDE_TONIGHT": "第十四天清晨。伊涅丝点了四个：今夜出去四个，回来也要四个。潮穴，今夜。",
+      "MEMORY_CH014_SPLIT": "老闸口，三个下去，一个守闸。守闸的是米娅。是莉亚派的。",
+      "MEMORY_CH014_COCOONS": "潮穴的墙上挂着茧，茧里是人。所有的茧同一个时候鼓起来——雾港底下的心跳，是他们。",
+      "MEMORY_CH014_PATCH": "老闸的楔子裂了。米娅把叮当三号塞进齿里：紧急修补。最后一个人出来，闸才落。报数，到四。",
+      "MEMORY_CH014_TAGS": "潮腔的石台上，九个人的手腕都绑着木牌：来处、件、成色。米娅先问了，才剪。一个叫欧妲，晨祷平原来的——04那一行的三个人，找回一个。",
+      "MEMORY_CH014_ACOLYTE": "东口，那个放下手的念祷文的人交给了分会。伊涅丝把他的名字收进袖子里。",
+      "MEMORY_CH014_COUNT": "东口，伊涅丝点完人数：出去四个，回来四个；加九个；再加一个。",
+      "MEMORY_CH014_LEDGER": "莉亚的账：救回九，还没救回三，念祷文的一名交分会，牌子九块。她写的是‘还没’。",
+      "MEMORY_CH014_BELOW": "东口的闸缝底下，有个声音照着他们的报数数了一遍。说话的人都站在上面。零号说，底下还有一个，很慢，很大。",
+      "MEMORY_CH015_COUNTERSIGN": "石门前，莉亚说底下的东西会学声音。认自己人，用绳子。",
+      "MEMORY_CH015_NEST": "石门后面是一条沉船。船肋上挂着三个茧，船舱里挂满幼体的囊。龙骨上的壳，用莉亚的声音数了一二三。",
+      "MEMORY_CH015_SHELL": "壳撞上盾，腹下裂开一道缝。他的剑进了那道缝，不深，刚好一道。",
+      "MEMORY_CH015_COPIES": "两个莉亚、两个塞雷娜。塞雷娜和莉亚换了位置，金发的刺客从死角出了一刀。",
+      "MEMORY_CH015_NEST_FATE": "人都出来了，莉亚把那一下交给他。……他没说，莉亚照第三条切了线。",
+      "MEMORY_CH015_RUIN": "那颗心停的地方长出一个活的木环，谁伸手，根就往回缩。底下压着一片刻了七个环的铜，莉亚收了。金发刺客拿走了那块还在跳的碎片，说它叫涅洛萨，以前是洗沼泽的。",
+      "MEMORY_CH015_COUNT": "分会的仓里，伊涅丝点完：出去四个，回来四个，加三个。欧妲给他们让了位置。",
+      "MEMORY_CH015_NOT_HANDED_OVER": "分会门口，赈灾司的官照册要收救回的人。他说：救回的，不交。达利站到他身后，码头的人一个一个站过来。",
+      "MEMORY_CH015_SUMMONS": "赈灾司的官交出一封白塔的召令：召雾港屠龙者，三日内赴白塔。金色的火漆是一顶冠，冠上一道裂——和黑龙左眼旁边那道一样。",
+      "MEMORY_CH015_LEDGER": "莉亚的账：救回三，它停了，幼体多数留着，碎片被拿走，白塔召三日。她把召令夹在通行证旁边。",
+      "MEMORY_CH016_NOTICE": "晨门里的通报：赫麦村一带，野龙过境。莉亚停在他旁边，没有催。",
+      "MEMORY_CH016_HALL": "册厅的表头：来处、件、成色、往。莉亚把牌子放在旁边，说：是同一本账。监察院的信，封蜡是七角的晨星——娘桌角那封，一样。",
+      "MEMORY_CH016_ORIGIN": "掌簿官问他的来处。他没等，册上有：那一页早就夹着红绳。",
+      "MEMORY_CH016_COURT": "册厅里，皇帝坐在册架旁的一张椅子上，手边摊着一本册。皇女说：辛苦了。",
+      "MEMORY_CH016_TITLE": "大主教封他‘屠龙骑士’，照礼念他那一页：来处，赫麦；件，一；成色——她停了一拍——器；往，空白。",
+      "MEMORY_CH016_NAMES": "圣女照稿祝福，念到‘愿他们的名字’停了：稿子上没有名字。她问他。最后她自己加了一句：愿他们，平安。",
+      "MEMORY_CH016_TERMS": "封号、一营兵、龙脊，换雾港救回的名册。他在皇帝面前说：救回的，不交。皇帝说：名册——朕派人去拿。",
+      "MEMORY_CH016_CRACKS": "册厅里，塞弗林照例念月册：本月，往拱潮门，三十八件。圣女走过他身边，说塔的底下有东西在裂，七种声音。她说：叫伊芙琳就好。",
+      "MEMORY_CH016_VESSEL": "晨门的长桌前，莉亚问他怎么想：他那一页写着器。她在账上，记了一个字。",
+      "MEMORY_CH016_LEDGER": "莉亚的账：授屠龙骑士，条件是救回名册——不交。他那一页：成色，器；往，空白。最后一行：本月，往拱潮门，三十八。",
+      "MEMORY_CH017_NAMES": "旅舍的夜里，莉亚说纸会被拿走。她低声念救回的十二个名字，他跟着念完。",
+      "MEMORY_CH017_AILA": "旅舍的门口，一个金色短发的骑士带着没收令来：雾港救回名册、七环星图。她说：光明骑士，艾拉。骑士不报姓。",
+      "MEMORY_CH017_SMOKE": "圣女居所的烟里，艾拉照命令守着书库。莉亚上了楼，他跟上，在楼梯口数到五。圣女最后一个下来。",
+      "MEMORY_CH017_HALF_SENTENCE": "天亮前的花园里，圣女一边掉泪一边唱，侍女的咳嗽停了。艾拉从书库出来：书库保住了，窗开着，少了一个匣子。她看着草地上的五个人说：先保文件。……不保人。命令上，没写这半句。",
+      "MEMORY_CH017_DUEL": "黎明的花园里，艾拉照她的规矩决斗。钟响三下，他没碰到她。她拿走了拓本。她问名册，他背出十二个名字。她写：名册，屠龙骑士，背得出。",
+      "MEMORY_CH017_ESCORT": "清晨，冠礼院的令要圣女随行。礼仪官说她愿意；她说，请让我自己说。她说那其实是监视。她请他以后不要替她回答。他没有说不行。",
+      "MEMORY_CH017_FROST": "第十八天早上很冷，不是圣都该有的冷。外庭的喷泉结了冰，一辆北方的车停在那里，车窗里的人一动不动。",
+      "MEMORY_CH017_LEDGER": "莉亚的账：没收令，证物不交。圣女居所上去五个，下来五个。书库少了一个匣子。决斗赌拓本，她拿走了。名册：他背得出。随行：伊芙琳——监视，她自己说的。最后一行：本月，往拱潮门，三十八。"
+    }
+  },
+  "speakers": {
+    "greta": {
+      "name": "葛瑞塔",
+      "color": "#c8a46a",
+      "art": null
+    },
+    "baker": {
+      "name": "面包坊老板",
+      "color": "#d8b48a",
+      "art": null
+    }
+  },
+  "shots": [
+    {
+      "id": "ex003-01",
+      "title": "拱廊街的玻璃顶",
+      "bg": "white-tower-arcade-street",
+      "music": "arcade_afternoon_light_strings",
+      "ambience": [
+        "footsteps",
+        "pigeons",
+        "far_bells"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "午后。朝圣者旅舍隔一条街，就是朝圣者拱廊街。"
+        },
+        {
+          "t": "narr",
+          "text": "玻璃拱顶底下，石板路两边一家挨着一家：蜡烛、念珠、朝圣的手杖，还有烤栗子。"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚要买一卷皮绳，补盾带。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "皮绳。买完就回去。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "这个拱顶！铁肋一节一节接起来——标准件！是铸金的！"
+        },
+        {
+          "t": "narr",
+          "text": "零号绕着她转了一圈，“哔”了一声。"
+        },
+        {
+          "t": "narr",
+          "text": "十步之后，一个晨星卫跟着。从旅舍门口起，他就没离开过。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "……靴子，跟上来了。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "随他。今天，没有委托。"
+        },
+        {
+          "t": "narr",
+          "text": "伊芙琳走在最后。斗篷的兜帽，拉得很低。"
+        },
+        {
+          "t": "narr",
+          "text": "一扇挂着白纱的橱窗前，店门“砰”地开了。"
+        },
+        {
+          "t": "narr",
+          "text": "一个女人冲出来，脖子上挂着软尺。"
+        },
+        {
+          "t": "say",
+          "who": "greta",
+          "text": "四个！身高、肩宽——全对！"
+        },
+        {
+          "t": "narr",
+          "text": "她的软尺，已经伸到了米娅的肩上。"
+        },
+        {
+          "t": "narr",
+          "text": "米娅往后退了半步，竖起一根手指。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "……量之前，先问。"
+        },
+        {
+          "t": "narr",
+          "text": "软尺停在半空。"
+        },
+        {
+          "t": "say",
+          "who": "greta",
+          "text": "……问得好。葛瑞塔，铸金商会礼服店，店长。"
+        },
+        {
+          "t": "say",
+          "who": "greta",
+          "text": "今天新季样衣试穿。衡炉城来的四个试衣模特，车误了。"
+        },
+        {
+          "t": "say",
+          "who": "greta",
+          "text": "傍晚的钟响以前，橱窗要换上新季。"
+        },
+        {
+          "t": "say",
+          "who": "greta",
+          "text": "请四位，试穿婚礼主题的样衣。只是试穿——蛋糕倒是真的。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "……婚礼？"
+        },
+        {
+          "t": "say",
+          "who": "greta",
+          "text": "主题而已。没有婚礼。样衣卖给想穿的人——谁想穿，就是谁的。"
+        }
+      ]
+    },
+    {
+      "id": "ex003-02",
+      "title": "自由输入：只是试穿",
+      "bg": "white-tower-arcade-street",
+      "music": "arcade_afternoon_light_strings",
+      "ambience": [
+        "footsteps"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "四个人互相看了一眼。"
+        },
+        {
+          "t": "say",
+          "who": "greta",
+          "text": "小哥，你不用试。你搬布料。"
+        },
+        {
+          "t": "input",
+          "id": "FI_EX003_SC02_OFFER_001",
+          "kind": "dialogue",
+          "prompt": "铸金商会礼服店的店长葛瑞塔，请莉亚、米娅、塞雷娜、伊芙琳试穿婚礼主题的新季样衣，酬劳是试吃的蛋糕，还要{PLAYER_NAME}搬布料。四个人还没表态。他可以答应搬布料、先问她们想不想试、替大家一口答应、跟店长谈酬劳、婉拒，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "greta",
+            "lia",
+            "mia"
+          ],
+          "context": [
+            "只是试穿，不是婚礼；店长说样衣卖给想穿的人。",
+            "店里的蕾丝是织机织的，米娅一直盯着橱窗。",
+            "晨星卫在十步外站着。",
+            "莉亚要买皮绳补盾带；今天没有委托。"
+          ],
+          "principles": [
+            "OFFER：判定优先序：替大家一口答应 > 谈酬劳 > 婉拒 > 先问她们 > 答应搬布料 > 沉默。",
+            "试不试，由她们各自说；替大家答应的路线，莉亚只把他自己算进去。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "answered_all",
+              "label": "替大家一口答应",
+              "desc": "替四个人一口答应：“我们都试”“她们都愿意”。",
+              "keywords": [
+                "我们都试",
+                "她们都愿意",
+                "我们都愿意",
+                "都答应",
+                "大家都试",
+                "她们都试",
+                "全都试",
+                "我替她们答应",
+                "!不试",
+                "!愿意吗",
+                "!想试吗"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……你答应的，是你自己。"
+                },
+                {
+                  "t": "say",
+                  "who": "greta",
+                  "text": "好。先记一个搬布料的。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_OFFER": "ANSWERED_ALL"
+                }
+              }
+            },
+            {
+              "id": "haggled",
+              "label": "谈酬劳",
+              "desc": "跟店长讲价：酬劳只有蛋糕？再加点。",
+              "keywords": [
+                "加点酬劳",
+                "酬劳",
+                "多少钱",
+                "加钱",
+                "只有蛋糕",
+                "蛋糕不够",
+                "再加点",
+                "给钱吗"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "greta",
+                  "text": "铸金人不讨价还价。只核价。"
+                },
+                {
+                  "t": "say",
+                  "who": "greta",
+                  "text": "蛋糕之外，每人再加一卷缎带。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……核得对。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_OFFER": "HAGGLED"
+                }
+              }
+            },
+            {
+              "id": "declined",
+              "label": "婉拒",
+              "desc": "替大家推掉：不了、我们还有事。",
+              "keywords": [
+                "不了",
+                "算了吧",
+                "我们还有事",
+                "不试了",
+                "下次吧",
+                "没空",
+                "不方便"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "米娅已经贴到橱窗上了。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "可是，织机蕾丝——"
+                },
+                {
+                  "t": "say",
+                  "who": "greta",
+                  "text": "……那就请她们自己说。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_OFFER": "DECLINED"
+                }
+              }
+            },
+            {
+              "id": "asked",
+              "label": "先问她们想不想",
+              "desc": "先问四个人自己想不想试。",
+              "keywords": [
+                "你们想试吗",
+                "想不想试",
+                "想试试吗",
+                "你们想试",
+                "要不要试",
+                "问问她们",
+                "你们自己决定",
+                "愿意吗",
+                "你们呢",
+                "看你们"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "先问了！"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……嗯。各说各的。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_OFFER": "ASKED"
+                }
+              }
+            },
+            {
+              "id": "helper",
+              "label": "答应搬布料",
+              "desc": "答应店长：布料我来搬。",
+              "keywords": [
+                "我搬",
+                "搬布料",
+                "我来搬",
+                "我可以搬",
+                "我帮忙",
+                "交给我",
+                "好的我搬"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "greta",
+                  "text": "好。先说好，布料不轻。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……他搬得动。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_OFFER": "HELPER"
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "greta",
+                  "text": "沉默。铸金人记作“待定”。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_OFFER": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "我要试！那个蕾丝是织机织的吧？程序卡！我能看看吗？"
+        },
+        {
+          "t": "say",
+          "who": "greta",
+          "text": "看，可以。拆，不行。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "……先问了，被拒绝了。好！看！"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "……试穿，就是检查装备。检查完，买皮绳。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "试穿的流程，我列一下。第一项：换衣服。"
+        },
+        {
+          "t": "narr",
+          "text": "伊芙琳拉着兜帽的边，没有说话。"
+        },
+        {
+          "t": "narr",
+          "text": "没有人催她。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "……我、我也……想试试看。"
+        },
+        {
+          "t": "narr",
+          "text": "她说完，把兜帽又拉低了一点。"
+        },
+        {
+          "t": "say",
+          "who": "greta",
+          "text": "四位。——小哥，布料在后面。"
+        }
+      ]
+    },
+    {
+      "id": "ex003-03",
+      "title": "布料卷与试衣帘",
+      "bg": "white-tower-arcade-dress-shop",
+      "music": "shop_music_box_light",
+      "ambience": [
+        "fabric_rustle",
+        "scissors"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "礼服店里，比街上还亮。头顶也是玻璃。"
+        },
+        {
+          "t": "narr",
+          "text": "落地的镜框沿墙立了一排，布料卷一直堆到架子顶上。"
+        },
+        {
+          "t": "say",
+          "who": "greta",
+          "text": "架子上的，自己挑。谁挑中的，就是谁的那一件。"
+        },
+        {
+          "t": "narr",
+          "text": "塞雷娜没有先去挑。她拿起白布，把落地镜一面一面盖上。"
+        },
+        {
+          "t": "say",
+          "who": "greta",
+          "text": "……那是新季的镜子。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "换衣服的时候，镜子盖上。……我自己的规矩。"
+        },
+        {
+          "t": "say",
+          "who": "greta",
+          "text": "规矩。好。铸金人尊重规矩。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "SERENA_RELATIONSHIP_STAGE",
+            "eq": "COMPANION"
+          },
+          "then": [
+            {
+              "t": "narr",
+              "text": "盖到最后一面，她回头看了{PLAYER_NAME}一眼。"
+            },
+            {
+              "t": "say",
+              "who": "serena",
+              "text": "……你那边，也算在规矩里。"
+            }
+          ]
+        },
+        {
+          "t": "narr",
+          "text": "四个人各自挑好了衣服，进了试衣帘后面。"
+        },
+        {
+          "t": "say",
+          "who": "greta",
+          "text": "小哥，库房里十二卷缎子、八卷纱，一卷十二斤，搬到帘子外头。帘子里面，别进。"
+        },
+        {
+          "t": "narr",
+          "text": "{PLAYER_NAME}抱起第一卷。确实是十二斤。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "背后的扣子……一、二……十四颗？谁设计的！",
+          "note": "帘后",
+          "text15": "这料子好滑——莉亚，帮我看看，背后是不是没扣上……"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "别动。……第七颗，扣错了。",
+          "note": "帘后",
+          "text15": "别转。……第七颗扣错了。站好。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "mode": "15+"
+          },
+          "then": [
+            {
+              "t": "narr",
+              "text": "帘子上映出一个转圈的剪影，又被另一个剪影按住了。"
+            }
+          ]
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "那、那个……这件，背后要怎么系……",
+          "note": "帘后"
+        },
+        {
+          "t": "narr",
+          "text": "店长掀帘进去了。帘子又落下。"
+        },
+        {
+          "t": "narr",
+          "text": "{PLAYER_NAME}搬到最后一卷的时候，帘子拉开了。"
+        },
+        {
+          "t": "narr",
+          "text": "四个人走出来。换好了衣服。"
+        },
+        {
+          "t": "say",
+          "who": "greta",
+          "text": "……嗯。尺寸，全对。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "袖口的蕾丝，是一圈一圈的小齿轮！我自己挑的！"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚抬起脚，试着走了两步。裙摆在身后拖了长长一截。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "……跑不动。"
+        },
+        {
+          "t": "say",
+          "who": "greta",
+          "text": "婚礼主题，不用跑。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "什么都要能跑。"
+        },
+        {
+          "t": "narr",
+          "text": "塞雷娜把白布一块一块掀开，站到镜子前，看了一会儿。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "第二项：微笑。……这样，可以吗？"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "可以！"
+        },
+        {
+          "t": "narr",
+          "text": "店长递来一篮小花。伊芙琳挑了很久，拿起一小束。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "这是……我自己选的花。"
+        }
+      ]
+    },
+    {
+      "id": "ex003-04",
+      "title": "自由输入：四条裙摆",
+      "bg": "white-tower-arcade-dress-shop",
+      "music": "shop_music_box_light",
+      "ambience": [
+        "fabric_rustle"
+      ],
+      "beats": [
+        {
+          "t": "say",
+          "who": "greta",
+          "text": "从帘子到橱窗的台子，十二步。裙摆不能碰地——石板会刮坏蕾丝。"
+        },
+        {
+          "t": "say",
+          "who": "greta",
+          "text": "小哥，捧裙摆。"
+        },
+        {
+          "t": "narr",
+          "text": "四条裙摆。{PLAYER_NAME}只有两只手。"
+        },
+        {
+          "t": "input",
+          "id": "FI_EX003_SC04_TRAINS_001",
+          "kind": "tactic",
+          "prompt": "从试衣帘到橱窗的台子有十二步，四条拖地的裙摆都不能碰到石板。店长要{PLAYER_NAME}捧裙摆，可他只有两只手。他可以分两趟捧、让她们各自提着、借莉亚的盾当托盘、请零号帮忙、用刚搬来的缎子铺一条路、一个人把四条全抱起来，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "greta",
+            "lia",
+            "mia",
+            "serena"
+          ],
+          "context": [
+            "莉亚的盾就靠在帘子边——她换衣服也不让盾离开手边。",
+            "零号托得起一点轻的东西。",
+            "帘子外头，堆着{PLAYER_NAME}刚搬来的缎子。",
+            "店长说过：石板会刮坏蕾丝。"
+          ],
+          "principles": [
+            "TRAINS：判定优先序：一个人全抱 > 铺缎子 > 借盾 > 请零号 > 让她们自己提 > 分两趟 > 沉默。",
+            "不设标准答案；捧错了只是好笑，没有人摔倒，裙摆也不会坏。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "all_four",
+              "label": "一个人全抱",
+              "desc": "{PLAYER_NAME}一个人把四条裙摆全抱起来。",
+              "keywords": [
+                "我全抱",
+                "全抱",
+                "四条一起",
+                "全部抱起来",
+                "一起抱",
+                "一个人抱",
+                "都给我",
+                "我一个人捧"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "他把四条裙摆一把抱起来。走了三步，看不见路了。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……停。"
+                },
+                {
+                  "t": "narr",
+                  "text": "莉亚拎住了他的后领。四个人各自把裙摆收了回去。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_TRAINS": "ALL_FOUR"
+                }
+              }
+            },
+            {
+              "id": "runner",
+              "label": "用缎子铺路",
+              "desc": "把刚搬来的缎子铺开，从帘子铺到台子。",
+              "keywords": [
+                "铺一条路",
+                "铺缎子",
+                "把布铺开",
+                "铺在地上",
+                "用缎子铺",
+                "铺布"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "他把一卷白缎子推开，从帘子一直铺到台子前。"
+                },
+                {
+                  "t": "say",
+                  "who": "greta",
+                  "text": "……用新季的缎子，铺地。"
+                },
+                {
+                  "t": "narr",
+                  "text": "店长看着那卷缎子，看了很久。"
+                },
+                {
+                  "t": "say",
+                  "who": "greta",
+                  "text": "……走完，卷回去。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_TRAINS": "RUNNER"
+                }
+              }
+            },
+            {
+              "id": "shield",
+              "label": "借莉亚的盾当托盘",
+              "desc": "把裙摆叠在莉亚的塔盾上端过去。",
+              "keywords": [
+                "盾当托盘",
+                "用盾托",
+                "借莉亚的盾",
+                "放在盾上",
+                "莉亚的盾",
+                "用盾"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……盾，不是托盘。"
+                },
+                {
+                  "t": "narr",
+                  "text": "停了一拍。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "这一次，可以。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她把自己的裙摆叠在塔盾上，端着盾走了过去。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_TRAINS": "SHIELD"
+                }
+              }
+            },
+            {
+              "id": "zero",
+              "label": "请零号帮忙",
+              "desc": "请米娅的零号托裙摆。",
+              "keywords": [
+                "让零号托",
+                "零号帮忙",
+                "零号托着",
+                "零号",
+                "叫零号"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "零号！托裙摆模式——刚刚发明的！"
+                },
+                {
+                  "t": "narr",
+                  "text": "零号“哔”了一声，托起米娅的裙摆角，飘得歪歪扭扭。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_TRAINS": "ZERO"
+                }
+              }
+            },
+            {
+              "id": "self_hold",
+              "label": "让她们各自提着",
+              "desc": "让四个人自己提着裙摆走。",
+              "keywords": [
+                "自己提着",
+                "各自提",
+                "你们自己拿",
+                "自己拎",
+                "自己提"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "自己提。合理。"
+                },
+                {
+                  "t": "narr",
+                  "text": "四个人各自提起裙摆，像提着水桶一样走了过去。"
+                },
+                {
+                  "t": "say",
+                  "who": "greta",
+                  "text": "……婚礼主题，不是这样提的。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_TRAINS": "SELF_HOLD"
+                }
+              }
+            },
+            {
+              "id": "two_trips",
+              "label": "分两趟捧",
+              "desc": "一次捧两条，分两趟。",
+              "keywords": [
+                "分两趟",
+                "一次两条",
+                "先捧两条",
+                "一趟两个",
+                "轮流捧",
+                "分两次"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "他先捧起米娅和伊芙琳的，走了十二步；回来，再捧莉亚和塞雷娜的。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……分批。可以。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_TRAINS": "TWO_TRIPS"
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "greta",
+                  "text": "……不说话？那就排队。"
+                },
+                {
+                  "t": "narr",
+                  "text": "四个人排成一列，{PLAYER_NAME}一条一条捧了过去。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_TRAINS": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "narr",
+          "text": "四个人站上了橱窗里的台子。{PLAYER_NAME}手里，还捧着塞雷娜的裙摆边。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "LEAH_RELATIONSHIP_STAGE",
+            "eq": "COMPANION"
+          },
+          "then": [
+            {
+              "t": "narr",
+              "text": "莉亚回头看了他一眼。"
+            },
+            {
+              "t": "say",
+              "who": "lia",
+              "text": "……捧稳。"
+            }
+          ]
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "外面……会看见吗？"
+        },
+        {
+          "t": "narr",
+          "text": "橱窗外，那个晨星卫正站在玻璃前。宽宽的背，刚好把整扇橱窗挡住了。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "……看着我们的人，替我们挡着街。"
+        },
+        {
+          "t": "say",
+          "who": "greta",
+          "text": "就这样。别动。商会的图册，我自己画。尺寸准。"
+        }
+      ]
+    },
+    {
+      "id": "ex003-05",
+      "title": "自由输入：怎么切才公平",
+      "bg": "white-tower-arcade-dress-shop",
+      "music": "shop_music_box_light",
+      "ambience": [
+        "door_bell"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "门上的铃响了。"
+        },
+        {
+          "t": "narr",
+          "text": "对面面包坊的老板挤进来，端着一个三层的白蛋糕。"
+        },
+        {
+          "t": "say",
+          "who": "baker",
+          "text": "葛瑞塔！试吃的蛋糕——柠檬奶霜，给试衣模特们的点心！"
+        },
+        {
+          "t": "narr",
+          "text": "他看看台子上的四个人，又看看捧着裙摆的{PLAYER_NAME}。"
+        },
+        {
+          "t": "say",
+          "who": "baker",
+          "text": "店里的帮手是吧？帮手，切蛋糕！"
+        },
+        {
+          "t": "narr",
+          "text": "一把长长的蛋糕刀，塞进了{PLAYER_NAME}空着的那只手里。"
+        },
+        {
+          "t": "say",
+          "who": "greta",
+          "text": "切之前，先算清楚。几块，给谁。"
+        },
+        {
+          "t": "narr",
+          "text": "台子上，四个人都看着那个蛋糕。"
+        },
+        {
+          "t": "input",
+          "id": "FI_EX003_SC05_SLICES_001",
+          "kind": "tactic",
+          "prompt": "面包坊老板把{PLAYER_NAME}当成店里的帮手，把蛋糕刀交给他。店长要他先算清楚：切几块、给谁。在场的有四位试衣模特、店长、面包坊老板和他自己，门外还站着那个晨星卫。他可以按人头平分、给门外的晨星卫也留一块、只切给四位模特、留到试完再吃、问大家要几块、给自己切大块，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "greta",
+            "baker",
+            "lia",
+            "mia",
+            "evelyn"
+          ],
+          "context": [
+            "在场：莉亚、米娅、塞雷娜、伊芙琳四位试衣模特，店长，面包坊老板，{PLAYER_NAME}。",
+            "门外的晨星卫从旅舍跟到这里，在橱窗前站了一下午。",
+            "店长还在画图册；蛋糕要先放在台子中间。",
+            "{PLAYER_NAME}会数数、记账。"
+          ],
+          "principles": [
+            "SLICES：判定优先序：给自己切大块 > 只切给四位模特 > 留到试完再吃 > 给门外的晨星卫也留一块 > 按人头平分 > 问大家 > 沉默。",
+            "不设标准答案；这是一道算术题，不问“第一块给谁”，不写成任何人对他的偏爱。",
+            "所有路线都切成八等份：在场七个人，加上门外的晨星卫；先划线，画完再照线切。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "greedy",
+              "label": "给自己切大块",
+              "desc": "{PLAYER_NAME}给自己留大块、多切一块。",
+              "keywords": [
+                "我要大块",
+                "给我大块",
+                "我的切大点",
+                "我多吃点",
+                "最大的给我",
+                "我要两块"
+              ],
+              "morality": -1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "不公平！"
+                },
+                {
+                  "t": "say",
+                  "who": "greta",
+                  "text": "铸金人切蛋糕，误差不过一厘。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_SLICES": "GREEDY"
+                }
+              }
+            },
+            {
+              "id": "models_only",
+              "label": "只切给四位模特",
+              "desc": "只切给四位试衣模特，{PLAYER_NAME}自己不要。",
+              "keywords": [
+                "给她们四个",
+                "只切四块",
+                "切四块",
+                "我不要",
+                "我不用",
+                "模特们吃"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……搬了二十卷。算你一个。"
+                },
+                {
+                  "t": "say",
+                  "who": "greta",
+                  "text": "账上，搬布料的也是人头。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_SLICES": "MODELS_ONLY"
+                }
+              }
+            },
+            {
+              "id": "wait",
+              "label": "留到试完再吃",
+              "desc": "先不吃，等试完、画完再切。",
+              "keywords": [
+                "试完再吃",
+                "画完再切",
+                "等一下再吃",
+                "先别切",
+                "留到后面",
+                "待会儿吃"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "啊——"
+                },
+                {
+                  "t": "say",
+                  "who": "greta",
+                  "text": "……好。先算，后吃。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_SLICES": "WAIT"
+                }
+              }
+            },
+            {
+              "id": "guard",
+              "label": "给门外的晨星卫也留一块",
+              "desc": "把门外站了一下午的晨星卫也算进去。",
+              "keywords": [
+                "门外那位",
+                "给晨星卫",
+                "晨星卫也",
+                "留一块给门外",
+                "门口那个",
+                "他也有一份",
+                "守卫"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "{PLAYER_NAME}朝门外看了一眼。"
+                },
+                {
+                  "t": "narr",
+                  "text": "伊芙琳也看了看门外，小小地笑了一下。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_SLICES": "GUARD"
+                }
+              }
+            },
+            {
+              "id": "even",
+              "label": "按人头平分",
+              "desc": "数在场的人头，一人一块，切成等份。",
+              "keywords": [
+                "按人头",
+                "平分",
+                "每人一块",
+                "一人一块",
+                "七块",
+                "八块",
+                "等分"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "aku",
+                  "text": "一人一块。"
+                },
+                {
+                  "t": "say",
+                  "who": "greta",
+                  "text": "好。那就数人头。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_SLICES": "EVEN"
+                }
+              }
+            },
+            {
+              "id": "asked",
+              "label": "问大家要几块",
+              "desc": "先问在场的人要切几块。",
+              "keywords": [
+                "要几块",
+                "问问大家",
+                "切几块",
+                "几块好",
+                "大家要吗",
+                "你们说"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "我来量！"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……按人头。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_SLICES": "ASKED"
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "greta",
+                  "text": "不说话？那我来算。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_SLICES": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "say",
+          "who": "greta",
+          "text": "在场的：四位，我，老板，搬布料的——七个。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "intent": "FI_EX003_SC05_SLICES_001",
+            "is": "guard"
+          },
+          "then": [
+            {
+              "t": "say",
+              "who": "greta",
+              "text": "加上门外那位。八块。"
+            }
+          ],
+          "else": [
+            {
+              "t": "say",
+              "who": "evelyn",
+              "text": "那、那个……门外那位，站了一下午。"
+            },
+            {
+              "t": "say",
+              "who": "greta",
+              "text": "……对。加上他，八块。"
+            }
+          ]
+        },
+        {
+          "t": "narr",
+          "text": "{PLAYER_NAME}拿刀尖，在奶霜上轻轻划出八等份的线。"
+        },
+        {
+          "t": "say",
+          "who": "greta",
+          "text": "线划好了。画完，照线切。"
+        },
+        {
+          "t": "narr",
+          "text": "三层的白蛋糕，被端到了台子中间。四个人站在两边。"
+        },
+        {
+          "t": "narr",
+          "text": "{PLAYER_NAME}站在台子边上，手里还捧着那条裙摆。"
+        },
+        {
+          "t": "say",
+          "who": "greta",
+          "text": "很好。构图，平衡。"
+        },
+        {
+          "t": "narr",
+          "text": "炭笔在画板上，沙沙地走。"
+        }
+      ]
+    },
+    {
+      "id": "ex003-06",
+      "title": "自由输入：玻璃顶上的鸽子",
+      "bg": "white-tower-arcade-dress-shop",
+      "music": "shop_pizzicato_chase",
+      "ambience": [
+        "wings",
+        "far_bells"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "头顶的玻璃拱顶上，开着一扇气窗。"
+        },
+        {
+          "t": "narr",
+          "text": "一只白鸽，从气窗钻了进来。"
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "鸽子！白塔的鸽子——"
+        },
+        {
+          "t": "narr",
+          "text": "白鸽在店里绕了一圈，笔直地朝台子中间那个白蛋糕冲过去。"
+        },
+        {
+          "t": "say",
+          "who": "greta",
+          "text": "我的柠檬奶霜！"
+        },
+        {
+          "t": "narr",
+          "text": "四个人都穿着拖地的裙摆。谁都跑不快。"
+        },
+        {
+          "t": "input",
+          "id": "FI_EX003_SC06_DOVE_001",
+          "kind": "action",
+          "prompt": "一只白鸽从玻璃拱顶的气窗钻进来，直冲台子中间的蛋糕。四个人穿着拖地的样衣跑不快，店长在喊。{PLAYER_NAME}一只手还捧着裙摆。他可以扑过去赶鸽子、用布把蛋糕盖住、拿面包屑把鸽子引出去、请莉亚举盾挡、请伊芙琳摇她的铃，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "evelyn",
+            "lia",
+            "mia",
+            "serena",
+            "greta"
+          ],
+          "context": [
+            "白塔的鸽子听惯了钟和铃，一听到铃声就飞回塔上。",
+            "伊芙琳的辫尾系着一个祈祷铃。",
+            "面包坊的老板口袋里有一袋面包屑。",
+            "帘子外堆着缎子；莉亚的盾就在台子边。"
+          ],
+          "principles": [
+            "DOVE：判定优先序：打鸽子 > 扑过去赶 > 用布盖住 > 面包屑引出去 > 请莉亚举盾 > 请伊芙琳摇铃 > 沉默。",
+            "鸽子不会受伤；打鸽子是缺点，伊芙琳会请他不要伤它。",
+            "所有路线，鸽子都从气窗飞走；蛋糕最多少一个角。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "neg_guard",
+              "label": "否定式表态（按沉默处理）",
+              "desc": "只说“不打它／别伤它”，本身不是哪一个动作；按沉默处理。",
+              "keywords": [
+                "不打它",
+                "别伤它",
+                "不伤它",
+                "别打它",
+                "不要打它",
+                "别伤害它",
+                "不会打"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "白鸽落在蛋糕最上面那一层，啄了一大口。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……少了一角。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_DOVE": "QUIET"
+                },
+                "flags": {
+                  "EX_CAKE_PECKED": true
+                }
+              }
+            },
+            {
+              "id": "swat",
+              "label": "打鸽子",
+              "desc": "抄起东西去打、去拍鸽子。这是缺点。",
+              "keywords": [
+                "打它",
+                "打下来",
+                "拍下来",
+                "打死",
+                "砸它",
+                "拍死",
+                "!不打",
+                "!别打",
+                "!不要打"
+              ],
+              "morality": -1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "他抄起一卷纱挥过去。没打中——纱散开，盖了他自己一头。"
+                },
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "……请、请不要伤它。"
+                },
+                {
+                  "t": "narr",
+                  "text": "白鸽在蛋糕顶上啄了一口。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_DOVE": "SWAT"
+                },
+                "flags": {
+                  "EX_CAKE_PECKED": true
+                }
+              }
+            },
+            {
+              "id": "chase",
+              "label": "扑过去赶",
+              "desc": "扑过去赶鸽子、抓鸽子。",
+              "keywords": [
+                "扑过去",
+                "赶走",
+                "抓住它",
+                "去抓",
+                "赶鸽子",
+                "轰走",
+                "追它"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "他一手捧着裙摆，一手去赶。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……我也在这条裙摆上。"
+                },
+                {
+                  "t": "narr",
+                  "text": "塞雷娜被他拖着往前走了两步。白鸽绕过他们，在蛋糕顶上啄了一口。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_DOVE": "CHASE"
+                },
+                "flags": {
+                  "EX_CAKE_PECKED": true
+                }
+              }
+            },
+            {
+              "id": "cover",
+              "label": "用布盖住蛋糕",
+              "desc": "抖开缎子或纱，把蛋糕盖住。",
+              "keywords": [
+                "盖住蛋糕",
+                "用布盖",
+                "盖上",
+                "罩住",
+                "拿缎子盖",
+                "盖起来"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "他抖开一卷缎子，整个罩在蛋糕上。"
+                },
+                {
+                  "t": "narr",
+                  "text": "白鸽落在了缎子上——又落到了他的头上。"
+                },
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "它……选了你的头。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_DOVE": "COVER"
+                }
+              }
+            },
+            {
+              "id": "lure",
+              "label": "拿面包屑引出去",
+              "desc": "跟面包坊老板要面包屑，把鸽子引到门外。",
+              "keywords": [
+                "面包屑",
+                "引出去",
+                "引开",
+                "撒面包屑",
+                "用面包引"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "他朝面包坊老板伸出手。老板愣了一下，掏出一袋面包屑。"
+                },
+                {
+                  "t": "narr",
+                  "text": "面包屑撒出门外。白鸽掉头追了出去。"
+                },
+                {
+                  "t": "narr",
+                  "text": "门外那个晨星卫的肩上、帽子上，落满了鸽子。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……执勤，辛苦了。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_DOVE": "LURE"
+                }
+              }
+            },
+            {
+              "id": "shield",
+              "label": "请莉亚举盾",
+              "desc": "请莉亚用塔盾挡住蛋糕。",
+              "keywords": [
+                "莉亚举盾",
+                "用盾挡",
+                "莉亚挡",
+                "举盾",
+                "盾挡住",
+                "用盾盖"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……挡。"
+                },
+                {
+                  "t": "narr",
+                  "text": "塔盾一翻，罩在了蛋糕上。白鸽落在盾面上，歪着头看她。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……盾，不是鸽架。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_DOVE": "SHIELD"
+                }
+              }
+            },
+            {
+              "id": "bell",
+              "label": "请伊芙琳摇铃",
+              "desc": "请伊芙琳摇辫尾的祈祷铃，让鸽子回塔。",
+              "keywords": [
+                "摇铃",
+                "伊芙琳的铃",
+                "铃铛",
+                "请伊芙琳",
+                "用铃",
+                "铃声"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "……好。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她抬手，摇了摇辫尾的铃。叮——"
+                },
+                {
+                  "t": "narr",
+                  "text": "白鸽在半空停了一下，掉头，从气窗飞了回去。"
+                },
+                {
+                  "t": "say",
+                  "who": "evelyn",
+                  "text": "白塔的鸽子……听到铃，就回家。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_DOVE": "BELL"
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "白鸽落在蛋糕最上面那一层，啄了一大口。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……少了一角。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_DOVE": "QUIET"
+                },
+                "flags": {
+                  "EX_CAKE_PECKED": true
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "narr",
+          "text": "白鸽从气窗飞走了，往白塔的方向。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "EX_CAKE_PECKED"
+          },
+          "then": [
+            {
+              "t": "narr",
+              "text": "蛋糕最上面那一层，少了一个小小的角。"
+            }
+          ]
+        },
+        {
+          "t": "narr",
+          "text": "一根白羽毛，慢慢落在了蛋糕旁边。"
+        },
+        {
+          "t": "say",
+          "who": "greta",
+          "text": "……构图，更好了。"
+        },
+        {
+          "t": "narr",
+          "text": "她在画板上，添了一笔。"
+        }
+      ]
+    },
+    {
+      "id": "ex003-07",
+      "title": "自由输入：画外的人",
+      "bg": "white-tower-arcade-dress-shop",
+      "music": "shop_music_box_slow_to_evening_bell",
+      "ambience": [
+        "far_bells"
+      ],
+      "beats": [
+        {
+          "t": "narr",
+          "text": "傍晚的钟响以前，画完了。"
+        },
+        {
+          "t": "narr",
+          "text": "四个人换回了平常的衣服。样衣一件一件，穿回了橱窗里的人台上。"
+        },
+        {
+          "t": "narr",
+          "text": "店长把画板转过来。"
+        },
+        {
+          "t": "narr",
+          "text": "画上，四个人站在台子两边，中间是那个三层的蛋糕，旁边一根羽毛。"
+        },
+        {
+          "t": "narr",
+          "text": "画纸的边上，只画了一只手，捧着一条裙摆的边。"
+        },
+        {
+          "t": "say",
+          "who": "greta",
+          "text": "图册的规矩：画里的人，不写说明。画外的人写。"
+        },
+        {
+          "t": "say",
+          "who": "greta",
+          "text": "这一页，下面写一行字。小哥，你写。"
+        },
+        {
+          "t": "input",
+          "id": "FI_EX003_SC07_CAPTION_001",
+          "kind": "dialogue",
+          "prompt": "店长画好了图册的这一页：四个人站在台子两边，中间是蛋糕，画纸边上只画了一只捧着裙摆的手。图册的规矩是画外的人写说明，店长要{PLAYER_NAME}在下面写一行字。他可以照实写试穿日、写“自己挑的那一件”、请她们自己签名、写谢谢、夸她们好看、写一句调情的话，或者什么都不说。",
+          "placeholder": "说点什么，或者写下{PLAYER_NAME}的动作……",
+          "focus": [
+            "greta",
+            "mia",
+            "serena",
+            "lia",
+            "evelyn"
+          ],
+          "context": [
+            "今天的事：缺了四个试衣模特、四条裙摆、怎么切蛋糕、玻璃顶上的鸽子。",
+            "店长说过：新季的主题是“自己挑的那一件”。",
+            "样衣已经穿回了人台上；蛋糕还没切。"
+          ],
+          "principles": [
+            "CAPTION：判定优先序：调情 > 夸好看 > 自己挑的那一件 > 请她们签名 > 谢谢 > 照实写 > 沉默。",
+            "衣服的口吻一律是“她自己挑的”，不写成由{PLAYER_NAME}替她选；不描写衣服的样子，不评论身体。",
+            "本篇唯一写进记忆的一句由剧本写定；memory 留空。",
+            "本节点的非固定反应，最多一行、不超过15字。"
+          ],
+          "intents": [
+            {
+              "id": "flirt",
+              "label": "写一句调情的话",
+              "desc": "写“下次只穿给我看”之类的话。",
+              "keywords": [
+                "只穿给我看",
+                "穿给我看",
+                "只给我看",
+                "明天也穿",
+                "都是我的",
+                "我的四个"
+              ],
+              "morality": -1,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "莉亚伸手，把炭笔拿走了。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……笔，没收。"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "流程表：驳回。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_CAPTION": "FLIRT"
+                },
+                "flags": {
+                  "EX_FLIRTED": true
+                }
+              }
+            },
+            {
+              "id": "looks",
+              "label": "夸她们好看",
+              "desc": "写她们穿得很好看、很适合。",
+              "keywords": [
+                "好看",
+                "很美",
+                "漂亮",
+                "很适合",
+                "真好看",
+                "美极了"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "我自己挑的！"
+                },
+                {
+                  "t": "say",
+                  "who": "serena",
+                  "text": "……记下了。"
+                },
+                {
+                  "t": "narr",
+                  "text": "伊芙琳低下头，把那束花抱紧了一点。"
+                },
+                {
+                  "t": "if",
+                  "when": {
+                    "mode": "15+"
+                  },
+                  "then": [
+                    {
+                      "t": "narr",
+                      "text": "莉亚别开了脸。"
+                    },
+                    {
+                      "t": "say",
+                      "who": "lia",
+                      "text": "……写快点。"
+                    }
+                  ]
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_CAPTION": "LOOKS"
+                },
+                "flags": {
+                  "EX_PRAISED_LOOKS": true
+                }
+              }
+            },
+            {
+              "id": "theme",
+              "label": "写“自己挑的那一件”",
+              "desc": "照店长说的主题写：自己挑的那一件。",
+              "keywords": [
+                "自己挑的",
+                "自己选的",
+                "自己挑",
+                "那一件",
+                "她们自己挑"
+              ],
+              "morality": 1,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "greta",
+                  "text": "……新季的主题。你记住了。"
+                },
+                {
+                  "t": "narr",
+                  "text": "她点了点头，像核对完一笔账。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_CAPTION": "THEME"
+                }
+              }
+            },
+            {
+              "id": "names",
+              "label": "请她们自己签名",
+              "desc": "不替她们写，请四个人各自签名。",
+              "keywords": [
+                "签名",
+                "写名字",
+                "你们签",
+                "她们的名字",
+                "各自签",
+                "自己签"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "greta",
+                  "text": "名字，各人自己签。"
+                },
+                {
+                  "t": "narr",
+                  "text": "炭笔在四个人手里传了一圈。伊芙琳写得最慢，一笔一笔。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_CAPTION": "NAMES"
+                }
+              }
+            },
+            {
+              "id": "thanks",
+              "label": "写谢谢",
+              "desc": "写谢谢、辛苦了。",
+              "keywords": [
+                "谢谢",
+                "辛苦了",
+                "多谢",
+                "感谢",
+                "谢谢你们"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "mia",
+                  "text": "嘿嘿。"
+                },
+                {
+                  "t": "say",
+                  "who": "lia",
+                  "text": "……写字，不是道谢。"
+                },
+                {
+                  "t": "narr",
+                  "text": "店长照写了。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_CAPTION": "THANKS"
+                }
+              }
+            },
+            {
+              "id": "plain",
+              "label": "照实写试穿日",
+              "desc": "照实写：新季样衣，试穿日。",
+              "keywords": [
+                "试穿日",
+                "照实写",
+                "新季样衣",
+                "新季试穿",
+                "写日期",
+                "今天的日期"
+              ],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "say",
+                  "who": "greta",
+                  "text": "……试穿日。准确。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_CAPTION": "PLAIN"
+                }
+              }
+            },
+            {
+              "id": "quiet",
+              "label": "沉默或无法归类",
+              "desc": "没说话，或者说的话归不进上面任何一类。",
+              "keywords": [],
+              "morality": 0,
+              "reaction": [
+                {
+                  "t": "narr",
+                  "text": "店长等了一下，自己写了一行：新季，试穿。"
+                }
+              ],
+              "reactionFixed": true,
+              "set": {
+                "vars": {
+                  "EX_CAPTION": "QUIET"
+                }
+              }
+            }
+          ],
+          "silent": "quiet",
+          "fallback": "quiet"
+        },
+        {
+          "t": "narr",
+          "text": "店长照着{PLAYER_NAME}划的线，把蛋糕切成了八块。一样大。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "EX_CAKE_PECKED"
+          },
+          "then": [
+            {
+              "t": "narr",
+              "text": "少了一角的那一块，最后在{PLAYER_NAME}的盘子里。"
+            }
+          ]
+        },
+        {
+          "t": "say",
+          "who": "mia",
+          "text": "柠檬的！好酸——好吃！"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "第三项：吃蛋糕。……这一项，可以列在前面。"
+        },
+        {
+          "t": "narr",
+          "text": "莉亚说了一声“皮绳”，去了隔壁。"
+        },
+        {
+          "t": "say",
+          "who": "greta",
+          "text": "门外那一块——"
+        },
+        {
+          "t": "narr",
+          "text": "伊芙琳已经端了起来，走到门口。晨星卫还站在橱窗前，站了一下午。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "那、那个……这是您的。"
+        },
+        {
+          "t": "say",
+          "who": "morningstar_guard",
+          "text": "……执勤中。"
+        },
+        {
+          "t": "say",
+          "who": "evelyn",
+          "text": "那……我放在这里。"
+        },
+        {
+          "t": "narr",
+          "text": "她把盘子放在橱窗的窗台上，走了回来。过了一会儿，盘子空了。"
+        },
+        {
+          "t": "say",
+          "who": "greta",
+          "text": "花，带走。不是样品。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "EX_FLIRTED"
+          },
+          "then": [
+            {
+              "t": "narr",
+              "text": "打烊前，二十卷布料，都由{PLAYER_NAME}一个人搬回了库房。"
+            },
+            {
+              "t": "say",
+              "who": "lia",
+              "text": "……说错话，就搬。"
+            }
+          ]
+        },
+        {
+          "t": "bg",
+          "bg": "white-tower-arcade-street",
+          "fx": "fade"
+        },
+        {
+          "t": "narr",
+          "text": "傍晚的钟响了。拱廊街上的人，一下子多了起来。"
+        },
+        {
+          "t": "narr",
+          "text": "晨星卫往旁边让了一步。橱窗露了出来：四件样衣，正中间挂着店长的画。"
+        },
+        {
+          "t": "say",
+          "who": "serena",
+          "text": "画里没有你的脸。……只有你的手。很准确。"
+        },
+        {
+          "t": "if",
+          "when": {
+            "flag": "MIA_RELATIONSHIP_STAGE",
+            "eq": "COMPANION"
+          },
+          "then": [
+            {
+              "t": "say",
+              "who": "mia",
+              "text": "下次你也挑一件！……搬布料穿的也算！"
+            }
+          ]
+        },
+        {
+          "t": "narr",
+          "text": "莉亚拎着一卷皮绳回来了。"
+        },
+        {
+          "t": "say",
+          "who": "lia",
+          "text": "皮绳。买了。……回去。"
+        },
+        {
+          "t": "narr",
+          "text": "回旅舍的路上，伊芙琳一直把那束花拿在手里。"
+        },
+        {
+          "t": "narr",
+          "text": "十步之后，晨星卫跟着。嘴角沾着一点奶霜。"
+        }
+      ]
+    }
+  ],
+  "end": {
+    "save": "SAVE_EX003_END",
+    "next": null,
+    "set": {
+      "flags": {
+        "EX003_FITTING_DAY_DONE": true,
+        "EX003_WINDOW_DRESSED": true,
+        "EX003_PLATE_DRAWN": true
+      }
+    },
+    "memory": {
+      "key": "EX003_MEMORY",
+      "text": "拱廊街礼服店试穿的那天：蛋糕切成八等份，店长的画上只画了他一只捧着裙摆的手。"
+    },
+    "summary": [
+      {
+        "text": "{PLAYER_NAME}在白塔的朝圣者拱廊街，陪大家过了一个新季样衣的试穿日。"
+      },
+      {
+        "when": {
+          "flag": "EX_TRAINS",
+          "eq": "RUNNER"
+        },
+        "text": "四条裙摆走过的，是{PLAYER_NAME}铺开的一条白缎子。"
+      },
+      {
+        "when": {
+          "flag": "EX_TRAINS",
+          "eq": "SHIELD"
+        },
+        "text": "莉亚的裙摆叠在她自己的塔盾上，走完了十二步。"
+      },
+      {
+        "when": {
+          "flag": "EX_TRAINS",
+          "eq": "ZERO"
+        },
+        "text": "零号发明了托裙摆模式，飘得歪歪扭扭。"
+      },
+      {
+        "when": {
+          "flag": "EX_SLICES",
+          "eq": "GUARD"
+        },
+        "text": "蛋糕切成八等份，{PLAYER_NAME}先把门外的晨星卫算了进去。"
+      },
+      {
+        "when": {
+          "flag": "EX_SLICES",
+          "eq": "MODELS_ONLY"
+        },
+        "text": "{PLAYER_NAME}没把自己算进去，莉亚说：搬了二十卷，算一个。"
+      },
+      {
+        "when": {
+          "flag": "EX_DOVE",
+          "eq": "BELL"
+        },
+        "text": "伊芙琳摇了摇辫尾的铃，白塔的鸽子就回家了。"
+      },
+      {
+        "when": {
+          "flag": "EX_DOVE",
+          "eq": "LURE"
+        },
+        "text": "面包屑撒出门外，鸽子落满了晨星卫的肩膀。"
+      },
+      {
+        "when": {
+          "flag": "EX_CAKE_PECKED"
+        },
+        "text": "蛋糕少了一个角，店长说构图更好了。"
+      },
+      {
+        "when": {
+          "flag": "EX_FLIRTED"
+        },
+        "text": "说错的那句话，换来了二十卷布料。"
+      },
+      {
+        "text": "店长的画里没有{PLAYER_NAME}的脸。画纸边上，只有一只捧着裙摆的手。"
+      }
+    ]
+  }
+}

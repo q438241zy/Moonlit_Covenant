@@ -3,7 +3,8 @@
  * 管理角色服装的装备、查询。服装类型、稀有度与「常驻 / 典藏 / 赠品」状态的唯一来源是 game/gacha.mjs 的 COSTUME_TYPE_META
  * （服装稿 §1.2、§5.1；决定#31）：常驻是泳装、婚礼礼服、OL装、女仆装、运动短袖；典藏（冬灯节服、新历祭服、纪念日礼服、
  * 龙舟祭服）退出了常驻抽取表，但 id 不变、已拥有的照样能穿；度假装是海边番外的赠品。
- * BRANCH_SCENES 是每类服装将来对应的番外入口（番外系统还没上线：每条都是 available:false，界面标注「敬请期待」）。
+ * BRANCH_SCENES 是每类服装对应的番外入口；available 由番外目录（public/story/extras/index.json）里已上线的番外决定，
+ * 见 branchScenesView。
  */
 
 import { CHARACTER_POOL, COSTUME_CATALOG, COSTUME_TYPE_META } from './gacha.mjs';
@@ -15,7 +16,8 @@ export const COSTUME_TYPES = Object.keys(COSTUME_TYPE_META);
 export const COSTUME_LABELS = Object.fromEntries(COSTUME_TYPES.map((type) => [type, COSTUME_TYPE_META[type].label]));
 
 /**
- * 每类服装对应的番外入口（服装稿 §5.2；番外排表以 30章重构提案 4.7 为准）。还没制作，全部 available:false。
+ * 每类服装对应的番外入口（服装稿 §5.2；番外排表以 30章重构提案 4.7 为准）。这里的 available:false 是静态默认值，
+ * /api/costume 发出去的是 branchScenesView 按番外目录算好的版本（对应的番外有一篇上线就是 true）。
  *   extras：对应的番外 id（ex001–ex010）；unlockAfter：番外在主线这一章通关后开放。
  * 服装不是番外的解锁条件，番外也不要求穿服装；文案只写「换上节日的衣服」这类泛称，不描写服装细节。
  * /api/costume 会把整张表原样发给所有玩家，所以这里不写女主的名字、姓、故国或任何主线剧透。
@@ -105,6 +107,30 @@ export const BRANCH_SCENES = {
     available: false
   }
 };
+
+/**
+ * /api/costume 的 branches：BRANCH_SCENES 加上每篇对应番外的上线与解锁状态。
+ * @param {Array} extras 番外目录（public/story/extras/index.json）；写了 file 的番外算已上线
+ * @param {Iterable<string>} cleared 这个玩家已首通的主线章节 id（解锁＝通关番外的 unlockAfter）
+ * @param {Iterable<string>} extrasCleared 已首通的番外 id
+ * 每类多出 extrasStatus: [{ id, title, live, unlocked, cleared, unlockAfter }]，available＝其中有一篇已上线。
+ * 番外的标题与解锁章本来就在公开的番外目录里；这里同样不写登场女主。
+ */
+export function branchScenesView(extras = [], cleared = [], extrasCleared = []) {
+  const done = new Set(cleared);
+  const exDone = new Set(extrasCleared);
+  const byId = new Map((Array.isArray(extras) ? extras : []).filter((e) => e && typeof e.id === 'string').map((e) => [e.id, e]));
+  const view = {};
+  for (const [type, scene] of Object.entries(BRANCH_SCENES)) {
+    const extrasStatus = scene.extras.map((id) => {
+      const e = byId.get(id);
+      const unlockAfter = e?.unlockAfter || scene.unlockAfter || null;
+      return { id, title: e?.title || id, live: Boolean(e?.file), unlocked: Boolean(unlockAfter && done.has(unlockAfter)), cleared: exDone.has(id), unlockAfter };
+    });
+    view[type] = { ...scene, available: extrasStatus.some((x) => x.live), extrasStatus };
+  }
+  return view;
+}
 
 /** 表示「脱下 / 恢复默认服装」的 costumeId。 */
 export const DEFAULT_COSTUME_IDS = new Set(['default', '', null, undefined]);

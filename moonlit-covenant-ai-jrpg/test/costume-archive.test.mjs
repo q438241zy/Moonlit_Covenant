@@ -161,14 +161,17 @@ test('BRANCH_SCENES 改成将来的番外入口：没有外传用语、没有女
 
 // ─── 换衣间（前端）───
 
-test('换衣间：典藏单列一组，只列已拥有的；番外入口写「番外 · 敬请期待」', () => {
+test('换衣间：典藏单列一组，只列已拥有的；番外入口按上线与解锁状态写「前往」「通关第N章后开放」「敬请期待」', () => {
   const app = read('public/app.js');
   assert.match(app, /function archiveCostumeTypes\(types, costumePool, typeMeta\)/);
   assert.match(app, /const archived = archiveCostumeTypes\(types, data\.costumePool, data\.typeMeta\);/);
   assert.match(app, /class="costume-archive"[^>]*aria-label="赠品"/, 'gifts get their own group');
   assert.match(app, /class="costume-archive"[^>]*aria-label="典藏"/);
   assert.match(app, /archived\.has\(type\) && ownedCostumes\.includes\(`\$\{charId\}_\$\{type\}`\)/, 'only owned archive costumes get a slot');
-  assert.match(app, /番外「\$\{escapeHtml\(branches\[equippedType\]\.title\)\}」· 敬请期待/);
+  assert.match(app, /\$\{equippedType && branches\[equippedType\] \? wardrobeBranchHtml\(branches\[equippedType\]\) : ''\}/);
+  assert.match(app, /function wardrobeBranchHtml\(branch\)/);
+  assert.match(app, /href="\/story\.html\?extra=\$\{encodeURIComponent\(open\.id\)\}"/, 'a live, unlocked extra links into the 番外・休息日 tab');
+  assert.match(app, /let tail = '敬请期待';/, 'types whose extras are not live yet still say 敬请期待');
   assert.ok(!app.includes('分支剧情「'), 'the old 「分支剧情」 wording is gone');
   assert.ok(!app.includes('6 套主题服饰'), 'the gacha page no longer promises six standing types');
   const css = read('public/styles.css');
@@ -272,7 +275,9 @@ test('HTTP: an old save that owns and wears 典藏 costumes still works after a 
   assert.equal(r.status, 200, r.text);
   assert.equal(r.json.equipped.costumeId, 'lia_newyear');
   assert.equal(r.json.branchScene.title, '新历祭');
-  assert.equal(r.json.branchScene.available, false);
+  // 新历祭番外（ex006）已上线，但这个旧存档只通关到第五章：入口在，还没解锁（解锁章 ch022）
+  assert.equal(r.json.branchScene.available, true);
+  assert.deepEqual(r.json.branchScene.extrasStatus.map((x) => [x.id, x.live, x.unlocked, x.unlockAfter]), [['ex006', true, false, 'ch022']]);
   r = await equip('lia', 'lia_anniversary');
   assert.equal(r.status, 400, 'not owned');
 

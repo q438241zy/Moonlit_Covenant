@@ -21,10 +21,10 @@ import { CHARACTERS, STRATEGIES, DECISIONS, GAME_TITLE, GAME_SUBTITLE, CG_GALLER
 import { MEMBERSHIP_TIERS, DIAMOND_PACKS, createPlayerAccount, purchaseMembership, purchaseDiamonds, grantDailyCredits, getMembershipInfo } from './game/membership.mjs';
 import { CREDIT_COSTS, createCreditMeter, addCredit, getMeterStatus } from './game/credit.mjs';
 import { CHARACTER_POOL, COSTUME_POOL, COSTUME_TYPE_META, GACHA_RATES, GACHA_COSTS, GACHA_CURRENCY, DUPLICATE_COMPENSATION, pullGacha, PITY_THRESHOLD, publicPools, clearedChaptersOf, highestClearedChapter, viewCostume, WARDROBE_TICKET, wardrobeStatus, wardrobeTicketChoices, redeemWardrobeTicket } from './game/gacha.mjs';
-import { COSTUME_LABELS, equipCostume, getEquippedCostumes, BRANCH_SCENES } from './game/costume.mjs';
+import { COSTUME_LABELS, equipCostume, getEquippedCostumes, branchScenesView } from './game/costume.mjs';
 import { createAnalyticsStore, trackSession, trackDailyActive, getDashboardData, getRealtimeStats, pruneAnalytics } from './game/analytics.mjs';
 import { AI_MODELS, PER_PLAYER_ROUTING, getActiveModel, switchModel, createDefaultSettings } from './game/settings.mjs';
-import { REWARD_RULES, HEROINE_JOIN_CHAPTERS, CHAPTER_ID_PATTERN, claimDaily, getRewardStatus, recordChapterClear, grantCardWin } from './game/rewards.mjs';
+import { REWARD_RULES, HEROINE_JOIN_CHAPTERS, CHAPTER_ID_PATTERN, EXTRA_ID_PATTERN, claimDaily, getRewardStatus, recordChapterClear, recordExtraClear, grantCardWin } from './game/rewards.mjs';
 import { publicSkillbook, enhanceSkill, equipSkills, setParty, convertMaterials, exchangeSkill, gaidenSkillBonus } from './game/skills.mjs';
 import { publicSkillPool, pullSkills, setSkillTarget } from './game/skill-gacha.mjs';
 import { listCommissions, startCommission, actCommission, fleeCommission } from './game/skill-battle.mjs';
@@ -471,6 +471,17 @@ function storyChapterIds() {
   return new Set((Array.isArray(index) ? index : []).map((entry) => entry?.id).filter((id) => typeof id === 'string'));
 }
 
+// ─── 番外目录（public/story/extras/index.json；剧本规格§七）：写了 file 的番外算已上线 ───
+const STORY_EXTRAS_FILE = path.join(PUBLIC_DIR, 'story', 'extras', 'index.json');
+function storyExtras() {
+  try {
+    const index = readJsonCached(STORY_EXTRAS_FILE);
+    return Array.isArray(index) ? index.filter((e) => e && EXTRA_ID_PATTERN.test(String(e.id || ''))) : [];
+  } catch {
+    return [];
+  }
+}
+
 const INTERNAL_ERROR_TYPES = [TypeError, RangeError, SyntaxError, ReferenceError];
 
 /**
@@ -503,7 +514,7 @@ const API_ROUTES = new Set([
   '/api/battle/concede', '/api/session', '/api/rewards/daily', '/api/rewards/status', '/api/story/progress',
   '/api/skills', '/api/skills/enhance', '/api/skills/equip', '/api/skills/party', '/api/skills/convert', '/api/skills/exchange',
   '/api/gacha/target', '/api/commissions', '/api/commission/start', '/api/commission/act', '/api/commission/flee',
-  '/api/gacha/wardrobe-ticket'
+  '/api/gacha/wardrobe-ticket', '/api/story/extra'
 ]);
 // 需要 sessionId 的外传动作（POST）
 const SESSION_ACTIONS = new Set([
@@ -737,7 +748,8 @@ async function handleApi(req, res, url) {
       types: COSTUME_LABELS,
       // 每类服装的稀有度与归属（常驻 current / 典藏 archive / 赠品 gift）、12+ 罩衫版（soft）与异界IF（if）
       typeMeta: COSTUME_TYPE_META,
-      branches: BRANCH_SCENES,
+      // 番外入口：每类服装对应的番外有没有上线、这个玩家解锁了没有（branchScenesView）
+      branches: branchScenesView(storyExtras(), account.rewards?.chaptersCleared || [], account.rewards?.extrasCleared || []),
       // 与 /api/gacha/pools 同一个登场闸门：未登场女主的服装是封存卡
       costumePool: publicPools(clearedChaptersOf(account)).costumes
     });
@@ -752,7 +764,7 @@ async function handleApi(req, res, url) {
     if (result.ok && result.equipped?.costumeId) {
       const parts = String(body.costumeId).split('_');
       const costumeType = parts[parts.length - 1];
-      const branch = BRANCH_SCENES[costumeType] || null;
+      const branch = branchScenesView(storyExtras(), account.rewards?.chaptersCleared || [], account.rewards?.extrasCleared || [])[costumeType] || null;
       result.branchScene = branch;
       trackSession(analyticsStore, account.id, 'costume_equip');
     }
@@ -802,6 +814,22 @@ async function handleApi(req, res, url) {
     const result = recordChapterClear(account, chapterId);
     if (!result.alreadyCleared) trackSession(analyticsStore, account.id, 'story_chapter_clear');
     return sendJson(res, 200, { ok: true, chapterId, ...result, account: publicAccount(account) });
+  }
+
+  // 番外首通（剧本规格§七、提案 4.7）：番外必须在目录里且已上线；解锁章（unlockAfter）要已经首通，否则 403。
+  // 幂等：重玩已通关的番外 alreadyCleared=true，不再发放。番外不进 chaptersCleared，不影响登场闸门与入队。
+  if (req.method === 'POST' && url.pathname === '/api/story/extra') {
+    const body = await readJson(req);
+    const account = getAccount(body.playerId);
+    if (!account) return sendError(res, 404, '账户不存在。', 'NO_ACCOUNT');
+    const extraId = typeof body.extraId === 'string' ? body.extraId : '';
+    const extra = EXTRA_ID_PATTERN.test(extraId) ? storyExtras().find((e) => e.id === extraId && e.file) : null;
+    if (!extra) return sendError(res, 400, '没有这一篇番外。', 'UNKNOWN_EXTRA');
+    const cleared = account.rewards?.chaptersCleared || [];
+    if (!cleared.includes(extra.unlockAfter)) return sendError(res, 403, '这篇番外还没解锁：先通关它的解锁章。', 'EXTRA_LOCKED');
+    const result = recordExtraClear(account, extra);
+    if (!result.alreadyCleared) trackSession(analyticsStore, account.id, 'story_extra_clear');
+    return sendJson(res, 200, { ok: true, extraId, ...result, account: publicAccount(account) });
   }
 
   // ═══ AI 设置 ═══

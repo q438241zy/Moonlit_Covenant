@@ -6,25 +6,29 @@
 // 试玩策略：silent（全部沉默）、fallback（无法归类的输入）、每个意图各跑一遍（逐节点轮换），确保所有分支都能走到章末。
 // 另有逐章接续的高信赖路线（LEAH_TRUST、MIA_TRUST 各一条），让只在高信赖时出现的节点也能被覆盖。另按 promise_* 组合各带一份接续存档进下一章（最多 6 种），覆盖「没立约才再问」的节点。
 // 意图覆盖同时统计「从本章开始」和「接续上一章各策略的存档」两种开局：只在特定前章结果下才出现的节点也算进覆盖。
+// 番外（public/story/extras/，剧本规格§七）：照样校验与试玩；开局用默认正史（canon）与解锁章各策略的章末存档（startExtraRun），
+// 另查 end.next 为空、只写 EX_* 变量（validateChapter）、目录与文件一致、赠品只有★3 或非卖品。
+//   node tools/story/check.mjs ex001 --transcript   导出番外逐字稿
 
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { createRun, continueRun, next, resolveInput, demoJudge, validateChapter, eachBeat } from '../../public/story/engine.js';
+import { createRun, continueRun, startExtraRun, next, resolveInput, demoJudge, validateChapter, eachBeat } from '../../public/story/engine.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const readJson = (rel) => JSON.parse(fs.readFileSync(path.join(root, rel), 'utf8'));
 const speakers = readJson('public/story/speakers.json');
 const locations = readJson('public/story/locations.json');
 const index = readJson('public/story/chapters/index.json');
+const extrasIndex = fs.existsSync(path.join(root, 'public/story/extras/index.json')) ? readJson('public/story/extras/index.json') : [];
 
 const args = process.argv.slice(2);
-const only = args.filter((a) => /^ch\d{3}$/.test(a));
+const only = args.filter((a) => /^(ch|ex)\d{3}$/.test(a));
 const transcript = args.includes('--transcript');
 const playArg = (args.find((a) => a.startsWith('intent=')) || '').split('=')[1];
 
 function loadChapter(id) {
-  const file = path.join(root, 'public/story/chapters', `${id}.json`);
+  const file = path.join(root, `public/story/${id.startsWith('ex') ? 'extras' : 'chapters'}`, `${id}.json`);
   return fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')) : null;
 }
 
@@ -216,6 +220,7 @@ if (!only.length && !transcript && playArg === undefined) {
 }
 let prevRuns = [];
 let greedyRuns = MAXIMIZE.map(() => null);
+const endRuns = new Map(); // 章节 id → 这一章各策略的章末存档（番外从解锁章的这些存档开局）
 for (const entry of index) {
   if (only.length && !only.includes(entry.id)) continue;
   const chapter = loadChapter(entry.id);
@@ -298,5 +303,80 @@ for (const entry of index) {
   if (greedyRuns.some((r) => !r)) { failed = true; console.log(`✗ ${entry.id} 高信赖路线未能走到章末`); }
   const known = new Set([...runs, ...greedyRuns.filter(Boolean)].map(promiseSignature));
   prevRuns = [...runs, ...greedyRuns.filter(Boolean), ...[...promiseRuns].filter(([sig]) => !known.has(sig)).map(([, r]) => r).slice(0, 6)];
+  endRuns.set(entry.id, prevRuns);
+}
+
+// ─── 番外 ───
+const giftOk = (() => {
+  const meta = { maid: 3, sportwear: 3, duanwu: 3, resort: 'gift' }; // ★3 与非卖品（game/gacha.mjs 的 COSTUME_TYPE_META）
+  return (id) => /^[a-z]+_[a-z]+$/.test(id) && Boolean(meta[id.split('_')[1]]);
+})();
+const chapterIds = new Set(index.map((e) => e.id));
+const extraIds = new Set();
+for (const entry of extrasIndex) {
+  const where = `番外目录 ${entry?.id}`;
+  const errs = [];
+  if (!/^ex\d{3}$/.test(entry?.id || '') || extraIds.has(entry.id)) errs.push('id 缺失、格式不对或重复');
+  extraIds.add(entry?.id);
+  if (!chapterIds.has(entry?.unlockAfter)) errs.push(`unlockAfter ${entry?.unlockAfter} 不是主线章节`);
+  else if (Number(entry.unlockAfter.slice(2)) > 25) errs.push('解锁章不晚于正式25（番外的时间窗不碰路线区）');
+  for (const c of entry?.gifts?.costumes || []) if (!giftOk(c)) errs.push(`赠品 ${c} 不是★3 或非卖品（★4、★5 永不赠送）`);
+  if (errs.length) { failed = true; console.log(`✗ ${where}：${errs.join('；')}`); }
+}
+for (const entry of extrasIndex) {
+  if (only.length && !only.includes(entry.id)) continue;
+  if (!entry.file) { if (!only.length || only.includes(entry.id)) console.log(`- ${entry.id}: （尚未转写）`); continue; }
+  const extra = loadChapter(entry.id);
+  if (!extra) { failed = true; console.log(`✗ ${entry.id} 目录写了 file ${entry.file}，但番外文件不存在`); continue; }
+  const indexErrors = [];
+  if (entry.file !== `/story/extras/${entry.id}.json`) indexErrors.push(`file 应为 /story/extras/${entry.id}.json`);
+  for (const k of ['estimatedMinutes', 'title', 'number', 'unlockAfter']) if ((k !== 'estimatedMinutes' || entry[k] !== undefined) && entry[k] !== extra[k]) indexErrors.push(`${k} 与番外文件不一致（目录 ${entry[k]}，文件 ${extra[k]}）`);
+  for (const k of ['costumeTypes', 'cast']) if (JSON.stringify(entry[k] || []) !== JSON.stringify(extra[k] || [])) indexErrors.push(`${k} 与番外文件不一致`);
+  if ((entry.defaultCostume || null) !== (extra.defaultCostume || null)) indexErrors.push('defaultCostume 与番外文件不一致');
+  const errors = [...indexErrors, ...validateChapter(extra, { speakers, locations }), ...wordingErrors(extra), ...insertErrors(extra)];
+  if (errors.length) {
+    failed = true;
+    console.log(`✗ ${entry.id} 校验失败 ${errors.length} 处：`);
+    errors.slice(0, 60).forEach((e) => console.log('   ' + e));
+    continue;
+  }
+  const fresh = () => startExtraRun({ extra, playerName: '亚克' });
+  if (transcript || playArg !== undefined) {
+    const log = [`# ${extra.title}`];
+    play(extra, playArg ?? 'rotate', fresh(), log);
+    console.log(log.join('\n'));
+    continue;
+  }
+  const allIntents = new Set();
+  let maxChoices = 1;
+  eachBeat(extra, (beat) => { if (beat.t === 'input') { beat.intents.forEach((x) => allIntents.add(`${beat.id}:${x.id}`)); maxChoices = Math.max(maxChoices, beat.intents.filter((x) => x.id !== beat.silent).length); } });
+  const strategies = ['silent', 'fallback', 'rotate', ...Array.from({ length: maxChoices }, (_, i) => String(i))];
+  const covered = new Set();
+  const snapshots = endRuns.get(extra.unlockAfter) || [];
+  let main = null;
+  let games = 0;
+  for (const snap of [null, ...snapshots]) {
+    for (const s of strategies) {
+      const r = play(extra, s, snap ? startExtraRun({ extra, snapshot: snap, playerName: '亚克' }) : fresh());
+      games += 1;
+      if (!r.ok) { failed = true; console.log(`✗ ${entry.id} 策略 ${s}${snap ? '（解锁章存档开局）' : ''} 未能走到结尾`); break; }
+      r.hit.forEach((h) => covered.add(h));
+      if (!snap && s === 'rotate') main = r;
+    }
+  }
+  for (const pair of [...allIntents].filter((h) => !covered.has(h))) {
+    const [nodeId, intentId] = pair.split(':');
+    for (const snap of [null, ...snapshots]) {
+      for (let j = 0; j < maxChoices && !covered.has(pair); j += 1) {
+        const r = play(extra, { fixed: { [nodeId]: intentId }, j }, snap ? startExtraRun({ extra, snapshot: snap, playerName: '亚克' }) : fresh());
+        if (r.ok) r.hit.forEach((h) => covered.add(h));
+      }
+      if (covered.has(pair)) break;
+    }
+  }
+  const minutes = main ? (main.chars / 320 + main.inputs * 0.4).toFixed(1) : '?';
+  const unreached = [...allIntents].filter((h) => !covered.has(h));
+  console.log(`✓ ${entry.id} ${extra.title}：${extra.shots.length} 分镜 · ${main?.beats} 节拍 · ${main?.inputs} 次输入 · ${main?.chars} 字 · 估算 ${minutes} 分钟 · 意图覆盖 ${covered.size}/${allIntents.size} · 试玩 ${games} 局（含解锁章存档 ${snapshots.length} 份）`);
+  if (unreached.length) console.log(`   演示判定无法触达的意图（关键词与其他意图冲突？）：${unreached.slice(0, 12).join('，')}${unreached.length > 12 ? '…' : ''}`);
 }
 process.exitCode = failed ? 1 : 0;

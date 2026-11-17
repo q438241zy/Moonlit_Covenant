@@ -1595,3 +1595,4 @@ body:has(.game-frame) .cg-unlock-stack { top:10px; }
   .loadout-slot select { min-width:0; width:100%; }
 }
 /* 委托板与赤月 cut-in 的样式在 skill-board.css（主线播放页也用） */
+.wardrobe-branch-link { color:var(--gold); font-weight:700; text-decoration:underline; text-underline-offset:2px; }
