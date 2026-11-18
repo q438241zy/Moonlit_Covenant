@@ -6,7 +6,8 @@ import os from 'node:os';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { jpegAigc, readAigc, insertApp1, aigcExif } from '../tools/art/raster/aigc.mjs';
+import { ALPHA_GROUPS } from '../tools/art/raster/manifest.mjs';
+import { jpegAigc, pngAigc, readAigc, insertApp1, aigcExif } from '../tools/art/raster/aigc.mjs';
 
 const projectDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const pub = (rel) => path.join(projectDir, 'public', rel.replace(/^\//, ''));
@@ -22,7 +23,12 @@ test('every paint-over JPEG under public/assets/paint carries AIGC metadata', ()
   // the manifest only lists files that exist
   const manifest = readJson('public/assets/paint/manifest.json');
   for (const [group, names] of Object.entries(manifest)) {
-    for (const name of names) assert.ok(fs.existsSync(pub(`assets/paint/${group}/${name}.jpg`)), `manifest lists missing ${group}/${name}.jpg`);
+    const ext = ALPHA_GROUPS.has(group) ? 'png' : 'jpg';
+    for (const name of names) {
+      const file = pub(`assets/paint/${group}/${name}.${ext}`);
+      assert.ok(fs.existsSync(file), `manifest lists missing ${group}/${name}.${ext}`);
+      if (ext === 'png') assert.ok(pngAigc(fs.readFileSync(file)), `${file} has no AIGC metadata`);
+    }
   }
 });
 
@@ -80,9 +86,11 @@ test('finalize keeps the source AIGC metadata, or adds a label when the source h
     finalizeOne(withMeta, path.join(dir, 'serena.jpg'), { group: 'portraits', id: 'portrait-serena' });
     assert.match(jpegAigc(fs.readFileSync(path.join(dir, 'serena.jpg'))), /"ServiceProvider"/);
     const plain = path.join(dir, 'plain.png');
-    execFileSync('convert', ['-size', '64x64', 'xc:#336', plain]);
-    finalizeOne(plain, path.join(dir, 'plain.jpg'), { group: 'story-npc', id: 'story-npc-test' });
-    assert.match(jpegAigc(fs.readFileSync(path.join(dir, 'plain.jpg'))), /"Label":"1".*"ProduceID":"story-npc-test"/);
+    execFileSync('convert', ['-size', '64x64', 'xc:none', '-fill', '#336', '-draw', 'circle 32,32 32,16', plain]);
+    const bust = path.join(dir, 'bust.png');
+    finalizeOne(plain, bust, { group: 'story-npc', id: 'story-npc-test' });
+    assert.match(readAigc(fs.readFileSync(bust)).exif.toString('utf8'), /"Label":"1".*"ProduceID":"story-npc-test"/);
+    assert.equal(execFileSync('convert', [bust, '-alpha', 'extract', '-format', '%[fx:minima],%[fx:maxima]', 'info:'], { encoding: 'utf8' }), '0,1');
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });
   }
