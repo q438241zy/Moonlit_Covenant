@@ -21,8 +21,8 @@ const speakers = readJson('public/story/speakers.json');
 const locations = readJson('public/story/locations.json');
 const live = index.filter((e) => e.file && fs.existsSync(path.join(root, 'public', e.file)));
 
-test('番外目录：ex001–ex010 十篇番外＋ex011–ex021 十一条成长支线，解锁章不晚于正式25，赠品只有★3 或非卖品', () => {
-  assert.deepEqual(index.map((e) => e.id), Array.from({ length: 21 }, (_, i) => `ex${String(i + 1).padStart(3, '0')}`));
+test('番外目录：ex001–ex010 十篇番外＋ex011–ex026 十六条成长支线，解锁章不晚于正式25，赠品只有★3 或非卖品', () => {
+  assert.deepEqual(index.map((e) => e.id), Array.from({ length: 26 }, (_, i) => `ex${String(i + 1).padStart(3, '0')}`));
   for (const [i, e] of index.entries()) {
     assert.equal(e.number, i + 1);
     const quest = i >= 10;

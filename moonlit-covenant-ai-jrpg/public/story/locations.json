@@ -1264,5 +1264,29 @@
     "svg": "/assets/story/bg/frostbell-camp-day.svg",
     "top": "#8a8a9a",
     "bottom": "#1a1a22"
+  },
+  "north-creek-goblin-camp": {
+    "name": "北山·溪谷里的哥布林营地",
+    "svg": "/assets/story/bg/north-creek-goblin-camp.svg",
+    "top": "#8a8a9a",
+    "bottom": "#1a1a22"
+  },
+  "north-slope-registry-tent": {
+    "name": "北山营地·登记帐篷",
+    "svg": "/assets/story/bg/north-slope-registry-tent.svg",
+    "top": "#8a8a9a",
+    "bottom": "#1a1a22"
+  },
+  "verdant-registry-hall": {
+    "name": "绿镜城·身份登记所",
+    "svg": "/assets/story/bg/verdant-registry-hall.svg",
+    "top": "#8a8a9a",
+    "bottom": "#1a1a22"
+  },
+  "verdant-vine-clinic": {
+    "name": "绿镜城·藤院诊疗所",
+    "svg": "/assets/story/bg/verdant-vine-clinic.svg",
+    "top": "#8a8a9a",
+    "bottom": "#1a1a22"
   }
 }

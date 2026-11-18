@@ -44,6 +44,10 @@ import { ex008Bgs } from './bg-ex008.mjs';
 import { ex009Bgs } from './bg-ex009.mjs';
 import { ex010Bgs } from './bg-ex010.mjs';
 import { gaidenGBgs } from './bg-gaiden-g.mjs';
+import { sqJBgs } from './bg-sq-j.mjs';
+import { sqIBgs } from './bg-sq-i.mjs';
+import { sqHBgs } from './bg-sq-h.mjs';
+import { sqGBgs } from './bg-sq-g.mjs';
 import { sqEBgs } from './bg-sq-e.mjs';
 import { sqDBgs } from './bg-sq-d.mjs';
 import { sqCBgs } from './bg-sq-c.mjs';
@@ -92,7 +96,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../.
 const locations = JSON.parse(fs.readFileSync(path.join(root, 'public/story/locations.json'), 'utf8'));
 const speakers = JSON.parse(fs.readFileSync(path.join(root, 'public/story/speakers.json'), 'utf8'));
 
-const bgs = { ...villageBgs, ...nightBgs, ...dawnBgs, ...townBgs, ...millBgs, ...oldMillBgs, ...marshBgs, ...tideBgs, ...harborBgs, ...sewerBgs, ...innBgs, ...lighthouseBgs, ...alleyBgs, ...roofBgs, ...tideCaveBgs, ...tideNestBgs, ...guildDockBgs, ...whiteTowerBgs, ...holyCityBgs, ...archiveBgs, ...archTideBgs, ...northHillBgs, ...verdantBgs, ...ashPassBgs, ...frostbellBgs, ...furnaceBgs, ...dragonsleepBgs, ...ravenfeatherBgs, ...siegeBgs, ...moonringBgs, ...ex002Bgs, ...ex003Bgs, ...ex004Bgs, ...ex005Bgs, ...ex006Bgs, ...ex007Bgs, ...ex008Bgs, ...ex009Bgs, ...ex010Bgs, ...gaidenABgs, ...gaidenBBgs, ...gaidenCBgs, ...gaidenDBgs, ...gaidenEBgs, ...gaidenFBgs, ...gaidenGBgs, ...sqABgs, ...sqCBgs, ...sqDBgs, ...sqEBgs };
+const bgs = { ...villageBgs, ...nightBgs, ...dawnBgs, ...townBgs, ...millBgs, ...oldMillBgs, ...marshBgs, ...tideBgs, ...harborBgs, ...sewerBgs, ...innBgs, ...lighthouseBgs, ...alleyBgs, ...roofBgs, ...tideCaveBgs, ...tideNestBgs, ...guildDockBgs, ...whiteTowerBgs, ...holyCityBgs, ...archiveBgs, ...archTideBgs, ...northHillBgs, ...verdantBgs, ...ashPassBgs, ...frostbellBgs, ...furnaceBgs, ...dragonsleepBgs, ...ravenfeatherBgs, ...siegeBgs, ...moonringBgs, ...ex002Bgs, ...ex003Bgs, ...ex004Bgs, ...ex005Bgs, ...ex006Bgs, ...ex007Bgs, ...ex008Bgs, ...ex009Bgs, ...ex010Bgs, ...gaidenABgs, ...gaidenBBgs, ...gaidenCBgs, ...gaidenDBgs, ...gaidenEBgs, ...gaidenFBgs, ...gaidenGBgs, ...sqABgs, ...sqCBgs, ...sqDBgs, ...sqEBgs, ...sqGBgs, ...sqHBgs, ...sqIBgs, ...sqJBgs };
 // bust id -> generator; the file is public/assets/story/npc/<id>.svg (several speakers may share one file)
 const npcBusts = { ...silhouetteBusts, lia: () => liaBust(), mia: () => miaBust(), serena: () => serenaBust(), ...ch12Busts, golden_assassin: () => goldenAssassinBust(), ...ch15Busts, ...ch16Busts, ...ch17Busts, ...ch18Busts, ...ch19Busts, ...ch20Busts, ...ch30Busts };
 const BG_BUDGET = 90 * 1024, NPC_BUDGET = 70 * 1024, INSERT_BUDGET = 40 * 1024;
