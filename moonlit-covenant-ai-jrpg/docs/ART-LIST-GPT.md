@@ -2,7 +2,7 @@
 
 <!-- 本文件由 tools/art/raster/list.mjs 根据 tools/art/raster/manifest.mjs 生成（npm run art:list），请勿手改。 -->
 
-游戏里现在所有画面都是原创矢量美术（SVG）。这份清单列出要交给 GPT 重新绘制的全部 **630 张**位图：女主立绘、服装、胸像、主线 / 番外 / 外传的场景背景、剧情胸像、道具特写、外传 CG 与卡面。出好的图按下面的规则放进去，游戏会自动用位图替换对应的矢量图，没出的继续显示矢量图，可以分批上线。
+游戏原有的美术为原创矢量图（SVG），已导入的条目可在游戏里显示厚涂位图。这份清单列出要交给 GPT 重新绘制的全部 **630 张**位图：女主立绘、服装、胸像、主线 / 番外 / 外传的场景背景、剧情胸像、道具特写、外传 CG 与卡面。出好的图按下面的规则放进去，游戏会自动用位图替换对应的矢量图，没出的继续显示矢量图，可以分批上线。
 
 - 逐张的完整提示词、参考图与尺寸：[`docs/art-list/gpt-art-list.csv`](art-list/gpt-art-list.csv)（Excel 可直接打开）。用 API 批量出图时脚本直接读 `manifest.mjs`，不读 CSV。
 - 提示词的源头是 `tools/art/raster/manifest.mjs`：改描述就改那里，再跑 `npm run art:list` 重新导出本清单。
@@ -12,12 +12,13 @@
 **日本动画画师画的欧洲奇幻**：日式动漫的人物画法——大而有神的眼睛、干净利落的线稿、赛璐璐与厚涂结合的上色、成熟的五官；舞台、服饰与器物是欧洲中世纪奇幻（哥特教堂、石砌城镇、骑士盔甲、长袍、木桥与港口）。光影偏电影感：月光、彩色轮廓光，色调略收、点缀色鲜明。
 
 - **以女主角立绘为基准**：第 1 批先出八位女主立绘（参考 `tools/art/raster/ref/lia.png` 的画风与正典外观描述），**定稿后**，其余每一张都把新出的莉亚立绘当第一张参考图，保证线稿、上色、光影一致；服装与胸像另外附上该女主自己的立绘，保证同一张脸。
+- **服装定设计，场景定表演**：80 套常规换装的朝向、眼神、手势与发型逐套写在 `tools/art/raster/costume-staging.json`，同一人的十张并排检查。避免用整图翻转换方向；伤痕、异色瞳、发夹和塔盾要留在人物本人的正确侧。透明服装胸像沿用对应立绘的表情和动作；泳装罩衫版只增加罩衫，保证切换自然。
 - 每条提示词的开头都是同一段画风描述（`manifest.mjs` 的 `STYLE`），结尾附「Avoid:」（GPT 没有单独的负面提示词）。
 - 例外：番外十是平行现代（IF），它的办公室、商场背景和 OL 装画现代都市。
 
 ## 硬性规定
 
-1. **不出现任何文字**：招牌、纸张、帐本、屏幕上的字一律画成看不清的笔画；不要水印、签名、logo。
+1. **不出现任何文字**：招牌、纸张、账本、屏幕一律留白或使用纯图形；不要字母、数字、伪文字、水印、签名或 logo。
 2. **女主全部是成年人**（18–19 岁），外观以正典为准（`设定集/03_主角与八位女主角.md`，提示词里已写好）。莉亚一律背着塔盾「赤誓」。外传（银轨号）的称号不写进画面说明。
 3. **尺度**：泳装是不透明的正常泳装，脸是画面重点，不做身体局部特写、不摆暗示性姿势（提示词与 Avoid 已写明）；12+ 罩衫版是同一件泳装外加她自己的罩衫。孩子（托比、波莉等）只出现在普通场景，永远不和泳装或任何擦边的画面同框。婚礼礼服是礼服店试穿：不画戒指、不画新郎、不画祭坛，头纱不遮脸。
 4. **背景不画人物**（场景背景、舞台背景、道具特写里没有人；人物用胸像另外叠上去）。
@@ -25,6 +26,8 @@
 6. **AI 生成标识**：GPT 写在原图里的 AI 生成元数据（C2PA / EXIF）要保留；导入脚本压缩时会把 AIGC 标识写回成品，游戏里换成位图的位置会自动显示「AI 生成」角标。
 
 ## 怎么出图与导入
+
+按 CSV 的「GPT 尺寸」交原图，「游戏尺寸」由导入脚本裁切。宽屏场景交 1536×1024 原图，把人物、地标和剧情线索放在画面高度中央约 83% 内，避免游戏裁掉上下边缘。
 
 **用 API 批量出（推荐）**：
 
@@ -56,6 +59,7 @@ npm run art:paint:finalize                                                      
 | 5 | `boss` | 食梦兽三阶段 | 3 | 1024×1024 → 1000×1000 |
 | 5 | `scenes` | 舞台背景 | 3 | 1536×1024 → 1600×900 |
 | 5 | `cards` | 卡面 | 38 | 1024×1024 → 512×512 |
+| 6 | `ui` | 标题背景与世界地图 | 2 | 1536×1024 → 1600×900 / 1000×560 |
 | | | **合计** | **630** | |
 
 「出现章节」里 `chNNN` 是主线、`exNNN` 是番外、`gNNN` 是外传正篇；没有章节的场景、胸像暂时没有地方用到，可以排到最后。
@@ -66,14 +70,14 @@ npm run art:paint:finalize                                                      
 
 | 任务ID | 名称 | 交付文件 | 用途 / 出现章节 |
 |---|---|---|---|
-| `portrait-lia` |  | `lia.png` | 召唤、换衣间、委托板绝技切入；后面所有图的画风参考 |
-| `portrait-mia` |  | `mia.png` | 召唤、换衣间、委托板绝技切入；后面所有图的画风参考 |
-| `portrait-serena` |  | `serena.png` | 召唤、换衣间、委托板绝技切入；后面所有图的画风参考 |
-| `portrait-freya` |  | `freya.png` | 召唤、换衣间、委托板绝技切入；后面所有图的画风参考 |
-| `portrait-lilith` |  | `lilith.png` | 召唤、换衣间、委托板绝技切入；后面所有图的画风参考 |
-| `portrait-evelyn` |  | `evelyn.png` | 召唤、换衣间、委托板绝技切入；后面所有图的画风参考 |
-| `portrait-ophelia` |  | `ophelia.png` | 召唤、换衣间、委托板绝技切入；后面所有图的画风参考 |
-| `portrait-aila` |  | `aila.png` | 召唤、换衣间、委托板绝技切入；后面所有图的画风参考 |
+| `portrait-lia` | 莉亚·赫斯特 | `lia.png` | 召唤、换衣间、委托板绝技切入；后面所有图的画风参考 |
+| `portrait-mia` | 米娅·玲 | `mia.png` | 召唤、换衣间、委托板绝技切入；后面所有图的画风参考 |
+| `portrait-serena` | 塞雷娜·诺克斯 | `serena.png` | 召唤、换衣间、委托板绝技切入；后面所有图的画风参考 |
+| `portrait-freya` | 芙蕾娅·霜华 | `freya.png` | 召唤、换衣间、委托板绝技切入；后面所有图的画风参考 |
+| `portrait-lilith` | 莉莉丝·瓦尔哈拉 | `lilith.png` | 召唤、换衣间、委托板绝技切入；后面所有图的画风参考 |
+| `portrait-evelyn` | 伊芙琳·星歌 | `evelyn.png` | 召唤、换衣间、委托板绝技切入；后面所有图的画风参考 |
+| `portrait-ophelia` | 奥菲利亚·使诺德 | `ophelia.png` | 召唤、换衣间、委托板绝技切入；后面所有图的画风参考 |
+| `portrait-aila` | 艾拉·瓦尔哈拉 | `aila.png` | 召唤、换衣间、委托板绝技切入；后面所有图的画风参考 |
 
 ## 第 2 批 · 服装立绘与 12+ 罩衫版（以该女主立绘为参考）
 
@@ -81,86 +85,86 @@ npm run art:paint:finalize                                                      
 
 | 任务ID | 名称 | 交付文件 | 用途 / 出现章节 |
 |---|---|---|---|
-| `costume-lia-swimsuit` |  | `lia_swimsuit.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-lia-wedding` |  | `lia_wedding.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-lia-office` |  | `lia_office.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-lia-maid` |  | `lia_maid.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-lia-sportwear` |  | `lia_sportwear.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-lia-newyear` |  | `lia_newyear.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-lia-christmas` |  | `lia_christmas.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-lia-duanwu` |  | `lia_duanwu.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-lia-anniversary` |  | `lia_anniversary.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-lia-resort` |  | `lia_resort.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-mia-swimsuit` |  | `mia_swimsuit.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-mia-wedding` |  | `mia_wedding.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-mia-office` |  | `mia_office.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-mia-maid` |  | `mia_maid.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-mia-sportwear` |  | `mia_sportwear.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-mia-newyear` |  | `mia_newyear.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-mia-christmas` |  | `mia_christmas.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-mia-duanwu` |  | `mia_duanwu.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-mia-anniversary` |  | `mia_anniversary.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-mia-resort` |  | `mia_resort.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-serena-swimsuit` |  | `serena_swimsuit.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-serena-wedding` |  | `serena_wedding.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-serena-office` |  | `serena_office.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-serena-maid` |  | `serena_maid.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-serena-sportwear` |  | `serena_sportwear.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-serena-newyear` |  | `serena_newyear.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-serena-christmas` |  | `serena_christmas.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-serena-duanwu` |  | `serena_duanwu.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-serena-anniversary` |  | `serena_anniversary.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-serena-resort` |  | `serena_resort.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-freya-swimsuit` |  | `freya_swimsuit.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-freya-wedding` |  | `freya_wedding.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-freya-office` |  | `freya_office.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-freya-maid` |  | `freya_maid.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-freya-sportwear` |  | `freya_sportwear.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-freya-newyear` |  | `freya_newyear.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-freya-christmas` |  | `freya_christmas.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-freya-duanwu` |  | `freya_duanwu.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-freya-anniversary` |  | `freya_anniversary.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-freya-resort` |  | `freya_resort.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-lilith-swimsuit` |  | `lilith_swimsuit.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-lilith-wedding` |  | `lilith_wedding.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-lilith-office` |  | `lilith_office.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-lilith-maid` |  | `lilith_maid.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-lilith-sportwear` |  | `lilith_sportwear.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-lilith-newyear` |  | `lilith_newyear.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-lilith-christmas` |  | `lilith_christmas.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-lilith-duanwu` |  | `lilith_duanwu.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-lilith-anniversary` |  | `lilith_anniversary.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-lilith-resort` |  | `lilith_resort.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-evelyn-swimsuit` |  | `evelyn_swimsuit.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-evelyn-wedding` |  | `evelyn_wedding.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-evelyn-office` |  | `evelyn_office.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-evelyn-maid` |  | `evelyn_maid.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-evelyn-sportwear` |  | `evelyn_sportwear.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-evelyn-newyear` |  | `evelyn_newyear.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-evelyn-christmas` |  | `evelyn_christmas.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-evelyn-duanwu` |  | `evelyn_duanwu.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-evelyn-anniversary` |  | `evelyn_anniversary.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-evelyn-resort` |  | `evelyn_resort.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-ophelia-swimsuit` |  | `ophelia_swimsuit.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-ophelia-wedding` |  | `ophelia_wedding.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-ophelia-office` |  | `ophelia_office.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-ophelia-maid` |  | `ophelia_maid.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-ophelia-sportwear` |  | `ophelia_sportwear.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-ophelia-newyear` |  | `ophelia_newyear.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-ophelia-christmas` |  | `ophelia_christmas.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-ophelia-duanwu` |  | `ophelia_duanwu.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-ophelia-anniversary` |  | `ophelia_anniversary.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-ophelia-resort` |  | `ophelia_resort.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-aila-swimsuit` |  | `aila_swimsuit.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-aila-wedding` |  | `aila_wedding.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-aila-office` |  | `aila_office.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-aila-maid` |  | `aila_maid.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-aila-sportwear` |  | `aila_sportwear.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-aila-newyear` |  | `aila_newyear.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-aila-christmas` |  | `aila_christmas.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-aila-duanwu` |  | `aila_duanwu.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-aila-anniversary` |  | `aila_anniversary.png` | 召唤结果、换衣间、服饰池卡面 |
-| `costume-aila-resort` |  | `aila_resort.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-lia-swimsuit` | 莉亚·泳装 | `lia_swimsuit.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-lia-wedding` | 莉亚·婚礼礼服 | `lia_wedding.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-lia-office` | 莉亚·OL装 | `lia_office.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-lia-maid` | 莉亚·女仆装 | `lia_maid.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-lia-sportwear` | 莉亚·运动短袖 | `lia_sportwear.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-lia-newyear` | 莉亚·新历祭服 | `lia_newyear.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-lia-christmas` | 莉亚·冬灯节服 | `lia_christmas.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-lia-duanwu` | 莉亚·龙舟祭服 | `lia_duanwu.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-lia-anniversary` | 莉亚·纪念日礼服 | `lia_anniversary.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-lia-resort` | 莉亚·度假装 | `lia_resort.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-mia-swimsuit` | 米娅·泳装 | `mia_swimsuit.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-mia-wedding` | 米娅·婚礼礼服 | `mia_wedding.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-mia-office` | 米娅·OL装 | `mia_office.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-mia-maid` | 米娅·女仆装 | `mia_maid.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-mia-sportwear` | 米娅·运动短袖 | `mia_sportwear.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-mia-newyear` | 米娅·新历祭服 | `mia_newyear.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-mia-christmas` | 米娅·冬灯节服 | `mia_christmas.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-mia-duanwu` | 米娅·龙舟祭服 | `mia_duanwu.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-mia-anniversary` | 米娅·纪念日礼服 | `mia_anniversary.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-mia-resort` | 米娅·度假装 | `mia_resort.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-serena-swimsuit` | 塞雷娜·泳装 | `serena_swimsuit.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-serena-wedding` | 塞雷娜·婚礼礼服 | `serena_wedding.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-serena-office` | 塞雷娜·OL装 | `serena_office.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-serena-maid` | 塞雷娜·女仆装 | `serena_maid.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-serena-sportwear` | 塞雷娜·运动短袖 | `serena_sportwear.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-serena-newyear` | 塞雷娜·新历祭服 | `serena_newyear.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-serena-christmas` | 塞雷娜·冬灯节服 | `serena_christmas.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-serena-duanwu` | 塞雷娜·龙舟祭服 | `serena_duanwu.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-serena-anniversary` | 塞雷娜·纪念日礼服 | `serena_anniversary.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-serena-resort` | 塞雷娜·度假装 | `serena_resort.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-freya-swimsuit` | 芙蕾娅·泳装 | `freya_swimsuit.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-freya-wedding` | 芙蕾娅·婚礼礼服 | `freya_wedding.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-freya-office` | 芙蕾娅·OL装 | `freya_office.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-freya-maid` | 芙蕾娅·女仆装 | `freya_maid.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-freya-sportwear` | 芙蕾娅·运动短袖 | `freya_sportwear.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-freya-newyear` | 芙蕾娅·新历祭服 | `freya_newyear.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-freya-christmas` | 芙蕾娅·冬灯节服 | `freya_christmas.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-freya-duanwu` | 芙蕾娅·龙舟祭服 | `freya_duanwu.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-freya-anniversary` | 芙蕾娅·纪念日礼服 | `freya_anniversary.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-freya-resort` | 芙蕾娅·度假装 | `freya_resort.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-lilith-swimsuit` | 莉莉丝·泳装 | `lilith_swimsuit.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-lilith-wedding` | 莉莉丝·婚礼礼服 | `lilith_wedding.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-lilith-office` | 莉莉丝·OL装 | `lilith_office.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-lilith-maid` | 莉莉丝·女仆装 | `lilith_maid.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-lilith-sportwear` | 莉莉丝·运动短袖 | `lilith_sportwear.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-lilith-newyear` | 莉莉丝·新历祭服 | `lilith_newyear.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-lilith-christmas` | 莉莉丝·冬灯节服 | `lilith_christmas.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-lilith-duanwu` | 莉莉丝·龙舟祭服 | `lilith_duanwu.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-lilith-anniversary` | 莉莉丝·纪念日礼服 | `lilith_anniversary.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-lilith-resort` | 莉莉丝·度假装 | `lilith_resort.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-evelyn-swimsuit` | 伊芙琳·泳装 | `evelyn_swimsuit.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-evelyn-wedding` | 伊芙琳·婚礼礼服 | `evelyn_wedding.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-evelyn-office` | 伊芙琳·OL装 | `evelyn_office.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-evelyn-maid` | 伊芙琳·女仆装 | `evelyn_maid.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-evelyn-sportwear` | 伊芙琳·运动短袖 | `evelyn_sportwear.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-evelyn-newyear` | 伊芙琳·新历祭服 | `evelyn_newyear.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-evelyn-christmas` | 伊芙琳·冬灯节服 | `evelyn_christmas.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-evelyn-duanwu` | 伊芙琳·龙舟祭服 | `evelyn_duanwu.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-evelyn-anniversary` | 伊芙琳·纪念日礼服 | `evelyn_anniversary.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-evelyn-resort` | 伊芙琳·度假装 | `evelyn_resort.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-ophelia-swimsuit` | 奥菲利亚·泳装 | `ophelia_swimsuit.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-ophelia-wedding` | 奥菲利亚·婚礼礼服 | `ophelia_wedding.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-ophelia-office` | 奥菲利亚·OL装 | `ophelia_office.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-ophelia-maid` | 奥菲利亚·女仆装 | `ophelia_maid.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-ophelia-sportwear` | 奥菲利亚·运动短袖 | `ophelia_sportwear.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-ophelia-newyear` | 奥菲利亚·新历祭服 | `ophelia_newyear.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-ophelia-christmas` | 奥菲利亚·冬灯节服 | `ophelia_christmas.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-ophelia-duanwu` | 奥菲利亚·龙舟祭服 | `ophelia_duanwu.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-ophelia-anniversary` | 奥菲利亚·纪念日礼服 | `ophelia_anniversary.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-ophelia-resort` | 奥菲利亚·度假装 | `ophelia_resort.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-aila-swimsuit` | 艾拉·泳装 | `aila_swimsuit.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-aila-wedding` | 艾拉·婚礼礼服 | `aila_wedding.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-aila-office` | 艾拉·OL装 | `aila_office.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-aila-maid` | 艾拉·女仆装 | `aila_maid.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-aila-sportwear` | 艾拉·运动短袖 | `aila_sportwear.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-aila-newyear` | 艾拉·新历祭服 | `aila_newyear.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-aila-christmas` | 艾拉·冬灯节服 | `aila_christmas.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-aila-duanwu` | 艾拉·龙舟祭服 | `aila_duanwu.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-aila-anniversary` | 艾拉·纪念日礼服 | `aila_anniversary.png` | 召唤结果、换衣间、服饰池卡面 |
+| `costume-aila-resort` | 艾拉·度假装 | `aila_resort.png` | 召唤结果、换衣间、服饰池卡面 |
 
 ### 泳装 12+ 罩衫版立绘（`costumes-soft`，8 张）
 
@@ -168,14 +172,14 @@ npm run art:paint:finalize                                                      
 
 | 任务ID | 名称 | 交付文件 | 用途 / 出现章节 |
 |---|---|---|---|
-| `costume-soft-lia` |  | `lia_swimsuit.png` | 内容模式 12+ 时替换泳装立绘 |
-| `costume-soft-mia` |  | `mia_swimsuit.png` | 内容模式 12+ 时替换泳装立绘 |
-| `costume-soft-serena` |  | `serena_swimsuit.png` | 内容模式 12+ 时替换泳装立绘 |
-| `costume-soft-freya` |  | `freya_swimsuit.png` | 内容模式 12+ 时替换泳装立绘 |
-| `costume-soft-lilith` |  | `lilith_swimsuit.png` | 内容模式 12+ 时替换泳装立绘 |
-| `costume-soft-evelyn` |  | `evelyn_swimsuit.png` | 内容模式 12+ 时替换泳装立绘 |
-| `costume-soft-ophelia` |  | `ophelia_swimsuit.png` | 内容模式 12+ 时替换泳装立绘 |
-| `costume-soft-aila` |  | `aila_swimsuit.png` | 内容模式 12+ 时替换泳装立绘 |
+| `costume-soft-lia` | 莉亚·泳装（罩衫版） | `lia_swimsuit.png` | 内容模式 12+ 时替换泳装立绘 |
+| `costume-soft-mia` | 米娅·泳装（罩衫版） | `mia_swimsuit.png` | 内容模式 12+ 时替换泳装立绘 |
+| `costume-soft-serena` | 塞雷娜·泳装（罩衫版） | `serena_swimsuit.png` | 内容模式 12+ 时替换泳装立绘 |
+| `costume-soft-freya` | 芙蕾娅·泳装（罩衫版） | `freya_swimsuit.png` | 内容模式 12+ 时替换泳装立绘 |
+| `costume-soft-lilith` | 莉莉丝·泳装（罩衫版） | `lilith_swimsuit.png` | 内容模式 12+ 时替换泳装立绘 |
+| `costume-soft-evelyn` | 伊芙琳·泳装（罩衫版） | `evelyn_swimsuit.png` | 内容模式 12+ 时替换泳装立绘 |
+| `costume-soft-ophelia` | 奥菲利亚·泳装（罩衫版） | `ophelia_swimsuit.png` | 内容模式 12+ 时替换泳装立绘 |
+| `costume-soft-aila` | 艾拉·泳装（罩衫版） | `aila_swimsuit.png` | 内容模式 12+ 时替换泳装立绘 |
 
 ## 第 3 批 · 剧情：场景背景、胸像、道具叠图（以莉亚立绘为画风参考）
 
@@ -535,60 +539,60 @@ npm run art:paint:finalize                                                      
 
 | 任务ID | 名称 | 交付文件 | 用途 / 出现章节 |
 |---|---|---|---|
-| `insert-ch10_purple_eyes` |  | `ch10_purple_eyes.png` | ch010 |
-| `insert-ch12_inverted_star` |  | `ch12_inverted_star.png` | ch012 |
-| `insert-ch12_roof_watcher` |  | `ch12_roof_watcher.png` | ch012 |
-| `insert-ch12_shadow_bind` |  | `ch12_shadow_bind.png` | ch012 |
-| `insert-ch13_half_crest` |  | `ch13_half_crest.png` | ch013 |
-| `insert-ch13_pilgrim_pass` |  | `ch13_pilgrim_pass.png` | ch013 |
-| `insert-ch14_tag_board` |  | `ch14_tag_board.png` | ch014 |
-| `insert-ch15_dark_shard` |  | `ch15_dark_shard.png` | ch015 |
-| `insert-ch15_dragon_eye` |  | `ch15_dragon_eye.png` | ch015 |
-| `insert-ch15_seven_ring_plate` |  | `ch15_seven_ring_plate.png` | ch015 |
-| `insert-ch15_summons_seal` |  | `ch15_summons_seal.png` | ch015 |
-| `insert-ch16_saint_draft` |  | `ch16_saint_draft.png` | ch016 |
-| `insert-ch16_seals` |  | `ch16_seals.png` | ch016 |
-| `insert-ch16_silver_hand` |  | `ch16_silver_hand.png` | ch016 |
-| `insert-ch16_weapons_table` |  | `ch16_weapons_table.png` | ch016 |
-| `insert-ch17_full_crest` |  | `ch17_full_crest.png` | ch017 |
-| `insert-ch17_rubbing` |  | `ch17_rubbing.png` | ch017 |
-| `insert-ch17_window_hand` |  | `ch17_window_hand.png` | ch017 |
-| `insert-ch18_frost_rings` |  | `ch18_frost_rings.png` | ch018 |
-| `insert-ch18_frost_spirit` |  | `ch18_frost_spirit.png` | ch018 |
-| `insert-ch18_ice_letter` |  | `ch18_ice_letter.png` | ch018 |
-| `insert-ch18_ice_person` |  | `ch18_ice_person.png` | ch018 |
-| `insert-ch19_alphabet` |  | `ch19_alphabet.png` | ch019 |
-| `insert-ch19_frost_circle` |  | `ch19_frost_circle.png` | ch019 |
-| `insert-ch20_white_gown` |  | `ch20_white_gown.png` | ch020 |
-| `insert-ch21_dragon_well` |  | `ch21_dragon_well.png` | ch021 |
-| `insert-ch22_lena_letter` |  | `ch22_lena_letter.png` | ch022 |
-| `insert-ch23_deeds` |  | `ch23_deeds.png` | ch023 |
-| `insert-ch23_vine_faces` |  | `ch23_vine_faces.png` | ch023 |
-| `insert-ch23_wood_ring` |  | `ch23_wood_ring.png` | ch023 |
-| `insert-ch24_barga` |  | `ch24_barga.png` | ch024 |
-| `insert-ch24_barga_cracked` |  | `ch24_barga_cracked.png` | ch024 |
-| `insert-ch25_frost_words` |  | `ch25_frost_words.png` | ch025 |
-| `insert-ch25_ice_heart` |  | `ch25_ice_heart.png` | ch025 |
-| `insert-ch25_mother_book` |  | `ch25_mother_book.png` | ch025 |
-| `insert-ch26_contract_lamp` |  | `ch26_contract_lamp.png` | ch026 |
-| `insert-ch26_deeds_burning` |  | `ch26_deeds_burning.png` | ch026 |
-| `insert-ch27_chain_blade` |  | `ch27_chain_blade.png` | ch027 |
-| `insert-ch27_dragon_free` |  | `ch27_dragon_free.png` | ch027 |
-| `insert-ch27_erased_scale` |  | `ch27_erased_scale.png` | ch027 |
-| `insert-ch27_ophelia_dragon` |  | `ch27_ophelia_dragon.png` | ch027 |
-| `insert-ch27_sea_rope` |  | `ch27_sea_rope.png` | ch027 |
-| `insert-ch27_seven_chairs` |  | `ch27_seven_chairs.png` | ch027 |
-| `insert-ch27_young_dragon` |  | `ch27_young_dragon.png` | ch027 |
-| `insert-ch28_mirror_tables` |  | `ch28_mirror_tables.png` | ch028 |
-| `insert-ch28_shackles` |  | `ch28_shackles.png` | ch028 |
-| `insert-ch28_tracking_mirror` |  | `ch28_tracking_mirror.png` | ch028 |
-| `insert-ch29_arkan_heart` |  | `ch29_arkan_heart.png` | ch029 |
-| `insert-ch29_eclipse_cloth` |  | `ch29_eclipse_cloth.png` | ch029 |
-| `insert-ch29_heart_back` |  | `ch29_heart_back.png` | ch029 |
-| `insert-ch30_code_first` |  | `ch30_code_first.png` | ch030 |
-| `insert-ch30_crown_crack` |  | `ch30_crown_crack.png` | ch030 |
-| `insert-ch30_ledger_last` |  | `ch30_ledger_last.png` | ch030 |
-| `insert-ch30_whistle` |  | `ch30_whistle.png` | ch030 |
+| `insert-ch10_purple_eyes` | 一面暗着的镜子里，一双紫色的眼睛，没有脸 | `ch10_purple_eyes.png` | ch010 |
+| `insert-ch12_inverted_star` | 旧镜面里，一只黑手套松开一根线，手套背面一颗倒过来的七角星亮了一下 | `ch12_inverted_star.png` | ch012 |
+| `insert-ch12_roof_watcher` | 雨夜，对岸的屋顶上，一个蹲着的人影，看不见脸 | `ch12_roof_watcher.png` | ch012 |
+| `insert-ch12_shadow_bind` | 暗紫色的影子贴着石板缠上去，只缠到靴子 | `ch12_shadow_bind.png` | ch012 |
+| `insert-ch13_half_crest` | 檐沟里，断成一半的黑金家纹扣子 | `ch13_half_crest.png` | ch013 |
+| `insert-ch13_pilgrim_pass` | 半湿的巡礼通行证 | `ch13_pilgrim_pass.png` | ch013 |
+| `insert-ch14_tag_board` | 手腕上绑着的木牌，背面烧着那个像拱又像浪的记号 | `ch14_tag_board.png` | ch014 |
+| `insert-ch15_dark_shard` | 焦黑的龙骨上，一块黑绿色的碎片，还在很慢地跳 | `ch15_dark_shard.png` | ch015 |
+| `insert-ch15_dragon_eye` | 闪回 | `ch15_dragon_eye.png` | ch015 |
+| `insert-ch15_seven_ring_plate` | 木环底下压着的一片铜，刻着七个同心的环 | `ch15_seven_ring_plate.png` | ch015 |
+| `insert-ch15_summons_seal` | 白纸的信，金色火漆压成一顶冠，冠缘一道裂 | `ch15_summons_seal.png` | ch015 |
+| `insert-ch16_saint_draft` | 圣女的稿子 | `ch16_saint_draft.png` | ch016 |
+| `insert-ch16_seals` | 册厅桌上 | `ch16_seals.png` | ch016 |
+| `insert-ch16_silver_hand` | 一只戴银甲的手伸进灯光里，接过那张纸 | `ch16_silver_hand.png` | ch016 |
+| `insert-ch16_weapons_table` | 晨门长桌上 | `ch16_weapons_table.png` | ch016 |
+| `insert-ch17_full_crest` | 披风内侧，一枚完整的黑金家纹 | `ch17_full_crest.png` | ch017 |
+| `insert-ch17_rubbing` | 石凳上的一张拓本 | `ch17_rubbing.png` | ch017 |
+| `insert-ch17_window_hand` | 白石墙上二楼的窗，黑烟里一只手在拍玻璃 | `ch17_window_hand.png` | ch017 |
+| `insert-ch18_frost_rings` | 霜上的刻纹 | `ch18_frost_rings.png` | ch018 |
+| `insert-ch18_frost_spirit` | 霜灵 | `ch18_frost_spirit.png` | ch018 |
+| `insert-ch18_ice_letter` | 一只手握着一块冰，冰里封着一封折好的信 | `ch18_ice_letter.png` | ch018 |
+| `insert-ch18_ice_person` | 冰里的人，只到胸口 | `ch18_ice_person.png` | ch018 |
+| `insert-ch19_alphabet` | 七环拓本旁边，一张古七锁文的字母表 | `ch19_alphabet.png` | ch019 |
+| `insert-ch19_frost_circle` | 一圈霜从杖尖长出去，停在戟尖和她的脚之间 | `ch19_frost_circle.png` | ch019 |
+| `insert-ch20_white_gown` | 远远地，一件白色的礼服被捧着穿过外庭 | `ch20_white_gown.png` | ch020 |
+| `insert-ch21_dragon_well` | 很深的井底 | `ch21_dragon_well.png` | ch021 |
+| `insert-ch22_lena_letter` | 一封信，七角晨星的封蜡已经裂开了 | `ch22_lena_letter.png` | ch022 |
+| `insert-ch23_deeds` | 一叠地契，每一张背面都盖着三家的章，还有拱浪的记号 | `ch23_deeds.png` | ch023 |
+| `insert-ch23_vine_faces` | 藤的尖端长出一张张脸，没有影子 | `ch23_vine_faces.png` | ch023 |
+| `insert-ch23_wood_ring` | 石台上的木环 | `ch23_wood_ring.png` | ch023 |
+| `insert-ch24_barga` | 一只巨大的熔岩蜥蜴，从熔岩里爬出来 | `ch24_barga.png` | ch024 |
+| `insert-ch24_barga_cracked` | 巴尔加 | `ch24_barga_cracked.png` | ch024 |
+| `insert-ch25_frost_words` | 营帐窗上的霜，一个字一个字长出来 | `ch25_frost_words.png` | ch025 |
+| `insert-ch25_ice_heart` | 冰之心 | `ch25_ice_heart.png` | ch025 |
+| `insert-ch25_mother_book` | 石台上摊开的母本，旁边一块很老的冰 | `ch25_mother_book.png` | ch025 |
+| `insert-ch26_contract_lamp` | 契约上画着一盏灯 | `ch26_contract_lamp.png` | ch026 |
+| `insert-ch26_deeds_burning` | 债契烧了一整夜 | `ch26_deeds_burning.png` | ch026 |
+| `insert-ch27_chain_blade` | 黎月的刃口对着锁链的一环，很轻，一毫米 | `ch27_chain_blade.png` | ch027 |
+| `insert-ch27_dragon_free` | 那一环断了 | `ch27_dragon_free.png` | ch027 |
+| `insert-ch27_erased_scale` | 黑龙颈上掉下的一片鳞，刻着龙文，有几行被刮掉了 | `ch27_erased_scale.png` | ch027 |
+| `insert-ch27_ophelia_dragon` | 奥菲莉亚的龙形 | `ch27_ophelia_dragon.png` | ch027 |
+| `insert-ch27_sea_rope` | 海面上，一条绳子漂着 | `ch27_sea_rope.png` | ch027 |
+| `insert-ch27_seven_chairs` | 镜子里是一张议桌，七张椅子 | `ch27_seven_chairs.png` | ch027 |
+| `insert-ch27_young_dragon` | 营火边，小小的幼龙形，停在他头顶上方一寸 | `ch27_young_dragon.png` | ch027 |
+| `insert-ch28_mirror_tables` | 每一面镜子里，都有一张议桌 | `ch28_mirror_tables.png` | ch028 |
+| `insert-ch28_shackles` | 压律镣铐 | `ch28_shackles.png` | ch028 |
+| `insert-ch28_tracking_mirror` | 永久追踪镜 | `ch28_tracking_mirror.png` | ch028 |
+| `insert-ch29_arkan_heart` | 石巨人跪下，石头的胸口打开，里面一团光 | `ch29_arkan_heart.png` | ch029 |
+| `insert-ch29_eclipse_cloth` | 桌布上绣着一个黑色的月亮，吞着一个白色的月亮 | `ch29_eclipse_cloth.png` | ch029 |
+| `insert-ch29_heart_back` | 光的背面刻着字，很旧的字 | `ch29_heart_back.png` | ch029 |
+| `insert-ch30_code_first` | 《帝国法典》翻在第一条 | `ch30_code_first.png` | ch030 |
+| `insert-ch30_crown_crack` | 帝冠的内侧，第一道细细的裂 | `ch30_crown_crack.png` | ch030 |
+| `insert-ch30_ledger_last` | 帐的最后一页 | `ch30_ledger_last.png` | ch030 |
+| `insert-ch30_whistle` | 一枚牧羊的铜哨，系在绳子上 | `ch30_whistle.png` | ch030 |
 
 ## 第 4 批 · 服装透明胸像（以对应服装立绘为参考）
 
@@ -598,86 +602,86 @@ npm run art:paint:finalize                                                      
 
 | 任务ID | 名称 | 交付文件 | 用途 / 出现章节 |
 |---|---|---|---|
-| `bust-lia-swimsuit` |  | `lia_swimsuit.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-lia-wedding` |  | `lia_wedding.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-lia-office` |  | `lia_office.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-lia-maid` |  | `lia_maid.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-lia-sportwear` |  | `lia_sportwear.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-lia-newyear` |  | `lia_newyear.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-lia-christmas` |  | `lia_christmas.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-lia-duanwu` |  | `lia_duanwu.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-lia-anniversary` |  | `lia_anniversary.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-lia-resort` |  | `lia_resort.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-mia-swimsuit` |  | `mia_swimsuit.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-mia-wedding` |  | `mia_wedding.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-mia-office` |  | `mia_office.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-mia-maid` |  | `mia_maid.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-mia-sportwear` |  | `mia_sportwear.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-mia-newyear` |  | `mia_newyear.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-mia-christmas` |  | `mia_christmas.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-mia-duanwu` |  | `mia_duanwu.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-mia-anniversary` |  | `mia_anniversary.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-mia-resort` |  | `mia_resort.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-serena-swimsuit` |  | `serena_swimsuit.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-serena-wedding` |  | `serena_wedding.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-serena-office` |  | `serena_office.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-serena-maid` |  | `serena_maid.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-serena-sportwear` |  | `serena_sportwear.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-serena-newyear` |  | `serena_newyear.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-serena-christmas` |  | `serena_christmas.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-serena-duanwu` |  | `serena_duanwu.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-serena-anniversary` |  | `serena_anniversary.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-serena-resort` |  | `serena_resort.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-freya-swimsuit` |  | `freya_swimsuit.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-freya-wedding` |  | `freya_wedding.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-freya-office` |  | `freya_office.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-freya-maid` |  | `freya_maid.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-freya-sportwear` |  | `freya_sportwear.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-freya-newyear` |  | `freya_newyear.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-freya-christmas` |  | `freya_christmas.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-freya-duanwu` |  | `freya_duanwu.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-freya-anniversary` |  | `freya_anniversary.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-freya-resort` |  | `freya_resort.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-lilith-swimsuit` |  | `lilith_swimsuit.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-lilith-wedding` |  | `lilith_wedding.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-lilith-office` |  | `lilith_office.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-lilith-maid` |  | `lilith_maid.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-lilith-sportwear` |  | `lilith_sportwear.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-lilith-newyear` |  | `lilith_newyear.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-lilith-christmas` |  | `lilith_christmas.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-lilith-duanwu` |  | `lilith_duanwu.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-lilith-anniversary` |  | `lilith_anniversary.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-lilith-resort` |  | `lilith_resort.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-evelyn-swimsuit` |  | `evelyn_swimsuit.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-evelyn-wedding` |  | `evelyn_wedding.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-evelyn-office` |  | `evelyn_office.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-evelyn-maid` |  | `evelyn_maid.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-evelyn-sportwear` |  | `evelyn_sportwear.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-evelyn-newyear` |  | `evelyn_newyear.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-evelyn-christmas` |  | `evelyn_christmas.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-evelyn-duanwu` |  | `evelyn_duanwu.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-evelyn-anniversary` |  | `evelyn_anniversary.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-evelyn-resort` |  | `evelyn_resort.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-ophelia-swimsuit` |  | `ophelia_swimsuit.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-ophelia-wedding` |  | `ophelia_wedding.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-ophelia-office` |  | `ophelia_office.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-ophelia-maid` |  | `ophelia_maid.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-ophelia-sportwear` |  | `ophelia_sportwear.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-ophelia-newyear` |  | `ophelia_newyear.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-ophelia-christmas` |  | `ophelia_christmas.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-ophelia-duanwu` |  | `ophelia_duanwu.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-ophelia-anniversary` |  | `ophelia_anniversary.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-ophelia-resort` |  | `ophelia_resort.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-aila-swimsuit` |  | `aila_swimsuit.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-aila-wedding` |  | `aila_wedding.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-aila-office` |  | `aila_office.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-aila-maid` |  | `aila_maid.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-aila-sportwear` |  | `aila_sportwear.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-aila-newyear` |  | `aila_newyear.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-aila-christmas` |  | `aila_christmas.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-aila-duanwu` |  | `aila_duanwu.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-aila-anniversary` |  | `aila_anniversary.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
-| `bust-aila-resort` |  | `aila_resort.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-lia-swimsuit` | 莉亚·泳装 · 胸像 | `lia_swimsuit.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-lia-wedding` | 莉亚·婚礼礼服 · 胸像 | `lia_wedding.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-lia-office` | 莉亚·OL装 · 胸像 | `lia_office.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-lia-maid` | 莉亚·女仆装 · 胸像 | `lia_maid.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-lia-sportwear` | 莉亚·运动短袖 · 胸像 | `lia_sportwear.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-lia-newyear` | 莉亚·新历祭服 · 胸像 | `lia_newyear.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-lia-christmas` | 莉亚·冬灯节服 · 胸像 | `lia_christmas.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-lia-duanwu` | 莉亚·龙舟祭服 · 胸像 | `lia_duanwu.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-lia-anniversary` | 莉亚·纪念日礼服 · 胸像 | `lia_anniversary.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-lia-resort` | 莉亚·度假装 · 胸像 | `lia_resort.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-mia-swimsuit` | 米娅·泳装 · 胸像 | `mia_swimsuit.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-mia-wedding` | 米娅·婚礼礼服 · 胸像 | `mia_wedding.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-mia-office` | 米娅·OL装 · 胸像 | `mia_office.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-mia-maid` | 米娅·女仆装 · 胸像 | `mia_maid.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-mia-sportwear` | 米娅·运动短袖 · 胸像 | `mia_sportwear.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-mia-newyear` | 米娅·新历祭服 · 胸像 | `mia_newyear.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-mia-christmas` | 米娅·冬灯节服 · 胸像 | `mia_christmas.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-mia-duanwu` | 米娅·龙舟祭服 · 胸像 | `mia_duanwu.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-mia-anniversary` | 米娅·纪念日礼服 · 胸像 | `mia_anniversary.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-mia-resort` | 米娅·度假装 · 胸像 | `mia_resort.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-serena-swimsuit` | 塞雷娜·泳装 · 胸像 | `serena_swimsuit.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-serena-wedding` | 塞雷娜·婚礼礼服 · 胸像 | `serena_wedding.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-serena-office` | 塞雷娜·OL装 · 胸像 | `serena_office.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-serena-maid` | 塞雷娜·女仆装 · 胸像 | `serena_maid.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-serena-sportwear` | 塞雷娜·运动短袖 · 胸像 | `serena_sportwear.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-serena-newyear` | 塞雷娜·新历祭服 · 胸像 | `serena_newyear.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-serena-christmas` | 塞雷娜·冬灯节服 · 胸像 | `serena_christmas.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-serena-duanwu` | 塞雷娜·龙舟祭服 · 胸像 | `serena_duanwu.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-serena-anniversary` | 塞雷娜·纪念日礼服 · 胸像 | `serena_anniversary.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-serena-resort` | 塞雷娜·度假装 · 胸像 | `serena_resort.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-freya-swimsuit` | 芙蕾娅·泳装 · 胸像 | `freya_swimsuit.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-freya-wedding` | 芙蕾娅·婚礼礼服 · 胸像 | `freya_wedding.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-freya-office` | 芙蕾娅·OL装 · 胸像 | `freya_office.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-freya-maid` | 芙蕾娅·女仆装 · 胸像 | `freya_maid.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-freya-sportwear` | 芙蕾娅·运动短袖 · 胸像 | `freya_sportwear.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-freya-newyear` | 芙蕾娅·新历祭服 · 胸像 | `freya_newyear.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-freya-christmas` | 芙蕾娅·冬灯节服 · 胸像 | `freya_christmas.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-freya-duanwu` | 芙蕾娅·龙舟祭服 · 胸像 | `freya_duanwu.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-freya-anniversary` | 芙蕾娅·纪念日礼服 · 胸像 | `freya_anniversary.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-freya-resort` | 芙蕾娅·度假装 · 胸像 | `freya_resort.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-lilith-swimsuit` | 莉莉丝·泳装 · 胸像 | `lilith_swimsuit.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-lilith-wedding` | 莉莉丝·婚礼礼服 · 胸像 | `lilith_wedding.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-lilith-office` | 莉莉丝·OL装 · 胸像 | `lilith_office.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-lilith-maid` | 莉莉丝·女仆装 · 胸像 | `lilith_maid.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-lilith-sportwear` | 莉莉丝·运动短袖 · 胸像 | `lilith_sportwear.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-lilith-newyear` | 莉莉丝·新历祭服 · 胸像 | `lilith_newyear.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-lilith-christmas` | 莉莉丝·冬灯节服 · 胸像 | `lilith_christmas.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-lilith-duanwu` | 莉莉丝·龙舟祭服 · 胸像 | `lilith_duanwu.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-lilith-anniversary` | 莉莉丝·纪念日礼服 · 胸像 | `lilith_anniversary.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-lilith-resort` | 莉莉丝·度假装 · 胸像 | `lilith_resort.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-evelyn-swimsuit` | 伊芙琳·泳装 · 胸像 | `evelyn_swimsuit.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-evelyn-wedding` | 伊芙琳·婚礼礼服 · 胸像 | `evelyn_wedding.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-evelyn-office` | 伊芙琳·OL装 · 胸像 | `evelyn_office.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-evelyn-maid` | 伊芙琳·女仆装 · 胸像 | `evelyn_maid.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-evelyn-sportwear` | 伊芙琳·运动短袖 · 胸像 | `evelyn_sportwear.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-evelyn-newyear` | 伊芙琳·新历祭服 · 胸像 | `evelyn_newyear.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-evelyn-christmas` | 伊芙琳·冬灯节服 · 胸像 | `evelyn_christmas.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-evelyn-duanwu` | 伊芙琳·龙舟祭服 · 胸像 | `evelyn_duanwu.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-evelyn-anniversary` | 伊芙琳·纪念日礼服 · 胸像 | `evelyn_anniversary.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-evelyn-resort` | 伊芙琳·度假装 · 胸像 | `evelyn_resort.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-ophelia-swimsuit` | 奥菲利亚·泳装 · 胸像 | `ophelia_swimsuit.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-ophelia-wedding` | 奥菲利亚·婚礼礼服 · 胸像 | `ophelia_wedding.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-ophelia-office` | 奥菲利亚·OL装 · 胸像 | `ophelia_office.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-ophelia-maid` | 奥菲利亚·女仆装 · 胸像 | `ophelia_maid.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-ophelia-sportwear` | 奥菲利亚·运动短袖 · 胸像 | `ophelia_sportwear.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-ophelia-newyear` | 奥菲利亚·新历祭服 · 胸像 | `ophelia_newyear.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-ophelia-christmas` | 奥菲利亚·冬灯节服 · 胸像 | `ophelia_christmas.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-ophelia-duanwu` | 奥菲利亚·龙舟祭服 · 胸像 | `ophelia_duanwu.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-ophelia-anniversary` | 奥菲利亚·纪念日礼服 · 胸像 | `ophelia_anniversary.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-ophelia-resort` | 奥菲利亚·度假装 · 胸像 | `ophelia_resort.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-aila-swimsuit` | 艾拉·泳装 · 胸像 | `aila_swimsuit.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-aila-wedding` | 艾拉·婚礼礼服 · 胸像 | `aila_wedding.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-aila-office` | 艾拉·OL装 · 胸像 | `aila_office.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-aila-maid` | 艾拉·女仆装 · 胸像 | `aila_maid.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-aila-sportwear` | 艾拉·运动短袖 · 胸像 | `aila_sportwear.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-aila-newyear` | 艾拉·新历祭服 · 胸像 | `aila_newyear.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-aila-christmas` | 艾拉·冬灯节服 · 胸像 | `aila_christmas.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-aila-duanwu` | 艾拉·龙舟祭服 · 胸像 | `aila_duanwu.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-aila-anniversary` | 艾拉·纪念日礼服 · 胸像 | `aila_anniversary.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
+| `bust-aila-resort` | 艾拉·度假装 · 胸像 | `aila_resort.png` | 委托板单位卡；类型相符的番外里她说话时的胸像 |
 
 ### 泳装 12+ 罩衫版透明胸像（`costumes-bust-soft`，8 张）
 
@@ -685,14 +689,14 @@ npm run art:paint:finalize                                                      
 
 | 任务ID | 名称 | 交付文件 | 用途 / 出现章节 |
 |---|---|---|---|
-| `bust-lia-swimsuit-soft` |  | `lia_swimsuit.png` | 12+ 时委托板与海边番外的泳装胸像 |
-| `bust-mia-swimsuit-soft` |  | `mia_swimsuit.png` | 12+ 时委托板与海边番外的泳装胸像 |
-| `bust-serena-swimsuit-soft` |  | `serena_swimsuit.png` | 12+ 时委托板与海边番外的泳装胸像 |
-| `bust-freya-swimsuit-soft` |  | `freya_swimsuit.png` | 12+ 时委托板与海边番外的泳装胸像 |
-| `bust-lilith-swimsuit-soft` |  | `lilith_swimsuit.png` | 12+ 时委托板与海边番外的泳装胸像 |
-| `bust-evelyn-swimsuit-soft` |  | `evelyn_swimsuit.png` | 12+ 时委托板与海边番外的泳装胸像 |
-| `bust-ophelia-swimsuit-soft` |  | `ophelia_swimsuit.png` | 12+ 时委托板与海边番外的泳装胸像 |
-| `bust-aila-swimsuit-soft` |  | `aila_swimsuit.png` | 12+ 时委托板与海边番外的泳装胸像 |
+| `bust-lia-swimsuit-soft` | 莉亚·泳装（罩衫版） · 胸像 | `lia_swimsuit.png` | 12+ 时委托板与海边番外的泳装胸像 |
+| `bust-mia-swimsuit-soft` | 米娅·泳装（罩衫版） · 胸像 | `mia_swimsuit.png` | 12+ 时委托板与海边番外的泳装胸像 |
+| `bust-serena-swimsuit-soft` | 塞雷娜·泳装（罩衫版） · 胸像 | `serena_swimsuit.png` | 12+ 时委托板与海边番外的泳装胸像 |
+| `bust-freya-swimsuit-soft` | 芙蕾娅·泳装（罩衫版） · 胸像 | `freya_swimsuit.png` | 12+ 时委托板与海边番外的泳装胸像 |
+| `bust-lilith-swimsuit-soft` | 莉莉丝·泳装（罩衫版） · 胸像 | `lilith_swimsuit.png` | 12+ 时委托板与海边番外的泳装胸像 |
+| `bust-evelyn-swimsuit-soft` | 伊芙琳·泳装（罩衫版） · 胸像 | `evelyn_swimsuit.png` | 12+ 时委托板与海边番外的泳装胸像 |
+| `bust-ophelia-swimsuit-soft` | 奥菲利亚·泳装（罩衫版） · 胸像 | `ophelia_swimsuit.png` | 12+ 时委托板与海边番外的泳装胸像 |
+| `bust-aila-swimsuit-soft` | 艾拉·泳装（罩衫版） · 胸像 | `aila_swimsuit.png` | 12+ 时委托板与海边番外的泳装胸像 |
 
 ## 第 5 批 · 外传 CG、Boss、舞台背景与卡面
 
@@ -700,16 +704,16 @@ npm run art:paint:finalize                                                      
 
 | 任务ID | 名称 | 交付文件 | 用途 / 出现章节 |
 |---|---|---|---|
-| `cg-intro-eye` |  | `intro-eye.png` | 外传 CG 图库与序章演出 |
-| `cg-camp-fire` |  | `camp-fire.png` | 外传 CG 图库与序章演出 |
-| `cg-corridor-frost` |  | `corridor-frost.png` | 外传 CG 图库与序章演出 |
-| `cg-battle-descend` |  | `battle-descend.png` | 外传 CG 图库与序章演出 |
-| `cg-battle-phase2` |  | `battle-phase2.png` | 外传 CG 图库与序章演出 |
-| `cg-battle-phase3` |  | `battle-phase3.png` | 外传 CG 图库与序章演出 |
-| `cg-aftermath-snow` |  | `aftermath-snow.png` | 外传 CG 图库与序章演出 |
-| `cg-ending-seal` |  | `ending-seal.png` | 外传 CG 图库与序章演出 |
-| `cg-ending-share` |  | `ending-share.png` | 外传 CG 图库与序章演出 |
-| `cg-ending-destroy` |  | `ending-destroy.png` | 外传 CG 图库与序章演出 |
+| `cg-intro-eye` | 窗外的眼睛 | `intro-eye.png` | 外传 CG 图库与序章演出 |
+| `cg-camp-fire` | 战前餐车 | `camp-fire.png` | 外传 CG 图库与序章演出 |
+| `cg-corridor-frost` | 记忆之霜 | `corridor-frost.png` | 外传 CG 图库与序章演出 |
+| `cg-battle-descend` | 食梦兽降临 | `battle-descend.png` | 外传 CG 图库与序章演出 |
+| `cg-battle-phase2` | 记忆崩塌 | `battle-phase2.png` | 外传 CG 图库与序章演出 |
+| `cg-battle-phase3` | 它想起了什么 | `battle-phase3.png` | 外传 CG 图库与序章演出 |
+| `cg-aftermath-snow` | 记忆之雪 | `aftermath-snow.png` | 外传 CG 图库与序章演出 |
+| `cg-ending-seal` | 静默契约 | `ending-seal.png` | 外传 CG 图库与序章演出 |
+| `cg-ending-share` | 黎明公开 | `ending-share.png` | 外传 CG 图库与序章演出 |
+| `cg-ending-destroy` | 永夜终章 | `ending-destroy.png` | 外传 CG 图库与序章演出 |
 
 ### 食梦兽三阶段（`boss`，3 张）
 
@@ -717,17 +721,17 @@ npm run art:paint:finalize                                                      
 
 | 任务ID | 名称 | 交付文件 | 用途 / 出现章节 |
 |---|---|---|---|
-| `boss-1` |  | `dream-eater-1.png` | 外传序章 Boss 战（按血量换三阶段） |
-| `boss-2` |  | `dream-eater-2.png` | 外传序章 Boss 战（按血量换三阶段） |
-| `boss-3` |  | `dream-eater-3.png` | 外传序章 Boss 战（按血量换三阶段） |
+| `boss-1` | 食梦兽·阿涅摩伊（完整形态） | `dream-eater-1.png` | 外传序章 Boss 战（按血量换三阶段） |
+| `boss-2` | 食梦兽·阿涅摩伊（破甲形态） | `dream-eater-2.png` | 外传序章 Boss 战（按血量换三阶段） |
+| `boss-3` | 食梦兽·阿涅摩伊（封印形态） | `dream-eater-3.png` | 外传序章 Boss 战（按血量换三阶段） |
 
 ### 舞台背景（`scenes`，3 张）
 
 | 任务ID | 名称 | 交付文件 | 用途 / 出现章节 |
 |---|---|---|---|
-| `scene-battle-bg` |  | `battle-bg.png` | 外传序章舞台；外传正篇也复用（餐车、撕裂的车顶、黎明的铁轨） |
-| `scene-camp-bg` |  | `camp-bg.png` | 外传序章舞台；外传正篇也复用（餐车、撕裂的车顶、黎明的铁轨） |
-| `scene-ending-bg` |  | `ending-bg.png` | 外传序章舞台；外传正篇也复用（餐车、撕裂的车顶、黎明的铁轨） |
+| `scene-battle-bg` | 列车车厢战场 | `battle-bg.png` | 外传序章舞台；外传正篇也复用（餐车、撕裂的车顶、黎明的铁轨） |
+| `scene-camp-bg` | 银辉列车餐车 | `camp-bg.png` | 外传序章舞台；外传正篇也复用（餐车、撕裂的车顶、黎明的铁轨） |
+| `scene-ending-bg` | 黎明 | `ending-bg.png` | 外传序章舞台；外传正篇也复用（餐车、撕裂的车顶、黎明的铁轨） |
 
 ### 卡面（`cards`，38 张）
 
@@ -735,41 +739,52 @@ npm run art:paint:finalize                                                      
 
 | 任务ID | 名称 | 交付文件 | 用途 / 出现章节 |
 |---|---|---|---|
-| `card-n_wisp` |  | `n_wisp.png` | 卡牌对战（实验模式）卡面 |
-| `card-n_goblin` |  | `n_goblin.png` | 卡牌对战（实验模式）卡面 |
-| `card-n_merchant` |  | `n_merchant.png` | 卡牌对战（实验模式）卡面 |
-| `card-n_knight` |  | `n_knight.png` | 卡牌对战（实验模式）卡面 |
-| `card-n_golem` |  | `n_golem.png` | 卡牌对战（实验模式）卡面 |
-| `card-n_troll` |  | `n_troll.png` | 卡牌对战（实验模式）卡面 |
-| `card-n_angel` |  | `n_angel.png` | 卡牌对战（实验模式）卡面 |
-| `card-n_dragon` |  | `n_dragon.png` | 卡牌对战（实验模式）卡面 |
-| `card-lia_recruit` |  | `lia_recruit.png` | 卡牌对战（实验模式）卡面 |
-| `card-lia_shieldbash` |  | `lia_shieldbash.png` | 卡牌对战（实验模式）卡面 |
-| `card-lia_flameguard` |  | `lia_flameguard.png` | 卡牌对战（实验模式）卡面 |
-| `card-lia_rally` |  | `lia_rally.png` | 卡牌对战（实验模式）卡面 |
-| `card-lia_charger` |  | `lia_charger.png` | 卡牌对战（实验模式）卡面 |
-| `card-lia_bulwark` |  | `lia_bulwark.png` | 卡牌对战（实验模式）卡面 |
-| `card-lia_captain` |  | `lia_captain.png` | 卡牌对战（实验模式）卡面 |
-| `card-lia_flamestrike` |  | `lia_flamestrike.png` | 卡牌对战（实验模式）卡面 |
-| `card-lia_fortress` |  | `lia_fortress.png` | 卡牌对战（实验模式）卡面 |
-| `card-lia_hero` |  | `lia_hero.png` | 卡牌对战（实验模式）卡面 |
-| `card-lilith_dagger` |  | `lilith_dagger.png` | 卡牌对战（实验模式）卡面 |
-| `card-lilith_strike` |  | `lilith_strike.png` | 卡牌对战（实验模式）卡面 |
-| `card-lilith_apprentice` |  | `lilith_apprentice.png` | 卡牌对战（实验模式）卡面 |
-| `card-lilith_poison` |  | `lilith_poison.png` | 卡牌对战（实验模式）卡面 |
-| `card-lilith_shadowdance` |  | `lilith_shadowdance.png` | 卡牌对战（实验模式）卡面 |
-| `card-lilith_assassin` |  | `lilith_assassin.png` | 卡牌对战（实验模式）卡面 |
-| `card-lilith_shadowarrow` |  | `lilith_shadowarrow.png` | 卡牌对战（实验模式）卡面 |
-| `card-lilith_nightblade` |  | `lilith_nightblade.png` | 卡牌对战（实验模式）卡面 |
-| `card-lilith_shadowlord` |  | `lilith_shadowlord.png` | 卡牌对战（实验模式）卡面 |
-| `card-lilith_hero` |  | `lilith_hero.png` | 卡牌对战（实验模式）卡面 |
-| `card-serena_acolyte` |  | `serena_acolyte.png` | 卡牌对战（实验模式）卡面 |
-| `card-serena_darkbolt` |  | `serena_darkbolt.png` | 卡牌对战（实验模式）卡面 |
-| `card-serena_observer` |  | `serena_observer.png` | 卡牌对战（实验模式）卡面 |
-| `card-serena_drain` |  | `serena_drain.png` | 卡牌对战（实验模式）卡面 |
-| `card-serena_oracle` |  | `serena_oracle.png` | 卡牌对战（实验模式）卡面 |
-| `card-serena_void` |  | `serena_void.png` | 卡牌对战（实验模式）卡面 |
-| `card-serena_nova` |  | `serena_nova.png` | 卡牌对战（实验模式）卡面 |
-| `card-serena_devourer` |  | `serena_devourer.png` | 卡牌对战（实验模式）卡面 |
-| `card-serena_seal` |  | `serena_seal.png` | 卡牌对战（实验模式）卡面 |
-| `card-serena_hero` |  | `serena_hero.png` | 卡牌对战（实验模式）卡面 |
+| `card-n_wisp` | 微光精灵 | `n_wisp.png` | 卡牌对战（实验模式）卡面 |
+| `card-n_goblin` | 哥布林 | `n_goblin.png` | 卡牌对战（实验模式）卡面 |
+| `card-n_merchant` | 旅行商人 | `n_merchant.png` | 卡牌对战（实验模式）卡面 |
+| `card-n_knight` | 重装骑士 | `n_knight.png` | 卡牌对战（实验模式）卡面 |
+| `card-n_golem` | 岩石魔像 | `n_golem.png` | 卡牌对战（实验模式）卡面 |
+| `card-n_troll` | 巨魔战士 | `n_troll.png` | 卡牌对战（实验模式）卡面 |
+| `card-n_angel` | 守护天使 | `n_angel.png` | 卡牌对战（实验模式）卡面 |
+| `card-n_dragon` | 远古巨龙 | `n_dragon.png` | 卡牌对战（实验模式）卡面 |
+| `card-lia_recruit` | 盾卫学徒 | `lia_recruit.png` | 卡牌对战（实验模式）卡面 |
+| `card-lia_shieldbash` | 盾击 | `lia_shieldbash.png` | 卡牌对战（实验模式）卡面 |
+| `card-lia_flameguard` | 烈焰守卫 | `lia_flameguard.png` | 卡牌对战（实验模式）卡面 |
+| `card-lia_rally` | 战吼鼓舞 | `lia_rally.png` | 卡牌对战（实验模式）卡面 |
+| `card-lia_charger` | 赤焰冲锋者 | `lia_charger.png` | 卡牌对战（实验模式）卡面 |
+| `card-lia_bulwark` | 铁壁守护者 | `lia_bulwark.png` | 卡牌对战（实验模式）卡面 |
+| `card-lia_captain` | 骑士队长 | `lia_captain.png` | 卡牌对战（实验模式）卡面 |
+| `card-lia_flamestrike` | 烈焰冲击 | `lia_flamestrike.png` | 卡牌对战（实验模式）卡面 |
+| `card-lia_fortress` | 赫斯特堡垒 | `lia_fortress.png` | 卡牌对战（实验模式）卡面 |
+| `card-lia_hero` | 莉亚·赫斯特 | `lia_hero.png` | 卡牌对战（实验模式）卡面 |
+| `card-lilith_dagger` | 暗影匕首 | `lilith_dagger.png` | 卡牌对战（实验模式）卡面 |
+| `card-lilith_strike` | 影袭 | `lilith_strike.png` | 卡牌对战（实验模式）卡面 |
+| `card-lilith_apprentice` | 刺客学徒 | `lilith_apprentice.png` | 卡牌对战（实验模式）卡面 |
+| `card-lilith_poison` | 淬毒短刃 | `lilith_poison.png` | 卡牌对战（实验模式）卡面 |
+| `card-lilith_shadowdance` | 影舞 | `lilith_shadowdance.png` | 卡牌对战（实验模式）卡面 |
+| `card-lilith_assassin` | 暗巷刺客 | `lilith_assassin.png` | 卡牌对战（实验模式）卡面 |
+| `card-lilith_shadowarrow` | 暗影箭 | `lilith_shadowarrow.png` | 卡牌对战（实验模式）卡面 |
+| `card-lilith_nightblade` | 夜刃游侠 | `lilith_nightblade.png` | 卡牌对战（实验模式）卡面 |
+| `card-lilith_shadowlord` | 暗影领主 | `lilith_shadowlord.png` | 卡牌对战（实验模式）卡面 |
+| `card-lilith_hero` | 莉莉丝 | `lilith_hero.png` | 卡牌对战（实验模式）卡面 |
+| `card-serena_acolyte` | 月蚀学徒 | `serena_acolyte.png` | 卡牌对战（实验模式）卡面 |
+| `card-serena_darkbolt` | 暗蚀术 | `serena_darkbolt.png` | 卡牌对战（实验模式）卡面 |
+| `card-serena_observer` | 虚空观测者 | `serena_observer.png` | 卡牌对战（实验模式）卡面 |
+| `card-serena_drain` | 生命汲取 | `serena_drain.png` | 卡牌对战（实验模式）卡面 |
+| `card-serena_oracle` | 月蚀先知 | `serena_oracle.png` | 卡牌对战（实验模式）卡面 |
+| `card-serena_void` | 虚空吞噬 | `serena_void.png` | 卡牌对战（实验模式）卡面 |
+| `card-serena_nova` | 暗月新星 | `serena_nova.png` | 卡牌对战（实验模式）卡面 |
+| `card-serena_devourer` | 深渊吞噬者 | `serena_devourer.png` | 卡牌对战（实验模式）卡面 |
+| `card-serena_seal` | 静月封界 | `serena_seal.png` | 卡牌对战（实验模式）卡面 |
+| `card-serena_hero` | 塞雷娜·诺克斯 | `serena_hero.png` | 卡牌对战（实验模式）卡面 |
+
+## 第 6 批 · 标题背景与世界地图（保留界面布局）
+
+### 标题背景与世界地图（`ui`，2 张）
+
+构图要和现在的矢量版一致（参考图 tools/art/raster/ref/layout-*.png）：标题页右侧要留给角色卡，地图上的铁路站点位置不能动。
+
+| 任务ID | 名称 | 交付文件 | 用途 / 出现章节 |
+|---|---|---|---|
+| `ui-title-bg` | 月蚀契约标题背景 | `title-bg.png` | 主菜单标题页的全屏背景 |
+| `ui-world-map` | 外传世界地图 | `world-map.png` | 外传路线图（城镇标记叠在上面，站点位置必须对齐） |

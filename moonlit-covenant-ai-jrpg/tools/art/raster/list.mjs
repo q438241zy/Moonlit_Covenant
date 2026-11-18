@@ -7,6 +7,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { JOBS, SIZE, GROUPS, ALPHA_GROUPS, gptSize, gptPrompt } from './manifest.mjs';
+import { CHARACTER_POOL, COSTUME_CATALOG } from '../../../game/gacha.mjs';
+import { CARDS } from '../../../cards/database.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
 
@@ -17,6 +19,7 @@ const BATCH = {
   'story-bg': 3, 'story-npc': 3, 'story-insert': 3,
   'costumes-bust': 4, 'costumes-bust-soft': 4,
   cg: 5, boss: 5, scenes: 5, cards: 5,
+  ui: 6,
 };
 const BATCH_TITLE = {
   1: '第 1 批 · 女主立绘（全套画风基准，必须先定稿）',
@@ -24,20 +27,37 @@ const BATCH_TITLE = {
   3: '第 3 批 · 剧情：场景背景、胸像、道具叠图（以莉亚立绘为画风参考）',
   4: '第 4 批 · 服装透明胸像（以对应服装立绘为参考）',
   5: '第 5 批 · 外传 CG、Boss、舞台背景与卡面',
+  6: '第 6 批 · 标题背景与世界地图（保留界面布局）',
 };
 // 游戏里替换的那张矢量图（paint() 按它找厚涂图）
 const gameFile = (j) => {
   const name = path.basename(j.out, '.png');
+  if (j.group === 'ui') return name === 'world-map' ? 'public/assets/map/world-map.svg' : 'public/assets/title-bg.svg';
   const dir = { portraits: 'portraits', costumes: 'costumes', 'costumes-soft': 'costumes/soft', 'costumes-bust': 'costumes/bust', 'costumes-bust-soft': 'costumes/bust/soft', cg: 'cg', boss: 'boss', scenes: 'scenes', cards: 'cards', 'story-bg': 'story/bg', 'story-npc': 'story/npc', 'story-insert': 'story/insert' }[j.group];
   return `public/assets/${dir}/${name}.svg`;
 };
 const paintFile = (j) => `public/assets/paint/${j.group}/${path.basename(j.out, '.png')}.${ALPHA_GROUPS.has(j.group) ? 'png' : 'jpg'}`;
 
+// 让 Excel 按游戏里的中文名称可筛选；标签不写进图。
+const portraitNames = new Map(CHARACTER_POOL.map((c) => [c.id, c.name]));
+const costumeNames = new Map(COSTUME_CATALOG.map((c) => [c.id, c.name]));
+const cardNames = new Map(CARDS.map((c) => [c.id, c.name]));
+const displayName = (j) => {
+  if (j.label) return j.label;
+  const slug = path.basename(j.out, '.png');
+  if (j.group === 'portraits') return portraitNames.get(slug);
+  if (j.group.startsWith('costumes')) return costumeNames.get(slug) + (j.group.endsWith('-soft') ? '（罩衫版）' : '') + (j.group.includes('-bust') ? ' · 胸像' : '');
+  if (j.group === 'cards') return cardNames.get(slug);
+  if (j.group === 'ui') return slug === 'world-map' ? '外传世界地图' : '月蚀契约标题背景';
+  const svg = fs.readFileSync(path.join(root, gameFile(j)), 'utf8');
+  const label = svg.match(/aria-label="([^"]+)"/)?.[1];
+  return label?.split('：')[0] || slug;
+};
 const rows = JOBS.map((j) => ({
   batch: BATCH[j.group],
   group: j.group,
   id: j.id,
-  label: j.label || '',
+  label: displayName(j),
   deliver: j.out,
   replaces: gameFile(j),
   final: paintFile(j),
@@ -68,7 +88,7 @@ const md = [
   '',
   '<!-- 本文件由 tools/art/raster/list.mjs 根据 tools/art/raster/manifest.mjs 生成（npm run art:list），请勿手改。 -->',
   '',
-  `游戏里现在所有画面都是原创矢量美术（SVG）。这份清单列出要交给 GPT 重新绘制的全部 **${rows.length} 张**位图：女主立绘、服装、胸像、主线 / 番外 / 外传的场景背景、剧情胸像、道具特写、外传 CG 与卡面。出好的图按下面的规则放进去，游戏会自动用位图替换对应的矢量图，没出的继续显示矢量图，可以分批上线。`,
+  `游戏原有的美术为原创矢量图（SVG），已导入的条目可在游戏里显示厚涂位图。这份清单列出要交给 GPT 重新绘制的全部 **${rows.length} 张**位图：女主立绘、服装、胸像、主线 / 番外 / 外传的场景背景、剧情胸像、道具特写、外传 CG 与卡面。出好的图按下面的规则放进去，游戏会自动用位图替换对应的矢量图，没出的继续显示矢量图，可以分批上线。`,
   '',
   '- 逐张的完整提示词、参考图与尺寸：[`docs/art-list/gpt-art-list.csv`](art-list/gpt-art-list.csv)（Excel 可直接打开）。用 API 批量出图时脚本直接读 `manifest.mjs`，不读 CSV。',
   '- 提示词的源头是 `tools/art/raster/manifest.mjs`：改描述就改那里，再跑 `npm run art:list` 重新导出本清单。',
@@ -78,12 +98,13 @@ const md = [
   '**日本动画画师画的欧洲奇幻**：日式动漫的人物画法——大而有神的眼睛、干净利落的线稿、赛璐璐与厚涂结合的上色、成熟的五官；舞台、服饰与器物是欧洲中世纪奇幻（哥特教堂、石砌城镇、骑士盔甲、长袍、木桥与港口）。光影偏电影感：月光、彩色轮廓光，色调略收、点缀色鲜明。',
   '',
   '- **以女主角立绘为基准**：第 1 批先出八位女主立绘（参考 `tools/art/raster/ref/lia.png` 的画风与正典外观描述），**定稿后**，其余每一张都把新出的莉亚立绘当第一张参考图，保证线稿、上色、光影一致；服装与胸像另外附上该女主自己的立绘，保证同一张脸。',
+  '- **服装定设计，场景定表演**：80 套常规换装的朝向、眼神、手势与发型逐套写在 `tools/art/raster/costume-staging.json`，同一人的十张并排检查。避免用整图翻转换方向；伤痕、异色瞳、发夹和塔盾要留在人物本人的正确侧。透明服装胸像沿用对应立绘的表情和动作；泳装罩衫版只增加罩衫，保证切换自然。',
   '- 每条提示词的开头都是同一段画风描述（`manifest.mjs` 的 `STYLE`），结尾附「Avoid:」（GPT 没有单独的负面提示词）。',
   '- 例外：番外十是平行现代（IF），它的办公室、商场背景和 OL 装画现代都市。',
   '',
   '## 硬性规定',
   '',
-  '1. **不出现任何文字**：招牌、纸张、帐本、屏幕上的字一律画成看不清的笔画；不要水印、签名、logo。',
+  '1. **不出现任何文字**：招牌、纸张、账本、屏幕一律留白或使用纯图形；不要字母、数字、伪文字、水印、签名或 logo。',
   '2. **女主全部是成年人**（18–19 岁），外观以正典为准（`设定集/03_主角与八位女主角.md`，提示词里已写好）。莉亚一律背着塔盾「赤誓」。外传（银轨号）的称号不写进画面说明。',
   '3. **尺度**：泳装是不透明的正常泳装，脸是画面重点，不做身体局部特写、不摆暗示性姿势（提示词与 Avoid 已写明）；12+ 罩衫版是同一件泳装外加她自己的罩衫。孩子（托比、波莉等）只出现在普通场景，永远不和泳装或任何擦边的画面同框。婚礼礼服是礼服店试穿：不画戒指、不画新郎、不画祭坛，头纱不遮脸。',
   '4. **背景不画人物**（场景背景、舞台背景、道具特写里没有人；人物用胸像另外叠上去）。',
@@ -91,6 +112,8 @@ const md = [
   '6. **AI 生成标识**：GPT 写在原图里的 AI 生成元数据（C2PA / EXIF）要保留；导入脚本压缩时会把 AIGC 标识写回成品，游戏里换成位图的位置会自动显示「AI 生成」角标。',
   '',
   '## 怎么出图与导入',
+  '',
+  '按 CSV 的「GPT 尺寸」交原图，「游戏尺寸」由导入脚本裁切。宽屏场景交 1536×1024 原图，把人物、地标和剧情线索放在画面高度中央约 83% 内，避免游戏裁掉上下边缘。',
   '',
   '**用 API 批量出（推荐）**：',
   '',
@@ -110,12 +133,12 @@ const md = [
   '',
   '| 批次 | 分组 | 内容 | 张数 | GPT 尺寸 → 游戏尺寸 |',
   '|---|---|---|---:|---|',
-  ...Object.keys(BATCH).filter((g) => counts[g]).sort((a, b) => BATCH[a] - BATCH[b]).map((g) => `| ${BATCH[g]} | \`${g}\` | ${GROUPS[g].title}${ALPHA_GROUPS.has(g) ? '（透明底）' : ''} | ${counts[g]} | ${rows.find((r) => r.group === g).gptSize.replace('x', '×')} → ${SIZE[g].replace('x', '×')} |`),
+  ...Object.keys(BATCH).filter((g) => counts[g]).sort((a, b) => BATCH[a] - BATCH[b]).map((g) => `| ${BATCH[g]} | \`${g}\` | ${GROUPS[g].title}${ALPHA_GROUPS.has(g) ? '（透明底）' : ''} | ${counts[g]} | ${rows.find((r) => r.group === g).gptSize.replace('x', '×')} → ${[...new Set(rows.filter((r) => r.group === g).map((r) => r.gameSize.replace('x', '×')))].join(' / ')} |`),
   `| | | **合计** | **${rows.length}** | |`,
   '',
   '「出现章节」里 `chNNN` 是主线、`exNNN` 是番外、`gNNN` 是外传正篇；没有章节的场景、胸像暂时没有地方用到，可以排到最后。',
 ];
-for (const batch of [1, 2, 3, 4, 5]) {
+for (const batch of Object.keys(BATCH_TITLE).map(Number)) {
   md.push('', `## ${BATCH_TITLE[batch]}`);
   for (const g of Object.keys(BATCH).filter((x) => BATCH[x] === batch && counts[x])) {
     const list = rows.filter((r) => r.group === g);

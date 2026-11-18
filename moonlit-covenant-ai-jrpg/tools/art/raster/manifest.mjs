@@ -50,6 +50,8 @@ export const STYLE = [
   'high detail, no text, no letters, no watermark, no signature, no logo',
 ].join(', ');
 
+const WIDE_MASTER = '3:2 landscape master, 1536 x 1024 pixels; keep important details within the central 83% of the image height for the game crop';
+
 export const NEGATIVE = 'text, watermark, signature, logo, chibi, child, loli, nsfw, cleavage, revealing clothes, swimsuit, lingerie, lowres, blurry, extra fingers, deformed hands, bad anatomy';
 // 泳装（服装稿 §4.3）：只拿掉 swimsuit 与 revealing，裸露、透视、特写与低龄相关的词保留并加强
 export const NEGATIVE_SWIMSUIT = 'text, watermark, signature, logo, chibi, child, loli, minor, teen, nsfw, nude, nipples, see-through, transparent fabric, wet see-through, cleavage, underboob, lingerie, close-up on chest, close-up on body, low angle, high angle, suggestive pose, lowres, blurry, extra fingers, deformed hands, bad anatomy';
@@ -91,6 +93,8 @@ const HEROINE_IDS = new Set(Object.keys(HEROINES));
 const portraitRef = (id) => `tools/art/raster/out/portraits/${id}.png`; // 新出的正典立绘（旧 PNG 只是立绘本身的参考）
 // 除了八张立绘，其余所有图的第一张参考都是新出的莉亚立绘：画风、线稿与上色都以女主立绘为准
 const HEROINE_STYLE = portraitRef('lia');
+const costumeStaging = readJson('tools/art/raster/costume-staging.json');
+const outfitRefs = (id, ...extra) => [...new Set([HEROINE_STYLE, portraitRef(id), ...extra])];
 
 const jobs = [];
 
@@ -108,11 +112,12 @@ for (const [id, h] of Object.entries(HEROINES)) {
 // 2) 80 套服装立绘：参考该女主的立绘保持同一张脸（泳装另用 NEGATIVE_SWIMSUIT，并同时出 12+ 罩衫版）
 for (const id of Object.keys(HEROINES)) {
   for (const [type, outfit] of Object.entries(OUTFITS)) {
+    const { design, acting } = costumeStaging[id][type];
     jobs.push({
-      id: `costume-${id}-${type}`, group: 'costumes', after: [`portrait-${id}`],
+      id: `costume-${id}-${type}`, group: 'costumes', after: [...new Set(['portrait-lia', `portrait-${id}`])],
       out: `tools/art/raster/out/costumes/${id}_${type}.png`, size: '1024x1536', seed: 2000 + jobs.length,
-      prompt: `${STYLE}. The same character as the second reference image (same face, eyes, hair and head accessories), upper body portrait in 3/4 view, ${outfit}. ${HEROINES[id].rim}.`,
-      refs: [portraitRef(id)],
+      prompt: `${STYLE}. The first reference sets the art style. Preserve the adult character in the last reference: face, eye colors, hair color, signature accessories and their anatomical sides. Draw a new upper-body composition without mirroring the reference. Costume: ${outfit}. ${design} Staging: ${acting} ${id === 'lia' ? 'Keep her red tower shield strapped behind her anatomical left shoulder. ' : ''}${HEROINES[id].rim}.`,
+      refs: outfitRefs(id),
       usage: '召唤结果、换衣间、服饰池卡面',
       ...(type === 'swimsuit' ? { negative: NEGATIVE_SWIMSUIT } : {}),
     });
@@ -124,8 +129,9 @@ for (const id of Object.keys(HEROINES)) {
   jobs.push({
     id: `costume-soft-${id}`, group: 'costumes-soft', after: [`costume-${id}-swimsuit`],
     out: `tools/art/raster/out/costumes-soft/${id}_swimsuit.png`, size: '1024x1536', seed: 2600 + jobs.length,
-    prompt: `${STYLE}. Exactly the same character, pose, swimsuit and seaside scene as the reference image, but she now wears her own light opaque cover-up over the swimsuit (an open beach shirt, a hooded rash-guard jacket or a long wrap skirt with a short cardigan, in her colors), covering the shoulders and hips, modest and cheerful. ${HEROINES[id].rim}.`,
-    refs: [`tools/art/raster/out/costumes/${id}_swimsuit.png`, portraitRef(id)],
+    prompt: `${STYLE}. Match the last reference exactly: same face, expression, gaze, hair, shoulders, hands, swimsuit, framing and seaside scene. Add only her own opaque cover-up over her shoulders and hips: ${costumeStaging[id].coverUp}. ${HEROINES[id].rim}.`,
+    refs: outfitRefs(id, `tools/art/raster/out/costumes/${id}_swimsuit.png`),
+    negative: NEGATIVE_SWIMSUIT,
     usage: '内容模式 12+ 时替换泳装立绘',
   });
 }
@@ -139,10 +145,10 @@ for (const id of Object.keys(HEROINES)) {
       id: `bust-${id}-${type}`, group: soft ? 'costumes-bust-soft' : 'costumes-bust', alpha: true,
       after: [soft ? `costume-soft-${id}` : `costume-${id}-${type}`],
       out: `tools/art/raster/out/${soft ? 'costumes-bust-soft' : 'costumes-bust'}/${id}_${soft ? 'swimsuit' : type}.png`, size: '1024x1536', seed: 2800 + jobs.length,
-      prompt: `${STYLE}. Bust portrait (head to chest, facing the viewer at 3/4) of exactly the same character in exactly the same outfit as the reference image, on a fully transparent background with no backdrop, no floor and no scenery, clean silhouette edges.`,
-      refs: [costume],
+      prompt: `${STYLE}. Head-to-chest dialogue portrait of the adult heroine from the last reference. Keep that costume image's exact facing direction, eyeline, expression, hairstyle, shoulder angle, and visible gestures and props; do not reset her to a stock front view or mirror asymmetric details. Leave enough margin for hair and accessories. Fully transparent background with real alpha, clean silhouette edges, no backdrop, no floor and no scenery.`,
+      refs: outfitRefs(id, costume),
       usage: soft ? '12+ 时委托板与海边番外的泳装胸像' : '委托板单位卡；类型相符的番外里她说话时的胸像',
-      ...(type === 'swimsuit' ? { negative: NEGATIVE_SWIMSUIT } : {}),
+      ...(type === 'swimsuit' || soft ? { negative: NEGATIVE_SWIMSUIT } : {}),
     });
   }
 }
@@ -167,7 +173,7 @@ const CG = [
 for (const [name, scene, refs, onTrain] of CG) {
   jobs.push({
     id: `cg-${name}`, group: 'cg', out: `tools/art/raster/out/cg/${name}.png`, size: '1920x1080', seed: 3000 + jobs.length,
-    prompt: `${STYLE}. Cinematic wide 16:9 story illustration. ${onTrain ? `Setting: ${TRAIN}. ` : ''}${scene}.`,
+    prompt: `${STYLE}. Cinematic story illustration (${WIDE_MASTER}). ${onTrain ? `Setting: ${TRAIN}. ` : ''}${scene}.`,
     refs: [HEROINE_STYLE, ...refs.filter((r) => r !== STYLE_REF).map((r) => (r === legacyRef('lia.png') ? portraitRef('lia') : r === legacyRef('mia.png') ? portraitRef('mia') : r === legacyRef('serena.png') ? portraitRef('serena') : r))].filter((r, i, a) => a.indexOf(r) === i),
     after: ['portrait-lia', 'portrait-mia', 'portrait-serena'],
     usage: '外传 CG 图库与序章演出',
@@ -196,7 +202,7 @@ const SCENES = [
 ];
 SCENES.forEach(([name, desc], i) => jobs.push({
   id: `scene-${name}`, group: 'scenes', out: `tools/art/raster/out/scenes/${name}.png`, size: '1920x1080', seed: 5000 + i,
-  prompt: `${STYLE}. Wide 16:9 background painting, ${desc}.`,
+  prompt: `${STYLE}. Wide background painting (${WIDE_MASTER}), ${desc}.`,
   refs: [HEROINE_STYLE],
   after: ['portrait-lia'],
   usage: '外传序章舞台；外传正篇也复用（餐车、撕裂的车顶、黎明的铁轨）',
@@ -249,7 +255,7 @@ for (const card of CARDS) {
   const subject = CARD_SUBJECT[card.id];
   if (!subject) throw new Error(`manifest: missing card subject for ${card.id}`);
   jobs.push({
-    id: `card-${card.id}`, group: 'cards', after: ['portrait-lia', ...(HERO_REF[card.id] ? [`portrait-${card.id.split('_')[0]}`] : [])],
+    id: `card-${card.id}`, group: 'cards', after: [...new Set(['portrait-lia', ...(HERO_REF[card.id] ? [`portrait-${card.id.split('_')[0]}`] : [])])],
     out: `tools/art/raster/out/cards/${card.id}.png`, size: '1024x1024', seed: 6000 + jobs.length,
     prompt: `${STYLE}. Square trading-card illustration, centered dramatic composition with a soft dark vignette, no card frame, ${CLASS_TONE[card.class]}: ${subject}.`,
     refs: [HEROINE_STYLE, ...(HERO_REF[card.id] && HERO_REF[card.id] !== HEROINE_STYLE ? [HERO_REF[card.id]] : [])],
@@ -295,7 +301,7 @@ for (const [id, loc] of Object.entries(readJson('public/story/locations.json')))
   jobs.push({
     id: `story-bg-${id}`, group: 'story-bg', label: loc.name, out: `tools/art/raster/out/story-bg/${id}.png`, size: '1920x1080', seed: 7000 + jobs.length,
     // 番外十（IF）的现代办公室与商场：平行现代，不套欧洲中世纪
-    prompt: `${STYLE}. Wide 16:9 story background painting, ${id.startsWith('if-modern') ? 'parallel-world modern-day city (an IF side story), contemporary interior, no text, no logos' : STORY_WORLD}, no characters in focus. Scene: ${svgLabel(loc.svg) || loc.name}.`,
+    prompt: `${STYLE}. Wide story background painting (${WIDE_MASTER}), ${id.startsWith('if-modern') ? 'parallel-world modern-day city (an IF side story), contemporary interior, no text, no logos' : STORY_WORLD}, no people, even in the distance. Scene: ${svgLabel(loc.svg) || loc.name}.`,
     refs: [HEROINE_STYLE], after: ['portrait-lia'],
     usage: usageText(usageIndex.bg.get(id)),
   });
@@ -305,13 +311,30 @@ for (const [sid, sp] of Object.entries(readJson('public/story/speakers.json'))) 
   const m = typeof sp.art === 'string' && sp.art.match(/^\/assets\/story\/npc\/([\w-]+)\.svg$/);
   if (m && (!busts.has(m[1]) || sid === m[1])) busts.set(m[1], { sid, sp }); // the speaker named like the file wins (lia over lia_unknown)
 }
+// 独立剧情胸像由场景决定表演。同角色的分支有意使用不同视线；左右始终按画面描述。
+const dialogueViews = ['face turned to screen left, eyes toward the other speaker', 'nearly frontal, eyes engaged with the listener', 'face turned to screen right, near shoulder forward', 'slight left profile, gaze lowered', 'body angled left, face looking back to the right'];
+const storyView = (name) => {
+  const branch = name.split('_').at(-1);
+  const branchView = { beside: 'shoulders open, meeting the listener’s eyes', apart: 'torso turned aside, a sidelong glance', away: 'gaze directed off screen in near profile', cell: 'chin lowered slightly, gaze raised toward the listener', consort: 'upright, looking calmly across the frame' }[branch];
+  if (branchView) return branchView;
+  let hash = 0;
+  for (const c of name) hash = (Math.imul(hash, 31) + c.charCodeAt(0)) >>> 0;
+  return dialogueViews[hash % dialogueViews.length];
+};
+// 这些剧情人物按设定年龄绘制；通用的 child 负面词会把儿童对白头像误画成大人。
+const storyYouths = new Set(['toby', 'toby_11', 'polly', 'mirror_apprentice', 'mirror_apprentice_blanket', 'nila', 'pike']);
+const youngSpeakerNegative = NEGATIVE.split(', ').filter((term) => term !== 'child').concat('aged-up face', 'sexualized styling').join(', ');
 for (const [name, { sp }] of busts) {
+  const youngSpeaker = storyYouths.has(name);
+  // 第 13 章尚未报上名字的金发刺客，仍用莉莉丝定稿对齐鼻梁膏药、眼睛和单侧披风。
+  const heroine = name === 'golden_assassin' ? 'lilith' : name.split('_')[0];
   jobs.push({
     id: `story-npc-${name}`, group: 'story-npc', label: sp.name.replace('{PLAYER_NAME}', '亚克'), out: `tools/art/raster/out/story-npc/${name}.png`, size: '1024x1365', seed: 8000 + jobs.length,
-    prompt: `${STYLE}. Bust portrait (head and shoulders, facing the viewer at 3/4) on a fully transparent background with no backdrop, ${STORY_WORLD}: ${svgLabel(sp.art) || sp.name}.`,
+    prompt: `${STYLE}. Head-and-shoulders dialogue portrait on a fully transparent background with real alpha, no backdrop, ${STORY_WORLD}: ${svgLabel(sp.art) || sp.name}. ${youngSpeaker ? 'Draw the age specified in the story with natural age-appropriate features and ordinary, fully clothed presentation. ' : ''}Follow the specified story moment and anatomy first. For a visible face: ${storyView(name)}; choose an expression and shoulder gesture that fit this speaker. Preserve asymmetrical facial marks and costume details; do not mirror.`,
     alpha: true,
-    refs: [HEROINE_STYLE, ...(HEROINE_IDS.has(name.split('_')[0]) && name.split('_')[0] !== 'lia' ? [portraitRef(name.split('_')[0])] : [])],
-    after: ['portrait-lia', ...(HEROINE_IDS.has(name.split('_')[0]) ? [`portrait-${name.split('_')[0]}`] : [])],
+    ...(youngSpeaker ? { negative: youngSpeakerNegative } : {}),
+    refs: [HEROINE_STYLE, ...(HEROINE_IDS.has(heroine) && heroine !== 'lia' ? [portraitRef(heroine)] : [])],
+    after: [...new Set(['portrait-lia', ...(HEROINE_IDS.has(heroine) ? [`portrait-${heroine}`] : [])])],
     usage: usageText(new Set(Object.entries(readJson('public/story/speakers.json')).filter(([, v]) => v.art === sp.art).flatMap(([k]) => [...(usageIndex.who.get(k) || [])]))),
   });
 }
@@ -322,7 +345,7 @@ for (const f of fs.existsSync(insertDir) ? fs.readdirSync(insertDir).filter((n) 
   const name = f.replace('.svg', '');
   jobs.push({
     id: `insert-${name}`, group: 'story-insert', out: `tools/art/raster/out/story-insert/${name}.png`, size: '1536x1024', seed: 9000 + jobs.length,
-    prompt: `${STYLE}. Close-up still-life illustration of a single prop on a dark softly lit surface, centered, ${STORY_WORLD}, any writing on paper is shown only as illegible scribble lines, absolutely no readable letters: ${svgLabel(`/assets/story/insert/${f}`) || name}.`,
+    prompt: `${STYLE}. Close-up still-life illustration of a single prop on a dark softly lit surface, centered, ${STORY_WORLD}, leave writing surfaces blank or use a simple pictorial emblem; no lettering or imitation handwriting: ${svgLabel(`/assets/story/insert/${f}`) || name}.`,
     refs: [HEROINE_STYLE], after: ['portrait-lia'],
     usage: usageText(usageIndex.bg.get(`insert:${name}`)),
   });
@@ -331,7 +354,7 @@ for (const f of fs.existsSync(insertDir) ? fs.readdirSync(insertDir).filter((n) 
 // 9) 标题背景与世界地图：附上现在矢量版的截图当构图参考（tools/art/raster/ref/layout-*.png），布局不能变
 jobs.push({
   id: 'ui-title-bg', group: 'ui', out: 'tools/art/raster/out/ui/title-bg.png', size: '1920x1080', target: '1600x900', seed: 9900,
-  prompt: `${STYLE}. Wide 16:9 title-screen background painting, ${STORY_WORLD}, no characters: a dusk sky under a lunar eclipse; on the left hillside a small medieval wheat-farming village with thatched roofs and a bell tower; on the right an armoured silver train crossing the open plain on silver rails; keep the exact layout of the second reference image (village left, train right, eclipse upper middle, calm open sky on the right half for the title UI and character cards).`,
+  prompt: `${STYLE}. Wide title-screen background painting (${WIDE_MASTER}), ${STORY_WORLD}, no characters: a dusk sky under a lunar eclipse; on the left hillside a small medieval wheat-farming village with thatched roofs and a bell tower; on the right an armoured silver train crossing the open plain on silver rails; keep the exact layout of the second reference image (village left, train right, eclipse upper middle, calm open sky on the right half for the title UI and character cards).`,
   refs: [HEROINE_STYLE, 'tools/art/raster/ref/layout-title-bg.png'], after: ['portrait-lia'],
   usage: '主菜单标题页的全屏背景',
 });
@@ -350,4 +373,4 @@ export const gptSize = (size) => {
   return w > h ? '1536x1024' : w < h ? '1024x1536' : '1024x1024';
 };
 // GPT 没有单独的负面提示词：把「避免」并进提示词
-export const gptPrompt = (job) => `${job.prompt} Avoid: ${job.negative || NEGATIVE}.`;
+export const gptPrompt = (job) => `${job.prompt} No writing anywhere, including labels, numerals, pseudo-lettering and watermarks; use pictorial shapes on paper, signs and screens. Avoid: ${job.negative || NEGATIVE}.`;
