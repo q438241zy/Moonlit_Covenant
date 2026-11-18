@@ -483,5 +483,109 @@
       "costumes": []
     },
     "blurb": "八个人各写了一封没有寄出的信。信是她们的，读不读、给不给看，也由她们决定。"
+  },
+  {
+    "id": "ex022",
+    "number": 22,
+    "title": "支线十二｜哥布林和平委托",
+    "estimatedMinutes": 10,
+    "file": "/story/extras/ex022.json",
+    "source": "剧本/番外/ex022哥布林和平委託.md",
+    "kind": "sidequest",
+    "unlockAfter": "ch022",
+    "window": "正式22–25之间",
+    "cast": [
+      "lia",
+      "mia",
+      "ophelia"
+    ],
+    "costumeTypes": [],
+    "gifts": {
+      "costumes": []
+    },
+    "blurb": "北山的溪谷里住进了一群摘掉颈圈的哥布林。营地要水，它们也要水。这张委托单，要两边都画押。"
+  },
+  {
+    "id": "ex023",
+    "number": 23,
+    "title": "支线十三｜失踪信使",
+    "estimatedMinutes": 10,
+    "file": "/story/extras/ex023.json",
+    "source": "剧本/番外/ex023失蹤信使.md",
+    "kind": "sidequest",
+    "unlockAfter": "ch023",
+    "window": "正式23–25之间",
+    "cast": [
+      "serena",
+      "aila",
+      "freya"
+    ],
+    "costumeTypes": [],
+    "gifts": {
+      "costumes": []
+    },
+    "blurb": "从雾港来的信使派克，比约好的晚了一天。沿着往雾港的路，把人和信都找回来。"
+  },
+  {
+    "id": "ex024",
+    "number": 24,
+    "title": "支线十四｜洗礼记录",
+    "estimatedMinutes": 9,
+    "file": "/story/extras/ex024.json",
+    "source": "剧本/番外/ex024洗禮記錄.md",
+    "kind": "sidequest",
+    "unlockAfter": "ch022",
+    "window": "正式22–25之间",
+    "cast": [
+      "evelyn",
+      "lia"
+    ],
+    "costumeTypes": [],
+    "gifts": {
+      "costumes": []
+    },
+    "blurb": "有人来北山登记，手里攥着一张烧掉一半的洗礼证明。名字写在哪里，才算数？"
+  },
+  {
+    "id": "ex025",
+    "number": 25,
+    "title": "支线十五｜身份登记",
+    "estimatedMinutes": 9,
+    "file": "/story/extras/ex025.json",
+    "source": "剧本/番外/ex025身份登記.md",
+    "kind": "sidequest",
+    "unlockAfter": "ch023",
+    "window": "正式23–25之间",
+    "cast": [
+      "lilith",
+      "ophelia",
+      "serena"
+    ],
+    "costumeTypes": [],
+    "gifts": {
+      "costumes": []
+    },
+    "blurb": "七席走了，绿镜城的登记所重新开门。排队的人里，有人带着两张脸，想登记两个名字。"
+  },
+  {
+    "id": "ex026",
+    "number": 26,
+    "title": "支线十六｜拟态药成瘾",
+    "estimatedMinutes": 10,
+    "file": "/story/extras/ex026.json",
+    "source": "剧本/番外/ex026擬態藥成癮.md",
+    "kind": "sidequest",
+    "unlockAfter": "ch023",
+    "window": "正式23–25之间",
+    "cast": [
+      "evelyn",
+      "mia",
+      "aila"
+    ],
+    "costumeTypes": [],
+    "gifts": {
+      "costumes": []
+    },
+    "blurb": "七席倒了，拟态药的货也断了。藤院诊疗所里，有人说她已经想不起自己原来的脸。"
   }
 ]
