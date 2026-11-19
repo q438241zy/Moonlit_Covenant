@@ -23,6 +23,8 @@ npm run art:paint:finalize              # 压缩进 public/assets/paint/ 并生�
 
 **审图退回**：`tools/art/raster/rejected.json` 登记退回的图（键为「组/文件名」，写明问题、重画要求与退回时原图的 sha256）。`finalize.mjs` 不导入这些图，并删掉已有的位图，游戏继续显示矢量图；交了新图（哈希变了）时会提示「已交新图，待复审」，复审通过后把那一条从 `rejected.json` 删掉，再跑一次 `finalize.mjs` 才会导入。`test/art-assets.test.mjs` 检查退回的图不在 `manifest.json` 里。
 
+重画条目的 `taskId` 对应逐张 CSV，`reviewChecks` 列出复审时要看的细节。原有 `sha256` 标识退回稿，`replacement.file` 和 `replacement.sha256` 指向新交的原图。罩衫、胸像等沿用了另一张返工图时，`replacement.basedOn` 记录所用版本的哈希，便于两张并排核对。复审仍不通过时，`sha256` 换成这次退回的新图哈希，之前的退回记在 `history` 里。
+
 - 改某张图的描述：编辑 `manifest.mjs`，然后 `npm run art:paint -- --only card-n_goblin --force`。
 - 模型 id 可用 `ARK_IMAGE_MODEL` 或 `--model` 覆盖（例如换成更新的 Seedream 版本）。
 - 参考图会先裁掉右下角「图片由AI生成」标识区域，避免模型把水印画进新图。
