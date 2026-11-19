@@ -299,11 +299,20 @@ const usageText = (set) => (set && set.size ? [...set].join(' ') : '（暂无章
 for (const [id, loc] of Object.entries(readJson('public/story/locations.json'))) {
   // 外传正篇复用的旧场景图（public/assets/scenes、cg）已经在上面的 scenes / cg 组里，不再重复出
   if (!String(loc.svg || '').startsWith('/assets/story/bg/')) continue;
+  const refs = [HEROINE_STYLE];
+  const after = ['portrait-lia'];
+  let scene = svgLabel(loc.svg) || loc.name;
+  if (id === 'white-tower-iron') {
+    const siege = 'white-tower-city-siege-far';
+    refs.push(`tools/art/raster/out/story-bg/${siege}.png`);
+    after.push(`story-bg-${siege}`);
+    scene += '。直接编辑第二张参考图「白塔城·远景」：宽大的哥特式塔身、正面大尖拱窗和一簇淡入云中的细尖顶都与底图对齐。仅在原塔身加几道黑铁箍，天空改为灰色阴天，城墙插上黑旗；营帐、道路、树与岩石留在原处';
+  }
   jobs.push({
     id: `story-bg-${id}`, group: 'story-bg', label: loc.name, out: `tools/art/raster/out/story-bg/${id}.png`, size: '1920x1080', seed: 7000 + jobs.length,
     // 番外十（IF）的现代办公室与商场：平行现代，不套欧洲中世纪
-    prompt: `${STYLE}. Wide story background painting (${WIDE_MASTER}), ${id.startsWith('if-modern') ? 'parallel-world modern-day city (an IF side story), contemporary interior, no text, no logos' : STORY_WORLD}, no people, even in the distance. Scene: ${svgLabel(loc.svg) || loc.name}.`,
-    refs: [HEROINE_STYLE], after: ['portrait-lia'],
+    prompt: `${STYLE}. Wide story background painting (${WIDE_MASTER}), ${id.startsWith('if-modern') ? 'parallel-world modern-day city (an IF side story), contemporary interior, no text, no logos' : STORY_WORLD}, no people, even in the distance. Scene: ${scene}.`,
+    refs, after,
     usage: usageText(usageIndex.bg.get(id)),
   });
 }
