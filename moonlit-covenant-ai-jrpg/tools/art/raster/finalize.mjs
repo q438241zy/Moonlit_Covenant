@@ -10,6 +10,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import crypto from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { JOBS, SIZE, ALPHA_GROUPS } from './manifest.mjs';
@@ -76,12 +77,24 @@ function main() {
   }
   const manifest = {};
   let done = 0;
+  // 审图退回的图（rejected.json，键为「组/文件名」）：不导入，游戏继续显示矢量图。
+  // 交了新图（源文件哈希变了）也先不导入，等复审通过、从 rejected.json 删掉那一条后再导入。
+  const rejectedFile = path.join(root, 'tools/art/raster/rejected.json');
+  const rejected = fs.existsSync(rejectedFile) ? JSON.parse(fs.readFileSync(rejectedFile, 'utf8')) : {};
+  const held = [];
   for (const job of JOBS) {
     const src = path.join(root, job.out);
     if (!fs.existsSync(src)) continue;
     const name = path.basename(job.out, path.extname(job.out));
     const alpha = ALPHA_GROUPS.has(job.group);
     const dest = path.join(paintDir, job.group, `${name}.${alpha ? 'png' : 'jpg'}`);
+    const rej = rejected[`${job.group}/${name}`];
+    if (rej) {
+      fs.rmSync(dest, { force: true });
+      const redrawn = rej.sha256 && crypto.createHash('sha256').update(fs.readFileSync(src)).digest('hex') !== rej.sha256;
+      held.push(`${job.group}/${name}${redrawn ? '（已交新图，待复审）' : ''}`);
+      continue;
+    }
     const stale = !fs.existsSync(dest) || fs.statSync(dest).mtimeMs < fs.statSync(src).mtimeMs || !(alpha ? pngAigc : jpegAigc)(fs.readFileSync(dest));
     if (stale) {
       finalizeOne(src, dest, job);
@@ -93,6 +106,7 @@ function main() {
   fs.writeFileSync(path.join(paintDir, 'manifest.json'), JSON.stringify(manifest, null, 2) + '\n');
   const total = Object.values(manifest).reduce((n, list) => n + list.length, 0);
   console.log(`已就绪 ${total} 张（本次压缩 ${done} 张）→ public/assets/paint/manifest.json`);
+  if (held.length) console.log(`退回未导入 ${held.length} 张（tools/art/raster/rejected.json）：\n  ${held.join('\n  ')}`);
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) main();

@@ -202,3 +202,16 @@ test('B18: the art direction defines an original slime', () => {
   assert.ok(doc.includes('### 3.1 史莱姆'), 'ART-DIRECTION.md has a slime section');
   for (const rule of ['没有水滴尖', '半透明', '没消化的叶子', '不笑']) assert.ok(sec.includes(rule), `slime rule "${rule}" missing`);
 });
+
+test('审图退回的图（tools/art/raster/rejected.json）不在 paint 清单里，也没有留下位图', () => {
+  const file = path.join(projectDir, 'tools/art/raster/rejected.json');
+  if (!fs.existsSync(file)) return;
+  const rejected = JSON.parse(fs.readFileSync(file, 'utf8'));
+  const manifest = readJson('public/assets/paint/manifest.json');
+  for (const [key, entry] of Object.entries(rejected)) {
+    const [group, name] = key.split('/');
+    assert.ok(entry.problem && entry.redo, `${key}: 退回要写明问题与重画要求`);
+    assert.ok(!(manifest[group] || []).includes(name), `${key} 已退回，不应在 manifest 里`);
+    assert.ok(!fs.existsSync(pub(`assets/paint/${group}/${name}.${ALPHA_GROUPS.has(group) ? 'png' : 'jpg'}`)), `${key} 已退回，不应留下位图`);
+  }
+});
