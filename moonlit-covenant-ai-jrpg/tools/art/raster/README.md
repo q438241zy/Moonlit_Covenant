@@ -1,6 +1,6 @@
 # 厚涂位图管线
 
-> **现在全部交给 GPT 出图**：画风是「日本动画画师画的欧洲奇幻」，以女主立绘为基准；完整清单（618 张，含逐张提示词）见 [`docs/ART-LIST-GPT.md`](../../../docs/ART-LIST-GPT.md) 与 `docs/art-list/gpt-art-list.csv`（`npm run art:list` 从 `manifest.mjs` 导出）。批量出图：`OPENAI_API_KEY=… npm run art:paint -- --provider openai`；胸像组透明底，`finalize.mjs` 输出 PNG。下面是原来的 Seedream 说明，仍然可用。
+> **现在全部交给 GPT 出图**：画风是「日本动画画师画的欧洲奇幻」，以女主立绘为基准；完整清单（630 张，含逐张提示词）见 [`docs/ART-LIST-GPT.md`](../../../docs/ART-LIST-GPT.md) 与 `docs/art-list/gpt-art-list.csv`（`npm run art:list` 从 `manifest.mjs` 导出）。批量出图：`OPENAI_API_KEY=… npm run art:paint -- --provider openai`；胸像组透明底，`finalize.mjs` 输出 PNG。下面是原来的 Seedream 说明，仍然可用。
 
 画风统一参照 `tools/art/raster/ref/lia.png`（赤红高马尾那张）。用 AI 绘图接口批量生成约 155 张图：8 位女主立绘（莉亚/米娅/塞雷娜已有 PNG，默认跳过）、48 套服装、10 张 CG、3 阶段 Boss、3 张舞台背景、38 张卡面，以及主线剧情的 29 张场景背景（来自 `public/story/locations.json`）和 16 张胸像（来自 `public/story/speakers.json`，同一文件只出一次）。游戏内的分组与尺寸见 `manifest.mjs` 的 `SIZE`，预留位清单 `public/assets/paint/README.md` 由 `readme.mjs` 从同一份清单生成（`npm run art` 的最后一步）。
 
@@ -20,6 +20,8 @@ npm run art:paint -- --limit 1          # 先试一张，确认画风
 npm run art:paint                       # 全量（可中断，重跑自动续传）
 npm run art:paint:finalize              # 压缩进 public/assets/paint/ 并生成 manifest.json
 ```
+
+**审图退回**：`tools/art/raster/rejected.json` 登记退回的图（键为「组/文件名」，写明问题、重画要求与退回时原图的 sha256）。`finalize.mjs` 不导入这些图，并删掉已有的位图，游戏继续显示矢量图；交了新图（哈希变了）时会提示「已交新图，待复审」，复审通过后把那一条从 `rejected.json` 删掉，再跑一次 `finalize.mjs` 才会导入。`test/art-assets.test.mjs` 检查退回的图不在 `manifest.json` 里。
 
 - 改某张图的描述：编辑 `manifest.mjs`，然后 `npm run art:paint -- --only card-n_goblin --force`。
 - 模型 id 可用 `ARK_IMAGE_MODEL` 或 `--model` 覆盖（例如换成更新的 Seedream 版本）。

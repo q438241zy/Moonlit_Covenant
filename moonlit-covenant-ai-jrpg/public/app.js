@@ -438,7 +438,7 @@ function titleScreen() {
           <div class="title-daily" id="titleDaily">${dailyStripHtml()}</div>
           <nav class="title-grid" aria-label="更多入口" style="--cols:${gridColumnsFor(secondaryActions.length)}">${secondaryActions.join('')}</nav>
           <p class="title-studio">阳之亮面出品</p>
-          <p class="title-footnote">「银轨号」是 IF 外传，人物身份与主线正史不同；正史以主线为准。标题页的三张厚涂角色卡由 AI 生成（画面含「图片由AI生成」标识）；标题背景与游戏内的立绘、服装、CG、地图、怪物和图标都是原创矢量美术，游戏内若出现 AI 生成的厚涂图，会在角落标注「AI 生成」。AI 只生成受约束的角色台词，不直接修改数值、战斗结果或世界事实。</p>
+          <p class="title-footnote">「银轨号」是 IF 外传，人物身份与主线正史不同；正史以主线为准。标题页的三张厚涂角色卡由 AI 生成（画面含「图片由AI生成」标识）；标题背景与游戏内的立绘、服装、CG、地图、怪物、卡面和剧情画面已换成 AI 生成的厚涂图，显示时角落标注「AI 生成」；界面图标与尚未替换的画面是原创矢量美术。AI 只生成受约束的角色台词，不直接修改数值、战斗结果或世界事实。</p>
         </section>
         <section class="title-art" aria-label="三名主要角色">
           <div class="hero-moon"></div>

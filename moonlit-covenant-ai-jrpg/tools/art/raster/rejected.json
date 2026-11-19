@@ -1,0 +1,158 @@
+{
+  "costumes/ophelia_swimsuit": {
+    "rejectedAt": "2026-11-18",
+    "problem": "胸口钥匙孔开口露出乳沟，腿口高衩，超出泳装尺度",
+    "redo": "改成胸口不开孔的连体或运动款泳装，腿口正常高度；脸仍是画面重点",
+    "sha256": "77d3b3d982208ab88f2ab04b896a065669077f6c48d586ec84523b48f55ea564"
+  },
+  "costumes-soft/ophelia_swimsuit": {
+    "rejectedAt": "2026-11-18",
+    "problem": "照着被退回的泳装原图加的罩衫",
+    "redo": "泳装重画后按新图加罩衫",
+    "sha256": "42ca14b7fae1bfddd33ec47c44a13f42c98dac5bfe827f76435fa19f48578597"
+  },
+  "costumes/aila_swimsuit": {
+    "rejectedAt": "2026-11-18",
+    "problem": "高衩竞技款，取景下缘压在胯部，沙滩球挡在胯前",
+    "redo": "正常腿口；取景到大腿中段以上；沙滩球拿在胸前或单手抛起",
+    "sha256": "75f22bc00b13ebad735ba80931819491e243a21b5bf57f35768e22fb2a9e4410"
+  },
+  "costumes-soft/aila_swimsuit": {
+    "rejectedAt": "2026-11-18",
+    "problem": "照着被退回的泳装原图加的罩衫",
+    "redo": "泳装重画后按新图加罩衫",
+    "sha256": "9f1009542f5352c40e6e14b4ed4e1fc169414d4464fe5139d732828b8ebc7994"
+  },
+  "costumes/lia_sportwear": {
+    "rejectedAt": "2026-11-18",
+    "problem": "塔盾「赤誓」背在她右肩后（正典是左肩）",
+    "redo": "塔盾改到莉亚本人左肩后，其余不变",
+    "sha256": "ac885e06888cb3ac33f82d2719692a71034cea8a589d6e22d0c6e13270329979"
+  },
+  "story-bg/fog-harbor-sewer-pump": {
+    "rejectedAt": "2026-11-18",
+    "problem": "地下水道里开了一扇看得见天空与月亮的窗",
+    "redo": "去掉窗，改成砖墙或通风格栅，其余不变",
+    "sha256": "17bfe82cb4f9270eeb561c27313f4cf0cb12457462e76a36b86180f9bcd2ad4c"
+  },
+  "costumes-bust/ophelia_swimsuit": {
+    "rejectedAt": "2026-11-19",
+    "problem": "继承立绘的尺度问题：胸口钥匙孔、乳沟、高衩",
+    "redo": "等泳装立绘重画后照新立绘重出胸像，领口封到锁骨下",
+    "sha256": "2f81f63842da7ba8d4bce9de23aba88dc36a23a07df88bce51690615ef2e2fa5"
+  },
+  "costumes-bust/aila_swimsuit": {
+    "rejectedAt": "2026-11-19",
+    "problem": "继承立绘的尺度问题：侧面开孔露出侧乳，紧身反光",
+    "redo": "等泳装立绘重画后照新立绘重出胸像，侧面与胸口不开孔",
+    "sha256": "b75f78f7c08e3ac71ac89e59f6e53d34955dd721ec66fe018b0cecfd7389cab8"
+  },
+  "costumes-bust/lia_sportwear": {
+    "rejectedAt": "2026-11-19",
+    "problem": "继承立绘错误：塔盾在她右肩后",
+    "redo": "等运动服立绘改正后重出胸像，塔盾在她本人左肩后",
+    "sha256": "78a641049b83dd0b57302795d0cd5fddda58e0b2625f5af778c677eb587ab2b4"
+  },
+  "costumes-bust-soft/ophelia_swimsuit": {
+    "rejectedAt": "2026-11-19",
+    "problem": "照着被退回的泳装罩衫版出的胸像",
+    "redo": "泳装与罩衫版重画后重出",
+    "sha256": "a66eaeba2277565fbb52471e3eb790b18892b030eef5dcd8236dd611d0bf6292"
+  },
+  "costumes-bust-soft/aila_swimsuit": {
+    "rejectedAt": "2026-11-19",
+    "problem": "照着被退回的泳装罩衫版出的胸像",
+    "redo": "泳装与罩衫版重画后重出",
+    "sha256": "24071b487741e7e443bc074952a14dbc4226f62a05652661dd089393c84f8cd5"
+  },
+  "cg/aftermath-snow": {
+    "rejectedAt": "2026-11-19",
+    "problem": "莉亚朝画面右侧，塔盾却在她右肩后（左右放反）",
+    "redo": "塔盾改到莉亚左肩后（她朝右时露在画面右侧），其余构图不变",
+    "sha256": "e38767ccf505f5f39174100f91e2ccd657a5e7c89086a5876b71e44fb4fb142a"
+  },
+  "cg/ending-share": {
+    "rejectedAt": "2026-11-19",
+    "problem": "山丘上四人画错队伍：第三人不是塞雷娜，第四人是棕发男弓手，没有米娅；莉亚没背盾",
+    "redo": "四个背影改成：金色短发的队长、背塔盾的红马尾莉亚、青蓝短发戴机械猫耳的米娅、紫黑长发发尾月白的塞雷娜",
+    "sha256": "a403c4a18a938178130e7f6f828e839fe814695b56ba2951cfa6398a7a2b857d"
+  },
+  "story-bg/holy-city-pilgrim-hostel-night": {
+    "rejectedAt": "2026-11-19",
+    "problem": "描述是门缝下的光里有一双靴子的影子（门外有人），成图在屋里地板上画了一双真靴子",
+    "redo": "门关着，门缝下透进一道暖光，光带被两块靴形黑影截断；屋里不放靴子，其余与白天版一致",
+    "sha256": "5810f5f0c7f91fb7bfa4a38d5bd2ad705a850e9a9f76276219f7ac0455499c62"
+  },
+  "story-bg/north-slope-registry-tent": {
+    "rejectedAt": "2026-11-19",
+    "problem": "门帘外麦田边有一个小人影",
+    "redo": "抹掉麦田边的人影，补成麦子或草地，其余不动",
+    "sha256": "50d9c97c2b9692b66fd6e045a01825903e6bdc1fe95b874984e1868430ced09f"
+  },
+  "story-bg/white-tower-arcade-dress-shop": {
+    "rejectedAt": "2026-11-19",
+    "problem": "小桌上软尺的刻度画成了伪数字",
+    "redo": "软尺只留长短刻线，不要数字或像字符的形状，其余不动",
+    "sha256": "aef2223d04822073d414054f35a9d070aeaa982990c2dde7916e9d719050d857"
+  },
+  "story-bg/white-tower-registry-hall-court": {
+    "rejectedAt": "2026-11-19",
+    "problem": "桌上的册与印章与本体册厅对不上，剧情要用的拱压浪印没了",
+    "redo": "桌上照本体册厅画：四栏格线的空白册页、七角星印、拱压浪印、七角晨星封蜡；列席布置保持现状",
+    "sha256": "12e4351fd95997b9477ccfb5079353345e769e35547308929fd55da3127e6bc0"
+  },
+  "story-bg/morning-gate": {
+    "rejectedAt": "2026-11-19",
+    "problem": "石巨人画在城门正面，与「晨门·上午」的普通拱门不像同一座门",
+    "redo": "从很深的门洞里面看：门洞两侧的墙是石头巨人，双手握着闸链；门外的立面仍是「晨门·上午」那座白石拱门",
+    "sha256": "376b0c8311f240d5f71992f8948dee0874c555f9b9d41ceebf60883b4d13067c"
+  },
+  "story-bg/white-tower-iron": {
+    "rejectedAt": "2026-11-19",
+    "problem": "白塔画成矮的圆形层叠塔，与其他几张入云的高尖白塔不像同一座",
+    "redo": "沿用围城远景里那座高尖、入云的白塔外形，再加上一道道黑铁箍，构图其余不变",
+    "sha256": "3e1acfe6fecbfe297543dd2324ca4dd5be65b8a2e83c1030c7e395868107ebed"
+  },
+  "story-npc/aila_cell": {
+    "rejectedAt": "2026-11-19",
+    "problem": "描述点名的星形发夹没画，与 aila_y3_* 对不上",
+    "redo": "原图不变，在金发侧边补一枚与 aila_y3_* 同款的星形发夹",
+    "sha256": "65f1213fcbcb8b50804a246525a6f67fdfcc3e598d7e097fd5066f0bd805e089"
+  },
+  "story-npc/aila_consort": {
+    "rejectedAt": "2026-11-19",
+    "problem": "没有星形发夹",
+    "redo": "保留细铁冠，在侧发补上与 aila_y3_* 同款的星形发夹",
+    "sha256": "895c64488b00da3e02a96354bdc13199664b2ab69667355e44d0ba831b15e390"
+  },
+  "story-npc/serena_consort": {
+    "rejectedAt": "2026-11-19",
+    "problem": "半截白手套戴在左手（正典是右手）",
+    "redo": "改成右手戴半截白手套，左手不戴；托下巴可改用右手",
+    "sha256": "4466080b202b0669b470e01e31a74b949e51c38c55c360c85b662d96aa846dbf"
+  },
+  "story-npc/veldra": {
+    "rejectedAt": "2026-11-19",
+    "problem": "没画「边上滑开的第二个轮廓」，与 veldra_plain 区分不开",
+    "redo": "在平静的脸侧叠一道半透明、略错位的第二张脸轮廓，像残影正在滑开",
+    "sha256": "906cc4c0db9240c89038af5e937ad0de8dd3d15fd8fa7fdc9f678abe6c670c7c"
+  },
+  "story-insert/ch18_frost_spirit": {
+    "rejectedAt": "2026-11-19",
+    "problem": "霜灵画成了半透明的裸体女性背影，还扎着马尾，容易看成某位女主",
+    "redo": "改成看不出性别、没有身体曲线的霜雾人形，边缘像结霜碎散，没有马尾，没有脸",
+    "sha256": "e8757979035fa9308fc0f3d68d75a83d35d455956a371d15095e8931008b5aef"
+  },
+  "story-insert/ch18_ice_person": {
+    "rejectedAt": "2026-11-19",
+    "problem": "冰里的人画成金发编辫、蓝眼的女性，很像伊芙琳；剧情里是被冻住的霜潮使团成员",
+    "redo": "画一位霜潮使团的成年成员（霜潮的服色），发色与发型避开八位女主，只露到胸口，眼睛睁着很平静",
+    "sha256": "ab7c31cc69f3e40195447f12f6f14a1a07a6489281e251c0db0bd9c66c0886ca"
+  },
+  "story-insert/ch23_vine_faces": {
+    "rejectedAt": "2026-11-19",
+    "problem": "藤尖只有三颗光滑的白椭圆，看不出是脸",
+    "redo": "苍白椭圆上隐约看得出人脸起伏（眉骨、鼻梁、闭着的眼），不画细节五官，地上不画影子",
+    "sha256": "f60dfb56ee7f78eb521eff130e7ac470b037ff17fa88160c2f7b7aaacc49db8d"
+  }
+}

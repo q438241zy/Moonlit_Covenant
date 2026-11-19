@@ -465,7 +465,7 @@ async function renderHub() {
         <button type="button" class="hub-card" data-nav="collection"><span class="ico">${icon('collection', { size: 30 })}</span><span class="name">图鉴</span><span class="desc">收录 ${S.summary?.ownedCards ?? 0}/${S.summary?.totalCards ?? 38}</span></button>
       </div>
       <div class="hub-links"><button type="button" class="btn ghost" id="rulesBtn">${icon('help', { size: 16 })} 对战规则</button></div>
-      <div class="hub-credit">卡面 / 立绘 / 图标：原创矢量美术 · 备用卡面剪影 <a href="https://game-icons.net" target="_blank" rel="noopener">game-icons.net</a>（CC BY 3.0）</div>
+      <div class="hub-credit">卡面 / 立绘：AI 生成的厚涂图（标注「AI 生成」），未替换时显示原创矢量美术 · 图标：原创矢量美术 · 备用卡面剪影 <a href="https://game-icons.net" target="_blank" rel="noopener">game-icons.net</a>（CC BY 3.0）</div>
     </div>
   </div>`;
   bindNav();

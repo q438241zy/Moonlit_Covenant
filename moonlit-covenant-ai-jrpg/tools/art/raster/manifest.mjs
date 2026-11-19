@@ -94,6 +94,7 @@ const portraitRef = (id) => `tools/art/raster/out/portraits/${id}.png`; // 新�
 // 除了八张立绘，其余所有图的第一张参考都是新出的莉亚立绘：画风、线稿与上色都以女主立绘为准
 const HEROINE_STYLE = portraitRef('lia');
 const costumeStaging = readJson('tools/art/raster/costume-staging.json');
+const endingStaging = readJson('tools/art/raster/ending-staging.json');
 const outfitRefs = (id, ...extra) => [...new Set([HEROINE_STYLE, portraitRef(id), ...extra])];
 
 const jobs = [];
@@ -316,7 +317,7 @@ const dialogueViews = ['face turned to screen left, eyes toward the other speake
 const storyView = (name) => {
   const branch = name.split('_').at(-1);
   const branchView = { beside: 'shoulders open, meeting the listener’s eyes', apart: 'torso turned aside, a sidelong glance', away: 'gaze directed off screen in near profile', cell: 'chin lowered slightly, gaze raised toward the listener', consort: 'upright, looking calmly across the frame' }[branch];
-  if (branchView) return branchView;
+  if (branchView) return [branchView, endingStaging[name]].filter(Boolean).join(', ');
   let hash = 0;
   for (const c of name) hash = (Math.imul(hash, 31) + c.charCodeAt(0)) >>> 0;
   return dialogueViews[hash % dialogueViews.length];
