@@ -121,6 +121,10 @@ test('raster job list covers every story background and bust', async () => {
   assert.equal(count('story-bg'), Object.values(locations).filter((l) => l.svg.startsWith('/assets/story/bg/')).length);
   assert.equal(count('story-npc'), busts.size);
   assert.ok(JOBS.some((j) => j.id === 'story-npc-lia'));
+  const siege = JOBS.find((j) => j.id === 'story-bg-white-tower-city-siege-far');
+  const ironTower = JOBS.find((j) => j.id === 'story-bg-white-tower-iron');
+  assert.equal(ironTower.refs[1], siege.out, 'the iron-bound tower is edited from the siege panorama');
+  assert.ok(ironTower.after.includes(siege.id), 'the panorama must be rendered before its variant');
   assert.equal(SIZE['story-bg'], '1600x900');
   assert.equal(SIZE['story-npc'], '600x800');
   assert.equal(new Set(JOBS.map((j) => j.id)).size, JOBS.length, 'job ids are unique');
